@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A3 Prompt Chaining · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to comp">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/a3-prompt-chaining/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/" class="active">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>A3</p>
+
+                        <h1>A3 · Prompt Chaining</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Action × Chain (relay)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (split into N segments, N calls, but each segment can use a cheaper model to amortize)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Action patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to complete the work.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>A single prompt that tries to do everything at once usually does none of it well. The first version of one financial media outlet's content-editing agent put seven things—proofreading, rewriting, unifying style, fact-checking numbers, generating headlines, writing summaries, and image suggestions—into one prompt fed to the model. The result was that "GMV grew 35%" in an article got changed to 53%: at that moment the model was in "rewrite" mode rather than "fact-check" mode, and it misread the number along the way. The later tasks got increasingly careless, and the image suggestions were always the same three boilerplate lines.</p>
+            <p>Prompt Chaining breaks a large task into several independent prompts processed in sequence. Each segment does only one thing, has its own role and the model best suited to it, and has its own success criterion. The difference from a single oversized prompt is that complexity can only be brought down by splitting; stuffing it into a bigger box does not bring it down.</p>
+            <h2>Why the coordinate is "Action × Chain"</h2>
+            <ul>
+            <li><strong>Vertical axis · Action</strong>: A task one prompt cannot complete is split into several sequential prompts, each of which triggers a model call or tool output. The landing point is "doing" rather than single-point "thinking," so it belongs to the Action module.</li>
+            <li><strong>Horizontal axis · Chain</strong>: prompt1 → prompt2 → prompt3 is a typical linear pipeline, where the output of one segment is the input of the next. It is neither routing diversion nor graph-shaped dependency. It shares the Chain topology with Plan-Execute (A2); the difference is that A3 is a pure straight line with no replan, while A2 is a DAG with replan.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>Its engineering prototype is the Unix pipe. <code>cat data.csv | grep ERROR | sort | uniq -c</code> strings together several single-responsibility small programs via stdin/stdout. Each program only reads input and writes output, with no need to know who comes before or after. A prompt chain reproduces the same thing at the LLM layer, where each prompt segment is a "small program."</p>
+            <p>The extra layer beyond the Unix pipe is the gate. A Unix program simply runs empty when it matches nothing, but an LLM will confidently make things up, so a cheap programmatic check goes between two segments—not a model, but a Python <code>if</code> test—and on failure it retries or escalates. If the researcher stage writes "find at least three references," the gate is <code>if len(refs) &lt; 3</code>, and only what passes flows on.</p>
+            <p>A few points for implementation:</p>
+            <ul>
+            <li><strong>Each prompt segment uses the five-piece structure</strong>: role, task, context, format, constraints, all wrapped in XML tags. The more explicit the contract for the next segment, the lower the parse failure rate, and reliability can be measured improving by roughly 8 to 15 points.</li>
+            <li><strong>Each segment selects its model independently</strong>: a cheap model handles details in proofreading, a strong model handles creative rewriting, and a medium model with thinking handles number checking. Handing language details to a cheap model keeps total cost only about 30% above the single-prompt version, rather than several times higher from using a strong model at every step.</li>
+            <li><strong>Gates need tolerance</strong>: writing "exactly 500 words" makes the chain stall forever; write it as a range plus necessary conditions, such as "450 to 550 words" plus "must contain three arguments."</li>
+            <li><strong>Retries should feed back the failure reason</strong>: tell the model "where it fell short last time" rather than rerunning blindly, and the hit rate goes up.</li>
+            </ul>
+            <p>Claude Code has produced three industrial forms of the chain: in the perceive-reason-act main loop, each tool result is a chain link (the implicit chain); a slash command is a prefabricated chain (<code>/commit</code> is a five-step template of status → diff → reasoning → drafting → commit); and SKILL.md is a composable chain segment (a declarative definition of a multi-step process embedded into a larger chain).</p>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>The workflow has clear stages, and "what counts as acceptable" between stages can be described in one or two lines of code</strong>: content editing, contract review, customer-ticket triage. In production, most teams end up with 3 to 5 steps.</li>
+            <li><strong>Productizing the workflow into a reusable entry point</strong>: a slash command packages a domain-specific workflow into a prefabricated chain, where the user triggers the whole chain with one command instead of handwriting the steps each time.</li>
+            <li><strong>Output that needs to be traceable and trustworthy</strong>: archiving the full-chain trace lets the business side trace in reverse how the agent moved step by step from the original draft to the final draft. In the content-editing case, the trace raised editor trust from 42% to 91%, more effective than any prompt engineering.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Information starvation</strong>: each step only receives the previous step's output, so information that appeared in step 1 but was not retained in step 2 is lost when step 3 needs it. The chain passes only the previous step's output and does not automatically let early information flow downstream. The remedy is to carry a separate cumulative context object that every step can read (called the saga context in distributed systems).</li>
+            <li><strong>Gate tyranny</strong>: a gate set too strictly can never pass; "exactly 500 words" rejects 499 and 501 indefinitely, burning through tokens before anyone notices. The remedy is a range plus necessary conditions.</li>
+            <li><strong>The multiplicative effect is underestimated</strong>: a 95% single-step pass rate, strung across seven steps, leaves the full-chain pass rate at only about 70%. The longer the chain, the higher the requirement on each step's pass rate.</li>
+            <li><strong>Assembly of the first prompt is overlooked</strong>: a production system prompt is usually assembled from several data sources—base instructions, user identity, history, current task, tool list, style, format constraints—and hardcoding it into one long string makes the most frequently updated part impossible to maintain independently.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Full-chain success rate</strong> (healthy zone &gt;85%): a failure to pass any step's gate counts as a chain failure. Below 70% usually means a step's gate is too strict or information broke between steps. Note that it is measured per chain, not per step.</li>
+            <li><strong>Per-step latency p99</strong> (healthy zone: each step's p99 &lt;3× the median): when the chain slows down, this distribution chart finds the lagging step fastest.</li>
+            <li><strong>Gate retry distribution</strong> (healthy zone: 90% pass on the first try, 9% on the second, 1% on the third): when a step's retry rate suddenly rises, it is almost always a mismatch between the gate and the model's current capability.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>chain = [step1, step2, step3]        # each step carries its own system_prompt + model + gate
+            current = initial_input
+            for step in chain:
+                for attempt in range(max_retry + 1):
+                    result = step.run(current)   # call the corresponding model
+                    if result passes the gate:
+                        current = result.output
+                        break
+                    elif retries remain:
+                        current += &quot;[did not meet standard: reason. retry]&quot;   # feed back the failure reason
+                    else:
+                        return failure(step, trace)
+            return success(current, total_tokens, trace)
+            </code></pre>
+            <p>Engineering points for implementation: gates carry tolerance; the trace's tokens and latency are written structured into the logging system; when needed mid-chain, actively retrieve the original input for reference (for example, number checking returns to the original draft so that versions produced by upstream rewriting do not contaminate the numbers).</p>
+            <h2>Enterprise implementation example</h2>
+            <p>The second version of the financial media content-editing agent was rebuilt into a seven-step chain: proofreading (cheap model, gate verifies that output length is no less than 95% of input), rewriting (strong model, preserves author style), style unification, number checking (medium model with thinking; the key design is returning to the original draft for reference, with the gate requiring numbers to match the original draft 100%), headline generation (outputs 3 candidates), summary writing, and image suggestions (all three categories required). Each step selects its model independently to control cost. The results: number-checking accuracy rose from 87% to 99.4%, editor trust rose from 42% to 91%, at the cost of per-article cost rising about 30% and latency rising from 12 seconds to 38 seconds. This template transfers directly to contract review, medical imaging assistance, and customer-service triage—each step with its own goal, its own model, its own gate.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Plan-Execute (A2)</strong>: a dual pair, one light and one heavy. A3 is a straight line, A2 is a graph. If the task can be drawn as a DAG (with parallelism and cross-step dependencies), use A2; if it is a straight line, use A3. A common hybrid form in production is A2 on the outside, A3 on the inside.</li>
+            <li><strong>Tool Dispatch (A1)</strong>: a nesting relationship rather than a substitution. A step inside a chain may call a tool, and that step is A1 (choosing one among several tools), but it happens within one link of the chain.</li>
+            <li><strong>Guardrail Sandwich (A5)</strong>: a chain's gate is a synchronous programmatic check, while A5's hook is a sandwich layer wrapped around tool calls before and after. Both make "the process interceptable at checkpoints."</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>As long as your system holds a multi-turn conversation with an LLM, you are already using a prompt chain; the only difference is whether it is explicit or implicit. With an explicit chain you can assign a model to each segment, add gates, keep a trace, and replay failed steps; with an implicit chain you can only pray the model does not crash this time.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

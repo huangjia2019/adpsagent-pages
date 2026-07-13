@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R4 Iterative Hypothesis Testing · Pattern White Paper · ADPS</title>
+    <meta name="description" content="The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scie">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/r4-iterative-hypothesis-testing/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/" class="active">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>R4</p>
+
+                        <h1>R4 · Iterative Hypothesis Testing</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reasoning × Loop (transition)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (cumulative cost over many iterations; must be bounded by circuit breakers and budget caps)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reasoning patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scientific method into reasoning.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>Some tasks cannot be answered in a single pass of reasoning: the root cause is unknown, the evidence must be gathered step by step, and the first judgment is often wrong. Diagnostic tasks are the typical case—when a fault alarm fires, the "most likely cause" that the model ranks by prior may be badly miscalibrated, with the true root cause ranked far down or not even considered at first. If the model reasons once and then commits, it walks further and further in the wrong direction; if it simply retries, the retry itself does not solve the problem, because the issue is not that "the result is unstable" but that "the understanding of the world is still wrong."</p>
+            <p>Iterative hypothesis testing replaces single-pass reasoning with a loop of "hypothesize → validate → revise → hypothesize again." The fundamental difference from ordinary retry is this: retry assumes that the retry itself can solve the problem, while iterative hypothesis testing assumes that each loop must update the understanding of the world. Its design center is also not "retry until success," but converging through falsification to the single hypothesis that has not been refuted. It is the dual of parallel exploration (R3): parallel opens N lines at once along the spatial dimension, while iteration runs one line many times along the time dimension.</p>
+            <h2>Why the coordinate is "Reasoning × Loop"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reasoning</strong>: It follows empirical, scientific-style reasoning of "hypothesize → validate → revise → hypothesize," not a single deduction. Each round actively revises its own belief rather than waiting for the result to stabilize.</li>
+            <li><strong>Horizontal axis · Loop</strong>: Multiple iterations until the evidence converges or a limit is reached form a natural loop structure. The dual-mode architecture (R5) in the same column is also in the Loop column but has a different emphasis—iteration is a single agent looping with itself to validate hypotheses, while dual-mode is two agents collaborating to split the handling of "talking" and "thinking."</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A mature iterative hypothesis-testing setup often uses a three-agent division of labor that maps to a strict loop:</p>
+            <ol>
+            <li><strong>Hypothesis generation (Planner)</strong>: List N candidate hypotheses based on the symptoms and historical cases, ranked by prior probability. This step uses the most expensive model, because generating the "right hypothesis list" determines the direction of the entire trajectory.</li>
+            <li><strong>Evidence collection (Generator)</strong>: Given a hypothesis, decide which tools to run to validate it—query a metric, retrieve a log, read a sensor. This is mostly tool calls, and a cheap model is enough. The evidence must come from deterministic, reproducible data sources; "the model looked at it itself and felt it was OK" does not count as evidence.</li>
+            <li><strong>Judgment (Evaluator)</strong>: Combine the evidence to decide whether the hypothesis is confirmed, falsified, or insufficiently supported. This step uses a mid-tier model, and the system prompt should emphasize falsification over confirmation—"your job is to find strong counter-evidence." This framing measurably improves accuracy.</li>
+            </ol>
+            <p>The loop rules are: falsified goes back to the generation stage, confirmed exits, and insufficient evidence goes back to gather more. Two engineering practices are easy to overlook but critical: first, when entirely new evidence appears, reset the whole hypothesis tree rather than fine-tuning the old one; second, when the limit is reached without convergence, trigger human-in-the-loop (HITL) rather than letting the agent force-pick the hypothesis with the highest prior and ram into it.</p>
+            <h2>Where it fits in production</h2>
+            <ul>
+            <li><strong>Diagnostic tasks</strong>: Industrial fault localization, medical diagnosis, safety incident root-cause analysis. The root cause is unknown, evidence must be gathered step by step, and a single line that goes astray can be reset and restarted.</li>
+            <li><strong>Complex code debugging</strong>: Change one place, validate one place, let the failure information flow back to form new hypotheses, and repeatedly converge to the real bug.</li>
+            <li><strong>Judgments that require a strict evidence chain</strong>: Scenarios where every step's conclusion must be backed by reproducible evidence and the reasoning path must ultimately be explainable to a regulator.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>Forcing it through under too tight a time budget</strong>: When the time budget is under 30 seconds, or the cost of error is low, do not use iteration—adding iteration to a task that one pass of reasoning could handle is over-engineering.</li>
+            <li><strong>Forcing it past 3 rounds without convergence</strong>: If it has not converged after 3 iterations, the task itself is usually wrong (the symptom description is inaccurate, or it is simply not a problem in this system), and it should be reset or escalated to a human, not burn a 4th and 5th round.</li>
+            <li><strong>The Evaluator looks for supporting evidence</strong>: "Find supporting evidence" falls into confirmation bias and is more than 30% less accurate than "find falsifying evidence."</li>
+            <li><strong>Fine-tuning the old tree when new evidence arrives</strong>: When entirely new evidence appears, the hypothesis tree should be reset and regenerated; patching the old tree will be dragged off course by the wrong prior.</li>
+            <li><strong>No circuit breaker</strong>: Every iteration must have a hard max_iterations cap plus a cost cap, or the cost explodes and the agent hangs.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Convergence Rate</strong> (healthy range &gt;80%): The share of cases that converge automatically before reaching the limit. Below 60% means the agent often reaches the limit without a conclusion—either the task is too complex and should be decomposed, or evidence collection is inadequate. This is the most comprehensive metric.</li>
+            <li><strong>Average iterations to convergence</strong> (healthy range 2-4): How many rounds successful cases take on average to converge. Below 2 means the task is too simple to need iteration; above 5 means each round is inefficient and hypothesis quality is poor.</li>
+            <li><strong>Falsification Rate</strong> (healthy range 30-60%): The share of hypotheses falsified each round. Below 20% means the agent is in confirmation bias and not actively falsifying; above 80% means most generated hypotheses are wrong.</li>
+            <li><strong>HITL Trigger Rate</strong> (healthy range 5-15%): The share of cases that escalate to a human. Below 2% means the agent is overconfident and commits even when it should not; above 30% means the agent is too weak and needs a human to backstop everything.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>Task arrives → Planner generates a hypothesis list (ranked by prior probability)
+            Loop (limit max_iterations):
+                Pick the unvalidated hypothesis with the highest prior
+                Generator collects evidence (deterministic data source)
+                Evaluator judges (emphasize falsification over confirmation):
+                    confirmed   → converge, exit
+                    falsified   → prune, continue to the next hypothesis
+                    if all hypotheses are falsified → take the new evidence back to the Planner to regenerate
+                Entirely new evidence arrives → reset the whole hypothesis tree
+            Loop ends still without convergence → trigger HITL, attach the full hypothesis tree + evidence + iterations run
+            Keep a trace on file throughout (compliance scenarios require long-term retention)
+            </code></pre>
+            <p>Four points for landing it: assign the three models by routing (the expensive model generates hypotheses, the cheap model collects evidence, the mid-tier model judges); make the evidence schema strict to prevent the model from inventing evidence; let HITL escalation carry the full hypothesis tree and evidence, not a simple notification; keep the trace on file for the long term for audit.</p>
+            <h2>Enterprise landing example</h2>
+            <p>A mid-sized chemical plant's industrial fault-diagnosis agent assists front-line engineers in locating the root cause when an alarm fires. In the early hours of the pilot's third week, a polyethylene production line raised an alarm—the reactor temperature was rising abnormally. The agent pushed 5 candidate hypotheses ranked by likelihood, and the engineer validated them one by one: cooling pump failure (flow looked normal, eliminated), sensor drift (compared against the redundant sensor and they agreed, eliminated), process recipe anomaly (the feed log looked normal, eliminated). When the fourth hypothesis required waiting for lab analysis and the line had already been down for an hour, the engineer manually fed in a new fact—the PID control log showed a remote login that had modified settings in the early hours. The agent immediately rebuilt the hypothesis tree from scratch, drilled down to find that a temperature-control parameter had been changed, which would cause the temperature to oscillate upward and matched the current state, and finally located the cause: another shift had run a parameter-optimization test and forgotten to roll it back.</p>
+            <p>Two observations afterward were key. First, the true root cause had only a 2% prior in the first round—the model's prior was badly miscalibrated, and it was dug out only by repeated iteration plus a human supplying a fact. Second, after the new fact was fed in, the agent reset and rebuilt the entire tree rather than fine-tuning it. The team rewrote the system on this basis, adding a three-layer structure (generate hypotheses, collect evidence, judge) and making six key decisions: a three-layer hypothesis tree that supports drill-down; a low HITL threshold (escalate to a human when confidence is insufficient after 3 rounds, and require human confirmation whenever critical equipment is restarted); reset on new evidence rather than compaction; a strict evidence schema; an Evaluator that emphasizes falsification; and a long-term trace on file for every run. After the changes, the convergence rate rose from 50% to 82%, and the average fault-localization time was compressed from 3.2 hours to 1.1 hours.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Parallel exploration (R3)</strong>: A dual relationship. Parallel opens N lines at once along the spatial dimension and selects the best in one shot; iteration runs one line many times along the time dimension and converges step by step.</li>
+            <li><strong>Chain of thought (R1)</strong>: The interior of each iteration round is a chain of thought; iteration strings multiple chains of thought together along the time dimension and revises them repeatedly.</li>
+            <li><strong>Complexity routing (R2)</strong>: Using different model tiers for the three roles inside iteration is exactly the application of routing thinking inside a loop.</li>
+            <li><strong>Dual-mode architecture (R5)</strong>: Also in the Loop column. Iteration is a single agent looping to validate against itself; dual-mode is two agents collaborating and dividing the work.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The exit condition of iterative hypothesis testing is not "find a correct hypothesis" but "falsify all the wrong hypotheses"—it encodes centuries of the human scientific method into a probabilistic system, because the reliability of a probabilistic system can only be built through falsification.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

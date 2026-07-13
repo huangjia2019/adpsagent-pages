@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3 Progress Tracking · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/m3-progress-tracking/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/" class="active">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M3</p>
+
+                        <h1>M3 · Progress Tracking</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Memory × Orchestrate</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Low (reading and writing state fields is cheap)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Memory patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work has progressed.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>The problem it solves</h2>
+            <p>An LLM has no real working memory. Its "memory" lives entirely in the context window, and the context window has a U-shaped attention profile—the middle section gets drowned out. When a long task runs for two or three hours and a stretch of debugging or detail-chasing crops up in the middle, the remaining tasks in the original plan are easily forgotten by attention. A common failure: the agent breaks down the first three files, then sinks into a small bug for twenty-odd turns, and once it finishes, goes straight to writing tests, forgetting that a fourth file in the original plan was never created.</p>
+            <p>Progress tracking catches this with engineering means: it forces the todos to be written out explicitly and repeatedly prompts the agent to look at its own list. The key point is that the list is not for humans, it is for the agent itself—an agent reading its own structured todos is far more reliable than reading its own conversation history from thirty turns ago, riddled with noise.</p>
+            <h2>Why the coordinate is "Memory × Orchestrate"</h2>
+            <ul>
+            <li><strong>Vertical axis · Memory</strong>: It gives the agent a "work log" that preserves task context across steps. This is the simplest form of memory (session memory)—remembering "what I just did, what I'm doing now, what comes next."</li>
+            <li><strong>Horizontal axis · Orchestrate</strong>: Progress tracking does not sit inside any single task step; it cuts across all steps. It maintains a todo state that runs through the entire long task, coordinating the agent so that it does not drift across multiple steps, can resume when interrupted, and can return when it jumps ahead. This "standing above all the steps and coordinating" is exactly what Orchestrate does, not the Chain approach where one step hands its result to the next.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <ol>
+            <li><strong>A minimal state machine</strong>: The core schema is extremely lean—task description, a status enum (pending / in_progress / completed), and a progressive form. The hard constraint of the state machine is that only one item is in_progress at any moment; a single-threaded agent can focus on only one thing at a time.</li>
+            <li><strong>Externalizing state into the conversation flow</strong>: On every turn, progress is written out so that both the agent and the user can see it. This is the central move against the LLM's working-memory deficit—offloading the task from working memory to external storage.</li>
+            <li><strong>Automatic clearing when everything is done</strong>: Once all todos are completed, the list is cleared automatically, so the agent does not keep seeing a stale "all done" list that interferes with judgment on a new task. This is counterintuitive but necessary, because an LLM has a "seen is attended to" property.</li>
+            <li><strong>Framework-level forced nudge</strong>: Teaching the agent to write todos through the prompt alone is not enough; the framework layer must have a mechanism. Two industrial implementations exist: one is the verification nudge (when a list of three or more items is closed without a verification step, a reminder is appended automatically), the other is context-loss detection (when a complex task is being done without any todos written, a reminder is injected automatically, and if the agent keeps not writing them, the pressure escalates progressively).</li>
+            <li><strong>Isolation by agent / session</strong>: Each agent or sub-agent maintains its own todo pool, so that a sub-agent's detail todos do not pollute the main agent's high-level list.</li>
+            </ol>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Multi-step long tasks</strong>: Tasks with three or more steps, spanning many turns, prone to amnesia after detail-chasing in the middle. Code refactoring, multi-file rework, complex debugging.</li>
+            <li><strong>Recoverable long flows</strong>: Scenarios where a task may crash midway and need to resume. After progress is persisted, the second session reads the progress, skips what is completed, and recovers from the interrupted step without redoing work.</li>
+            <li><strong>Tasks driven forward over multiple weeks</strong>: Scenarios where the same goal is advanced across several weeks (such as investment research forming a judgment on a single stock), requiring a two-layer todo—the high-level research plan persists across weeks, while concrete actions within a session are merged back into the high level once done.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>Forcing it onto a single simple task</strong>: Work of three steps or fewer, plain conversation, and one-off Q&amp;A do not need todos.</li>
+            <li><strong>Allowing multiple in_progress</strong>: Violates the hard constraint of the state machine. When an engineer complains "I want to do them in parallel," it is usually a false need—either the task should be split across multiple agents, or it should be arranged into a chain and done in sequence.</li>
+            <li><strong>Missing the active-form field</strong>: When the UI shows "what is being done," mechanically appending -ing to a verb produces splices like "Fix cache bug...ing." Using a progressive-form field forces the verb form to be thought through at the moment the todo is written.</li>
+            <li><strong>Main agent and sub-agent sharing one pool</strong>: When the main agent looks at its own list, it gets drowned by five to ten detail todos from sub-agents, its attention contested by irrelevant granularity. Sub-agents must have their own todos.</li>
+            <li><strong>No framework-level nudge</strong>: When the agent does a five-step task with no todos written at all and the framework does not remind it, the amnesia happens as before. The three tiers of the nudge's progressive pressure (suggest → require → enforce) need clear boundaries.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Amnesia rate</strong> (the lower the healthier): the fraction of long tasks in which the agent drops a step from the original plan. This is the primary indicator of whether progress tracking is done right; no matter how pretty the todo UI is, it cannot rescue a high amnesia rate.</li>
+            <li><strong>Verification-step coverage</strong> (healthy range near 100%): the fraction of tasks with three or more items that include a verification step before closing. The verification nudge drives this metric directly.</li>
+            <li><strong>Resume success rate</strong> (healthy range ≥ 95%): the fraction of post-crash recoveries that resume from progress without redoing completed steps.</li>
+            <li><strong>Single-in_progress compliance rate</strong> (healthy range 100%): the share of moments at which only one item is in_progress; any violation means the state machine has a bug.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>TodoItem: content (verb base form) / active_form (progressive) / status (pending|in_progress|completed)
+            TodoList (isolated by owner_id):
+                start(id)    → mark in_progress, automatically pause any other in_progress back to pending (only one at a time)
+                complete(id) → mark completed
+                all_done()   → if all completed, clear automatically
+            ProgressTracker (framework-level enforcement):
+                context_loss_detected → complex task but no todos written → inject reminder
+                nudge progression: suggest → require → enforce (halting)
+                verification_nudge   → 3+ list closing without a verification step → append reminder
+            Persistence: incremental append-only + periodic snapshot + session fallback
+            </code></pre>
+            <p>Four points for engineering implementation: only one in_progress at a time must be enforced; estimate complexity with a cheap model rather than by counting verbs; the three tiers of the nudge's progressive pressure need clear boundaries; isolate the TodoList by agent_id rather than sharing it.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>A buy-side research firm's investment-research agent has to advance a judgment on a single stock alongside the analyst over four to twelve weeks. An ordinary single-layer todo is not enough; here a "unified session state plane" is needed. The SessionState is the mechanical-parameter state—a strict key-value structure that records each stock's research plan, current investment thesis, key risks, and counter-views, ensuring that during continuous multi-step analysis the input to each step has a unique, auditable source (for example, "which day's earnings data was used"). The SessionNarrative is the narrative-alignment state—a natural-language summary that records "what we are doing overall and which dimension this round advanced," resolving the question of where output is written back for later sessions to consume. The accompanying design includes: a two-layer todo (the research plan persists across weeks while session tasks merge back once done); state stored as git-friendly markdown (the analyst can git diff to see each week's changes); key risks and counter-views never cleared (injected as the system prompt on every session); a four-state machine (an extra needs_review state, where the fund manager must review before something counts as completed, satisfying the regulatory requirement that "every judgment is reviewed by a person"); active forms carrying data timestamps (forcing the agent to check "is the data I used fresh enough"); and an automatic weekly-report merge on weekends.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Layered Retention (M1)</strong>: Progress tracking is the hottest layer within the hierarchy. The todo list is the agent's register—three to seven items, frequently updated, loaded on every inference—the part of the session layer dedicated to managing "how far the work has progressed."</li>
+            <li><strong>Failure Diary (M4)</strong>: A twin relationship, both in the Loop column. Progress tracking manages "the path of what was done right," the failure diary manages "the pitfalls stepped into." One records successful steps, the other records failure cases.</li>
+            <li><strong>Plan-and-Execute (Reasoning module)</strong>: Progress tracking is the runtime twin of Plan. Planning produces a one-shot static list of "what we want to do"; progress tracking maintains, in a loop, the dynamic state of "how far we've gotten." Two different things—do not conflate them.</li>
+            <li><strong>Hooks Pipeline (Governance module)</strong>: The framework-level nudge and persistence hook points fit the hook mechanism naturally and can be implemented with PreToolUse / PostToolUse hooks.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Progress tracking is not progress visualization for the user; it is external working memory for the agent—an engineering patch for the working-memory deficit of the agent era. Without it, the smarter the agent, the more dangerous it becomes in long tasks.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

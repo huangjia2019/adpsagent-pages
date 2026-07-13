@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2 Semantic Compaction · Pattern White Paper · ADPS</title>
+    <meta name="description" content="After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly a">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/p2-semantic-compaction/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/" class="active">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>P2</p>
+
+                        <h1>P2 · Semantic Compaction</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Perception × Chain (relay)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (summarization can use a cheap model, triggered by threshold)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Perception patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly afterward.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>The information has already come in, the agent has run dozens of turns, and the context is full, so it has to be compacted before it can continue. Once a 487-token connection-pool-exhaustion stack trace gets compressed into "a database error occurred," the agent no longer knows that enlarging the pool or adding retries has already been ruled out, so it repeatedly retries options that were already rejected, wasting both time and tokens.</p>
+            <p>Semantic compaction turns this into an engineering practice: a three-level cascade (clean up verbose tool results → summarize old conversation → compress further) is triggered progressively against context-occupancy thresholds, each level more aggressive than the last. It governs the capacity of the context window within a single session. It does not aim for unlimited compression but for every segment of history to be produced by high-quality reasoning, so that it does not poison the next segment.</p>
+            <h2>Why the coordinate is "Perception × Chain"</h2>
+            <ul>
+            <li><strong>Vertical axis · Perception</strong>: Compaction operates on the input history that has "already been taken in," performing an input → semantically-preserving-compression. It is not about writing information into cross-session storage (memory), nor about reasoning through a problem (reasoning); it decides which evidence to keep in the current window.</li>
+            <li><strong>Horizontal axis · Chain</strong>: The three levels of compression form a cascade, each level taking the output of the previous one. The original text is relayed through cleanup, summarization, and further compression, getting tighter at each step. What flows along the chain is the compressed history.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>Compaction is triggered in tiers, from light to heavy according to context occupancy, with the error stack protected across the whole flow:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Level</th>
+            <th style="text-align: left;">Action</th>
+            <th style="text-align: left;">Typical compression ratio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Level 1 Truncation</td>
+            <td style="text-align: left;">Clean up verbose tool output (keep a pointer, mark as re-fetchable)</td>
+            <td style="text-align: left;">~2×</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Level 2 Summarization</td>
+            <td style="text-align: left;">Merge old conversation into a persistent anchor, without regenerating a full summary</td>
+            <td style="text-align: left;">~14×</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Level 3 Deep compression</td>
+            <td style="text-align: left;">Compress old errors into a list while keeping each one's core numbers; keep the most recent few in full</td>
+            <td style="text-align: left;">~30× and above</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Two mechanisms are key to industrial-grade compaction. First, the trigger threshold. Claude Code triggers at 95% by default, but quality degradation begins as early as 70%-80%. Waiting until 95% to compact means the last stretch of reasoning is itself low-quality reasoning, and once compressed into history it poisons the whole chain. The community consensus is to set it to 60%-70% and compact early, giving up some window space in exchange for stable reasoning quality. Second, the persistent anchor. Re-summarizing loses a little every time (like the grain that builds up when you repeatedly enlarge a photo); iterative merging does not lose what has already been remembered. The anchor maintains four fixed fields—intent, changes made, decisions made, next step—of which "ruled-out options" is the most critical. The root cause of an agent repeatedly trying rejected options is precisely that this field is missing.</p>
+            <h2>Production scenarios that fit</h2>
+            <ul>
+            <li><strong>Long-session customer-support agent</strong>: A user reports a complex fault, the agent both converses with the user and calls internal tools, and over 4 hours runs 80-120 turns, which inevitably hits compaction. The anchor fields can also be exported directly as a handoff sheet for second-line engineers.</li>
+            <li><strong>Multi-step debugging and coding agents</strong>: Runs of more than 40 turns where tool output is often very long (logs, data queries, API responses), well suited to keeping "what was done" while masking the old "what was seen."</li>
+            <li><strong>Research assistants, data analysis, and consulting-style long-session agents</strong>: Any task that runs beyond 20-30 turns and exceeds 60% context occupancy should start compaction.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Summary loses key information</strong>: Compressing "line 47, max_connections=20, queue_depth=347" into "a database error occurred" loses all three locating numbers, and a few loops later the agent has to re-read the log. The summary prompt must hard-code "all numbers, file paths, and function names must be preserved."</li>
+            <li><strong>Compacting across an error boundary</strong>: Triggering compaction in the middle of the agent's active reasoning—say, just after it has narrowed the bug down to two candidate files and is about to decide—causes the reasoning context to be lost when compaction kicks in, forcing a restart. Compact only conversation segments that are complete and that the agent has already moved on from.</li>
+            <li><strong>Drift from repeated compaction</strong>: Compressing already-compressed content amplifies the information into distortion. The same segment of history may not be compressed more than twice; if that is still not enough, hand off to a human or open a new session rather than forcing Level 3.</li>
+            <li><strong>Compacting too late</strong>: Claude Code triggers at 95% by default, meaning compaction happens after "a stretch of low-quality reasoning has already occurred." Set it to 60%-70%.</li>
+            <li><strong>Never compact the error stack</strong>: The error stack is the agent's feedback loop; losing it is amnesia. It must be specially protected across the entire compaction flow.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Level 3 trigger rate</strong> (healthy zone &lt; 5%): The share taken by the most aggressive tier. Every L3 means a +30% probability of information drift; a class of sessions repeatedly entering L3 indicates its token budget is misconfigured or that it should exit early.</li>
+            <li><strong>Average compression ratio</strong> (healthy zone 0.30-0.50): after/before. Below 0.20 is over-compression with a high probability of losing key information; above 0.60 is under-compression that soon has to be compacted again.</li>
+            <li><strong>Error stacks preserved per compaction</strong> (any zero preservation triggers a P0 alert): The most critical metric. Zero preservation means the error-recognition patterns leaked through, and the next time the agent hits the same bug it has no memory of it.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>should_compact(total, budget): total / budget &gt;= 0.60   # 60% early compaction
+            compact(turns, target):
+                Split: old compressible | protected (most recent N turns + all error stacks, never compacted)
+                Level 1: clean up verbose tool output → return if enough
+                Level 2: summarize and merge old turns into anchor (intent/changes/decisions/excluded/next) → return if enough
+                Level 3: compress old errors into a list but keep core numbers, keep the most recent 3 in full
+            Record one CompactionEvent per compaction (level / before-and-after tokens / error stacks preserved)
+            </code></pre>
+            <p>The anchor's "ruled-out options" field must be hard-coded in the summary prompt as "ruled-out options must be preserved; new decisions are appended, not overwritten." The summarization call can use a cheap model.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>An enterprise customer reported a P1 API gateway fault, a support agent picked it up, and the session ran from 2 p.m. for 4 hours over 80-120 turns, with context occupancy climbing to 150K-200K. The rhythm is designed around three points in time: at about 100K (55%) the first compaction runs Level 1, cleaning up only verbose tool output, and the anchor is written for the first time with the diagnoses made and the options ruled out; at about 120K (67%) the second compaction runs Level 2, the old conversation verbatim is gone, and the anchor becomes the only historical memory thereafter; on entering the SLA countdown zone, Level 3 is triggered proactively and a handoff is exported, sending the anchor plus the ruled-out options in full to second-line engineers. The key discipline is that after Level 3 the agent is no longer allowed to reason through important decisions—L3 is the signal that the agent should exit, not an instruction to compact once more. This handoff sheet lets a human agent read it and take over in 5 minutes.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Context Triage (P1)</strong>: Complementary. Triage governs future tokens (which ones come in), compaction governs past tokens (how to compress what has already come in without losing the key parts). P1's "load after P2-level compaction" is precisely where the two connect.</li>
+            <li><strong>Progressive Discovery (P3)</strong>: The three divide the labor across different time dimensions of tokens. Triage governs the future, compaction the past, and discovery the unknown. A production agent needs all three; doing one fewer leaks in that dimension.</li>
+            <li><strong>Layered Memory (Memory module)</strong>: The boundary must be held. Compaction governs window capacity within a single session, and all compaction events are cleared the moment the session ends. Remembering "this user reported a similar bug last week" is memory's job; do not make the compactor do memory's work.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Good compaction is itself a form of cognition—what the agent chooses to keep determines what it can reason clearly about next; compacting away an error stack is like deleting the tests during a refactoring, so that on the next regression you won't know where it broke.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

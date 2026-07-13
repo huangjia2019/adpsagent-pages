@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R5 双模架构 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="把 Agent 拆成快而浅的 Talker 和慢而深的 Reasoner，通过共享 belief state 协同，让 Agent 在深度思考的同时还能即时跟用户说话。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/r5-talker-reasoner/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/r5-talker-reasoner/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/" class="active">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>R5
+            </p>
+
+            <h1>R5 · Talker-Reasoner · 双模架构</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">推理 Reasoning × 层级 Hierarchy（分）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（Talker 用便宜模型扛大部分对话，Reasoner 才用贵模型）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">推理模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">把 Agent 拆成快而浅的 Talker 和慢而深的 Reasoner，通过共享 belief state 协同，让 Agent 在深度思考的同时还能即时跟用户说话。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>很多推理模式默认了一个不该默认的前提——用户能等。给 Agent 时间想清楚 24 秒，在异步任务里没问题，但在实时交互场景里是灾难：对话场景 200 毫秒不回话用户就掉线，voice agent 1 秒沉默就尴尬，实时协作 3 秒没反应就打断节奏。问题的核心不是 Agent 想得慢，而是它在想的时候什么都不说——用户不介意 Agent 用 24 秒思考，介意的是 24 秒里 Agent 一片静默。</p>
+            <p>Talker-Reasoner 把"实时响应"和"深度推理"两种相互冲突的目标拆到两个 Agent 上。一个 Talker 永远在 200 毫秒内回应、保持对话流畅，一个 Reasoner 在后台慢慢做深度分析，两者通过共享 belief state 协同。它要的不是更高的质量，而是把延迟从用户感知里藏起来——同样的思考时间，体验天差地别。</p>
+            <h2>为什么坐标是「推理 × 分层」</h2>
+            <ul>
+            <li><strong>纵轴 · 推理</strong>：它把"实时响应"和"深度推理"两种 reasoning modality 分开，是一个双系统的推理架构——对应 Kahneman 的 System 1（快、自动、低耗）和 System 2（慢、刻意、高耗）。这是认知科学在 Agent 上的工程映射，不是单一推理通道。</li>
+            <li><strong>横轴 · 分层</strong>：Talker 在前（快、浅）、Reasoner 在后（慢、深），是分层分工而不是 parallel 竞争。两者职责不同、模型不同、时机不同，Reasoner 的输出通过 belief 影响 Talker 的回答，是上下层协作关系。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次双模协同由三段组成：</p>
+            <ol>
+            <li><strong>Talker 即时响应</strong>：用便宜快模型，看到用户输入立刻回（200-800ms），保持对话流畅、回应情绪、问澄清问题。它的 system prompt 有一条硬约束——不要给具体建议，那是 Reasoner 的事。Talker 处理绝大多数对话轮次。</li>
+            <li><strong>Reasoner 异步深思</strong>：用贵的慢模型，被触发后在后台跑深度分析（10-30s），跑完把结构化结论写到共享 belief state。它不阻塞对话。</li>
+            <li><strong>belief state 协同 + 自然过桥</strong>：两个 Agent 通过一份共享 state 通信，写要加锁避免 race condition。Reasoner 跑完后，Talker 在下一轮对话里找一个自然时机把分析织进回答，而不是突然蹦出一段结论。</li>
+            </ol>
+            <p>用户输入在 Reasoner 还在跑时怎么处理，有三种做法可选：QUEUE（排队等 Reasoner 跑完，适合任务场景）、INTERRUPT（立即打断重跑，适合短任务 explore）、PARALLEL（两个 Agent 真并行，Talker 即时回 Reasoner 后台跑，对话场景必须用这个）。把三种做成 config 让产品按场景选。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>实时对话</strong>：教育辅导、客服、个人助手——前端要 200 毫秒级响应，后端又要深度个性化分析，单 Agent 满足不了双约束。</li>
+            <li><strong>Voice agent</strong>：电话、语音助手，1 秒沉默就尴尬，必须边说边想。</li>
+            <li><strong>需要边聊边收集信息的咨询场景</strong>：Talker 跟用户聊倾向、问 follow-up 的同时，Reasoner 在后台基于已有信息做匹配分析,聊完分析也好了。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>Talker 自作聪明猜答案</strong>：Talker prompt 没把"不要给具体建议"约束死，它就抢着给结论，跟 Reasoner 的深度分析冲突，Reasoner 白跑。这是双模最常见的失败模式。</li>
+            <li><strong>Reasoner 没有 timeout 和 cancel</strong>：后台任务跑飞了没人管，或者用户中途换话题了 Reasoner 还在跑旧问题，浪费算力。要做 30 秒强制结束加用户换话题时主动 cancel。</li>
+            <li><strong>belief state 不跨 session 持久化</strong>：用户下次回来 Talker 又从零开始，上次 Reasoner 的分析全丢了。要持久化到 Redis / PostgreSQL。</li>
+            <li><strong>过桥生硬</strong>：Reasoner 跑完直接"突然蹦出一段分析"，用户觉得突兀。要靠 prompt 让 Talker 找对话上的自然时机插入。</li>
+            <li><strong>异步任务场景硬上双模</strong>：用户提交任务就离开的场景（写文档、批处理），不需要 Talker，直接让 Reasoner 慢慢跑就行，加 Talker 是过度工程。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>Talker 响应延迟 p99</strong>（健康区 &lt;800ms）：Talker 从收到输入到回话的时间。超过就失去了双模的意义，用户照样感到卡顿。</li>
+            <li><strong>Talker 越界率</strong>（健康区 &lt;5%）：抽样 Talker 回答里"在给具体建议"的比例。偏高说明 Talker prompt 没约束住，Reasoner 的深度分析被浪费。</li>
+            <li><strong>belief 命中率</strong>（健康区接近 100%）：用户回到会话时 Talker 能基于上次 belief 给个性化回应的比例。低说明 belief state 没持久化或没读到。</li>
+            <li><strong>单 turn 成本</strong>（注意结构）：双模是"两档同时跑"，单 turn 成本比单档贵档还略高（多了 Talker 那部分），但换来延迟大降——这是 cost-latency-quality 三角的另一种 Pareto 选择，要按业务接受度评估。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>用户说话 →
+    若是首轮：建 belief state，异步触发 Reasoner（非阻塞）
+    Talker 立即回应（便宜模型，200-800ms，不给具体建议）
+    若 Reasoner 已跑完（belief 状态 = updated）→ Talker 把分析自然织进回应
+Reasoner 后台（贵模型，10-30s）：
+    深度分析 → 写 belief state（结构化结论 + 建议）
+    带 timeout（30s 强制结束）+ cancel（用户换话题时取消）
+belief state：跨 session 持久化，写操作加锁
+返回 Talker 回应 + 后台维护的 belief
+</code></pre>
+            <p>落地四个要点：Talker prompt 把"不给具体建议"约束死；Reasoner 异步任务做 timeout 和 cancel；belief state 持久化到 Redis 跨 session 复用；共享 state 写操作加锁防 race condition。</p>
+            <h2>企业落地示例</h2>
+            <p>某留学申请咨询 Agent，给中国学生辅助选校和文书润色。第一版上线两周收到一类反馈："我问它两所学校哪个更适合我，它停了 30 多秒才回，我以为网络挂了就关掉重问。" 团队复盘发现 Agent 不慢，是思考路径太完整——用户问完，Agent 老实走完整链：取用户画像（800ms）、比对两校特点（1.2s）、跑深度分析（18s）、综合写回答（4s），总共 24 秒一个高质量回答。但 24 秒对对话场景是无限长，用户体验崩盘。第三周加了"正在分析"的 loading 提示，用户还是抱怨"看着转圈就走了"。</p>
+            <p>第四周彻底重写成 Talker + Reasoner：用户问完，Talker 在 200 毫秒内立刻回应，先快速点出两校核心差异、同时告诉用户"我在后台为你做详细匹配分析"、并反问用户倾向（留美工作还是回国）。用户跟 Talker 聊倾向的十几秒里，Reasoner 在后台跑完了结合 GPA、科研经历、兴趣方向的详细分析，把结论写进 belief state。Talker 在下一轮自然过桥："听到你倾向硅谷工作,那我刚跑完的分析显示……"。同样的 24 秒思考时间，体验从"卡死"变成"边聊边收到分析"。同类的在线编程辅导 Agent 用这套架构（Talker 用便宜模型对话、Reasoner 用贵模型异步分析、PARALLEL 模式、belief 跨 session 持久化、自然过桥、师生双视图 trace），上线第二月学生 NPS 从 6 升到 8.5，教师对 Agent 推荐的 override 率从 35% 降到 12%。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>复杂度路由（R2）</strong>：双模是路由的架构极致。普通路由是"选一档跑"（单时间点决策），双模是"两档同时跑"（双时间维度决策），把"选档"推到了"拆 Agent"。</li>
+            <li><strong>迭代假设验证（R4）</strong>：同在循环列。迭代是单 Agent 跟自己循环验证假设，双模是双 Agent 协同分处理"说"和"想"。</li>
+            <li><strong>思维链（R1）</strong>：Reasoner 那一侧的深度推理本质就是一条完整思维链，Talker 那一侧刻意不做深推理。</li>
+            <li><strong>分层记忆模式</strong>：belief state 跨 session 持久化，和记忆模块"User 层 belief 持久化"是同源思路。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Talker-Reasoner 的本质不是性能优化，而是把 Agent 的人格拆成两个——一个处理实时、一个处理深度。Talker 给的不是 Reasoner 的预览，是性质完全不同的内容，这是两种心智模式在协作。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

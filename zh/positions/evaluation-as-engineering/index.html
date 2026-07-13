@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eval 的工程化 — 立场 · ADPS</title>
+    <meta name="description" content="Evaluation 是设计本身——pre-design / pre-prod / production 三段评估，缺一段系统就飘。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/positions/evaluation-as-engineering/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/evaluation-as-engineering/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/evaluation-as-engineering/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/" style="color: var(--color-link);">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/positions/evaluation-as-engineering/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/positions/" style="color: var(--color-text-muted);">立场</a>
+            </p>
+
+            <h1>立场 · Eval 不是 benchmark · 是工程纪律</h1>
+            <blockquote>
+            <p>Eval 的现状是被当作"上线前打分"。ADPS 的立场是：<strong>Eval 是设计的输入 · 是生产的常驻仪表盘 · 是 Agent 工程的 TDD</strong>。没有它系统永远在飘。</p>
+            </blockquote>
+            <h2>一 · 现状 · 把 eval 当作 benchmark 分数</h2>
+            <p>我观察过的团队里，<strong>至少七成把 evaluation 等同于跑一遍 SWE-bench 或 AgentBench</strong>。系统建得差不多了，挑一个流行 benchmark 跑一轮，分数过得去就 ship、不过就调。整个 eval 的生命周期是上线前那一周——之前没人想、之后没人看。</p>
+            <p>这套姿态有它的来源——它继承自传统机器学习的 model card 文化。模型训完跑 GLUE / MMLU / HumanEval，发分数、发论文、发 model card——eval 是模型的成绩单。这套在 LLM 评测里有它的合理性，因为模型本身就是被当作"通用能力的快照"在被消费。</p>
+            <p>但 Agent 系统不是模型的快照。<strong>Agent 是一套被部署在特定业务流量上的生产系统</strong>——它的"对不对"由你的客户对话分布、你的工具调用频率、你的合规约束、你的成本预算共同决定。SWE-bench 在 500 个开源 PR 上得 65 分，跟你的客户跑客服时漏单率多少，<strong>几乎没有关系</strong>。</p>
+            <p>所以现状里有两个错位——</p>
+            <p>第一个错位 · <strong>把通用 benchmark 当作业务 eval</strong>。你的 Agent 不是要在 SWE-bench 上拿高分，是要在你公司的 ticket 分布上把 P0 漏判率压到 0.1% 以下。这两件事在分布、在评分标准、在 stakeholder 上都不一样。</p>
+            <p>第二个错位 · <strong>把 eval 当作 ship 前的 checklist</strong>。"跑一遍 eval 看看分数过没过"——这套语言听起来熟悉，因为它就是把 unit test 那套搬过来。但 Agent 系统出生产的失败模式跟传统软件不一样——它不是某行代码 throw 了 exception，是它<strong>在一类输入分布上的表现整体漂移了</strong>。Checklist 抓不到漂移，只有持续的 eval pipeline 抓得到。</p>
+            <h2>二 · ADPS 立场</h2>
+            <p><strong>Eval 是设计的输入 + 持续运行的仪表盘 · 不是上线前的 checklist</strong>。</p>
+            <p>这句话有两半。前半 · eval 必须在动手设计架构之前就锁定——latency / cost / accuracy 三轴的目标是设计选型的输入，不是事后的产出。这一点 ADPS 原则 3《评估即设计》已经立过。后半是这篇立场要展开的 · <strong>eval 的生命周期不止于上线前那一刻，它从 pre-design 一直延伸到 production 的每一天</strong>。</p>
+            <p>把这件事说得再具体一点 —— <strong>Agent 工程没有 "eval 这件事做完了" 的时刻</strong>。设计阶段定 SLO、开发阶段写回归 suite、上线前做 pre-prod、上线后跑 production trace、每周看 drift、每季度迭代 eval 本身。eval 是一条贯穿 Agent 全生命周期的纪律，不是一次性事件。</p>
+            <h2>三 · Eval 的三个时机</h2>
+            <p>ADPS 把 Agent 工程里的 eval 拆成三段。每一段的目标、stakeholder、产出物都不一样。</p>
+            <p><strong>Pre-design eval · 作为设计输入</strong>。一支监管科技团队的工作方式给了我清楚的样本——动手设计之前先把三轴锁死：latency 端到端 &lt; 3 秒、cost 每次 inference &lt; $0.05、accuracy 漏判率 &lt; 0.1%。这三个数字不是 wish list，是合规和监管给定的硬约束。<strong>所有后续的模式选型、模型选择、并发拓扑都服从这三个数</strong>。如果 Reflection Loop 把 latency 推到 5 秒，那这一加就不做——不管它在 paper 上看起来多优雅。Pre-design eval 的产出是一份"SLO 卡"，一页纸钉在团队墙上。</p>
+            <p><strong>Pre-prod eval · 区分回归与新特性</strong>。系统建出来之后，上线前要跑两类 eval。一类是回归 eval——已有功能在新一版代码下还工作吗？这类 eval 跑得快、覆盖广、跑出来差异要触发 block。一类是新特性 eval——这一版新增的能力（比如新加了一个工具、新增了一种 reasoning 模式）在专门构造的样本上达成预期了吗？这类 eval 跑得慢、case 少、要由设计者亲自看输出。<strong>两类混在一起就两类都做不好</strong>——回归 suite 会被新特性的不稳定拖垮，新特性的 case 会被淹在回归的噪声里。这套区分继承自 Google SRE 的 release engineering——progressive rollout 里 baseline traffic 和 canary traffic 是分开评估的。</p>
+            <p><strong>Production eval · 持续 trace 与 drift detection</strong>。上线不是 eval 的终点，是 eval 真正开始的地方。生产环境每天有真实流量，每一条都是免费的 eval 样本。ADPS 推荐的做法是 · 全量 trace（langfuse / langsmith / 自研）+ 抽样人工标注 + 周度 drift 报告。Drift 有两种——输入分布漂移（用户问的问题变了）和输出质量漂移（模型对同类问题的回答变差了）。<strong>两种 drift 必须分开监控</strong>，因为它们的修复路径完全不一样——前者是产品问题、后者是模型或 prompt 问题。Notion 在 2026 年 4 月披露的多 Agent 系统里专门有一页讲他们怎么在生产里跑 trace-as-eval，这套做法正在头部团队成为标配。</p>
+            <h2>四 · 五个误区</h2>
+            <p>我在过去两年看过的失败样本里，eval 的误区高度集中在五个。</p>
+            <p><strong>误区 1 · 只测 accuracy 不测 latency 与 cost</strong>。Accuracy 高就是好——这是从 ML benchmark 文化继承下来的最大债。生产场景下 99% accuracy 但平均响应 10 秒，用户跑光；95% accuracy 但每次 inference $3，CFO 砍预算。<strong>三轴必须同时出现在同一张 eval 仪表盘上</strong>，单轴优化是陷阱。这一点跟 Agent CAP 直接对应——CAP 的四角里有三角是 eval 度量得到的，不能只看一角。</p>
+            <p><strong>误区 2 · 用 public benchmark 替代 domain eval</strong>。SWE-bench / AgentBench / τ-bench 是好工具——它们的好处是给社区一套共同语言、让不同团队的工作可比。但<strong>它们不是你的业务 eval</strong>。你的客服 Agent 在你公司的 ticket 上的表现，没有任何 public benchmark 能替你答。<strong>Public benchmark 用来横向校准 · domain eval 用来纵向决策</strong>——这两件事不可互换。</p>
+            <p><strong>误区 3 · 等系统建好了才开始建 eval suite</strong>。这是最贵的错。建 eval suite 本身要写 case、要标 ground truth、要校 inter-rater agreement，这件事至少要一两个月。如果等系统建完了再开始，等于你前面几个月都在没有度量衡的情况下做架构决策。我见过一个团队建了 6 个月才开始建 eval，eval 一跑发现 accuracy 62%，整个推倒重来——<strong>6 个月浪费的根本原因是 eval 没在 day 1 就有</strong>。</p>
+            <p><strong>误区 4 · Eval 不带 traceability · 没有 debugger</strong>。Eval 跑出来 accuracy 78%——然后呢？哪些 case 错了？错在哪个 Agent 节点？是 Perception 没看懂、Reasoning 走偏、还是 Action 调错工具？没有 trace 链路的 eval 等于只告诉你"病了"，不告诉你"病在哪"。ADPS 推荐的最低标准 · 每一个 eval case 跑出来必须能点开看完整的 trace（输入 / 中间状态 / 工具调用 / 输出），并且能按 28 模式矩阵的 cell 归类——这一错是 Perception × Loop 类的还是 Reflection × Chain 类的。<strong>没有归类的 eval 没法驱动改进</strong>。</p>
+            <p><strong>误区 5 · Pass / fail 二值 · 没有 SLO 思维</strong>。"这个 eval 过了吗"——这是 unit test 的语言。Agent 系统不该用二值思维管 eval。<strong>它该用 SRE 的 SLO + error budget 思维</strong>——定下"必须达到的底线"（比如 95% case 的 latency &lt; 3 秒）和"能容忍的偶发未达标比例"（比如允许 5% 流量超时），达到底线就 ship、剩下用 incremental rollout 管。SLO 思维让 eval 不再阻塞 release，但又不会失去对质量的控制。</p>
+            <h2>五 · 工具栈 · 怎么选</h2>
+            <p>2026 年的 Agent eval 工具栈大致分三层。我把它们的位置列清楚。</p>
+            <p><strong>Trace 与 observability 层</strong>：langfuse / langsmith / arize / 自研。这一层负责把生产流量的每一次 Agent 执行完整记录下来——输入、每个节点的中间状态、所有工具调用、token 消耗、最终输出。<strong>Trace 是 eval 的物理基础</strong>，没有 trace 就没有 production eval。Langfuse 的好处是开源 + self-host 友好（合规场景必要），LangSmith 跟 LangGraph 集成度高（如果已经全栈 LangChain），Arize 偏企业 ML observability（如果团队来自 MLOps 背景）。</p>
+            <p><strong>Eval framework 层</strong>：Anthropic Evals / OpenAI Evals / DeepEval / Promptfoo / Inspect AI。这一层负责把 eval case 组织成 suite、跑批、出报告。Anthropic Evals 是 2026 年 4 月发布的，强项是跟 Claude 生态深度集成、对 thinking trace 有原生支持。OpenAI Evals 历史更久但偏 model eval 不是 agent eval。DeepEval 和 Promptfoo 是开源选项，灵活但需要团队自己搭。<strong>关键不是选哪一家，是选了就持续投入</strong>——eval framework 是会随业务一起演进十年的资产。</p>
+            <p><strong>自研 eval 框架</strong> · 大部分头部团队最后会做自研。原因不是不信任开源工具，是<strong>业务的 eval 逻辑跟业务的领域语义高度耦合</strong>——合规场景的 eval 要懂监管规则，电商客服的 eval 要懂订单流程，这些没法用通用工具表达。自研的合理边界是 · <strong>上层 case 定义 + 评分逻辑自研 · 下层 trace 与 batch runner 用现成工具</strong>。完全自研所有层是浪费，完全不自研业务层是无效。</p>
+            <p>ADPS 的推荐 · <strong>任何团队的 Day 1 工具栈最少应该有 langfuse 或对等物（trace 层）+ 一个 eval framework（可以是 Anthropic Evals 或自研）+ 一套 SLO 仪表盘</strong>。三件少一件，系统就在飘。</p>
+            <h2>六 · 最小 eval setup · Day 1 的三个 dashboard</h2>
+            <p>ADPS 推荐每一个生产 Agent 系统从 day 1 就具备三个 dashboard。这是最小集——少于这三个，你没办法管这个系统。</p>
+            <p><strong>Dashboard 1 · SLO 三轴</strong>。每天看一次。Y 轴三条线 · latency p50 / p95 / p99、cost per request（按模型分层）、accuracy（domain eval 抽样）。X 轴是时间。<strong>SLO 红线画在图上</strong>。任何一条越红线，开 incident。这张图的目的是回答老板那个永远会被问的问题——"这玩意儿现在状态怎么样"。一图回答，不解释。</p>
+            <p><strong>Dashboard 2 · Trace 抽样与归类</strong>。每周看一次。每天从生产流量里随机抽样 50-100 条 trace，按 28 模式矩阵的 cell 归类（这一条主要走了 Perception × Loop 还是 Reasoning × Chain），标注每条的成功 / 失败 / 边缘案例。这张图的目的是回答工程师那个问题——"我们的系统在哪些 cell 上工作得好、哪些上工作得差、下季度该 invest 在哪"。这张图也是事故归因的基础——出事故时直接定位是哪个 cell 失效。</p>
+            <p><strong>Dashboard 3 · Drift 监控</strong>。每周看一次。两条线 · 输入分布 drift（用 embedding 距离衡量本周流量跟基线分布的距离）+ 输出质量 drift（同一个 fixed eval suite 在本周模型 / prompt 版本下的分数变化）。<strong>输入 drift 高 → 产品侧发生了什么 · 输出 drift 高 → 模型或 prompt 漂了</strong>。两条线分开看，不混淆。</p>
+            <p>这三张图都不需要昂贵的工具——langfuse 的免费层加一个简单的 dashboard 工具（Grafana / Metabase / Notion 内嵌）就能搭起来。<strong>关键是 day 1 就搭 · 不是等系统出事故才补</strong>。</p>
+            <h2>七 · 收束 · Eval 是 Agent 工程的 TDD</h2>
+            <p>Kent Beck 1999 年把 TDD 立为方法论——先写测试、再写实现、再 refactor。TDD 的工程意义不在"代码更稳"，在<strong>把"什么算对"在动手前就具象化</strong>。没定义"对"就开始写，写出来不知道是不是对的。</p>
+            <p>Agent 工程到 2026 年还没有真正普及对应的纪律。很多团队把 eval 当作 ship 前的 checklist——这相当于回到 2000 年以前的"先写代码再补单元测试"的姿态。这套姿态在 Agent 时代会更贵，因为 Agent 系统的失败模式不是 throw exception，是<strong>在一类分布上整体漂移</strong>。Exception 一眼看到，漂移看不见——只有 eval 看得见。</p>
+            <p><strong>Eval 是 Agent 工程的 TDD</strong>。Pre-design 的 SLO 卡是"先定义对"，pre-prod 的回归 suite 是"红绿灯"，production 的 trace 与 drift 监控是"持续 refactor 的安全网"。三段缺一段，系统就在飘——飘的意思是你不知道它今天比昨天好了还是差了、不知道下周用户会不会跑光、不知道事故什么时候来。</p>
+            <p>ADPS 立这条立场是想把这套纪律前置——<strong>不是在出过事故的团队里教训出来 · 是在 day 1 就装上</strong>。这是工程的事，不是数据的事，更不是 paper 的事。</p>
+            <p>—— ADPS · 2026-05-30</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/zh/positions/">← 返回全部立场</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

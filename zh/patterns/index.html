@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent 设计模式白皮书 · 模式矩阵 · ADPS</title>
+    <meta name="description" content="ADPS Agent 设计模式白皮书：认知功能 × 执行拓扑的双轴矩阵，28 核心 + 5 扩展模式，每个模式一页企业级说明。免费公开的跨角色技术参考。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .wp-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0 1.75rem; font-size: 0.92rem; }
+        .wp-table th, .wp-table td { border: 1px solid var(--color-rule); padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+        .wp-table th { background: var(--color-link) !important; color: #fff !important; font-weight: 600; }
+        .wp-table tr:nth-child(even) td { background: var(--color-quote-bg); }
+        .wp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .matrix-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.8rem; min-width: 46rem; }
+        .matrix-table th, .matrix-table td { border: 1px solid var(--color-rule); padding: 0.4rem 0.5rem; text-align: center; }
+        .matrix-table th { background: var(--color-link) !important; color: #fff !important; font-weight: 600; }
+        .matrix-table td.fn { background: var(--color-link) !important; color: #fff !important; font-weight: 600; text-align: left; white-space: nowrap; }
+        .matrix-table td.filled { background: var(--color-badge-bg); color: var(--color-text); }
+        .matrix-table td.empty { color: var(--color-text-faint); }
+        .ext-badge { font-size: 0.72em; color: var(--color-badge); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; vertical-align: middle; }
+        .callout { background: var(--color-quote-bg); border: 1px solid var(--color-rule); border-left: 3px solid var(--color-badge); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+        .callout p { margin: 0.4rem 0; }
+        .grp-intro { color: var(--color-text-muted); margin: 0.25rem 0 0.6rem; }
+    </style>
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+            <a href="/zh/patterns/" class="docs-nav-title">模式矩阵白皮书</a>
+            <h4>感知 Perception</h4>
+            <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+            <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+            <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+            <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+            <h4>记忆 Memory</h4>
+            <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+            <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+            <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+            <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+            <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+            <h4>推理 Reasoning</h4>
+            <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+            <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+            <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+            <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+            <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+            <h4>行动 Action</h4>
+            <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+            <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+            <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+            <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+            <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+            <h4>反思 Reflection</h4>
+            <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+            <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+            <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+            <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+            <h4>协作 Collaboration</h4>
+            <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+            <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+            <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+            <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+            <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+            <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+            <h4>治理 Governance</h4>
+            <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+            <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+            <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+            <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+            <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            <h4>案例</h4>
+            <a href="/zh/cases/" class="sb-home">案例库 · 蓝皮书</a>
+            <h4>概念</h4>
+            <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent 设计模式白皮书</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">认知功能 × 执行拓扑 · 28 核心 + 5 扩展模式 · 每个模式一页企业级说明。</p>
+
+            <div class="callout">
+                <p><strong>这是一份免费公开的技术参考。</strong>它给团队一套对齐用的词汇、一个选型框架和一组工程边界，面向企业里的每一个角色——产品、架构、研发、安全合规、管理——都能读懂某个模式是什么、什么时候该用、哪里容易出错。</p>            </div>
+
+            <p>
+                白皮书讲模式是什么，蓝皮书讲模式在真实企业里怎么落地。每个模式页下面都挂着对应的企业落地切片，跨模式的完整案例收在 <a href="/zh/cases/">案例库</a> 里。第一个落地锚点是梁博 · 东方屹腾的执行型 Agent。
+            </p>
+
+            <p>
+                大部分"Agent 架构"指南给的是一张平铺的清单——Reflection、ReAct、Multi-Agent、Tree of Thoughts，等等。平铺清单回答的是<em>有哪些模式</em>，它不回答<em>我的问题坐落在哪里、那个坐标上住着哪个模式</em>。
+            </p>
+            <p>
+                一个贷款评估 Agent 崩掉，往往不是因为缺了 Reflection，而是因为感知阶段的预算分配把那份关键文档丢了。一个多 Agent 代码评审系统漂移，根因常在协作拓扑缺少冲突解决机制，互相矛盾的编辑不断累积。<strong>知道失败发生在哪条轴上，比知道失败模式叫什么更重要。</strong>
+            </p>
+
+            <h2>为什么 Agent 需要一套新的设计模式</h2>
+            <p>
+                GoF 设计模式处理对象之间的协作，分布式系统模式处理服务、网络、存储和故障。Agent 系统里多了一类新主体：模型会在不完全信息下做判断，还会调用工具去影响外部世界。传统软件的控制流主要由代码决定，Agent 系统里有一部分控制流会经过模型判断。
+            </p>
+            <p>
+                用户说一句话，模型要判断它是闲聊、查询、分析、执行，还是需要人审。工具返回一段结果，模型要判断证据够不够。长任务跑到中途，模型要判断继续、回滚、重新取证，还是停下来请人。这些判断如果只停留在自然语言里，系统很快会失去可控性。Agent 设计模式要做的，就是把这些判断重新落回工程结构——路由、状态、证据、权限、日志、回滚和评估。
+            </p>
+
+            <h2>两条轴</h2>
+            <p>
+                <strong>认知功能</strong>（行）回答 Agent 在做什么类型的工作，七类：感知、记忆、推理、行动、反思、协作、治理。
+            </p>
+            <p>
+                <strong>执行拓扑</strong>（列）回答工作长什么形状，六类。可以记成六个动词：传、选、撒、协、转、分。
+            </p>
+            <div class="wp-scroll">
+            <table class="wp-table">
+                <thead><tr><th>执行拓扑</th><th>速记</th><th>适合什么</th></tr></thead>
+                <tbody>
+                    <tr><td>链式 Chain</td><td>传</td><td>步骤稳定，前一步的输出直接交给后一步</td></tr>
+                    <tr><td>路由 Route</td><td>选</td><td>先分类，再选择模型、工具、流程或人审路径</td></tr>
+                    <tr><td>并行 Parallel</td><td>撒</td><td>多路同时展开，用成本换质量或时长</td></tr>
+                    <tr><td>编排 Orchestrate</td><td>协</td><td>一个中心协调者维护全局目标、任务账和汇总</td></tr>
+                    <tr><td>循环 Loop</td><td>转</td><td>生成、观察、修正、再生成，直到收敛或熔断</td></tr>
+                    <tr><td>层级 Hierarchy</td><td>分</td><td>多层职责、权限、记忆或防护边界</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p>
+                两轴相交，形成 7 × 6 = 42 格的矩阵。其中 28 格落有命名模式——一部分借自已有文献（RAG、思维链、规划执行），一部分是为之前无名的格子在本框架里第一次命名（上下文分诊、失败日记、可观测性等）。剩下的 14 格是<em>有意空白</em>，代表工业空白和未来研究的前沿。
+            </p>
+
+            <figure style="margin: 2.5rem 0; text-align: center;">
+                <img src="/images/matrix-28-zh-20260616.png"
+                     alt="28 模式矩阵——7 个认知功能 × 6 种执行拓扑"
+                     style="max-width: 100%; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 12px rgba(15, 58, 95, 0.12);">
+                <figcaption style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--color-text-muted); font-style: italic;">
+                    28 模式矩阵。行为认知功能，列为执行拓扑。空白格是工业空白与未来研究的前沿。
+                </figcaption>
+            </figure>
+
+            <p>下面是同一张矩阵的文字版，便于检索和引用。</p>
+            <div class="wp-scroll">
+            <table class="matrix-table">
+                <thead><tr><th>认知功能</th><th>链式 Chain</th><th>路由 Route</th><th>并行 Parallel</th><th>编排 Orchestrate</th><th>循环 Loop</th><th>层级 Hierarchy</th></tr></thead>
+                <tbody>
+                    <tr><td class="fn">感知</td><td class="filled">P2 语义压缩</td><td class="filled">P1 上下文分诊</td><td class="filled">P4 多模态融合</td><td class="empty">—</td><td class="filled">P3 渐进发现</td><td class="empty">—</td></tr>
+                    <tr><td class="fn">记忆</td><td class="filled">M2 RAG（naive）</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 进度追踪</td><td class="filled">M2 Agentic RAG · M4 失败日记</td><td class="filled">M1 分层保留</td></tr>
+                    <tr><td class="fn">推理</td><td class="filled">R1 思维链</td><td class="filled">R2 复杂度路由</td><td class="filled">R3 并行探索</td><td class="empty">—</td><td class="filled">R4 迭代假设验证</td><td class="empty">—</td></tr>
+                    <tr><td class="fn">行动</td><td class="filled">A3 提示链</td><td class="filled">A1 工具调度</td><td class="empty">—</td><td class="filled">A2 规划执行</td><td class="empty">—</td><td class="filled">A5 守卫三明治</td></tr>
+                    <tr><td class="fn">反思</td><td class="filled">F1 生成批评</td><td class="filled">F2 技能包</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 自愈循环</td><td class="filled">F3 经验回放</td></tr>
+                    <tr><td class="fn">协作</td><td class="filled">C4 交接链</td><td class="empty">—</td><td class="filled">C2 扇出聚合</td><td class="empty">—</td><td class="filled">C3 对抗评审</td><td class="filled">C1 层级委派</td></tr>
+                    <tr><td class="fn">治理</td><td class="filled">G3 渐进承诺</td><td class="filled">G1 审批门</td><td class="empty">—</td><td class="filled">G5 可观测性</td><td class="empty">—</td><td class="filled">G2 爆炸半径控制</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted);">
+                矩阵有意不填满。空格提醒大家不要为了形式对称去发明不成熟的模式。其中 <strong>M2 RAG 跨两格</strong>——naive RAG 是查一次给一次的线性流水线（链式），Agentic RAG 是查、评、改写、再查的迭代（循环），一个模式随工程成熟度从链式长进循环，说明这张矩阵是描述性的、而不是非此即彼。
+            </p>
+
+            <h2>五个工程契约</h2>
+            <p>
+                把七个功能落到生产时，建议每个 Agent 都显式设计五个契约。Agent 系统的稳定性，通常不来自更大的模型，而来自这五个契约能不能把模型判断和工程状态对齐。
+            </p>
+            <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
+                <li><strong>Context Contract</strong>——哪些信息进上下文、哪些只挂句柄、哪些延迟检索、哪些丢弃（对应感知）。</li>
+                <li><strong>Evidence Contract</strong>——一条证据必须带 source、version、scope、citation、provenance。RAG 管业务证据，SessionState 管 employee_id、amount 这类机械真值（对应记忆）。</li>
+                <li><strong>Decision Contract</strong>——模型输出怎样变成结构化的 RouteDecision / PlanDecision，而不是一段自然语言（对应推理）。</li>
+                <li><strong>Action Contract</strong>——工具元数据、参数来源、权限、审批、人审和回滚规则（对应行动与治理）。</li>
+                <li><strong>Trace Contract</strong>——每个 LLM call、tool call、handoff、approval、state update 串到同一个 trace id（对应治理）。</li>
+            </ul>
+
+            <h2>模式白皮书目录 · 28 核心 + 5 扩展 = 33</h2>
+            <p>
+                双轴框架的 <strong>28 个核心模式</strong>构成矩阵主体。另有 <strong>5 个扩展模式</strong>（M5 程序性记忆 · R5 双模架构 · A4 最简工具集 · C5 子代理隔离 · G4 钩子流水线——教学时并入相邻讲，白皮书单独成篇），合为 33。再加新兴拓扑 C6 编舞，是 34 篇全集。扩展模式标 <span class="ext-badge">扩展</span>。
+            </p>
+            <p>
+                矩阵里的每一格背后，都有一页结构相同的企业级说明文档：它解决什么问题、什么时候该用、哪里容易出错、上线后看哪些指标。面向产品、架构、研发、合规、管理各类角色，是可以直接拿去对齐团队的干净技术参考。
+            </p>
+
+            <h3>感知 Perception · 4 核心</h3>
+            <p class="grp-intro">Agent 与世界的接口，把异构、嘈杂、超长的原始输入变成模型能用、信噪比高的表示。管"看什么、压多小、钻多深、怎么合"。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/p1-context-triage/" style="font-weight: 600;">P1 · 上下文分诊</a><span style="color: var(--color-text-muted);"> — 候选信息总量超出 context 窗口预算时，决定谁先进、谁等门外、谁压根不预加载。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/p2-semantic-compaction/" style="font-weight: 600;">P2 · 语义压缩</a><span style="color: var(--color-text-muted);"> — Agent 跑久了 context 装满，必须压缩。保留什么、丢什么、压到什么程度，决定它接下来还能不能想清楚。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/p3-progressive-discovery/" style="font-weight: 600;">P3 · 渐进发现</a><span style="color: var(--color-text-muted);"> — Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/p4-multi-modal-fusion/" style="font-weight: 600;">P4 · 多模态融合</a><span style="color: var(--color-text-muted);"> — Agent 接到的输入有图、有文、有表、有日志，把每一种转换成最适合 LLM 消化的形态，再合并喂给推理层。</span></li>
+            </ul>
+
+            <h3>记忆 Memory · 4 核心 + 1 扩展</h3>
+            <p class="grp-intro">让 Agent 在单次输入之外保留与取回知识。记忆不是上下文的无限延伸，它必须带层级、版本、作用域、过期策略和取回规则。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/m1-hierarchical-retention/" style="font-weight: 600;">M1 · 分层保留</a><span style="color: var(--color-text-muted);"> — 把 agent 的记忆按作用域切成多层，每层独立存储、独立生命周期、独立加载策略，新会话从粗到细加载。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/m2-rag-pipeline/" style="font-weight: 600;">M2 · 检索增强生成</a><span style="color: var(--color-text-muted);"> — 给 agent 配一个外挂图书馆，让它在每次需要超出 context 容量的知识时，能查、能筛、能迭代地查回来用。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/m3-progress-tracking/" style="font-weight: 600;">M3 · 进度追踪</a><span style="color: var(--color-text-muted);"> — Agent 在长任务中显式维护一份结构化的 todo list，每一轮把状态外部化，让 agent 自己和用户都能看见做到哪了。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/m4-failure-journals/" style="font-weight: 600;">M4 · 失败日记</a><span style="color: var(--color-text-muted);"> — Agent 把每次失败结构化记录（哪一步失败、什么错、根因、怎么补救），跨任务持久化，下次类似情况主动召回。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/m5-procedural-memory/" style="font-weight: 600;">M5 · 程序性记忆</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把一类任务的成功执行流程凝固成可命名、可加载、可复用的结构化资产，下次同类任务直接调用，跳过试错进入主路。</span></li>
+            </ul>
+
+            <h3>推理 Reasoning · 4 核心 + 1 扩展</h3>
+            <p class="grp-intro">从已知推出结论、做出决策。工程的关键是给判断装上控制平面：模式、预算、证据要求、可行动作、人审边界和下一步。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/r1-chain-of-thought/" style="font-weight: 600;">R1 · 思维链</a><span style="color: var(--color-text-muted);"> — 把模型的推理过程显性化成一段可存储、可审计、可跨模型迁移的结构化数据，让"为什么得出这个结论"有据可查。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/r2-complexity-based-routing/" style="font-weight: 600;">R2 · 复杂度路由</a><span style="color: var(--color-text-muted);"> — 在查询进入主循环之前按复杂度信号选模型加 effort 档位，让简单查询走便宜模型、复杂查询才用贵模型，用分流换账单。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/r3-parallel-exploration/" style="font-weight: 600;">R3 · 并行探索</a><span style="color: var(--color-text-muted);"> — 同一个查询内故意启动 N 条独立推理链，再用聚合策略合成单一答案，用算力换准确度。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/r4-iterative-hypothesis-testing/" style="font-weight: 600;">R4 · 迭代假设验证</a><span style="color: var(--color-text-muted);"> — Agent 形成假设、用证据验证、根据结果修正，循环到证据收敛或达到迭代上限，把科学方法搬进推理。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/r5-talker-reasoner/" style="font-weight: 600;">R5 · 双模架构</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把 Agent 拆成快而浅的 Talker 和慢而深的 Reasoner，通过共享 belief state 协同，让 Agent 在深度思考的同时还能即时跟用户说话。</span></li>
+            </ul>
+
+            <h3>行动 Action · 4 核心 + 1 扩展</h3>
+            <p class="grp-intro">Agent 对世界产生作用，也就是调用工具。这是从"会说"到"会做"的分水岭，也是一切副作用和风险的来源。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a1-tool-dispatch/" style="font-weight: 600;">A1 · 工具调度</a><span style="color: var(--color-text-muted);"> — Agent 在每一步行动前，由工程层依据工具元数据从工具集中挑出最合适的工具，而不是让模型自己临场决定。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a2-plan-and-execute/" style="font-weight: 600;">A2 · 规划执行</a><span style="color: var(--color-text-muted);"> — Agent 先生成完整 plan（含依赖结构、资源预估、审批节点），再由编排者按 plan 执行，遇到偏离时局部 replan 而非全局重写。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a3-prompt-chaining/" style="font-weight: 600;">A3 · 提示链</a><span style="color: var(--color-text-muted);"> — 把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a4-minimal-tool-set/" style="font-weight: 600;">A4 · 最简工具集</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把 agent 的工具集控制在合理上限（通常 10 到 30 个），砍掉低频、合并相似、把次要工具下沉到 sub-agent，给模型留下选择的专注力。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a5-guardrail-sandwich/" style="font-weight: 600;">A5 · 守卫三明治</a><span style="color: var(--color-text-muted);"> — 在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从"自由行动"约束到"被监督的行动"。</span></li>
+            </ul>
+
+            <h3>反思 Reflection · 4 核心</h3>
+            <p class="grp-intro">Agent 检查自己、修正自己、沉淀经验，是可累积智能的核心机制。它必须绑定外部反馈、失败信号或历史轨迹，不是让模型自夸式总结。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/f1-generator-critic/" style="font-weight: 600;">F1 · 生成批评</a><span style="color: var(--color-text-muted);"> — 一个 agent 内置两个角色，Generator 写、Critic 评，generate→critique→revise 的线性精修，必要时多走几轮。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/f2-skill-package/" style="font-weight: 600;">F2 · 技能包</a><span style="color: var(--color-text-muted);"> — 把反复成功的工作流封装成可命名、可加载、可复用的结构化资产，新任务进来按 triggers 路由到命中技能直接调用。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/f3-experience-replay/" style="font-weight: 600;">F3 · 经验回放</a><span style="color: var(--color-text-muted);"> — agent 在新任务来时主动检索历史相似任务的 trajectory，把可复用部分作为上层经验注入当前 context，让学过的东西不白学。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · 自愈循环</a><span style="color: var(--color-text-muted);"> — agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。</span></li>
+            </ul>
+
+            <h3>协作 Collaboration · 4 核心 + 1 扩展</h3>
+            <p class="grp-intro">多个 Agent 之间分工与协同。协作是规模逼出来的，量没起来时单 Agent 往往更稳。底线是每个 Agent 都有自己的上下文、权限、产出和失败边界。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c1-hierarchical-delegation/" style="font-weight: 600;">C1 · 层级委派</a><span style="color: var(--color-text-muted);"> — 一个 supervisor agent 动态拆分任务、派给 N 个 worker agent 执行、再把结果合并，是经典的多 agent 主管-工人协作。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c2-fan-out-gather/" style="font-weight: 600;">C2 · 扇出聚合</a><span style="color: var(--color-text-muted);"> — orchestrator 把一批可独立执行的子任务并行分发给 N 个 sub-agent，每个独立完成，最后由 aggregator 用聚合策略合并成单一输出，用 N 倍算力换 1/N 时长。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c3-adversarial-review/" style="font-weight: 600;">C3 · 对抗评审</a><span style="color: var(--color-text-muted);"> — 把一个 generator agent 跟一个或多个独立 critic agent 配在一起，通过结构化对抗循环改进输出，critic 必须用不同模型、不同 family、不同 prompt 激励。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c4-handoff-chain/" style="font-weight: 600;">C4 · 交接链</a><span style="color: var(--color-text-muted);"> — 把一个长流程拆成 N 个职责清晰的 agent，前一棒处理完后通过结构化 HandoffPacket（不是裸文本）把关键状态传给下一棒，每一棒只擅长一件事。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c5-sub-agent-isolation/" style="font-weight: 600;">C5 · 子代理隔离</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 子 agent 在独立 context 中执行，返回前必须压缩成 schema 化 artifact，主 agent 只看 artifact 不看 raw trajectory。</span></li>
+            </ul>
+
+            <h3>治理 Governance · 4 核心 + 1 扩展</h3>
+            <p class="grp-intro">约束 Agent 的权限与可追溯性。治理不是上线前临时加的安全补丁，它贯穿前面六个功能，在每一个案例里都参与模式选型。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g1-approval-gate/" style="font-weight: 600;">G1 · 审批门</a><span style="color: var(--color-text-muted);"> — 高 blast radius 或不可逆的动作执行前，按风险路由到自动放行 / 留痕 / 人审三档之一，让人在关键决策点保留最后否决权。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g2-blast-radius-control/" style="font-weight: 600;">G2 · 爆炸半径控制</a><span style="color: var(--color-text-muted);"> — 给动作分级（readonly / mutating / catastrophic），用嵌套的工程边界把单次失败的最大损失硬上限锁死。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · 渐进承诺</a><span style="color: var(--color-text-muted);"> — Agent 的权限从只读起步，按阶段顺序解锁到可写、再到不可逆，每升一档要拿证据挣，出事立即降级。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g4-hooks-pipeline/" style="font-weight: 600;">G4 · 钩子流水线</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 在工具调用与 agent step 的前后挂上 deterministic 拦截层，把不该让模型思考的事从 prompt 剥离到 hook 来保证。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g5-observability-harness/" style="font-weight: 600;">G5 · 可观测性</a><span style="color: var(--color-text-muted);"> — 给 Agent 全生命周期挂五维 telemetry，跨 agent 串联 trace，让事后能回放、监管能审计、产品能决策。</span></li>
+            </ul>
+
+            <h2>编舞 Choreography：编排的去中心化孪生</h2>
+            <p>
+                六种核心拓扑都有一个共同的隐含前提——存在一个可设计的控制点。链有顺序，路由有路由器，并行有 fan-out 和 gather，循环有迭代器，层级有经理，编排有指挥。<strong>编舞的定义特征，是取消这个控制点。</strong>
+            </p>
+            <p>
+                编舞里没有中央指挥。每个 Agent 成为一个自治单元，只订阅自己关心的事件，事件来了就反应，反应完把结果作为新事件发回共享的事件流，不向任何中心汇报。系统的整体行为不写在某一处的流程图里，而是从所有 Agent 的局部"订阅—反应—发布"规则中涌现出来。加一个新 Agent，只要让它订阅该订阅的事件，其余 Agent 一行都不用改。它和编排是一对孪生：编排由指挥协调，编舞由事件协调。
+            </p>
+            <p>
+                ADPS 暂时把编舞登记为新兴拓扑、不升为核心第七列。判据是：一个拓扑要配当核心列，必须能横切多个认知功能，而编舞目前几乎只在协作这一行密集成立。再加上到 2026 年绝大多数上了生产的多 Agent 系统仍是编排式的，证据还不够厚。它强依赖可观测性（G5）——没有中央 trace，涌现行为出了问题无从查起。生产里最常见的形态，是编舞为主、关键收口处留一个薄编排的混合式。完整说明见 <a href="/zh/patterns/c6-choreography/">C6 编舞白皮书</a>。
+            </p>
+
+            <h2>三套起步组合</h2>
+            <p>第一次做 Agent 不知从哪入手，下面三套组合覆盖了大部分场景。任何带写权限的 Agent，G1 审批门和 G5 可观测性是底线。</p>
+            <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
+                <li style="margin-bottom: 0.6rem;"><strong>知识问答型 Agent。</strong>P1 上下文分诊 + M2 RAG + R2 复杂度路由 + G5 可观测性。边界提醒：RAG 只提供业务证据，不提供机械真值，所有引用必须可追溯。</li>
+                <li style="margin-bottom: 0.6rem;"><strong>执行型 SaaS Agent。</strong>P1 + M2 RAG + M3 进度追踪 + R2 复杂度路由 + A1 工具调度 + A2 规划执行 + G1 审批门 + G2 爆炸半径控制 + G5 可观测性。边界提醒：employee_id、amount、approval_id 这类机械状态必须来自工具和 SessionState，不能让模型当场合成。</li>
+                <li style="margin-bottom: 0.6rem;"><strong>多 Agent 研究或审查系统。</strong>P3 渐进发现 + M2 RAG + R3 并行探索 + C1 层级委派 + C2 扇出聚合 + C3 对抗评审 + G5 可观测性。边界提醒：多 Agent 的收益来自任务规模、角色边界和独立审查，不来自"看起来更先进"。</li>
+            </ul>
+
+            <h2>方法论</h2>
+            <p>
+                从一个业务问题到一套 Agent 架构，走一遍<strong>六步选型法</strong>，从业务收束到 3 到 7 个模式，不要一上来把所有模式都装进系统。
+            </p>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: decimal;">
+                <li>界定（Bound）——写一页范围声明，定义做什么、不做什么。</li>
+                <li>映射（Map）——七个功能各打 None / Light / Heavy，得到能力向量。</li>
+                <li>选拓扑（Select）——按主约束确定主拓扑。</li>
+                <li>挑模式（Pick）——在矩阵上按坐标挑 5 到 7 个模式。</li>
+                <li>校预算（Assess）——用准确率、延迟、成本三轴校验组合。</li>
+                <li>分步落地（Build）——分三阶段建设，先跑通最小闭环，再叠反思记忆，最后叠治理。</li>
+            </ul>
+            <p>
+                它的入口是一张 <strong>Pattern Selection Card（模式选项卡）</strong>，三个面板：ASSESS（任务需要哪些认知功能）、ROUTE（约束适配哪种拓扑）、SELECT（交叉点上住着哪些模式）。这张卡把"我要做一个 X 的 Agent"在十五分钟内变成候选模式清单。
+            </p>
+
+            <h2>相关资产地图</h2>
+            <p>
+                白皮书是 ADPS 模式语言的入口。每个模式组背后还连着一组配套资产——本组各模式的白皮书页、付费专栏对应模块、Manning 书对应章、GitHub 代码对应目录，以及后续蓝皮书的企业落地案例。下面是资产骨架，具体链接随讨论逐步补全。
+            </p>
+            <div class="wp-scroll">
+            <table class="wp-table">
+                <thead><tr><th>模式组</th><th>白皮书</th><th>专栏模块</th><th>Manning 章</th><th>代码目录</th></tr></thead>
+                <tbody>
+                    <tr><td>感知 Perception</td><td>P1–P4</td><td>感知模块</td><td>Ch3 Perception</td><td><code>perception/</code></td></tr>
+                    <tr><td>记忆 Memory</td><td>M1–M4（+M5 扩展）</td><td>记忆模块</td><td>Ch4 Memory</td><td><code>memory/</code></td></tr>
+                    <tr><td>推理 Reasoning</td><td>R1–R4（+R5 扩展）</td><td>推理模块</td><td>Ch5 Reasoning</td><td><code>reasoning/</code></td></tr>
+                    <tr><td>行动 Action</td><td>A1–A3、A5（+A4 扩展）</td><td>行动模块</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
+                    <tr><td>反思 Reflection</td><td>F1–F4</td><td>反思模块</td><td>Ch7 Reflection</td><td><code>reflection/</code></td></tr>
+                    <tr><td>协作 Collaboration</td><td>C1–C4（+C5、C6 扩展）</td><td>协作模块</td><td>Ch8 Collaboration</td><td><code>collaboration/</code></td></tr>
+                    <tr><td>治理 Governance</td><td>G1–G3、G5（+G4 扩展）</td><td>治理模块</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted);">
+                每个具体模式向下还可以挂自己的资产清单：该模式的白皮书页、专栏对应讲、Manning 对应小节、GitHub 双框架实现（LangGraph + LangChain），以及引用它的企业落地案例。这一层会随蓝皮书案例的积累持续补全。
+            </p>
+
+            <h2>关于《Agent 设计模式之美》专栏</h2>
+            <p>
+                白皮书和<a href="https://time.geekbang.org/column/intro/101162601" target="_blank" rel="noopener">《Agent 设计模式之美》</a>专栏写的是同一套框架，但服务两类需要，体例完全不同。
+            </p>
+            <p>
+                白皮书是<strong>收敛的、跨角色的技术参考</strong>。每个模式压成一页，回答四件事——它解决什么问题、什么时候该用、哪里容易出错、上线后看哪些指标。读者是整个团队，目标是让产品、架构、研发、合规在十分钟内对齐"我们要做的是哪个坐标的 Agent"。
+            </p>
+            <p>
+                专栏是<strong>展开的、面向工程师的深度教程</strong>。同一个模式，专栏会拆开主流框架的源码、横切八个框架的实现差异、给出可运行代码、复盘真实工程现场踩过的坑。白皮书告诉你"用不用、怎么不踩坑"，专栏告诉你"怎么动手把它做出来、做对"。两者互为指针。
+            </p>
+
+            <h2>延伸阅读</h2>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: disc;">
+                <li>立场论文：<a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a></li>
+                <li>Manning 书：<a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a></li>
+                <li>可运行代码目录：<a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">agent-design-patterns</a>（28 模式 LangGraph + LangChain 双框架）</li>
+            </ul>
+
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+        </div>
+      </div>
+    </main>
+
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

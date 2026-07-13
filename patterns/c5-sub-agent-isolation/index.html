@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C5 Sub Agent Isolation · Pattern White Paper · ADPS</title>
+    <meta name="description" content="A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw traj">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/c5-sub-agent-isolation/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/" class="active">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C5</p>
+
+                        <h1>C5 · Sub-Agent Isolation</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Collaboration × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Cross-cutting (a cross-cutting concern layered on top of other collaboration patterns)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Collaboration patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw trajectory.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>The supervisor agent dispatches a sub-agent to do work, the sub-agent dumps its entire working process back, and the supervisor's context is immediately flooded. Returning a detailed 3,000-word analysis for each of 50 contracts is 150,000 words, and once the supervisor receives it, reasoning quality drops off a cliff. The root cause is that the supervisor should not see the sub-agent's raw working process, only the work conclusions—just as the PM at a law firm does not ask each lawyer to report which line they read, but looks only at "which few are abnormal and their key issues."</p>
+            <p>Sub-agent isolation solves context pollution in enterprise multi-agent systems. It lets each sub-agent run in its own isolated context and forces a reduce into a structured artifact before returning, so the supervisor consumes only the artifact. The engineering value here is independent enough to warrant its own pattern: it is the internal discipline that lets collaboration patterns such as hierarchical delegation and fan-out aggregation run stably in production. Without it, the supervisor's context is bound to blow up by the third task, and a long-running multi-agent system is bound to cascade.</p>
+            <h2>Why the coordinate is "Collaboration × Hierarchy"</h2>
+            <ul>
+            <li><strong>Vertical axis · Collaboration</strong>: Giving a sub-agent its own context and permissions is a design that adds boundaries within collaboration. It is not simple task dispatch but adds isolation discipline to collaboration—the information flow between supervisor and sub-agent is deliberately cut down to "pass only refined conclusions."</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: A parent agent schedules a sub-agent, and the sub-agent runs in its own sandbox—this is a structure of hierarchy plus isolation. It shares a cell with hierarchical delegation (both sit at the Collaboration × Hierarchy intersection), but the emphasis differs—hierarchical delegation stresses dispatch, while sub-agent isolation stresses isolation plus summarized return.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>Sub-agent isolation is built from four engineering elements:</p>
+            <ol>
+            <li><strong>Context isolation</strong>: When the sub-agent starts, it does not inherit the parent's history; it receives only its own system prompt, the specific task instruction, and its own tool set. It cannot see what the supervisor has run or what other sub-agents are doing.</li>
+            <li><strong>Schema-formed artifact return</strong>: The sub-agent returns not a free-text summary but a structured artifact (a pydantic model or JSON schema). A three-layer structure is recommended—verdict (success / partial / failure), top findings (3-5 items), citations (optional). This lets the supervisor parse it directly with deterministic code, without spending tokens to interpret it.</li>
+            <li><strong>Failure boundary isolation</strong>: When a sub-agent times out or throws an exception, the supervisor receives an artifact with verdict=failure rather than being blown up by the exception. If 1 of N sub-agents fails, only 1/N is lost.</li>
+            <li><strong>Parallel non-interference</strong>: N sub-agents each run their own context, cannot see each other's intermediate state, and do not communicate directly—exchanging information must go through the supervisor.</li>
+            </ol>
+            <h2>Where it fits in production</h2>
+            <ul>
+            <li><strong>Batch tasks where subtasks produce a lot of output and the supervisor's context is tight</strong>: contract review, document scanning, large-scale code search, where each sub-agent handles one item and returns only a refined conclusion.</li>
+            <li><strong>Scenarios that must prevent cross-task pollution</strong>: each contract should get an independent fresh review, not be primed by details from other contracts (avoiding anchoring bias), so an independent context is required.</li>
+            <li><strong>Scenarios where data scope must not cross over</strong>: sensitive data seen by one sub-agent must not flow to another sub-agent or pollute the supervisor; an isolated context provides a natural data boundary.</li>
+            <li><strong>Scenarios that need protection against prompt pollution</strong>: a sub-agent's trial-and-error failure traces and out-of-bounds attempts should not drag down the later reasoning of the supervisor or other sub-agents.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>The sub-agent inherits the supervisor's history</strong>: it looks fine in the demo stage, but after the third task the supervisor's history accumulates tens of thousands of tokens, and every sub-agent carries those tokens at the starting line—cost explodes and quality drops. The sub-agent must start completely independently with local messages.</li>
+            <li><strong>Returning free text instead of a schema artifact</strong>: free text makes usability on the supervisor side 10 times worse—it cannot be parsed with deterministic code, cannot be confidence-ranked, cannot be routed by verdict. A schema must be enforced.</li>
+            <li><strong>Direct communication between sub-agents</strong>: letting sub-agent A call sub-agent B for convenience immediately turns the hierarchical topology into a mesh topology, and the risk of cascade failure soars. Exchanging information must go through the supervisor.</li>
+            <li><strong>Failure has no boundary</strong>: the sub-agent throws an exception that is not caught, the supervisor receives a raw exception, the reasoning loop is interrupted, and the whole task fails. On failure, a schema-formed failure artifact must be returned.</li>
+            <li><strong>Wrapping isolation around a subtask whose output is already small</strong>: when a subtask produces less than 500 tokens, or when the supervisor genuinely needs to see intermediate detail, isolation is needless overhead. Its value holds only when output is large, context is tight, and output can be schema-formed all hold at once.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Supervisor context usage</strong> (a healthy range leaves enough room for reasoning): the proportion of the supervisor's context taken up by all sub-agent artifacts combined. Keeping the artifacts for 50 contracts under 10,000 words and leaving the supervisor 40,000 tokens for its own reasoning is a good target.</li>
+            <li><strong>Artifact compliance rate</strong> (healthy range &gt; 95%): the proportion of sub-agent returns that conform to the schema. Occasionally bypassing the schema with free-text output triggers re-dispatch and latency.</li>
+            <li><strong>Failure cascade rate</strong> (healthy range &lt; 5%): the probability that one sub-agent's failure drags down other sub-agents. Only when all four elements are in place can this metric be held at the healthy line; missing one can make it soar.</li>
+            <li><strong>Artifact compression ratio</strong> (higher is healthier): the ratio of the raw trajectory word count to the reduced artifact word count, reflecting how much isolation saves on context.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>IsolatedSubAgent.execute(task):
+                local_context = [system_prompt, task]      # no parent history passed in → context isolation
+                try:
+                    raw = run_loop(task, local_context)     # independent LLM call + independent tool set
+                except: return Artifact(verdict=&quot;failure&quot;)  # failure boundary
+                return reduce_to_artifact(raw)              # force reduce to verdict/findings/citations
+
+            SupervisorWithSubAgents.execute(task):
+                artifacts = parallel gather(                 # N in parallel, each with its own context → non-interference
+                    sub.execute(dispatch_subtask(task, sub)) for sub in sub_agents
+                )
+                return synthesize_from_artifacts(artifacts) # supervisor sees only artifacts, never raw trajectory
+            </code></pre>
+            <p>The four engineering points correspond to the four elements: starting from local messages implements context isolation; reduce_to_artifact implements schema-formed return; try/except plus timeout implements the failure boundary; parallel gather plus a separate context each implements non-interference.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>A law firm's contract review Agent: in the first version, the supervisor dispatched sub-agents to scan 50 contracts, each sub-agent returned the full 3,000-word detailed analysis, and after receiving 150,000 words the supervisor's context blew up completely. The second version added the four isolation elements: each contract gets its own independent sub-agent (context isolation); before returning, each is forced to reduce into a fixed-schema artifact (the three fields verdict, top_3_concerns, recommendation are all required); each contract gets an independent fresh review without being primed by other contracts; one sub-agent failing does not affect the other 49; the supervisor's context is always kept under 50,000 tokens (the 50 artifacts together are under 10,000 words, leaving 40,000 for the supervisor's reasoning); low-confidence contracts are marked for escalation to humans. After the change, 50 contracts run in one hour, the supervisor does high-level synthesis on 10,000 words of artifacts, and the lawyer reviews the report in under an hour. Claude Code's Task tool is the most complete industrial implementation of this pattern—the sub-agent runs in a fully independent context (no supervisor history, independent LLM call, independent tool set), returns only a final summary, and the supervisor cannot see the sub-agent's intermediate thinking and tool calls, so 50 grep calls never enter the supervisor's context.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Hierarchical delegation (C1)</strong>: same cell and two sides of the same coin. Hierarchical delegation is the move (the supervisor dispatches workers), sub-agent isolation is the internal discipline (the worker isolates context plus schema artifact plus failure boundary). Hierarchical delegation without isolation is bound to cause context explosion plus cascade failure; the two must come as a set.</li>
+            <li><strong>Fan-out aggregation (C2)</strong>: every parallel branch of the fan-out depends on isolation—an independent context, and the gather stage sees only reduced results. Isolation is the engineering foundation that lets fan-out scale to large parallelism.</li>
+            <li><strong>Hierarchical Retention (memory module)</strong>: same root idea. Information is distributed by level and grows more concise the higher up it goes; sub-agent isolation is the landing of this scope-layering principle at the multi-agent collaboration layer.</li>
+            <li><strong>Context triage (perception module)</strong>: same line of thinking. The supervisor does not preload the sub-agent's intermediate state but fetches it on demand (usually unnecessary, since the artifact is enough), similar to lazy loading.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Sub-agent isolation looks like context optimization, but at its core it <strong>encodes the information-layering spirit of organizational management into agent systems</strong>—the CEO looks at the manager's summary rather than every employee's detail, the supervisor looks at the sub-agent's artifact rather than the raw trajectory, and this is the last mile that takes a multi-agent system from demo to production.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

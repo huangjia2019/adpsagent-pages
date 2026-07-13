@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C2 Fan out Gather · Pattern White Paper · ADPS</title>
+    <meta name="description" content="The orchestrator distributes a batch of independently executable subtasks in parallel to N sub-agents. Each completes its subtask on its own, and an aggregator merges the results i">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/c2-fan-out-gather/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/" class="active">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C2</p>
+
+                        <h1>C2 · Fan-out / Gather</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Collaboration × Parallel (fan-out)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (N× single-agent calls, traded for 1/N wall-clock time)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Collaboration patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">The orchestrator distributes a batch of independently executable subtasks in parallel to N sub-agents. Each completes its subtask on its own, and an aggregator merges the results into a single output using an aggregation strategy, trading N times the compute for 1/N of the wall-clock time.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>Some tasks are simply too slow when one agent does them sequentially. A single agent reading a hundred thousand pages of financial documents takes 35 hours, but the legal team has only a 24-hour window before quarterly disclosure.</p>
+            <p>Fan-out / gather splits a large task into multiple independently executable subtasks, distributes them in parallel to N sub-agents, and aggregates the results at the end. Its benefit is not saving tokens—token cost doubles linearly—but compressing wall-clock time: as the number of workers grows, total duration drops almost linearly. It has one frequently underestimated difficulty: dispatching the tasks costs almost no engineering effort, while merging the results back is where the real engineering lies. When multiple workers see the same material, their outputs overlap, and the aggregation stage must perform deduplication and conflict resolution.</p>
+            <h2>Why the coordinate is "Collaboration × Parallel"</h2>
+            <ul>
+            <li><strong>Vertical axis · Collaboration</strong>: This splits one task across multiple sub-agents that work in parallel and then summarize. The entities being distributed are different subtasks, which makes it a multi-agent collaboration topology. This differs from parallel exploration in the reasoning module—the latter parallelizes multiple solution paths for the same problem (a reasoning strategy), while the former parallelizes different subtasks split across different agents (a collaboration topology).</li>
+            <li><strong>Horizontal axis · Parallel</strong>: N sub-agents run simultaneously, unaware of one another, and are gathered together at the end. This is the classic map-reduce parallel structure. It is neither sequential chaining nor loop iteration.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single fan-out / gather consists of three stages:</p>
+            <ol>
+            <li><strong>Split and fan out</strong>: The large task is split into N parts by "semantic independence" and distributed in parallel. The splitting criterion is not equal division by document count, but making the subtasks independent of one another—worker B must not depend on worker A's output, otherwise a handoff chain rather than fan-out is called for.</li>
+            <li><strong>Isolated execution</strong>: Each sub-agent runs in an independent context and completes its own subtask without communicating with the others. The strength of isolation is proportional to the likelihood of output conflicts—research tasks that each query different corpora need only soft isolation, while code-writing tasks where multiple agents modify overlapping files require physical isolation (separate Git worktrees or separate containers).</li>
+            <li><strong>Gather and collect</strong>: An aggregation strategy merges the N sets of results. If aggregation is done wrong, the entire pipeline falls apart.</li>
+            </ol>
+            <p>Aggregation is not simple concatenation; it must do at least five things:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Aggregation step</th>
+            <th style="text-align: left;">Function</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Dedup</td>
+            <td style="text-align: left;">Merge the same fact when multiple workers capture it, using semantic similarity to find duplicates</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Conflict resolution</td>
+            <td style="text-align: left;">Decide how to adjudicate when worker A says buy and worker B says sell</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Integration</td>
+            <td style="text-align: left;">Catch problems that surface only at the boundaries between worker slices</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Ranking</td>
+            <td style="text-align: left;">Multi-dimensional combined ranking</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Attribution</td>
+            <td style="text-align: left;">Anchor each conclusion to its original source</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>Batch tasks under wall-clock time pressure</strong>: Quarterly compliance scans, large-scale document review, batch bid evaluation—cases where total duration is the hard bottleneck and the subtasks are independent of one another.</li>
+            <li><strong>Research tasks that split cleanly by semantic independence</strong>: Parallel verification across multiple corpus sources, where each sub-agent queries a different category of content and the outputs barely conflict.</li>
+            <li><strong>Multi-agent parallel code writing</strong>: One agent each for UI, API, database, and tests, combined with physically isolated worktrees to compress 8 hours down to 2.</li>
+            </ul>
+            <p>Three conditions must hold simultaneously: the task can be split into independent parallel parts, total duration is the bottleneck, and the budget can absorb N times the tokens. If any one fails, fan-out merely moves the bottleneck from duration to quality.</p>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Forcing a split when subtasks have strong dependencies</strong>: For tasks where workers need to exchange intermediate state, or must be read in sequence to recognize an evolution trajectory, fan-out flattens sequential dependencies into parallelism, and the gather stage then spends a great deal of effort rebuilding those dependencies. Such scenarios call for a handoff chain.</li>
+            <li><strong>Aggregation costs more than execution</strong>: When too little is invested in aggregation, fan-out merely moves the bottleneck from duration to quality. If the business has no engineering capacity for deduplication, conflict resolution, and cross-slice integration, fan-out should not be turned on.</li>
+            <li><strong>Aggregation bottleneck</strong>: As the number of workers N grows, the aggregator must read every worker's output, blowing out its context and causing quality to drop sharply. When N is large, the aggregator should work in layers (first group-level sub-aggregation, then final synthesis) to reduce the context pressure to logarithmic scale.</li>
+            <li><strong>Slicing by function rather than by conflict</strong>: Slicing for "most complete function coverage" (one group each for frontend, backend, algorithms, and testing) leads to daily conflict resolution at the integration stage; slicing to "minimize output conflicts" is the right approach. The fan-out topology should mirror the actual collaboration topology of the business team.</li>
+            <li><strong>Implicit batching cuts concurrency</strong>: You think you have launched 50 concurrent calls, but the LLM provider is doing implicit queuing plus batch scheduling, quietly cutting real concurrency down to 10. The fan-out implementation must align with the provider's batching behavior.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Success rate</strong> (healthy range ≥ 95%): The proportion of workers that return valid results. In compliance review scenarios this is a hard floor—missing a few items will be flagged at the audit stage.</li>
+            <li><strong>Duplication rate</strong> (healthy range &lt; 30%): The proportion of similar entries after aggregation. Exceeding this means deduplication was not done well, and the report will bloat to the point that "readers cannot get through it."</li>
+            <li><strong>Speedup ratio</strong> (healthy range close to N): The actual duration-compression factor delivered by N workers. Significantly below N means concurrency was cut by rate limiting, or the task actually has dependencies.</li>
+            <li><strong>Aggregation cost share</strong> (healthy range &lt; 15%): The proportion of total cost consumed by the aggregation step. Too high, and you should switch to a lighter aggregation strategy or use layered aggregation.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>FanoutGather.execute(goal, perspectives, strategy):
+                workers = decompose(goal, perspectives)    # split into N parts by semantic independence
+                results = parallel gather(                  # semaphore for concurrency + retry + backoff
+                    execute_worker(w) for w in workers      # independent context each, failures don't block others
+                )
+                return aggregate(goal, results, strategy)   # the soul is in this step
+
+            aggregate(results, strategy):
+                concatenate → simple concatenation (only when no overlap)
+                vote        → majority vote
+                synthesize  → strong model synthesis, explicit contradiction resolution + dedup
+                structured  → schema-based structured merge
+            </code></pre>
+            <p>Four engineering points: use a cheap model for the workers, but the aggregator model must be strong (synthesis is the quality bottleneck); set the initial concurrency to match the provider's RPM tier, starting at 5–10 and raising it gradually with monitoring; failed workers must not block others, and set a partial-failure threshold; retain a complete trace of each path for audit.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>A listed company's quarterly compliance-scanning agent: the first version, a single agent reading a hundred thousand pages of financial documents sequentially, took 35 hours, well past the legal team's 24-hour pre-disclosure window. The second version switched to 12 workers, each responsible for one document category (4 for financial reports, 4 for emails, 4 for contracts), scanning in parallel and compressing total duration to 4 hours. But once live, it immediately hit the aggregation problem: the 12 workers each flagged more than 200 risk points, the same contract change was flagged by three workers in three different phrasings ("VAM clause added," "earnout clause expansion," "new VAM term may trigger buyback"), and the gather stage tallied 600 risks, at least sixty percent of them duplicates. The legal director put it plainly: "the agent runs fast, but I can't get through the report." The third version added three things to gather: embedding-based semantic deduplication, concept normalization (canonicalizing the three phrasings into one entry), and confidence weighting (a single-worker flag weighted 0.6, an item flagged by multiple workers weighted 1.0). The final risk report was compressed from over 600 items to 80 high-confidence plus 120 needs-review. In a large government or state-owned-enterprise bid-evaluation scenario, additional compliance constraints would stack on top: strict isolation between workers to satisfy evaluator-independence requirements, full trace retention for 7 years, and a partial-failure threshold no lower than 95% (missing one submission will be flagged at the audit stage).</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Parallel exploration (reasoning module R3)</strong>: Same structure, shared aggregation mechanism, differing in what is parallelized. Fan-out / gather assigns different subtasks to different agents (a collaboration topology); parallel exploration runs multiple solution paths for the same problem (a reasoning strategy). Both follow "N times the tokens for 1/N of the duration," but the objects being distributed differ.</li>
+            <li><strong>Hierarchical delegation (C1)</strong>: Both are one-to-many, but fan-out is one-to-many by quantity (multiple workers simultaneously handling different parts of the same kind of work) with shallow collaboration (fire-and-collect), while hierarchical delegation is one-to-many by specialty with deep collaboration (the supervisor continuously monitors). Anthropic's multi-agent research is both hierarchical (the lead supervises) and fan-out (the subagents run in parallel).</li>
+            <li><strong>Adversarial review (C3)</strong>: The N workers in fan-out are complementary (each looks at one facet to assemble the full picture), while the reviewers in adversarial review are adversarial (independently scrutinizing the robustness of a decision).</li>
+            <li><strong>Sub-agent isolation (C5)</strong>: Each parallel branch in fan-out depends on the inner discipline of isolation—an independent context, with the gather stage seeing only the reduced result.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Fan-out / gather looks like saving wall-clock time, but in engineering practice it is <strong>investing in aggregation complexity and replicating your team's real collaboration topology</strong>—the premise for N times the workers turning duration into 1/N is that you also invest N times the engineering effort into aggregation.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

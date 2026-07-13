@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P4 多模态融合 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="Agent 接到的输入有图、有文、有表、有日志，把每一种转换成最适合 LLM 消化的形态，再合并喂给推理层。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/p4-multi-modal-fusion/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/p4-multi-modal-fusion/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/" class="active">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>P4
+            </p>
+
+            <h1>P4 · Multi-Modal Fusion · 多模态融合</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">感知 Perception × 并行 Parallel（撒）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">高（多路 specialist 处理器 + vision 调用，开销显著）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">感知模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">Agent 接到的输入有图、有文、有表、有日志，把每一种转换成最适合 LLM 消化的形态，再合并喂给推理层。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>Agent 感知到的通常是 PDF、图表、表格、扫描件、日志混在一起的异构信息。把一份 80 页研报整份喂给 vision 模型，y 轴刻度密、像素糊，市场规模 5800 亿被读成 5800 万，差了一千倍；全部 OCR 成纯文本又把图全丢了，研报里真正值钱的市场规模柱状图、竞争格局饼图坍缩成一句"图 3 显示市场份额"，Agent 读到等于没读到。</p>
+            <p>多模态融合把这件事工程化，关键在数据进入上下文之前：哪一段该走 vision、哪一段该转文本、哪一段应该被丢掉。它处理的是 Agent 还没"想"之前的输入形态问题——形态错了，下游怎么挑、怎么压、怎么探都是在错误的形态上继续消耗。</p>
+            <h2>为什么坐标是「感知 × 并行」</h2>
+            <ul>
+            <li><strong>纵轴 · 感知</strong>：融合处理的是多通道输入（PDF、图、音、结构化数据）合成统一表示，是感知最原始的"融合"问题，发生在推理之前。</li>
+            <li><strong>横轴 · 并行</strong>：每一路数据同时交给各自的 specialist 处理器（PDF parser、OCR、table extractor、日志 sub-agent）<strong>并行转换</strong>，各路互不依赖、可同时跑，再由一个 fuser 把多路结果<strong>聚合（gather）</strong>成统一的 prompt content。这是典型的扇出—聚合（fan-out / gather）：N 路并行处理 + 一次合并，不是单链顺序，也不是单点路由。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>融合的核心判断是给每一路数据选对载体，再合并。判定标准是：空间信息是信号才保留为图，结构信息是信号该转 markdown。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">输入类型</th>
+            <th style="text-align: left;">默认处理</th>
+            <th style="text-align: left;">成本对比</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">架构图、流程图</td>
+            <td style="text-align: left;">转 Mermaid</td>
+            <td style="text-align: left;">8 节点图 Mermaid ~50 token，draw.io XML ~1200，差 24×</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">表格、结构化数据</td>
+            <td style="text-align: left;">转 GitHub Flavored Markdown</td>
+            <td style="text-align: left;">10×6 表 markdown ~150 token，截屏走 vision ~1398，差 9×</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">chart、heatmap</td>
+            <td style="text-align: left;">保留图但只做检索 anchor，要数字走 chart→CSV 二次提取</td>
+            <td style="text-align: left;">vision 直读 chart 准确率低，不能当推理引擎用</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">长日志（&gt;&gt; 窗口）</td>
+            <td style="text-align: left;">三层流水线</td>
+            <td style="text-align: left;">见下</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>两个机制撑起工业级融合。第一，vision token 的真实数学。同一张 1024×1024 喂三家差 16 倍（GPT-4o detail=high 765、Gemini 1032、Claude Sonnet 1398、GPT-4o detail=low 仅 85）；prompt cache 省得最多，cache reads 是 base rate 的 0.1×，重复读同一份 PDF 省 90%。第二，长日志三层流水线：bash 预过滤（grep/awk/jq 在 shell 把 500MB 缩到 5-10MB，只烧 CPU 不烧 token）→ sub-agent 处理（便宜模型读完返回 200-500 token 结构化摘要）→ 结构化产物回主 context（JSON 而非 free text，原始日志的指针留在摘要里需要时再查）。500MB 日志直灌 Sonnet 约 $150 还可能溢出窗口，走三层约 $0.16，差约 940 倍。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>金融研报分析</strong>：PDF 表格 + 分析师文字 + 市场规模图表，每一路单独看都不完整，必须拼起来才能下判断。</li>
+            <li><strong>保险理赔</strong>：事故照片 + 报案文本 + 结构化保单数据合一。</li>
+            <li><strong>运维事故响应</strong>：监控截图 + 长日志片段 + 配置文件，长日志必走三层流水线。</li>
+            <li><strong>任何输入混着结构化和非结构化的场景</strong>：判断标准是各路信息是否互补——如果只是同一信息的重复表达，跳过融合直接进推理，融合是有成本的。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>看错图</strong>：研报 5800 亿读成 5800 万就是这一类，chart 直读准确率本就低，且 multi-turn 有传染性——早期一轮看错，后面跟着错。对策是 cross-field consistency check（图里提取的数字要跟文本区同名数字对得上，对不上触发人工 review），每轮重新校验图源，不要在第三轮还用第一轮看错的数字推理。</li>
+            <li><strong>图片 input 月底账单爆炸</strong>：POC 阶段每月 $50，上生产变成 $2.5M/月。根因是 agent loop 每跑一步都把整个 prompt（含那张 800KB 图）重新打包发一遍，图片付 N 次不是一次。对策三层：budget guard（USD/token/wall-clock/recursion-depth 四道天花板，任一触发即 halt）、thumbnail-first（默认低分辨率，需要细节再请求 high-res）、prompt cache。</li>
+            <li><strong>sub-agent 死循环、finding 丢失</strong>：四个 agent 互相调用，无人值守的周末烧掉 $47,000 / 264 小时。根因是 handoff 时 long-form context 被截断，下游拿到残缺指令又回头问上游，循环起来。对策是 Memory Pointer Pattern（完整 finding 存 state store，context 里只传 pointer ID）+ pre-execution budget enforcement（每个 sub-agent 启动前强制声明 budget，超出就 kill）。</li>
+            <li><strong>截断阈值一刀切</strong>：按 tool 语义分别定阈值才对——bash 头尾各半（错误常在结尾 stack trace）、read_file head-only（信息密度集中前段）。一刀切无论切多大都会在某个 tool 上失真。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>按形态的 token 占比</strong>（image &gt; 50% 或 log &gt; 40% 即告警）：某形态占比悄悄漂移，比如 image 突然涨到 60%，几乎一定是该转表格/markdown 的图没转。这种诊断比"总 token 涨了"早报警，能在账单爆炸前发现。</li>
+            <li><strong>agent loop 的 budget 触发情况</strong>（必须有 pre-execution cap）：四道天花板（USD/token/wall-clock/recursion-depth）的触发与拦截记录。卡不断或卡得太晚就是 $47K 风险。</li>
+            <li><strong>chart 路径的二次提取率</strong>：走 vision 的 chart 中有多少做了 chart→CSV 提取再计算。直接拿 vision 输出的数字做推理是高风险信号。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>fuse(inputs):                       # inputs 是多路异构输入
+    对每一路按形态分发：
+        TEXT   → 直接进 content
+        IMAGE  → base64 走 vision（空间信息是信号才走这条）
+        TABLE  → 转 markdown（结构是信号，省 9×）
+        PDF    → 抽目录 + 定位关键页 + 关键图走 vision + 表转 md + 装饰图丢
+        LOG    → bash 预过滤 → sub-agent 摘要 → 结构化 JSON 回主 context
+        AUDIO  → STT 转文本
+    合并成统一 content blocks，返回 + 一份 trace（每路 modality / tokens_out / method）
+health_check：按形态盯 token 占比，异常形态早报警
+</code></pre>
+            <p>specialist 工具（ocr / stt / pdf_extract / log_subagent / bash_filter）用注入而非封装，迁移环境时只换注入实现（如 OCR 从 Textract 换本地引擎），不动 fuser 主流程。多模态依赖（cv2、pyaudio、pdfplumber）要 lazy import 到函数体内并加 ImportError 兜底，避免在 headless 环境启动即 crash。</p>
+            <h2>企业落地示例</h2>
+            <p>一个券商研报分析 Agent 做了三版。V1 把 80 页 PDF 整份喂给 vision，单次约 90K token、$0.27，柱状图市场规模 5800 亿被读成 5800 万。V2 全部 OCR 成纯文本，token 降到 35K 便宜一半，但摘要句子通顺、销售要点全空——值钱信息恰恰长在图表里，转文本后空间信息全坍缩。V3 没再调 prompt，重新设计 pipeline：PDF 先抽目录、定位关键页、关键图保留原图走 vision、表格转 markdown、装饰图直接丢，最后塞给模型 18K token，比 V1 省 80%，数字核查也过了。一份 PDF 客户经理一天平均查 8 次，开 prompt cache 后单份日均成本从 $2.16 降到 $0.46。工程师的复盘是写了三周 prompt 都没用，最后救场的是重新想数据该长什么样。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>上下文分诊（P1）、语义压缩（P2）、渐进发现（P3）</strong>：融合在感知四把刀的最前。形态错了，下游 Triage 怎么挑、Compaction 怎么压、Discovery 怎么探都是在错误的形态上继续消耗。</li>
+            <li><strong>扇出聚合（C2，协作模块）</strong>：长日志三层流水线里把过滤后数据交给 sub-agent 处理，是扇出聚合在感知层的体现——多个 specialist 处理器并行处理后汇到中央 fuser。</li>
+            <li><strong>分层记忆（Memory 模块）</strong>：sub-agent 死循环的对策 Memory Pointer Pattern 与记忆模块共享同一思路——完整产物存外部 store，context 里只传 pointer。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>多模态融合不是 prompt 工程，是数据形态工程——好的融合让 Agent 看到恰当的少，而不是完整的多。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

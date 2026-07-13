@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P1 上下文分诊 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="候选信息总量超出 context 窗口预算时，决定谁先进、谁等门外、谁压根不预加载。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/p1-context-triage/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/p1-context-triage/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/" class="active">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>P1
+            </p>
+
+            <h1>P1 · Context Triage · 上下文分诊</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">感知 Perception × 路由 Route（选）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（一次轻量优先级判断，不额外起推理链）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">感知模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">候选信息总量超出 context 窗口预算时，决定谁先进、谁等门外、谁压根不预加载。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>生产级 Agent 的常态不是信息不够，而是信息太多。一个中等 codebase 加三周 git 历史扔进去就是 180K token 起步，企业知识库更是远超任何窗口。当候选信息装不下，最朴素的截断（按文件名排序砍后半段）会留下过期材料、丢掉关键证据，Agent 看着"完整一套"给出错误结论。</p>
+            <p>上下文分诊把这件事工程化：把所有候选信息分成 P0/P1/P2/P3 四级，从高到低塞，塞到 token 预算耗尽。它管的是单次请求的窗口分配，目标是“保证最关键的信息不被淹没”。</p>
+            <h2>为什么坐标是「感知 × 路由」</h2>
+            <ul>
+            <li><strong>纵轴 · 感知</strong>：分诊决定 Agent 看什么、不看什么，是感知端的注意力管理。它处理的是信息进入推理之前的环节，不是输出格式的调整，也不是跨会话的记忆。</li>
+            <li><strong>横轴 · 路由</strong>：不同优先级的信息走不同处理路径——高优进 context、中优压成摘要、低优只挂句柄等按需拉取。这是基于信息特征做的一次路由决策，不是链式串联也不是循环迭代。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次分诊把候选信息按优先级分层，再用 token 预算来分配各层额度：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">级别</th>
+            <th style="text-align: left;">典型内容</th>
+            <th style="text-align: left;">加载策略</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">P0 永远加载</td>
+            <td style="text-align: left;">system prompt、安全规则、当前任务、业务身份（tenant_id）</td>
+            <td style="text-align: left;">占预算 5-10%，超预算也进</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P1 有空间就加载</td>
+            <td style="text-align: left;">当前文件、最近 tool 结果、错误堆栈</td>
+            <td style="text-align: left;">占预算 20-30%</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P2 压缩后加载</td>
+            <td style="text-align: left;">历史对话、背景文档</td>
+            <td style="text-align: left;">压成摘要，占 10-20%</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P3 只挂句柄</td>
+            <td style="text-align: left;">可访问但不预加载的资源</td>
+            <td style="text-align: left;">0 预算，通过工具按需拉</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>三个工程要点决定分诊的成败。第一，优先级判定的来源有两条路：人工分诊（如 Claude Code 的五级 CLAUDE.md hierarchy，开发者本人把安全规则放 P0、个人偏好放 P2）和算法分诊（如 Aider 的 RepoMap 用 tree-sitter 抽符号、按图算法打分）。第二，错误堆栈受特殊保护，永远不被分诊掉——它是 Agent 的反馈回路，丢了 Agent 会反复犯同一个错。第三，每次分诊决策必须落 trace，否则线上无法判断关键文件是被分诊扔了还是压根没发现。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>多租户 SaaS 客服 Agent</strong>：一个 Agent 服务上百家租户，每家知识库 30 万 token 量级，合计远超窗口。tenant_id 必须做成 P0 硬约束，其余知识按四级分诊。</li>
+            <li><strong>面对陌生 codebase 的代码 Agent</strong>：用户每次给一个不同仓库，无法要求每人都写 CLAUDE.md，必须走算法自动符号抽取这条路。</li>
+            <li><strong>长期服务同一团队的工程 Agent</strong>：投资人工写 200 行 CLAUDE.md 换分诊准确度，效率比算法路线更高。</li>
+            <li><strong>接入文件系统、知识库或会跑超过 5 轮的任何 Agent</strong>：一旦信息有可能超窗，分诊就不可避免。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>优先级误判</strong>：把一个文件标成 P3，结果它正是 bug 的关键，Agent 推到一半得额外跑一次检索循环把它拉回来，多烧 5K-10K token 还增加级联错误风险。拿不准就升级，多带一份小文件比多跑一次循环便宜。</li>
+            <li><strong>分诊过激</strong>：为省 token 把 budget 卡得太死，关键依赖链全被挂起，Agent 反复"我需要再读一下这个文件"，重读率（re-read ratio）飙升——省下的 token 又被重读耗回去。</li>
+            <li><strong>P3 句柄命名含混</strong>：<code>doc://manual-page-3</code> 这种名字让 Agent 不知道该不该取。句柄名要自带"是什么"信号，走"层级 + 主题 + 时间"三段式。</li>
+            <li><strong>跨租户串数据</strong>：P3 句柄取错租户的数据塞进 context 就是数据泄露事件。带租户前缀的资源在加载时必须强制校验与 P0 tenant_id 一致。</li>
+            <li><strong>trace 被采样掉</strong>：用 1% 采样控制存储看不出"某租户一直跨租户串数据"。分诊 trace 走全量结构化日志，用计数而非采样控制存储。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>重读率 re-read ratio</strong>（健康区 &lt; 5%）：Agent 推理中途要求重读已挂起文件的比例。超过 10% 是分诊过激的明确信号，每次重读都是一次完整推理循环。</li>
+            <li><strong>dropped_count 的 p99</strong>（关注长尾而非均值）：均值掩盖问题，p99 能暴露"1% 的请求触发分诊雪崩、Agent 几乎啥都看不见"的长尾故障。</li>
+            <li><strong>P3 命中率 p3_hit_rate</strong>（健康区 10-30%）：P3 句柄中实际被取的比例。低于 5% 说明句柄挂太宽浪费 token；高于 50% 说明该升 P2 的东西被错降到 P3。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>对候选信息按优先级排序（P0 &gt; P1 &gt; P2 &gt; P3，错误堆栈额外加分）：
+    逐条塞入：
+        P3            → 进句柄池，不预加载
+        其余 + 未超预算 → 进 context，累加 token
+        其余 + 超预算   → 丢弃（但错误堆栈强制保留）
+返回 (进 context 的, 挂句柄的, 一条 TriageDecision)
+TriageDecision 留下：时间戳 / 预算 / selected / deferred / dropped / tokens_used
+</code></pre>
+            <p>工程落地三处必改：token 估算换成真 tokenizer（<code>len // 4</code> 对中文误差大）；错误识别要按领域补关键词；TriageDecision 必须落到 ELK 或 Datadog，每天看 dropped_count 趋势。</p>
+            <h2>企业落地示例</h2>
+            <p>一家区域银行的贷款评审 Agent，标准消费贷（8 份文档）跑得很准。直到一笔商业贷款申请堆进 43 份文档，context 装不下，Agent 按文件名排序做了一刀朴素截断，砍掉的那摞里有 2024 年的抵押物估值报告，留下的那摞里有一份 2019 年早已过期的工商登记拍照件。Agent 看着剩下的"完整一套"给出"建议批准"，两周后这笔贷款进入坏账。重写后改为四级分诊：抵押物估值、当前财报这类强证据进 P0/P1，历史登记件按时间衰减降级，并强制保护所有"异常/缺失"标记不被丢弃。问题的根因不是推理不够强，是没教 Agent 谁该先进门。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>语义压缩（P2）</strong>：互补且常配合。分诊管"哪些信息进 context"（未来 token），压缩管"已经进的怎么压不丢关键"（过去 token），P2 级"压缩后加载"正是两者的衔接点。</li>
+            <li><strong>渐进发现（P3）</strong>：天然耦合。分诊的 P3 句柄就是渐进发现按需拉取的对象，一个被动选、一个主动找。</li>
+            <li><strong>分层记忆（Memory 模块）</strong>：共用同一套句柄命名规范，但 TTL 不同。代码、文档类句柄永远指向当前版本归分诊管；用户偏好、对话状态类有版本演化归记忆管。建议把 P3 句柄分 <code>immutable://</code> 和 <code>versioned://</code> 两类标记。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>上下文分诊不是 prompt 调优，而是操作系统进程调度在 LLM 时代的回响——context window 是稀缺的 CPU 时间，分诊算法就是那个保证最重要的进程不被饿死的调度器。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

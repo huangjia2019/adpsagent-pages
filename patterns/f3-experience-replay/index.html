@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F3 Experience Replay · Pattern White Paper · ADPS</title>
+    <meta name="description" content="When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learn">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/f3-experience-replay/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/" class="active">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>F3</p>
+
+                        <h1>F3 · Experience Replay</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reflection × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (ongoing investment in storage, retrieval, and injection; returns accumulate over time)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reflection patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>A company runs for a few years, employees turn over across several generations, and everything the engineers ever did is scattered across Slack messages, Jira tickets, the internal wiki, and email archives. These are the company's "silent assets"—80% of them are never reopened, but any single entry might save half a day's work when a new task is picked up. A senior employee who leaves takes away more than skills: the pitfalls they stepped into, the failed paths they tried, the process by which they once discovered a key variable. None of this can be summarized in a skill package, but it carries reuse value all the same.</p>
+            <p>Experience Replay solves the same problem inside an agent system—keeping historical trajectories from becoming silent assets. When a new task arrives, it proactively retrieves similar past trajectories (successful, failed, fragmentary) and injects the reusable parts into the current context. Its difference from Skill Package is one of granularity: a Skill Package holds verified, callable units, while Experience Replay holds broader reference assets—experience that is useful but not necessarily verified. CER (Contextual Experience Replay) raised the GPT-4o baseline success rate on WebArena by 51%, and is entirely training-free.</p>
+            <h2>Why the coordinate is "Reflection × Hierarchy"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reflection</strong>: What was learned should not be learned in vain; it is fed back into later tasks. This is reflection grounded in looking back over history. It neither changes the present output (Generator-Critic) nor solidifies into a callable unit (Skill Package); instead it treats complete past experience as a reference asset for the agent to draw on.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: Historical trajectories form an "upper experience layer" that wraps around the current decision—the upper layer of experience supplies reference and constraint for the present action below. Experience itself is also stored in layers: raw trajectories, extracted lessons, reusable artifacts, candidates for promotion to skills—from coarse to fine. A multi-level structure in which the upper layer parametrizes the lower one is exactly the essence of the Hierarchy topology, distinct from the single "route to which skill" choice in Skill Package.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>An Experience Replay loop has six segments: Task → Retrieve → Adapt → Execute → Distill → Store. Two core design judgments decide whether it can be industrialized:</p>
+            <ol>
+            <li><strong>Multi-level layered storage</strong>: Experience must be stored in layers; a single layer is either too scattered or too empty. AgentRR offers two layers—low-level (concrete actions: which tool was called, what parameters were filled in, what observation came back, used for debugging) plus high-level (generalized strategy: what approach was used, what type of problem it addresses, when it works, closer to an engineer's judgment). Manning extends this upward into a three-level abstraction ladder:</li>
+            </ol>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Level</th>
+            <th style="text-align: left;">Content</th>
+            <th style="text-align: left;">Engineering role</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">L0 Raw traces</td>
+            <td style="text-align: left;">Complete execution trace</td>
+            <td style="text-align: left;">Ground truth, debug + audit</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">L1 Per-task reflections</td>
+            <td style="text-align: left;">Reflection text written after a single task</td>
+            <td style="text-align: left;">Reflexion paradigm, injected into the next prompt</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">L2 Cross-task heuristics</td>
+            <td style="text-align: left;">General regularities distilled across tasks</td>
+            <td style="text-align: left;">ExpeL paradigm, distilled after multiple L1 entries</td>
+            </tr>
+            </tbody>
+            </table>
+            <ol start="2">
+            <li><strong>Training-free injection</strong>: Retraining the LLM is too expensive. CER's approach is to inject past trajectories (after trimming and summarization) as context into the current prompt, letting the LLM do in-context learning within the context window and skipping the training stage. During retrieval, experience with high effectiveness and successful outcomes is prioritized; after reuse, effectiveness is written back—useless lessons are automatically deprecated.</li>
+            </ol>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Agents with long cumulative runtime</strong>: Customer service, operations, data analysis—scenarios where tasks recur and experience can accumulate. Engineering value grows over time: significant effect only after 3 months, becoming a core dividend after 6 months.</li>
+            <li><strong>Organizational knowledge accumulation</strong>: Connect the experience scattered across the company's wiki, Confluence, and Notion, and the agent retrieves and organizes it for use within seconds. In enterprise scenarios, hooking into the existing knowledge base is the most economical option.</li>
+            <li><strong>Reuse of failure assets</strong>: 80% of trajectories are failures. AgentHER uses hindsight relabeling to make failed trajectories more valuable—a trajectory that failed to pursue goal A is often a successful demonstration of some reachable goal B, scoring 7.1 to 11.7 percentage points higher than using only successful trajectories on WebArena plus ToolBench.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Cold-start deadlock</strong>: The first 3 months carry almost no value, but without accumulation there is no value after 6 months either. Teams easily decide to "pause it until the system stabilizes, then turn it on," and then it never comes back up. The defense is synthetic experience seeding during the cold-start period: write 30-50 bootstrap entries from the team's past documented best practices and load them into the store.</li>
+            <li><strong>Stale-lesson drift</strong>: An experience that was correct half a year ago no longer applies after a product revision, yet the agent keeps injecting it and steers people the wrong way. The defense is continuous decay of the effectiveness_score plus time-stamp downweighting of heuristics plus active quarterly review to deprecate.</li>
+            <li><strong>Retrieval-bias amplification</strong>: Embedding similarity does not equal task-structure similarity. "User growth analysis" retrieves "user churn analysis" experience and forces the churn funnel framework onto growth—growth and churn are inverse problems. The defense is to add a task-type classifier for coarse filtering, block cross-type retrieval, and have the LLM perform a second applicability review after retrieval.</li>
+            <li><strong>Unstructured bulk dump</strong>: Cramming every trajectory into a vector DB and letting the agent pick on its own, with no multi-level layering.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Retrieval hit rate</strong> (healthy zone &gt;70%): The proportion of recalled historical experience that is actually adopted. Low values indicate the task_signature used a hash instead of semantics, or retrieval bias.</li>
+            <li><strong>Effectiveness score</strong> (healthy zone ≥0.5): Task success rate after experience is retrieved. Lessons below 0.5 that have been reused 5 or more times go into the archive; this is key to resisting superstitious lessons (pseudo-experience from misattribution).</li>
+            <li><strong>Experience store growth plus retrieval count</strong> (the two to watch during cold start): For the first 3 months, do not watch success-rate improvement; watch whether the store is growing and whether experience is being retrieved, to buy time for reflection engineering.</li>
+            <li><strong>Quality gain</strong> (healthy zone: significant after 3 months, pulling away from baseline after 6 months): The success-rate gain relative to no experience reuse. This is a lagging indicator.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code># Retrieve + inject (CER training-free)
+            past = retrieve(task)                      # top-K, prioritize high effectiveness + success
+            context += render_for_context(past)        # high-level strategy + author metadata
+            heuristics = get_L2_by_signature(task)     # cross-task regularities
+            context += render(heuristics)
+
+            result = agent.run(task, prior_context=context, trajectory_collector=traj)
+
+            # Record new experience (auto-distill high-level, use a cheap model)
+            record(task, traj, outcome, author_id)     # high + low two layers
+
+            # Write back effectiveness (lesson accuracy feedback loop)
+            for e in past:
+                update_effectiveness(e, current_task_succeeded=result.ok)
+
+            # Periodically distill L2 (only when &gt;= 5 entries share a signature, to prevent overfit)
+            monthly_distill_L2(signature)
+            </code></pre>
+            <p>Four engineering points: use the cheapest model for both embedding and high-level distillation (high frequency; the store will grow to hundreds of thousands of entries); the effectiveness_score is the core metric, with a health line of ≥0.5; do not skip the author_id metadata—it lets the agent tell the user "who has done this, and whom to consult"; use semantics rather than a hash for the task_signature, or the hit rate will be low.</p>
+            <h2>Enterprise rollout example</h2>
+            <p>An 8-person data team at a SaaS company. The PM asks, "After the Q2 new feature launched, D7 retention didn't visibly rise—analyze why." Eight data scientists work on it separately, and a month later produce 5 independent reports (3 unfinished). The post-mortem finds that 3 ran almost identical cohort analyses, 2 used different attribution methods but both missed the same confounding variable (the natural traffic baseline shifted during the Black Friday window), and 0 cited the team's similar analysis from 6 months earlier—that analysis was done by Sarah, who had since left. She had built out the method, had stepped on the confounding issue herself and written a case note, but it was archived in SharePoint where no one looks. After the team adopts Experience Replay, the next time a similar task comes up, the first person to start triggers retrieval and pulls up Sarah's analysis (including the heuristic "always check time-window effects in retention analysis"), injected into the prompt as a cross-task heuristic. Six accompanying decisions: a multi-level schema (high-level approach plus low-level SQL), CER injection of the top-5 plus author metadata, embedding with a cheap model, storing successful plus failed plus neutral trajectories, a 30-day cold tier, and monthly automatic L2 distillation. The 8 person-months of waste are compressed down to 1 person-month for a well-done new analysis.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Skill Package (F2)</strong>: A paired sibling pattern whose boundary must be nailed down. Skill Package holds verified callable units ("this has been done 3 times, all successful—seal it into a skill and call it directly"); Experience Replay holds broader reference assets ("Sarah did this 6 months ago; the method and the pitfalls are in the trace, and the agent learns from them on its own"). The former is a module, the latter a case library. The agent calls a skill first and falls back to experience retrieval when there is no match; experience that succeeds repeatedly graduates into a skill.</li>
+            <li><strong>Failure Journals (memory module)</strong>: A shared-source input. Failure Journals supplies the library of failed trajectories, Experience Replay supplies the retrieval-plus-injection mechanism, and the two work together. After AgentHER, failed trajectories also became high-value training material.</li>
+            <li><strong>Generator-Critic (F1)</strong>: A progression in level. Generator-Critic changes a single output, while Experience Replay lets accumulated experience be reused across tasks.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Experience Replay belongs to the class of reflection-engineering patterns where "time is your friend"—investment up front, dividends later. It turns the scattered, fragmentary experience inside an organization into a retrievable asset. An agent's maturity is not about how smart it is today, but about how much smarter it is in three months, in six months, than it is now.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

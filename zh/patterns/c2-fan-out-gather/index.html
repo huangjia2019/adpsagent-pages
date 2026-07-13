@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C2 扇出聚合 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="orchestrator 把一批可独立执行的子任务并行分发给 N 个 sub-agent，每个独立完成，最后由 aggregator 用聚合策略合并成单一输出，用 N 倍算力换 1/N 时长。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/c2-fan-out-gather/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/c2-fan-out-gather/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/" class="active">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>C2
+            </p>
+
+            <h1>C2 · Fan-out / Gather · 扇出聚合</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">协作 Collaboration × 并行 Parallel（撒）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">高（N× 单 agent 调用，换 1/N 时长）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">协作模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">orchestrator 把一批可独立执行的子任务并行分发给 N 个 sub-agent，每个独立完成，最后由 aggregator 用聚合策略合并成单一输出，用 N 倍算力换 1/N 时长。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>有些任务单 agent 顺序做就是太慢。十万页财务文档让一个 agent 读完要 35 小时，可法务团队季报披露前只有 24 小时窗口。</p>
+            <p>扇出聚合把一个大任务切成多个可独立执行的子任务，并行分发给 N 个 sub-agent，最后聚合。它的收益不在省 token——token 成本是线性翻倍的——而在压缩 wall-clock 时间：worker 数量上去，总时长几乎线性下降。但它有一个常被低估的难点：把任务派出去几乎不花工程成本，把结果合回来才是真正的工程。多个 worker 看到同一份材料时输出会重叠，聚合阶段必须做去重和冲突消解。</p>
+            <h2>为什么坐标是「协作 × 并行」</h2>
+            <ul>
+            <li><strong>纵轴 · 协作</strong>：这是把一个任务拆给多个 sub-agent 并行做再汇总，分发的实体是不同的子任务，属于多 agent 协作拓扑。区别于推理模块的并行探索——后者并行的是同一道题的多条解法（推理策略），前者并行的是切给不同 agent 的不同子任务（协作拓扑）。</li>
+            <li><strong>横轴 · 并行</strong>：N 个 sub-agent 同时跑、互不知情，最后统一 gather，是经典的 map-reduce 式并行结构。不是顺序串联，也不是循环迭代。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次扇出聚合由三段组成：</p>
+            <ol>
+            <li><strong>切分扇出</strong>：把大任务按"语义独立性"切成 N 份，并行分发。切分标准不是按文档数等分，而是让子任务彼此独立——worker B 不能依赖 worker A 的输出，否则就该用交接链而不是扇出。</li>
+            <li><strong>隔离执行</strong>：每个 sub-agent 跑在独立 context 里完成自己的子任务，互不通信。隔离强度跟输出冲突可能性成正比——各查不同语料的研究任务用软隔离就够，多 agent 改重叠文件的写代码任务要用物理隔离（独立 Git worktree 或独立容器）。</li>
+            <li><strong>聚合收回</strong>：用聚合策略把 N 路结果合并。聚合没做对，全套链路就不成立。</li>
+            </ol>
+            <p>聚合不是简单拼接，至少要做五件事：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">聚合环节</th>
+            <th style="text-align: left;">作用</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">去重 dedup</td>
+            <td style="text-align: left;">多 worker 抓到同一事实时合并，用语义相似度找重复</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">冲突消解 conflict resolution</td>
+            <td style="text-align: left;">worker A 说买、worker B 说卖时怎么裁定</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">跨切整合 integration</td>
+            <td style="text-align: left;">只在 worker 切片交界处才暴露的问题不能漏</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">排序 ranking</td>
+            <td style="text-align: left;">多维度综合排序</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">溯源 attribution</td>
+            <td style="text-align: left;">每条结论锚定到原始 source</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>wall-clock 时间紧迫的批量任务</strong>：季报合规扫描、大规模文档审查、批量投标书评审，总时长是硬瓶颈、子任务彼此独立。</li>
+            <li><strong>可按语义独立切分的研究任务</strong>：跨多个语料源的并行查证，每个 sub-agent 各查一类内容，输出几乎不冲突。</li>
+            <li><strong>多 agent 并行写代码</strong>：UI、API、数据库、测试各一个 agent，配合物理隔离的 worktree 把 8 小时压到 2 小时。</li>
+            </ul>
+            <p>三个条件要同时满足：任务可独立并行、总时长是瓶颈、能负担 N 倍 token。任一不满足，扇出就只是把瓶颈从时长挪到质量。</p>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>子任务有强依赖还硬切</strong>：worker 之间需要交换中间状态、或必须按顺序看才能识别演化轨迹的任务，扇出会把顺序依赖强行拍平成并行，gather 阶段要花大量工作重新建立依赖关系。这种场景应该用交接链。</li>
+            <li><strong>聚合比执行还贵</strong>：aggregation 投入不够时，扇出只是把瓶颈从时长挪到质量。如果业务没有工程精力做去重、冲突消解、跨切整合，就不该开扇出。</li>
+            <li><strong>聚合瓶颈</strong>：worker 数 N 增加时，aggregator 要读完所有 worker 输出，context 撑爆、质量直线下降。N 大时 aggregator 要分层做（先分组 sub-aggregation，再最终综合），把 context 压力压到对数级。</li>
+            <li><strong>切片按职能切而非按冲突切</strong>：按"职能最齐全"切（前端/后端/算法/测试各一组）会导致集成阶段天天解冲突；按"输出冲突最小化"切才对。扇出拓扑应该 mirror 业务团队真实的协作拓扑。</li>
+            <li><strong>隐式 batch 削并发</strong>：以为开了 50 并发，实际 LLM provider 那边在做隐式 queue 加 batch 调度，真实并发被悄悄削到 10。扇出实现要跟 provider 的 batching 行为对齐。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>成功率</strong>（健康区 ≥ 95%）：返回有效结果的 worker 占比。合规审查场景这是硬底线，漏评几份在审计阶段会被卡。</li>
+            <li><strong>重复率</strong>（健康区 &lt; 30%）：聚合后相似条目占比。超过说明去重没做好，报告会膨胀到"读者看不动"。</li>
+            <li><strong>加速比</strong>（健康区接近 N）：N 个 worker 实际带来的时长压缩倍数。明显低于 N 说明并发被限流削掉、或任务其实有依赖。</li>
+            <li><strong>聚合成本占比</strong>（健康区 &lt; 15%）：聚合这一步消耗的算力占总成本的比例，过高就换更轻的聚合策略或分层聚合。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>FanoutGather.execute(goal, perspectives, strategy):
+    workers = decompose(goal, perspectives)    # 按语义独立性切 N 份
+    results = 并行 gather(                       # 信号量控并发 + retry + backoff
+        execute_worker(w) for w in workers      # 每个独立 context,失败不阻塞其他
+    )
+    return aggregate(goal, results, strategy)   # 灵魂在这一步
+
+aggregate(results, strategy):
+    concatenate → 简单拼接(仅无重叠时)
+    vote        → 多数投票
+    synthesize  → 强模型综合,显式消解矛盾 + 去重
+    structured  → schema 化结构合并
+</code></pre>
+            <p>四个工程要点：worker model 用便宜的、aggregator model 必须用强的（综合是质量瓶颈）；并发初始值跟 provider 的 RPM tier 对齐，从 5-10 起步加监控逐步上调；失败 worker 不阻塞其他、设 partial failure 阈值；保留每路完整 trace 供审计。</p>
+            <h2>企业落地示例</h2>
+            <p>某上市公司的季度合规扫描 Agent，第一版单 agent 顺序读完十万页财务文档要 35 小时，直接超出法务团队 24 小时的披露前窗口。第二版改成 12 个 worker 各负责一类文档（财报 4 个、邮件 4 个、合同 4 个）并行扫描，总时长压到 4 小时。但上线后立刻撞上聚合难题：12 个 worker 各标了 200 多个风险点，同一份合同变更被三个 worker 用三种说法标记（"对赌条款增加""earnout clause expansion""对赌新增可触发回购"），gather 阶段统计出 600 项风险，其中至少六成是重复。法务总监的原话是"agent 跑得快，但报告我看不动"。第三版给 gather 加了三件事：基于 embedding 的语义去重、概念归一化（把三种说法 canonical 成一条）、置信度加权（单 worker 标的权重 0.6，多 worker 都标的权重 1.0）。最终风险报告从 600 多项压到 80 项 high-confidence 加 120 项 needs-review。如果是政府或国企的大型招标投标书评审场景，还要叠加合规约束：worker 间严格隔离满足评委独立性要求、全 trace 留档 7 年、partial failure 阈值不低于 95%（漏评一份在审计阶段会被卡）。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>并行探索（推理模块 R3）</strong>：结构同源、聚合机制相通，区别在并行的实体。扇出聚合是不同子任务分给不同 agent（协作拓扑），并行探索是同一道题的多条解法（推理策略）。两者都遵循"N 倍 token 换 1/N 时长"，但分发对象不同。</li>
+            <li><strong>层级委派（C1）</strong>：同为一对多，但扇出是一对多分量（多个 worker 同时干同一类活的不同部分）、浅协作（fire-and-collect），层级委派是一对多分专业、深协作（supervisor 持续监督）。Anthropic 多 agent research 同时是层级（lead 主管）加扇出（subagents 并行）。</li>
+            <li><strong>对抗评审（C3）</strong>：扇出的 N 个 worker 是互补关系（各看一面拼出全景），对抗评审的 reviewer 是对抗关系（独立审查决策健壮性）。</li>
+            <li><strong>子代理隔离（C5）</strong>：扇出的每个并行 branch 都依赖隔离这个内功——独立 context，gather 阶段只看 reduced 结果。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>扇出聚合看上去是省 wall-clock 时间，工程实战里是<strong>投资 aggregation 复杂度加复刻你团队真实的协作拓扑</strong>——N 倍 worker 让时长变 1/N 的前提，是你给聚合也投了 N 倍的工程精力。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

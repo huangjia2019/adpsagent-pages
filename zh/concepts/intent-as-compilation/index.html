@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>意图即编译：把活的编译成死的 · 概念 · ADPS</title>
+    <meta name="description" content="把自然语言意图编译成离散控制信号，配 unknown 兜底，意图网关按信号编排下游。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/concepts/intent-as-compilation/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/" class="active">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/concepts/" style="color: var(--color-text-muted);">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
+
+            <h1>意图即编译：把活的编译成死的</h1>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
+
+            <p><img src="/images/concepts/intent-as-compilation.png" alt="意图即编译：把活的编译成死的" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>概念定义</h2>
+            <p>意图识别是把用户的自然语言，编译成编排器能执行的、明确可识别的控制信号。它本质上也是一次推理，只是这次推理的产物不是一段回复，而是一个能被程序读取、用来选择下游分支的离散信号。</p>
+            <h2>使用说明</h2>
+            <p>把它叫"编译"，是因为这一步做的事跟编译器做的事是一回事：源头是活的、不确定的、形态自由的输入，目标是死的、可控的、能被机器直接执行的指令。用户口语里那句"帮我搭个薪资组"，模型读得懂，但程序读不懂；程序只读得懂"这是一个 resolve 信号"。意图识别站在两者中间，用提示词引导 LLM 返回结构化输出，把用户意图收敛抽象到系统内可接纳的几个下游控制信号上。从这一步往后，程序面对的是一个枚举里的确定值，而非一段可能跑偏的语义。</p>
+            <p>这一步防住的，是把自然语言直接喂进控制流。如果不先编译，程序就得在每个分支点临场去问模型"用户现在到底想干嘛"，让概率模型来决定下一步走哪条路。LLM 是概率模型，把确定性的分支判断交给它临场决定，结果就是有时走对、有时明显走错，而且什么时候出错既不可控也无法预料。编译这一步把不确定性集中处理掉：发散的语义在入口处一次性收敛成确定的信号，之后的控制流就是一台干净的状态机，可以单测、可以回放。</p>
+            <p>东方屹腾最早落地意图识别时，识别出三种基本意图。第一种是闲聊，尽快拦截结束，不发起后面高成本的推理和行动。第二种是分析，比如用户上传一张薪资表想让 Agent 分析，这类检索一下领域知识再调一次 LLM 即可。第三种是理解意图并准确编排一系列工具完成任务，这才是核心场景。这三种早期定为 chat、analyze、resolve，后来按下游业务演化成 task、information、produce、chat 等更丰富的信号。因为 LLM 不可靠，这里设了兜底：意图没解析到就统一打成 unknown，下游配套 unknown 的兜底逻辑。也正是在这第一个意图识别环节，团队第一次看到了控制平面与叙事平面的分离——一个能力环节的输出里，既有驱动程序走向的控制信号，也有供下游推理消费的叙事内容。</p>
+            <h2>何时需要</h2>
+            <p>当你的 Agent 要把用户口语化的请求接进一条确定的执行流，而不是直接生成一段内容回去。编译出来的控制信号交给谁消费、怎么按信号路由到不同下游执行链，就是 <a href="../orchestrator/">Orchestrator 与意图网关</a>；为什么入口处必须先把语义收敛成信号，根子在 <a href="../control-narrative-dualism/">控制叙事二元论</a>。</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

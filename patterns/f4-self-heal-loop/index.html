@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F4 Self Heal Loop · Pattern White Paper · ADPS</title>
+    <meta name="description" content="When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/f4-self-heal-loop/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/" class="active">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>F4</p>
+
+                        <h1>F4 · Self-Heal Loop</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reflection × Loop (cyclic)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (each repair adds a few extra calls, but saves the engineering time spent on manual triage)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reflection patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>The problem it solves</h2>
+            <p>Failing tests, lint errors, broken builds, a red CI run—these deterministic failure signals are the most valuable feedback an agent can receive, because they are unambiguously right or wrong and do not depend on subjective judgment. But having an engineer manually triage and manually fix every failure is heavy, repetitive work, and many failures have formulaic fixes (a missing dependency, a misplaced configuration, an obvious logic error). Having a human fix those is wasteful.</p>
+            <p>Self-Heal Loop lets the agent absorb these signals and close the repair loop automatically: a failure signal fires → diagnose the root cause → generate a fix → apply it → re-verify, and run another round if it is not fixed. It is the form of reflection closest to "agent autonomy," and it is the only mandatory loop in the reflection module—once a fix fails, another round is required, and there is no legitimate form called a "single-pass self-heal." Aider exposes it as a command-line flag, Spotify Honk runs it at production scale (650+ merged AI PRs per month), and GitHub Copilot Rubber Duck builds it as cross-model dual-review.</p>
+            <h2>Why the coordinate is "Reflection × Loop"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reflection</strong>: the agent detects its own errors and repairs them. Self-repair is the most practical application of the reflection mechanism, and it is especially common in software. It does not improve an output that already works; it recovers from a state that is already broken—the agent reads the failure signal, understands it, diagnoses it, and corrects it, and the whole process is a review and correction of its own output.</li>
+            <li><strong>Horizontal axis · Loop</strong>: the structure is a forced cycle of detect failure → diagnose → repair → re-test. This loop is structural and mandatory, unlike the optional replay of Generator-Critic—the starting point is "the output is already broken," the loop is the means of recovery, another iteration is required if it is not fixed, and the termination conditions are tests passing, max_iterations bottoming out, or a detected regression triggering a rollback.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A production-grade Self-Heal Loop is built from a six-stage pipeline plus a triple stop mechanism. The pipeline: Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify, and when verification fails, <code>git revert</code> returns to Diagnose to redo the work.</p>
+            <p>The triple stop mechanism is what upgrades Generator-Critic into Self-Heal; drop any one of them and you risk "breaking the main branch":</p>
+            <ol>
+            <li><strong>max_iterations hard circuit break</strong>: the loop runs at most a few rounds (Aider uses 3). This prevents the agent from playing whack-a-mole indefinitely.</li>
+            <li><strong>dual-model critic verifier</strong>: use a reviewer from a different model family to review the fix. LLMs from the same family share blind spots; cross-family review introduces the perspective of an independent training history and breaks self-bias. GitHub Copilot Rubber Duck forces cross-model verification at three risk nodes (after the plan, after implementation, and after writing tests but before running them).</li>
+            <li><strong>stability check via signature</strong>: compare failure signatures to distinguish "fixed the same problem" (hash repeats) from "switched to a new problem," and perform regression detection (a severity escalation or a doubling of affected files counts as a regression and rolls everything back).</li>
+            </ol>
+            <p>Spotify Honk's four-tier cascade of format/lint/build/test is worth copying outright—run the cheap signals first to filter out obvious problems, and reserve the expensive signals for genuinely semantic-level issues.</p>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Domains where right and wrong are clear, such as code / tests / CI</strong>: auto-fixing CI failures, auto-fixing lint, auto-diagnosing and repairing test failures. This is the main battleground for Self-Heal, because there is a deterministic ground truth.</li>
+            <li><strong>A standard capability for coding agents</strong>: Aider, Spotify Honk, and GitHub Copilot all treat it as a default feature; it is infrastructure for coding agents.</li>
+            <li><strong>Engineering pipelines with a clearly layered ground-truth signal</strong>: a CI with a clean format/lint/build/test layering is what suits self-heal. The more distinct the signals, the more reliable the repair.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Forcing it where there is no deterministic failure signal</strong>: subjective judgments such as writing and design have no objective right-or-wrong signal, so use Generator-Critic (F1) rather than Self-Heal. Tasks where the cost of repair exceeds the cost of failure (changing the schema of a production database) belong in the governance module's Approval Gate with human review.</li>
+            <li><strong>Whack-a-mole</strong>: without a stability check, the agent fixes one error and introduces a new one, and after a few rounds the code is a mess. The defense is to run failure-signature comparison, regression detection, and max_iterations together as three layers.</li>
+            <li><strong>Regression cascade</strong>: when each round's fix is not an atomic commit, a string of cascading changes leaves the rollback unable to restore the correct state. The defense is per-iteration atomic commits plus the strict constraint "modify only files in the diagnosis."</li>
+            <li><strong>False recovery</strong>: the agent changes the test instead of the code, weakening the test so it passes—every metric is green and every problem remains. The defense is for the critic to explicitly review whether "production code or the test was changed," plus a rule that test coverage may not drop.</li>
+            <li><strong>Bottoming out without handing off to a human</strong>: "crash if it can't be fixed" is an unacceptable engineering practice. HITL handoff must be a first-class citizen: bottoming out hands off to human review, and the queue needs someone clearing it daily.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Self-heal success rate</strong> (healthy range 60-80%): the proportion of repairs that succeed automatically, with the rest handed off to humans. Spotify Honk runs around 70% with the triple stop in place. Below 50% means the ground-truth signal is unclear or the diagnostic capability is insufficient.</li>
+            <li><strong>Average repair rounds</strong> (healthy range ≤3 rounds): if it has not converged after more than 3 rounds, a dev-tool scenario should hand off to a human; only production scale can support more rounds.</li>
+            <li><strong>Regression rate</strong> (healthy range &lt;10%): the proportion of repairs that introduce a new failure. A high rate means the stability check or atomic commit is missing.</li>
+            <li><strong>HITL queue clear-out latency</strong> (healthy range cleared the same day): how long it takes for someone to handle a case after bottoming out hands it off. A backlog means the organizational ops path is not in place.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>for i in range(MAX_ITERATIONS):           # MAX=3, same as Aider
+                diagnosis = diagnose(current_failure)
+                fix = generate_fix(diagnosis)         # modify only files in the diagnosis
+                critique = cross_family_critic(fix)   # different vendor, breaks self-bias
+                if critique.block:
+                    return &quot;blocked_by_critic&quot;        # hand off to HITL
+                commit = atomic_apply(fix)            # per-iteration atomic commit
+                new_failure = verify()                # format/lint/build/test four-tier cascade
+                if new_failure is None:
+                    return &quot;fixed&quot;
+                if is_regression(current_failure, new_failure):   # severity up / files doubled
+                    rollback(all applied commits)
+                    return &quot;rolled_back_regression&quot;
+                current_failure = new_failure
+            return &quot;max_iterations_human_handoff&quot;     # bottomed out, hand off to human review
+            </code></pre>
+            <p>Four engineering points: the dual-model critic should use cross-family, not the same family at a different size; regression-detection rules are defined by the business (you can add performance, security, and coverage regressions); atomic commits must be truly atomic—do not change 5 files at once, or the rollback will not return; and bottoming out must actually have someone watching the HITL queue.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>A DevTool company built a CI/CD auto-repair agent. The first version was aggressive—any failure was fixed automatically, up to 10 iterations, with no critic, no rollback, and no stability check. In the second week there was an incident: a test failed → the agent changed the code → it failed again but with a different error → it changed it again → after 9 changes it had rewritten unrelated code throughout, the main branch was a mess, and the rollback could not restore the correct state because the 9 commits were not atomic. The post-mortem found three root causes: no stability check (it was playing whack-a-mole), no critic verification (the agent applied whatever it claimed it had fixed), and no git audit trail. The third version was rewritten from scratch with the triple stop mechanism—a max-iterations hard circuit break, a dual-model critic (Sonnet writes, GPT-5.4 reviews, cross-family), and a stability check via signature comparison. Verification runs the format/lint/build/test four-tier cascade, each round is an atomic commit for precise rollback, and bottoming out hands off to a HITL human review of the PR. After the rework, main-branch incidents dropped to zero, the self-heal success rate was 70% (the remaining 30% handed off to humans), and the cost was that a single repair's latency rose from about 30 seconds to about 90 seconds—in a financial scenario, this much latency is a worthwhile trade for accuracy.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Generator-Critic (F1)</strong>: a sibling pattern whose boundary must be nailed down. Generator-Critic is "improve after generation"—the chain is a linear pipeline, replay is optional, and the starting point is a usable output; Self-Heal Loop is "repair after failure"—the loop is a mandatory structure, and the starting point is a broken output. This distinction makes their stop conditions, rollback, and blast radius all different. The former is for subjective tasks, the latter for tasks with a deterministic failure signal.</li>
+            <li><strong>Adversarial Review (collaboration module)</strong>: the cross-family critic connects here. Rubber Duck's dual-model review is a lightweight version of this idea, and Adversarial Review pushes it to the extreme (multi-agent debate).</li>
+            <li><strong>Iterative Hypothesis (reasoning module)</strong>: the same Loop lineage; both are an iterative "try—verify—try again" structure.</li>
+            <li><strong>Guardrail Sandwich (action module)</strong>: the same sandbox lineage. Honk runs the agent in an isolated container with restricted permissions, compressing the blast radius from "production wide open" to "wide open inside the sandbox."</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Self-Heal Loop is not simply auto-fixing code; it defines the boundary of agent autonomy—in domains where it can self-heal (a deterministic ground truth exists) the agent can work independently, and in domains where it cannot (an irreversible blast radius) a human must step in. This line is exactly the same lineage as DevOps's decades-long judgment of "what can be automated and what must be human-reviewed."</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

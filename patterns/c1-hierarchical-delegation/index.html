@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C1 Hierarchical Delegation · Pattern White Paper · ADPS</title>
+    <meta name="description" content="A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collabo">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/c1-hierarchical-delegation/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/" class="active">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C1</p>
+
+                        <h1>C1 · Hierarchical Delegation</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Collaboration × Hierarchy (split)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (3-15× a single agent call)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Collaboration patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>A single agent that researches, writes the body text, produces figures, and assembles the report all at once is not specialized in any of them, and across a long workflow its context keeps growing. The more subtle problem is this: when one agent processes several subtasks in sequence, the execution details of the earlier tasks stay in its context the whole time, and by the third or fourth task its reasoning quality starts to degrade.</p>
+            <p>Hierarchical delegation replaces "one all-purpose agent" with "one supervisor plus several specialized workers." The supervisor splits the task, monitors progress, and merges the output; each worker only does the one kind of work it is good at, running in its own isolated context. This lets each segment of work be handled by an appropriate model and prompt, and it also frees the supervisor's context from execution details so it can focus on coordination. The price is that token consumption rises by a multiple, so this pattern only fits scenarios where the value of the task can cover that multiple.</p>
+            <h2>Why the coordinate is "Collaboration × Hierarchy"</h2>
+            <ul>
+            <li><strong>Vertical axis · Collaboration</strong>: This is genuine multi-agent role differentiation—the supervisor and the workers are different agents that carry different responsibilities, not an engineering abstraction inside a single agent. Researcher, Writer, and Visualizer each correspond to one professional capability, and this division of labor by occupational ability is the classic form of multi-agent collaboration.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: The topology is a tree. The orchestrator sits on top and several workers sit below; workers do not communicate directly, and to exchange information they must go through the supervisor. This is a natural hierarchical structure, distinct from the fan-out aggregation of Parallel, the review loop of adversarial review, and the sequential handoff chain.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single hierarchical delegation consists of three stages:</p>
+            <ol>
+            <li><strong>Dynamic splitting</strong>: The supervisor decides, based on the specific input, how many workers to split into and what each worker does. Researching the AI industry and researching the coffee industry produce different subtask structures, so the split must be tied to the input and cannot be hardcoded.</li>
+            <li><strong>Isolated execution</strong>: Each worker runs in an isolated context, does not inherit the supervisor's history, and receives only its own system prompt, its specific task instruction, and its own tool set. Workers run in parallel wherever they can.</li>
+            <li><strong>Centralized synthesis</strong>: The supervisor looks only at the structured artifacts the workers return, not at the workers' raw trajectories, and makes its overall judgment and final merge based on these refined summaries.</li>
+            </ol>
+            <p>The supervisor and workers usually use different models. The supervisor does the splitting and synthesis, which require deep reasoning, so it uses a strong model; the workers do specialized execution, so they use cheaper models. This is the same idea as Plan-and-Execute separating the planner from the executor, only extended from inside a single agent to across multiple agents.</p>
+            <p>The artifact a worker returns should have at least a three-field structure:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Field</th>
+            <th style="text-align: left;">Purpose</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">verdict (success / partial / failure)</td>
+            <td style="text-align: left;">Lets the supervisor judge at a glance whether this output can be used directly</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">top findings (3-5 items)</td>
+            <td style="text-align: left;">A distillation of the worker's conclusions, covering most of the information</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">confidence (0-1)</td>
+            <td style="text-align: left;">An arbitration signal when several workers' outputs conflict</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>Long-workflow tasks with clear professional division of labor</strong>: industry research report generation, investment research analysis, new-drug R&amp;D processes, where each stage needs a different professional capability.</li>
+            <li><strong>Isolated processing of batches of similar tasks</strong>: contract review, resume screening, document compliance scanning, where each item is handed independently to a worker to avoid mutual contamination and context explosion.</li>
+            <li><strong>Tasks valuable enough to cover the token multiple</strong>: at least 2-3× tokens is the norm for multi-agent, and Anthropic measured complex research tasks reaching 15× in exchange for a 90% win rate; only high-value tasks are worth it.</li>
+            </ul>
+            <h2>Where it commonly goes wrong</h2>
+            <ul>
+            <li><strong>The form of delegation without the spirit of isolation</strong>: the supervisor sees the worker's full execution process rather than a schema artifact, and after a few tasks its context is filled with details from earlier tasks, causing reasoning quality to fall off a cliff. Workers must reduce to a structured artifact before returning.</li>
+            <li><strong>Workers communicating directly</strong>: letting worker A call worker B to save effort turns the tree structure into a mesh structure and drives up the risk of cascade failure. The essence of hierarchical delegation is a tree, and breaking the tree structure breaks the isolation.</li>
+            <li><strong>No boundary on worker failure</strong>: a worker throws an uncaught exception, the supervisor receives a raw exception rather than a failure artifact, and the whole task is interrupted. Each worker needs a timeout plus exception wrapping.</li>
+            <li><strong>Too many parallel workers</strong>: beyond 5 parallel workers, the supervisor has trouble making trade-offs during synthesis, and the marginal value of the 6th worker starts to decline. The complexity ceiling is not in compute but in the cognitive bandwidth of the model's synthesis.</li>
+            <li><strong>Misuse in Collaboration Light scenarios</strong>: if the system has no genuine multiple roles and is only an engineering-level abstract split (for example, the same agent swapping a few prompts), hierarchical delegation should not be applied. It requires that there really be multiple agents with professional differentiation.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Coordination overhead ratio</strong> (healthy zone &lt; 30%): the share of total tokens consumed by back-and-forth communication between the supervisor and workers. Above half means little budget is left for actual work, so make the artifacts more strictly schematized and route coordination messages through a lightweight channel.</li>
+            <li><strong>Worker failure cascade rate</strong> (healthy zone &lt; 5%): the probability that one worker's failure drags down other workers. This is the metric to suppress first; when it is high, it pulls the other three metrics down with it.</li>
+            <li><strong>Artifact compliance rate</strong> (healthy zone &gt; 95%): the share of worker returns that conform to the schema. Workers occasionally emitting free text that bypasses the schema trigger redispatch and latency.</li>
+            <li><strong>Token multiple</strong> (healthy zone &lt; 5×): the multiple of tokens multi-agent spends over single-agent. 15× is the acceptable ceiling for high-value tasks; for ordinary business 5× is already on the high side, and if it does not match, fall back to a single agent.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>SupervisorAgent.execute(task):
+                plan = decompose(task)              # dynamic split, tied to the input
+                artifacts = parallel gather(        # concurrency cap set to 5
+                    IsolatedSubAgent(worker).execute(subtask)
+                    for worker, subtask in plan
+                )
+                return synthesize(task, artifacts)  # look only at artifacts, not raw trajectory
+
+            IsolatedSubAgent.execute(subtask):
+                local messages = [system_prompt, subtask]   # do not inherit parent history
+                try: raw = wait_for(llm(messages, tools), timeout)  # failure boundary
+                except: return Artifact(verdict=&quot;failure&quot;, ...)
+                return reduce_to_artifact(raw)      # force reduce to verdict/findings/confidence
+            </code></pre>
+            <p>Four engineering points: each worker starts in an isolated context; workers are forced to reduce to a schema artifact; each worker uses a timeout plus exception wrapping to isolate failures; a semaphore controls the concurrency cap, and workers share no state with one another.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>A law firm's contract review agent: in the first version the main agent dispatched sub-agents to scan 50 contracts for anomalous clauses, and when each sub-agent finished it returned its full 3,000-word detailed analysis. After receiving 150,000 words, the main agent's context completely exploded and its subsequent reasoning quality fell off a cliff. After the post-mortem the engineering team understood one thing: the main agent should not see the sub-agents' raw work process, only the conclusions—just as a law firm's PM does not ask each lawyer to report which line of each contract they read, only "3 of the 50 are anomalous, plus their list of key issues." The second version assigned an independent worker to each contract, with each worker running in an isolated context and required to reduce to a fixed-schema artifact before returning (contract_id, risk_level, top_3_concerns, recommendation, plus a contract_hash to prevent tampering). The artifacts for all 50 contracts added up to under 10,000 words, which the main agent could handle easily. The accompanying engineering discipline also included: contracts with HIGH or above risk are forced into a lawyer review queue and the agent is not allowed to clear them automatically; each worker's timeout is tightened to 180 seconds and returns a failure artifact on failure rather than blowing up the whole job; the portfolio report is written to a file as an audit trail. After the changes, all 50 contracts ran in 1 hour.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Sub-Agent Isolation (C5)</strong>: the implementation core. Hierarchical delegation is the move (the supervisor dispatches workers), and sub-agent isolation is the inner skill (the worker's isolated context plus schema artifact plus failure boundary). Hierarchical delegation without isolation will inevitably suffer context explosion plus cascade failure, so the two must go together.</li>
+            <li><strong>Fan-out Aggregation (C2)</strong>: also one-to-many, but the division logic differs. Hierarchical delegation is one-to-many by specialty (each worker does something different), while fan-out aggregation is one-to-many by volume (multiple workers do different parts of the same kind of work at the same time).</li>
+            <li><strong>Handoff Chain (C4)</strong>: hierarchical delegation has a supervisor as a stable anchor, while a handoff chain has no supervisor and every leg is a peer.</li>
+            <li><strong>Plan-and-Execute (Action module)</strong>: hierarchical delegation is its extension at the multi-agent layer, extending "plan-execute separation inside one agent" to "separation across multiple agents."</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of hierarchical delegation is not splitting a task and dispatching it, but <strong>encoding into an agent system the information-layering discipline that human pyramid organizations have accumulated over 50 years</strong>—the supervisor looking only at the refined conclusions of the layer below is the engineering vehicle for that discipline.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

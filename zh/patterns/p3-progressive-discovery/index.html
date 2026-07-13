@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3 渐进发现 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/p3-progressive-discovery/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/p3-progressive-discovery/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/" class="active">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>P3
+            </p>
+
+            <h1>P3 · Progressive Discovery · 渐进发现</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">感知 Perception × 循环 Loop（转）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（一轮 forage-focus-deepen 约 18K token）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">感知模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>Agent 面对一个 15000 文件的遗留 codebase、一份没看过的合同、一个长长的事故日志，它不知道相关代码叫什么、不知道关键证据在哪一页。把整个 codebase 喂进去会爆窗口，做 RAG 又常常召不回（相关代码的变量名是 <code>merge_user_state</code>，注释里没有 "order" 字样，语义检索匹配不上）。</p>
+            <p>渐进发现把这件事工程化：用广扫拿一批候选，让看到的内容重塑下一步该看什么，迭代到信号足够强为止。它管的是当下 session 内对未知空间的主动探索，核心约束是成本——一轮探索约 18K token、约 45 秒，远比把整个 codebase 索引进 prompt 划算。</p>
+            <h2>为什么坐标是「感知 × 循环」</h2>
+            <ul>
+            <li><strong>纵轴 · 感知</strong>：渐进发现是"先看一眼再决定钻不钻深"的阶段性信息获取，属于感知端的渐进式注意力。它决定 Agent 接下来去看什么，是输入侧的事，不是推理或记忆。</li>
+            <li><strong>横轴 · 循环</strong>：看→决定→再看→决定，每轮带着前一轮的发现做下一轮决策，终止条件是"信息够了"或"成本到顶"。它是迭代式的，不是分诊那种单次完成的路由，也不是压缩那种线性级联。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次发现走 forage-focus-deepen 三阶段，广度递减、深度递增：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">阶段</th>
+            <th style="text-align: left;">动作</th>
+            <th style="text-align: left;">工具与代价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Forage 广扫</td>
+            <td style="text-align: left;">扫陌生空间拿 30-50 个候选，只看文件名、路径、匹配行上下文</td>
+            <td style="text-align: left;">grep / glob / find，~3K token、~10 秒</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Focus 精读</td>
+            <td style="text-align: left;">从候选里挑 5-10 个最可能的完整读，看依赖关系和调用链</td>
+            <td style="text-align: left;">read，~8K token、~20 秒</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Deepen 深追</td>
+            <td style="text-align: left;">沿可疑链追下去（被引用的函数、测试、历史 commit），只追一两条最有信号的</td>
+            <td style="text-align: left;">read，~7K token、~15 秒</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>三个机制决定发现的成败。第一，给 Agent grep、read、glob 三件 atomic 工具，不要给 <code>search_codebase()</code> 这种高级封装——只有 atomic 工具支持"看到的内容重塑下一步"的反馈循环。第二，硬上限。循环数封顶（多为 3 轮，事故场景 2 轮），单循环 token 封顶（约 20K），3 轮还没找到说明关键词不对或需要人介入，继续循环不会有新收益。第三，关键词推导是杠杆。第一轮的关键词决定 forage 的命中质量，做得粗糙后面再多循环也救不回来，建议先用一个轻量模型把任务描述翻译成 5-8 个精确关键词再 grep。一轮信号不够时回到 forage 用更准的关键词重来，而不是硬猜。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>陌生 codebase 的 bug 根因定位</strong>：原作者跑了、文档稀疏，没人知道某条 pipeline 走哪几个文件。Anthropic 披露 Q1 2026 有 78% 的 Claude Code 会话涉及多文件编辑，意味着 Agent 越来越频繁面对不熟悉的代码区域。</li>
+            <li><strong>运维事故响应</strong>：接到告警后从 metric 反推关键词，按时间窗口裁剪日志，三阶段定位故障源，给值班工程师初判报告和"第一步该做什么"建议。</li>
+            <li><strong>合同条款风险扫描、研究文献综述</strong>：任何符合"接到任务→不知道相关信息在哪→探索定位"模式的场景。</li>
+            <li><strong>隐私敏感且 codebase 不大（&lt; 50K 文件）</strong>：grep + read 让代码留在文件系统不进向量库，是比 RAG 更安全的选择。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>Forage 关键词太宽</strong>：任务"用户登录变慢了"被写成 <code>["login", "slow"]</code>，返回 5000 个候选，forage 阶段 token 直接爆。让关键词窄而准，<code>["LoginController", "auth_timeout", "session_create"]</code> 精确得多。</li>
+            <li><strong>Focus 阶段挑错文件</strong>：scorer 算分错把测试文件排在生产文件前，Agent 读了一堆 spec 文件，关键的 <code>services/auth.rb</code> 没读到。给 scorer 带业务权重：生产文件 &gt; 测试文件、最近修改 &gt; 旧代码、核心目录 &gt; 边缘目录。</li>
+            <li><strong>Deepen 死胡同</strong>：追依赖追到第三方库源码，读几百行没拿到任何 signal。给 Deepen 划边界：不追第三方库（除非 bug 报告点名）、不追超过 2 跳的依赖。</li>
+            <li><strong>Discovery 跟 RAG 撞车</strong>：同一个 Agent 同时上 Discovery 和 RAG，两边结果重叠或冲突，Agent 不知道信谁。选一个，不要混用——&lt; 50K 文件用 Discovery，&gt; 400K 用 persistent indexing。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>找到答案的中位循环数 cycles_to_success_p50</strong>（健康线 = 1）：一轮三阶段搞定 80% 任务。p50 涨到 2-3 说明关键词推导能力下降，可能模型升级、业务场景变了或用户描述变长，一升立刻调。</li>
+            <li><strong>forage/focus token 比</strong>（健康区 0.3-0.5）：forage 应比 focus 轻。超过 0.7 是关键词太宽（拿了太多无关候选），低于 0.2 是关键词太窄（没拿到足够候选）。</li>
+            <li><strong>零信号率 zero_signal_rate</strong>（健康线 &lt; 5%）：跑完三阶段还没找到任何 signal 的 session 占比。涨高几乎一定是 atomic 工具坏了（grep 索引过时、read 权限错配、scorer bug），比任务失败率更早报警。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>discover(task, keywords):
+    循环 至多 max_cycles（默认 3）：
+        Forage：对每个 keyword 跑 grep → 汇总候选 → 按 task 相关性打分 → 留 top-30
+        若 cycle_tokens 超 budget → 停
+        Focus：挑 top-8 完整 read，记下依赖关系
+        Deepen：从已读内容抽依赖（import / 函数引用），最多深追 5 个
+        若信号足够 → 成功，跳出
+        否则 → 用已发现内容 refine keywords，再来一轮
+    每阶段落一条 DiscoveryEvent（phase / keyword / 候选数 / files_read / tokens / wall_time）
+</code></pre>
+            <p>三件 atomic 工具（grep / read / scorer）用注入而非封装，让同一份代码能跑在本地文件系统、MCP server 或外部索引引擎上，只换注入实现。</p>
+            <h2>企业落地示例</h2>
+            <p>一个电商客户的 bug：订单确认邮件偶尔混入其他客户的订单条目。开发团队面对 15000 文件的遗留 monolith，试过把整库喂给 Agent（800K token 爆窗口）、试过 RAG（相关代码无 "order" 字样召不回），最后让 Agent 用 grep + read 自己探。Forage：<code>grep "send.*confirm"</code> 拿 30 个候选，按文件名挑出 <code>mailers/order_confirmed.rb</code>。Focus：完整读 5 个文件，看到调用链 <code>MailerWorker → Cache.get_user → render</code>。Deepen：追 <code>Cache.get_user</code>，发现 cache key 用了 <code>order_id</code> 却没用 <code>customer_id</code>，不同客户订单 id 撞桶就命中错误缓存——bug 找到了。一轮、约 18K token、约 75 秒。复盘结论是这个 bug 跟语义没关系、跟代码结构有关系，只有直接接触结构的 grep + read + follow imports 才能找到。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>上下文分诊（P1）</strong>：天然耦合。分诊的 P3 句柄就是渐进发现按需拉取的入口，一个被动选、一个主动找。最关键的区别是主动性——分诊和压缩都被动（信息送来或窗口满才动），发现是 Agent 自己决定 grep 什么、读什么。</li>
+            <li><strong>语义压缩（P2）</strong>：三者按 token 的不同时间维度分工，发现管未知 token（决定哪些找）。把探索推给 sub-agent、主 agent 只拿回摘要，正是压缩里 ObservationMasking 思路在发现层的复刻。</li>
+            <li><strong>程序性记忆（Memory 模块）</strong>：建议做成"discovery 找到 + memory 沉淀"双层架构。这次探出的 final_files 跨 session 保留下来，下次类似任务先查记忆，没命中再启动发现，Agent 的经验就开始累积。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>最强的 Agent 不是知道得最多的，是知道哪里去找的——渐进发现是信息觅食理论在 LLM 时代的回响，Agent 不试图理解整个 codebase，它找够用的就停。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

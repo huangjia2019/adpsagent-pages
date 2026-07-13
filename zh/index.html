@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS · Agent 设计模式研究小组</title>
+    <meta name="description" content="ADPS 是一个把中国工程师的一线 Agent 实践、软件工程方法、开源 Harness 经验和企业级落地反馈，沉淀为全球可讨论的 Agent 架构语言的小型研究共同体。">
+    <meta name="keywords" content="ADPS, Agent 设计模式, AI agent, 生产级 agent, 架构, 双轴框架, 设计语言">
+
+    <meta property="og:title" content="ADPS · Agent 设计模式研究小组">
+    <meta property="og:description" content="生产级 AI agent 系统的架构语言。2026 年发起。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adpsagent.com/zh/">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-home">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <section class="intro">
+            <div class="intro-text" style="grid-column: 1 / -1;">
+                <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Patterns Society</h1>
+                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">沉淀通用范式，做可成长的 Agent 系统。</p>
+                <p class="lede">
+                    ADPS 是一个小而认真的研究共同体。我们把中国工程师的一线 agent 实践、软件工程方法、开源 Harness 经验
+                    和企业级落地反馈，把 agent 时代反复出现的架构问题和混乱经验，整理成<strong>一套全球工程师
+                    都可以使用、可以讨论、可以评审、可以传承的模式语言</strong>。
+                </p>
+            </div>
+        </section>
+
+        <section class="block" style="text-align: center; margin: 2rem 0 3rem;">
+            <a href="/zh/patterns/" style="display: inline-block; text-decoration: none;">
+                <img src="/images/matrix-28-zh-20260616.png"
+                     alt="28 模式矩阵——7 个认知功能 × 6 种执行拓扑"
+                     style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
+                28 模式矩阵 &middot; 7 个认知功能 &times; 6 种执行拓扑
+            </p>
+            <p style="margin-top: 0.75rem; max-width: 720px; margin-left: auto; margin-right: auto; font-size: 0.88rem; color: var(--color-text-muted); text-align: left;">
+                <strong style="color: var(--color-text);">关于编舞（Choreography）。</strong>
+                编舞有时被列为一种拓扑。这里没有把它当成独立的列——它是跨拓扑的协调模式，
+                精神上更接近 Teams 模式，不是独立的执行形态。所以放在模式正文里讨论，
+                不单独占一列。
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>我们做什么</h2>
+            <p>
+                ADPS 把反复出现的 agent 架构问题整理成一套连贯的模式语言。工作围绕三件交付物展开：
+            </p>
+            <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
+                <li style="margin-bottom: 0.5rem;"><strong>模式目录</strong>——28 个命名模式落在 7×6 矩阵
+                （认知功能 × 执行拓扑）上，每一个都有可运行的实现，以及来自真实生产代码的工程切片。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>模式选型方法论</strong>——6 步流程加 5 条定律，
+                把"我要做一个 X 的 agent"在十五分钟内变成候选模式清单。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>生产级 Harness</strong>——开源参考实现，
+                展示模式在成本、时延、治理约束下如何组合。</li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <h2>框架</h2>
+            <p>
+                双轴框架——<strong>认知功能 × 执行拓扑</strong>——首次发表在论文
+                <em>A Two-Dimensional Framework for AI Agent Design Patterns</em>（Huang &amp; Zhou，
+                <a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a>），
+                并在 Manning 的英文书
+                <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a>
+                中进一步展开。ADPS 现在作为共同体资产持续维护这套目录。
+            </p>
+            <p>
+                <a href="/zh/patterns/" class="cta">查看 28 模式矩阵 →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>创始成员</h2>
+            <p>
+                四位创始成员代表四种力量：架构语言、软件工程、开源生态、企业落地。
+            </p>
+            <ul style="margin: 0.8rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-jia.svg" alt="黄佳" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>黄佳</strong> <span style="color: var(--color-text-muted);">— 框架 · 写作 · 全球叙事接口</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">新加坡 A*STAR AI 研究员。Manning《Designing AI Agents》作者。</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-ru.svg" alt="茹炳晟" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>茹炳晟</strong> <span style="color: var(--color-text-muted);">— 软件工程 · 智能体系统 · 研发效能</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">腾讯研究院产业研究顾问。CCF TF 多智能体系统工程 SIG 副主席。</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-jiang.svg" alt="姜宁" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>姜宁</strong> <span style="color: var(--color-text-muted);">— 开源 · Harness · 工作流</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">Apache 软件基金会长期贡献者。DeerFlow 开发者。</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-liang.svg" alt="梁博" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>梁博</strong> <span style="color: var(--color-text-muted);">— 企业 SaaS · 金融场景 · 生产反馈</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">上海东方屹腾科技副总裁。银行泛金融 SaaS 转型 Agents 体系。</span>
+                    </div>
+                </li>
+            </ul>
+            <p style="margin-top: 0.8rem;">
+                <a href="/zh/founders/" class="cta">阅读完整团队介绍 →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>顾问</h2>
+            <ul style="margin: 0.4rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.7rem 0;">
+                    <strong>周天异</strong> <span style="color: var(--color-text-muted);">——新加坡 A*STAR IAIC Agent Chapter Director；新加坡国立大学（NUS）副教授。双轴框架论文共同作者。</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <h2>专家组</h2>
+            <ul style="margin: 0.4rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.7rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong>王昊奋</strong> <span style="color: var(--color-text-muted);">——同济大学长聘教授、博导。OpenKG 首任轮值主席。知识图谱与知识增强大模型（OpenSPG / KAG-Thinker / MemOS），谷歌学术被引超 1.27 万。</span>
+                </li>
+                <li style="padding: 0.7rem 0;">
+                    <strong>张海立</strong> <span style="color: var(--color-text-muted);">——《LangGraph 实战》《LangChain 实战》作者，LangChain 官方大使，LFAPAC 开源布道师。</span>
+                </li>
+            </ul>
+            <p style="margin-top: 0.8rem;">
+                <a href="/zh/founders/" class="cta">阅读完整介绍 →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>资产</h2>
+            <ul style="margin: 0 0 0 0; list-style: none;">
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a></strong>
+                    ——提出双轴框架的立场论文。
+                </li>
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">github.com/huangjia2019/agent-design-patterns</a></strong>
+                    ——28 个模式的可运行目录。未来将迁至 ADPS 组织名下。
+                </li>
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://github.com/huangjia2019/designing-ai-agents" target="_blank" rel="noopener">github.com/huangjia2019/designing-ai-agents</a></strong>
+                    ——《Designing AI Agents》Manning 书配套代码。
+                </li>
+                <li style="padding: 0.55rem 0;">
+                    <strong><a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener">Manning &middot; <em>Designing AI Agents</em></a></strong>
+                    ——生产级 AI agent 的设计模式目录。
+                    <br>
+                    <span style="font-size: 0.86rem; color: var(--color-text-muted);">
+                        Manning 折扣码：<code>designing-ai</code>（电子书 / MEAP，仅中国大陆，$20.99）&middot;
+                        <code>MLHuang4</code>（全格式 5 折，6 月 9&ndash;23 日有效）。
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="block" id="reach-out">
+            <h2>联系我们</h2>
+            <p>
+                ADPS 面向有真实经验的工程师和组织开放——尤其是有大规模部署、强监管行业、
+                或者较硬可靠性约束下的 agent 系统建设经验的同行。<strong>成员资格通过贡献获得，不需要申请。</strong>
+            </p>
+            <p>
+                填一下下面三项，我们会通过微信联系你。<strong>用昵称就行，不需要真实姓名。</strong>
+            </p>
+
+            <div style="margin-top: 1.25rem; text-align: center; padding: 1.25rem; background: var(--color-quote-bg); border: 1px solid var(--color-rule); border-radius: 6px;">
+                <p style="margin: 0 0 0.9rem 0; font-weight: 600;">最快的方式：扫码直接加咖哥（黄佳）微信</p>
+                <img src="/images/qrcode-wechat-jia.jpg" alt="咖哥（黄佳）微信二维码"
+                     style="width: 200px; height: auto; display: inline-block; border-radius: 6px; border: 1px solid var(--color-rule);">
+                <p style="margin: 0.9rem 0 0 0; font-size: 0.9rem; color: var(--color-text-muted);">或填下面的表单，我们主动联系你。</p>
+            </div>
+
+            <form action="https://formspree.io/f/xjgzjjeg" method="POST"
+                  style="margin-top: 1.25rem; padding: 1.25rem; background: var(--color-quote-bg); border: 1px solid var(--color-rule); border-radius: 6px;">
+
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="nickname">昵称</label>
+                    <input type="text" id="nickname" name="nickname" required placeholder="例如：网易老张"
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="contact">微信号 / 任意联系方式</label>
+                    <input type="text" id="contact" name="contact" required placeholder="微信号 / Twitter / LinkedIn / 任意可联系到你的方式"
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="direction">技术方向</label>
+                    <input type="text" id="direction" name="direction" required placeholder="agent runtime / RAG / 多 agent 编排 / 金融 SaaS / DevOps / ..."
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <button type="submit"
+                        style="background: var(--color-link); color: white; border: none; padding: 0.6rem 1.3rem; border-radius: 4px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit;">
+                    发送
+                </button>
+            </form>
+
+            <p style="margin-top: 1rem; font-size: 0.88rem; color: var(--color-text-muted);">
+                习惯 GitHub？可以在
+                <a href="https://github.com/huangjia2019/agent-design-patterns/discussions" target="_blank" rel="noopener">agent-design-patterns</a>
+                的 Discussions 里直接发帖。
+            </p>
+        </section>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            <p style="margin-top: 0.3rem;">
+                <a href="/" style="color: var(--color-text-muted);">EN</a> ·
+                <a href="/zh/" style="color: var(--color-text-muted);">中文</a> ·
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener" style="color: var(--color-text-muted);">GitHub</a> ·
+                <a href="/zh/#reach-out" style="color: var(--color-text-muted);">联系我们</a>
+            </p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

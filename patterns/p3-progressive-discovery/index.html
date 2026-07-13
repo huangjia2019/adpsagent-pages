@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3 Progressive Discovery · Pattern White Paper · ADPS</title>
+    <meta name="description" content="When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space ">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/p3-progressive-discovery/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/" class="active">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>P3</p>
+
+                        <h1>P3 · Progressive Discovery</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Perception × Loop (turn)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (one forage-focus-deepen round is roughly 18K tokens)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Perception patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space out through a three-stage loop of broad scan → close read → deep follow.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>An agent faces a legacy codebase of 15,000 files, a contract it has never seen, a long incident log. It does not know what the relevant code is called and does not know which page holds the key evidence. Feeding the whole codebase in blows the context window, and RAG often fails to recall (the relevant code's variable name is <code>merge_user_state</code>, the comments contain no "order", so semantic retrieval does not match).</p>
+            <p>Progressive discovery turns this into an engineering process: use a broad scan to gather a batch of candidates, let what is seen reshape what should be looked at next, and iterate until the signal is strong enough. It governs active exploration of an unknown space within the current session, and its core constraint is cost — one round of exploration is roughly 18K tokens and about 45 seconds, far cheaper than indexing the entire codebase into the prompt.</p>
+            <h2>Why the coordinate is "Perception × Loop"</h2>
+            <ul>
+            <li><strong>Vertical axis · Perception</strong>: Progressive discovery is staged information acquisition that "takes a quick look before deciding whether to dig deeper", a form of progressive attention on the perception side. It decides what the agent looks at next; it is an input-side matter, not reasoning or memory.</li>
+            <li><strong>Horizontal axis · Loop</strong>: look → decide → look again → decide, where each round carries the previous round's findings into the next decision, terminating when "there is enough information" or "the cost cap is reached". It is iterative, unlike triage's single-pass routing or compression's linear cascade.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single discovery runs the three forage-focus-deepen stages, decreasing in breadth and increasing in depth:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Stage</th>
+            <th style="text-align: left;">Action</th>
+            <th style="text-align: left;">Tools and cost</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Forage (broad scan)</td>
+            <td style="text-align: left;">Scan the unfamiliar space for 30-50 candidates, looking only at file names, paths, and the context around matched lines</td>
+            <td style="text-align: left;">grep / glob / find, ~3K tokens, ~10 seconds</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Focus (close read)</td>
+            <td style="text-align: left;">Pick the 5-10 most likely candidates and read them in full, examining dependencies and call chains</td>
+            <td style="text-align: left;">read, ~8K tokens, ~20 seconds</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Deepen (deep follow)</td>
+            <td style="text-align: left;">Follow the suspicious chain (referenced functions, tests, history commits), pursuing only the one or two with the strongest signal</td>
+            <td style="text-align: left;">read, ~7K tokens, ~15 seconds</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Three mechanisms decide whether discovery succeeds. First, give the agent three atomic tools — grep, read, glob — not a high-level wrapper like <code>search_codebase()</code>. Only atomic tools support the feedback loop where "what is seen reshapes the next step". Second, hard caps. Cap the number of loops (usually 3, or 2 for incident scenarios) and cap the tokens per loop (about 20K); if three rounds still find nothing, the keywords are wrong or a human is needed, and continuing the loop yields no further return. Third, keyword derivation is the lever. The first round's keywords decide the hit quality of the forage stage, and a sloppy first round cannot be salvaged by more loops afterward, so it is better to first use a lightweight model to translate the task description into 5-8 precise keywords before running grep. When one round does not produce enough signal, return to forage with sharper keywords rather than guessing blindly.</p>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Root-cause localization of a bug in an unfamiliar codebase</strong>: the original author has left, the documentation is sparse, and no one knows which files a given pipeline runs through. Anthropic disclosed that 78% of Claude Code sessions in Q1 2026 involved multi-file edits, which means agents increasingly face unfamiliar areas of code.</li>
+            <li><strong>Operations incident response</strong>: after receiving an alert, derive keywords from the metric, trim the log by time window, localize the fault source through the three stages, and give the on-call engineer an initial assessment report plus a "what to do first" recommendation.</li>
+            <li><strong>Contract clause risk scanning, research literature review</strong>: any scenario that fits the pattern of "receive a task → do not know where the relevant information is → explore to locate it".</li>
+            <li><strong>Privacy-sensitive and not a large codebase (&lt; 50K files)</strong>: grep + read keep the code on the file system and out of a vector store, a safer choice than RAG.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Forage keywords too broad</strong>: the task "user login has gotten slow" is written as <code>["login", "slow"]</code>, returns 5,000 candidates, and the forage-stage tokens blow up immediately. Make the keywords narrow and precise; <code>["LoginController", "auth_timeout", "session_create"]</code> is far more exact.</li>
+            <li><strong>Focus stage picks the wrong files</strong>: the scorer miscounts and ranks test files ahead of production files, the agent reads a pile of spec files, and the key <code>services/auth.rb</code> goes unread. Give the scorer business weights: production files &gt; test files, recently modified &gt; old code, core directories &gt; peripheral directories.</li>
+            <li><strong>Deepen dead end</strong>: following dependencies down into a third-party library's source, reading hundreds of lines without obtaining any signal. Set boundaries for Deepen: do not follow into third-party libraries (unless the bug report names one), do not follow dependencies beyond 2 hops.</li>
+            <li><strong>Discovery collides with RAG</strong>: the same agent runs Discovery and RAG at once, the two sets of results overlap or conflict, and the agent does not know which to trust. Pick one, do not mix — Discovery for &lt; 50K files, persistent indexing for &gt; 400K.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Median cycles to find the answer, cycles_to_success_p50</strong> (healthy line = 1): one three-stage round handles 80% of tasks. A p50 rising to 2-3 indicates declining keyword-derivation ability, possibly from a model upgrade, a changed business scenario, or longer user descriptions; tune the moment it rises.</li>
+            <li><strong>forage/focus token ratio</strong> (healthy band 0.3-0.5): forage should be lighter than focus. Above 0.7 means keywords are too broad (too many irrelevant candidates pulled in); below 0.2 means keywords are too narrow (not enough candidates gathered).</li>
+            <li><strong>Zero-signal rate, zero_signal_rate</strong> (healthy line &lt; 5%): the share of sessions that finish all three stages without finding any signal. A rise almost always means an atomic tool is broken (stale grep index, misconfigured read permissions, scorer bug), and it alarms earlier than the task failure rate.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>discover(task, keywords):
+                loop up to max_cycles (default 3):
+                    Forage: run grep for each keyword → collect candidates → score by relevance to task → keep top-30
+                    if cycle_tokens exceed budget → stop
+                    Focus: pick top-8 to read in full, recording dependencies
+                    Deepen: extract dependencies from what was read (import / function references), follow at most 5
+                    if signal is sufficient → success, break
+                    else → refine keywords from what was discovered, run another round
+                emit one DiscoveryEvent per stage (phase / keyword / candidate count / files_read / tokens / wall_time)
+            </code></pre>
+            <p>The three atomic tools (grep / read / scorer) are injected rather than wrapped, so the same code can run against the local file system, an MCP server, or an external indexing engine, swapping only the injected implementation.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>A bug at an e-commerce customer: order confirmation emails occasionally mixed in order items belonging to other customers. The development team faced a 15,000-file legacy monolith, had tried feeding the whole repository to the agent (800K tokens blew the window), had tried RAG (the relevant code had no "order" so recall failed), and finally let the agent explore on its own with grep + read. Forage: <code>grep "send.*confirm"</code> returned 30 candidates, and <code>mailers/order_confirmed.rb</code> was picked out by file name. Focus: five files read in full, surfacing the call chain <code>MailerWorker → Cache.get_user → render</code>. Deepen: following <code>Cache.get_user</code>, the cache key was found to use <code>order_id</code> but not <code>customer_id</code>, so different customers' order ids colliding in the same bucket hit the wrong cache — the bug was found. One round, about 18K tokens, about 75 seconds. The retrospective conclusion was that this bug had nothing to do with semantics and everything to do with code structure, and only grep + read + follow imports, which touch the structure directly, could find it.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Context triage (P1)</strong>: naturally coupled. Triage's P3 handle is the entry point that progressive discovery pulls from on demand — one selects passively, the other finds actively. The most important distinction is activeness — triage and compression are both passive (they act only when information arrives or the window fills), whereas discovery is the agent deciding for itself what to grep and what to read.</li>
+            <li><strong>Semantic compression (P2)</strong>: the three divide labor along different time dimensions of tokens, with discovery governing unknown tokens (deciding which to find). Pushing exploration to a sub-agent so the main agent only gets back a summary is exactly compression's ObservationMasking idea replicated at the discovery layer.</li>
+            <li><strong>Procedural memory (Memory module)</strong>: it is advisable to build this as a two-layer architecture of "discovery finds + memory persists". The final_files explored this time are retained across sessions, so the next similar task first checks memory and starts discovery only on a miss, and the agent's experience begins to accumulate.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The strongest agent is not the one that knows the most but the one that knows where to look — progressive discovery is the echo of information foraging theory in the LLM era. The agent does not try to understand the entire codebase; it stops once it has found enough.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

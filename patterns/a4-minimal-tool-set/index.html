@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 Minimal Tool Set · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Keep the agent&#x27;s tool set within a reasonable ceiling (usually 10 to 30 tools): drop low-frequency tools, merge similar ones, and push secondary tools down into sub-agents, so">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/a4-minimal-tool-set/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/" class="active">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>A4</p>
+
+                        <h1>A4 · Minimal Tool Set</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Action × Constraint (cross-cutting, belongs to no single topology)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Low (cutting tools itself saves tokens, a net gain)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern Group</strong></td>
+            <td style="text-align: left;">Action patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern Summary</strong></td>
+            <td style="text-align: left;">Keep the agent's tool set within a reasonable ceiling (usually 10 to 30 tools): drop low-frequency tools, merge similar ones, and push secondary tools down into sub-agents, so the model has the focus to choose.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What Problem It Solves</h2>
+            <p>More tools is not better. One e-commerce customer-service agent shipped its first version with the goal of "doing everything a human agent can do" and wired in 67 tools; in the first week, customer satisfaction dropped from 78% to 51%. In the post-mortem logs, when the agent faced a simple question like "when will my order arrive," it repeatedly trial-and-errored across 14 order-related tools—three wrong calls, an answer only after eight seconds, with about 70% of the thinking tokens spent on tool selection. The tool list was too long, and the model "got dizzy."</p>
+            <p>Minimal Tool Set is a counterintuitive design principle: when it comes to the tools you give an agent, few and sharp beats many and complete. Anthropic, GitHub, and Block published the same set of data in 2026—cutting the tool count from 30-plus down to around 10 actually raised accuracy. This went from a marginal optimization to required engineering.</p>
+            <h2>Why the Coordinate Is "Action × Constraint"</h2>
+            <p>This is the only pattern in this module that does not land on a specific topology column, so it needs to be spelled out.</p>
+            <ul>
+            <li><strong>Vertical axis · Action</strong>: It governs the number of tools on the action side, which is action design, so the vertical axis lands in the Action module.</li>
+            <li><strong>Horizontal axis · Constraint (not Structure)</strong>: Route (A1), Chain (A3), and Hierarchy (A5) are structural patterns; they specify how an agent "organizes its actions." Minimal Tool Set specifies no structure—it does not tell you how to pick tools, how to chain steps, or how to nest a sandwich. It only adds one cross-cutting constraint to all of these structures: the total number of tools must have a ceiling. In other words, it is a design discipline that runs through the entire module, not an execution form that can be drawn as a topology diagram. Its object of action is precisely routing—the cleaner the tool set, the less likely the router's selection accuracy is to drop; the less tool pollution, the less the model's attention is diluted. So the coordinate is recorded as "Action × Constraint," emphasizing that it is a cross-cutting design principle that, in practice, attaches itself to structural patterns such as A1.</li>
+            </ul>
+            <h2>Core Mechanism</h2>
+            <p>The physical root of the threshold lies in attention. Anthropic's internal benchmark repeatedly confirms: when a single agent's tool count exceeds 30 to 50, selection accuracy drops noticeably; when tool descriptions add up to more than about 5,000 tokens, the tools at the end of the list exhibit the "lost in the middle" phenomenon—they cannot be selected, or they are selected wrongly. The 30 to 50 figure is roughly the conversion of this token threshold; 10 to 15 is the sweet spot.</p>
+            <p>There are three strategies for cutting tools:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Strategy</th>
+            <th style="text-align: left;">How</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Drop low-frequency</td>
+            <td style="text-align: left;">Evict tools not called in 30 days</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Merge similar</td>
+            <td style="text-align: left;">Merge tools with over 50% functional overlap (e.g., query_order_detail / query_order_status / query_logistics merged into one query_order)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Push down secondary</td>
+            <td style="text-align: left;">Put low-frequency but useful tools (OCR, PDF parsing, image translation) into a dedicated sub-agent</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Paired with cutting tools is progressive disclosure. Claude Code itself has more than 40 tools, but by default it loads only 10 to 12 in the system prompt; the rest are loaded on demand through Tool Search. This is the de facto standard for tool management in 2026—core tools resident, extended tools on-demand.</p>
+            <h2>Production Scenarios It Fits</h2>
+            <ul>
+            <li><strong>Latency-sensitive, accuracy-sensitive user-experience scenarios</strong>: customer service, conversation, consumer-grade agents. This is where Minimal Tool Set delivers the most value.</li>
+            <li><strong>Controlling per-call exposure when integrating external tool protocols</strong>: even if there are hundreds of tools underneath, a single dispatch should keep the visible tools under 30, paired with Tool Search so the agent actively finds rare tools.</li>
+            <li><strong>A health check before splitting a multi-function agent</strong>: when an agent's tools approach the ceiling, it is often a signal that a sub-agent should be split off.</li>
+            </ul>
+            <p>When it does not apply: code agents whose tasks are inherently highly complex (the likes of Cursor and Claude Code, which require 30-plus tools), and enterprise multi-function agents. Forcing them down to 10 will instead lose capability.</p>
+            <h2>Where It Tends to Go Wrong</h2>
+            <ul>
+            <li><strong>Treating "all-capable" as the goal</strong>: pursuing "one agent that does everything" inevitably leads to tool bloat, and is the root of the 67-tool incident. Tools should be organized around "what outcome the user wants" (outcome-oriented), not enumerated around "what capabilities the system has."</li>
+            <li><strong>Losing semantic boundaries when merging</strong>: forcing tools with large semantic differences into one makes a single tool's description vague, and selection becomes harder. Merging is only justified when functionality genuinely overlaps heavily.</li>
+            <li><strong>Cutting without pairing with progressive disclosure</strong>: directly deleting low-frequency tools makes rare tasks impossible. The correct approach is to push down plus Tool Search, not to delete across the board.</li>
+            <li><strong>Not reviewing after cutting</strong>: the tool set is alive, and new features keep being added back. A fixed evict cycle is needed, or in a few months it grows back to 67.</li>
+            </ul>
+            <h2>Key Metrics</h2>
+            <ul>
+            <li><strong>Tools per dispatch</strong> (healthy zone 10 to 15, hard ceiling 30 to 50): exceed the ceiling and it is time to cut or split off a sub-agent.</li>
+            <li><strong>Total tool-description tokens</strong> (healthy zone &lt;5,000): cross this line and lost-in-the-middle is triggered—a leading indicator of accuracy decline.</li>
+            <li><strong>Default-loaded / total tool ratio</strong> (healthy zone on the low side, paired with on-demand): Claude Code is 10-12 / 40+. Too high a ratio means progressive disclosure has not been done.</li>
+            <li><strong>Tool selection accuracy</strong> (healthy zone &gt;90): the direct gain from cutting tools. In the customer-service case, accuracy rose by about 10 points after cutting.</li>
+            </ul>
+            <h2>Minimal Implementation Skeleton</h2>
+            <pre><code>prune(all_tools, stats, target_size=12):
+                score each tool = calls in 30 days × success rate
+                sort by score descending, keep the top target_size as resident
+            evict_stale(stats):
+                return tools with 0 calls in 30 days      # decommission candidates
+            merge_similar(tools, threshold=0.5):
+                use embeddings to compute description similarity, recommend merging those &gt; threshold
+            # remaining tools are not deleted; move them to a sub-agent + attach to the Tool Search entry
+            </code></pre>
+            <p>Engineering implementation points: core tools always-on, extended tools on-demand; prune by scoring on usage frequency plus success rate; keep a Tool Search entry so rare tasks remain reachable.</p>
+            <h2>Enterprise Implementation Example</h2>
+            <p>Six decision points for a translation/localization agent: 5 to 7 core tools carry the full pipeline (translate / detect_lang / glossary_lookup / quality_check / format_preserve / cultural_adapt); low-frequency tools such as OCR, PDF parsing, and image translation are pushed down into a dedicated sub-agent; set a 30-day evict cycle; automatically prompt to merge similar tools; keep a Tool Search entry so the agent can find rare tasks when users ask about them; configure progressive disclosure with core always-on plus extended on-demand. With the six decisions made correctly, the agent's token cost drops by about 35% and accuracy rises by about 10 points. Back to that e-commerce customer-service case: the team cut 67 tools down to 18, and a week later customer satisfaction returned to 79%—1 point higher than the 67-tool first version.</p>
+            <h2>Relationship to Other Patterns</h2>
+            <ul>
+            <li><strong>Tool Dispatch (A1)</strong>: a same-cell pair with opposite roles. A1 solves "given a tool set, how to pick accurately," while A4 solves "before picking, first cut the tool set down to something pickable." A4 is the precondition for A1's accuracy—with less tool pollution, the router does not lose points.</li>
+            <li><strong>Layered Retention (Memory module)</strong>: progressive disclosure shares the same origin as the Memory module's layered loading; both are the attention-management idea of "core resident, the rest fetched on demand."</li>
+            <li><strong>Plan-Execute (A2)</strong>: when tools approach the ceiling, splitting off a sub-agent often happens together with A2's task decomposition—pushing down secondary capabilities along with their tools.</li>
+            </ul>
+            <h2>What This Pattern Teaches</h2>
+            <p>Minimal Tool Set is not about trimming tools; it is about leaving the agent its focus—an LLM's attention is a scarce resource, and opening 50 tools at once is like opening 50 browser tabs at once: no one can think deeply.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

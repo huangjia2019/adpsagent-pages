@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering 的位置 — 立场 · ADPS</title>
+    <meta name="description" content="Prompt 是 Harness 的一个输入，不是 architecture——它是 Agent 工程的 1/10，不是中心。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/positions/where-prompt-engineering-fits/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/where-prompt-engineering-fits/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/where-prompt-engineering-fits/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/" style="color: var(--color-link);">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/positions/where-prompt-engineering-fits/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/positions/" style="color: var(--color-text-muted);">立场</a>
+            </p>
+
+            <h1>Prompt Engineering 的位置 · ADPS 立场论文</h1>
+            <blockquote>
+            <p>Prompt 是 Harness 的一个输入，不是 architecture。它是 Agent 工程的 1/10，不是中心。这是 ADPS 区别于 prompt-centric 学派的根本判断。</p>
+            </blockquote>
+            <h2>1 · 现状 · prompt engineering 被吹成了 Agent 工程的全部</h2>
+            <p>2023 到 2024 这两年，整个行业有一个集体性的认知偏移——<strong>把 prompt engineering 当成了 Agent 工程的中心</strong>。</p>
+            <p>证据散落在各处。OpenAI 的 prompt engineering guide 一发，全网做"prompt 模板大全"的 GitHub repo 涌出几百个，最高的几个收到几万 star。Prompt engineering 一度被列入 LinkedIn 招聘高频技能，2023 年中甚至有公司开出 30 万美金以上的"prompt engineer"岗——后来这个职位在 2025 年安静地从大部分招聘列表上消失。书架上《Prompt Engineering for Developers》《The Art of Prompt Engineering》《ChatGPT Prompting Mastery》一字排开。极客时间、Coursera、DeepLearning.AI 出过的 prompt engineering 短课加起来超过 50 门。这是一场认知上的洪水。</p>
+            <p>到 2024 下半年，行业里第一次系统性地反思——这条路走得过了。Anthropic 的 Claude Code 团队在 2025 年初公开拒绝走"巨型 system prompt"路线，转而做 tool registry + permission pipeline + hook 体系。Karan Prasad 2026 年 4 月那篇 Claude Code 512K 行代码逆向分析里有一句话被反复引用——<strong>"Claude Code 的护城河不是 prompt，是 harness。"</strong> 同期，LangChain 创始人 Harrison Chase 在 LangChain Interrupt 2025 大会上说"prompt engineering is a small piece of the puzzle"。<strong>但行业的工程教育还没跟上</strong>。打开主流 Agent 教程，一半以上的篇幅还在讲 prompt 怎么写。</p>
+            <p>这就是 ADPS 要立场的时刻——<strong>Prompt engineering 是 Agent 工程的 1/10，不是中心，更不是 architecture</strong>。</p>
+            <h2>2 · ADPS 立场</h2>
+            <p><strong>Prompt 是 Harness 的一个输入，不是 architecture</strong>。</p>
+            <p>把这句话拆开——</p>
+            <p>Prompt 决定模型在某一次调用中怎么响应；Harness 决定模型在什么场景下被调用、被传入什么 context、被允许调用什么工具、什么时候停、什么留痕、出错怎么回滚。<strong>Prompt 是单次调用的形态，Harness 是系统行为的边界</strong>。</p>
+            <p>这两件事不在一个量级。</p>
+            <p>ADPS 第四原则讲过"Harness 是 Agent 的工程载体"——Prompt engineering 在这个框架里的位置是清楚的：<strong>它是 Harness 里 system prompt 这一层的工艺，是七脉里 Reasoning 和 Action 在某些场景下的局部触发机制</strong>。它有自己的合法领地，但越过这块领地就是误用。</p>
+            <p>下面把合法和非法各列清楚。</p>
+            <h2>3 · Prompt engineering 的合法领地</h2>
+            <p>下面这 5 个场景是 prompt engineering 真正发力、且没有更好工程替代品的地方。</p>
+            <p><strong>System prompt 中的 role definition</strong>。给模型一个明确的角色定位——"你是一个金融合规审查助手，输出必须符合 MAS 670 章节格式"——这是 prompt engineering 的核心工作之一，没有架构替代品。Claude Code 的 system prompt 里有大段 role 和行为约束，DeerFlow 的 Researcher Agent 有它的角色 prompt，OpenCode 的 AGENTS.md 第一段也是 role 定义。<strong>Role 是 prompt 的工作，不是 Harness 的工作</strong>。</p>
+            <p><strong>Few-shot example 设计</strong>。给模型 2-5 个 input-output 对的范例，让它从例子里学到隐式规则——这件事在结构化输出、领域特化、风格迁移上极其有效。Anthropic 自己发布的 prompt engineering 文档把 few-shot 列为最有效的技术之一。<strong>例子的选择、顺序、相似度</strong> 是 prompt 工艺，没有架构替代。</p>
+            <p><strong>Output format constraint</strong>。让模型输出 JSON、XML、特定 markdown 格式——这是 prompt engineering 的另一个真实战场。即使有 structured output API（OpenAI function calling、Anthropic tool use），底层仍然依赖 prompt 设计。<strong>输出格式的精确性 80% 来自 prompt，20% 来自 schema validation</strong>。</p>
+            <p><strong>Chain-of-Thought 触发</strong>。"让我们一步步思考"这句话是 prompt engineering 的经典工艺——它触发模型走出更长的中间推理。CoT 的变体（自洽 CoT、Tree-of-Thoughts、Plan-and-Solve）也都是 prompt 层的设计。这件事工程层不太能替代——<strong>推理的触发机制本质上是语言层的</strong>。</p>
+            <p><strong>Failure mode mitigation</strong>。已知模型在某类输入上会幻觉、会越权、会重复——prompt 里的 negative instruction（"不要编造数字"、"不要给出医疗建议"、"如果不确定就说不知道"）是降低这些失败模式的工艺之一。<strong>这不是唯一防线，但是第一道防线</strong>。</p>
+            <p>这 5 个场景加起来，差不多就是 prompt engineering 的全部合法领地。它们重要，它们需要专门的工艺训练，它们值得被认真对待——但<strong>它们加起来只是 Agent 工程的 1/10</strong>。</p>
+            <h2>4 · Prompt engineering 的非法越界</h2>
+            <p>下面 6 个误用是过去两年 Agent 项目走死的主要原因。</p>
+            <p><strong>用 prompt 替代 architecture</strong>。"我用一段 5000 字的 prompt 实现了一个多 Agent 协作系统"——这种 demo 在 2024 年的 ChatGPT 圈子里很流行。问题是 demo 永远是 demo，<strong>架构问题不能用 prompt 解决</strong>。多 Agent 协作的真正问题是 message passing、context isolation、conflict resolution、handoff fidelity——这些是 Harness 层的工程问题，不是语言问题。</p>
+            <p><strong>用 prompt 替代 evaluation</strong>。"我在 prompt 里写'请自我评估输出质量并给出 0-100 分'"——这是另一种典型误用。模型的自我评估有严重的 well-known 偏差（它倾向于给自己打高分），且这种"评估"没有任何工程意义——<strong>没有 ground truth、没有 latency 和 cost 测量、没有 regression test</strong>。ADPS 第三原则讲过"评估即设计"，评估的位置是 Harness 里独立的 evaluation harness，不是 prompt 里的一句话。</p>
+            <p><strong>用 prompt 替代 governance</strong>。"我在 system prompt 里写了'不允许调用任何涉及资金的 API'"——这是 governance 误用的标准形态。LLM 的 instruction following 有 well-known 的可绕过性，prompt injection 的几十种变体（DAN、grandma exploit、unicode tag smuggling）每个月都有新的发布。<strong>Governance 必须在 Harness 层用 permission pipeline、tool registry、approval gate 来实现</strong>——prompt 只是辅助提示，不是 enforcement。Claude Code 的 PreToolUse Hook 才是 governance 的工程位置。</p>
+            <p><strong>用 prompt 替代 memory architecture</strong>。"我在 prompt 里塞了 50K token 的历史对话"——这种做法在 2024 年长上下文模型刚出来时很流行。问题立即暴露：token 成本爆炸、关键信息淹没在噪声里、跨会话不持久。<strong>Memory 是架构问题</strong>——short-term / long-term 分层、retrieval 策略、relevance scoring、persistence layer 都是 Harness 层的工程问题。Prompt 是 memory 的消费者，不是 memory 的实现层。</p>
+            <p><strong>用 prompt 替代 tool dispatch</strong>。"我在 prompt 里写'当用户问天气时调用 weather API'"——把工具路由用自然语言描述放进 prompt。这条路在 2024 年的早期 Agent 项目里失败率极高。<strong>Tool dispatch 是工程问题，不是语言问题</strong>——tool registry 的 schema 设计、permission boundary、failure handling、retry strategy 都需要 Harness 层的代码实现。Anthropic 2024 年推出的 tool use API、OpenAI 的 function calling、MCP 协议都是这件事的工程化方向。</p>
+            <p><strong>用 prompt 试图实现状态机</strong>。"我在 prompt 里写'你处于规划阶段，规划完成后进入执行阶段，执行完成后进入反思阶段'"——把 finite-state-machine 塞进 prompt 里。这是过去两年最隐蔽、也最常见的反模式之一。<strong>LLM 不维护状态——状态必须在 Harness 层用真正的状态机或 graph 框架（LangGraph、Pydantic Graph、自研编排层）实现</strong>。Prompt 里描述的"状态"本质是一种 wishful thinking——模型可能这次按你描述的状态走，下一次就跳过某个阶段。<strong>状态是工程对象，不是语言对象</strong>。</p>
+            <p>这 6 个误用有一个共同的形态——<strong>把架构问题降级成语言问题</strong>。Prompt engineering 的合法领地是"语言问题"，越界做"架构问题"就一定会失败。</p>
+            <h2>5 · Prompt engineering 在双轴矩阵里的真实位置</h2>
+            <p>ADPS 的双轴框架——纵轴七脉（Perception / Memory / Reasoning / Action / Reflection / Collaboration / Governance）× 横轴六式（Chain / Route / Parallel / Orchestrate / Loop / Hierarchy）——给 prompt engineering 一个精确的坐标。</p>
+            <p><strong>Prompt engineering 主要影响纵轴的 Reasoning 脉和 Action 脉</strong>——它通过 system prompt 影响模型的推理风格（CoT、ToT、ReAct），通过 tool description 影响工具选择行为。</p>
+            <p><strong>Prompt engineering 几乎不影响横轴</strong>——Chain / Route / Parallel / Orchestrate / Loop / Hierarchy 这六种执行拓扑是 Harness 层的架构决策，跟 prompt 没关系。一个 Orchestrator-Worker 拓扑不会因为你 prompt 写得好就变成 Hierarchy；一个 Chain 拓扑不会因为你 prompt 写得差就变成 Loop。<strong>拓扑是工程结构，跟语言无关</strong>。</p>
+            <p><strong>Prompt engineering 在 28 个 cell 里影响的范围</strong>：大约影响 Reasoning × 6 + Action × 6 = 12 个 cell 中"模型在这个 cell 里如何响应"这件事，但不影响"这个 cell 怎么被组合进系统"。</p>
+            <p>把这件事量化——<strong>Prompt engineering 是 28-cell 矩阵里 12 个 cell 的局部工艺，不是矩阵的设计语言</strong>。</p>
+            <p>这就是 1/10 这个判断的来源——<strong>prompt 影响的是模型在某些 cell 里的局部响应质量，影响范围有限，且每个 cell 还有别的更强的工程杠杆（tool schema、permission、context strategy、reflection loop）</strong>。</p>
+            <h2>6 · 两类生产团队的对照</h2>
+            <p>观察过去 18 个月 30 多个 Agent 落地项目，团队可以分成两类——</p>
+            <p><strong>Prompt-heavy + Harness-thin（fail mode）</strong>。这类团队的特征清楚——system prompt 5000 字以上，没有独立的 tool registry，没有 permission pipeline，没有 evaluation harness，没有 audit log。<strong>所有工程问题都用"在 prompt 里加一段说明"的方式解决</strong>。这类项目典型的死法是：demo 阶段惊艳，进入生产之后 corner case 雪崩，三个月内 30% 以上的工程时间花在 prompt 上反复调，一年内项目静悄悄下线。</p>
+            <p>2024-2025 年有大量这种项目——某车企的售后客服 Agent、某银行的理财顾问 Agent、某电商的推荐 Agent——共同特征都是 prompt-heavy。它们都没活过第一年。</p>
+            <p><strong>Harness-heavy + prompt-clean（success mode）</strong>。这类团队的特征也很清楚——system prompt 通常控制在 800-2000 字、聚焦 role 和 high-level behavior，剩下的工程力气全花在 tool registry、permission pipeline、context management、observability、recovery 上。<strong>Prompt 是工程产物的最后一道工序，不是中心</strong>。</p>
+            <p>Claude Code 是这条路最完整的样本——它的 system prompt 不到 3000 字，但 Harness 层有 512K 行代码。DeerFlow 2.0 是另一个样本——每个子 Agent 的 prompt 都很短，但每个 Agent 有 Docker sandbox、persistent filesystem、long-term memory store。Aider 是第三个样本——prompt 极简，所有工程力气在 Git 边界上。<strong>这三个项目的共同特征是 Harness-heavy + prompt-clean，都活过了三年以上，都是当前生产级 Agent 工程的参考样本</strong>。</p>
+            <p>这个对照说明的事情很简单——<strong>Prompt 不是杠杆，Harness 才是杠杆</strong>。</p>
+            <h2>7 · 收束 · 升级路径</h2>
+            <p>写这篇立场不是为了贬低 prompt engineer——<strong>恰恰相反，是为了给 prompt engineer 指一条清楚的升级路径</strong>。</p>
+            <p>过去两年学过 prompt engineering 的工程师，手里有真东西——他们懂模型语言层的工艺，懂 few-shot 设计，懂 CoT 触发，懂格式约束。这些技能没有过时，<strong>它们是 Agent 工程的 1/10，仍然是必需的 1/10</strong>。</p>
+            <p>但只停留在这 1/10 没有未来。<strong>升级方向是 Harness 工程师</strong>——学 tool registry 的 schema 设计、学 permission pipeline 的实现、学 context management 的策略、学 evaluation harness 的搭建、学 observability 和 audit 的工程、学 multi-agent 编排的拓扑选择。</p>
+            <p>这条升级路径里，prompt engineering 的工艺不丢——它会被吸收进 Harness 工程师工具箱里"system prompt 这一层"的子技能。<strong>1/10 仍然在，只是不再是全部</strong>。</p>
+            <p>ADPS 欢迎这种升级。这个共同体的工程教育、Pattern Selection Card、六步选型法、Agent Incident Taxonomy——所有这些工件都是给"想从 prompt engineer 升级成 Harness engineer 的人"准备的。</p>
+            <p><strong>Prompt 是 Harness 的一个输入，不是 architecture</strong>。承认这件事，是 2026 年开始严肃做 Agent 工程的第一步。</p>
+            <hr />
+            <p><em>ADPS · Agent Design Patterns Society · adpsagent.com · 2026-05-30 · v0.1</em></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/zh/positions/">← 返回全部立场</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>执行型 Agent 不是内容生成型 Agent · 概念 · ADPS</title>
+    <meta name="description" content="参数错一位会破坏业务数据的场景是执行型，文本松传递、可重试的是内容生成型。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/concepts/execution-vs-content/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/" class="active">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/concepts/" style="color: var(--color-text-muted);">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
+
+            <h1>执行型 Agent 不是内容生成型 Agent：先把场景归类</h1>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
+
+            <p><img src="/images/concepts/execution-vs-content.png" alt="执行型 Agent 不是内容生成型 Agent：先把场景归类" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>概念定义</h2>
+            <p>设计一个 Agent 之前，先要回答一个比技术更靠前的问题：它要交付的是内容，还是执行。这个分类决定了后面整套架构的取舍走向。</p>
+            <p>内容生成型 Agent 以产出为主，工具之间松散编排，参数可以由 LLM 当场合成。投研报告、旅行助手、写 PPT 都属于这一类：先并行查资料、再总结、再喂给报告生成、再接一道评审质检，每一步传递的主要是文本内容，没有严格的机械状态绑定关系。执行型 Agent 不一样，它以用户的业务意图为输入，通过一连串业务 API 的可靠编排调用，自动交付完整的业务流程。它重交付，不重生成；步骤之间有严格的先后依赖，传递的是 id、状态码、实体引用这类机械参数，顺序错一步或参数错一位就会交付失败。</p>
+            <p>两类的区别，可以用抽卡来对照。内容生成型 Agent 有 second chance：抽到不满意的一张，再生成一张就是了，重试几乎没有代价，这是它能容忍 LLM 漂移的根本。执行型 Agent 没有这种容错——一旦误操作了业务数据，没有重来。容错能力的差异，决定了两类在可靠性上的设计要求不同。</p>
+            <h2>使用说明</h2>
+            <p>它防住的，是把执行当成内容来做的那个具体失败。在 MCP 协议里，Agent 作为 Client 只感知工具、调用工具、把结果以文本塞回上下文，参数的理解和生成全部交给 LLM。这套设计在通用助手场景里价值极大，用到执行型场景却会出问题。东方屹腾团队最早的判断和很多 SaaS 公司一样：把原有 API 按 MCP 实现成 Server，是不是就能让机器人自动跑完业务流程。真拿几个核心场景去落地，立刻走不通——走不通的原因恰恰是 MCP 的开放和灵活。LLM 是概率模型，生成总会漂移，加再多 JSON-Schema 约束、换再强的模型，都有出错和幻觉的时候。团队要的是确定的执行结果，确定就不能只靠概率，这与 MCP 把参数生成交给 LLM 的前提直接冲突。</p>
+            <p>东方屹腾是一家做企业人事、组织、考勤、审批、薪酬的 SaaS 公司。开场那个报销的例子把这道坎说得最清楚：在费控系统里报销是「先创建申请、再上传发票、再提交审批、再查询结果」，上传发票时绑定的申请 id 必须是上一步业务系统刚返回的那个，不能是任意 id，更不能让模型自己生成一个。人在 GUI 上做这件事毫无难度，因为每个按钮调哪个方法、绑什么参数，程序早就钉死了。交给 Agent 自动做，这些显式操作没了，调哪个工具、准备什么参数全由它负责。团队踩过这个坑：把每步结果像 tool_call 一样追加到上下文，让模型从上下文里解析绑定下一步参数，实测下来极度不可靠，有时成功有时失败，什么时候失败既不可控也无法预料。这之后，团队把自己要做的明确归为执行型，整套架构后续所有取舍，都从这条分野开始。</p>
+            <h2>何时需要</h2>
+            <p>当你的 Agent 在执行一连串有严格状态依赖的业务流程，而且参数错一位会破坏业务数据或产生「假成功」，那就是执行型，得按执行型的重机制来设计。划清了类别之后，控制和叙事怎么分，见<a href="../control-narrative-dualism/">控制平面与叙事平面的二元论</a>；执行型最核心的那个机械参数问题怎么解，见<a href="../mechanical-state-plane/">机械状态平面与 Provenance 坐标</a>。</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

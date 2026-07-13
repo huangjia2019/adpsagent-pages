@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M2 RAG Pipeline · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Give the agent an attached library, so that whenever it needs knowledge beyond what the context can hold, it can search, filter, and iteratively pull that knowledge back to use.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/m2-rag-pipeline/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/" class="active">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M2</p>
+
+                        <h1>M2 · RAG Pipeline · Retrieval-Augmented Generation</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Memory × Chain (pass)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (indexing + retrieval + optional reranking)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Memory patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">Give the agent an attached library, so that whenever it needs knowledge beyond what the context can hold, it can search, filter, and iteratively pull that knowledge back to use.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>An enterprise knowledge base routinely holds hundreds of thousands of documents plus a history of tickets, and no LLM context window can fit all of it. But the agent cannot answer "I don't know" for that reason. On each question it needs to pick, out of a vast corpus, the few most relevant documents and temporarily place them into context. This is what RAG addresses: pulling in facts that live outside the input, on demand.</p>
+            <p>By 2026, the engineering difficulty of production-grade RAG is no longer "can it find anything" but "does it know how to search." Naive RAG is one query, one return, whereas RAG that actually ships to production lets the agent drive multi-step retrieval—if the first batch of results is unsatisfactory it rewrites the query and searches again, when it finds a candidate answer it actively looks for counterexamples to verify, and it cross-compares across multiple corpora.</p>
+            <h2>Why the coordinate is "Memory × Chain"</h2>
+            <ul>
+            <li><strong>Vertical axis · Memory</strong>: RAG is an attached knowledge base that pulls in facts outside the input. At its core it is about "which facts to record and how to recall them," which belongs to the part of the memory module that manages declarative knowledge.</li>
+            <li><strong>Horizontal axis · Chain</strong>: RAG is a sequential pipeline—the query is embedded first, then top-K is retrieved, then reranked, then injected into the prompt, and finally handed to generation. The output of each step is the input to the next; each step passes to the one after it, the textbook form of chain passing. The name "RAG pipeline" itself points to its chained backbone. Even when hybrid retrieval (semantic plus BM25) is used to select sources, that is one link in the chain and does not change the overall sequential-pipeline form.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <ol>
+            <li><strong>Two pipelines meet at the vector store</strong>: RAG is not a single step. The offline side chunks documents, embeds them, and builds the index; the online side embeds the query, retrieves top-K, reranks, and injects into generation. The two independent pipelines share one vector store.</li>
+            <li><strong>Hybrid retrieval</strong>: Embeddings are good at semantics ("ACME earnings report" ≈ "ACME performance"), but exact keywords (product names, error codes, specific IDs) are often missed. Combine semantic retrieval with BM25 keyword retrieval, then fuse with RRF (Reciprocal Rank Fusion).</li>
+            <li><strong>Context-enhanced chunking</strong>: Once a chunk is split off, the original context anchors are lost. Prepending a short context summary (generated with a cheap model) to each chunk before embedding can significantly reduce the retrieval failure rate.</li>
+            <li><strong>Agent-driven multi-step retrieval</strong>: Upgrade RAG from a one-shot pipeline to an agent-driven process—decompose sub-queries, iteratively rewrite, find counterexamples, triangulate across corpora, and synthesize weighted by evidence strength. This is the engineered version of a human researcher's methodology.</li>
+            <li><strong>A hard iteration ceiling</strong>: Multi-step retrieval must have a hard ceiling, otherwise the agent will keep feeling "it isn't enough yet" and retrieve continuously.</li>
+            </ol>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>Large-scale natural-language knowledge bases</strong>: academic literature reviews, legal case libraries, customer-service FAQs. Large volume, containing synonyms and implicit relationships, relatively stable, public or semi-public—these are the best scenarios for RAG.</li>
+            <li><strong>Complex queries across many documents</strong>: scenarios that need answers synthesized from multiple sources and that need traceable citations.</li>
+            <li><strong>Organizing enterprise know-how</strong>: organizing the knowledge scattered across wikis, Confluence, Slack, email, and tickets into a form the agent can retrieve in five minutes. This is RAG's real proposition for enterprise deployment.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Deploying RAG before governing the knowledge source</strong>: 90% of enterprise RAG failures are rooted not in technology but in the knowledge itself never having been organized—the wiki holds many documents that contradict each other, key decisions are not in any document, all the versions are outdated, and the same concept has several names. Embedding garbage into vectors and retrieving it back is still garbage, and worse than not doing RAG at all. Do ontology and knowledge governance before building enterprise RAG.</li>
+            <li><strong>Forcing RAG where Agentic Search belongs</strong>: dev workflows, code search, and internal sensitive data—these three categories mostly should not use RAG. Code changes by the minute, and a just-written function cannot be found before it is indexed (data latency); the index itself is an attack surface, and a malicious insider may peek beyond their authorization (a security hazard). Such scenarios should use grep- and glob-based Agentic Search.</li>
+            <li><strong>Stopping at one query, one answer</strong>: when the key information is not found on the first try, naive RAG either says it doesn't know or silently fabricates. Production-grade RAG must be able to rewrite the query and search again.</li>
+            <li><strong>Blindly chasing retrieval precision</strong>: choosing an embedding model that is a few points better is a marginal optimization; whether the agent's multi-step retrieval resembles a person who truly knows how to search is the qualitative change. Pushing chunk recall to 80% is not necessarily useful; the final synthesized quality resembling a senior researcher's is the real value.</li>
+            <li><strong>Untraceable citations</strong>: in academic, legal, and medical scenarios, every conclusion must trace back to the original chunk plus page number—this is a necessary condition for compliance.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Retrieval failure rate</strong> (lower is healthier): the fraction of cases where no relevant chunk appears in top-K. Stacking the three—context enhancement plus hybrid retrieval plus reranking—reduces the failure rate by about two-thirds in industrial data.</li>
+            <li><strong>Retrieval hit rate / citation rate</strong> (healthy zone ≥ 70%): the fraction of retrieved chunks actually cited by the agent. Too low indicates noisy recall or a query written too broadly.</li>
+            <li><strong>Number of multi-step retrieval rounds</strong> (healthy zone 3–5 rounds with a hard ceiling): the actual number of iterative retrieval rounds. Continuously hitting the ceiling indicates the task is genuinely hard or that single-pass recall is too poor.</li>
+            <li><strong>Final synthesized quality</strong> (business judgment): whether the agent's output resembles the work of a senior practitioner. This is the real criterion for judging a RAG system; reaching 70% can already change how a team works.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>Offline indexing side:
+                doc → chunk → prepended context summary (cheap model) → embed → vector store + BM25 index
+
+            Online retrieval side (agent-driven, multi-step):
+                decompose sub-queries
+                iterative retrieval per sub-query:
+                    semantic top-150 + BM25 top-150 → RRF fusion → reranker top-20
+                    agent assesses whether it is enough → if not, rewrite query and search again (up to N rounds)
+                form hypothesis → negate it as a new query to find counterexamples
+                triangulate across multiple corpora (weight chunks that appear in several groups)
+                synthesize weighted by evidence strength
+            return answer + evidence + counter_evidence + full trace (with traceable citations)
+            </code></pre>
+            <p>Four points for engineering deployment: the retriever layer does context enhancement plus hybrid retrieval plus reranking; set a hard ceiling on max_iterations plus a hard ceiling on the token budget; the trace records every retrieval in full; citations must be traceable to the original document plus page number.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>A research institution's academic literature-review agent had to answer arbitrary researcher questions over a million-paper library. The first version used keyword retrieval and returned five thousand papers already read; switching to embeddings returned only the 2018–2020 "classics." After a rewrite, all five canonical patterns were on: decompose sub-queries, iteratively refine, negate hypotheses to find counterexamples, triangulate across arXiv plus bioRxiv plus PubMed, and synthesize weighted by evidence strength. Six business decisions accompanied this—corpora kept in separate stores but not separate tables (peer-reviewed weight 1.5, preprint 1.0, unpublished 0.5), time-decay weighting (half-life 18 months), counterexample retrieval forced on, citations at the chunk level, and an author-relationship graph across corpora. After deployment the agent returned a precise twenty papers plus five counterexamples plus three implicitly related ones, each with a traceable citation; a researcher's review went from six hours down to an hour and a half, with higher quality.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Layered Retention (M1)</strong>: M1 addresses "how long-term, already-known memory is loaded by scope," while RAG addresses "how to look up, on demand, the vast knowledge that the scope cannot hold." Layering manages the known; RAG manages the attached.</li>
+            <li><strong>Procedural Memory (M5)</strong>: RAG manages declarative memory (retrieving factual knowledge), while M5 manages procedural memory (reusing the ability to get work done). RAG retrieves "what is known," M5 retrieves "how a past task was done." The two play in concert in enterprise agent deployment.</li>
+            <li><strong>Context Triage (perception module)</strong>: RAG pulls candidate information in, and triage decides which of these candidates enters first. RAG is recall; triage is the entry ordering.</li>
+            <li><strong>Progressive Discovery (perception module)</strong>: the two are structurally similar but have different goals. Progressive discovery is the agent exploring structure in an unfamiliar space, while RAG retrieves relevant fragments from a known large library. One leans cognitive, the other leans retrieval.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>RAG is not "the more precise the better" but "the better it searches the better"—its engineering ceiling lies not in the model, the embeddings, or the vector store, but in the organizational quality of the knowledge source itself.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

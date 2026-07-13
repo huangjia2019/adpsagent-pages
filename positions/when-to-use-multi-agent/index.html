@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When to Use Multi-Agent — and When Not To — Positions · ADPS</title>
+    <meta name="description" content="Multi-agent is not the next frontier — it is one bounded design choice in the matrix; single-agent plus tools plus a Harness covers 70%+ of production.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/positions/when-to-use-multi-agent/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/when-to-use-multi-agent/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/when-to-use-multi-agent/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/" style="color: var(--color-link);">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/positions/when-to-use-multi-agent/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/positions/" style="color: var(--color-text-muted);">Positions</a>
+            </p>
+
+            <h1>When to Use Multi-Agent — and When Not To</h1>
+            <blockquote>
+            <p>ADPS Position Paper No.1
+            Published: 2026-05-30
+            Signed: The ADPS Community (Agent Design Patterns Society)</p>
+            </blockquote>
+            <hr />
+            <h2>The State of Things — A Badly Overrated Paradigm</h2>
+            <p>Across 2024 to 2026, "multi-agent" has been the most aggressively promoted phrase in agent engineering. AutoGen's early-2024 demo video had five GPT-4 instances debating how to write a piece of code, and that clip was shared millions of times on X. CrewAI put a "crew of agents" in its hero section, foregrounding the cognitive division of labor that role-playing makes possible. MetaGPT moved an entire software company straight into the prompt — a Product Manager Agent, an Architect Agent, an Engineer Agent, a QA Agent. For a while, "multi-agent collaboration" became synonymous with "the next stage of agent engineering."</p>
+            <p>The data from the field does not support this narrative.</p>
+            <p>In its <em>Hype Cycle for AI Agents</em>, published in February 2026, Gartner offered a widely cited judgment: <strong>by the end of 2027, more than 40% of multi-agent projects will be cancelled or rolled back to single-agent implementations</strong>. In Galileo's Q1 2026 production-incident dataset, multi-agent systems showed an incident rate 2.7 times that of single-agent systems, a median token cost 4.1 times higher, and an average latency 3.8 times higher. Of the 23 production agent cases that Joey Zhou and I assembled for Chapter 10 of the Manning book, <strong>only 7 were genuinely multi-agent; the remaining 16 were all "a single agent plus an adequate tool set plus a good Harness."</strong> That ratio is the exact inverse of the prevailing impression.</p>
+            <p>What deserves even more caution is the misuse pattern. A substantial share of the "multi-agent systems" we saw in 2026 were, at bottom, a single agent pulled apart by hand — each sub-agent sharing the same context, taking turns calling the same model, passing the same state along in sequence. This is nothing more than rewriting one for-loop as five LLM calls that invoke one another: token cost doubled, latency doubled, and debuggability actually worse. Such systems dazzle in the demo stage and get cancelled in production.</p>
+            <p>ADPS has to speak to this.</p>
+            <hr />
+            <h2>The ADPS Position</h2>
+            <p><strong>Multi-agent is not the next frontier of agent engineering; it is one specific design choice within the 28-pattern matrix.</strong> It has clear boundaries of applicability, clear failure modes, and clear cost penalties. Placing it on a pedestal is a distortion of the 2024–2026 narrative wave — and that distortion is now causing many agent projects that could have shipped stably to fail because they were forced into a multi-agent shape.</p>
+            <p>The ADPS judgment comes in four sentences.</p>
+            <p><strong>First — a single agent plus an adequate tool set plus a good Harness can cover more than 70% of production scenarios.</strong> What can be solved with a single agent should not be solved with multiple agents.</p>
+            <p><strong>Second — the value of multi-agent lies in isolation, not in collaboration.</strong> If several agents share context, cannot run in parallel, and cannot fail independently, then it is not a multi-agent system; it is a single agent pulled apart for show.</p>
+            <p><strong>Third — choosing multi-agent requires a quantifiable statement of the cost</strong>: how many times the token cost, how many times the latency, whether observability can keep up, whether the lines of responsibility are clear. A multi-agent decision without answers to these is an irresponsible decision.</p>
+            <p><strong>Fourth — the authority to decide on multi-agent rests in where you sit on the four corners of the Agent CAP, not in what "sounds more advanced."</strong> When the four corners tell you that a single agent has hit its ceiling, then consider multi-agent — not the other way around.</p>
+            <p>The following expands this position into six concrete scenarios — three where you should use it, three where you should not.</p>
+            <hr />
+            <h2>When to Use It — Three Scenarios</h2>
+            <h3>Scenario 1 — The Task Is Naturally Parallel and the Subtasks Are Independent</h3>
+            <p>The real engineering advantage of multi-agent is parallelism — multiple LLM calls running at once, shortening walltime. But this advantage holds only when the subtasks have no mutual dependencies. The moment dependencies appear, "parallelism" degrades into "pseudo-parallelism plus intermediate synchronization," which is in fact slower than running sequentially.</p>
+            <p>The test is very simple — take the task's DAG and look at whether there are arrows between the leaf nodes. Leaves with no arrows can be run in parallel across multiple agents; the parts that do have arrows should be left to a single agent's internal loop.</p>
+            <p><strong>DeerFlow's Multi-Researcher is the model case for this scenario.</strong> A research question is decomposed by a Planner Agent into 5 to 8 sub-questions, each with its own keyword search, its own source crawl, its own content summary, and no need to reference one another — under this structure, 5 to 8 Researcher Agents run in parallel and compress walltime from 12 minutes to 2 minutes 30 seconds. A Reviewer Agent waits for all Researchers to finish and then reviews everything in one pass. This is multi-agent doing the right thing.</p>
+            <p>The counterexample is a team that split "write a technical article" into "Outline Agent → Paragraph 1 Agent → Paragraph 2 Agent → Paragraph 3 Agent → Polish Agent." These five agents must run sequentially, because Paragraph 2 depends on the content of Paragraph 1, and Paragraph 3 depends on the tone of Paragraph 2. In the end, walltime was 60% slower than a single agent writing the piece, and token cost tripled — because each agent had to re-read everything that came before. This is forcing a non-parallelizable task into a multi-agent split.</p>
+            <h3>Scenario 2 — Pronounced Role Specialization Plus a High Cost of Context Contamination</h3>
+            <p>In certain tasks, "playing different roles" is not performative — it is necessary in the engineering sense. When the information one role sees would interfere with another role's judgment, physically isolating them (separate context, separate prompt, even separate models) is the more stable engineering choice.</p>
+            <p><strong>Adversarial Review is the most classic form of this scenario.</strong> When a Generator Agent is writing code, if it simultaneously knows "there will be a Critic reviewing me," its generation behavior self-censors to the point of losing exploratory range — much as a writer drafting under an editor's constant gaze cannot produce their best work. Physically isolate the Generator and the Critic — the Generator unaware that the Critic exists, the Critic seeing only the pure output detached from the generation process — and the quality of both sides' judgment rises a level.</p>
+            <p><strong>The three-agent design of a certain RegTech POC is another model case</strong>: a Knowledge Retrieval Agent responsible for pulling the relevant compliance clauses, a Pattern Matching Agent responsible for matching user conversations against them, and a Decision Agent responsible for delivering the final compliance-risk judgment. The three agents use three models at three different temperatures, three different sets of prompts, three independent contexts — because if the Decision Agent saw all the raw material at once, it would be pulled off course by irrelevant clauses; and if the Retrieval Agent knew the final decision goal, it would select clauses with confirmation bias. Physical isolation is the core of this system's stability.</p>
+            <p>The test is the cost of context contamination. If "letting one agent see all the information at once" makes its judgment worse, multi-agent is warranted. If the cost of context contamination is low, a single agent paired with the Reflection pattern is enough.</p>
+            <h3>Scenario 3 — Adversarial Review Is Needed to Raise Trustworthiness</h3>
+            <p>This is a special case of the previous scenario, but it is worth listing on its own — because in high-risk settings it is a nearly irreplaceable design.</p>
+            <p>The output of high-risk decisions (medical, legal, financial, governmental) must withstand adversarial scrutiny. A single agent with the Reflection pattern can perform self-critique, but <strong>self-critique has a fundamental limit — the same model is not very good at finding the blind spots in its own reasoning path.</strong> This limit is well documented in psychology, and it holds for LLMs just the same.</p>
+            <p>The multi-agent adversarial review pattern — one Generator Agent producing a solution, one independent Critic Agent reviewing it with a different prompt, a different model, a different perspective — can markedly raise the trustworthiness of the output. Anthropic's internal data from Q1 2026 shows that, on high-risk code-review tasks, the false-negative rate of a single agent with self-reflection was 18%, dropping to 6.4% once an independent Critic Agent was added.</p>
+            <p><strong>The Constitutional AI training pipeline is itself an extreme form of adversarial review</strong> — one model generates content, one model critiques it against constitutional principles, and a third model rewrites it accordingly. The physical isolation of the three models is the key to why this training paradigm works.</p>
+            <p>But this scenario has a boundary — the cost of adversarial review is doubled token cost and doubled latency. It should not be used in low-risk settings. For fault-tolerant tasks such as customer-support systems, internal knowledge retrieval, and document summarization, a single agent plus Reflection is already enough.</p>
+            <hr />
+            <h2>When Not to Use It — Three Scenarios</h2>
+            <h3>Scenario 4 — The Task Is Inherently Sequential but Gets Forcibly Split</h3>
+            <p>This is the most common form of multi-agent misuse in 2026.</p>
+            <p>The task's dependency graph is a single line — Step 1 → Step 2 → Step 3 — and a single agent running it through with the Chain topology would have been fine. But because "multi-agent sounds more advanced," it gets split into three agents, each responsible for one step and passing state to the next. The result: the same context loaded three times over (token cost ×3), three serial LLM calls (latency ×3), and three state handoffs introducing extra serialization and deserialization (error probability ×3).</p>
+            <p>The test is the shape of the task DAG. <strong>Linear DAG → use a single agent plus Chain; tree-shaped DAG (independent leaves) → consider multi-agent parallelism; cyclic DAG → use a single agent plus Loop.</strong> Apart from the tree-shaped branch, multi-agent is the wrong choice.</p>
+            <p>There are plenty of counterexamples; here is the most typical — a startup team building an "AI paper-reading assistant" split "read PDF → extract key points → generate summary → translate into Chinese" into four agents. This is a purely linear DAG. It was eventually cancelled and rolled back to a single agent plus Chain, with walltime compressed from 18 seconds to 5 and token cost dropping to 35%.</p>
+            <h3>Scenario 5 — Using Multi-Agent to Mask a Lack of Single-Agent Design Skill</h3>
+            <p>This is the deeper problem — a team that cannot do single-agent design turns instead to "multiple agents collaborating" in the hope of masking the weakness of each individual agent.</p>
+            <p>The reality is the reverse — a multi-agent system demands <strong>more</strong> of each sub-agent's design, not less. The sub-agent's prompt must be more precise (because there is no human present to correct course), its Memory more restrained (because cross-agent state handoff is costly), its error handling more rigorous (because one sub-agent's failure can drag down the whole system). If a team has not even gotten a single agent's Perception / Memory / Reasoning / Action right, expanding to multi-agent will only magnify the problem.</p>
+            <p><strong>A line from an April 2026 article on the Anthropic Engineering Blog puts it very well</strong>: "<em>If you can't make your single agent reliable, you won't make your multi-agent system reliable—you'll make it 5× as unreliable</em>." This applies to the overwhelming majority of real situations.</p>
+            <p>The test is direct — has the team's single-agent baseline run stably in production for at least three months? If not, do not consider multi-agent. Get the single agent solid first — pick the right Memory pattern, break the Reasoning steps out clearly, converge the Action tool set, tune the Reflection cadence — and once that is done, <strong>in 80% of cases you will find you do not need multi-agent at all.</strong></p>
+            <h3>Scenario 6 — "Pseudo Multi-Agent" That Lacks Sub-Agent Isolation</h3>
+            <p>The most insidious and most common — multi-agent in form, single agent in engineering.</p>
+            <p>There are four telltale signs: (1) all sub-agents share the same context window; (2) the sub-agents are invoked sequentially rather than in parallel; (3) any sub-agent's output appears in another sub-agent's input; (4) the entire system runs in one process and shares the same in-memory state. <strong>As soon as any two or more of these four hold, it is not a multi-agent system</strong> — it is merely one agent's internal loop split into several prompt segments.</p>
+            <p>Pseudo multi-agent costs just as much as real multi-agent (every "role switch" is an LLM call), but yields nothing at all — no parallelism advantage, no context isolation, no independent failure domain. That makes it the worst choice of all.</p>
+            <p><strong>Sub-Agent Isolation is the core constraint of the Collaboration × Hierarchy cell in the ADPS pattern matrix.</strong> Without this constraint, multi-agent is merely performative. Claude Code's SubAgent implementation is the cleanest model of isolation — each SubAgent runs in its own context, its own tool registry, its own working directory, its own conversation history. The parent agent sees only the SubAgent's returned final summary, not the internal process. This isolation is the very reason a multi-agent system is multi-agent.</p>
+            <hr />
+            <h2>Decision Matrix</h2>
+            <p>Before deciding whether to go multi-agent, ask yourself about each of the six dimensions below. <strong>If 4 or more of the 6 dimensions land in the "should be multi-agent" column, then consider multi-agent; otherwise, single agent.</strong></p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Dimension</th>
+            <th style="text-align: left;">Should Be Single Agent</th>
+            <th style="text-align: left;">Should Be Multi-Agent</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Shape of task DAG</td>
+            <td style="text-align: left;">Linear / cyclic</td>
+            <td style="text-align: left;">Tree-shaped / independent leaves</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Cost of context contamination</td>
+            <td style="text-align: left;">Low (mixing information together does not bias judgment)</td>
+            <td style="text-align: left;">High (information must be isolated between roles)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Risk level</td>
+            <td style="text-align: left;">Low (fault-tolerant, rollback-able)</td>
+            <td style="text-align: left;">High (adversarial review required)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Team's single-agent baseline</td>
+            <td style="text-align: left;">Nonexistent / unstable</td>
+            <td style="text-align: left;">Already running stably for ≥ 3 months</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Observability budget</td>
+            <td style="text-align: left;">Tight (cannot afford to correlate multiple traces)</td>
+            <td style="text-align: left;">Ample (full distributed tracing in place)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Lines of responsibility</td>
+            <td style="text-align: left;">Single team owner</td>
+            <td style="text-align: left;">Cross-subsystem ownership already agreed</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>This table is not about "tallying a score" — it is six vetoes. As soon as any single item in the "should be single agent" column is hit, the multi-agent decision needs to be seriously questioned.</p>
+            <hr />
+            <h2>Real Cases — Four Comparisons</h2>
+            <p><strong>Claude Code SubAgents — appropriate.</strong> When the parent agent takes on a task that "needs to grep dozens of files across a large codebase and summarize cross-file patterns," it dispatches 5 to 20 SubAgents to read in parallel. Each SubAgent has its own context and its own tool registry, with no shared state. The parent agent waits for all SubAgents to return and then performs a single consolidation. <strong>This is what multi-agent looks like when it is genuinely used right</strong> — the task is parallelizable, the subtasks are independent, the isolation is strict, and the lines of responsibility are clear. Two years of stable operation across Claude Code's 512K lines of code validate this design.</p>
+            <p><strong>DeerFlow's four roles — appropriate.</strong> Planner / Multi-Researcher / Reviewer / Writer are four agents, but they are not equal peers running side by side — Multi-Researcher is a parallel fan-out, while the other three are sequential. The only genuinely "multi-agent" part of the whole system is the Researcher layer; the other three layers are a single agent invoked at different stages. <strong>This kind of "local multi-agent" is the norm in real engineering</strong> — most of the flow is single-agent, with multi-agent used only at the parallelizable bottleneck.</p>
+            <p><strong>CrewAI's default demo — excessive.</strong> The hello-world example in CrewAI's official documentation is "Researcher + Writer," two agents writing a technical article. The Researcher gathers material, and the Writer takes the Researcher's material and writes the article — this is a linear DAG. The two agents share the same task state and are invoked sequentially. <strong>This is a textbook case of pseudo multi-agent</strong> — splitting a single agent's two steps of "research first, then write" into two LLM calls, doubling token cost with no isolation value whatsoever. CrewAI's framework itself is well designed, but the default demo showcases a mistaken paradigm.</p>
+            <p><strong>A negative case — an insurance company's customer-support agent — excessive.</strong> A team designed seven agents — an Intent Recognition Agent, a Knowledge Retrieval Agent, a Case Matching Agent, a Policy Interpretation Agent, a Reply Generation Agent, a Compliance Review Agent, and a Tone Adjustment Agent. All agents shared conversation state, were invoked sequentially, and had no parallelism. Production data: token consumption per conversation was 4.2 times that of a peer's single-agent approach, average response latency was 8.7 seconds (the peer's was 2.1 seconds), and the incident rate was 3.1 times higher. Three months later it was cancelled and rolled back to a single agent plus a 5-tool set plus an Approval Gate, and every metric improved to the peer's level. <strong>This is the stacking of all three negative scenarios the ADPS position warns against</strong> — a sequential task forcibly split, a nonexistent single-agent baseline, and pseudo multi-agent with no isolation.</p>
+            <hr />
+            <h2>Closing</h2>
+            <p><strong>Multi-agent is not the next frontier of agent engineering.</strong> It is a set of specific choices at the intersection of the Collaboration lineage with the Parallel and Hierarchy topologies in the ADPS 28-pattern matrix — roughly 4 to 6 pattern cells — and it holds only under particular conditions.</p>
+            <p>Returning multi-agent to where it belongs — an engineering option, not a badge of identity; a cost-benefit trade-off, not a rhetorical flourish — is one of the things the ADPS community is willing to take on.</p>
+            <p>Our judgment about agent engineering remains this — <strong>a single agent plus an adequate tool set plus a good Harness is the right starting point for the overwhelming majority of production scenarios.</strong> Multi-agent is the next step to consider only once that starting point has hit its ceiling, once there is a clear isolation boundary, a quantifiable cost budget, and a well-defined line of responsibility.</p>
+            <p>Writing this position down clearly is how ADPS distinguishes itself from the hype cycle.</p>
+            <hr />
+            <blockquote>
+            <p>ADPS · Agent Design Patterns Society · adpsagent.com
+            This is the first article in the ADPS position-paper series. Subsequent pieces will continue to speak to topics such as "the boundaries of agent autonomy," "the relationship between Evaluation and Testing," and "the real differences between open-source and closed-source models in agent engineering."</p>
+            </blockquote>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/positions/">← Back to all positions</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

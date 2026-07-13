@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>治理与 Safety — 立场 · ADPS</title>
+    <meta name="description" content="治理不是外挂的基础设施，而是设计的一部分——OWASP Agentic Top 10 与八条原则精确映射。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/positions/governance-and-safety/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/governance-and-safety/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/governance-and-safety/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/" style="color: var(--color-link);">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/positions/governance-and-safety/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/positions/" style="color: var(--color-text-muted);">立场</a>
+            </p>
+
+            <h1>治理与 Safety · 工程问题不是哲学问题</h1>
+            <blockquote>
+            <p>Agent safety 不是 alignment 哲学辩论的延伸，是可以被工程化的设计问题。ADPS 在这件事上的立场很明确——治理 = governance + observability + blast radius control，三件工程事，没有第四件。</p>
+            </blockquote>
+            <p>这是一篇 ADPS 共同体的立场文章，不是个人观点。四位发起人在 2026-05-27 上线 adpsagent.com 的时候就把"治理是工程问题"写进了首页副标题，没有放进 alignment 哲学语境里讨论。这篇文章把这条立场展开。</p>
+            <h2>现状 · 讨论被两端拉扯</h2>
+            <p>打开任何一个 2026 年讨论 Agent safety 的场子，会看到两个极端在抢话语权。</p>
+            <p><strong>一端是末日论</strong>。"Agent 即将通用智能化、即将失控、即将取代人类决策、所以我们需要 alignment 研究、需要 RLHF 改进、需要 constitutional AI"——这套话语从 2023 年 GPT-4 发布开始就在生产，到 2026 年仍然在被生产。它不算错，但它讨论的对象不是今天部署在生产环境里的 Agent 系统，而是一个假想的未来。<strong>讨论一个还不存在的系统的失败模式，对今天正在出事故的工程师没有可消费的输出</strong>。</p>
+            <p><strong>另一端是无政府主义</strong>。"don't add governance、trust the model、约束越多 Agent 越笨、Approval Gate 是过度工程、Hook 是反 LLM 的"——这套话语从 LangChain 早期社区延续到 2026 年的某些 Agent 框架社区。它的潜台词是"模型本身能力足够强，不需要外部约束"。这套话语跟末日论是镜像——一个相信模型太强需要从哲学层面阻止，一个相信模型够强不需要从工程层面约束。<strong>两端都不在工程现场</strong>。</p>
+            <p>工程师夹在中间。CTO 周会上老板问"这个 Agent 出了事谁负责"，CTO 不能回答"我们相信模型对齐"，也不能回答"我们 trust the model"。CTO 需要的是<strong>可被审计、可被复盘、可被甩给法务的治理基线</strong>——这是工程问题的领域，不是哲学辩论的领域。</p>
+            <p>ADPS 第一句立场就在这里——<strong>Agent safety 是工程问题，工程问题用工程方法对待</strong>。</p>
+            <h2>ADPS 立场 · 三件工程事</h2>
+            <p>ADPS 共同体把 Agent safety 拆成三件可工程化的事，<strong>不接受把它当成第四件事——哲学辩论</strong>。</p>
+            <p><strong>第一件 · Governance</strong>。决定什么动作允许执行、什么动作必须经过批准、什么动作禁止。这是规则层，对应 Claude Code 的 PreToolUse Hook、对应 Kubernetes 的 admission controller、对应金融系统的 four-eyes principle。<strong>Governance 的工程实现是 Hook + Permission + Tool Registry 这套约束装置</strong>。</p>
+            <p><strong>第二件 · Observability</strong>。每一次 LLM 调用、每一次工具调用、每一次状态变更，都必须留下可追溯的证据链。这是审计层，对应分布式系统的 distributed tracing、对应数据库的 transaction log、对应 SOC 2 的 audit trail。<strong>Observability 的工程实现是 ActionTrace + Span + Cost Accounting 这套观测装置</strong>。</p>
+            <p><strong>第三件 · Blast Radius Control</strong>。当 Agent 出错——它一定会出错——能受影响的范围必须被预先界定。这是隔离层，对应 Linux 的 namespace、对应 K8s 的 sidecar、对应金融系统的 sandbox account。<strong>Blast Radius Control 的工程实现是 Sub-Agent Isolation + Sandboxing + Rate Limiting 这套隔离装置</strong>。</p>
+            <p>这三件事每一件都对应 ADPS 八条原则里的具体条目——Governance 对应原则 5（Agent CAP 里的 G 维度）、Observability 对应原则 3（评估即设计）、Blast Radius Control 对应原则 7（模式是约束）。<strong>ADPS 不需要为 safety 单独立一个原则——三件工程事已经在八原则里了</strong>。</p>
+            <h2>OWASP Agentic Top 10 · ADPS 怎么映射</h2>
+            <p>OWASP 在 2026-03 发布了 Agentic Top 10，列出生产 Agent 系统的 10 类主要威胁。ADPS 把这 10 类逐条映射到八原则 + 双轴矩阵的某个 cell 上——映射本身就是论证"safety 是工程问题"的最强证据。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">OWASP Agentic Top 10 (2026)</th>
+            <th style="text-align: left;">ADPS 原则映射</th>
+            <th style="text-align: left;">双轴 cell</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">A01 · Tool Misuse</td>
+            <td style="text-align: left;">原则 7 + 原则 4 · 最小工具集 + Tool Registry 约束</td>
+            <td style="text-align: left;">Action × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A02 · Prompt Injection (Indirect)</td>
+            <td style="text-align: left;">原则 1 + 原则 7 · 把外部输入当不可信约束</td>
+            <td style="text-align: left;">Perception × Chain</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A03 · Excessive Agency</td>
+            <td style="text-align: left;">原则 5 · Agent CAP 里 G 维度过低</td>
+            <td style="text-align: left;">Action × Orchestrate</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A04 · Cascading Hallucination</td>
+            <td style="text-align: left;">原则 3 + 原则 8 · 缺 Reflection 模式</td>
+            <td style="text-align: left;">Reflection × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A05 · Multi-Agent Collusion</td>
+            <td style="text-align: left;">原则 8 · Sub-Agent 间无隔离</td>
+            <td style="text-align: left;">Collaboration × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A06 · Memory Poisoning</td>
+            <td style="text-align: left;">原则 4 + 原则 7 · Memory 无写入校验</td>
+            <td style="text-align: left;">Memory × Chain</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A07 · Orchestration Confusion</td>
+            <td style="text-align: left;">原则 8 · 模式组合越界</td>
+            <td style="text-align: left;">Orchestrate × 多脉</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A08 · Identity Spoofing</td>
+            <td style="text-align: left;">原则 5 · Auth/Identity 在 Harness 缺位</td>
+            <td style="text-align: left;">Governance × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A09 · Resource Exhaustion</td>
+            <td style="text-align: left;">原则 5 · Cost 维度无上限</td>
+            <td style="text-align: left;">Action × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A10 · Supply Chain (Tool/Model)</td>
+            <td style="text-align: left;">原则 4 · Tool / Model Registry 无版本</td>
+            <td style="text-align: left;">全矩阵</td>
+            </tr>
+            </tbody>
+            </table>
+            <p><strong>10 条威胁，10 个工程定位</strong>。每一条都能精确落到八原则的某个交叉点，每一条都能定位到双轴矩阵的某个 cell，每一条都对应一组可执行的工程动作。<strong>这就是"工程化"的含义——不是 alignment 抽象讨论，是 cell 级别的归因和处置</strong>。</p>
+            <h2>四个工程层 · 治理的物理实现</h2>
+            <p>把"治理是工程问题"具体化，ADPS 共同体识别出四个治理层。每一层都有具体的工程载体，每一层都已经在 Claude Code、LangGraph、CrewAI 这些主流 Harness 里有参考实现。</p>
+            <p><strong>层 1 · PreToolUse · Approval Gate</strong>。这是治理的最外层。Agent 每次想调用工具前，由 Hook 拦截、做风险判断、必要时升级到人工审批。Claude Code 的 PreToolUse Hook、LangGraph 的 interrupt_before 节点、CrewAI 的 human_input 字段都是这个层的实现。<strong>Approval Gate 的工程价值不在"挡住一次 LLM 错误"——在于把"是否要执行"这个决策从 Agent 上交到一个外部决策面</strong>。</p>
+            <p><strong>层 2 · Tool Registry · 最小工具集</strong>。这是治理的供给侧。Agent 能访问的工具不是 LLM 自己决定的，是工程师在 Tool Registry 里预先注册、版本化、签名的。Anthropic 在 2025-03 把 MCP 捐给 Linux Foundation 之后，MCP Registry 成为这一层的事实标准。<strong>最小工具集对应 OWASP A01 + A10，工程实现就是"Registry + 白名单 + 强制版本"三件套</strong>。</p>
+            <p><strong>层 3 · Action Audit · Observability Harness</strong>。这是治理的证据层。每一次 Action 都留下一条 ActionTrace——包含 cost、latency、tool_name、input/output hash、parent_action_id。OpenTelemetry 在 2025 年扩展出 GenAI Semantic Conventions 之后，Agent observability 有了跨厂商的统一 schema。<strong>这一层对应 ADPS 原则 3——评估即设计，audit trail 本身就是评估系统的输入</strong>。</p>
+            <p><strong>层 4 · Blast Radius · Sandboxing + Sub-Agent Isolation</strong>。这是治理的最内层，也是最强的一道防线。当前 3 层都失效——Hook 没拦住、工具被滥用、审计没及时报警——Sub-Agent 仍然只能在自己的 sandbox 里造成有限破坏。Claude Code 的 Sub-Agent 默认独立 context、Anthropic 的 computer-use 默认在 VM 沙箱、Replit Agent 在自己的 isolated workspace 都是这一层的实践。<strong>Blast Radius Control 是 ADPS 看待 safety 的最后一道工程兜底——不假设前面 3 层万无一失，假设它们一定会有一次失效</strong>。</p>
+            <p>四个层叠加，就是一份具体的、可被甩给安全审计的治理基线。<strong>不需要哲学，需要的是把这四层的每一层都做扎实</strong>。</p>
+            <h2>真实案例 · Claude Code 被滥用攻击 · ADPS 视角的归因</h2>
+            <p>Anthropic 在 2025-11 披露了第一起被记录的"AI 主导的网络间谍攻击"——攻击者用 Claude Code 协调 80-90% 的攻击执行，人类操作员仅在 10-15% 关键决策点介入。这是 2026 年讨论 Agent safety 时被引用最多的案例。</p>
+            <p>末日论对这件事的归因是"模型对齐失败、需要更强的 RLHF"。无政府主义对这件事的归因是"这是用户滥用、不是模型问题"。两种归因都没法转化成下一次部署 Agent 系统时该改什么。</p>
+            <p>ADPS 八原则视角的归因落到三个具体的工程失效点。</p>
+            <p><strong>失效点 1 · Tool Registry 缺位</strong>。攻击者用的是 Claude Code 的通用 Bash 工具——这个工具没有被注册到一个"按场景白名单"的 Registry 里。原则 4 的工程含义是 Tool Registry 必须是分场景的、最小化的、可被吊销的。<strong>如果攻击场景的 Bash 调用必须经过"渗透测试" 这个独立 Registry 的白名单审查，攻击的可执行路径会大幅收窄</strong>。</p>
+            <p><strong>失效点 2 · Sub-Agent 间无隔离</strong>。攻击链里多个 Sub-Agent 协作完成 reconnaissance → exploit → exfiltration，但这些 Sub-Agent 共享同一个 credential context。原则 8 在这里的工程含义是 Sub-Agent 间默认应当不可见对方的 credential，只能通过显式的 Token Passing 协议传递。<strong>Credential 隔离是阻断 80-90% 攻击链的工程动作，跟 alignment 无关</strong>。</p>
+            <p><strong>失效点 3 · Action Audit 不上报</strong>。每一次 Bash 调用的 ActionTrace 都被 Claude Code 写到了本地，但没有触发任何外部告警——因为没有 SIEM 集成。原则 3 的工程含义是 audit trail 必须有"上报触发器"，不能只是被动留痕。<strong>SIEM 集成 + 异常 pattern 告警，是从 audit 到 detection 的工程跨越</strong>。</p>
+            <p>三个失效点，三个具体的工程动作。<strong>ADPS 视角的归因可以直接转化成下次 Anthropic 升级 Claude Code 时的 P0 工程任务</strong>——这就是"safety 是工程问题"的可消费性。</p>
+            <h2>跟 alignment 圈的关系 · 工程师的 home turf</h2>
+            <p>ADPS 共同体不接 superintelligence 辩论，不站队 e/acc 也不站队 doomer——这两套辩论都不在工程师的 home turf。</p>
+            <p><strong>ADPS 接的是 production governance 这个 home turf</strong>。它有公开的工业案例（Anthropic 披露的攻击、Air Canada chatbot、Replit Agent 删库、Microsoft Copilot 数据泄漏）、有公开的标准（OWASP Agentic Top 10、CSA Agentic Trust Framework、NIST AI RMF Agentic Profile draft 2026）、有公开的工程载体（Claude Code Hook、LangGraph interrupt、MCP Registry）。<strong>这些东西每一样都是可被工程师消费、可被纳入 SDLC、可被写进 OKR 的</strong>。</p>
+            <p>ADPS 跟 alignment 研究社区不对立——双方在不同的时间尺度上工作。Alignment 研究服务的是 2030 年代的潜在 AGI 系统，ADPS 服务的是 2026 年正在生产环境里跑着的 Agent 系统。<strong>两者不需要互相说服，需要的是各自把各自尺度上的工作做好</strong>。</p>
+            <p>ADPS 的立场是——<strong>今天部署一个 Agent 上生产，治理的合格线是工程层面的合格线，不是哲学层面的合格线</strong>。Hook 配齐了、Tool Registry 立好了、ActionTrace 上报了、Sub-Agent 隔离了，这就是 2026 年一个 Agent 系统的"足够 safe"。<strong>Safe 不是绝对值，是相对于已知威胁模型的工程基线值</strong>。</p>
+            <h2>收束</h2>
+            <p><strong>Agent safety 是工程问题——governance、observability、blast radius control，三件工程事</strong>。</p>
+            <p>ADPS 共同体在这件事上的姿态很简单——把 OWASP Agentic Top 10 当成 issue tracker、把双轴矩阵当成归因坐标系、把八原则当成设计基线、把 Claude Code 和 LangGraph 这些 Harness 当成参考实现。<strong>Safety 在 ADPS 这里没有特殊地位——它是双轴矩阵 Governance 那一脉的设计议题，跟 Memory、Reasoning、Action 同等待遇</strong>。</p>
+            <p>这条立场会写进 ADPS 即将发布的《生产准入基线 v0.1》——一份用八原则覆盖、用双轴矩阵归因、用三层治理给定 Tier 划分的、可被任何 CTO 甩给法务和安全审计的中立基线文档。这份文档不讨论 alignment，只讨论"达到 Tier-N 需要做什么工程动作"。</p>
+            <p>工程问题用工程方法对待。这是 ADPS 在治理与 safety 这件事上唯一的姿态。</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/zh/positions/">← 返回全部立场</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

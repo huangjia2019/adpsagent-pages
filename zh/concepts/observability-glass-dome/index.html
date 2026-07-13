@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可观测性：玻璃罩里的瑞士机械表 · 概念 · ADPS</title>
+    <meta name="description" content="把 Agent 的精神活动与躯体活动封装成带语义事件，按时间轴对开发者完整可见。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/concepts/observability-glass-dome/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/" class="active">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/concepts/" style="color: var(--color-text-muted);">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
+
+            <h1>可观测性：玻璃罩里的瑞士机械表</h1>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
+
+            <p><img src="/images/concepts/observability-glass-dome.png" alt="可观测性：玻璃罩里的瑞士机械表" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>概念定义</h2>
+            <p>执行型 Agent 的一次对话，背后是一长串看不见的动作：识别意图、路由分支、链式推理、调用工具、读写状态、合成回复。如果开发者只能看到两层——用户输入和最终回复——中间全是黑盒，那么这台系统每出一次问题，定位都要靠猜。可观测性要解决的就是这件事：把 Agent 的每一步动作和驱动这步动作的思考，按时间轴完整地暴露给开发者自己。</p>
+            <p>这里的"可观测"有一层需要先说清的语义。它指的不是 Agent 对它所处世界的感知，而是反过来——让 Agent 的意识和行为对开发者可见。Agent 在一次对话里产生的一系列行动是它的躯体活动，驱动这些行动的推理和判断是它的精神活动，可观测性要把这两者都摊开来看。</p>
+            <h2>使用说明</h2>
+            <p>玻璃罩这个比喻就出在这里。开发态把全部可观测事件打开之后，组装这台复杂精密的 Agent，体验接近在一个透明玻璃罩里修一块瑞士机械表。机械表零件多、咬合精密，但只要罩子是透明的，每个齿轮在哪里转、哪根游丝在动，都看得见。Agent 同理：意图识别这一环识别出了什么、意图网关把它路由到了哪条下游链、ReAct 跑到第几步、这一步的 LLM 调用用的是什么提示词、模型返回了什么、花了多少成本，都在时间轴上按顺序排开。系统越复杂，这层透明罩越能减轻开发者的心智负担——它没有降低系统本身的复杂度，但让复杂度变得可见、可查。</p>
+            <p>它防住的失败很具体。执行型 Agent 链路长、环节多，一旦某次交付不符合预期，问题可能出在意图识别误判、可能出在某步推理跑偏、也可能出在一次工具调用的参数绑定。没有时间轴，开发者只能反复重放整个对话去推测哪一环出了岔，调试周期被拉得很长。把每一步的动作和 LLM 调用细节都摊在时间轴上，定位就从猜测变成查看——哪一步的输出和预期不符，一眼就能落到那一格。</p>
+            <p>东方屹腾把这条经验放在了起步阶段，而不是等系统复杂了再补。项目从最朴素的对话管道接通起步，第一件认真做足的基础设施就是可观测性。做法是把 Agent 的活动和程序逻辑统一封装抽象成带语义的事件——用户意图识别、意图网关路由判定、ReAct 执行都是这样的事件——再把一次对话的整个执行过程按时间轴清晰展示出来。每一步既能看到 Agent 产生了什么动作，也能按时间顺序看到这一步的 LLM 调用细节：运行态实际用的提示词、模型的输出、这一步相关的各种成本。这些调试详情在生产投放时可以关掉，开发态时在前端打开。地基铺好之后，后面往上逐步堆意图识别、推理、行动这些能力，每堆一层都能直接看见它在罩子里怎么工作。</p>
+            <h2>何时需要</h2>
+            <p>当你的 Agent 一次对话要走多步、跨多个能力环节，且每一步都可能出错。环节越多、链路越长，把执行过程在开发态摊成一条透明的时间轴，回报就越大。这层时间轴展示的对象，是 <a href="../orchestrator/">Orchestrator</a> 在运行态编排出的那一串活动事件。</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governance and Safety — Positions · ADPS</title>
+    <meta name="description" content="Governance is not a bolt-on; it is part of design — OWASP Agentic Top 10 mapped to the eight principles.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/positions/governance-and-safety/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/governance-and-safety/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/governance-and-safety/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/" style="color: var(--color-link);">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/positions/governance-and-safety/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/positions/" style="color: var(--color-text-muted);">Positions</a>
+            </p>
+
+            <h1>Governance and Safety</h1>
+            <blockquote>
+            <p>Agent safety is not an extension of the alignment philosophy debate; it is a design problem that can be engineered. ADPS takes a clear position here: governance = governance + observability + blast radius control — three engineering matters, and no fourth.</p>
+            </blockquote>
+            <p>This is a position paper of the ADPS community, not a personal opinion. When the four founders launched adpsagent.com on 2026-05-27, they wrote "governance is an engineering problem" into the subtitle on the home page, rather than framing it within the alignment philosophy context. This paper develops that position.</p>
+            <h2>The current state · The discussion is pulled toward two extremes</h2>
+            <p>Walk into any venue discussing Agent safety in 2026 and you will see two extremes fighting for the microphone.</p>
+            <p><strong>At one end is doomerism.</strong> "Agents are about to become generally intelligent, about to go out of control, about to replace human decision-making, so we need alignment research, we need improved RLHF, we need constitutional AI" — this discourse has been in production since GPT-4's release in 2023, and it is still being produced in 2026. It is not wrong, but the object it discusses is not the Agent systems deployed in production today; it is a hypothetical future. <strong>Discussing the failure modes of a system that does not yet exist produces nothing consumable for the engineers whose systems are having incidents today.</strong></p>
+            <p><strong>At the other end is anarchism.</strong> "Don't add governance, trust the model, the more constraints the dumber the Agent gets, the Approval Gate is over-engineering, Hooks are anti-LLM" — this discourse runs from the early LangChain community through to certain Agent framework communities in 2026. Its subtext is that "the model is capable enough on its own and needs no external constraint." This discourse is a mirror image of doomerism: one believes the model is so strong it must be stopped at the philosophical level, the other believes the model is strong enough that it needs no constraint at the engineering level. <strong>Neither end is at the engineering coalface.</strong></p>
+            <p>Engineers are caught in the middle. At the CTO's weekly meeting, the boss asks, "Who is responsible when this Agent causes an incident?" The CTO cannot answer "we trust in model alignment," nor can the CTO answer "we trust the model." What the CTO needs is <strong>a governance baseline that can be audited, reviewed in post-mortems, and handed off to legal</strong> — that is the domain of an engineering problem, not the domain of a philosophical debate.</p>
+            <p>ADPS's first statement of position is right here: <strong>Agent safety is an engineering problem, and engineering problems are treated with engineering methods.</strong></p>
+            <h2>The ADPS position · Three engineering matters</h2>
+            <p>The ADPS community decomposes Agent safety into three matters that can be engineered, and <strong>refuses to treat it as a fourth matter — a philosophical debate.</strong></p>
+            <p><strong>First · Governance.</strong> Decide what actions are permitted to execute, what actions must go through approval, and what actions are forbidden. This is the rule layer, corresponding to Claude Code's PreToolUse Hook, to Kubernetes's admission controller, and to the four-eyes principle in financial systems. <strong>The engineering realization of Governance is the constraint apparatus of Hook + Permission + Tool Registry.</strong></p>
+            <p><strong>Second · Observability.</strong> Every LLM call, every tool call, every state change must leave behind a traceable chain of evidence. This is the audit layer, corresponding to distributed tracing in distributed systems, to the transaction log in databases, and to the audit trail in SOC 2. <strong>The engineering realization of Observability is the observation apparatus of ActionTrace + Span + Cost Accounting.</strong></p>
+            <p><strong>Third · Blast Radius Control.</strong> When the Agent errs — and it will err — the range of what can be affected must be bounded in advance. This is the isolation layer, corresponding to the namespace in Linux, to the sidecar in K8s, and to the sandbox account in financial systems. <strong>The engineering realization of Blast Radius Control is the isolation apparatus of Sub-Agent Isolation + Sandboxing + Rate Limiting.</strong></p>
+            <p>Each of these three matters corresponds to a specific item among the ADPS eight principles — Governance corresponds to Principle 5 (the G dimension in Agent CAP), Observability corresponds to Principle 3 (evaluation is design), and Blast Radius Control corresponds to Principle 7 (patterns are constraints). <strong>ADPS does not need to establish a separate principle for safety — the three engineering matters are already inside the eight principles.</strong></p>
+            <h2>OWASP Agentic Top 10 · How ADPS maps it</h2>
+            <p>OWASP released the Agentic Top 10 in 2026-03, listing the ten major classes of threats to production Agent systems. ADPS maps these ten classes, item by item, onto the eight principles plus a specific cell of the two-axis matrix — the mapping itself is the strongest evidence for the argument that "safety is an engineering problem."</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">OWASP Agentic Top 10 (2026)</th>
+            <th style="text-align: left;">ADPS principle mapping</th>
+            <th style="text-align: left;">Two-axis cell</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">A01 · Tool Misuse</td>
+            <td style="text-align: left;">Principle 7 + Principle 4 · minimal tool set + Tool Registry constraint</td>
+            <td style="text-align: left;">Action × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A02 · Prompt Injection (Indirect)</td>
+            <td style="text-align: left;">Principle 1 + Principle 7 · treat external input as an untrusted constraint</td>
+            <td style="text-align: left;">Perception × Chain</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A03 · Excessive Agency</td>
+            <td style="text-align: left;">Principle 5 · G dimension too low in Agent CAP</td>
+            <td style="text-align: left;">Action × Orchestrate</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A04 · Cascading Hallucination</td>
+            <td style="text-align: left;">Principle 3 + Principle 8 · missing Reflection pattern</td>
+            <td style="text-align: left;">Reflection × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A05 · Multi-Agent Collusion</td>
+            <td style="text-align: left;">Principle 8 · no isolation between Sub-Agents</td>
+            <td style="text-align: left;">Collaboration × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A06 · Memory Poisoning</td>
+            <td style="text-align: left;">Principle 4 + Principle 7 · no write validation on Memory</td>
+            <td style="text-align: left;">Memory × Chain</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A07 · Orchestration Confusion</td>
+            <td style="text-align: left;">Principle 8 · pattern composition oversteps its bounds</td>
+            <td style="text-align: left;">Orchestrate × multiple functions</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A08 · Identity Spoofing</td>
+            <td style="text-align: left;">Principle 5 · Auth/Identity absent from the Harness</td>
+            <td style="text-align: left;">Governance × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A09 · Resource Exhaustion</td>
+            <td style="text-align: left;">Principle 5 · no ceiling on the Cost dimension</td>
+            <td style="text-align: left;">Action × Loop</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">A10 · Supply Chain (Tool/Model)</td>
+            <td style="text-align: left;">Principle 4 · no versioning on the Tool / Model Registry</td>
+            <td style="text-align: left;">entire matrix</td>
+            </tr>
+            </tbody>
+            </table>
+            <p><strong>Ten threats, ten engineering locations.</strong> Each one lands precisely on a specific intersection of the eight principles, each one can be located in a specific cell of the two-axis matrix, and each one corresponds to a set of executable engineering actions. <strong>This is what "engineered" means — not an abstract alignment discussion, but cell-level attribution and disposition.</strong></p>
+            <h2>Four engineering layers · The physical realization of governance</h2>
+            <p>To make "governance is an engineering problem" concrete, the ADPS community identifies four governance layers. Each layer has a specific engineering carrier, and each layer already has a reference implementation in mainstream Harnesses such as Claude Code, LangGraph, and CrewAI.</p>
+            <p><strong>Layer 1 · PreToolUse · Approval Gate.</strong> This is the outermost layer of governance. Before the Agent attempts to call a tool each time, a Hook intercepts it, makes a risk judgment, and escalates to human approval when necessary. Claude Code's PreToolUse Hook, LangGraph's interrupt_before node, and CrewAI's human_input field are all implementations of this layer. <strong>The engineering value of the Approval Gate is not in "blocking one LLM error" — it is in moving the decision of "whether to execute" up from the Agent to an external decision surface.</strong></p>
+            <p><strong>Layer 2 · Tool Registry · minimal tool set.</strong> This is the supply side of governance. The tools the Agent can access are not decided by the LLM itself; they are pre-registered, versioned, and signed by engineers in the Tool Registry. After Anthropic donated MCP to the Linux Foundation in 2025-03, the MCP Registry became the de facto standard for this layer. <strong>The minimal tool set corresponds to OWASP A01 + A10, and its engineering realization is the trio of "Registry + allowlist + enforced versioning."</strong></p>
+            <p><strong>Layer 3 · Action Audit · Observability Harness.</strong> This is the evidence layer of governance. Every Action leaves behind one ActionTrace — containing cost, latency, tool_name, input/output hash, and parent_action_id. After OpenTelemetry extended its GenAI Semantic Conventions in 2025, Agent observability gained a unified, cross-vendor schema. <strong>This layer corresponds to ADPS Principle 3 — evaluation is design, and the audit trail is itself an input to the evaluation system.</strong></p>
+            <p><strong>Layer 4 · Blast Radius · Sandboxing + Sub-Agent Isolation.</strong> This is the innermost layer of governance, and also the strongest line of defense. When the first three layers all fail — the Hook did not intercept, the tool was misused, the audit did not raise an alert in time — the Sub-Agent can still only cause limited damage within its own sandbox. Claude Code's Sub-Agents defaulting to an independent context, Anthropic's computer-use defaulting to a VM sandbox, and Replit Agent operating in its own isolated workspace are all practices of this layer. <strong>Blast Radius Control is ADPS's final engineering backstop in how it views safety — it does not assume the first three layers are foolproof; it assumes they will fail at least once.</strong></p>
+            <p>The four layers stacked together form a specific governance baseline that can be handed off to a security audit. <strong>No philosophy is needed; what is needed is to do each of these four layers solidly.</strong></p>
+            <h2>A real case · Claude Code abused in an attack · Attribution from the ADPS perspective</h2>
+            <p>In 2025-11, Anthropic disclosed the first recorded "AI-orchestrated cyber-espionage attack" — the attacker used Claude Code to coordinate 80-90% of the attack execution, with human operators intervening only at the 10-15% of critical decision points. This is the most-cited case in the 2026 discussion of Agent safety.</p>
+            <p>Doomerism attributes this to "a failure of model alignment, requiring stronger RLHF." Anarchism attributes it to "user abuse, not a model problem." Neither attribution can be converted into anything to change the next time an Agent system is deployed.</p>
+            <p>The attribution from the perspective of the ADPS eight principles lands on three specific engineering points of failure.</p>
+            <p><strong>Point of failure 1 · Tool Registry absent.</strong> The attacker used Claude Code's general-purpose Bash tool — a tool that had not been registered into a Registry with "per-scenario allowlisting." The engineering meaning of Principle 4 is that the Tool Registry must be scenario-segmented, minimized, and revocable. <strong>If the Bash calls in the attack scenario had to pass the allowlist review of a dedicated "penetration testing" Registry, the executable path of the attack would have narrowed sharply.</strong></p>
+            <p><strong>Point of failure 2 · No isolation between Sub-Agents.</strong> In the attack chain, multiple Sub-Agents collaborated to complete reconnaissance → exploit → exfiltration, but these Sub-Agents shared the same credential context. The engineering meaning of Principle 8 here is that, by default, Sub-Agents should not be able to see one another's credentials, and can only pass them through an explicit Token Passing protocol. <strong>Credential isolation is the engineering action that breaks 80-90% of the attack chain, and it has nothing to do with alignment.</strong></p>
+            <p><strong>Point of failure 3 · Action Audit not reported.</strong> The ActionTrace of every Bash call was written by Claude Code to the local disk, but it did not trigger any external alert — because there was no SIEM integration. The engineering meaning of Principle 3 is that the audit trail must have a "reporting trigger"; it cannot merely leave a passive trace. <strong>SIEM integration plus anomaly-pattern alerting is the engineering leap from audit to detection.</strong></p>
+            <p>Three points of failure, three specific engineering actions. <strong>The attribution from the ADPS perspective can be directly converted into P0 engineering tasks for the next time Anthropic upgrades Claude Code</strong> — and that is the consumability of "safety is an engineering problem."</p>
+            <h2>The relationship with the alignment community · The engineer's home turf</h2>
+            <p>The ADPS community does not take up the superintelligence debate, does not side with e/acc and does not side with the doomers — neither of these debates is on the engineer's home turf.</p>
+            <p><strong>What ADPS takes up is the home turf of production governance.</strong> It has public industrial cases (the attack disclosed by Anthropic, the Air Canada chatbot, the Replit Agent database deletion, the Microsoft Copilot data leak), public standards (OWASP Agentic Top 10, CSA Agentic Trust Framework, NIST AI RMF Agentic Profile draft 2026), and public engineering carriers (the Claude Code Hook, LangGraph interrupt, MCP Registry). <strong>Every one of these is something an engineer can consume, can fold into the SDLC, and can write into an OKR.</strong></p>
+            <p>ADPS is not in opposition to the alignment research community — the two work on different time scales. Alignment research serves the potential AGI systems of the 2030s; ADPS serves the Agent systems running in production environments in 2026. <strong>The two do not need to persuade each other; what they need is for each to do well the work on its own scale.</strong></p>
+            <p>ADPS's position is this: <strong>when you deploy an Agent to production today, the passing line for governance is the passing line at the engineering level, not the passing line at the philosophical level.</strong> Hooks are in place, the Tool Registry is established, the ActionTrace is reported, the Sub-Agents are isolated — that is "safe enough" for an Agent system in 2026. <strong>Safe is not an absolute value; it is an engineering baseline value relative to a known threat model.</strong></p>
+            <h2>Conclusion</h2>
+            <p><strong>Agent safety is an engineering problem — governance, observability, blast radius control, three engineering matters.</strong></p>
+            <p>The ADPS community's stance on this is simple: treat the OWASP Agentic Top 10 as an issue tracker, treat the two-axis matrix as a coordinate system for attribution, treat the eight principles as a design baseline, and treat Harnesses such as Claude Code and LangGraph as reference implementations. <strong>Safety holds no special status at ADPS — it is a design topic on the Governance meridian of the two-axis matrix, accorded the same treatment as Memory, Reasoning, and Action.</strong></p>
+            <p>This position will be written into the forthcoming ADPS <em>Production Readiness Baseline v0.1</em> — a neutral baseline document covered by the eight principles, attributed through the two-axis matrix, and given a Tier division through three-layer governance, that any CTO can hand off to legal and to a security audit. This document does not discuss alignment; it discusses only "what engineering actions are needed to reach Tier-N."</p>
+            <p>Engineering problems are treated with engineering methods. This is ADPS's only stance on the matter of governance and safety.</p>
+            <hr />
+            <p>ADPS · Agent Design Patterns Society · adpsagent.com</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/positions/">← Back to all positions</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

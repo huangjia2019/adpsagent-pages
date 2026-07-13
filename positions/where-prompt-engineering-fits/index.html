@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where Prompt Engineering Fits — Positions · ADPS</title>
+    <meta name="description" content="Prompt is one input to the Harness, not architecture — it is 1/10 of agent engineering, not the center.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/positions/where-prompt-engineering-fits/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/where-prompt-engineering-fits/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/where-prompt-engineering-fits/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/" style="color: var(--color-link);">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/positions/where-prompt-engineering-fits/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/positions/" style="color: var(--color-text-muted);">Positions</a>
+            </p>
+
+            <h1>Where Prompt Engineering Fits</h1>
+            <blockquote>
+            <p>Prompt is one input to the Harness, not architecture. It is 1/10 of agent engineering, not the center. This is the judgment that sets ADPS apart from the prompt-centric school.</p>
+            </blockquote>
+            <h2>1 · The current state · prompt engineering has been inflated into the whole of agent engineering</h2>
+            <p>Across 2023 and 2024, the industry underwent a collective shift in perception—<strong>treating prompt engineering as the center of agent engineering</strong>.</p>
+            <p>The evidence is scattered everywhere. The moment OpenAI released its prompt engineering guide, hundreds of "prompt template collection" GitHub repos sprang up, the top few of them gathering tens of thousands of stars. Prompt engineering was briefly listed among the high-frequency skills on LinkedIn job postings; by mid-2023 some companies were even advertising "prompt engineer" roles paying upwards of 300,000 US dollars—a title that then quietly disappeared from most job listings in 2025. <em>Prompt Engineering for Developers</em>, <em>The Art of Prompt Engineering</em>, <em>ChatGPT Prompting Mastery</em> lined the bookshelves. The prompt engineering short courses put out by Geekbang, Coursera, and DeepLearning.AI add up to more than fifty. This was a cognitive flood.</p>
+            <p>By the second half of 2024, the industry reflected systematically for the first time—this road had been taken too far. Anthropic's Claude Code team publicly rejected the "giant system prompt" route in early 2025, turning instead to a tool registry + permission pipeline + hook system. A line from Karan Prasad's April 2026 reverse-engineering analysis of Claude Code's 512K lines of code has been quoted repeatedly—<strong>"Claude Code's moat is not the prompt, it is the harness."</strong> Around the same time, LangChain founder Harrison Chase said at LangChain Interrupt 2025 that "prompt engineering is a small piece of the puzzle." <strong>But the industry's engineering education has not caught up.</strong> Open up a mainstream agent tutorial and more than half of it is still about how to write prompts.</p>
+            <p>This is the moment for ADPS to take a position—<strong>prompt engineering is 1/10 of agent engineering, not the center, and certainly not architecture</strong>.</p>
+            <h2>2 · The ADPS position</h2>
+            <p><strong>Prompt is one input to the Harness, not architecture.</strong></p>
+            <p>Unpack that sentence—</p>
+            <p>The prompt determines how the model responds in a single given call; the Harness determines under what conditions the model is called, what context it is handed, what tools it is permitted to call, when it stops, what gets left as a trace, and how to roll back when something goes wrong. <strong>The prompt is the shape of a single call; the Harness is the boundary of system behavior.</strong></p>
+            <p>These two things are not on the same order of magnitude.</p>
+            <p>The fourth ADPS principle states that "the Harness is the engineering substrate of the agent"—and within this framework prompt engineering occupies a clear position: <strong>it is the craft of the system prompt layer inside the Harness, the local triggering mechanism for Reasoning and Action among the seven cognitive functions in certain scenarios</strong>. It has its own legitimate territory, but stepping beyond that territory is misuse.</p>
+            <p>Let us lay out the legitimate and the illegitimate, each in turn.</p>
+            <h2>3 · The legitimate territory of prompt engineering</h2>
+            <p>The following five scenarios are where prompt engineering genuinely delivers, and where no better engineering substitute exists.</p>
+            <p><strong>Role definition in the system prompt.</strong> Giving the model a clear role—"you are a financial compliance review assistant, and your output must conform to the section format of MAS 670"—is one of the core jobs of prompt engineering, with no architectural substitute. Claude Code's system prompt contains long passages of role and behavioral constraints, DeerFlow's Researcher Agent has its role prompt, and the first paragraph of OpenCode's AGENTS.md is likewise a role definition. <strong>Role is the work of the prompt, not the work of the Harness.</strong></p>
+            <p><strong>Few-shot example design.</strong> Giving the model two to five input-output example pairs so it can learn implicit rules from the examples—this is extremely effective for structured output, domain specialization, and style transfer. Anthropic's own published prompt engineering documentation lists few-shot among the most effective techniques. <strong>The selection, ordering, and similarity of examples</strong> are prompt craft, with no architectural substitute.</p>
+            <p><strong>Output format constraint.</strong> Getting the model to output JSON, XML, or a specific markdown format—this is another genuine battleground for prompt engineering. Even with a structured output API (OpenAI function calling, Anthropic tool use), the underlying layer still depends on prompt design. <strong>The precision of output format is 80% from the prompt and 20% from schema validation.</strong></p>
+            <p><strong>Chain-of-Thought triggering.</strong> The phrase "let's think step by step" is a classic piece of prompt engineering craft—it triggers the model into a longer chain of intermediate reasoning. The variants of CoT (self-consistency CoT, Tree-of-Thoughts, Plan-and-Solve) are all designs at the prompt layer as well. The engineering layer cannot readily substitute for this—<strong>the triggering mechanism of reasoning is, in essence, linguistic.</strong></p>
+            <p><strong>Failure mode mitigation.</strong> When a model is known to hallucinate, overstep, or repeat itself on a certain class of input—a negative instruction in the prompt ("do not fabricate numbers," "do not give medical advice," "if you are unsure, say you don't know") is one of the techniques for reducing these failure modes. <strong>This is not the only line of defense, but it is the first line of defense.</strong></p>
+            <p>These five scenarios together amount to roughly the entire legitimate territory of prompt engineering. They matter, they require dedicated craft training, and they deserve to be taken seriously—but <strong>together they are only 1/10 of agent engineering.</strong></p>
+            <h2>4 · The illegitimate overreach of prompt engineering</h2>
+            <p>The following six misuses are the main reason agent projects died over the past two years.</p>
+            <p><strong>Using a prompt in place of architecture.</strong> "I implemented a multi-agent collaboration system with a single 5,000-word prompt"—this kind of demo was popular in the 2024 ChatGPT circles. The problem is that a demo is always a demo; <strong>architectural problems cannot be solved with a prompt.</strong> The real problems of multi-agent collaboration are message passing, context isolation, conflict resolution, and handoff fidelity—these are engineering problems at the Harness layer, not language problems.</p>
+            <p><strong>Using a prompt in place of evaluation.</strong> "I wrote 'please self-assess the output quality and give a score from 0 to 100' into the prompt"—this is another typical misuse. A model's self-assessment carries serious, well-known bias (it tends to give itself high marks), and such "evaluation" has no engineering meaning whatsoever—<strong>no ground truth, no latency and cost measurement, no regression test.</strong> The third ADPS principle states that "evaluation is design"; the place for evaluation is an independent evaluation harness inside the Harness, not a single sentence in the prompt.</p>
+            <p><strong>Using a prompt in place of governance.</strong> "I wrote 'calling any API involving money is not allowed' into the system prompt"—this is the standard form of governance misuse. An LLM's instruction following has well-known circumventability, and new variants of prompt injection (DAN, the grandma exploit, unicode tag smuggling) are published every month, dozens of them. <strong>Governance must be implemented at the Harness layer with a permission pipeline, tool registry, and approval gate</strong>—the prompt is only an auxiliary hint, not enforcement. Claude Code's PreToolUse Hook is the engineering location of governance.</p>
+            <p><strong>Using a prompt in place of memory architecture.</strong> "I stuffed 50K tokens of conversation history into the prompt"—this practice was popular in 2024 when long-context models had just appeared. The problems surfaced immediately: token costs exploded, key information drowned in the noise, and nothing persisted across sessions. <strong>Memory is an architectural problem</strong>—short-term / long-term tiering, retrieval strategy, relevance scoring, and the persistence layer are all engineering problems at the Harness layer. The prompt is a consumer of memory, not the implementation layer of memory.</p>
+            <p><strong>Using a prompt in place of tool dispatch.</strong> "I wrote 'when the user asks about the weather, call the weather API' into the prompt"—putting tool routing into the prompt as a natural-language description. This road had an extremely high failure rate in early agent projects in 2024. <strong>Tool dispatch is an engineering problem, not a language problem</strong>—the schema design of the tool registry, permission boundary, failure handling, and retry strategy all require code implementation at the Harness layer. Anthropic's tool use API launched in 2024, OpenAI's function calling, and the MCP protocol are all the engineering direction for this.</p>
+            <p><strong>Trying to implement a state machine with a prompt.</strong> "I wrote 'you are in the planning phase; after planning is complete you enter the execution phase; after execution is complete you enter the reflection phase' into the prompt"—stuffing a finite-state-machine into the prompt. This is one of the most hidden and most common anti-patterns of the past two years. <strong>An LLM does not maintain state—state must be implemented at the Harness layer with a real state machine or graph framework (LangGraph, Pydantic Graph, an in-house orchestration layer).</strong> The "state" described in the prompt is essentially a form of wishful thinking—the model may follow the state you describe this time and skip a phase the next. <strong>State is an engineering object, not a language object.</strong></p>
+            <p>These six misuses share one form—<strong>downgrading an architectural problem into a language problem.</strong> The legitimate territory of prompt engineering is "language problems"; overreaching to do "architectural problems" is bound to fail.</p>
+            <h2>5 · The true position of prompt engineering in the two-axis matrix</h2>
+            <p>The ADPS two-axis framework—the vertical axis of the seven cognitive functions (Perception / Memory / Reasoning / Action / Reflection / Collaboration / Governance) × the horizontal axis of the six topologies (Chain / Route / Parallel / Orchestrate / Loop / Hierarchy)—gives prompt engineering a precise coordinate.</p>
+            <p><strong>Prompt engineering mainly affects the Reasoning and Action functions on the vertical axis</strong>—through the system prompt it shapes the model's reasoning style (CoT, ToT, ReAct), and through tool description it shapes tool-selection behavior.</p>
+            <p><strong>Prompt engineering has almost no effect on the horizontal axis</strong>—the six execution topologies of Chain / Route / Parallel / Orchestrate / Loop / Hierarchy are architectural decisions at the Harness layer and have nothing to do with the prompt. An Orchestrator-Worker topology will not become a Hierarchy because you write a good prompt; a Chain topology will not become a Loop because you write a poor one. <strong>Topology is engineering structure, independent of language.</strong></p>
+            <p><strong>The range prompt engineering affects across the 28 cells</strong>: it affects roughly Reasoning × 6 + Action × 6 = 12 cells, specifically "how the model responds within this cell," but it does not affect "how this cell is composed into the system."</p>
+            <p>To quantify this—<strong>prompt engineering is the local craft of 12 cells within the 28-cell matrix, not the design language of the matrix.</strong></p>
+            <p>This is where the judgment of 1/10 comes from—<strong>the prompt affects the local response quality of the model within certain cells, its range of effect is limited, and each cell still has other, stronger engineering levers (tool schema, permission, context strategy, reflection loop).</strong></p>
+            <h2>6 · A comparison of two kinds of production teams</h2>
+            <p>Having observed more than thirty agent deployment projects over the past eighteen months, teams can be sorted into two kinds—</p>
+            <p><strong>Prompt-heavy + Harness-thin (fail mode).</strong> The traits of this kind of team are clear—a system prompt of more than 5,000 words, no independent tool registry, no permission pipeline, no evaluation harness, no audit log. <strong>Every engineering problem is solved by "adding another passage to the prompt."</strong> The typical way such projects die: dazzling at the demo stage, then a corner-case avalanche once they enter production, more than 30% of engineering time spent within three months on repeatedly tuning the prompt, and the project quietly taken offline within a year.</p>
+            <p>There were a great many such projects in 2024-2025—a certain automaker's after-sales customer service Agent, a certain bank's wealth advisory Agent, a certain e-commerce platform's recommendation Agent—all sharing the trait of being prompt-heavy. None of them survived the first year.</p>
+            <p><strong>Harness-heavy + prompt-clean (success mode).</strong> The traits of this kind of team are equally clear—the system prompt is usually kept within 800-2,000 words, focused on role and high-level behavior, while all the remaining engineering effort goes into the tool registry, permission pipeline, context management, observability, and recovery. <strong>The prompt is the final step in the engineering output, not the center.</strong></p>
+            <p>Claude Code is the most complete sample of this road—its system prompt is under 3,000 words, but the Harness layer runs to 512K lines of code. DeerFlow 2.0 is another sample—the prompt of each sub-agent is short, but each agent has a Docker sandbox, a persistent filesystem, and a long-term memory store. Aider is a third sample—the prompt is minimal, with all the engineering effort going into the Git boundary. <strong>What these three projects have in common is Harness-heavy + prompt-clean; all have survived more than three years, and all are reference samples for current production-grade agent engineering.</strong></p>
+            <p>What this comparison shows is simple—<strong>the prompt is not the lever; the Harness is the lever.</strong></p>
+            <h2>7 · Closing · the upgrade path</h2>
+            <p>This position is not written to belittle the prompt engineer—<strong>quite the opposite, it is written to point the prompt engineer toward a clear upgrade path.</strong></p>
+            <p>Engineers who studied prompt engineering over the past two years hold something real—they understand the craft of the model's language layer, they understand few-shot design, they understand CoT triggering, they understand format constraints. These skills are not obsolete; <strong>they are 1/10 of agent engineering, and they remain a necessary 1/10.</strong></p>
+            <p>But staying only within that 1/10 has no future. <strong>The direction of the upgrade is the Harness engineer</strong>—learning the schema design of the tool registry, learning to implement the permission pipeline, learning the strategies of context management, learning to build the evaluation harness, learning the engineering of observability and audit, learning the topology selection of multi-agent orchestration.</p>
+            <p>Along this upgrade path, the craft of prompt engineering is not lost—it gets absorbed into the Harness engineer's toolbox as a sub-skill of "the system prompt layer." <strong>The 1/10 is still there; it is simply no longer the whole.</strong></p>
+            <p>ADPS welcomes this upgrade. This society's engineering education, the Pattern Selection Card, the six-step selection method, the Agent Incident Taxonomy—all of these artifacts are prepared for "those who want to upgrade from prompt engineer to Harness engineer."</p>
+            <p><strong>Prompt is one input to the Harness, not architecture.</strong> Acknowledging this is the first step toward doing agent engineering seriously, beginning in 2026.</p>
+            <hr />
+            <p><em>ADPS · Agent Design Patterns Society · adpsagent.com · 2026-05-30 · v0.1</em></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/positions/">← Back to all positions</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

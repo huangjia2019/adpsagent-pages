@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M1 Hierarchical Retention · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Slice an agent&#x27;s memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/m1-hierarchical-retention/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/" class="active">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M1</p>
+
+                        <h1>M1 · Hierarchical Retention</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Memory × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (multi-tier storage and loading overhead)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Memory patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Slice an agent's memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>The problem it solves</h2>
+            <p>The information an agent has to "recall" at startup spans completely different scopes. A company's security policy is permanently valid for everyone; a user's preferences follow only that person; session progress matters only for this run; tool results expire after a single turn. Stuffing all of it into one prompt hits two walls at once: tokens blow up, or the critical information gets drowned in noise.</p>
+            <p>Hierarchical retention slices this information into tiers by scope, and each tier has its own storage location, expiration time, and loading strategy. The agent loads from coarse to fine at startup and drills down tier by tier when needed. The core problem it solves is not "what to store" but "how to tier"—a memory system without tiers degrades over time into a warehouse where nothing can be found.</p>
+            <h2>Why the coordinate is Memory × Hierarchy</h2>
+            <ul>
+            <li><strong>Vertical axis · Memory</strong>: It governs what the agent stores across sessions, across users, and across projects, corresponding to the classic working / session / long-term three-tier memory division. It is the foundational pattern of the memory module.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: The tiers stand in a subordinate relationship—an outer tier's settings are the defaults for inner tiers, and an inner tier can override the outer one. Data rises and falls between hot / warm / cold, which is a naturally hierarchical storage structure, not a Chain and not a Loop.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <ol>
+            <li><strong>Tier by scope</strong>: The primary basis for tiering is "who should see this piece of information," not "content type." The typical four tiers are user-level (unchanged across all sessions), project-level (shared within a project), session-level (valid for the current run), and ephemeral (expires after one turn). Scope determines which tier a piece of information belongs to.</li>
+            <li><strong>Independent backend per tier</strong>: Each tier's storage backend is chosen separately according to its access pattern. The user tier is high-read, low-write, and permanent, which suits an indexed relational store; the project tier suits a file system under git management; the session tier is high read-write with a TTL, which suits Redis; the ephemeral tier is just an in-memory dictionary. Using one backend for all four tiers is the mark of a beginner implementation.</li>
+            <li><strong>Load from coarse to fine</strong>: At session startup, the prompt is assembled from coarse to fine by scope, and each tier has its own token budget. One benefit of tiering is that no matter how long a session runs, it cannot squeeze out the user tier.</li>
+            <li><strong>Promotion, demotion, and eviction</strong>: A mature implementation lets memory flow automatically according to access pattern—frequently referenced memory is promoted to a higher tier, memory not accessed for a long time is demoted, and expired memory is cleared per a retention policy. This turns a static schema into a dynamic working set.</li>
+            </ol>
+            <h2>Production scenarios where it fits</h2>
+            <ul>
+            <li><strong>Agents reused across sessions, users, and projects</strong>: programming coaches, long-term assistants, and internal enterprise agents need to remember "who this user is, what this project is about, and where the last conversation left off."</li>
+            <li><strong>Multi-tenant SaaS agents</strong>: Tiering by scope naturally provides isolation—user A's preferences do not pollute user B's session, and project X's rules are not carried into project Y. Scenarios that cannot tolerate cross-tenant data leakage, such as finance, healthcare, and contract review, rely on this especially.</li>
+            <li><strong>Enterprise developer agents</strong>: Claude Code's multi-tier CLAUDE.md is exactly this pattern. The person who writes CLAUDE.md is acting as a memory architect, placing security rules, personal preferences, and project rules in different tiers.</li>
+            </ul>
+            <h2>Where it commonly goes wrong</h2>
+            <ul>
+            <li><strong>Copying tier count instead of matching need</strong>: Copying CoALA's three tiers (working / episodic / semantic) outright when the product only needs two, leaving a pile of empty scaffolding in the code with nothing to put in it. The tier count should match the number of scope kinds the product actually has.</li>
+            <li><strong>No schema on the user tier</strong>: Letting the agent write free text like "Xiao Li knows decorators" produces, half a year later, ten phrasings for the same concept and a cliff drop in retrieval hit rate. High-frequency fields must be put into a typed schema.</li>
+            <li><strong>Designing everything as startup injection</strong>: The user tier and project tier are startup injection, the session tier is progressive reading, and the ephemeral tier is real-time assembly. Mashing the three access patterns into one will make the session tier's tokens explode after it accumulates dozens of turns.</li>
+            <li><strong>Forcing tiering onto fully stateless scenarios</strong>: Single-shot Q&amp;A and one-off ETL transformations do not need cross-session memory.</li>
+            <li><strong>Eviction without a reason log</strong>: Compliance (GDPR right-to-be-forgotten) and debugging both require proving "what was deleted, why, and when." Without a log, this cannot be proven.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Working set hit rate</strong> (healthy range ≥ 80%): whether all the memory the agent truly needs during reasoning is in the prompt. Below 30% means the tiering is not working, and no matter how elegant the schema is, it is wasted. This is the primary metric for judging whether the tiering is done right.</li>
+            <li><strong>Per-tier token share</strong> (allocated by budget): whether the tokens each tier loads into the prompt stay within budget. A tier that consistently exceeds its budget needs truncation or to be pushed down to on-demand loading.</li>
+            <li><strong>Cross-tier pollution rate</strong> (healthy range near 0): whether the user tier gets polluted by incidental information from a single session, or whether data leaks between tenants. In multi-tenant scenarios this is a make-or-break metric.</li>
+            <li><strong>Total startup tokens</strong> (measured against a baseline): how much is saved compared with a "full history dump." Done right, tiering typically saves 70-80% of startup tokens.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>Define tiers (scope from coarse to fine):
+                USER    → permanent / high-read / strong schema / relational store
+                PROJECT → permanent / team-shared / file system + git
+                SESSION → TTL 24h / high read-write / Redis
+                TURN    → TTL 5min / very high frequency / in-memory dict
+
+            Write:    select backend by tier, record last_modified
+            Read:     query from fine to coarse, return on inner-tier hit (inner overrides outer)
+            Assemble: at startup build prompt from coarse to fine, truncate each tier by token_budget
+            Evict:    clear expired content and record a reason log (compliance + debug)
+            </code></pre>
+            <p>Four engineering points for landing this: each tier's storage backend must genuinely use a different choice; assembly must truncate by token budget rather than stuffing in everything; writes must do "write routing" (a small model or a rule decides which tier to write to); and eviction must keep a reason log.</p>
+            <h2>Enterprise landing example</h2>
+            <p>An execution-oriented agent at a payroll SaaS company builds its memory into three tiers. L1 is the current stream of consciousness—the minimal necessary set for this moment, holding only the information genuinely useful for advancing the immediate next step, kept extremely lean. L2 is the in-progress milestone log—recording where the task stands and what was just completed, maintaining task context across turns. L3 is cross-turn reusable experience—keeping the judgments and practices distilled from this kind of task as a long-term asset. The three tiers each manage one timescale: L1 manages "now," L2 manages "this task," and L3 manages "across tasks." This tiering lets the agent, over a long process, neither be drowned in irrelevant history (L1 stays lean) nor lose memory between turns (L2 is continuously maintained), and grow more proficient with use (L3 keeps accumulating). The accompanying engineering decisions include an independent token budget per tier, real-time assembly of L1 rather than preloading, and a trust check before writing to L3 to keep incidental single-run information from polluting long-term experience.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Progress Tracking (M3)</strong>: M3 is the hottest tier within the hierarchy. The todo list is the agent's register, frequently updated and loaded on every reasoning step; it is essentially the part of the session tier dedicated to managing "where we are."</li>
+            <li><strong>RAG (M2)</strong>: Tiering solves "how long-term known memory is loaded by scope," while RAG solves "how the massive knowledge that no scope can hold is queried on demand." Tiering manages the known; RAG manages the external.</li>
+            <li><strong>Failure Journal (M4) / Procedural Memory (M5)</strong>: These two are dedicated partitions within the long-term memory tier—M4 stores failure cases, M5 stores successful moves. Tiering is the container; they are the contents inside it.</li>
+            <li><strong>Semantic Compression (perception module)</strong>: When the session tier fills up with tokens, semantic compression is triggered to slim it down, which is a supporting mechanism for tiering within a single tier.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of hierarchical retention is not database schema design but giving the agent a working set manager—it decides which memory stays resident in RAM, which is swapped in on demand, and which is swapped out for the long term.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

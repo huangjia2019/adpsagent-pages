@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2 规划执行 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="Agent 先生成完整 plan（含依赖结构、资源预估、审批节点），再按 plan 执行，遇到偏离时局部 replan 而非全局重写。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/a2-plan-and-execute/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/a2-plan-and-execute/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/" class="active">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>A2
+            </p>
+
+            <h1>A2 · Plan-and-Execute · 规划-执行</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">行动 Action × 编排 Orchestrate（协）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（一次规划 + 多次执行，异构模型可显著压成本）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">行动模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">Agent 先生成完整 plan（含依赖结构、资源预估、审批节点），再按 plan 执行，遇到偏离时局部 replan 而非全局重写。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>长任务里，逐步反应式（ReAct）的 agent 几乎注定翻车。一个 HR 招聘 agent 把 17 个工具全开放给模型自由决定每一步，结果是：把没面试通过的候选人薪酬发给了招聘经理、跳过背景调查直接发 offer、反复查同一份薪酬数据 50 次。根因是 agent 没有完整 plan——context window 装不下 12 步招聘流程的全貌，模型只能基于"上一步刚发生什么"决定下一步，没有全局视图。</p>
+            <p>Plan-and-Execute 把动作端拆成两个阶段：先 plan，后 execute。规划阶段一次性把任务排成有序的多步，标清依赖、资源、必须人审的节点；执行阶段按 plan 推进。它的价值在于把宏观顺序从模型的临场判断里拿出来，钉死在一份可审计的计划里。</p>
+            <h2>为什么坐标是「行动 × 编排」</h2>
+            <ul>
+            <li><strong>纵轴 · 行动</strong>：agent 不是单步执行，而是把一个目标变成一连串对外动作。"先想后干"的两阶段属于行动端，不是推理端的单点思考。</li>
+            <li><strong>横轴 · 编排</strong>：Plan-and-Execute 的中心是一个编排者——它持有完整 plan，按依赖图调度每一步、维护全局状态与检查点、在偏离时做局部 replan。这跟提示链（A3）的纯链式不同：A3 是前一段输出喂给后一段的线性传递，A2 是一个中心节点统筹多步，独立步骤可并行展开、关键节点落 checkpoint、出错可回退重规划。统筹与回收这一层，正是编排区别于链式的地方。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>Plan-and-Execute 的核心不是复杂，而是三件事：分家、审批闸门、context reset。Aider 的 architect mode 核心只有 9 行代码就把这三件事占全了——architect 出 plan，editor 清空上下文后执行 plan，中间默认要用户确认。</p>
+            <p>落到工程上有几个关键设计：</p>
+            <ul>
+            <li><strong>异构模型</strong>：plan 阶段需要深度推理，用强模型；execute 阶段是结构化、可验证的，用中等模型就够，便宜 5 到 15 倍。Aider 在 SWE-bench 实测，强模型规划加中等模型执行，比单用强模型准确率高 3 到 5 个点，成本降 40%。</li>
+            <li><strong>plan 是 user-owned artifact</strong>：Claude Code 把 plan 写文件而不是留在 prompt 里。文件天然是审计日志，可以多人 review、版本化、diff，用户从文件读、agent 也从文件读。</li>
+            <li><strong>局部 replan</strong>：plan 走到一半与现实冲突时，只改受影响的部分，已 commit 的步骤不动。Anthropic 的工程经验值是每 5 步检查一次 plan 是否还成立，每次 replan 预算不超过总预算的 10%。</li>
+            </ul>
+            <p>研究数据印证了这套范式的经济性。ReWOO 把 plan-execute 的 LLM 调用压到 2 次（一次规划加一次综合），中间所有工具调用并行执行不走模型，相比 ReAct 范式 token 效率高 5 倍、准确率还高 4 个点。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>目标明确、步骤可枚举、副作用敏感三者叠加</strong>：HR 招聘、信贷审批、运维变更。</li>
+            <li><strong>有硬性流程约束的合规场景</strong>：比如"背景调查必须在发 offer 之前"。这类约束可以编码进 plan validator，规划阶段就拦下违规的 plan。</li>
+            <li><strong>需要崩溃恢复的长任务</strong>：每步写 checkpoint，崩溃后从 checkpoint resume，把 plan-execute 当可恢复事务来设计。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>plan ossification（计划僵化）</strong>：plan 写好后执行器一路跑，中途某步返回意外结果（候选人撤回、schema 变更、外部 API 改协议），规划器没及时介入，后续步骤全是无效计算。应对是每 N 步把当前子任务和原始目标做一次对齐检查。</li>
+            <li><strong>plan thrashing（计划震荡）</strong>：replan 触发太频繁，每次失败都重写，agent 永远在规划从不执行。应对是设 replan 硬上限加 replan 预算封顶。</li>
+            <li><strong>stale context 悄悄累积</strong>：长任务的 state 用自由格式笔记容易"看起来还能解析但语义已坏"。应对是 state 用 JSON schema 严格化，让 partial corruption 早暴露。</li>
+            <li><strong>cache 友好性被忽略</strong>：plan-execute 每步若 invalidate 缓存，成本可飙升约 10 倍。Manus 重写 todo.md 时做结构性 update 而非 append-only，正是为了保 prefix 稳定、命中缓存。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>长任务成功率 / 错误率</strong>（健康区错误率 &lt;1%）：HR 招聘案例从 8.3% 降到 0.4%。这是 plan 是否起作用的直接信号。</li>
+            <li><strong>每任务 LLM 调用次数</strong>（越低越好，且要稳定）：案例从平均 47 次/候选人降到 13 次。次数失控通常意味着 replan 在震荡。</li>
+            <li><strong>replan 频率</strong>（健康区每 5 步一次左右）：过高是 thrashing，长期为零是 ossification 的前兆。</li>
+            <li><strong>缓存命中率</strong>（健康区越高越好）：被 Manus 团队称为生产 agent 单一最重要的指标，直接决定单 token 成本。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>plan = planner(goal, context)        # 强模型，一次
+若用户不批准 → 返回
+while plan 未完成:
+    ready = plan 中依赖已满足的步骤   # 拓扑序
+    并行执行 ready:
+        成功 → 标记 completed，写 checkpoint
+        失败 → replan（受限于 MAX_REPLANS）
+    每满 N 步 → adaptive replan 检查 plan 是否仍成立
+返回 plan + 完整执行 trace
+</code></pre>
+            <p>工程落地要点：Planner、Executor、Approval 用依赖注入，由业务决定具体模型和 prompt；destructive 步骤登记 saga inverse；plan 写文件加版本化。</p>
+            <h2>企业落地示例</h2>
+            <p>梁博团队把"战略层计划"与"战术层执行"显式拆开。Plan-Exec 模式下，计划一旦由规划层写入 Workspace 的 DAG，调度器就按依赖关系推进，不再依赖 LLM 逐步重新选择路径。这正面解决了 ReAct 的结构性问题——ReAct 每一步都要再调一次 LLM 来决策，宏观执行顺序无法被工程化地钉死，长任务里随时可能跑偏。把顺序固化进 DAG 之后，模型只在单步内填参数和解读结果，宏观流程交给确定性的调度器，长任务的可靠性和成本才同时可控。落到 HR 招聘案例：重写成 Planner 加 Executor 加 Approval Gate 三段后，月度账单从 18 万降到 6 万，招聘周期从 23 天压到 16 天。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>提示链（A3）</strong>：一对对偶模式，一重一轻。A2 是完整 plan 加 DAG 并行加 replan，A3 是线性串联无 replan。生产里最常见的形态是 A2 在外、A3 在内——每个被规划出来的子任务内部跑一条 prompt chain。</li>
+            <li><strong>工具调度（A1）</strong>：A2 的每个执行步骤内部都要做一次 A1 的工具选择。Planner 和 Executor 用异构模型的思路，与 A1 的 Programmatic Tool Calling 同源。</li>
+            <li><strong>护栏三明治（A5）</strong>：plan 里的审批节点和合规校验，落地时常由 A5 的 pre-check 实现。两者都把控制权交还给用户。</li>
+            <li><strong>迭代假设验证（R4）</strong>：R4 是推理端的"边做边调"，A2 是行动端的"先定后调"。A2 的局部 replan 借鉴了 R4 的反馈调整思路。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Plan-and-Execute 不是"列 todo"，而是把人类几十年的项目管理工程沉淀（WBS、PERT、Saga、DAG 调度）原样复刻到 LLM 上——它之所以比单 agent ReAct 更耐用，是因为它站在成熟工程的肩膀上，而且把控制权交还给了用户。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1rem 0; padding: 0;">
+                <li style="margin-bottom: 0.6rem; line-height: 1.55;"><a href="cases/liangbo/" style="font-weight: 600;">东方屹腾 · 规划执行落地</a><span style="color: var(--color-text-muted);"> — ReAct 跨步漏步逼出来的任务 DAG + 状态机，把执行顺序从模型判断里拿出来钉进任务图。</span></li>
+            </ul>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS — Agent Design Patterns Society</title>
+    <meta name="description" content="ADPS is a small research community sedimenting reusable, debatable, reviewable architecture patterns for production-grade AI agent systems.">
+    <meta name="keywords" content="ADPS, Agent Design Patterns, AI agents, production agents, architecture patterns, two-axis framework, design language">
+
+    <meta property="og:title" content="ADPS — Agent Design Patterns Society">
+    <meta property="og:description" content="A design language for production AI agent systems. Founded 2026.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://adpsagent.com">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_CN">
+
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-home">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <section class="intro">
+            <div class="intro-text" style="grid-column: 1 / -1;">
+                <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Patterns Society</h1>
+                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">A design language for production AI agent systems.</p>
+                <p class="lede">
+                    ADPS is a small but serious research community sedimenting the field experience of
+                    Chinese engineers — agent practice, software engineering methodology, open-source
+                    harness work, enterprise deployment feedback — together with the recurring architectural
+                    problems and messy experience of the agent era, into
+                    <strong>a pattern language the world's engineers can use, debate, review, and pass on.</strong>
+                </p>
+            </div>
+        </section>
+
+        <section class="block" style="text-align: center; margin: 2rem 0 3rem;">
+            <a href="/patterns/" style="display: inline-block; text-decoration: none;">
+                <img src="/images/matrix-28-en-20260616.png"
+                     alt="The 28-pattern matrix — 7 cognitive functions × 6 execution topologies"
+                     style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
+                The 28-pattern matrix &middot; 7 cognitive functions &times; 6 execution topologies
+            </p>
+            <p style="margin-top: 0.75rem; max-width: 720px; margin-left: auto; margin-right: auto; font-size: 0.88rem; color: var(--color-text-muted); text-align: left;">
+                <strong style="color: var(--color-text);">A note on Choreography.</strong>
+                Choreography is sometimes listed as a topology. We treat it instead as a coordination
+                mode that operates <em>across</em> topologies — closer in spirit to the Teams pattern
+                than to an independent execution shape — so it is described in the patterns text rather
+                than given its own column.
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>What we do</h2>
+            <p>
+                ADPS organizes recurring agent-system architecture problems into a coherent pattern
+                language. The work is structured around three deliverables:
+            </p>
+            <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
+                <li style="margin-bottom: 0.5rem;"><strong>The pattern catalog</strong> — 28 named patterns on a 7×6 matrix
+                (cognitive function × execution topology), each with a runnable implementation and an engineering slice from a real production codebase.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>The pattern selection methodology</strong> — a 6-step process plus 5 laws that
+                turn "I'm building an agent for X" into a candidate pattern list in under fifteen minutes.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>The production harness</strong> — open-source reference implementations
+                that show how patterns compose under cost, latency, and governance constraints.</li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <h2>The framework</h2>
+            <p>
+                The two-axis framework — <strong>cognitive function × execution topology</strong> — was introduced
+                in <em>A Two-Dimensional Framework for AI Agent Design Patterns</em> (Huang &amp; Zhou,
+                <a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a>)
+                and developed further in the Manning book
+                <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a>.
+                ADPS now stewards the catalog as a community asset.
+            </p>
+            <p>
+                <a href="/patterns/" class="cta">See the 28-pattern matrix →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>Founders</h2>
+            <p>
+                Four founding members, four forces: architecture language, software engineering, open-source ecosystem,
+                enterprise deployment.
+            </p>
+            <ul style="margin: 0.8rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-jia.svg" alt="Jia Huang" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>Jia Huang</strong> <span style="color: var(--color-text-muted);">— Framework · Writing · Global Narrative</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">A*STAR Singapore. Author, <em>Designing AI Agents</em> (Manning).</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-ru.svg" alt="Bingsheng Ru" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>Bingsheng Ru (茹炳晟)</strong> <span style="color: var(--color-text-muted);">— Software Engineering · Agent System · R&amp;D Productivity</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">Industry Research Consultant, Tencent Research Institute. Vice Chair, CCF TF Multi-Agent Systems Engineering SIG.</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-jiang.svg" alt="Willem Jiang" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>Willem Jiang (姜宁)</strong> <span style="color: var(--color-text-muted);">— Open Source · Harness · Workflow</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">Apache Software Foundation contributor. DeerFlow.</span>
+                    </div>
+                </li>
+                <li style="padding: 0.85rem 0; display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
+                    <img src="/images/avatar-liang.svg" alt="Bo Liang" style="width: 60px; height: 60px; border-radius: 50%;">
+                    <div>
+                        <strong>Bo Liang (梁博)</strong> <span style="color: var(--color-text-muted);">— Enterprise SaaS · FinTech · Production Feedback</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">VP, Shanghai Dongfang Yiteng. Banking &amp; FinTech SaaS, agent transformation.</span>
+                    </div>
+                </li>
+            </ul>
+            <p style="margin-top: 0.8rem;">
+                <a href="/founders/" class="cta">Read the full team profiles →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>Advisor</h2>
+            <ul style="margin: 0.4rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.7rem 0;">
+                    <strong>Joey Tianyi Zhou (周天异)</strong> <span style="color: var(--color-text-muted);">— A*STAR IAIC Agent Chapter Director. Associate Professor at NUS. Co-author of the two-axis framework paper.</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="block">
+            <h2>Expert Group</h2>
+            <ul style="margin: 0.4rem 0 1rem 0; list-style: none;">
+                <li style="padding: 0.7rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong>Haofen Wang (王昊奋)</strong> <span style="color: var(--color-text-muted);">— Tenured Professor, Tongji University. Founding rotating chair of OpenKG. Knowledge graphs &amp; knowledge-enhanced LLMs (OpenSPG / KAG-Thinker / MemOS); 12,700+ citations.</span>
+                </li>
+                <li style="padding: 0.7rem 0;">
+                    <strong>Haili Zhang (张海立)</strong> <span style="color: var(--color-text-muted);">— Author of the LangGraph / LangChain practical guides. LangChain Ambassador. LFAPAC open-source evangelist.</span>
+                </li>
+            </ul>
+            <p style="margin-top: 0.8rem;">
+                <a href="/founders/" class="cta">Read full profiles →</a>
+            </p>
+        </section>
+
+        <section class="block">
+            <h2>Assets</h2>
+            <ul style="margin: 0 0 0 0; list-style: none;">
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a></strong>
+                    — the position paper introducing the two-axis framework.
+                </li>
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">github.com/huangjia2019/agent-design-patterns</a></strong>
+                    — runnable catalog of 28 patterns. Will migrate under the ADPS organization.
+                </li>
+                <li style="padding: 0.55rem 0; border-bottom: 1px dotted var(--color-rule);">
+                    <strong><a href="https://github.com/huangjia2019/designing-ai-agents" target="_blank" rel="noopener">github.com/huangjia2019/designing-ai-agents</a></strong>
+                    — companion code to <em>Designing AI Agents</em> (Manning).
+                </li>
+                <li style="padding: 0.55rem 0;">
+                    <strong><a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener">Manning &middot; <em>Designing AI Agents</em></a></strong>
+                    — the design-pattern catalogue for production AI agents.
+                    <br>
+                    <span style="font-size: 0.86rem; color: var(--color-text-muted);">
+                        Reader codes at Manning: <code>designing-ai</code> (eBook / MEAP, mainland China only &mdash; $20.99) &middot;
+                        <code>MLHuang4</code> (50% off all formats, valid Jun 9&ndash;23).
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="block" id="reach-out">
+            <h2>Reach out</h2>
+            <p>
+                ADPS is open to engineers and organizations with field experience building production-grade
+                agent systems — at scale, in regulated industries, or under hard reliability constraints.
+                Membership is by contribution, not application.
+            </p>
+            <p>
+                Fill the three fields below and we'll get in touch through WeChat.
+                Nickname is fine — no real name required.
+            </p>
+
+            <form action="https://formspree.io/f/xjgzjjeg" method="POST"
+                  style="margin-top: 1.25rem; padding: 1.25rem; background: var(--color-quote-bg); border: 1px solid var(--color-rule); border-radius: 6px;">
+
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="nickname">Nickname</label>
+                    <input type="text" id="nickname" name="nickname" required placeholder="e.g. zhangsan@netease"
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <div style="margin-bottom: 0.9rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="contact">WeChat ID or any contact</label>
+                    <input type="text" id="contact" name="contact" required placeholder="WeChat / Twitter / LinkedIn / etc."
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem;" for="direction">Technical direction</label>
+                    <input type="text" id="direction" name="direction" required placeholder="agent runtime / RAG / multi-agent orchestration / FinTech / DevOps / ..."
+                           style="width: 100%; padding: 0.55rem 0.7rem; border: 1px solid var(--color-rule); border-radius: 4px; font-size: 0.95rem; font-family: inherit; background: white;">
+                </div>
+
+                <button type="submit" class="btn"
+                        style="background: var(--color-link); color: white; border: none; padding: 0.6rem 1.3rem; border-radius: 4px; font-size: 0.95rem; font-weight: 600; cursor: pointer; font-family: inherit;">
+                    Send
+                </button>
+            </form>
+
+            <p style="margin-top: 1rem; font-size: 0.88rem; color: var(--color-text-muted);">
+                Prefer GitHub? Open a discussion or issue on
+                <a href="https://github.com/huangjia2019/agent-design-patterns/discussions" target="_blank" rel="noopener">agent-design-patterns</a>.
+            </p>
+        </section>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+            <p style="margin-top: 0.3rem;">
+                <a href="/" style="color: var(--color-text-muted);">EN</a> ·
+                <a href="/zh/" style="color: var(--color-text-muted);">中文</a> ·
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener" style="color: var(--color-text-muted);">GitHub</a> ·
+                <a href="/#reach-out" style="color: var(--color-text-muted);">Reach out</a>
+            </p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

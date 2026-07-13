@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方屹腾 · 规划执行落地 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="ReAct 跨步漏步逼出来的任务 DAG + 状态机，把执行顺序从模型判断里拿出来钉进任务图。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/a2-plan-and-execute/cases/liangbo/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/" class="active">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/a2-plan-and-execute/" style="color: var(--color-text-muted);">A2 规划执行</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
+
+            <h1>A2 · 规划执行 · 蓝皮书 · 东方屹腾执行型 Agent</h1>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">主模式</td>
+            <td style="text-align: left;">A2 规划执行 Plan-and-Execute（行动 × 编排）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">结合模式</td>
+            <td style="text-align: left;">A1 工具调度 · G1 审批门 · M3 进度追踪</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">案例</td>
+            <td style="text-align: left;">上海东方屹腾科技 · HR/薪酬 SaaS · 服务 2 万+ 企业 · 执行型 Agent</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对应白皮书</td>
+            <td style="text-align: left;"><a href="https://adpsagent.com/zh/patterns/a2-plan-and-execute/">/zh/patterns/a2-plan-and-execute/</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">源</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿 第五章 · PPT 第 16–19 页</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">一句话</td>
+            <td style="text-align: left;">当任务的几步有严格依赖、ReAct 走一步看一步会跨步漏步时，先把步骤规划成任务图钉死，再按图调度执行。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>场景：这一格在案例里解决什么</h2>
+            <p>东方屹腾要验证的第一个完整业务场景，是帮用户快速搭建薪资组：用户用自然语言说出薪资组诉求，系统从模板库里向量匹配出最贴合的薪资组模板，先给企业原有薪资组数据建好快照，确认快照建立后再导入模板，导入失败就用快照回滚。这一串动作的顺序不能乱，每一步都依赖前一步的结果，跟开场举的报销例子是同一类问题——「先创建申请、再上传发票、再提交审批、再查询结果」这种有严格递进依赖的多步事务。</p>
+            <p>这类场景下，光靠 ReAct 的「走一步看一步」不够稳。</p>
+            <h2>落地演进：问题怎么把它逼出来</h2>
+            <p>最早的设想很自然：把所有 API 描述成 Agent 能感知的工具，再在技能里描述每个场景该怎么编排，把「这个场景要先调哪步、再调哪步」作为叙事上下文喂给 Agent，期望它在 ReAct 里自己跑出正确顺序——调完第一步，观察到完成了，再调第二步。</p>
+            <p>听上去合理，实测不行。技能编排作为叙事上下文给到模型后，它有时能跑对顺序，有时会明显跨步或漏一步，导致整个任务不符合预期。根因还是 LLM 的不确定性：把执行顺序交给概率模型临场判断，就没法保证每次都对。</p>
+            <p>于是团队识别出还缺一种行动模式——规划执行。它的定位是把要完成的几步<strong>先明确规划下来钉死</strong>，而不是走一步看一步。顺序从模型的临场判断里拿出来，落进一份可调度、可审计的任务图。</p>
+            <h2>关键设计：数据结构 / 控制信号 / 机制</h2>
+            <p>规划执行的落地复杂度比 ReAct 高一个量级。ReAct 的核心控制结构本质上是一个带退出边界的链式循环，概念理解了，数据结构和逻辑很容易写出来。规划执行不一样，它要明确规划并管理连续多个任务的调度与依赖，得维护一套更复杂的任务规划与调度状态。</p>
+            <p>落地下来有几个核心构件。</p>
+            <ul>
+            <li><strong>任务 DAG 图</strong>：把目标分解成一张任务依赖图，独立任务可以并行展开，有依赖的任务按拓扑序串行。这跟传统的 DAG 调度（Airflow、Prefect 那一类）是同一个工程范式。</li>
+            <li><strong>规划器、执行器、验收器</strong>：规划器产出任务图，执行器按图推进，验收器判断每个节点是否达成。三者分开，各管一段。</li>
+            <li><strong>任务状态机</strong>：这是最花功夫的一块。每个任务节点有自己的状态（ready、in_progress、completed 等），下游节点要能被调度启动，前提是它依赖的上游节点全部 completed、且本节点状态为 ready。整套调度语义靠这台状态机驱动。</li>
+            </ul>
+            <p>控制权在 Orchestrator 和具体行动模式之间流转。ReAct 跑着跑着如果发现任务脉络清晰了，可以明确规划成若干并行或串行任务，就把控制权交还 Orchestrator，切到规划执行模式。两种模式不是二选一，而是按任务的清晰程度切换。</p>
+            <h2>踩过的坑与取舍</h2>
+            <ul>
+            <li><strong>不要一次性生成一份漂亮 plan 然后就不动了。</strong> 真实世界会变、工具会失败、证据会补充，计划必须允许局部 replan，而不是全局重写。</li>
+            <li><strong>ReAct 与规划执行的边界要钉清楚。</strong> 脉络不清、需要边做边看的，走 ReAct。步骤明确、有严格依赖和状态传递的，走规划执行。把后者套到前者的场景上是过度设计，把前者用在后者的场景上则会跨步漏步。</li>
+            <li><strong>状态机模型值得花一番功夫精巧设计。</strong> 这块是规划执行可靠性的地基，书里给得了概念抽象，给不了这种底层工程细节，是团队额外花了较多设计心血才做好的。</li>
+            </ul>
+            <h2>边界与指标</h2>
+            <p>规划执行不是免费的。它引入了任务图、状态机、调度器这些重构件，只有当任务确实是「多步、有依赖、顺序错了就交付失败」时才值回票价。关键要盯的是：关键节点有没有 checkpoint、出错能不能局部 replan、独立任务有没有真正并行起来、以及一次规划产出多个任务后任务图全局状态的维护是否正确。</p>
+            <h2>对应白皮书的哪几节</h2>
+            <p>这是 A2 规划执行（行动 × 编排）的一个企业落地实例，对应白皮书里「核心机制」的 Planner / Executor / Orchestrator 三分，「最小骨架」的 PlanStep 依赖结构与 checkpoint，以及「容易出错的地方」里「一次性生成漂亮计划然后不再更新」那一条。案例把白皮书的抽象骨架填上了真实的任务状态机细节。</p>
+            <h2>可迁移判据：别的 SaaS 什么条件下照搬</h2>
+            <p>当你的场景满足这几条，就该上规划执行而不是硬扛 ReAct：任务步骤明确、步骤间有严格的依赖和状态参数传递、且跨步漏步会直接导致交付失败或破坏业务数据。反过来，内容生成型、步骤松散、容错度高的场景（先查资料再总结再生成报告那一类），ReAct 甚至简单的提示链就够了，不必引入任务图和状态机这套重机制。</p>
+            <p>另外有个顺带的红利值得提前规划进去：一旦把任务 DAG、状态机、调度器、执行器搭好了，关键任务的人审阻塞与续作（见 <a href="/zh/patterns/g1-approval-gate/">G1 审批门切片</a>）就能水到渠成地接上去，不用再单独造一套阻塞机制。</p>
+            <h2>一句话</h2>
+            <p>规划执行的价值，是把「按什么顺序做」这件最不能交给概率的事，从模型的临场判断里拿出来，钉进一张可调度、可回滚、可人审的任务图。</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

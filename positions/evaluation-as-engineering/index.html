@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation as Engineering — Positions · ADPS</title>
+    <meta name="description" content="Evaluation is design itself — pre-design, pre-prod, production; miss one stage and the system drifts.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/positions/evaluation-as-engineering/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/evaluation-as-engineering/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/evaluation-as-engineering/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/" style="color: var(--color-link);">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/positions/evaluation-as-engineering/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/positions/" style="color: var(--color-text-muted);">Positions</a>
+            </p>
+
+            <h1>Evaluation as Engineering</h1>
+            <blockquote>
+            <p>Today, evaluation is treated as a pre-launch scorecard. The ADPS position is this: <strong>evaluation is an input to design, a permanent dashboard in production, and the TDD of agent engineering</strong>. Without it, the system is always drifting.</p>
+            </blockquote>
+            <h2>1 · The Status Quo · Treating eval as a benchmark score</h2>
+            <p>Across the teams I have observed, <strong>at least seventy percent equate evaluation with running SWE-bench or AgentBench once</strong>. The system is more or less built, a popular benchmark is picked and run once, and if the score is acceptable the system ships; if not, it gets tuned. The entire lifecycle of eval is the week before launch—nobody thinks about it before, and nobody looks at it after.</p>
+            <p>This posture has a lineage—it is inherited from the model-card culture of traditional machine learning. A model finishes training, gets run on GLUE / MMLU / HumanEval, and the score is published, the paper is published, the model card is published—eval is the model's report card. This makes a certain sense in LLM evaluation, because the model itself is consumed as a "snapshot of general capability."</p>
+            <p>But an agent system is not a snapshot of a model. <strong>An agent is a production system deployed against specific business traffic</strong>—whether it is "right" is determined jointly by your customer conversation distribution, your tool-call frequency, your compliance constraints, and your cost budget. Scoring 65 on SWE-bench across 500 open-source PRs has <strong>almost nothing to do</strong> with your miss rate when an agent handles customer support.</p>
+            <p>So there are two mismatches in the status quo—</p>
+            <p>The first mismatch · <strong>treating a general benchmark as a business eval</strong>. Your agent does not need to score high on SWE-bench; it needs to push the P0 miss rate below 0.1% on your company's ticket distribution. These two things differ in distribution, in scoring criteria, and in stakeholders.</p>
+            <p>The second mismatch · <strong>treating eval as a pre-ship checklist</strong>. "Run the eval once and see whether the score passes"—this language sounds familiar because it simply imports the unit-test mindset. But the failure modes of an agent system in production are unlike those of traditional software—it is not that some line of code throws an exception, it is that <strong>its performance drifts across a class of input distribution as a whole</strong>. A checklist cannot catch drift; only a continuous eval pipeline can.</p>
+            <h2>2 · The ADPS Position</h2>
+            <p><strong>Eval is an input to design plus a continuously running dashboard · not a pre-launch checklist</strong>.</p>
+            <p>This sentence has two halves. The first half · eval must be locked down before architecture design begins—the targets on the three axes of latency / cost / accuracy are inputs to design selection, not after-the-fact outputs. ADPS Principle 3, "Evaluation is design," has already established this. The second half is what this position paper sets out to develop · <strong>the lifecycle of eval does not end at the moment before launch; it extends from pre-design all the way through every day of production</strong>.</p>
+            <p>To put it more concretely—<strong>agent engineering has no moment at which "eval is done."</strong> The design phase sets the SLO, the development phase writes the regression suite, the pre-prod stage runs before launch, production traces run after launch, drift is reviewed weekly, and the eval itself is iterated quarterly. Eval is a discipline running through the entire agent lifecycle, not a one-off event.</p>
+            <h2>3 · The Three Moments of Eval</h2>
+            <p>ADPS divides eval in agent engineering into three stages. Each stage differs in its goal, its stakeholders, and its deliverables.</p>
+            <p><strong>Pre-design eval · as a design input</strong>. The way one regulatory-technology team works gave me a clear sample—before any design begins, lock the three axes: latency end-to-end &lt; 3 seconds, cost per inference &lt; $0.05, accuracy miss rate &lt; 0.1%. These three numbers are not a wish list; they are hard constraints handed down by compliance and regulation. <strong>All subsequent pattern selection, model selection, and concurrency topology obey these three numbers</strong>. If a Reflection Loop pushes latency to 5 seconds, then that addition is not made—no matter how elegant it looks on paper. The deliverable of pre-design eval is an "SLO card," a single page pinned to the team's wall.</p>
+            <p><strong>Pre-prod eval · distinguishing regression from new features</strong>. After the system is built, two kinds of eval must run before launch. One kind is regression eval—does existing functionality still work under the new version of the code? This kind runs fast, covers broadly, and any divergence it surfaces must trigger a block. The other kind is new-feature eval—does the capability added in this version (say, a newly added tool, or a new reasoning mode) meet expectations on specially constructed samples? This kind runs slow, has few cases, and requires the designer to inspect the output personally. <strong>Mixing the two means doing both badly</strong>—the regression suite gets dragged down by the instability of new features, and the new-feature cases get drowned in the noise of regression. This distinction is inherited from Google SRE release engineering—in progressive rollout, baseline traffic and canary traffic are evaluated separately.</p>
+            <p><strong>Production eval · continuous trace and drift detection</strong>. Launch is not the endpoint of eval; it is where eval truly begins. The production environment carries real traffic every day, and every request is a free eval sample. The practice ADPS recommends is · full trace (langfuse / langsmith / in-house) + sampled human annotation + weekly drift reports. Drift comes in two kinds—input-distribution drift (the questions users ask have changed) and output-quality drift (the model's answers to the same class of question have gotten worse). <strong>The two kinds of drift must be monitored separately</strong>, because their remediation paths are entirely different—the former is a product problem, the latter a model or prompt problem. The multi-agent system Notion disclosed in April 2026 includes a dedicated page on how they run trace-as-eval in production, and this practice is becoming standard among leading teams.</p>
+            <h2>4 · Five Pitfalls</h2>
+            <p>Across the failure samples I have seen over the past two years, eval pitfalls cluster heavily into five.</p>
+            <p><strong>Pitfall 1 · Testing only accuracy, not latency and cost</strong>. High accuracy is good—this is the largest debt inherited from ML benchmark culture. In a production scenario, 99% accuracy but a 10-second average response means users walk away; 95% accuracy but $3 per inference means the CFO cuts the budget. <strong>The three axes must appear together on the same eval dashboard</strong>; single-axis optimization is a trap. This corresponds directly to Agent CAP—three of CAP's four corners are obtained through eval measurement, and you cannot look at just one corner.</p>
+            <p><strong>Pitfall 2 · Substituting a public benchmark for domain eval</strong>. SWE-bench / AgentBench / τ-bench are good tools—their benefit is giving the community a shared language and making different teams' work comparable. But <strong>they are not your business eval</strong>. How your customer-support agent performs on your company's tickets is something no public benchmark can answer for you. <strong>Public benchmarks are for horizontal calibration · domain eval is for vertical decisions</strong>—the two are not interchangeable.</p>
+            <p><strong>Pitfall 3 · Waiting until the system is built to start building the eval suite</strong>. This is the most expensive mistake. Building an eval suite itself requires writing cases, labeling ground truth, and calibrating inter-rater agreement, and this takes at least a month or two. Waiting until the system is finished to begin means you have spent the preceding months making architecture decisions with no standard of measurement. I once saw a team build for 6 months before starting on eval; the moment eval ran, accuracy came back at 62%, and the whole thing was torn down and rebuilt—<strong>the root cause of those 6 wasted months was that eval was not present on day 1</strong>.</p>
+            <p><strong>Pitfall 4 · Eval without traceability · no debugger</strong>. Eval comes back with 78% accuracy—and then what? Which cases failed? At which agent node did they fail? Was it Perception failing to understand, Reasoning going astray, or Action calling the wrong tool? An eval without a trace chain only tells you "it's sick," not "where it's sick." The minimum standard ADPS recommends · every eval case, once run, must let you open and inspect the full trace (input / intermediate state / tool calls / output), and it must be classifiable by cell in the 28-pattern matrix—is this failure a Perception × Loop case or a Reflection × Chain case? <strong>Eval without classification cannot drive improvement</strong>.</p>
+            <p><strong>Pitfall 5 · Binary pass / fail · no SLO thinking</strong>. "Did this eval pass"—this is the language of unit tests. An agent system should not manage eval with binary thinking. <strong>It should use the SLO + error budget thinking of SRE</strong>—set a "floor that must be met" (say, latency &lt; 3 seconds for 95% of cases) and a "tolerable proportion of occasional misses" (say, 5% of traffic allowed to time out), ship once the floor is met, and manage the rest with incremental rollout. SLO thinking keeps eval from blocking release while never losing control of quality.</p>
+            <h2>5 · The Tool Stack · How to Choose</h2>
+            <p>The agent eval tool stack in 2026 falls roughly into three layers. I will lay out where each sits.</p>
+            <p><strong>Trace and observability layer</strong>: langfuse / langsmith / arize / in-house. This layer is responsible for completely recording every agent execution on production traffic—input, the intermediate state of each node, all tool calls, token consumption, final output. <strong>Trace is the physical foundation of eval</strong>; without trace there is no production eval. Langfuse's strength is being open-source and self-host friendly (necessary in compliance scenarios); LangSmith integrates tightly with LangGraph (if you are already full-stack LangChain); Arize leans toward enterprise ML observability (if the team comes from an MLOps background).</p>
+            <p><strong>Eval framework layer</strong>: Anthropic Evals / OpenAI Evals / DeepEval / Promptfoo / Inspect AI. This layer is responsible for organizing eval cases into suites, running batches, and producing reports. Anthropic Evals was released in April 2026; its strength is deep integration with the Claude ecosystem and native support for thinking traces. OpenAI Evals has a longer history but leans toward model eval rather than agent eval. DeepEval and Promptfoo are open-source options—flexible, but the team has to assemble them itself. <strong>The key is not which vendor you choose, but that once chosen you keep investing</strong>—an eval framework is an asset that will evolve alongside the business for ten years.</p>
+            <p><strong>In-house eval framework</strong> · most leading teams end up building their own. The reason is not distrust of open-source tools, it is that <strong>the business's eval logic is highly coupled to the business's domain semantics</strong>—a compliance scenario's eval has to understand regulatory rules, an e-commerce support eval has to understand the order workflow, and these cannot be expressed with generic tools. The reasonable boundary for building in-house is · <strong>case definition and scoring logic at the upper layer built in-house · trace and batch runner at the lower layer using off-the-shelf tools</strong>. Building every layer in-house is wasteful; building none of the business layer in-house is ineffective.</p>
+            <p>The ADPS recommendation · <strong>any team's Day 1 tool stack should have, at minimum, langfuse or an equivalent (trace layer) + one eval framework (could be Anthropic Evals or in-house) + an SLO dashboard</strong>. Drop any one of the three and the system is drifting.</p>
+            <h2>6 · The Minimal Eval Setup · Three Dashboards on Day 1</h2>
+            <p>ADPS recommends that every production agent system have three dashboards from day 1. This is the minimal set—with fewer than these three, you have no way to manage the system.</p>
+            <p><strong>Dashboard 1 · SLO three axes</strong>. Look once a day. Three lines on the Y axis · latency p50 / p95 / p99, cost per request (layered by model), accuracy (domain eval sampling). The X axis is time. <strong>The SLO red lines are drawn on the chart</strong>. Any line crossing a red line opens an incident. The purpose of this chart is to answer the question the boss will always ask—"how is this thing doing right now." Answered in one chart, no explanation.</p>
+            <p><strong>Dashboard 2 · Trace sampling and classification</strong>. Look once a week. Each day, randomly sample 50-100 traces from production traffic, classify them by cell in the 28-pattern matrix (did this one mainly go through Perception × Loop or Reasoning × Chain), and label each as success / failure / edge case. The purpose of this chart is to answer the question engineers ask—"which cells does our system work well on, which does it work poorly on, and where should we invest next quarter." This chart is also the basis for incident attribution—when an incident occurs, locate directly which cell failed.</p>
+            <p><strong>Dashboard 3 · Drift monitoring</strong>. Look once a week. Two lines · input-distribution drift (measure this week's traffic against the baseline distribution by embedding distance) + output-quality drift (the change in score of the same fixed eval suite under this week's model / prompt version). <strong>High input drift → something happened on the product side · high output drift → the model or prompt has drifted</strong>. Read the two lines separately, do not conflate them.</p>
+            <p>None of these three charts requires expensive tools—langfuse's free tier plus a simple dashboard tool (Grafana / Metabase / Notion embed) is enough to stand them up. <strong>The key is to build them on day 1 · not to patch them in after the system has an incident</strong>.</p>
+            <h2>7 · Closing · Eval is the TDD of Agent Engineering</h2>
+            <p>Kent Beck established TDD as a methodology in 1999—write the test first, then the implementation, then refactor. The engineering significance of TDD is not "more stable code," it is <strong>making "what counts as right" concrete before you start</strong>. Begin writing without defining "right," and you do not know whether what you wrote is right.</p>
+            <p>By 2026, agent engineering has still not truly adopted the corresponding discipline. Many teams treat eval as a pre-ship checklist—which amounts to returning to the pre-2000 posture of "write the code first, add unit tests later." This posture is more expensive in the agent era, because the failure mode of an agent system is not throwing an exception, it is <strong>drifting across a class of distribution as a whole</strong>. An exception is seen at a glance; drift is invisible—only eval can see it.</p>
+            <p><strong>Eval is the TDD of agent engineering</strong>. The pre-design SLO card is "define right first," the pre-prod regression suite is the "red-green light," and production trace and drift monitoring are the "safety net for continuous refactoring." Drop any one of the three stages and the system is drifting—drifting meaning you do not know whether it is better or worse today than yesterday, you do not know whether users will walk away next week, and you do not know when the incident will come.</p>
+            <p>ADPS takes this position in order to put the discipline up front—<strong>not learned the hard way in a team that has already had an incident · but installed on day 1</strong>. This is a matter of engineering, not of data, and least of all of papers.</p>
+            <p>—— ADPS · 2026-05-30</p>
+            <p>ADPS · Agent Design Patterns Society · adpsagent.com</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/positions/">← Back to all positions</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

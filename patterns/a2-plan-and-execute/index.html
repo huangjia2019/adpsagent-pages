@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2 Plan and Execute · Pattern White Paper · ADPS</title>
+    <meta name="description" content="The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/a2-plan-and-execute/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/" class="active">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>A2</p>
+
+                        <h1>A2 · Plan-and-Execute</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Action × Orchestrate (coordination)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (plan once, execute many times; heterogeneous models can cut cost substantially)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Action patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full rewrite when it drifts.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>In long tasks, a step-by-step reactive (ReAct) agent is almost certain to fail. An HR recruiting agent exposed all 17 tools to the model and let it decide each step freely. The result: it sent a rejected candidate's compensation to the hiring manager, skipped the background check and issued the offer directly, and queried the same compensation record 50 times over. The root cause is that the agent has no complete plan—the context window cannot hold the full picture of a 12-step recruiting process, so the model can only decide the next step based on "what just happened in the previous step," with no global view.</p>
+            <p>Plan-and-Execute splits the action side into two phases: plan first, then execute. The planning phase lays the task out in one pass as an ordered sequence of steps, marking dependencies, resources, and the nodes that require human review; the execution phase advances against the plan. Its value is in taking the macro-level ordering out of the model's in-the-moment judgment and pinning it into an auditable plan.</p>
+            <h2>Why the coordinate is "Action × Orchestrate"</h2>
+            <ul>
+            <li><strong>Vertical axis · Action</strong>: the agent does not execute a single step; it turns a goal into a sequence of outward actions. The two-phase "think first, then act" belongs to the action side, not the single-point thinking of the reasoning side.</li>
+            <li><strong>Horizontal axis · Orchestrate</strong>: the center of Plan-and-Execute is an orchestrator—it holds the complete plan, schedules each step along the dependency graph, maintains global state and checkpoints, and does local replanning when things drift. This differs from the pure chaining of prompt chaining (A3): A3 is a linear hand-off where the previous segment's output feeds the next, whereas A2 is a central node coordinating multiple steps, where independent steps can expand in parallel, key nodes drop checkpoints, and errors can roll back and replan. This layer of coordination and recovery is exactly what distinguishes Orchestrate from Chain.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>The core of Plan-and-Execute is not complexity but three things: separation, an approval gate, and context reset. The core of Aider's architect mode covers all three in just 9 lines of code—the architect produces the plan, the editor clears its context and then executes the plan, and by default the user confirms in between.</p>
+            <p>Several key designs matter in engineering practice:</p>
+            <ul>
+            <li><strong>Heterogeneous models</strong>: the plan phase needs deep reasoning, so use a strong model; the execute phase is structured and verifiable, so a mid-tier model is enough and is 5 to 15 times cheaper. In Aider's SWE-bench testing, a strong model for planning plus a mid-tier model for execution was 3 to 5 points more accurate than using the strong model alone, at 40% lower cost.</li>
+            <li><strong>The plan is a user-owned artifact</strong>: Claude Code writes the plan to a file rather than keeping it in the prompt. A file is an audit log by nature—it can be reviewed by multiple people, versioned, and diffed; the user reads from the file and the agent reads from it too.</li>
+            <li><strong>Local replanning</strong>: when the plan halfway through conflicts with reality, change only the affected parts and leave committed steps untouched. Anthropic's engineering rule of thumb is to check every 5 steps whether the plan still holds, with each replan budgeted at no more than 10% of the total.</li>
+            </ul>
+            <p>Research data confirms the economics of this paradigm. ReWOO compresses the plan-execute LLM calls down to 2 (one for planning plus one for synthesis), with all intermediate tool calls executed in parallel without going through the model; compared with the ReAct paradigm, it is 5 times more token-efficient and 4 points more accurate.</p>
+            <h2>Where it fits in production</h2>
+            <ul>
+            <li><strong>Where a clear goal, enumerable steps, and side-effect sensitivity stack together</strong>: HR recruiting, credit approval, operations changes.</li>
+            <li><strong>Compliance scenarios with hard process constraints</strong>: for example, "the background check must come before the offer." Such constraints can be encoded into a plan validator that rejects a violating plan during the planning phase.</li>
+            <li><strong>Long tasks that need crash recovery</strong>: write a checkpoint at each step, resume from the checkpoint after a crash, and design plan-execute as a recoverable transaction.</li>
+            </ul>
+            <h2>Where it tends to break</h2>
+            <ul>
+            <li><strong>Plan ossification</strong>: once the plan is written, the executor runs straight through; some step midway returns an unexpected result (a candidate withdraws, a schema changes, an external API changes its protocol), the planner does not intervene in time, and all subsequent steps are wasted computation. The remedy is to do an alignment check every N steps between the current subtask and the original goal.</li>
+            <li><strong>Plan thrashing</strong>: replanning fires too often, every failure triggers a rewrite, and the agent is forever planning and never executing. The remedy is a hard cap on replans plus a replan budget ceiling.</li>
+            <li><strong>Stale context accumulating quietly</strong>: long-task state held as free-form notes easily becomes "still parseable on the surface but semantically broken." The remedy is to strictly type state with a JSON schema so partial corruption surfaces early.</li>
+            <li><strong>Cache friendliness ignored</strong>: if each plan-execute step invalidates the cache, cost can spike about 10 times. Manus does a structural update rather than append-only when rewriting todo.md, precisely to keep the prefix stable and hit the cache.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Long-task success rate / error rate</strong> (healthy zone error rate &lt;1%): the HR recruiting case dropped from 8.3% to 0.4%. This is the direct signal of whether the plan is working.</li>
+            <li><strong>LLM calls per task</strong> (lower is better, and it should be stable): the case dropped from an average of 47 per candidate to 13. Calls spiraling out of control usually means replanning is thrashing.</li>
+            <li><strong>Replan frequency</strong> (healthy zone is about once every 5 steps): too high is thrashing; staying at zero long-term is an early sign of ossification.</li>
+            <li><strong>Cache hit rate</strong> (healthy zone is the higher the better): called by the Manus team the single most important metric for a production agent, as it directly determines per-token cost.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>plan = planner(goal, context)            # strong model, once
+            if user does not approve → return
+            while plan is not complete:
+                ready = steps in plan whose dependencies are satisfied   # topological order
+                execute ready in parallel:
+                    success → mark completed, write checkpoint
+                    failure → replan (bounded by MAX_REPLANS)
+                every N steps → adaptive replan check whether the plan still holds
+            return plan + full execution trace
+            </code></pre>
+            <p>Engineering points: inject Planner, Executor, and Approval as dependencies, letting the business decide the concrete models and prompts; register a saga inverse for destructive steps; write the plan to a file and version it.</p>
+            <h2>Enterprise example</h2>
+            <p>Liang Bo's team explicitly separated the "strategic-layer plan" from the "tactical-layer execution." Under the Plan-Exec pattern, once the planning layer writes the plan into the Workspace's DAG, the scheduler advances by dependency relations and no longer relies on the LLM to re-select the path step by step. This directly solves ReAct's structural problem—ReAct calls the LLM again to decide at every step, so the macro execution order cannot be engineered and pinned down, and a long task can drift at any moment. Once the order is fixed into the DAG, the model only fills in parameters and interprets results within a single step, while the macro flow is handed to the deterministic scheduler; only then are the reliability and cost of long tasks both controllable. Applied to the HR recruiting case: after rewriting it into the three segments of Planner plus Executor plus Approval Gate, the monthly bill dropped from 180,000 to 60,000, and the hiring cycle was compressed from 23 days to 16.</p>
+            <h2>Relationships to other patterns</h2>
+            <ul>
+            <li><strong>Prompt chaining (A3)</strong>: a dual pair, one heavy and one light. A2 is a complete plan plus DAG parallelism plus replanning; A3 is linear chaining with no replanning. The most common form in production is A2 on the outside and A3 on the inside—each planned subtask runs a prompt chain internally.</li>
+            <li><strong>Tool dispatch (A1)</strong>: each execution step in A2 internally does one round of A1 tool selection. The idea of using heterogeneous models for Planner and Executor shares its origin with A1's Programmatic Tool Calling.</li>
+            <li><strong>Guard sandwich (A5)</strong>: the approval nodes and compliance checks in the plan are often implemented by A5's pre-check at deployment time. Both hand control back to the user.</li>
+            <li><strong>Iterative hypothesis testing (R4)</strong>: R4 is the reasoning side's "adjust as you go," while A2 is the action side's "fix first, then adjust." A2's local replanning borrows R4's feedback-adjustment idea.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Plan-and-Execute is not "make a todo list." It replicates decades of human project-management engineering (WBS, PERT, Saga, DAG scheduling) onto the LLM as is—it is more durable than a single ReAct agent because it stands on the shoulders of mature engineering, and because it hands control back to the user.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

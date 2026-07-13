@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R3 并行探索 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="同一个查询内故意启动 N 条独立推理链，再用聚合策略合成单一答案，用算力换准确度。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/r3-parallel-exploration/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/r3-parallel-exploration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/" class="active">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>R3
+            </p>
+
+            <h1>R3 · Parallel Exploration · 并行探索</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">推理 Reasoning × 并行 Parallel（撒）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">高（5-10× 单次调用）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">推理模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">同一个查询内故意启动 N 条独立推理链，再用聚合策略合成单一答案，用算力换准确度。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>单条推理链有"侥幸偏差"：同一个提示、同一个模型，不同采样得到的答案不一定一致。一条链刚好走偏，整个结论就错了，而且每一步看上去都对——错误藏在"这一次恰好没抓到的那个特征"里，事后复盘很难发现。</p>
+            <p>并行探索把"赌一条链"换成"同时跑 N 条独立的链，再合并"。它不追求降低单次成本，而是在<strong>错误代价远大于算力代价</strong>的场景里，用 3-5 倍的算力把准确度抬上去。它和复杂度路由（R2）互补：路由负责日常省钱，并行负责关键决策买质量，两者在同一个 Agent 里并存。</p>
+            <h2>为什么坐标是「推理 × 并行」</h2>
+            <ul>
+            <li><strong>纵轴 · 推理</strong>：并行的实体是<em>同一个推理任务的多条候选路径</em>（多个 candidate solution），属于推理策略层，而不是把任务拆给多个 Agent。这是它和协作模块"扇出聚合（C2）"的根本区别——后者并行的是子任务，前者并行的是同一道题的多个解法。</li>
+            <li><strong>横轴 · 并行</strong>：N 条分支同时跑、互不知情，最后统一聚合，是天然的并行结构，不是链式串联，也不是循环迭代。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次并行探索由三段组成：</p>
+            <ol>
+            <li><strong>分发</strong>：把同一个查询复制成 N 条分支，通过提示扰动（不同 temperature、可能不同的 system prompt 或模型）制造多样性。N 的工业甜区是 <strong>2-5</strong>：研究数据显示 N=2 已能拿到 N=10 约 90% 的收益，N=10 在生产里几乎找不到划算的场景。</li>
+            <li><strong>隔离执行</strong>：每条分支跑在独立的执行环境里（独立的模型客户端、独立的中间状态、独立的错误恢复）。分支之间串扰会让"独立采样"退化成"链式错误传染"，准确度不升反降。</li>
+            <li><strong>聚合</strong>：用一种聚合策略把 N 个结果合成一个。聚合策略不是只有"多数投票"一种——它本质上是<strong>对错误代价的工程化编码</strong>。</li>
+            </ol>
+            <p>聚合策略的选择取决于业务"错的代价分布"：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">聚合策略</th>
+            <th style="text-align: left;">适用场景</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">多数投票 Majority</td>
+            <td style="text-align: left;">答案可枚举、错误代价对称（数学、分类）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">加权投票 Weighted</td>
+            <td style="text-align: left;">不同分支可信度不同（不同模型 / 不同算力档）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">评委裁定 Verifier</td>
+            <td style="text-align: left;">开放式答案（写作、代码、规划）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">第一个达标 First-Correct</td>
+            <td style="text-align: left;">有明确成功判据（测试驱动）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">任一警报即升级 Any-Alarm</td>
+            <td style="text-align: left;">高风险且错误代价不对称（医疗、金融、安全）</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>高风险、错误代价不对称的判断</strong>：医疗影像分诊、金融风控、反洗钱、安全漏洞审查。这类场景"漏判"远比"误判"贵，配合 Any-Alarm 聚合即可把不对称代价表达进系统。</li>
+            <li><strong>答案空间大、单链不稳的推理</strong>：复杂诊断、多跳推理、需要 self-consistency 提升可靠性的任务。</li>
+            <li><strong>关键的一次性决策</strong>：值得花 N 倍算力换确定性的节点（如不可逆的业务承诺前的最终复核）。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>分支不独立</strong>：N 条分支共享执行环境，相互污染缓冲区或 retry，"伪独立"导致准确度反降。必须给每条分支独立的运行时。</li>
+            <li><strong>提示扰动不足</strong>：N 条都跑出几乎一样的答案，有效分支数塌成 1，白白浪费 N-1 倍算力。temperature 太低、缺少 system prompt 多样性是主因。</li>
+            <li><strong>盲目默认多数投票</strong>：在错误代价不对称的场景用 Majority，会把少数分支的真实警报投没——医疗里这等于漏诊。</li>
+            <li><strong>该收齐却早终止</strong>：Any-Alarm 必须等所有分支返回，不能用"高置信度早终止"省钱，否则会漏掉警报信号。早终止只适用于对称代价场景。</li>
+            <li><strong>滥用并行</strong>：简单任务、低风险任务、便宜模型已经够用的任务跑 N=5 就是纯浪费。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>分支一致率</strong>（健康区 60-80%）：低于 50% 说明任务确实复杂、适合并行；高于 90% 说明任务太简单、不该并行。</li>
+            <li><strong>有效 N</strong>（健康区接近 N）：N 条里产生<em>不同</em>答案的分支数。N=5 但只有 2 种答案，说明扰动不够，加 N 不如改提示多样性。这是性价比最直接的信号。</li>
+            <li><strong>聚合成本占比</strong>（健康区 &lt;15%）：聚合这一步本身的算力占总成本的比例，过高就换更轻的聚合策略。</li>
+            <li><strong>质量提升</strong>（健康区 5-15 个百分点）：并行相对单链的准确度增益。低于 3 个点说明并行没起作用；高于 25 个点说明单链配置本身有问题，先修单链。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>对 query 复制 N 条分支：
+    每条分支 → 独立运行时 → 不同 temperature 采样 → (answer, confidence)
+聚合(N 个结果, 策略):
+    Majority   → 票数最多的答案
+    Weighted   → 按 confidence 加权后最高的答案
+    Verifier   → 交给独立评委模型打分裁定
+    Any-Alarm  → 任一分支命中高风险标签即升级，无视多数
+返回 final_answer + 完整分支 trace（每路答案/置信度/聚合策略/最终决策）
+</code></pre>
+            <p>工程落地四个要点：提示扰动要真正制造多样性；评委若用模型实现要用便宜模型；并发要复用连接池避免限流；Any-Alarm 与早终止互斥要在代码里写死。</p>
+            <h2>企业落地示例</h2>
+            <p>某三甲医院的医疗影像辅助 Agent，第一版单链推理读 CT 标记肺结节，准确率 89% 即上线试点。一例 12mm 结节被判低度疑似，三个月后确诊为肺腺癌早期——单链恰好没抓到边缘毛刺征。重写后改为 N=5 并行采样，5 路里 2 路抓到了毛刺和胸膜凹陷；团队把聚合策略从多数投票改成"任一路 ≥ 4a 立即触发二审"，准确率升到 96.2%，算力上升 4.1 倍。在医疗这种错误代价极不对称的场景，5 倍算力换 7 个百分点准确度，这笔账完全划算。配套的工程决策还包括：每路独立运行时（合规要求真独立采样）、Any-Alarm 场景不开早终止、N 路完整 trace 留档 7 年备监管审计。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>复杂度路由（R2）</strong>：互补。路由省钱，并行买质量，同一个 Agent 里两者并存——日常走路由，关键决策启动并行。</li>
+            <li><strong>思维链（R1）</strong>：并行的每一条分支内部通常就是一条思维链；并行是在 R1 之上叠加的"多采样"。</li>
+            <li><strong>扇出聚合（C2）</strong>：结构同源、聚合机制相通，区别在并行的实体——R3 是同一道题的多条解法（推理策略），C2 是不同子任务分给不同 Agent（协作拓扑）。</li>
+            <li><strong>迭代假设验证（R4）</strong>：对偶关系。并行是空间维度同时开 N 条线，迭代是时间维度一条线跑多次。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>并行探索的本质不是"多采几次投票"，而是<strong>用聚合策略把业务对错误的容忍模式编码进系统</strong>——选哪种聚合，就是在选一个代价函数。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

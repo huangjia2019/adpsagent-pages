@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C5 子代理隔离 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="子 agent 在独立 context 中执行，返回前必须压缩成 schema 化 artifact，主 agent 只看 artifact 不看 raw trajectory。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/c5-sub-agent-isolation/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/c5-sub-agent-isolation/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/" class="active">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>C5
+            </p>
+
+            <h1>C5 · Sub-Agent Isolation · 子代理隔离</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">协作 Collaboration × 层级 Hierarchy（分）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">横切（跨切关注点，叠加在其他协作模式上）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">协作模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">子 agent 在独立 context 中执行，返回前必须压缩成 schema 化 artifact，主 agent 只看 artifact 不看 raw trajectory。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>主 agent 派 sub-agent 干活，sub-agent 跑完把全部工作过程 dump 回来，主 agent 的 context 立刻被淹没。50 份合同每份 3000 字的详细分析回传就是 15 万字，主 agent 接到后推理质量断崖式下降。问题的根子是主 agent 不该看 sub-agent 的 raw 工作过程，只该看工作结论——就像律所的 PM 不会要求每个律师汇报读了哪一行字，只看"哪几份异常加它们的关键问题"。</p>
+            <p>子代理隔离解决的是 enterprise multi-agent 系统的 context pollution。它让每个 sub-agent 跑在自己的隔离 context 里，返回前强制 reduce 成结构化 artifact，主 agent 只消费 artifact。这件事的工程价值独立到值得单独成一个模式：它是层级委派、扇出聚合这些协作模式能在生产环境跑稳的内功，没有它，主 agent 第三个任务必爆 context、多 agent 跑久了必然 cascade。</p>
+            <h2>为什么坐标是「协作 × 层级」</h2>
+            <ul>
+            <li><strong>纵轴 · 协作</strong>：让 sub-agent 拥有独立的 context 和权限，是在协作中加边界的设计。它不是单纯的派工，而是给协作加上隔离纪律——主 agent 和 sub-agent 之间的信息流被刻意切断成"只传精炼结论"。</li>
+            <li><strong>横轴 · 层级</strong>：parent agent 调度 sub-agent，sub-agent 在自己的沙箱里跑，是层级加隔离的结构。它跟层级委派共格（都在协作 × 层级交点），但侧重不同——层级委派强调派工，子代理隔离强调隔离加摘要返回。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>子代理隔离由四件工程要素构成：</p>
+            <ol>
+            <li><strong>Context 隔离</strong>：sub-agent 启动时不继承 parent 的 history，只收到自己的 system prompt、具体的 task instruction、自己的 tool set。它看不到主 agent 跑过什么、其他 sub-agent 在做什么。</li>
+            <li><strong>Artifact schema 化返回</strong>：sub-agent 返回的不是自由文本总结，是结构化 artifact（pydantic model 或 JSON schema）。推荐三层结构——verdict（success / partial / failure）、top findings（3-5 条）、citations（可选）。这让主 agent 能用确定性代码直接 parse，不用再花 token 解析。</li>
+            <li><strong>失败 boundary 隔离</strong>：一个 sub-agent timeout 或抛异常，主 agent 收到的是 verdict=failure 的 artifact，而不是被异常炸掉。N 个 sub-agent 中 1 个挂掉只损失 1/N。</li>
+            <li><strong>并行互不干扰</strong>：N 个 sub-agent 各跑各的 context，互相看不到中间状态，也不直接通信——要交换信息必须经过主 agent。</li>
+            </ol>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>子任务产出多、主 agent context 紧的批量任务</strong>：合同审阅、文档扫描、大规模代码检索，每个 sub-agent 处理一份、只回传精炼结论。</li>
+            <li><strong>需要防止任务间相互污染的场景</strong>：每份合同应该被独立 fresh review，不被其他合同的细节 prime（避免 anchoring bias），独立 context 是必需的。</li>
+            <li><strong>数据 scope 不能跨的场景</strong>：一个 sub-agent 看到的敏感数据不能流到另一个 sub-agent 或污染主 agent，隔离 context 提供了天然的数据边界。</li>
+            <li><strong>需要防 prompt 污染的场景</strong>：sub-agent 的试错失败 trace、越界尝试不应该拖累主 agent 或其他 sub-agent 的后续推理。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>sub-agent 继承主 agent history</strong>：在 demo 阶段看着没事，等第三个任务跑完后主 agent history 累计几万 token，每个 sub-agent 都背这些 token 起跑——成本爆炸加质量下降。sub-agent 必须用本地 messages 完全独立起跑。</li>
+            <li><strong>返回自由文本而非 schema artifact</strong>：自由文本让主 agent 端可用性差 10 倍——不能用确定性代码 parse、不能做 confidence 排序、不能做 verdict 分流。必须强制 schema 化。</li>
+            <li><strong>sub-agent 之间直接通信</strong>：为了省事让 sub-agent A 调 sub-agent B，会立刻把层级拓扑变成网状拓扑，cascade failure 风险飙升。要交换信息必须经过主 agent。</li>
+            <li><strong>失败没有 boundary</strong>：sub-agent 抛异常没被捕获，主 agent 收到 raw exception 导致 reasoning loop 被中断、整个任务失败。失败时要返回 schema 化的 failure artifact。</li>
+            <li><strong>子任务输出本身就小还套隔离</strong>：子任务产出小于 500 token、或主 agent 确实需要看中间细节时，隔离是多余开销。它的价值在产出多、context 紧、能 schema 化输出三者同时成立时。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>主 agent context 占用</strong>（健康区留足推理空间）：所有 sub-agent artifact 加起来占主 agent context 的比例。50 份合同 artifact 控制在 1 万字以内、给主 agent 留 4 万 token 自己推理是一个好的目标。</li>
+            <li><strong>artifact 合规率</strong>（健康区 &gt; 95%）：sub-agent 返回符合 schema 的比例。偶尔输出自由文本绕过 schema 会触发重派和延迟。</li>
+            <li><strong>失败级联率</strong>（健康区 &lt; 5%）：一个 sub-agent 失败拖垮其他 sub-agent 的概率。四件要素全做到位才能把这个指标压在健康线，缺一件就可能飙升。</li>
+            <li><strong>artifact 压缩比</strong>（健康区高）：raw trajectory 字数与 reduce 后 artifact 字数之比，反映隔离对 context 的节省效果。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>IsolatedSubAgent.execute(task):
+    local_context = [system_prompt, task]      # 不传入 parent history → Context 隔离
+    try:
+        raw = run_loop(task, local_context)     # 独立 LLM call + 独立 tool set
+    except: return Artifact(verdict=&quot;failure&quot;)  # 失败 boundary
+    return reduce_to_artifact(raw)              # 强制压成 verdict/findings/citations
+
+SupervisorWithSubAgents.execute(task):
+    artifacts = 并行 gather(                     # N 个并行,各自独立 context → 互不干扰
+        sub.execute(dispatch_subtask(task, sub)) for sub in sub_agents
+    )
+    return synthesize_from_artifacts(artifacts) # 主 agent 只看 artifact 不看 raw trajectory
+</code></pre>
+            <p>四个工程要点对应四件要素：本地 messages 起跑实现 context 隔离；reduce_to_artifact 实现 schema 化返回；try/except 加 timeout 实现失败 boundary；并行 gather 加各自独立 context 实现互不干扰。</p>
+            <h2>企业落地示例</h2>
+            <p>某律所的合同审阅 Agent，第一版主 agent 派 sub-agent 扫描 50 份合同，sub-agent 把每份 3000 字的详细分析全部回传，主 agent 接到 15 万字后 context 完全爆炸。第二版加上四件隔离要素：每份合同分一个独立 sub-agent（context 隔离）、返回前强制 reduce 成固定 schema 的 artifact（verdict、top_3_concerns、recommendation 三字段必填）、每份合同独立 fresh review 不被其他合同 prime、某个 sub-agent 挂掉不影响其他 49 份、主 agent context 永远控制在 5 万 token 以内（50 份 artifact 加起来不到 1 万字，留 4 万给主 agent 推理）、低 confidence 的合同直接 mark 升人工。改完之后 50 份合同 1 小时跑完，主 agent 拿 1 万字 artifact 做 high-level 综合，律师 review 报告不到 1 小时。Claude Code 的 Task tool 是这个模式最完整的工业实现——子 agent 在完全独立的 context 跑（无主 agent history、独立 LLM call、独立 tool set），跑完只返回 final summary，主 agent 看不到子 agent 的中间 thinking 和 tool calls，50 次 grep 调用不会进主 agent 的 context。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>层级委派（C1）</strong>：共格且互为表里。层级委派是招式（supervisor 派 worker），子代理隔离是内功（worker 隔离 context 加 schema artifact 加失败 boundary）。没有隔离的层级委派必定 context 爆炸加 cascade failure，两者必须配套。</li>
+            <li><strong>扇出聚合（C2）</strong>：扇出的每个并行 branch 都依赖隔离——独立 context，gather 阶段只看 reduced 结果。隔离是扇出能跑通大规模并行的工程基础。</li>
+            <li><strong>Hierarchical Retention（记忆模块）</strong>：同源思想。信息按层级分发、越上层越精简，子代理隔离是这个作用域分层原则在多 agent 协作层的落地。</li>
+            <li><strong>上下文分诊（感知模块）</strong>：同源思路。主 agent 不预加载子 agent 的中间状态，需要时按需取（通常不需要，artifact 就够），类似延迟加载。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>子代理隔离看上去是 context 优化，本质是<strong>把组织管理里的信息分层精神编码进 agent 系统</strong>——CEO 看 manager 的 summary 不看每个员工的细节，主 agent 看 sub-agent 的 artifact 不看 raw trajectory，这是 multi-agent 系统从 demo 到生产的最后一公里。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

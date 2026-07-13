@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Tool Dispatch · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/a1-tool-dispatch/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/" class="active">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>A1</p>
+
+                        <h1>A1 · Tool Dispatch</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Action × Route</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Low (on the order of a single call; metadata overhead is negligible)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Action patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>As the number of tools grows, the chance that an agent picks the wrong one rises. There is a counterintuitive fact here: an LLM is good at using tools (filling in parameters, interpreting return values) but poor at choosing tools. A logistics dispatch agent wired to 17 tools once assigned all 80 orders to a single driver stuck in traffic—at every step it "felt" it had chosen correctly, with the error hidden in details it did not notice, such as "did not refresh driver status" and "did not check road conditions."</p>
+            <p>Tool Dispatch takes "which tool to choose" out of the model's hands and returns it to the engineering layer. Its core judgment is that tool selection is reliability engineering. It relies not on writing a smarter prompt, but on supplying complete metadata for each tool, plus a full set of engineering contracts: quotas, state refresh, and side-effect tracking.</p>
+            <h2>Why the coordinate is "Action × Route"</h2>
+            <ul>
+            <li><strong>Vertical axis · Action</strong>: an agent turns decisions into outward effect through tool calls. In multi-tool scenarios, "which one to call" is the earliest and most frequent decision on the action side, so it belongs to the action module rather than the reasoning module.</li>
+            <li><strong>Horizontal axis · Route</strong>: it works by directing a given call to the most suitable tool based on current intent and context. This is a typical routing structure, not a chained sequence or a hierarchical wrapper. The minimal tool set (A4) in the same module also falls on the routing side, but with a different division of labor—A1 addresses "how to pick," while A4 addresses "trim before picking."</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>The quality of industrial-grade Tool Dispatch is determined mainly by the richness of tool metadata. OpenAI's early function calling had only three fields—name, description, parameters—which is enough for a demo. Claude Code's tool schema expands to 14 fields, grouped roughly into eight categories by purpose: identification, dynamic description, dual schema, execution characteristics, UI behavior, source marking, progressive disclosure, and lifecycle.</p>
+            <p>The most critical among them are the five execution-characteristic fields: <code>isReadOnly</code>, <code>isConcurrencySafe</code>, <code>isDestructive</code>, <code>requiresFreshState</code>, <code>requiresApproval</code>. Their engineering philosophy is that all default to false—that is, "if unknown, treat as unsafe." If a tool implementer forgets to declare, the system still handles it conservatively; only an explicit read-only declaration admits a tool to the parallel channel and skips the confirmation prompt. Each field corresponds to a senior engineer's intuition about tool operations, encoding judgment accumulated over years of experience into a machine-readable contract.</p>
+            <p>Around the metadata, three engineering disciplines must be in place:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Mechanism</th>
+            <th style="text-align: left;">Function</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Quota</td>
+            <td style="text-align: left;">Caps the number of calls to the same tool (or same parameter) within a single session, blocking the accumulation of side effects such as "80 orders to one driver"</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Mandatory state refresh</td>
+            <td style="text-align: left;">Before a write operation, status must first be queried and refreshed, to avoid writing based on stale data</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Saga side-effect tracking</td>
+            <td style="text-align: left;">Each destructive tool registers an inverse action, rolling back in reverse on failure</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>When many tools, many side effects, and a high cost of mis-dispatch stack together</strong>: logistics dispatch, customer-service tickets, operations actions.</li>
+            <li><strong>When integrating external tool protocols such as MCP</strong>: external tool sources are untrusted, so additional security review must rely on the source marking in the metadata.</li>
+            <li><strong>Fixed-process tasks</strong>: one can go further with Programmatic Tool Calling, where the engineering layer explicitly orchestrates the call sequence and the model only fills in parameters and interprets results, reducing round trips, improving fault tolerance, and making auditing clearer.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>Metadata too thin</strong>: with only name plus description, an agent picks a tool from a single sentence, which is like handing an intern a one-line job description and expecting them to start. This is the leading root cause of mis-dispatch.</li>
+            <li><strong>Side-effect tools without supporting controls</strong>: tools that write to a database, send messages, or deduct payment, without quota, state refresh, or saga—one mis-dispatch is a production incident.</li>
+            <li><strong>Tool stuffing</strong>: sending more than 50 tools to the model, with the schema eating up a large stretch of context, drops accuracy rather than raising it. The response is progressive disclosure—core tools stay resident, the rest are retrieved and loaded on demand.</li>
+            <li><strong>Tool poisoning</strong>: this is OWASP Agentic's top threat. An attacker embeds hidden instructions in the description of an MCP tool, and every session that uses this tool is compromised, persistently and broadly. It is not ordinary prompt injection; it requires five layers of defense—allowlisting, description scanning, description sandboxing, behavior monitoring, and least privilege—and missing any one layer leaves an open attack surface.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Tool selection accuracy</strong> (healthy zone &gt;90%): replay historical queries and use a reviewer model to judge whether each step chose correctly. Below 80% usually means the descriptions are not good enough or there are too many tools.</li>
+            <li><strong>Side-effect controllability rate</strong> (healthy zone 100%): run chaos tests periodically, deliberately making the model mis-dispatch some destructive tool, and check whether it can be stopped by quota within a minute and rolled back cleanly by saga. Any mis-dispatch should be rollable back.</li>
+            <li><strong>Tool hallucination rate</strong> (healthy zone &lt;5%): the proportion of calls to nonexistent tools or with wrong parameters. Suppress it with strict registry validation plus a pre-call schema check.</li>
+            <li><strong>Average tools per task</strong> (healthy zone 3-7): too few means the agent is not doing the work; too many is over-tooling.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>dispatch(tool_name, args, session):
+                tool does not exist        → reject (tool_hallucination)
+                quota exhausted            → reject (quota_exceeded)
+                fresh state required but stale → reject (stale_state_must_refresh)
+                approval required          → suspend (awaiting_approval)
+                run handler:
+                    success and destructive → register saga inverse + increment quota + refresh state timestamp
+                    failure                → record trace, hand off to upper-layer saga rollback
+                return DispatchTrace (tool / parameters / trigger / status / rejection reason / latency)
+            </code></pre>
+            <p>Engineering implementation points: metadata defaults to being treated as unsafe; quota is counted by the primary parameter (e.g., dispatch counted by driver id); MCP tools carry a source marking and go through additional description validation and behavior monitoring.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>Liang Bo's team's execution agent divides tools, skills, and knowledge bases into three roles: tools are the "hands," skills are the "playbooks," and the knowledge base is the "map plus manual." The agent uses <code>retrieve</code> to read the map, <code>use_skill</code> to read the playbook, and <code>call_tool</code> to act—reading the map and playbook before acting is exactly Tool Dispatch making the selection at the engineering layer. Applied to that intra-city dispatch agent, the team added five things when rewriting the dispatch layer: tool metadata expansion, selection guidance, mandatory state refresh before write operations, a quota on dispatching to the same driver within a single session, and saga side-effect tracking. Accuracy rose from 60% to 96%, at the cost of about 800 additional lines in the dispatch layer. Each extra line is, in essence, a pitfall an engineer once stepped into, hardened into a rule the machine executes.</p>
+            <h2>Relationships to other patterns</h2>
+            <ul>
+            <li><strong>Minimal tool set (A4)</strong>: complementary within the same cell. A1 picks accurately within a given tool set; A4 first trims the tool set to a reasonable size so that A1 can pick at all.</li>
+            <li><strong>Plan-and-execute (A2)</strong>: A1 optimizes single-step decisions, while A2 orchestrates the whole multi-step task. Programmatic Tool Calling is where the two meet—the engineering layer sets the call sequence, and within each step it is still a single dispatch.</li>
+            <li><strong>Guardrail sandwich (A5)</strong>: A5 wraps a pre-check and a post-check around the dispatch, nesting with A1's quota and state refresh—A1 picks the right tool, and A5 ensures the wrong pick is still caught.</li>
+            <li><strong>Complexity routing (R2)</strong>: same line of thinking, both routing based on context. The difference is that R2 routes the reasoning tier, while A1 routes the tool.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of Tool Dispatch is not "writing a prompt that picks tools," but encoding the tool-operation discipline accumulated over years by the engineering community into metadata and engineering contracts for the agent to use—a demo-grade agent has 3-field tool metadata, while a production-grade one has 14 fields, and that field gap is the distance between a toy and a system.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

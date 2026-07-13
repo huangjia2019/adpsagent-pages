@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Design Pattern White Papers · Pattern Matrix · ADPS</title>
+    <meta name="description" content="ADPS Agent design pattern white papers: a dual-axis matrix of cognitive function × execution topology, 28 core + 5 extension patterns, one enterprise page per pattern. A free, open cross-role technical reference.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .wp-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0 1.75rem; font-size: 0.92rem; }
+        .wp-table th, .wp-table td { border: 1px solid var(--color-rule); padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+        .wp-table th { background: var(--color-link) !important; color: #fff !important; font-weight: 600; }
+        .wp-table tr:nth-child(even) td { background: var(--color-quote-bg); }
+        .wp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .matrix-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.8rem; min-width: 46rem; }
+        .matrix-table th, .matrix-table td { border: 1px solid var(--color-rule); padding: 0.4rem 0.5rem; text-align: center; }
+        .matrix-table th { background: var(--color-link) !important; color: #fff !important; font-weight: 600; }
+        .matrix-table td.fn { background: var(--color-link) !important; color: #fff !important; font-weight: 600; text-align: left; white-space: nowrap; }
+        .matrix-table td.filled { background: var(--color-badge-bg); color: var(--color-text); }
+        .matrix-table td.empty { color: var(--color-text-faint); }
+        .ext-badge { font-size: 0.72em; color: var(--color-badge); border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; vertical-align: middle; }
+        .callout { background: var(--color-quote-bg); border: 1px solid var(--color-rule); border-left: 3px solid var(--color-badge); border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+        .callout p { margin: 0.4rem 0; }
+        .grp-intro { color: var(--color-text-muted); margin: 0.25rem 0 0.6rem; }
+    </style>
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Pattern White Papers</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Cognitive function × execution topology · 28 core + 5 extension patterns · one enterprise-grade page per pattern.</p>
+
+            <div class="callout">
+                <p><strong>A free, open technical reference.</strong> It gives a team a shared vocabulary, a selection framework, and a set of engineering boundaries — so every role in an enterprise (product, architecture, engineering, security &amp; compliance, management) can read what a pattern is, when to use it, and where it tends to break.</p>
+            </div>
+
+            <p>The white papers say what a pattern is; the blue books say how it lands in a real enterprise. Each pattern page carries its matching enterprise-landing slice; cross-pattern complete cases live in the <a href="/cases/">Cases library</a>. The first landing anchor is Bo Liang's execution agent at Dongfang Yiteng.</p>
+            <p>Most "agent architecture" guides give a flat list — Reflection, ReAct, Multi-Agent, Tree of Thoughts, and so on. A flat list answers <em>which patterns exist</em>. It does not answer <em>where my problem sits, and which pattern lives at that coordinate</em>.</p>
+            <p>A loan-assessment agent rarely breaks for lack of Reflection; it breaks because the perception stage's budget allocation dropped the one critical document. A multi-agent code review drifts because the collaboration topology lacks conflict resolution and contradictory edits pile up. <strong>Knowing which axis a failure sits on matters more than knowing the failure's name.</strong></p>
+
+            <h2>Why agents need a new set of design patterns</h2>
+            <p>GoF patterns handle collaboration between objects; distributed-systems patterns handle services, networks, storage, and failure. Agent systems add a new kind of actor: a model that makes judgments under incomplete information and calls tools that affect the outside world. In traditional software, control flow is decided mostly by code; in agent systems, part of the control flow passes through model judgment.</p>
+            <p>A user says one sentence, and the model has to decide whether it's small talk, a query, analysis, execution, or something needing human review. A tool returns a result, and the model has to decide whether the evidence is enough. A long task reaches the middle, and the model has to decide whether to continue, roll back, re-gather evidence, or stop and ask a human. If these judgments stay only in natural language, the system quickly loses control. Agent design patterns put those judgments back into engineering structure — routing, state, evidence, permissions, logs, rollback, and evaluation.</p>
+
+            <h2>Two axes</h2>
+            <p><strong>Cognitive function</strong> (rows) answers what kind of work the agent is doing — seven: Perception, Memory, Reasoning, Action, Reflection, Collaboration, Governance.</p>
+            <p><strong>Execution topology</strong> (columns) answers what shape the work takes — six.</p>
+            <div class="wp-scroll">
+            <table class="wp-table">
+                <thead><tr><th>Execution topology</th><th>Fits</th></tr></thead>
+                <tbody>
+                    <tr><td>Chain</td><td>Stable steps; one step's output goes straight to the next.</td></tr>
+                    <tr><td>Route</td><td>Classify first, then choose model, tool, flow, or human-review path.</td></tr>
+                    <tr><td>Parallel</td><td>Several paths at once, trading cost for quality or latency.</td></tr>
+                    <tr><td>Orchestrate</td><td>One central coordinator holds the global goal, the task ledger, and the rollup.</td></tr>
+                    <tr><td>Loop</td><td>Generate, observe, correct, regenerate — until convergence or a circuit breaker.</td></tr>
+                    <tr><td>Hierarchy</td><td>Layered responsibility, permissions, memory, or protection boundaries.</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p>The two axes cross into a 7 × 6 = 42-cell matrix. 28 cells hold named patterns — some borrowed from prior literature (RAG, chain-of-thought, plan-and-execute), some named here for the first time for previously nameless cells (context triage, failure journals, observability). The remaining 14 cells are <em>deliberately empty</em>: industry gaps and the frontier of future research.</p>
+
+            <figure style="margin: 2.5rem 0; text-align: center;">
+                <img src="/images/matrix-28-en-20260616.png" alt="The 28-pattern matrix — 7 cognitive functions × 6 execution topologies" style="max-width: 100%; width: 100%; height: auto; border-radius: 6px; box-shadow: 0 2px 12px rgba(15, 58, 95, 0.12);">
+                <figcaption style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--color-text-muted); font-style: italic;">The 28-pattern matrix. Rows are cognitive functions, columns execution topologies. Empty cells are industry gaps and the frontier of future research.</figcaption>
+            </figure>
+
+            <p>The same matrix in text, for search and citation.</p>
+            <div class="wp-scroll">
+            <table class="matrix-table">
+                <thead><tr><th>Cognitive function</th><th>Chain</th><th>Route</th><th>Parallel</th><th>Orchestrate</th><th>Loop</th><th>Hierarchy</th></tr></thead>
+                <tbody>
+                    <tr><td class="fn">Perception</td><td class="filled">P2 Semantic Compaction</td><td class="filled">P1 Context Triage</td><td class="filled">P4 Multi-Modal Fusion</td><td class="empty">—</td><td class="filled">P3 Progressive Discovery</td><td class="empty">—</td></tr>
+                    <tr><td class="fn">Memory</td><td class="filled">M2 RAG (naive)</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 Progress Tracking</td><td class="filled">M2 Agentic RAG · M4 Failure Journals</td><td class="filled">M1 Hierarchical Retention</td></tr>
+                    <tr><td class="fn">Reasoning</td><td class="filled">R1 Chain-of-Thought</td><td class="filled">R2 Complexity-Based Routing</td><td class="filled">R3 Parallel Exploration</td><td class="empty">—</td><td class="filled">R4 Iterative Hypothesis Testing</td><td class="empty">—</td></tr>
+                    <tr><td class="fn">Action</td><td class="filled">A3 Prompt Chaining</td><td class="filled">A1 Tool Dispatch</td><td class="empty">—</td><td class="filled">A2 Plan-and-Execute</td><td class="empty">—</td><td class="filled">A5 Guardrail Sandwich</td></tr>
+                    <tr><td class="fn">Reflection</td><td class="filled">F1 Generator-Critic</td><td class="filled">F2 Skill Package</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 Self-Heal Loop</td><td class="filled">F3 Experience Replay</td></tr>
+                    <tr><td class="fn">Collaboration</td><td class="filled">C4 Handoff Chain</td><td class="empty">—</td><td class="filled">C2 Fan-out Gather</td><td class="empty">—</td><td class="filled">C3 Adversarial Review</td><td class="filled">C1 Hierarchical Delegation</td></tr>
+                    <tr><td class="fn">Governance</td><td class="filled">G3 Progressive Commitment</td><td class="filled">G1 Approval Gate</td><td class="empty">—</td><td class="filled">G5 Observability</td><td class="empty">—</td><td class="filled">G2 Blast-Radius Control</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted);">The matrix is left intentionally unfilled. Empty cells are a reminder not to invent immature patterns for the sake of symmetry. <strong>M2 RAG spans two cells</strong> — naive RAG is a query-once linear pipeline (Chain), Agentic RAG is query-evaluate-rewrite-query iteration (Loop). One pattern growing from Chain into Loop with engineering maturity shows this matrix is descriptive, not either/or.</p>
+
+            <h2>Five engineering contracts</h2>
+            <p>When the seven functions go to production, design five contracts explicitly for every agent. The stability of an agent system usually comes not from a bigger model but from whether these five contracts align model judgment with engineering state.</p>
+            <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
+                <li><strong>Context Contract</strong> — what enters context, what is held as a handle, what is retrieved lazily, what is discarded (Perception).</li>
+                <li><strong>Evidence Contract</strong> — every piece of evidence carries source, version, scope, citation, provenance. RAG handles business evidence; SessionState handles mechanical ground truth like employee_id and amount (Memory).</li>
+                <li><strong>Decision Contract</strong> — how model output becomes a structured RouteDecision / PlanDecision rather than a paragraph of natural language (Reasoning).</li>
+                <li><strong>Action Contract</strong> — tool metadata, parameter provenance, permissions, approval, human review, and rollback rules (Action and Governance).</li>
+                <li><strong>Trace Contract</strong> — every LLM call, tool call, handoff, approval, and state update threaded onto one trace id (Governance).</li>
+            </ul>
+
+            <h2>White-paper catalog · 28 core + 5 extension = 33</h2>
+            <p>The <strong>28 core patterns</strong> form the body of the matrix. Five <strong>extension patterns</strong> (M5 Procedural Memory · R5 Talker-Reasoner · A4 Minimal Tool Set · C5 Sub-Agent Isolation · G4 Hooks Pipeline — folded into adjacent lessons for teaching, given their own page in the white papers) make 33. Add the emerging topology C6 Choreography for a full set of 34. Extension patterns are marked <span class="ext-badge">ext</span>.</p>
+            <p>Behind every cell is a same-structured enterprise page: what problem it solves, when to use it, where it tends to break, what metrics to watch in production. Written for product, architecture, engineering, compliance, and management — a clean reference you can take straight to a team.</p>
+
+            <h3>Perception · 4 core</h3>
+            <p class="grp-intro">The agent's interface to the world — turning heterogeneous, noisy, oversized raw input into a high-signal representation the model can use. Governs what to look at, how small to compress, how deep to drill, how to merge.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/p1-context-triage/" style="font-weight: 600;">P1 · Context Triage</a><span style="color: var(--color-text-muted);"> — When the total volume of candidate information exceeds the context window budget, decide what gets in first, what waits outside the door, and what is not preloaded at all.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/p2-semantic-compaction/" style="font-weight: 600;">P2 · Semantic Compaction</a><span style="color: var(--color-text-muted);"> — After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly afterward.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/p3-progressive-discovery/" style="font-weight: 600;">P3 · Progressive Discovery</a><span style="color: var(--color-text-muted);"> — When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space out through a three-stage loop of broad scan → close read → deep follow.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/p4-multi-modal-fusion/" style="font-weight: 600;">P4 · Multi Modal Fusion</a><span style="color: var(--color-text-muted);"> — The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning layer.</span></li>
+            </ul>
+            <h3>Memory · 4 core + 1 extension</h3>
+            <p class="grp-intro">Keeps and retrieves knowledge beyond a single input. Memory is not an unbounded extension of context; it needs layers, versions, scope, expiry, and retrieval rules.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m1-hierarchical-retention/" style="font-weight: 600;">M1 · Hierarchical Retention</a><span style="color: var(--color-text-muted);"> — Slice an agent&#x27;s memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m2-rag-pipeline/" style="font-weight: 600;">M2 · RAG Pipeline</a><span style="color: var(--color-text-muted);"> — Give the agent an attached library, so that whenever it needs knowledge beyond what the context can hold, it can search, filter, and iteratively pull that knowledge back to use.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m3-progress-tracking/" style="font-weight: 600;">M3 · Progress Tracking</a><span style="color: var(--color-text-muted);"> — Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work has progressed.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m4-failure-journals/" style="font-weight: 600;">M4 · Failure Journals</a><span style="color: var(--color-text-muted);"> — The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the next time a similar situation arises.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m5-procedural-memory/" style="font-weight: 600;">M5 · Procedural Memory</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Freeze the successful execution flow of a class of tasks into a named, loadable, reusable structured asset. The next time the same kind of task arrives, the agent calls it directly, skipping trial-and-error and going straight to the main path.</span></li>
+            </ul>
+            <h3>Reasoning · 4 core + 1 extension</h3>
+            <p class="grp-intro">Draws conclusions and makes decisions from what's known. The engineering key is to put a control plane on judgment: mode, budget, evidence requirements, allowed actions, human-review boundary, and the next step.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/r1-chain-of-thought/" style="font-weight: 600;">R1 · Chain of Thought</a><span style="color: var(--color-text-muted);"> — Make the model&#x27;s reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that &quot;why this conclusion was reached&quot; is on record.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/r2-complexity-based-routing/" style="font-weight: 600;">R2 · Complexity Based Routing</a><span style="color: var(--color-text-muted);"> — Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive one. Trade routing for the bill.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/r3-parallel-exploration/" style="font-weight: 600;">R3 · Parallel Exploration</a><span style="color: var(--color-text-muted);"> — Within a single query, deliberately launch N independent reasoning chains, then use an aggregation strategy to synthesize one answer. Trade compute for accuracy.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/r4-iterative-hypothesis-testing/" style="font-weight: 600;">R4 · Iterative Hypothesis Testing</a><span style="color: var(--color-text-muted);"> — The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scientific method into reasoning.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/r5-talker-reasoner/" style="font-weight: 600;">R5 · Talker Reasoner</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Split the agent into a fast, shallow Talker and a slow, deep Reasoner that coordinate through a shared belief state, so the agent can think deeply while still talking to the user in real time.</span></li>
+            </ul>
+            <h3>Action · 4 core + 1 extension</h3>
+            <p class="grp-intro">The agent acts on the world — it calls tools. This is the divide between talking and doing, and the source of all side effects and risk.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a1-tool-dispatch/" style="font-weight: 600;">A1 · Tool Dispatch</a><span style="color: var(--color-text-muted);"> — Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a2-plan-and-execute/" style="font-weight: 600;">A2 · Plan and Execute</a><span style="color: var(--color-text-muted);"> — The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full rewrite when it drifts.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a3-prompt-chaining/" style="font-weight: 600;">A3 · Prompt Chaining</a><span style="color: var(--color-text-muted);"> — Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to complete the work.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a4-minimal-tool-set/" style="font-weight: 600;">A4 · Minimal Tool Set</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Keep the agent&#x27;s tool set within a reasonable ceiling (usually 10 to 30 tools): drop low-frequency tools, merge similar ones, and push secondary tools down into sub-agents, so the model has the focus to choose.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a5-guardrail-sandwich/" style="font-weight: 600;">A5 · Guardrail Sandwich</a><span style="color: var(--color-text-muted);"> — Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from &quot;free action&quot; to &quot;supervised action.&quot;</span></li>
+            </ul>
+            <h3>Reflection · 4 core</h3>
+            <p class="grp-intro">The agent checks itself, corrects itself, and accrues experience — the core of cumulative intelligence. It must bind to external feedback, failure signals, or past trajectories, not self-congratulatory summary.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f1-generator-critic/" style="font-weight: 600;">F1 · Generator Critic</a><span style="color: var(--color-text-muted);"> — One agent hosts two roles. The Generator writes, the Critic evaluates, and the loop improves the output until the critic passes it or the iteration cap is reached.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f2-skill-package/" style="font-weight: 600;">F2 · Skill Package</a><span style="color: var(--color-text-muted);"> — Package a repeatedly successful workflow into a named, loadable, reusable structured asset, so the next task of the same kind calls it directly instead of figuring things out from scratch.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f3-experience-replay/" style="font-weight: 600;">F3 · Experience Replay</a><span style="color: var(--color-text-muted);"> — When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · Self Heal Loop</a><span style="color: var(--color-text-muted);"> — When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.</span></li>
+            </ul>
+            <h3>Collaboration · 4 core + 1 extension</h3>
+            <p class="grp-intro">Division of labor across agents. Collaboration is forced by scale; below that scale a single agent is usually steadier. The floor: each agent has its own context, permissions, output, and failure boundary.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c1-hierarchical-delegation/" style="font-weight: 600;">C1 · Hierarchical Delegation</a><span style="color: var(--color-text-muted);"> — A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c2-fan-out-gather/" style="font-weight: 600;">C2 · Fan out Gather</a><span style="color: var(--color-text-muted);"> — The orchestrator distributes a batch of independently executable subtasks in parallel to N sub-agents. Each completes its subtask on its own, and an aggregator merges the results into a single output using an aggregation strategy, trading N times the compute for 1/N of the wall-clock time.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c3-adversarial-review/" style="font-weight: 600;">C3 · Adversarial Review</a><span style="color: var(--color-text-muted);"> — Pair one generator agent with one or more independent critic agents and improve the output through a structured adversarial loop. The critics must use a different model, a different family, and a different prompt incentive.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c4-handoff-chain/" style="font-weight: 600;">C4 · Handoff Chain</a><span style="color: var(--color-text-muted);"> — Split a long process into N agents with clearly scoped responsibilities. After one agent finishes its leg, it passes the critical state to the next through a structured HandoffPacket (not raw text), and each agent is good at only one thing.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c5-sub-agent-isolation/" style="font-weight: 600;">C5 · Sub Agent Isolation</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw trajectory.</span></li>
+            </ul>
+            <h3>Governance · 4 core + 1 extension</h3>
+            <p class="grp-intro">Constrains the agent's permissions and traceability. Governance is not a patch bolted on before launch; it runs through the other six functions and takes part in pattern selection in every case.</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g1-approval-gate/" style="font-weight: 600;">G1 · Approval Gate</a><span style="color: var(--color-text-muted);"> — Before executing a high-blast-radius or irreversible action, route it by risk to one of three tiers — auto-approve, log-and-execute, or human review — so that a human retains final veto power at the critical decision points.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g2-blast-radius-control/" style="font-weight: 600;">G2 · Blast Radius Control</a><span style="color: var(--color-text-muted);"> — Classify actions by severity (readonly / mutating / catastrophic) and use nested engineering boundaries to lock down the maximum loss a single failure can cause.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · Progressive Commitment</a><span style="color: var(--color-text-muted);"> — The agent&#x27;s permissions start read-only and unlock in stages toward writable, then toward irreversible. Each step up must be earned with evidence, and any incident triggers an immediate downgrade.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g4-hooks-pipeline/" style="font-weight: 600;">G4 · Hooks Pipeline</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that guarantee them.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g5-observability-harness/" style="font-weight: 600;">G5 · Observability Harness</a><span style="color: var(--color-text-muted);"> — Attach five-dimensional telemetry across the full agent lifecycle and stitch traces across agents, so the system can be replayed after the fact, audited by regulators, and used to drive product decisions.</span></li>
+            </ul>
+            <h2>Choreography: the decentralized twin of orchestration</h2>
+            <p>All six core topologies share one implicit premise — a designable control point. A chain has order, routing has a router, parallel has fan-out and gather, a loop has an iterator, hierarchy has a manager, orchestration has a conductor. <strong>The defining trait of choreography is to remove that control point.</strong></p>
+            <p>In choreography there is no central conductor. Each agent becomes an autonomous unit that subscribes only to events it cares about, reacts when one arrives, and publishes its result as a new event back to a shared stream — reporting to no center. The system's overall behavior is not written in any single flowchart; it emerges from every agent's local subscribe-react-publish rules. Add a new agent and you only wire its subscriptions; no other agent changes a line. It is orchestration's twin: orchestration is coordinated by a conductor, choreography by events.</p>
+            <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. The test: to be a core column a topology must cut across multiple cognitive functions, and choreography so far holds densely only in collaboration. As of 2026 the vast majority of production multi-agent systems are still orchestration-based — the evidence isn't thick enough. It depends heavily on observability (G5): without a central trace, emergent misbehavior is hard to debug. The most common production form is a hybrid — choreography-led with a thin orchestration at the critical close. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
+
+            <h2>Three starter combos</h2>
+            <p>First time building an agent and unsure where to start — these three combos cover most scenarios. For any agent with write permission, G1 Approval Gate and G5 Observability are the floor.</p>
+            <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
+                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + G5 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + G5 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + G5 Observability. Boundary: multi-agent gains come from task scale, role boundaries, and independent review — not from looking more advanced.</li>
+            </ul>
+
+            <h2>Methodology</h2>
+            <p>From a business problem to an agent architecture, run the <strong>six-step selection method</strong>: converge from the business down to 3–7 patterns. Don't load every pattern into the system up front.</p>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: decimal;">
+                <li>Bound — write a one-page scope statement: what's in, what's out.</li>
+                <li>Map — score each of the seven functions None / Light / Heavy to get a capability vector.</li>
+                <li>Select — fix the primary topology by the main constraint.</li>
+                <li>Pick — choose 5–7 patterns on the matrix by coordinate.</li>
+                <li>Assess — validate the combination on accuracy, latency, and cost.</li>
+                <li>Build — build in three phases: minimal loop first, then reflection and memory, then governance.</li>
+            </ul>
+            <p>Its entry point is a <strong>Pattern Selection Card</strong> with three panels: ASSESS (which cognitive functions the task needs), ROUTE (which topology fits the constraints), SELECT (which patterns live at the intersections). The card turns "I want to build an X agent" into a shortlist of candidate patterns in fifteen minutes.</p>
+
+            <h2>Related assets</h2>
+            <p>The white papers are the entry to the ADPS pattern language. Each pattern group connects to a set of companion assets — the group's white-paper pages, the matching book chapter, the GitHub code directory, and the enterprise-landing cases in the forthcoming blue books.</p>
+            <div class="wp-scroll">
+            <table class="wp-table">
+                <thead><tr><th>Pattern group</th><th>White papers</th><th>Book chapter</th><th>Code directory</th></tr></thead>
+                <tbody>
+                    <tr><td>Perception</td><td>P1–P4</td><td>Ch3 Perception</td><td><code>perception/</code></td></tr>
+                    <tr><td>Memory</td><td>M1–M4 (+M5 ext)</td><td>Ch4 Memory</td><td><code>memory/</code></td></tr>
+                    <tr><td>Reasoning</td><td>R1–R4 (+R5 ext)</td><td>Ch5 Reasoning</td><td><code>reasoning/</code></td></tr>
+                    <tr><td>Action</td><td>A1–A3, A5 (+A4 ext)</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
+                    <tr><td>Reflection</td><td>F1–F4</td><td>Ch7 Reflection</td><td><code>reflection/</code></td></tr>
+                    <tr><td>Collaboration</td><td>C1–C4 (+C5, C6 ext)</td><td>Ch8 Collaboration</td><td><code>collaboration/</code></td></tr>
+                    <tr><td>Governance</td><td>G1–G3, G5 (+G4 ext)</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h2>The book: <em>Designing AI Agents</em></h2>
+            <p>The white papers and the Manning book <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a> describe the same framework for two different needs, in completely different forms.</p>
+            <p>The white papers are a <strong>converged, cross-role reference</strong>. Each pattern is compressed to one page answering four things — what problem it solves, when to use it, where it tends to break, what to watch in production. The reader is the whole team; the goal is to align product, architecture, engineering, and compliance in ten minutes on "which coordinate of agent we're building."</p>
+            <p>The book is the <strong>expanded, engineer-facing treatment</strong>: the same patterns developed with runnable code, the running Argus example, and post-mortems of real production failure modes. The white papers tell you whether to use a pattern and how to avoid the traps; the book shows you how to build it and build it right.</p>
+
+            <h2>Further reading</h2>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: disc;">
+                <li>Position paper: <a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a></li>
+                <li>Book: <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a> (Manning)</li>
+                <li>Runnable code: <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">agent-design-patterns</a> (28 patterns, LangGraph + LangChain)</li>
+            </ul>
+
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

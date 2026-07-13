@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research — ADPS</title>
+    <meta name="description" content="The position paper that introduced the two-axis framework for AI agent design patterns.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/research/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/research/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/research/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/" style="color: var(--color-link);">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="/news/">News</a>
+                <a href="/join/">Join</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/research/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Research</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 2rem;">The foundational papers behind ADPS.</p>
+
+            <h2>The position paper</h2>
+            <p>
+                <strong>A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function × Execution Topology</strong><br>
+                Huang &amp; Zhou, 2026. <a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a> · Zenodo DOI <a href="https://doi.org/10.5281/zenodo.19036557" target="_blank" rel="noopener">10.5281/zenodo.19036557</a>
+            </p>
+            <p>
+                The paper introduces the two-axis framework, the 27 named patterns, and the five pattern-selection laws.
+                It establishes the IP-priority timestamp for the framework (indexed two months before the Manning MEAP).
+            </p>
+
+            <h2>Abstract</h2>
+            <blockquote style="margin: 1rem 0; padding: 1rem 1.25rem; background: var(--color-quote-bg); border-left: 3px solid var(--color-badge); border-radius: 0 4px 4px 0;">
+                <p>
+                    Existing surveys of AI agent design either enumerate cognitive functions in isolation
+                    (perception, memory, reasoning, action) or describe execution topologies as architectural
+                    diagrams (chain, parallel, hierarchical). Neither view, taken alone, identifies a pattern:
+                    the same topology can implement architecturally distinct systems, and the same cognitive
+                    function can be realized through structurally different runtime shapes. We propose a
+                    two-dimensional framework that classifies agent design patterns along two orthogonal axes —
+                    cognitive function and execution topology — yielding a 7 × 6 matrix of 42 cells, of which
+                    28 are populated by named patterns. The framework disambiguates patterns that otherwise
+                    share a name, identifies industrially empty cells that suggest under-explored design space,
+                    and supplies a coordinate system for the pattern-selection problem: given a task, which
+                    patterns sit at the intersection of the cognitive functions the task requires and the
+                    execution topologies its constraints permit.
+                </p>
+            </blockquote>
+
+            <h2>Citation</h2>
+            <p>BibTeX:</p>
+            <pre style="background: var(--color-quote-bg); padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.88rem; font-family: var(--font-mono);">@article{huang2026twoaxis,
+  title  = {A Two-Dimensional Framework for AI Agent Design Patterns:
+            Cognitive Function × Execution Topology},
+  author = {Huang, Jia and Zhou, Joey},
+  year   = {2026},
+  eprint = {2605.13850},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  doi    = {10.5281/zenodo.19036557},
+  url    = {https://arxiv.org/abs/2605.13850}
+}</pre>
+
+            <h2>Companion book</h2>
+            <p>
+                The framework is developed in full in the Manning book
+                <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a> (Huang, 2026–2027, MEAP launched May 2026).
+                The book includes ten chapters, twenty-eight patterns with structured definitions, four real-world case studies
+                (financial lending, legal due diligence, network operations, healthcare triage), and a reference appendix
+                with the full matrix.
+            </p>
+
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · Founded 2026</p>
+        </footer>
+
+    </main>
+
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

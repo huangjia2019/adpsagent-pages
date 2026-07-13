@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Generator Critic · Pattern White Paper · ADPS</title>
+    <meta name="description" content="One agent hosts two roles. The Generator writes, the Critic evaluates, and the loop improves the output until the critic passes it or the iteration cap is reached.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/f1-generator-critic/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/" class="active">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>F1</p>
+
+                        <h1>F1 · Generator-Critic</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reflection × Chain (sequential)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (2-4× a single call)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reflection patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">One agent hosts two roles. The Generator writes, the Critic evaluates, and the loop improves the output until the critic passes it or the iteration cap is reached.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>Tasks dense with subjective judgment have no single correct answer, only a quality spectrum—writing, design, code style, product copy, and academic abstracts all fall into this category. A cheap model often misses on the first attempt, but a human writer rereads a finished piece three times, revising on each pass, and stops when the marginal return drops. This ability to "look back and improve" is what determines output quality, and a single generation cannot deliver it.</p>
+            <p>Generator-Critic encodes this process into an agent: the generator writes a draft, the critic looks back and finds problems, the generator revises with that feedback, and the loop continues until the critic is satisfied or the iteration cap is hit. It is the simplest engineering implementation in the reflection module, established by the 2023 Reflexion paper and still the industrial baseline for reflection patterns in 2026—Self-Refine achieves about a 20% absolute improvement on average across 7 tasks, with no training data required.</p>
+            <h2>Why the coordinate is "Reflection × Chain"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reflection</strong>: The critic is the agent examining its own output, letting the agent criticize itself, which is the most classic form of reflection. It introduces no new agent and retrieves no external knowledge; the entire act of looking back happens inside the same reasoning process.</li>
+            <li><strong>Horizontal axis · Chain</strong>: Its skeleton is a three-step linear pipeline of generate → critique → revise, one role per step, each with its own prompt, feeding the previous step's output into the next. This chain can be replayed and run for several rounds when needed, but iteration is not its mandatory structure—forced looping is the domain of the Self-Heal Loop (F4). The essential boundary between F1 and F4 lies exactly here: F1 starts from chained refinement where "the output is usable, but could be better," while F4 starts from a forced loop where "the output is already broken and must be fixed."</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A Generator-Critic loop consists of three segments:</p>
+            <ol>
+            <li><strong>Generate</strong>: The generator produces a draft. The model used in this step determines how much the critic has to make up for.</li>
+            <li><strong>Critique</strong>: The critic evaluates the current output and produces a structured verdict (an issues list / severity / an explicit no_changes_needed field). The key innovation of the Reflexion paper is that the critic produces natural-language reflection text rather than a bare score, telling the generator what is wrong, why it is wrong, and how to fix it next time.</li>
+            <li><strong>Revise</strong>: The generator rewrites with the critique in hand. It then returns to step 2, until the critic passes the output or iteration bottoms out.</li>
+            </ol>
+            <p>The reliability of the critic is the linchpin of the whole loop. Its sources fall into three classes in order of increasing reliability, and which one to choose depends on whether the task has a deterministic signal:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Critic type</th>
+            <th style="text-align: left;">Applicable scenario</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Self-Critic (the same model with a reversed prompt)</td>
+            <td style="text-align: left;">Subjective tasks with no external verification signal; simplest but has a same-source blind spot</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Cross-Model (a model from a different vendor evaluates)</td>
+            <td style="text-align: left;">When single-model bias must be broken, providing a cross-family perspective</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">External-Grounded (verification by test / schema / citation database)</td>
+            <td style="text-align: left;">When the task has a deterministic signal; most reliable</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Content-generation tasks</strong>: Writing, translation, summarization, copywriting, polishing academic abstracts—no objective right or wrong, but a clear quality difference, where the critic can reliably spot "where it falls short."</li>
+            <li><strong>Code style and readability optimization</strong>: Naming, comments, structural adjustments, and similar improvements that do not affect correctness but do affect quality.</li>
+            <li><strong>High-frequency tasks backed by a cheap model</strong>: Use a cheap model as the generator, let the critic lift quality to an acceptable line, and keep overall cost far below going straight to an expensive model.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Forcing it in the Reflection-Light domain</strong>: For tasks where a human can tell right from wrong at a glance and an objective criterion exists (math problems, SQL, unit-test results), using the test or schema directly as the critic is far more accurate than letting the LLM evaluate itself, and wrapping it in Generator-Critic is the long way around.</li>
+            <li><strong>A critic weaker than the generator</strong>: When the critic model lacks capability, it cannot spot real problems and instead introduces noise, and the loop degrades the more it runs. The critic must be at least the same tier as the generator, or stronger.</li>
+            <li><strong>A critic that forces problems into existence</strong>: If the critic prompt does not state that "no changes needed is a valid option," it will invent problems to fill the quota. On MBPP, Reflexion measured a 16.3% probability of the critic flagging errors in already-correct code; adding a line like "if it already qualifies, output no changes needed" cuts this rate substantially.</li>
+            <li><strong>No guard against same-source bias</strong>: When the critic and generator are the same LLM, a self-enhancement bias exists, and it tends to score its own output highly. High-stake tasks should switch vendors or add external grounding.</li>
+            <li><strong>No circuit breaker on iteration</strong>: Not setting max_iterations triggers over-thinking—the critic keeps inventing on top of the previous round's fabrications, and after a few rounds the agent convinces itself that the output is severely flawed.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Critic convergence rate</strong> (healthy zone: converges within 2-3 rounds): Failing to pass after more than 3 rounds indicates that the critic's standard is miscalibrated or the generator lacks capability.</li>
+            <li><strong>Phantom-issue rate</strong> (healthy zone: &lt;10%): The proportion of already-qualified outputs the critic flags as having errors. Above 15% indicates the critic prompt lacks a "no changes needed" exit.</li>
+            <li><strong>Critic-vs-expert agreement rate</strong> (healthy zone: &gt;70%): Sample 50-100 critic outputs each week and compare them against expert judgment. Below 70% calls for rewriting the critic prompt or switching models.</li>
+            <li><strong>Quality increment</strong> (healthy zone: 5-15% higher than a single generation): Below 3% means reflection had no effect; above 25% means the generator's single-call configuration itself is the problem, so fix the generator first.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>output = generator(task)
+            for i in range(MAX_ITERATIONS):       # MAX=3, same-source circuit breaker à la Aider
+                if external_critic:               # prefer a deterministic signal when present
+                    critique = external_critic(task, output)
+                elif multi_critic:                # multiple roles in parallel + arbitration
+                    critique = merge(critic(task, output, role=r) for r in roles)
+                else:
+                    critique = critic(task, output)
+                if critique.no_changes_needed:    # valid exit, guards against phantom issues
+                    return output, &quot;converged&quot;
+                output = generator(task, previous=output, feedback=critique)
+            return output, &quot;max_iterations_reached&quot;   # hand off to HITL when bottomed out
+            </code></pre>
+            <p>Four engineering essentials: the critic prompt must explicitly state that no_changes_needed is a valid option; when a deterministic signal such as a test, schema, or citation database is present, prefer the external critic; do not casually raise max_iterations, as 3 is the empirical optimum; and keep the full history on file as the source data for critic calibration.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>An academic publisher's paper-abstract polishing agent completed its first version with a single prompt ("please optimize this abstract"), and offline evaluation gave it an average editorial score of 8.2/10. The second version added a Generator-Critic loop ("after writing, review it yourself, find 3 improvement points, then optimize"), and the average score instead dropped to 7.4—a trace review found that the critic was over-revising, rewriting concise abstracts into verbose ones, and all three issues were fabricated. The third version changed three things: adding "if it is already well written, output no changes needed" to the critic prompt cut the phantom-issue rate from 16.3% to 7%; introducing a 3-role multi-critic (academic rigor / conciseness / terminology accuracy) that evaluated in parallel and then arbitrated, where the terminology critic was external-grounded and queried a citation database to verify that the cites in the abstract actually existed; and sampling 50 critic outputs each week against expert judgment to calibrate the prompt. After the fixes, the average score rose to 8.9, 0.7 above the first-version baseline, at the cost of a 2.8× increase in per-call token cost. Abstracts are high-stake content, so the trade-off is worth it.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Self-Heal Loop (F4)</strong>: A sibling pattern, and the boundary must be nailed down. Generator-Critic is "improve after generating," starting from a usable output, with the loop serving quality improvement and replay being optional; Self-Heal Loop is "repair after failure," starting from a broken output, with the loop being a mandatory structure. The former is for subjective tasks, the latter for tasks with a deterministic failure signal.</li>
+            <li><strong>Adversarial Review (collaboration module)</strong>: An upgraded form. Generator-Critic is "the same model with a different prompt," while Adversarial Review is "an independent agent with adversarial incentives." The former addresses "how an agent revises itself," needing only one LLM process and two prompts; the latter addresses "how a decision passes audit-grade independent review," requiring model routing, an independent trace, and cross-agent orchestration, at about 9× the token cost. Use the former when the cost of error is low, and upgrade to the latter for scenarios that demand regulatory independence, such as financial approval or medical diagnosis.</li>
+            <li><strong>Skill Package (F2)</strong>: A connecting relationship. Generator-Critic revises this one current output, while Skill Package distills the successful process across tasks.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of Generator-Critic is not "adding a reviewer," but making explicit an asymmetry that software engineering has relied on for decades—that evaluation is simpler than generation—letting the same model use the "easy" (evaluation) to constrain the "hard" (generation) in reverse.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

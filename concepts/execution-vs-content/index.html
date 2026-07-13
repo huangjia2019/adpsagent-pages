@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Execution-Type Agent Is Not a Content-Generation Agent: Classify the Scenario First · Concept · ADPS</title>
+    <meta name="description" content="If a one-digit error corrupts business data, it&#x27;s execution-type; loose text passing that tolerates retries is content-generation.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/concepts/execution-vs-content/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/" class="active">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
+
+            <h1>An Execution-Type Agent Is Not a Content-Generation Agent: Classify the Scenario First</h1>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
+
+            <p><img src="/images/concepts/en/execution-vs-content.png" alt="An execution-type agent is not a content-generation agent: classify the scenario first" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Definition</h2>
+            <p>Before designing an agent, answer a question that comes earlier than the technology: is it meant to deliver content, or to deliver execution? This classification decides which way the whole architecture leans afterward.</p>
+            <p>A content-generation agent is centered on output. Tools are loosely orchestrated, and parameters can be synthesized on the spot by the LLM. Research reports, travel assistants, and slide writing all fall in this category: query sources in parallel, summarize, feed the result into report generation, then add a review-and-quality-check pass. What each step passes along is mainly text content, with no strict mechanical state binding. An execution-type agent is different. It takes the user's business intent as input and, through a reliable orchestrated sequence of business API calls, delivers a complete business process automatically. It values delivery over generation; the steps have strict ordered dependencies, and what they pass along are mechanical parameters such as ids, status codes, and entity references. One step out of order, or one parameter wrong, and the delivery fails.</p>
+            <p>The difference between the two can be drawn against gacha. A content-generation agent has a second chance: draw a card you do not like, and you just generate another. Retrying costs almost nothing, which is the root of its tolerance for LLM drift. An execution-type agent has no such tolerance — once business data is touched by mistake, there is no redo. The difference in fault tolerance is what makes the reliability requirements of the two categories different by design.</p>
+            <h2>How it works</h2>
+            <p>What this guards against is the specific failure of treating execution as if it were content. In the MCP protocol, the agent acts as a Client: it perceives tools, calls tools, and stuffs results back into context as text, while the understanding and generation of parameters is left entirely to the LLM. This design is enormously valuable in general-assistant scenarios, but applied to execution scenarios it runs into trouble. The Dongfang Yiteng team's earliest judgment was the same as that of many SaaS companies: if the existing APIs were implemented as MCP Servers, could the bot then run a business process to completion on its own? Taken to a few core scenarios for real, it immediately failed to work — and the reason it failed to work was precisely MCP's openness and flexibility. The LLM is a probabilistic model; generation always drifts, and no amount of added JSON-Schema constraints or stronger models removes the moments of error and hallucination. The team wanted a deterministic execution result, and determinism cannot rest on probability alone. This conflicts directly with MCP's premise of handing parameter generation to the LLM.</p>
+            <p>Dongfang Yiteng is a SaaS company for enterprise personnel, organization, attendance, approval, and payroll. The reimbursement example at the start makes this hurdle clearest. In an expense-control system, reimbursement is "create the request first, then upload the invoice, then submit for approval, then query the result." When uploading the invoice, the bound request id must be the one the business system just returned in the previous step — not an arbitrary id, and certainly not one the model generates itself. For a person doing this in a GUI it is trivial, because which method each button calls and which parameters it binds were nailed down by the program long ago. Hand it to an agent to do automatically and those explicit operations are gone: which tool to call and what parameters to prepare are all its responsibility. The team fell into this pit: appending each step's result to context like a tool_call, and letting the model parse the binding for the next step's parameters out of context, proved extremely unreliable in practice — sometimes succeeding, sometimes failing, with the moment of failure neither controllable nor predictable. After that, the team classified what it was building clearly as execution-type, and every architectural trade-off that followed started from this dividing line.</p>
+            <h2>When you need it</h2>
+            <p>When your agent is executing a chain of business steps with strict state dependencies, and one wrong parameter would corrupt business data or produce a "false success," then it is execution-type, and it has to be designed with the heavy mechanisms execution-type demands. Once the category is clear, how control and narrative are split is covered in <a href="/concepts/control-narrative-dualism/">the dualism of the control plane and the narrative plane</a>; how to solve the most central mechanical-parameter problem of execution-type agents is covered in <a href="/concepts/mechanical-state-plane/">the mechanical state plane and the provenance coordinate</a>.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This is an ADPS blue-book concept. Back to <a href="/concepts/">Concepts</a> or <a href="/patterns/">the pattern matrix</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

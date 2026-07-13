@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 工具调度 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="Agent 在每一步行动前，由工程层依据工具元数据从工具集中挑出最合适的工具，而不是让模型自己临场决定。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/a1-tool-dispatch/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/a1-tool-dispatch/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/" class="active">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>A1
+            </p>
+
+            <h1>A1 · Tool Dispatch · 工具调度</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">行动 Action × 路由 Route（选）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">低（与单次调用同量级，元数据开销可忽略）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">行动模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">Agent 在每一步行动前，由工程层依据工具元数据从工具集中挑出最合适的工具，而不是让模型自己临场决定。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>工具一多，agent 选错工具的概率就上来了。这里有一个反直觉的事实：LLM 擅长用工具（填参数、解读返回值），但不擅长选工具。一个接了 17 个工具的物流派单 agent，曾经把 80 单全部派给同一个堵在路上的司机——它每一步都"觉得"自己选对了，错误藏在"没刷新司机状态"和"没看路况"这些它注意不到的细节里。</p>
+            <p>Tool Dispatch 把"选哪个工具"这件事从模型手里收回到工程层。它的核心判断是：选工具是可靠性工程。靠的不是写一段更聪明的提示，而是给每个工具补足元数据，再配上配额、状态刷新、副作用追踪这一整套工程契约。</p>
+            <h2>为什么坐标是「行动 × 路由」</h2>
+            <ul>
+            <li><strong>纵轴 · 行动</strong>：agent 要把决策变成对外影响，靠的就是工具调用。多工具场景下"调哪个"是行动端最前置、也最高频的决策，所以它属于行动模块而非推理模块。</li>
+            <li><strong>横轴 · 路由</strong>：它的工作方式是基于当前 intent 和 context，把这一次调用导向最合适的那个工具，是典型的路由结构，而不是链式串联或层级包装。同模块的最简工具集（A4）也落在路由这一侧，但分工不同——A1 解决"怎么挑"，A4 解决"挑之前先砍"。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>工业级 Tool Dispatch 的质量，主要由工具元数据的丰富度决定。OpenAI 早期 function calling 只有 name、description、parameters 三个字段，够 demo 用。Claude Code 的工具 schema 扩到了 14 个字段，按用途大致分成八类：标识、动态描述、双 schema、执行特性、UI 行为、来源标记、渐进披露、生命周期。</p>
+            <p>其中最关键的是执行特性五字段：<code>isReadOnly</code>、<code>isConcurrencySafe</code>、<code>isDestructive</code>、<code>requiresFreshState</code>、<code>requiresApproval</code>。它们的工程哲学是默认全部为 false，也就是"不知道就当不安全"——工具实现者忘了声明，系统也会保守处理，只有显式声明只读才进并行通道、跳过确认弹窗。每一个字段都对应一条资深工程师的工具操作直觉，把人靠多年经验积累的判断编码成机器可读的契约。</p>
+            <p>围绕元数据，还要配三件工程纪律：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">机制</th>
+            <th style="text-align: left;">作用</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Quota 配额</td>
+            <td style="text-align: left;">单 session 内同一工具（或同一参数）调用次数封顶，挡住"80 单派一个司机"这类副作用累积</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">State refresh 强制</td>
+            <td style="text-align: left;">写操作前必须先查询刷新状态，避免基于过期数据做写入</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Saga 副作用追踪</td>
+            <td style="text-align: left;">每个 destructive 工具登记 inverse 动作，失败时反向回滚</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>工具数量多、副作用多、错调代价大三者叠加</strong>：物流派单、客服工单、运维操作。</li>
+            <li><strong>接入 MCP 等外部工具协议</strong>：外部工具来源不可信，必须靠元数据里的来源标记加额外安全审查。</li>
+            <li><strong>固定流程任务</strong>：可以更进一步走 Programmatic Tool Calling，由工程层显式编排调用序列，模型只负责填参数和解读结果，减少来回、容错更强、审计更清晰。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>元数据太薄</strong>：只有 name 加 description，agent 凭一句话选工具，相当于让实习生凭一行 job description 上手。这是错调的首要根因。</li>
+            <li><strong>副作用工具没配套</strong>：写数据库、发消息、扣款这类工具没有 quota、没有 state refresh、没有 saga，一次错调就是生产事故。</li>
+            <li><strong>工具堆砌（Tool Stuffing）</strong>：50 多个工具全发给模型，schema 吃掉大段 context，准确率不升反降。应对是渐进披露——核心工具常驻，其余按需检索加载。</li>
+            <li><strong>工具中毒（Tool Poisoning）</strong>：这是 OWASP Agentic 头号威胁，攻击者在 MCP 工具的 description 里嵌入隐藏指令，所有用这个工具的 session 都中招，持久且范围广。它不是普通 prompt injection，必须靠白名单、描述扫描、描述沙箱、行为监控、最小权限这五层防护，缺一层都是开放的攻击面。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>工具选择准确率</strong>（健康区 &gt;90%）：回放历史 query，用 reviewer 模型判断每步选对没。低于 80% 多半是 description 不够好或工具太多。</li>
+            <li><strong>副作用可控率</strong>（健康区 100%）：定期做 chaos test，故意让模型错调某个 destructive 工具，看能否在一分钟内被 quota 拦下并被 saga 回滚干净。任何错调都该能 rollback。</li>
+            <li><strong>工具幻觉率</strong>（健康区 &lt;5%）：调用不存在的工具或填错参数的比例。靠 registry 严格校验加调用前 schema 检查压制。</li>
+            <li><strong>平均每任务工具数</strong>（健康区 3-7）：少了说明 agent 没干活，多了是 over-tooling。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>dispatch(tool_name, args, session):
+    工具不存在        → 拒绝（tool_hallucination）
+    配额已用满        → 拒绝（quota_exceeded）
+    需新鲜状态但已过期 → 拒绝（stale_state_must_refresh）
+    需人工审批        → 挂起（awaiting_approval）
+    执行 handler:
+        成功且 destructive → 登记 saga inverse + 累加 quota + 刷新 state 时间戳
+        失败              → 记 trace，交由上层 saga 回滚
+    返回 DispatchTrace（工具/参数/触发方/状态/拒因/耗时）
+</code></pre>
+            <p>工程落地要点：元数据默认按不安全处理；quota 按主参数计（如派单按司机 id 计）；MCP 工具加来源标记走额外的描述校验和行为监控。</p>
+            <h2>企业落地示例</h2>
+            <p>梁博团队的执行型 agent 把工具、技能、知识库分成三种角色：工具是"手"，技能是"套路"，知识库是"地图加手册"。agent 通过 <code>retrieve</code> 看地图、<code>use_skill</code> 读套路、<code>call_tool</code> 出手——出手前先看图读套路，正是 Tool Dispatch 在工程层做选择的体现。落到那个城配派单 agent 上，团队重写 dispatch 层时加了五件事：工具元数据扩展、selection guidance、写操作前强制状态刷新、单 session 内同一司机派单配额、saga 副作用追踪。准确率从 60% 升到 96%，代价是 dispatch 层多了约 800 行代码。多出来的每一行，本质都是把工程师踩过的坑固化成了机器执行的规则。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>最简工具集（A4）</strong>：同格互补。A1 在给定工具集里挑得准，A4 先把工具集砍到合理规模让 A1 挑得动。</li>
+            <li><strong>规划-执行（A2）</strong>：A1 是单步决策的优化，A2 是多步任务的整体编排。Programmatic Tool Calling 是两者的交汇——工程层定调用序列，每步内部仍是一次 dispatch。</li>
+            <li><strong>护栏三明治（A5）</strong>：A5 在 dispatch 的前后套 pre-check 和 post-check，与 A1 的 quota、state refresh 是嵌套关系——A1 选对工具，A5 保证选错时也兜得住。</li>
+            <li><strong>复杂度路由（R2）</strong>：思路同源，都是基于 context 做路由，区别在 R2 路由的是推理档位，A1 路由的是工具。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Tool Dispatch 的本质不是"写一段挑工具的提示"，而是把工程师群体多年积累的工具操作纪律，编码成元数据和工程契约交给 agent 用——demo 级 agent 的工具元数据是 3 字段，生产级是 14 字段，这道字段差就是玩具和系统之间的距离。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <ul style="list-style: none; margin: 0.5rem 0 1rem 0; padding: 0;">
+                <li style="margin-bottom: 0.6rem; line-height: 1.55;"><a href="cases/liangbo/" style="font-weight: 600;">东方屹腾 · 工具调度落地</a><span style="color: var(--color-text-muted);"> — 工具不裸调、封装进行动能力，注册时声明机械状态依赖坐标，原 API 不改造即可被编排。</span></li>
+            </ul>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M2 检索增强生成 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="给 agent 配一个外挂图书馆，让它在每次需要超出 context 容量的知识时，能查、能筛、能迭代地查回来用。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/m2-rag-pipeline/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/m2-rag-pipeline/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/" class="active">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>M2
+            </p>
+
+            <h1>M2 · RAG Pipeline · 检索增强生成</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">记忆 Memory × 链式 Chain（传）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（索引 + 检索 + 可选重排）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">记忆模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">给 agent 配一个外挂图书馆，让它在每次需要超出 context 容量的知识时，能查、能筛、能迭代地查回来用。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>企业知识库动辄几十万份文档加历史工单，任何 LLM 的 context window 都装不下，但 agent 不能因此回答"我不知道"。它需要在每次提问时，从海量语料里挑出最相关的几份临时塞进 context。这就是 RAG 要解决的事：把 input 之外的事实按需拉进来。</p>
+            <p>2026 年生产级 RAG 的工程难点已经不是"能不能查到",而是"会不会查"。naive RAG 是一次查询一次返回，而真正能上生产的 RAG 让 agent 主导多步检索——看完第一批结果不满意就改写 query 再查，查到候选答案就主动找反例验证，跨多个语料做交叉对比。</p>
+            <h2>为什么坐标是「记忆 × 链式」</h2>
+            <ul>
+            <li><strong>纵轴 · 记忆</strong>：RAG 是外挂知识库，把 input 之外的事实拉进来，本质是"记下哪些事实、怎么把它调出来"，属于记忆模块里管 declarative knowledge 的部分。</li>
+            <li><strong>横轴 · 链式</strong>：RAG 是一条顺序流水线——query 先 embed，再召回 top-K，再重排，再注入 prompt，最后交给生成。每一步的产物是下一步的输入，前一步传给后一步，是典型的链式传递。"RAG pipeline"这个名字本身就点明了它的链式骨架。即便中间用混合检索（语义加 BM25）选源，那也是链条里的一个环节，不改变整体的顺序流水线形态。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <ol>
+            <li><strong>两条 pipeline 在向量库汇合</strong>：RAG 不是单一步骤。离线侧把文档 chunk、embed、建索引；在线侧把 query embed、召回 top-K、重排、注入生成。两条独立 pipeline 共享同一个向量库。</li>
+            <li><strong>混合检索</strong>：embedding 擅长语义（"ACME 财报"约等于"ACME 业绩"），但精确关键词（产品名、错误码、特定 ID）经常 miss。把语义检索和 BM25 关键词检索结合，再用 RRF（Reciprocal Rank Fusion）融合。</li>
+            <li><strong>上下文增强 chunking</strong>：chunk 一旦切开，原文上下文锚点就丢了。在每个 chunk 前 prepend 一段上下文摘要（用便宜模型生成）再 embed，能显著降低检索失败率。</li>
+            <li><strong>agent 主导的多步检索</strong>：把 RAG 从一次性流水线升级为 agent 主导流程——拆子 query、迭代改写、找反例、跨语料三角验证、按证据强度加权合成。这是人类研究员方法论的工程化版本。</li>
+            <li><strong>迭代硬上限</strong>：多步检索必须设硬上限，否则 agent 会一直觉得"还不够"连续检索。</li>
+            </ol>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>大规模自然语言知识库</strong>：学术文献综述、法律案例库、客服 FAQ。数据量大、含同义词和隐含关系、相对稳定、公开或半公开，是 RAG 的最佳场景。</li>
+            <li><strong>跨多文档的复杂查询</strong>：需要从多个来源综合答案、需要可追溯引用的场景。</li>
+            <li><strong>企业 know-how 组织</strong>：把散落在 wiki、Confluence、Slack、邮件、工单里的知识，组织成 agent 能五分钟取出来的形态。这是 RAG 在企业落地的真正命题。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>知识源没治理就上 RAG</strong>：90% 企业 RAG 翻车的根因不是技术，是知识本身没整理过——wiki 里大量文档互相矛盾、关键决策不在文档里、版本全是过期的、同一概念有多个名字。把垃圾 embed 成 vector，检索回来还是垃圾，比不做 RAG 更糟。做 enterprise RAG 之前先做 ontology 和知识治理。</li>
+            <li><strong>该走 Agentic Search 却硬上 RAG</strong>：dev workflow、代码搜索、内部敏感数据这三类场景多数不该上 RAG。代码每分钟在变，刚写的函数还没建索引就找不到（数据延迟）；索引本身是 attack surface，内部恶意人员可能越权偷看（安全隐患）。这类场景应该走 grep 加 glob 的 Agentic Search。</li>
+            <li><strong>停留在一查一答</strong>：第一次没查到关键信息时，naive RAG 要么直接说不知道，要么 silently 编造。生产级 RAG 必须能改写 query 再查。</li>
+            <li><strong>盲目追求召回精度</strong>：embedding 模型选型差几个点是边际优化，agent 多步检索像不像一个真会查的人才是质变。chunk 召回率上 80% 不一定有用，最终综合质量像 senior 研究员才是真价值。</li>
+            <li><strong>引用不可追溯</strong>：学术、法律、医疗场景里，每个结论都要能追到原始 chunk 加页码，这是合规的必要条件。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>检索失败率</strong>（健康区越低越好）：top-K 里没有相关 chunk 的比例。上下文增强加混合检索加重排三件套叠加，工业数据显示可把失败率降低约三分之二。</li>
+            <li><strong>检索命中率 / 引用率</strong>（健康区 ≥ 70%）：召回的 chunk 里实际被 agent 引用的比例。过低说明召回噪声大或 query 写得太宽。</li>
+            <li><strong>多步检索轮数</strong>（健康区 3-5 轮且有硬上限）：迭代检索的实际轮数。持续顶到上限说明任务确实难或单次召回太差。</li>
+            <li><strong>最终综合质量</strong>（业务判定）：agent 输出像不像一个 senior 从业者的产出。这是 RAG 系统真正的判断标准，上 70% 已能改变团队工作方式。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>离线索引侧：
+    doc → chunk → 前置上下文摘要(便宜模型) → embed → 向量库 + BM25 索引
+
+在线检索侧（agent 主导多步）：
+    拆子 query
+    每个子 query 迭代检索：
+        语义 top-150 + BM25 top-150 → RRF 融合 → reranker 重排 top-20
+        agent 评估是否够 → 不够则改写 query 再查（最多 N 轮）
+    形成假设 → 取反作为新 query 找反例
+    跨多语料三角验证（多组都出现的 chunk 加权）
+    按证据强度加权合成
+返回 answer + evidence + counter_evidence + 完整 trace（含 citation 可追溯）
+</code></pre>
+            <p>工程落地四个要点：retriever 层做上下文增强加混合检索加重排；max_iterations 设硬上限加 token 预算硬上限；trace 完整记录每次检索；引用必须可追溯到原始文档加页码。</p>
+            <h2>企业落地示例</h2>
+            <p>某科研机构的学术文献综述 agent，要在百万级论文库里帮研究员回答任意问题。第一版用关键词检索返回五千篇已读过的，换 embedding 又只返回 2018-2020 的“经典”。重写后五个 canonical 模式全上：拆子 query、迭代精化、假设取反找反例、跨 arXiv 加 bioRxiv 加 PubMed 三角验证、按证据强度加权合成。配套六个业务决策——多语料分库不分表（peer-reviewed 权重 1.5、预印本 1.0、未发表 0.5）、时间衰减权重（半衰期 18 个月）、强制开启反例检索、引用做到 chunk 级、跨语料作者关系图。落地后 agent 返回精准二十篇加五篇反例加三篇隐含相关，每篇都有 citation 可追，研究员一份综述从六小时压到一个半小时，质量还更高。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>分层保留（M1）</strong>：M1 解决"长期已知的记忆怎么按作用域加载",RAG 解决"作用域装不下的海量知识怎么现查现用"。分层管已知，RAG 管外挂。</li>
+            <li><strong>程序性记忆（M5）</strong>：RAG 管 declarative memory（事实知识的检索），M5 管 procedural memory（会做活儿的复用）。RAG 检索"知道什么",M5 检索"过去做过的任务怎么做"。两者在企业 agent 落地里是合奏。</li>
+            <li><strong>上下文分诊（感知模块）</strong>：RAG 把候选信息拉进来，分诊决定这些候选谁先入场。RAG 是召回，分诊是入场排序。</li>
+            <li><strong>渐进发现（感知模块）</strong>：两者结构相似但目标不同。渐进发现是 agent 在陌生空间探索结构，RAG 是在已知大库里取相关片段。一个偏认知，一个偏检索。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>RAG 不是越精准越好，是越会查越好——它的工程天花板不在模型、embedding 或向量库，而在知识源本身的整理质量。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

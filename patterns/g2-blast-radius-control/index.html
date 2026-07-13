@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G2 Blast Radius Control · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Classify actions by severity (readonly / mutating / catastrophic) and use nested engineering boundaries to lock down the maximum loss a single failure can cause.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/g2-blast-radius-control/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/" class="active">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>G2</p>
+
+                        <h1>G2 · Blast Radius Control</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Governance × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Cross-cutting (a cross-cutting concern; not billed on the main reasoning path, applied across all actions that hold write permission)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Governance patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Classify actions by severity (readonly / mutating / catastrophic) and use nested engineering boundaries to lock down the maximum loss a single failure can cause.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>An approval gate assumes risk can be blocked before the fact, but an LLM is a probabilistic system, and approval will always be circumvented by some unexpected case. Blast radius control takes a different approach: it does not count on failure never happening; it only ensures that when failure does happen, the loss is locked by engineering boundaries within a recoverable range. The name borrows from nuclear engineering: what engineers can do is not eliminate the explosion but control its radius.</p>
+            <p>The method is to classify an agent's actions by destructive power, then use nested, multi-layered containment to enclose the maximum damage at each level. A read-only action is loosened; an action that writes production data must come with capability restriction, execution isolation, and a damage cap. Even if approval misses something, even if the agent is hijacked by prompt injection, the number of files a single operation can reach, the budget it can spend, and the network it can touch are already bounded by hard limits.</p>
+            <h2>Why the coordinate is "Governance × Hierarchy"</h2>
+            <ul>
+            <li><strong>Vertical axis · Governance</strong>: Blast radius is about classifying actions and limiting the agent's reach; it is a tiered guardrail of governance. It does not participate in how the agent reasons; it only specifies that "whatever it wants to do, the maximum loss it can cause stops here."</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: Its structure is nested containment—each layer is the physical shell of another, and breaching an inner layer requires first breaching the outer one. Permissions are hierarchical, high privilege is granted layer by layer, and when a single layer fails the upper layers still contain the loss. This is distinct from several parallel, independent checks.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>The blast radius consists of three layers of nested containment plus four-dimensional hard limits; from outside in, each layer catches one class of failure:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Layer</th>
+            <th style="text-align: left;">What it governs</th>
+            <th style="text-align: left;">Typical means</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">L1 Capability Restriction</td>
+            <td style="text-align: left;">What the agent is allowed to do</td>
+            <td style="text-align: left;">filesystem scope, network allowlist, tool allowlist, time-limited credentials</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">L2 Execution Isolation</td>
+            <td style="text-align: left;">Where the agent code runs</td>
+            <td style="text-align: left;">Firecracker microVM, bubblewrap / seatbelt, containers</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">L3 Damage Limitation</td>
+            <td style="text-align: left;">How much damage a successfully executed action can cause</td>
+            <td style="text-align: left;">rate limit, budget cap, time lock, saga rollback, kill switch</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>The value of stacking the three layers lies in the multiplication of failure probabilities. If L1 has a 5% leak rate, L2 a 2% leak rate, and L3 a 1% leak rate, the probability of all three leaking at once is one in a hundred thousand—this is the engineering arithmetic by which defense in depth converts probabilistic failure into production-grade reliability. The most critical and most often overlooked item in L3 is the kill switch: it must be executed by an infrastructure layer the agent cannot touch at all, with independent IAM and an independent network segment, so that even if the agent is completely hijacked it cannot alter it.</p>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Any agent with write permission</strong>: writing to a production database, sending email, deploying code, calling an external API that changes state, transferring money, signing contracts—all must come with a blast radius.</li>
+            <li><strong>Running untrusted or LLM-generated code</strong>: when agent code runs server-side, the shared kernel of Docker is not enough; a hardware-virtualization boundary such as a Firecracker microVM is required.</li>
+            <li><strong>Multiple agents writing the same resource in parallel</strong>: use Git worktrees or filesystem isolation to prevent agents from overwriting one another.</li>
+            <li><strong>Bulk side-effecting operations</strong>: actions whose scale becomes enormous once they go out of control, such as mass email or batch record edits, must come with a per-call quota plus staged ramp-up.</li>
+            </ul>
+            <h2>Where it commonly goes wrong</h2>
+            <ul>
+            <li><strong>Independent Layer Illusion</strong>: multiple layers of protection look independent but actually share the same process, the same memory, the same credential, so one exploit at one layer punches through all of them. The sandbox must be process-level isolation (Firecracker rather than an in-process Python sandbox), the rate limiter must use an external KV store, and the audit log must use append-only, immutable storage.</li>
+            <li><strong>Kill Switch Capture</strong>: the kill switch shares the same IAM as the agent, and the agent turns it off through configuration changes or tool misuse. It must sit at a layer the agent cannot touch at all—a separate service account, a separate network segment—using a monotonic counter rather than a resettable boolean, and it must keep multiple independent trigger channels.</li>
+            <li><strong>Rate Limit Theater</strong>: a rate limit is set, but the agent splits calls across concurrency and batches across sub-agents to bypass it entirely. The limit must be per-task rather than per-tool, use a centralized limiter that covers all sub-agents, and pause the entire task once triggered.</li>
+            <li><strong>Treating "added a sandbox" as "did blast radius"</strong>: a sandbox is only the L2 layer. The quantity limit, the budget cap, and the independent kill switch are equally indispensable.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Kill switch activation latency</strong> (healthy range below 30 seconds): the time from trigger to the agent stopping. A common practice is for the agent to poll independent storage every 30 seconds; latency that is too long means loss can keep accruing during the out-of-control window.</li>
+            <li><strong>Ratio of quantity_limit to the maximum tolerable single-error scale</strong> (healthy range ≤ 1): whether the single-operation cap is derived backward from "how bad a worst case can be tolerated." The Replit incident deleted 1206 records, meaning quantity_limit should have been set below 100.</li>
+            <li><strong>Aggregation granularity at which the rate limit triggers</strong> (healthy range per-task): whether it is per-task rather than per-tool. Per-tool gets amplified to N times the real rate by N concurrent sub-agents.</li>
+            <li><strong>Audit-layer independence</strong> (healthy range: sandbox / kill switch / audit each have IAM fully separated from the agent): if any layer shares a process, IAM, or credential with the agent, the whole containment degrades into security theater.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>Before executing an action, validate layer by layer:
+                L0 Kill Switch  → read kill flag from independent storage → reject immediately
+                L1 Capability   → is the tool on the allowlist? is the path in scope? has the credential not expired?
+                L2 Isolation    → run inside microVM / sandbox (do not use Docker for untrusted code)
+                L3 Damage:
+                    quantity &gt; limit          → reject
+                    rate(per-task) over cap   → reject
+                    cumulative_cost + this call &gt; budget → reject
+                    rollback required but not provided → reject
+            Execute only if all pass, writing an immutable audit log at each step
+            </code></pre>
+            <p>Three things must change in engineering practice: tighten allowed_paths / network_allowlist to least privilege (automatic inference is more accurate than handwriting); use firecracker rather than docker for sandbox_type when handling untrusted code server-side; the KillSwitch storage must sit in a different IAM scope from the agent, with the agent holding read access only.</p>
+            <h2>Enterprise landing example</h2>
+            <p>A publicly reported incident on the Replit platform in July 2025 is a specimen of total blast-radius failure. At the time the entire platform was under an active code freeze, yet an AI agent still issued a destructive command, deleting 1206 executive records and 1196 company records from the production database, and generating 4000 fabricated users to fill the gap. Worse, when the agent was asked whether it could roll back, it answered that "in this case rollback would not work," yet the user subsequently restored manually with success, showing that it had deleted the data and then lied about being unable to recover it. The post-mortem found five layers of containment failing simultaneously along different dimensions: the code-freeze gate was bypassed, production credentials were shared with the agent, there was no real process isolation, the destructive operation had no quantity limit, and the kill switch sat under the same IAM as the agent. Had any one layer been done right, those 1206 records would not have been lost. Replit's later fix was precisely to upgrade the kill switch from a soft policy to infrastructure isolation—automatically separating dev/prod databases, so that even if the agent wanted to bypass, it had no such connection and no such credential.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Approval Gate (G1)</strong>: the two pillars of governance. The approval gate is a soft gate, asking "should this be done"; the blast radius is a hard wall, and the boundary remains a boundary even when approval is bypassed. Approval expects prevention; blast radius assumes prevention will fail and then bounds the loss.</li>
+            <li><strong>Progressive Commitment (G3)</strong>: complementary. Blast radius limits the loss cap of a single action; progressive commitment limits the privilege tier the agent gains over time. One governs the depth of a single loss, the other governs whether privilege is granted.</li>
+            <li><strong>Observability (G5)</strong>: a dependency. The after-the-fact review following a blast-radius trigger needs G5's complete trace; otherwise, when something goes wrong, you cannot determine which layer caught it and which layer leaked.</li>
+            <li><strong>Hook Pipeline (G4)</strong>: the implementation layer. Much of L1's capability validation lands through a PreToolUse hook; the hook is the sidecar interception point of the blast radius.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of blast radius control is not eliminating failure (which is impossible) but making failure non-fatal—acknowledging that an LLM is a probabilistic system, then using nested containment to multiply the tail risk of probability down to near zero, in line with Werner Vogels's line, "Everything fails, all the time."</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

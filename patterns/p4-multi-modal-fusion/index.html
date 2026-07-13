@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P4 Multi Modal Fusion · Pattern White Paper · ADPS</title>
+    <meta name="description" content="The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning laye">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/p4-multi-modal-fusion/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/" class="active">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>P4</p>
+
+                        <h1>P4 · Multi-Modal Fusion</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Perception × Parallel (fan-out)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (multiple specialist processors + vision calls, significant overhead)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Perception patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning layer.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>What the agent perceives is usually a mix of PDFs, charts, tables, scanned documents, and logs—heterogeneous information jumbled together. Feeding an entire 80-page research report to a vision model gives you dense y-axis tick marks and blurry pixels: a market size of 580 billion gets read as 58 million, off by a factor of a thousand. OCR everything into plain text and you lose all the figures: the genuinely valuable market-size bar chart and competitive-landscape pie chart in the report collapse into a single sentence, "Figure 3 shows market share," and what the agent reads amounts to nothing.</p>
+            <p>Multi-modal fusion engineers this problem, and the key is before the data enters the context: which segment should go through vision, which should be converted to text, which should be discarded. It handles the form of the input before the agent has "thought" about anything—if the form is wrong, then no matter how downstream selects, compacts, or explores, it is just continuing to burn resources on the wrong form.</p>
+            <h2>Why the coordinate is "Perception × Parallel"</h2>
+            <ul>
+            <li><strong>Vertical axis · Perception</strong>: Fusion processes multi-channel input (PDF, image, audio, structured data) and synthesizes a unified representation. This is the most primitive "fusion" problem in perception, occurring before reasoning.</li>
+            <li><strong>Horizontal axis · Parallel</strong>: Each channel of data is handed simultaneously to its own specialist processor (PDF parser, OCR, table extractor, log sub-agent) for <strong>parallel conversion</strong>. The channels do not depend on each other and can run at the same time, after which a fuser <strong>gathers</strong> the results from the channels into unified prompt content. This is a classic fan-out / gather: N channels processed in parallel + one merge, neither a single sequential chain nor single-point routing.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>The core judgment in fusion is to choose the right carrier for each channel of data, then merge. The decision criterion is: keep it as an image when spatial information is the signal, convert it to markdown when structural information is the signal.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Input type</th>
+            <th style="text-align: left;">Default handling</th>
+            <th style="text-align: left;">Cost comparison</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Architecture diagrams, flowcharts</td>
+            <td style="text-align: left;">Convert to Mermaid</td>
+            <td style="text-align: left;">An 8-node diagram is ~50 tokens in Mermaid vs. ~1200 in draw.io XML, a 24× difference</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Tables, structured data</td>
+            <td style="text-align: left;">Convert to GitHub Flavored Markdown</td>
+            <td style="text-align: left;">A 10×6 table is ~150 tokens in markdown vs. ~1398 as a screenshot through vision, a 9× difference</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Charts, heatmaps</td>
+            <td style="text-align: left;">Keep the image but use it only as a retrieval anchor; to get numbers, go through chart→CSV secondary extraction</td>
+            <td style="text-align: left;">Reading charts directly through vision has low accuracy and cannot be used as a reasoning engine</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Long logs (&gt;&gt; window)</td>
+            <td style="text-align: left;">Three-layer pipeline</td>
+            <td style="text-align: left;">See below</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Two mechanisms hold up industrial-grade fusion. First, the real arithmetic of vision tokens. The same 1024×1024 image differs 16× across three providers (GPT-4o detail=high 765, Gemini 1032, Claude Sonnet 1398, GPT-4o detail=low only 85); prompt cache saves the most, with cache reads at 0.1× the base rate, so re-reading the same PDF saves 90%. Second, the three-layer pipeline for long logs: bash pre-filtering (grep/awk/jq in the shell shrink 500MB to 5-10MB, burning CPU not tokens) → sub-agent processing (a cheap model reads it all and returns a 200-500 token structured summary) → structured artifact back to the main context (JSON rather than free text, with a pointer to the raw log kept in the summary to query again when needed). Pouring 500MB of logs straight into Sonnet costs about $150 and may overflow the window; the three-layer route costs about $0.16, a difference of about 940×.</p>
+            <h2>Production scenarios where it fits</h2>
+            <ul>
+            <li><strong>Financial research report analysis</strong>: PDF tables + analyst text + market-size charts. None of the channels is complete on its own; they must be assembled before a judgment can be made.</li>
+            <li><strong>Insurance claims</strong>: Accident photos + claim report text + structured policy data combined.</li>
+            <li><strong>Operations incident response</strong>: Monitoring screenshots + long log fragments + configuration files. Long logs must go through the three-layer pipeline.</li>
+            <li><strong>Any scenario where input mixes structured and unstructured data</strong>: The decision criterion is whether the channels of information are complementary—if it is just a repeated expression of the same information, skip fusion and go straight to reasoning, since fusion has a cost.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Misreading figures</strong>: Reading 580 billion in a research report as 58 million belongs to this category. Chart-direct accuracy is inherently low, and it is contagious across multi-turn—a misread in an early turn carries the error forward. The countermeasure is a cross-field consistency check (numbers extracted from a figure must match the same-named numbers in the text region; a mismatch triggers manual review), re-validating the figure source each turn and not still reasoning with the misread number from the first turn by the third turn.</li>
+            <li><strong>Image input blows up the end-of-month bill</strong>: $50 per month at the POC stage becomes $2.5M/month in production. The root cause is that every step of the agent loop repackages and resends the entire prompt (including that 800KB image), so the image is paid for N times, not once. Three-layer countermeasure: budget guard (four ceilings—USD/token/wall-clock/recursion-depth—with halt on any one triggering), thumbnail-first (low resolution by default, request high-res only when detail is needed), and prompt cache.</li>
+            <li><strong>Sub-agent infinite loop, lost findings</strong>: Four agents calling each other burned $47,000 / 264 hours over an unattended weekend. The root cause is that long-form context is truncated at handoff, so the downstream receives a truncated instruction and turns back to ask the upstream, and a loop forms. The countermeasure is the Memory Pointer Pattern (the complete finding is stored in a state store, and only the pointer ID is passed in the context) + pre-execution budget enforcement (each sub-agent must declare a budget before starting, and is killed if it exceeds it).</li>
+            <li><strong>One-size-fits-all truncation threshold</strong>: Thresholds should be set per tool semantics—for bash, keep half from the head and half from the tail (errors are often in the trailing stack trace); for read_file, head-only (information density is concentrated in the front). A one-size-fits-all cut, no matter how large, will distort on some tool.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Token share by form</strong> (alert if image &gt; 50% or log &gt; 40%): When some form's share quietly drifts—say image suddenly rises to 60%—it is almost certainly a figure that should have been converted to a table/markdown but was not. This diagnosis alerts earlier than "total tokens went up" and can catch the problem before the bill explodes.</li>
+            <li><strong>Budget triggers in the agent loop</strong> (a pre-execution cap is mandatory): The trigger and interception records of the four ceilings (USD/token/wall-clock/recursion-depth). A cap that never triggers, or triggers too late, is the $47K risk.</li>
+            <li><strong>Secondary extraction rate on the chart path</strong>: Of the charts that go through vision, how many do a chart→CSV extraction before computing. Taking a vision-output number directly for reasoning is a high-risk signal.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>fuse(inputs):                       # inputs are multiple heterogeneous channels
+                for each channel, dispatch by form:
+                    TEXT   → straight into content
+                    IMAGE  → base64 through vision (take this path only when spatial info is the signal)
+                    TABLE  → convert to markdown (structure is the signal, saves 9×)
+                    PDF    → extract TOC + locate key pages + key figures through vision + tables to md + drop decorative images
+                    LOG    → bash pre-filter → sub-agent summary → structured JSON back to main context
+                    AUDIO  → STT to text
+                merge into unified content blocks, return + a trace (per channel: modality / tokens_out / method)
+            health_check: watch token share by form, alert early on anomalous forms
+            </code></pre>
+            <p>Specialist tools (ocr / stt / pdf_extract / log_subagent / bash_filter) should be injected rather than wrapped, so that migrating environments only swaps the injected implementation (e.g., OCR from Textract to a local engine) without touching the fuser's main flow. Multi-modal dependencies (cv2, pyaudio, pdfplumber) should be lazy-imported inside the function body with an ImportError fallback, to avoid crashing on startup in a headless environment.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>A brokerage research-report analysis agent went through three versions. V1 fed the entire 80-page PDF to vision, about 90K tokens and $0.27 per run, and the bar-chart market size of 580 billion was read as 58 million. V2 OCR'd everything into plain text, dropping tokens to 35K and halving the cost, but while the summary sentences were fluent the sales takeaways were all empty—the valuable information lived precisely in the charts, and converting to text collapsed all spatial information. V3 did not touch the prompt again but redesigned the pipeline: the PDF first had its TOC extracted, key pages located, key figures kept as original images through vision, tables converted to markdown, decorative images dropped outright, and finally 18K tokens were handed to the model—80% less than V1, and the number checks passed too. An account manager queries a single PDF about 8 times a day on average, and with prompt cache turned on the daily cost per document dropped from $2.16 to $0.46. The engineer's retrospective was that three weeks of writing prompts achieved nothing, and what finally saved the day was rethinking what shape the data should be in.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Context triage (P1), semantic compaction (P2), progressive discovery (P3)</strong>: Fusion sits at the very front of the four perception blades. If the form is wrong, then no matter how downstream Triage selects, Compaction compacts, or Discovery explores, it is just continuing to burn resources on the wrong form.</li>
+            <li><strong>Fan-out gather (C2, collaboration module)</strong>: In the three-layer pipeline for long logs, handing the filtered data to a sub-agent for processing is fan-out gather expressed at the perception layer—multiple specialist processors process in parallel and converge at a central fuser.</li>
+            <li><strong>Layered memory (Memory module)</strong>: The countermeasure for sub-agent infinite loops, the Memory Pointer Pattern, shares the same idea as the memory module—store the complete artifact in an external store and pass only the pointer in the context.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Multi-modal fusion is not prompt engineering, it is data-form engineering—good fusion lets the agent see the appropriate little rather than the complete much.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

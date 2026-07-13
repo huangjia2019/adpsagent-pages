@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R1 思维链 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="把模型的推理过程显性化成一段可存储、可审计、可跨模型迁移的结构化数据，让&quot;为什么得出这个结论&quot;有据可查。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/r1-chain-of-thought/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/r1-chain-of-thought/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/" class="active">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>R1
+            </p>
+
+            <h1>R1 · Chain-of-Thought · 思维链</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">推理 Reasoning × 链式 Chain（传）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">低（约等于一次普通调用，开 thinking 时按 token 多付一档）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">推理模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">把模型的推理过程显性化成一段可存储、可审计、可跨模型迁移的结构化数据，让"为什么得出这个结论"有据可查。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>模型给出一个结论，但没人知道它是怎么得出来的。结论对的时候没人追问，结论错的时候无法 debug，监管来查的时候拿不出依据。Agent 跟传统软件最大的差别之一就是这种"灰盒性"——它不是黑盒，也不是真白盒，中间这层推理过程如果不落下来，出事时根本无法 root-cause。</p>
+            <p>Chain-of-Thought 把这段推理过程从模型内部拽出来，变成 trajectory 里的一等数据。在 2026 年，它已经不是 2022 年那句 "Let's think step by step" 的 prompt 技巧——reasoning model 本来就会 emit 推理过程，工程层要做的是管理这段过程的生命周期：怎么落库、怎么审计、跨模型 fallback 时怎么迁移、按任务复杂度怎么控制深度。写 Agent 不写 CoT trace，等于写后端不打 log。</p>
+            <h2>为什么坐标是「推理 × 链式」</h2>
+            <ul>
+            <li><strong>纵轴 · 推理</strong>：CoT 把"为什么"显性化，让模型把思考过程写出来，是纯推理领域的原点模式。推理模块其他 4 个模式（路由、并行、迭代、双模）都在 CoT 这条基线上做不同方向的扩展。</li>
+            <li><strong>横轴 · 链式</strong>：推理本身是一条线性 trajectory，从输入走到输出，中间每一步都依赖前一步（思考 → 中间结论 → 最终答案）。这是天然的链式结构，不是并行撒网，也不是循环迭代。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>CoT 在 2026 年是一个多形态的工程范畴，核心是把推理 trajectory 当结构化数据管理，而不是看完即弃。落地时有四件硬责任：</p>
+            <ol>
+            <li><strong>持久化</strong>：thinking blocks 进 trajectory log，按 trace_id 索引，结构化存储，支持重放、回滚、跨 session 迁移。</li>
+            <li><strong>跨模型归一</strong>：不同 reasoning model 的标签格式各异（OpenAI 用 <code>&lt;reasoning&gt;</code>、DeepSeek 用 <code>&lt;think&gt;</code>、Anthropic 用结构化字段）。入库前 normalize 成统一 schema，Agent 看到的永远是格式一致的 trajectory，审计时也只需要看一种结构。</li>
+            <li><strong>跨模型 fallback strip</strong>：thinking block 的签名跟生成它的模型绑定。主模型限流切到 fallback 模型时，fallback 模型不接受其他模型的签名，必须先 strip 掉所有不兼容的 thinking block 再发，否则整个请求被拒、Agent 调用失败。</li>
+            <li><strong>effort 控制</strong>：thinking 是付费 token，但更多 thinking 不一定更高质量。给一个 effort 控制曲面（off / low / medium / high / max），让简单任务用 low、复杂任务用 high。</li>
+            </ol>
+            <p>一个值得注意的边界：reasoning model 对自己 CoT 的控制力很弱，写出来的推理也可能是事后补的"剧本"而非真实推理路径。所以 CoT 是有用的可观测性信号，但不能 100% 当成模型的真实思考过程，关键决策要再加一层外部验证。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>多跳逻辑、需要解释的判断</strong>：理赔审核、合同风险识别、信贷决策，每个结论都要能向监管解释"依据是什么"。</li>
+            <li><strong>合规留痕场景</strong>：金融、医疗、法律领域要求决策的完整 reasoning 长期留档，CoT trace 是这条合规底线的载体。</li>
+            <li><strong>教学与调试场景</strong>：反例——这类场景反而该让 thinking 显式可见，把推理过程暴露出来是加分项。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>给 reasoning model 硬加 step instruction</strong>：模型自己已经在 think，再喂"请逐步分析"反而打乱推理、多烧 token。Wharton 2025 的实证显示这种加法在 reasoning model 上几乎无效甚至变差。</li>
+            <li><strong>fallback 时不 strip thinking</strong>：主模型挂掉切 fallback 时不清理跨模型签名，整个请求被拒、Agent 调用失败。这种 incident 平时不暴露，一旦主模型限流就集中爆发。</li>
+            <li><strong>trace 只写日志文件</strong>：监管要"调某月某日那件 case 的完整 reasoning"时，散在日志文件里的 trace 翻不出来。要结构化进 OpenTelemetry / Datadog，按 trace_id 可查。</li>
+            <li><strong>所有任务一个 effort 跑</strong>：简单任务（"今天周几"）和复杂任务（"这份合同有什么风险"）用同一个 effort，既浪费了简单任务的 token，又委屈了复杂任务的质量。</li>
+            <li><strong>延迟敏感场景开 thinking</strong>：用户输入要在 200 毫秒出回应的场景，extended thinking 会引入秒级延迟，应该关掉或用 effort=low。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>Reasoning Token 占比</strong>（健康区 30-60%）：thinking token 占总 token 的比例。p99 高于 80% 说明在 over-thinking 简单 case 浪费成本，低于 20% 说明在 under-thinking 有准确率风险，任何方向超阈值都该告警。</li>
+            <li><strong>fallback strip 成功率</strong>（健康区接近 100%）：主模型切 fallback 时正确清理跨模型 thinking 的比例。低于 100% 意味着存在会让 Agent 调用直接失败的隐患。</li>
+            <li><strong>trace 可回查率</strong>（健康区 100%）：任意一条历史决策能按 trace_id 调出完整 reasoning 的比例。合规场景这是硬性要求。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>任务进来 → 按复杂度选 effort 档（off / low / medium / high / max）
+模型 emit thinking blocks → normalize 成统一 schema → 进结构化 trace
+若主模型限流 fallback：
+    strip 掉所有跟目标模型不兼容的 thinking block，再发请求
+审计取数双视图：
+    监管视图  → 完整 thinking + 最终决策 + fallback 链
+    客户视图  → 仅脱敏摘要，不暴露 reasoning 细节
+返回 final_answer + 完整 trace（按 trace_id 索引，长期留档）
+</code></pre>
+            <p>落地四个要点：reasoning model 不要再加 step instruction；effort 控制做成 per-request / per-task 配置；标签归一要随新模型持续扩展；trace 打到结构化 trace bus 支持长周期回查。</p>
+            <h2>企业落地示例</h2>
+            <p>某企业级执行型 Agent 团队（梁博团队）在落地时发现一个分水岭：思维链不是"多写一段思考给用户看"，而是每次调用产出一个可被程序消费的 Decision 控制信号。具体做法是把模型输出拆成 thinking 和 answer 两段——thinking 段是推理过程进 trace 留档，answer 段是结构化的 JSON 决策对象，被下游程序直接解析执行。两段分离之后，CoT 从"内容"变成了"控制流"：answer 里的字段直接驱动后续动作，thinking 里的过程供审计回查。</p>
+            <p>关键的工程兜底是 JSON 解析失败时有确定性回退——模型偶尔会把决策写得不符合 schema，这时不是让 Agent 崩溃或随机重试，而是落到一个预定义的安全默认动作上。这套设计是从"内容型 Agent"（生成文本给人读）走向"执行型 Agent"（产出信号给程序用）的关键。配套决策还包括 thinking 完整留档备审、answer schema 强校验、解析失败计数接入监控。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>复杂度路由（R2）</strong>：CoT 的 effort 控制是按任务深度调推理档位，路由是按任务复杂度选模型档位，同源思路，从单次调用提升到任务级。</li>
+            <li><strong>并行探索（R3）</strong>：并行的每一条分支内部通常就是一条思维链，并行是在 CoT 之上叠加的"多采样"。</li>
+            <li><strong>迭代假设验证（R4）</strong>：迭代的每一轮也是一条思维链，迭代是把多条思维链在时间维度串起来反复修正。</li>
+            <li><strong>双模架构（R5）</strong>：Reasoner 那一侧的深度推理本质就是一条完整思维链，Talker 那一侧则刻意不做深推理。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Chain-of-Thought 在 2026 年的本质不是"教模型想"，而是把模型已经在想的过程当成一等数据来管理——它是 Agent 时代可观测性的根基，不是可选项。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

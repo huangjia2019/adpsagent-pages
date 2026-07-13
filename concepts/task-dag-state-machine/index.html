@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task DAG and Task State Machine: The Skeleton of Plan-and-Execute · Concept · ADPS</title>
+    <meta name="description" content="Forced out by ReAct&#x27;s step-skipping — take execution order out of the model&#x27;s judgment and pin it into a task graph + state machine.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/concepts/task-dag-state-machine/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/" class="active">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
+
+            <h1>Task DAG and Task State Machine: The Skeleton of Plan-and-Execute</h1>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
+
+            <p><img src="/images/concepts/en/task-dag-state-machine.png" alt="Task DAG and Task State Machine: The Skeleton of Plan-and-Execute" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Definition</h2>
+            <p>Plan-and-execute is an action pattern that first lays out and fixes the several steps a business process has to take, then schedules execution by dependency, instead of deciding one step at a time. The two core data structures that carry this plan are the task DAG and the task state machine. The task DAG is a directed acyclic graph that organizes task nodes by dependency, fixing the ordering constraints between steps; the task state machine maintains each node's own state and drives the whole graph forward.</p>
+            <h2>How it works</h2>
+            <p>What this structure solves is taking execution order out of the model's on-the-spot judgment and fixing it on the task graph. Letting the LLM work out the correct step order on its own inside a ReAct loop amounts to handing deterministic control flow to a probabilistic model. Plan-and-execute pulls this order out of the narrative context and lays it down as edges in the graph and node states, scheduled by the program through the state machine, so the model no longer re-decides the ordering at every step.</p>
+            <p>What it guards against is ReAct skipping or missing steps on a process with strict dependencies. Dongfang Yiteng hit this failure while validating fast setup of payroll groups in the mock stage: this scenario has to snapshot the enterprise's existing payroll-group data first, confirm the snapshot is built before importing the matched template, and roll back from the snapshot if the import fails — a sequence that cannot be reordered and that has strict progressive dependencies. The first idea was natural: describe each API as a tool, describe in the skill how each scenario should be orchestrated, feed "call this step first, then that step" to the agent as narrative context, and expect it to work out the correct order on its own inside ReAct. In testing it did not work: once the skill orchestration was given to the model as narrative context, it sometimes ran correctly and sometimes clearly skipped or missed a step, leaving the task not matching expectations. The root cause is again the uncertainty of the LLM — handing execution order to a probabilistic model for on-the-spot judgment cannot guarantee it is right every time.</p>
+            <p>So the team identified one more missing action pattern: plan-and-execute. ReAct's core control structure is essentially a chained loop with an exit boundary; once you understand the concept the data structure is easy to write. Plan-and-execute has to lay out and manage the scheduling and dependencies of several consecutive tasks, which means maintaining more complex task-planning and scheduling state, and its implementation complexity is an order of magnitude higher than ReAct's. Its core components are the task DAG, the planner, the executor, the verifier, and the task state machine together with the mechanism that dynamically maintains task-graph state. The most demanding part is the task state machine model: each node has its own state, and the precondition for a downstream node to be scheduled and started is that all of its upstream dependencies are complete and the node itself is ready; the whole scheduling semantics is driven by this state machine.</p>
+            <p>The two action patterns need not be an either-or choice. Control flows between the Orchestrator and the specific action pattern: when ReAct runs to a step where the path becomes clear and can be planned into several parallel or sequential tasks, it hands control back to the Orchestrator and switches into plan-and-execute, alternating between the two by how clear the task is. Once the state machine is in place, human-review blocking and resumption of key tasks also gain a ready-made structure to ride on; the node state itself can express "paused, awaiting approval," with no need to design a separate mechanism for it.</p>
+            <h2>When you need it</h2>
+            <p>When your agent has to deliver a business process whose steps have strict ordering dependencies, where the wrong order means delivery fails, and ReAct's step-by-step free decision can no longer hold down skipped or missed steps. How this plan maintains task-scheduling state and keeps it separate from narrative and mechanical parameters is what the <a href="/concepts/unified-session-state/">separation of powers in the unified session state plane</a> answers; key tasks blocking for human review and resuming the execution flow after approval rely on this state machine, see <a href="/concepts/hitl-block-resume/">HITL block and resume</a>.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This is an ADPS blue-book concept. Back to <a href="/concepts/">Concepts</a> or <a href="/patterns/">the pattern matrix</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

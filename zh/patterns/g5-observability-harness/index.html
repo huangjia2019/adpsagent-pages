@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G5 可观测性 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="给 Agent 全生命周期挂五维 telemetry，跨 agent 串联 trace，让事后能回放、监管能审计、产品能决策。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/g5-observability-harness/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/g5-observability-harness/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/" class="active">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G5
+            </p>
+
+            <h1>G5 · Observability Harness · 可观测性</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">治理 Governance × 编排 Orchestrate（协）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在所有 agent / tool / step 上）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">治理模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">给 Agent 全生命周期挂五维 telemetry，跨 agent 串联 trace，让事后能回放、监管能审计、产品能决策。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>LLM Agent 没有可读的源码，模型权重是黑盒，唯一能看清它做了什么的窗口是 trace。可观测性没做好的 Agent 系统等于黑盒：监管不接、运维不敢、出事查不清。而且 Agent 的故障方式跟传统软件不同——传统软件在某个时间戳抛异常、stack trace 一目了然，Agent 是慢慢漂移：完全正确、仍然正确、看起来正确、自信但错、沉默灾难化，没有一个 crash point。</p>
+            <p>可观测性给 Agent 装上飞行数据记录器。它在每个 LLM call、每个 tool call、每个 sub-agent step 上采集遥测，把分散的 span 用同一个 trace id 串成完整调用链。监管来审能给完整 trace，出事能 root-cause 到具体哪一步，产品和客服在做日常决策时能几分钟拿到证据，长期还能拿来优化。</p>
+            <h2>为什么坐标是「治理 × 编排」</h2>
+            <ul>
+            <li><strong>纵轴 · 治理</strong>：可观测性管的是所有 Agent 操作可观测、可重放，是治理的可追溯基础。审批门、爆炸半径、渐进承诺这三件事的记录都要靠它兑现，否则审批 log 没人看、爆炸半径出事没法复盘、信任档位变化没法解释。</li>
+            <li><strong>横轴 · 编排</strong>：监控本质上是中心化协调问题——没有任何单个组件能看到完整 trajectory。tool 看不到 LLM 的 reasoning，LLM 看不到 tool 的副作用，sub-agent 看不到主 Agent 的 plan，只有 orchestrator 能拼出完整画面。它横切在所有 agent / tool / step 上，不属于某一条具体的 chain / route / loop，是跨切的编排。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>可观测性把 Agent 的遥测做成五个维度，缺一维就是盲点：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">维度</th>
+            <th style="text-align: left;">传统软件</th>
+            <th style="text-align: left;">LLM Agent 加在哪</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Log</td>
+            <td style="text-align: left;">应用 log</td>
+            <td style="text-align: left;">加 prompt / response / system_prompt 全文</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Metric</td>
+            <td style="text-align: left;">request count / latency / error rate</td>
+            <td style="text-align: left;">加 tokens_in / tokens_out / model_swap event / refusal rate</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Trace</td>
+            <td style="text-align: left;">request → service → DB</td>
+            <td style="text-align: left;">加 user → agent → sub-agent → tool → LLM call 跨层</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Cost</td>
+            <td style="text-align: left;">不存在</td>
+            <td style="text-align: left;">AI-native：per-call / per-session / per-tenant / per-tool</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Quality</td>
+            <td style="text-align: left;">response status code</td>
+            <td style="text-align: left;">AI-native：hallucination / scope creep / refusal / correctness</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>五维不是平铺的。log / metric / trace 是底层的事实记录层，cost / quality 是上层的斜率分析层。因为 Agent 故障是漂移不是阶跃，关键判断是监控 trajectory slope（变化率）而不是 threshold crossing（阈值穿越）——质量在转弯处下降、每个结果消耗的 token 在 cycle 间膨胀，这些斜率信号才是真正的故障征兆。跨进程靠 W3C Trace Context 的 traceparent 串联所有 span 到同一个 trace id，配合 OpenTelemetry GenAI Semantic Conventions 的标准 attribute，其中 <code>gen_ai.request.model</code> 与 <code>gen_ai.response.model</code> 分开记录，专治"请求 Sonnet 实际跑了 Haiku"这类传统 APM 看不见的 fallback。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>任何企业 production Agent</strong>：合规与客户审计要求顶在那里，五维 telemetry 是底线。</li>
+            <li><strong>多租户 SaaS</strong>：per-tenant cost attribution 是计费基础，也是跨租户隔离审计的入口。</li>
+            <li><strong>多 model 系统</strong>：model swap 不可见就会变成长时间盲查，<code>request.model != response.model</code> 一查就暴露。</li>
+            <li><strong>多 sub-agent 或长 conversation 系统</strong>：跨 Agent 不串 trace 就是黑盒，200K context 的演化必须可回放。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>Volume Overwhelms Signal（信号被淹）</strong>：一个忙碌的 Agent 每小时产生上千 span，dashboard 上两千条绿色里藏着三条红色没人看到。修正方式是 structured alerting——只对少数几个 production metric 做斜率告警（success rate、cost per task、tool accuracy、human override rate、latency p99），dashboard 看趋势不看个体 event，其余走采样加 query-on-demand。</li>
+            <li><strong>Trace Sampling Bias（采样偏差）</strong>：quality 评估有成本，10% 随机采样常见，但某些租户 case 偏向简单端时采到的全是简单 case，dashboard 显示 0.95 完美而困难 case 早已跌到 0.6。修正方式是 stratified sampling 加 SLA-tier 全采，按难度分层强制采样，Enterprise tier 100% 全采。</li>
+            <li><strong>Schema Drift（schema 漂移）</strong>：OpenTelemetry GenAI conventions 仍在演进，今天写死的字段明年被改名，dashboard、alert、cost engine 全部 broken。修正方式是 schema versioning 加 dual-write 加 migration window，stable convention 出来之前不写死任何字段。</li>
+            <li><strong>自造 observability backend</strong>：trace store 加 query engine 加 dashboard 这套基础设施造一遍要数个工程师做一年。2026 年的工程纪律是直接接 Langfuse / Phoenix 这类成熟工具加一层薄业务扩展。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>五维采集完整度</strong>（健康区：cost 与 quality 两维不缺）：是否采了 AI-native 的成本与质量维度。少这两维，故障的斜率信号就消失，事后回放只剩"看起来一切正常"。</li>
+            <li><strong>trajectory slope 告警 vs threshold 告警的比例</strong>（健康区：以斜率告警为主）：是否在监控变化率。纯阈值告警在 Agent 时代基本失效，因为故障是漂移不是越线。</li>
+            <li><strong>跨进程 trace 串联率</strong>（健康区接近 100%）：sub-agent 的 span 能否挂回父 trace id。串不上就只剩一堆孤立 span，无法 reconstruct 完整调用链。</li>
+            <li><strong>采样的难度分布偏差</strong>（健康区：采样分布贴近实际分布）：采到的 case 难度是否代表整体。偏向简单端会让 quality dashboard 系统性高估真实质量。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>每个 LLM call / tool call / sub-agent step 产出一个 span：
+    填 OTel GenAI attribute（含 request.model 与 response.model 分开）
+    cost = compute_cost(span)                 # 按 token 与实际 model 算
+    若命中采样 → quality = llm_judge(span)     # hallucination / refusal / scope_creep
+    emit 到 OTel pipeline（五维同时打）
+
+跨 sub-agent：主 Agent inject W3C traceparent 到 carrier，
+             sub-agent extract 后继续同一个 trace_id
+
+trajectory_slope(tenant, metric, window)：返回变化率，不是阈值
+query_for_audit(trace_id)：一个 trace_id 串起所有 span 供监管回放
+</code></pre>
+            <p>工程落地三处必改：PRICING 换成实际 model 价格；llm_judge 换成真实的便宜 judge 调用（如 Haiku）而非 mock；business 槽里加 tenant_id / user_id / workflow_id，并把 emit 接到真实的 collector 或 Langfuse endpoint。</p>
+            <h2>企业落地示例</h2>
+            <p>2026 年 2 月一家月活 12 万中学生的 Edtech 公司，某个周二早上九点起作业反馈质量突然崩溃，投诉雪片般来——"AI 写错解题步骤"、"AI 拒答物理基础问题"。团队查 application log 正常、查 metric（request count / latency / error rate）正常、查 Datadog APM 显示一切 OK，卡了 6 个小时。最后一个工程师偶然打开 Anthropic Console，发现周一凌晨一次为了省成本的部署，把 main agent 的 model 从 Sonnet 4.6 切到了 Haiku 4.5，routing 配错导致所有题都路由到了 Haiku。复盘时的结论是："我们有 log 加 metric 加 trace，但所有这些都不告诉我 task 用的是哪个 model。LLM agent 的可观测性需要传统三大支柱再加 cost 和 quality 两个 AI-native 维度，少一个都查不出来。"传统 APM 看不到 cost per call 在 model swap 当时从 0.03 跌到 0.001（看起来是好事），也看不到 quality score 同一时刻从 0.92 跌到 0.71（这才是事），两条曲线一对照 model swap 立刻暴露。这就是为什么五维 telemetry 是底线。</p>
+            <p>在执行型 Agent 的工程实现里，可观测性可以用统一的活动事件抽象落地：把智能体的每一个活动事件用 Activity 加 Frame 统一表达，开发者就能看到执行过程的完整时间线（如 SSE 实时推送）。需要注意区分一件事——这里的"可观测"是让执行过程对开发者可见，不等于"Agent 对世界的感知"。前者是治理端的 telemetry，后者是感知模块的事。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>审批门（G1）/ 爆炸半径（G2）/ 渐进承诺（G3）</strong>：被依赖的基础设施。这三件事的记录——审批 log、爆炸半径触发、信任档位变化——都通过 trace_id 在 G5 收口。没有 G5，前三件都是没法兑现的承诺。</li>
+            <li><strong>钩子流水线（G4）</strong>：互补。hook 本身要留痕，Stop hook 常用来挂审计 commit，是 G5 数据采集的入口之一。</li>
+            <li><strong>推理 / 反思模块的 trace</strong>：CoT trace 是 reasoning 维度的可观测性，reflection 讲过的 silent correctness 正是 G5 用 trajectory slope 应对的对象。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>可观测性的最大用户不是 Agent，是人——它把"某个改动会影响哪些客户"这类占工程师大半时间的沟通与影响分析，从花两周开会压缩到花一小时查 trace，让被治理的 Agent 反而拿到更多自主权，因为组织知道最坏情况是被框住的。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

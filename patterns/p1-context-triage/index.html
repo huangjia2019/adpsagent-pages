@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P1 Context Triage · Pattern White Paper · ADPS</title>
+    <meta name="description" content="When the total volume of candidate information exceeds the context window budget, decide what gets in first, what waits outside the door, and what is not preloaded at all.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/p1-context-triage/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/" class="active">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>P1</p>
+
+                        <h1>P1 · Context Triage</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Perception × Route</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (one lightweight priority judgment, no extra reasoning chain)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Perception patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">When the total volume of candidate information exceeds the context window budget, decide what gets in first, what waits outside the door, and what is not preloaded at all.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>The normal state of a production-grade Agent is not too little information but too much. A medium codebase plus three weeks of git history runs to 180K tokens before anything else, and an enterprise knowledge base far exceeds any window. When the candidate information will not fit, the most naive truncation (sort by filename and cut the back half) leaves behind stale material and drops critical evidence, so the Agent reaches a wrong conclusion while believing it has seen a complete set.</p>
+            <p>Context triage turns this into an engineering process: it divides all candidate information into four levels, P0/P1/P2/P3, and loads from high to low until the token budget runs out. It governs window allocation for a single request, with the goal of guaranteeing that the most critical information is not drowned out.</p>
+            <h2>Why the coordinate is "Perception × Route"</h2>
+            <ul>
+            <li><strong>Vertical axis · Perception</strong>: Triage decides what the Agent looks at and what it ignores; it is attention management on the perception side. It handles the stage before information enters reasoning, not the adjustment of output format and not cross-session memory.</li>
+            <li><strong>Horizontal axis · Route</strong>: Information of different priorities takes different processing paths—high priority enters context, medium priority is compressed into a summary, low priority is only attached as a handle to be pulled on demand. This is a single routing decision based on the characteristics of the information, not a chained sequence and not a looped iteration.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single triage layers the candidate information by priority, then uses the token budget to allocate a quota to each layer:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Level</th>
+            <th style="text-align: left;">Typical content</th>
+            <th style="text-align: left;">Loading strategy</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">P0 always loaded</td>
+            <td style="text-align: left;">system prompt, safety rules, current task, business identity (tenant_id)</td>
+            <td style="text-align: left;">takes 5-10% of the budget, enters even if over budget</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P1 loaded if space allows</td>
+            <td style="text-align: left;">current file, recent tool results, error stack</td>
+            <td style="text-align: left;">takes 20-30% of the budget</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P2 loaded after compression</td>
+            <td style="text-align: left;">conversation history, background documents</td>
+            <td style="text-align: left;">compressed into a summary, takes 10-20%</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">P3 handle only</td>
+            <td style="text-align: left;">resources accessible but not preloaded</td>
+            <td style="text-align: left;">0 budget, pulled on demand through tools</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Three engineering points decide whether triage succeeds or fails. First, the priority judgment comes from one of two routes: manual triage (such as Claude Code's five-level CLAUDE.md hierarchy, where the developer themselves puts safety rules at P0 and personal preferences at P2) and algorithmic triage (such as Aider's RepoMap, which uses tree-sitter to extract symbols and scores them with a graph algorithm). Second, the error stack is specially protected and is never triaged away—it is the Agent's feedback loop, and losing it makes the Agent repeat the same mistake. Third, every triage decision must produce a trace; otherwise it is impossible to tell in production whether a critical file was dropped by triage or never discovered at all.</p>
+            <h2>Production scenarios where it fits</h2>
+            <ul>
+            <li><strong>Multi-tenant SaaS customer-service Agent</strong>: One Agent serves hundreds of tenants, each with a knowledge base on the order of 300,000 tokens, far exceeding the window in total. tenant_id must be made a hard P0 constraint, with the rest of the knowledge triaged across the four levels.</li>
+            <li><strong>Code Agent facing an unfamiliar codebase</strong>: The user supplies a different repository each time, and you cannot require everyone to write a CLAUDE.md, so you must take the route of automatic algorithmic symbol extraction.</li>
+            <li><strong>Engineering Agent serving the same team long term</strong>: Investing in a hand-written 200-line CLAUDE.md to buy triage accuracy is more efficient than the algorithmic route.</li>
+            <li><strong>Any Agent connected to a file system, a knowledge base, or running more than five rounds</strong>: Once the information can possibly exceed the window, triage becomes unavoidable.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Priority misjudgment</strong>: Marking a file as P3 when it is the key to the bug means the Agent has to run an extra retrieval loop midway to pull it back, burning another 5K-10K tokens and raising the risk of cascading errors. When in doubt, upgrade; carrying one extra small file is cheaper than running one extra loop.</li>
+            <li><strong>Over-aggressive triage</strong>: Capping the budget too tightly to save tokens suspends the whole critical dependency chain, and the Agent repeatedly says "I need to read this file again." The re-read ratio climbs, and the tokens saved are spent again on re-reading.</li>
+            <li><strong>Vague P3 handle naming</strong>: A name like <code>doc://manual-page-3</code> leaves the Agent unsure whether to fetch it. Handle names should carry a "what is this" signal and follow a three-part "hierarchy + topic + time" form.</li>
+            <li><strong>Cross-tenant data leakage</strong>: A P3 handle fetching the wrong tenant's data into the context is a data-breach incident. A resource with a tenant prefix must be force-validated against the P0 tenant_id at load time.</li>
+            <li><strong>Trace sampled away</strong>: A 1% sampling rate for storage control cannot reveal that "a certain tenant has been leaking data across tenants the whole time." Triage traces go to full structured logging, with storage controlled by counting rather than sampling.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>re-read ratio</strong> (healthy zone &lt; 5%): The fraction of times the Agent requests, mid-reasoning, to re-read a suspended file. Above 10% is a clear signal of over-aggressive triage, and every re-read is a full reasoning loop.</li>
+            <li><strong>p99 of dropped_count</strong> (watch the long tail, not the mean): The mean hides the problem; the p99 exposes the long-tail failure where "1% of requests trigger a triage avalanche and the Agent sees almost nothing."</li>
+            <li><strong>p3_hit_rate</strong> (healthy zone 10-30%): The fraction of P3 handles that are actually fetched. Below 5% means the handles are attached too broadly and waste tokens; above 50% means things that should be P2 were wrongly downgraded to P3.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>对候选信息按优先级排序（P0 &gt; P1 &gt; P2 &gt; P3，错误堆栈额外加分）：
+                逐条塞入：
+                    P3            → 进句柄池，不预加载
+                    其余 + 未超预算 → 进 context，累加 token
+                    其余 + 超预算   → 丢弃（但错误堆栈强制保留）
+            返回 (进 context 的, 挂句柄的, 一条 TriageDecision)
+            TriageDecision 留下：时间戳 / 预算 / selected / deferred / dropped / tokens_used
+            </code></pre>
+            <p>Three things must be changed for real deployment: replace the token estimate with a real tokenizer (<code>len // 4</code> has a large error for Chinese); supplement error detection with domain-specific keywords; and the TriageDecision must land in ELK or Datadog, with the dropped_count trend reviewed daily.</p>
+            <h2>Enterprise deployment example</h2>
+            <p>A regional bank's loan-review Agent ran accurately on standard consumer loans (8 documents). Then a commercial loan application piled in 43 documents, the context would not hold them, and the Agent sorted by filename and made a single naive truncation. The pile it cut included a 2024 collateral valuation report, and the pile it kept included a 2019 photo of a business registration that had long since expired. The Agent, looking at the "complete set" that remained, recommended approval, and two weeks later the loan went into default. The rewrite switched to four-level triage: strong evidence such as the collateral valuation and the current financial statements went to P0/P1, the historical registration was downgraded by time decay, and all "anomaly/missing" markers were force-protected from being dropped. The root cause was not weak reasoning; it was that the Agent had not been taught who should come through the door first.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Semantic Compression (P2)</strong>: Complementary and often paired. Triage governs "which information enters context" (future tokens), and compression governs "how what has already entered is compressed without losing the key parts" (past tokens). The P2-level "loaded after compression" is exactly where the two connect.</li>
+            <li><strong>Progressive Discovery (P3)</strong>: Naturally coupled. The P3 handle from triage is precisely the object that progressive discovery pulls on demand—one is selected passively, the other is sought actively.</li>
+            <li><strong>Layered Memory (Memory module)</strong>: Shares the same handle-naming convention, but with different TTLs. Handles for code and documents always point to the current version and belong to triage; handles for user preferences and conversation state evolve through versions and belong to memory. It is recommended to mark P3 handles in two classes, <code>immutable://</code> and <code>versioned://</code>.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>Context triage is not prompt tuning; it is an echo of operating-system process scheduling in the LLM era—the context window is scarce CPU time, and the triage algorithm is the scheduler that keeps the most important process from being starved.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

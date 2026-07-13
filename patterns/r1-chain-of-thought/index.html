@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R1 Chain of Thought · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Make the model&#x27;s reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that &quot;why this conclusion was reached&quot; is ">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/r1-chain-of-thought/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/" class="active">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>R1</p>
+
+                        <h1>R1 · Chain-of-Thought</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reasoning × Chain (canonical)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Low (roughly one ordinary call; one tier higher per token when thinking is enabled)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reasoning patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern summary</strong></td>
+            <td style="text-align: left;">Make the model's reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that "why this conclusion was reached" is on record.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>The model returns a conclusion, but no one knows how it got there. When the conclusion is correct, no one asks; when it is wrong, there is no way to debug it; and when a regulator comes to inspect, there is no evidence to produce. One of the biggest differences between an agent and traditional software is this "gray-box" quality—it is neither a black box nor a true white box. If the reasoning layer in the middle is not captured, there is no way to root-cause an incident.</p>
+            <p>Chain-of-Thought pulls this reasoning process out of the model's interior and turns it into first-class data in the trajectory. In 2026 it is no longer the 2022 prompt trick of saying "Let's think step by step"—a reasoning model already emits its reasoning process, and what the engineering layer has to do is manage the lifecycle of that process: how to persist it, how to audit it, how to migrate it when falling back across models, and how to control its depth by task complexity. Writing an agent without writing a CoT trace is like writing a backend without logging.</p>
+            <h2>Why the coordinate is "Reasoning × Chain"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reasoning</strong>: CoT makes the "why" explicit by having the model write out its thinking process. It is the origin pattern of the pure reasoning domain. The other four patterns in the reasoning module (Route, Parallel, iterative, dual-mode) all extend in different directions from this CoT baseline.</li>
+            <li><strong>Horizontal axis · Chain</strong>: Reasoning itself is a linear trajectory, running from input to output, where each step depends on the one before it (thinking → intermediate conclusion → final answer). This is a naturally chained structure, not a parallel fan-out, and not a looping iteration.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>In 2026 CoT is a multi-form engineering category, and its core is to manage the reasoning trajectory as structured data rather than discarding it once read. In practice there are four hard responsibilities:</p>
+            <ol>
+            <li><strong>Persistence</strong>: thinking blocks go into the trajectory log, indexed by trace_id, stored in structured form, supporting replay, rollback, and migration across sessions.</li>
+            <li><strong>Cross-model normalization</strong>: different reasoning models use different tag formats (OpenAI uses <code>&lt;reasoning&gt;</code>, DeepSeek uses <code>&lt;think&gt;</code>, Anthropic uses structured fields). Normalize them into a unified schema before storage, so the agent always sees a trajectory in a consistent format and an audit only needs to read one structure.</li>
+            <li><strong>Cross-model fallback strip</strong>: a thinking block's signature is bound to the model that generated it. When the primary model is rate-limited and traffic switches to a fallback model, the fallback model does not accept signatures from another model. All incompatible thinking blocks must be stripped before sending, otherwise the entire request is rejected and the agent call fails.</li>
+            <li><strong>Effort control</strong>: thinking consumes paid tokens, but more thinking does not necessarily mean higher quality. Provide an effort control surface (off / low / medium / high / max), so simple tasks use low and complex tasks use high.</li>
+            </ol>
+            <p>One boundary worth noting: a reasoning model has weak control over its own CoT, and the reasoning it writes may be a "script" composed after the fact rather than the actual reasoning path. So CoT is a useful observability signal, but it cannot be treated 100% as the model's actual thinking process; critical decisions need an additional layer of external verification.</p>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>Multi-hop logic and judgments that need explanation</strong>: claims review, contract risk identification, credit decisions—each conclusion must be explainable to a regulator in terms of "what the basis is."</li>
+            <li><strong>Compliance audit-trail scenarios</strong>: finance, healthcare, and legal domains require the complete reasoning of a decision to be retained long-term, and the CoT trace is the carrier of this compliance baseline.</li>
+            <li><strong>Teaching and debugging scenarios</strong>: a counterexample—these scenarios should instead make thinking explicitly visible, where exposing the reasoning process is a plus.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>Forcing step instructions onto a reasoning model</strong>: the model is already thinking, and feeding it "please analyze step by step" disrupts the reasoning and burns more tokens. Wharton 2025 empirical work shows this addition is nearly ineffective or even worse on reasoning models.</li>
+            <li><strong>Not stripping thinking on fallback</strong>: failing to clean up cross-model signatures when the primary model goes down and traffic switches to fallback causes the entire request to be rejected and the agent call to fail. This kind of incident is not exposed in normal operation but breaks out all at once when the primary model is rate-limited.</li>
+            <li><strong>Writing traces only to log files</strong>: when a regulator wants to "pull the complete reasoning of a given case on a given day," a trace scattered across log files cannot be dug out. It should be structured into OpenTelemetry / Datadog, queryable by trace_id.</li>
+            <li><strong>Running every task at one effort level</strong>: using the same effort for a simple task ("what day is it today") and a complex task ("what risks does this contract have") both wastes tokens on the simple task and shortchanges the quality of the complex one.</li>
+            <li><strong>Enabling thinking in latency-sensitive scenarios</strong>: in scenarios where user input must get a response within 200 milliseconds, extended thinking introduces second-level latency and should be turned off or set to effort=low.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Reasoning token share</strong> (healthy band 30–60%): the proportion of thinking tokens in total tokens. A p99 above 80% indicates over-thinking on simple cases and wasting cost; below 20% indicates under-thinking with an accuracy risk. Crossing the threshold in either direction should trigger an alert.</li>
+            <li><strong>Fallback strip success rate</strong> (healthy band near 100%): the proportion of correct cleanup of cross-model thinking when the primary model switches to fallback. Below 100% means there is a latent risk that can cause an agent call to fail outright.</li>
+            <li><strong>Trace queryability rate</strong> (healthy band 100%): the proportion of any historical decision whose complete reasoning can be pulled by trace_id. In compliance scenarios this is a hard requirement.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>task arrives → choose effort tier by complexity (off / low / medium / high / max)
+            model emits thinking blocks → normalize into a unified schema → into structured trace
+            if primary model is rate-limited and falls back:
+                strip all thinking blocks incompatible with the target model, then send the request
+            dual views for audit retrieval:
+                regulator view → complete thinking + final decision + fallback chain
+                customer view  → redacted summary only, no exposure of reasoning details
+            return final_answer + complete trace (indexed by trace_id, retained long-term)
+            </code></pre>
+            <p>Four points for implementation: do not add step instructions to a reasoning model; make effort control a per-request / per-task configuration; keep extending tag normalization as new models appear; and emit traces to a structured trace bus that supports long-cycle retrieval.</p>
+            <h2>Enterprise implementation example</h2>
+            <p>An enterprise execution-oriented agent team (Liang Bo's team) found a dividing line during implementation: chain-of-thought is not "writing an extra paragraph of thinking for the user to read," but producing a Decision control signal that a program can consume on every call. The concrete approach is to split the model output into two parts, thinking and answer—the thinking part is the reasoning process that goes into the trace for archiving, and the answer part is a structured JSON decision object that downstream programs parse and execute directly. Once the two are separated, CoT shifts from "content" to "control flow": fields in answer directly drive subsequent actions, while the process in thinking is available for audit retrieval.</p>
+            <p>The key engineering safeguard is a deterministic fallback when JSON parsing fails—the model occasionally writes a decision that does not conform to the schema, and in that case the agent does not crash or retry at random but falls back to a predefined safe default action. This design is the key to moving from a "content-oriented agent" (generating text for people to read) to an "execution-oriented agent" (producing signals for programs to use). The accompanying decisions also include archiving the full thinking for audit, strict validation of the answer schema, and wiring parse-failure counts into monitoring.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Complexity routing (R2)</strong>: CoT's effort control adjusts the reasoning tier by task depth, while routing selects the model tier by task complexity—the same line of thought, lifted from a single call to the task level.</li>
+            <li><strong>Parallel exploration (R3)</strong>: each branch of a parallel run is usually a chain of thought internally, and parallelism layers "multi-sampling" on top of CoT.</li>
+            <li><strong>Iterative hypothesis verification (R4)</strong>: each round of iteration is also a chain of thought, and iteration strings multiple chains of thought together along the time dimension for repeated correction.</li>
+            <li><strong>Dual-mode architecture (R5)</strong>: the deep reasoning on the Reasoner side is essentially a complete chain of thought, while the Talker side deliberately does no deep reasoning.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of Chain-of-Thought in 2026 is not "teaching the model to think," but managing the process the model is already running through as first-class data—it is the foundation of observability in the agent era, not an option.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

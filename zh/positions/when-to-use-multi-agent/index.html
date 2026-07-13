@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多 Agent 何时该用 — 立场 · ADPS</title>
+    <meta name="description" content="多 Agent 不是 Agent 工程的下一个 frontier，而是矩阵里一个有边界的设计选择——单 Agent + 工具集 + Harness 覆盖 70%+ 的生产场景。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/positions/when-to-use-multi-agent/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/positions/when-to-use-multi-agent/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/positions/when-to-use-multi-agent/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/" style="color: var(--color-link);">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/positions/when-to-use-multi-agent/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/positions/" style="color: var(--color-text-muted);">立场</a>
+            </p>
+
+            <h1>多 Agent · 何时该用，何时不该用</h1>
+            <blockquote>
+            <p>ADPS 立场专文 · 第 1 篇
+            发布：2026-05-30
+            署名：ADPS 共同体（Agent Design Patterns Society）</p>
+            </blockquote>
+            <hr />
+            <h2>现状 · 一个被严重高估的范式</h2>
+            <p>2024 到 2026 这两年，"multi-agent"是 Agent 工程里被推得最猛的词。AutoGen 在 2024 年初的 demo 视频里让五个 GPT-4 互相讨论怎么写一段代码，那段视频在 X 上转了几百万次。CrewAI 把"crew of agents"放进首页 hero，强调 role-playing 的认知分工。MetaGPT 直接把软件公司搬进 prompt——产品经理 Agent、架构师 Agent、程序员 Agent、QA Agent。一时之间，"多 Agent 协作"被等同于"Agent 工程的下一阶段"。</p>
+            <p>工程现场的数据并不支持这种叙事。</p>
+            <p>Gartner 在 2026-02 发布的 <em>Hype Cycle for AI Agents</em> 中给出一个被引用很广的判断——<strong>到 2027 年底，超过 40% 的 multi-agent 项目会被砍掉或回退到单 Agent 实现</strong>。Galileo 2026-Q1 的 production incident 数据集里，多 Agent 系统的事故率是单 Agent 系统的 2.7 倍，token 成本中位数是 4.1 倍，平均延迟是 3.8 倍。曼宁书第十章我和 Joey Zhou 整理的 23 个生产 Agent 案例里，<strong>只有 7 个真正是多 Agent，剩下 16 个都是"单 Agent + 充分的工具集 + 良好的 Harness"</strong>。这个比例跟舆论场的印象完全相反。</p>
+            <p>更值得警惕的是滥用形态。我们在 2026 年看到的相当一部分"多 Agent 系统"，本质是单 Agent 被人为拆开，每个子 Agent 共享同一份 context、轮流调用同一个模型、按顺序传递同一个 state——这只是把一个 for 循环改写成了五个互相调用的 LLM call，token 成本翻倍、latency 翻倍、可调试性反而下降。这类系统在 demo 阶段惊艳，在生产阶段被砍掉。</p>
+            <p>ADPS 必须就这件事说话。</p>
+            <hr />
+            <h2>ADPS 的立场</h2>
+            <p><strong>多 Agent 不是 Agent 工程的下一个 frontier，而是 28 模式矩阵中一个 specific 的设计选择</strong>。它有清晰的适用边界、清晰的失败模式、清晰的成本代价。把它推上神坛是 2024-2026 这一波叙事的偏差——这种偏差正在让很多本来可以稳定落地的 Agent 项目，因为强行拆成多 Agent 而失败。</p>
+            <p>ADPS 的判断有四句——</p>
+            <p><strong>第一 · 单 Agent + 充分的工具集 + 良好的 Harness 能覆盖 70% 以上的生产场景</strong>。能用单 Agent 解决的事情，不要用多 Agent 解决。</p>
+            <p><strong>第二 · 多 Agent 的价值在 isolation，不在 collaboration</strong>。如果几个 Agent 共享 context、不能并行、不能独立失败，那就不是多 Agent 系统，是把单 Agent 拆开装样子。</p>
+            <p><strong>第三 · 选择多 Agent 必须有可量化的代价说明</strong>：token 成本几倍、latency 几倍、可观测性是否兜得住、责任界面是否清晰。没有这些回答的多 Agent 决策，是不负责任的决策。</p>
+            <p><strong>第四 · 多 Agent 的判别权在 Agent CAP 四角的位置，不在"听起来更高级"</strong>。当四角告诉你单 Agent 已经触顶，再去考虑多 Agent；不要倒过来。</p>
+            <p>下面把这条立场展开成六个具体场景——三个该用，三个不该用。</p>
+            <hr />
+            <h2>该用 · 三个场景</h2>
+            <h3>场景 1 · 任务自然可并行且子任务之间无依赖</h3>
+            <p>多 Agent 真正的工程优势在并行——多个 LLM call 同时跑，walltime 缩短。但这个优势只在子任务之间没有相互依赖时才成立。子任务之间一旦有依赖，"并行"就退化成"伪并行 + 中间同步"，反而比 sequential 更慢。</p>
+            <p>判别非常简单——拿出任务的 DAG，看叶子节点之间有没有箭头。没有箭头的叶子可以并行交给多 Agent，有箭头的部分应该留给单 Agent 的内部循环。</p>
+            <p><strong>DeerFlow 的 Multi-Researcher 是这个场景的样板</strong>。一个研究问题被 Planner Agent 拆成 5 到 8 个子问题，每个子问题独立的关键词搜索、独立的 source crawl、独立的内容总结，子问题之间不需要互相参考——这种结构下 5 到 8 个 Researcher Agent 并行跑，把 walltime 从 12 分钟压到 2 分 30 秒。Reviewer Agent 等所有 Researcher 完成后再统一审查。这是多 Agent 在做正确的事情。</p>
+            <p>反例是某团队把"写一篇技术文章"拆成"大纲 Agent → 段落 1 Agent → 段落 2 Agent → 段落 3 Agent → 润色 Agent"。这五个 Agent 必须 sequential 跑，因为段落 2 依赖段落 1 的内容，段落 3 依赖段落 2 的语气。最后 walltime 比单 Agent 写慢了 60%，token 成本翻 3 倍——因为每个 Agent 都需要重读前文。这就是把不可并行的任务强行拆出多 Agent。</p>
+            <h3>场景 2 · 角色专长差异显著 + 上下文污染成本高</h3>
+            <p>某些任务里，"扮演不同角色"不是表演性的——是工程意义上的必要。当一个角色看到的信息会干扰另一个角色的判断时，把它们物理隔离（独立 context、独立 prompt、独立模型甚至）是更稳定的工程选择。</p>
+            <p><strong>Adversarial Review 是这个场景最经典的形态</strong>。Generator Agent 在写代码时，如果同时知道"会有一个 Critic 来审查我"，它的生成行为会自我审查到失去探索性——就像作家写稿子时被编辑全程盯着会写不出最好的稿子。把 Generator 和 Critic 物理隔离——Generator 不知道 Critic 的存在，Critic 看到的是脱离了生成过程的纯输出——双方的判断质量都会上一个台阶。</p>
+            <p><strong>某监管科技 POC 的三 Agent 设计是另一个样板</strong>：Knowledge Retrieval Agent 负责拉合规条文，Pattern Matching Agent 负责拿用户对话去匹配，Decision Agent 负责给出最终合规风险判断。三个 Agent 用三个不同温度的模型、三套不同的 prompt、三份独立的 context——因为如果 Decision Agent 同时看到所有原始资料，它会被无关条文带偏；如果 Retrieval Agent 知道最终判断目标，它会带着 confirmation bias 选条文。物理隔离是这套系统稳定的核心。</p>
+            <p>判别标准是上下文污染成本。如果"让一个 Agent 同时看到所有信息"会让它的判断变差——多 Agent 该上。如果上下文污染成本低，单 Agent 配合 Reflection 模式就够。</p>
+            <h3>场景 3 · 需要 adversarial review 提升可信度</h3>
+            <p>这是上一个场景的特例，但值得单列——因为它在高风险场景里几乎是不可替代的设计。</p>
+            <p>高风险决策（医疗、法律、金融、政府）的输出必须经得起对抗性审查。单 Agent 配 Reflection 模式可以做自我批判，但<strong>自我批判有一个根本限制——同一个模型不太能发现自己思维路径里的盲点</strong>。这个限制在心理学上有大量证据，在 LLM 上同样存在。</p>
+            <p>Multi-Agent 的 adversarial review 模式——一个 Generator Agent 产出方案、一个独立的 Critic Agent 用不同的 prompt / 不同的模型 / 不同的视角去审查——能显著提高输出的可信度。Anthropic 2026-Q1 的内部数据显示，在高风险代码审查任务上，单 Agent 配 self-reflection 的 false-negative 率是 18%，加上独立 Critic Agent 之后降到 6.4%。</p>
+            <p><strong>Constitutional AI 训练流程本身就是 adversarial review 的极端形态</strong>——一个模型生成内容，一个模型按宪法原则批判，第三个模型据此重写。三个模型物理隔离是这套训练范式有效的关键。</p>
+            <p>但这个场景有边界——adversarial review 的代价是 token 成本翻倍、latency 翻倍。低风险场景不该用。客服系统、内部知识检索、文档摘要这类容错性高的任务，单 Agent + Reflection 已经够。</p>
+            <hr />
+            <h2>不该用 · 三个场景</h2>
+            <h3>场景 4 · 任务本质 sequential 但被强行拆分</h3>
+            <p>这是 2026 年最常见的多 Agent 滥用形态。</p>
+            <p>任务的依赖图是一条线——步骤 1 → 步骤 2 → 步骤 3——本来一个 Agent 用 Chain 拓扑跑下来就好。但因为"多 Agent 听起来更高级"，被拆成三个 Agent，每个 Agent 负责一步、互相传递 state。结果是——同一份 context 被重复加载三次（token 成本 ×3），三次 LLM call 串行（latency ×3），三次状态传递引入额外的序列化和反序列化（出错概率 ×3）。</p>
+            <p>判别标准是任务 DAG 的形态。<strong>线性 DAG → 用单 Agent + Chain；树状 DAG（无依赖叶子）→ 考虑多 Agent 并行；有环 DAG → 用单 Agent + Loop</strong>。除了树状 DAG 那一支，多 Agent 都是错的选择。</p>
+            <p>反例非常多，举一个最典型的——某创业团队做"AI 论文阅读助手"，把"读 PDF → 提取关键观点 → 生成摘要 → 翻译成中文"拆成四个 Agent。这是一条纯线性 DAG。最后被砍掉，回退到单 Agent + Chain，walltime 从 18 秒压到 5 秒，token 成本降到 35%。</p>
+            <h3>场景 5 · 用多 Agent 掩盖单 Agent 设计能力不足</h3>
+            <p>这是更深层的问题——团队不会做单 Agent 设计，转而希望用"多个 Agent 协作"来掩盖每个 Agent 的薄弱。</p>
+            <p>实际情况是反过来——多 Agent 系统对每个子 Agent 的设计要求<strong>更高</strong>，不是更低。子 Agent 的 prompt 必须更精确（因为没有人类在场纠偏）、Memory 必须更克制（因为跨 Agent 状态传递成本高）、错误处理必须更严格（因为一个子 Agent 失败可能拖垮整个系统）。如果团队连单 Agent 的 Perception / Memory / Reasoning / Action 都没设计好，扩展到多 Agent 只会把问题放大。</p>
+            <p><strong>Anthropic Engineering Blog 2026-04 的一篇文章里有一句话说得很准</strong>："<em>If you can't make your single agent reliable, you won't make your multi-agent system reliable—you'll make it 5× as unreliable</em>"。这句话适用于绝大多数现实情况。</p>
+            <p>判别标准很直接——团队的单 Agent baseline 是否在生产稳定运行了至少三个月。没有就不要考虑多 Agent。先把单 Agent 做扎实——把 Memory 模式选对、把 Reasoning 步骤拆清楚、把 Action 工具集收敛、把 Reflection 节奏调好——这些做完之后，<strong>80% 的情况下你会发现根本不需要多 Agent</strong>。</p>
+            <h3>场景 6 · 缺乏 sub-agent isolation 的"伪多 Agent"</h3>
+            <p>最隐蔽也最常见——形式上是多 Agent，工程上是单 Agent。</p>
+            <p>判别标志有四个：（1）所有子 Agent 共享同一份 context window；（2）子 Agent 之间是顺序调用而不是并行；（3）任何子 Agent 的输出会出现在其它子 Agent 的输入里；（4）整个系统在同一个 process 里跑、共享同一份内存状态。<strong>只要这四条满足任意两条以上，那就不是多 Agent 系统</strong>——只是把一个 Agent 的内部循环拆成了多个 prompt 段落。</p>
+            <p>伪多 Agent 的成本和真多 Agent 一样高（每个"角色切换"都是一次 LLM call），但收益完全没有——没有并行优势、没有 context isolation、没有独立失败域。所以是最差的选择。</p>
+            <p><strong>Sub-Agent Isolation 是 ADPS 模式矩阵里 Collaboration × Hierarchy 这一格的核心约束</strong>。没有这个约束，多 Agent 就是表演性的。Claude Code 的 SubAgent 实现是 isolation 做得最干净的样板——每个 SubAgent 跑在独立的 context、独立的 tool registry、独立的 working directory、独立的 conversation history。父 Agent 看到的只是 SubAgent 返回的 final summary，看不到内部过程。这种隔离是多 Agent 之所以是多 Agent 的根本。</p>
+            <hr />
+            <h2>判别表 · Decision Matrix</h2>
+            <p>在选择是否上多 Agent 之前，按下面六个维度逐项问自己。<strong>6 个维度 ≥ 4 个落在"应当多 Agent"，再考虑多 Agent；否则单 Agent</strong>。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">维度</th>
+            <th style="text-align: left;">应当单 Agent</th>
+            <th style="text-align: left;">应当多 Agent</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">任务 DAG 形态</td>
+            <td style="text-align: left;">线性 / 有环</td>
+            <td style="text-align: left;">树状 / 无依赖叶子</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">上下文污染成本</td>
+            <td style="text-align: left;">低（信息混在一起不会带偏判断）</td>
+            <td style="text-align: left;">高（角色之间必须信息隔离）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">风险等级</td>
+            <td style="text-align: left;">低（容错性高、可回滚）</td>
+            <td style="text-align: left;">高（需要 adversarial review）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">团队单 Agent baseline</td>
+            <td style="text-align: left;">不存在 / 不稳定</td>
+            <td style="text-align: left;">已稳定运行 ≥ 3 个月</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">可观测性预算</td>
+            <td style="text-align: left;">紧（无法承受多 trace 关联）</td>
+            <td style="text-align: left;">充足（有完整 distributed tracing）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">责任界面</td>
+            <td style="text-align: left;">单一团队 owner</td>
+            <td style="text-align: left;">跨子系统 owner 已商定</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>这张表不是"算分得高低"——是六个 veto——只要"应当单 Agent"那一列有任何一项命中，多 Agent 的决策就需要被严肃质疑。</p>
+            <hr />
+            <h2>真实案例 · 四个对比</h2>
+            <p><strong>Claude Code SubAgents · 恰当</strong>。当父 Agent 接到一个"需要在大代码库里 grep 几十个文件 + 总结跨文件模式"的任务，会派出 5 到 20 个 SubAgent 并行去读。每个 SubAgent 独立 context、独立 tool registry，没有共享状态。父 Agent 等所有 SubAgent 返回后做一次汇总。<strong>这是多 Agent 真正用对的样子</strong>——任务可并行、子任务无依赖、isolation 严格、责任界面清晰。Claude Code 512K 行代码两年稳定运行验证了这套设计。</p>
+            <p><strong>DeerFlow 四角色 · 恰当</strong>。Planner / Multi-Researcher / Reviewer / Writer 是四个 Agent，但它们不是平等并列的——Multi-Researcher 是并行 fan-out，其它三个是 sequential。整个系统真正"多 Agent"的部分只在 Researcher 这一层，其它三层是单 Agent 在不同阶段被调用。<strong>这种"局部多 Agent"是真实工程的常态</strong>——大部分流程是单 Agent，只在能并行的瓶颈处用多 Agent。</p>
+            <p><strong>CrewAI 默认 demo · 过度</strong>。CrewAI 官方文档的 hello-world 示例是"研究员 + 写作者"两个 Agent 写一篇科技文章。研究员搜资料，写作者拿研究员的资料写文章——这是一条线性 DAG。两个 Agent 共享同一个 task state，顺序调用。<strong>这是典型的伪多 Agent</strong>——把单 Agent 的"先研究再写"两个步骤拆成了两次 LLM call，token 成本翻倍，没有任何 isolation 价值。CrewAI 的 framework 本身设计良好，但默认 demo 在示范一种错误的范式。</p>
+            <p><strong>反面案例 · 某保险公司客服 Agent · 过度</strong>。某团队设计了七个 Agent——意图识别 Agent、知识检索 Agent、案例匹配 Agent、政策解读 Agent、回复生成 Agent、合规审查 Agent、语气调整 Agent。所有 Agent 共享 conversation state，顺序调用，没有并行。生产数据：单次对话 token 消耗是同行单 Agent 方案的 4.2 倍，平均响应延迟 8.7 秒（同行 2.1 秒），事故率 3.1 倍。三个月后被砍掉，回退到单 Agent + 5 工具集 + Approval Gate，所有指标改善到同行水平。<strong>这是 ADPS 立场要警示的全部三个反面场景的叠加</strong>——sequential 任务被强拆、单 Agent baseline 不存在、伪多 Agent 没有 isolation。</p>
+            <hr />
+            <h2>收束</h2>
+            <p><strong>多 Agent 不是 Agent 工程的下一个 frontier</strong>。它是 ADPS 28 模式矩阵中 Collaboration 这一脉跟 Parallel / Hierarchy 这两式交叉处的一组 specific 选择——大约 4 到 6 个模式格——只在特定场景下成立。</p>
+            <p>让多 Agent 回到它应该在的位置——一种工程选项，不是一种身份标识；一种成本-收益权衡，不是一种叙事修辞——是 ADPS 共同体愿意承担的事情之一。</p>
+            <p>我们对 Agent 工程的判断仍然是——<strong>单 Agent + 充分的工具集 + 良好的 Harness 是绝大多数生产场景的正确起点</strong>。多 Agent 是当这个起点触顶之后、有清晰的 isolation 边界、有可量化的成本预算、有明确的责任界面之后，才考虑的下一步。</p>
+            <p>把这条立场写清楚，是 ADPS 区别于 hype cycle 的方式。</p>
+            <hr />
+            <blockquote>
+            <p>ADPS · Agent Design Patterns Society · adpsagent.com
+            本文是 ADPS 立场专文系列第 1 篇 · 后续将就 "Agent 自主性边界" / "Evaluation 与 Testing 的关系" / "开源 vs 闭源模型在 Agent 工程中的真实差异" 等议题继续发声。</p>
+            </blockquote>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                <a href="/zh/positions/">← 返回全部立场</a>
+            </p>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

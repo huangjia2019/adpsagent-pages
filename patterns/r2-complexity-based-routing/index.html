@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R2 Complexity Based Routing · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive ">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/r2-complexity-based-routing/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/" class="active">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>R2</p>
+
+                        <h1>R2 · Complexity-Based Routing</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reasoning × Route (selection)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Medium (the routing decision itself is cheap; the overall bill typically drops 50-70%)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reasoning patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive one. Trade routing for the bill.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>The problem it solves</h2>
+            <p>Using the most expensive, most capable model as the default is the most common form of waste in 2026 agent industry practice. The price gap between GPT-4o and GPT-4o-mini is 16x, and the gap between Opus and Haiku is close to the same order. If an agent routes every query to the most expensive model while more than half of those queries are in fact template-fill-in level simple tasks, that share of the bill is money spent for nothing.</p>
+            <p>Complexity-based routing replaces "use the expensive model for everything" with "split by need." Its premise is that real traffic has many easy cases and few hard ones—simple queries make up the bulk, complex queries are the minority. Route simple queries to a cheap model and reserve the expensive model for the complex queries that genuinely need it, and the bill is immediately cut in half with essentially no quality loss. Industry data shows that teams who route correctly commonly achieve a 47% to 80% cost reduction. It is complementary to parallel exploration (R3): routing handles everyday savings, while parallelism buys quality for critical decisions, and both can coexist in the same agent.</p>
+            <h2>Why the coordinate is "Reasoning × Route"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reasoning</strong>: A routing decision is at heart "should this question use cheap fast thinking or expensive slow thinking." What it selects is a reasoning policy. It belongs to the reasoning-strategy layer, not to splitting a task across multiple agents.</li>
+            <li><strong>Horizontal axis · Route</strong>: Based on the complexity signal of the input, it dispatches different queries to different reasoning depths (model tier + effort tier). This is a natural branch-selection structure: a query comes in and one path is chosen.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single complexity-based routing pass consists of three stages:</p>
+            <ol>
+            <li><strong>Extract signals + classify</strong>: Extract complexity signals from the query (length, keywords, domain, historical success rate) and hand them to a classifier that decides which tier to take. The classifier itself must use a cheap model or rules, keeping the decision cost within 5% of the total—you cannot call an expensive model upfront just to make the routing decision.</li>
+            <li><strong>Tiered execution</strong>: A common setup is three tiers (Cheap / Medium / Expensive), all sharing the same call interface and only switching the model name. Routing selects not only the model but also the model's effort tier, combining the two dimensions.</li>
+            <li><strong>Escalation fallback</strong>: After the cheap tier answers, check whether the result is trustworthy (confidence, schema, length); if it falls short, escalate and retry. The escalation chain must have a hard ceiling (usually 3 tiers); if it still fails at the top, raise an error or hand off to a human—every escalation chain needs a circuit breaker.</li>
+            </ol>
+            <p>In 2026 the routing industry split into three lines, which determine how a team chooses:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Line</th>
+            <th style="text-align: left;">Form</th>
+            <th style="text-align: left;">Trade-off</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Internalized in the model</td>
+            <td style="text-align: left;">The model decides on its own whether to take the fast or slow path</td>
+            <td style="text-align: left;">Convenient, but a black box + single-vendor lock-in</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Explicit in the harness</td>
+            <td style="text-align: left;">The application layer writes its own classifier + fallback</td>
+            <td style="text-align: left;">More engineering effort, but loggable, auditable, multi-vendor</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Third-party router service</td>
+            <td style="text-align: left;">Call a middle-layer API that dispatches automatically</td>
+            <td style="text-align: left;">The simplest interface, but one more dependency + data passes through a third party</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Serious production agents generally take the explicit-harness line, because cost control is at the core of product economics, and handing that power to a model vendor or a third party is giving up control. PoCs and small projects can use the other two.</p>
+            <h2>Production scenarios it fits</h2>
+            <ul>
+            <li><strong>Many easy cases, few hard ones, with cost sensitivity but no room for accuracy to drop</strong>: internal BI self-service queries, customer-support Q&amp;A, document processing—most queries are simple, a few are complex, and routing spends money exactly where it matters.</li>
+            <li><strong>Multi-vendor mixed scenarios</strong>: a team using Claude / DeepSeek / its own fine-tuned model at the same time cannot hand routing to a single vendor and must do it at the engineering layer.</li>
+            <li><strong>Specialized agents that split by action type</strong>: code changes use the main model, git operations use a weak model—routing by action rather than by query complexity is a variant of the routing idea.</li>
+            </ul>
+            <h2>Where it goes wrong</h2>
+            <ul>
+            <li><strong>Classifier built on pure rules</strong>: keyword matching generalizes poorly to unseen query forms and misroutes complex queries into the cheap tier. In production you should use a cheap model for classification—it generalizes better and still costs within 5% of the total.</li>
+            <li><strong>Acceptability check looks only at length</strong>: checking only whether the output is long enough lets through results that violate the schema, exceed numeric bounds, or cite the wrong source data. Do schema-aware validation.</li>
+            <li><strong>Fallback ends up more expensive than going straight to the expensive tier</strong>: running the cheap tier first, finding it inadequate, then escalating to the expensive tier costs more in total than going expensive from the start. As soon as the fallback rate rises, check whether the classifier is misfiring.</li>
+            <li><strong>High-risk queries also go to the cheap tier</strong>: queries involving finance, privacy, or compliance cannot be skimped on even when they look simple, because the cost of an error is 100x more than the tokens. Force them through the most reliable tier.</li>
+            <li><strong>A single-model team forcing routing in</strong>: when only one model is used, or the task is always of the same kind, or the cheap model is already good enough, routing is pointless.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Per-query cost distribution</strong> (healthy zone is long-tailed): cheap tier 60-80%, medium tier 15-30%, expensive tier &lt;10%. If the expensive tier exceeds 30%, either the business really is complex or the classifier is misrouting too many simple queries to the expensive tier.</li>
+            <li><strong>Routing accuracy</strong> (healthy zone &gt;90%): the share handled by the cheap tier without escalation. If only 60% avoid escalation, the classifier is pushing too many complex queries into the cheap tier.</li>
+            <li><strong>Fallback rate</strong> (healthy zone &lt;10%): the share of cheap-tier results that trigger escalation. This is the leading signal for the other metrics—when it rises, the cost distribution shifts and accuracy drops immediately, so bring it down first.</li>
+            <li><strong>Average decision time</strong> (healthy zone &lt;100ms): how long the classifier takes to make its own decision. Exceeding this value means the routing judgment is too heavy and the agent waits before it does any work.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>Query comes in → extract complexity signals (length / keywords / domain / history)
+            classifier (cheap model or rules) → choose tier + confidence
+            High-risk query (finance / privacy / compliance) → force most expensive tier, skip the split
+            Execute:
+                cheap tier runs → result acceptable? → return
+                          not acceptable → escalate (schema validation + cost estimate)
+                escalation chain has a hard ceiling (e.g. 3 tiers); still failing at the top → raise error / hand off to human
+            Emit a trace on every routing decision (query summary / tier / signals / confidence / actual cost / whether escalated)
+            </code></pre>
+            <p>Four points for getting it into production: use a cheap model instead of pure rules for the classifier; make the acceptability check schema-aware; add a cost ceiling to the fallback chain to keep extreme cases from blowing up; periodically promote query types that repeatedly escalate to default directly to the high tier, saving the repeated escalation overhead.</p>
+            <h2>Enterprise landing example</h2>
+            <p>A mid-sized SaaS company's internal data-analysis agent let the product, growth, and finance teams query BI data in natural language. The first version defaulted to the most expensive model for everything ("the strongest, so nothing goes wrong"), and three months after launch finance received a monthly bill of 480,000. The team broke down the traffic: 41% of queries were SQL template fill-ins ("number of users who registered last week"), 22% added a grouping ("retention curve grouped by region"), genuinely complex queries needing multi-step attribution were only 19%, and those needing causal modeling were only 4%. Feeding template-fill-in queries to the most expensive model is paying 15x for nothing.</p>
+            <p>The rewrite made six key decisions: three tiers plus a fallback tier (cheap tier runs template fill-ins, medium tier runs groupings, expensive tier runs attribution, top tier runs causal modeling); a dual-track classifier of rules plus a cheap model (80% goes through rules, 20% through the cheap model, holding routing cost under 200 per month); estimate total cost before escalating to avoid escalation that ends up more expensive; force the three high-risk categories—finance, privacy, compliance—through the most expensive tier; full traces on every routing decision and a weekly health report; every 30 days, promote query types that repeatedly escalate to default directly to the high tier. Three weeks later the bill dropped from 480,000 to 120,000, the error rate held within 0.5%, and p99 latency also fell.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Parallel exploration (R3)</strong>: complementary. Routing picks one tier at a single point in time to save money; parallelism opens N lines at once to buy quality. Within the same agent, everyday work goes through routing and critical decisions start parallelism.</li>
+            <li><strong>Chain of thought (R1)</strong>: the tier that routing selects already contains the CoT effort tier. Routing is the version of CoT effort control raised from a single call to the task level.</li>
+            <li><strong>Dual-mode architecture (R5)</strong>: dual-mode is the architectural extreme of routing—ordinary routing is "pick one tier and run," dual-mode is "run two tiers at once," pushing "tier selection" all the way to "splitting the agent."</li>
+            <li><strong>Failure journal / guard-type patterns</strong>: forcing high-risk queries through the most reliable tier shares the same protective reasoning as "some boundaries cannot be skimped on."</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of complexity-based routing is not "pick a model by looking at the query," but turning the three variables of token, latency, and quality into a Pareto frontier and choosing a specific point on the curve according to the business SLA—this is the work of product economics, not of model parameter tuning.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

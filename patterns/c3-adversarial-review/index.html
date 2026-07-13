@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C3 Adversarial Review · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Pair one generator agent with one or more independent critic agents and improve the output through a structured adversarial loop. The critics must use a different model, a differen">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/c3-adversarial-review/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/" class="active">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C3</p>
+
+                        <h1>C3 · Adversarial Review</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Collaboration × Loop (debate)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (about 9× a single call, 3 agents × 3 rounds)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Collaboration patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Pair one generator agent with one or more independent critic agents and improve the output through a structured adversarial loop. The critics must use a different model, a different family, and a different prompt incentive.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>What problem it solves</h2>
+            <p>The same LLM running three different prompts and pretending to be an "independent reviewer" does not count as independent in the eyes of a regulatory auditor. These three prompts share the same underlying model's training data, the same alignment biases, and the same prior about "what it thinks is right and what is wrong." It is like a judge serving as prosecution, defense, and arbiter at once: formally there is review, but structurally there is none.</p>
+            <p>Adversarial review addresses how a high-stakes decision passes audit-grade independent review. It is not as simple as "add a critic to make the agent more accurate." In settings such as financial credit approval, medical diagnosis, legal assessment, and regulatory compliance, independent review is a structural requirement rather than a quality optimization. Frameworks such as SOC 2, HIPAA, FDA, and the EU AI Act explicitly require "different people, different models, different incentives" to do the reviewing; this is the entry ticket to going live, not a bonus. It shares a common origin with single-agent self-examination (Generator-Critic) but operates at a different scale: the former is one LLM process plus two prompts, while the latter requires model routing, independent traces, and cross-vendor billing, an entirely separate set of engineering infrastructure.</p>
+            <h2>Why the coordinate is "Collaboration × Loop"</h2>
+            <ul>
+            <li><strong>Vertical axis · Collaboration</strong>: This is two or more independent agents genuinely in opposition, one proposing a solution and another dedicated to finding flaws. It is multi-agent, but with the distinctive structure of an adversarial incentive, not merely a division of labor. The critic must use a different model, a different vendor, and a different prompt incentive; otherwise it degenerates into single-agent self-review.</li>
+            <li><strong>Horizontal axis · Loop</strong>: The proponent and the critic argue back and forth, propose, object, revise, object again, until the judge converges or the budget runs out. This is the only structural loop within the collaboration group, distinct from the splitting of Hierarchy, the scattering of Parallel, and the passing of Chain.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single adversarial review consists of three roles and one loop:</p>
+            <ol>
+            <li><strong>Proponent proposes</strong>: the generator agent produces the initial solution.</li>
+            <li><strong>Critic objects</strong>: an independent critic agent is dedicated to finding problems, with a prompt that makes explicit that "finding problems is not confirmation; finding no issue means you should review again." A critic that finds no problems is a suspicious signal in a high-stakes setting, not a pass signal.</li>
+            <li><strong>Proponent revises</strong>: the solution is revised based on the issues the critic raised, and the next round begins.</li>
+            <li><strong>Judge rules</strong>: the judge agent synthesizes both sides' arguments and issues the final ruling (approve / conditional / reject).</li>
+            </ol>
+            <p>The three roles use models from different vendors, and each writes its independent trace into the audit log. The number of rounds has a ceiling: 3 agents × 2 rounds is the standard configuration validated in academic experiments, where 2 rounds already converge most improvements; beyond 3 rounds the marginal returns diminish and oscillation is introduced. The capability of the critic and the generator must not differ too much, or the critic will fail to detect the generator's subtle errors. Crossing families matters more than crossing sizes: models from the same vendor have correlated bias distributions and shared blind spots, and only crossing families introduces the perspective of an independent training history.</p>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>Compliance scenarios with audit-grade independence requirements</strong>: financial credit approval, medical diagnosis assistance, legal assessment, regulatory compliance. In these scenarios independent review is the entry ticket to going live.</li>
+            <li><strong>Critical decisions where errors are costly</strong>: decisions where the cost of error exceeds ten thousand dollars, where trading 9× the cost for an accuracy improvement gives a positive ROI.</li>
+            <li><strong>Scenarios where the generator output and the critic share biased training data</strong>: single-model self-review is almost ineffective in these scenarios, and an independent cross-family perspective must be introduced.</li>
+            <li><strong>The engineering trade-off of saving money for quality</strong>: pairing a mid-tier model with a cross-family critic can close a considerable portion of the performance gap against running a top-tier model alone, while the total cost is in fact lower.</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Model collusion</strong>: nominally cross-vendor, but the critic and the generator share the same batch of web training corpus underneath. "Independent training" is independent on the surface, not in substance, and the two have shared blind spots on certain corner cases. Vendor independence does not equal training-data independence. Critical scenarios should choose models pretrained on different regions and different language corpora, or add a third critic, or attach a compliance human reviewer as the final line of defense.</li>
+            <li><strong>Cost cascade explosion</strong>: the context accumulates and grows longer each round, and the nominal 9× cost may actually rise to over 30×. Each round's critic context should be truncated to "the task plus the current draft" without history, and the judge runs only once at the end with the full history.</li>
+            <li><strong>Sycophancy collapse</strong>: the critic's RLHF training makes it default toward being helpful rather than critical, and after running for a while it says "looks good" to seventy percent of generator outputs, so there is opposition in name but no disagreement in fact. The critic prompt must explicitly state "finding no problems is a red flag," monitor the critic's issues_per_turn distribution, and rewrite prompts that stay low for the long term.</li>
+            <li><strong>Insufficient diversity in role prompts</strong>: when all agents use the same role prompt, multi-agent is actually worse than single-agent. The engineering focus is not piling up the number of agents but designing role diversity.</li>
+            <li><strong>Misuse on simple tasks</strong>: tasks where the cost of error is below one hundred dollars, such as writing polish, and tasks where deterministic verification is available (tests as a critic are far cheaper than an LLM as a critic), are fine with single-agent self-review and should not invoke adversarial review.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Vendor independence</strong> (healthy zone ≥ 2 different vendors): how many different vendors the participating models come from. Fewer than 2 fails to meet compliance-grade independence, and auditors will cross-check against vendor billing records.</li>
+            <li><strong>Critic discovery rate issues_per_turn</strong> (healthy zone not persistently zero): the distribution of the number of issues the critic raises per round. Staying near zero for the long term is a signal of sycophancy collapse.</li>
+            <li><strong>Number of debate rounds</strong> (healthy zone 2-3 rounds): the back-and-forth rounds needed to converge. More than 3 rounds suggests the task may not suit this pattern, or the judge's convergence logic has a problem.</li>
+            <li><strong>Cost per decision</strong> (accounted by business): the real token cost of three cross-family agents. Monitor the spend per round, and downgrade to single-critic mode when it exceeds the threshold.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>AdversarialReview.review(task):
+                check vendor independence (≥2 different vendors)   # refuse to run if not met
+                proposition = proponent(task)
+                for round in 1..MAX_ROUNDS:            # ceiling 3
+                    verdict = critic(task, current)    # use a model from a different vendor
+                    if verdict.no_issues_found and round==1: continue  # found no problems = red flag
+                    if not verdict.issues: break
+                    current = proponent(task, current, verdict.issues) # revise
+                return judge(task, debate_log)         # synthesize both sides, write audit log
+
+            CritiqueVerdict:
+                issues: list           # explicit beats implicit
+                severity: minor/major/critical
+                no_issues_found: bool  # note: this is a RED FLAG, not a PASS
+            </code></pre>
+            <p>Four engineering points: agent_vendors must genuinely cross vendors (auditors verify against billing); the critic's "treat finding no problems as a red flag" is the core of anti-sycophancy; set MAX_ROUNDS to 3; write the compliance attestation field into the audit log and retain it for 7 years.</p>
+            <h2>Enterprise adoption example</h2>
+            <p>A regional bank's AI decision-assistance system for corporate lending has the agent read a borrower's 43 documents and then recommend approve / reject / approve with added credit support. The first version used a single model plus three role prompts (credit analysis, risk assessment, compliance review), and after half a year the accuracy looked acceptable. But once the SOC 2 audit arrived, the auditor asked three questions: Has this "approve" recommendation gone through independent review? If the same LLM with different prompts was used, how does that count as independent? If regulators impose penalties later, can you produce an audit trail proving that every decision went through independent adversarial review? The engineering team could not answer. This was not a technical problem but a structural one. In the seventh month they completely rebuilt it into adversarial review: the generator used Claude Sonnet to produce the loan recommendation, the critic used GPT-5.4 as the red-team reviewer (with a prompt stating "finding problems is not confirmation; treat finding no issue as a red flag and keep reviewing"), and the judge used Claude Opus to arbitrate. The three agents used models from three different vendors, and each wrote its independent trace into the audit log. In the eighth month they passed the SOC 2 re-review. The cost was that the token cost per decision rose from about $0.30 to about $2.10, a 7× cost for compliant go-live, and in a financial setting that arithmetic is worth it.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Generator-Critic (Reflection group)</strong>: a common origin at a different scale. The former is single-agent self-examination (the same model with different prompts), while the latter is multi-agent independent review (independent agents plus an adversarial incentive plus structural independence). The cost of error, regulatory requirements, and cost budget are the three decision points for upgrading from the former to the latter.</li>
+            <li><strong>Fan-out Aggregate (C2)</strong>: a sibling pattern. Both have multiple agents working in parallel, but the fan-out workers are in a collaborative, complementary relationship, while the adversarial review critic is in an adversarial relationship.</li>
+            <li><strong>Parallel Exploration (Reasoning group R3)</strong>: a cousin pattern, multi-agent in parallel but without the structure of an adversarial incentive.</li>
+            <li><strong>N-version programming (classic engineering lineage)</strong>: adversarial review is its reskinned counterpart in the LLM era. Independent implementations each running on their own plus a judge synthesizing them is equivalent to N-version plus voting.</li>
+            </ul>
+            <h2>What the pattern teaches</h2>
+            <p>The essence of adversarial review is not adding a critic to make the agent more accurate, but <strong>encoding the procedural justice of humanity's thousands of years of rule-of-law tradition into the agent system</strong>. Truth does not emerge from consensus; it emerges from structured disagreement, and independence is a structural requirement, not a quality optimization.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

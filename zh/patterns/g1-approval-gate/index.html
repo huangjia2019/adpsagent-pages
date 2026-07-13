@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G1 审批门 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="高 blast radius 或不可逆的动作执行前，按风险路由到自动放行 / 留痕 / 人审三档之一，让人在关键决策点保留最后否决权。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/g1-approval-gate/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/g1-approval-gate/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G1
+            </p>
+
+            <h1>G1 · Approval Gate · 审批门</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">治理 Governance × 路由 Route（选）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在所有高风险动作上）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">治理模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">高 blast radius 或不可逆的动作执行前，按风险路由到自动放行 / 留痕 / 人审三档之一，让人在关键决策点保留最后否决权。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>Agent 进生产之后，最贵的不是它跑得慢，是它独自 commit 了一个不可逆的高风险动作。一笔转账、一次 production 部署、一封对外发布的邮件，错一次的代价远超它跑一万次省下的人力。把所有动作都交给 Agent 自动执行是赌博，把所有动作都拦下来人审又会让效率回到 Agent 之前。</p>
+            <p>Approval Gate 把这件事路由化：每个动作到达决策点，先按风险分类，再分发到三个目的地之一——低风险自动放行、中风险留痕后执行、高风险强制人审。它不追求拦下每一个动作，只追求让"错的代价不可逆且巨大"的那一小类动作必须有人按过回车。这条边界还顺带回答了企业落地 Agent 最关心的一个问题——出事谁负责：有人审过的责任由审批人承担，自动决定的责任由产品 owner 承担。</p>
+            <h2>为什么坐标是「治理 × 路由」</h2>
+            <ul>
+            <li><strong>纵轴 · 治理</strong>：审批门管的是高 blast radius 动作该不该被执行，是治理的核心控制点。它不改变 Agent 怎么推理，也不优化它的输出质量，只在动作即将落地的那一刻插入一道人类否决权。</li>
+            <li><strong>横轴 · 路由</strong>：它的本质是一个 router——把到达的每个 action 按 reversibility × impact 分类，分发到 auto-approve / auto-with-log / human-in-loop 三条路径。这是基于动作特征的一次分流决策，不是链式串联，也不是按层级限权。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一次审批评估由风险分级加三阶段路由组成：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">阶段</th>
+            <th style="text-align: left;">做什么</th>
+            <th style="text-align: left;">关键纪律</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Stage 1 Deny</td>
+            <td style="text-align: left;">命中黑名单规则直接拒绝</td>
+            <td style="text-align: left;">必须 inspect arguments 不只看 tool name</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Stage 2 Allow</td>
+            <td style="text-align: left;">命中白名单的低风险动作自动放行</td>
+            <td style="text-align: left;">CRITICAL 风险不允许走 allow rule 通过</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Stage 3 Ask</td>
+            <td style="text-align: left;">剩余的中高风险动作路由到人审</td>
+            <td style="text-align: left;">无人可审时默认拒绝，不默认放行</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>风险分级建议走 reversibility × impact 双轴，而不是单纯按金额线性切。可逆且影响小的自动放行，不可逆或影响大的强制人审，超过某个阈值的再加 two-person rule 要求两人独立复核。Claude Code 的 5+1 PermissionMode（default / plan / acceptEdits / bypass / dontAsk / auto）是这套档位设计的工业样本，把"全开/全关"二选一升级成了多档位加动态判定的状态机。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>金融与支付</strong>：转账、退款、放款这类不可逆资金动作，超阈值必须人审且高额走双人复核。</li>
+            <li><strong>运维生产环境</strong>：部署、数据库 migration、DNS 切换这类影响面大的操作，先看 plan 再执行。</li>
+            <li><strong>对外发布与法律文书</strong>：邮件群发、合同生成、监管报告，错一次的声誉与合规代价不可逆。</li>
+            <li><strong>regulator-facing 的高风险 AI</strong>：部署在 EU 且属于招聘、信贷、关键基础设施等类别的系统，没有 human oversight 的审批路径直接合规失败。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>Approval Fatigue（审批疲劳）</strong>：allow list 太窄、每个动作都弹窗，审批人开始条件反射点放行。这种橡皮图章比没有审批更危险，因为它制造了"已经有人审过"的虚假安全感。把 demonstrably safe 的动作放宽到自动放行，把人审留给真正高风险的。</li>
+            <li><strong>False Safety（虚假安全）</strong>：deny 规则只看 tool name 不看参数，一个看似无害的 <code>run_command</code> 调 <code>rm -rf</code> 就绕过了。deny 必须检查 arguments，高风险判定建议用 LLM 评估参数是否 destructive。</li>
+            <li><strong>Trust Score Override Drift（信任分数绕过漂移）</strong>：为了减少审批人不耐烦，加一条"老 vendor 累计成功 N 次就放宽阈值"。每一次绕过都假设那条被绕过的路径不会出事，直到那笔被绕过的大额付款进了攻击者账户。金额、不可逆性、监管关键性这三类硬触发永远不允许被 trust 优化绕过。</li>
+            <li><strong>审批规则散落在 agent 代码里</strong>：每个 Agent 各写一套，跨 Agent 系统找不到统一合规边界。正确方向是把 policy 抽到独立的 centralized layer，用声明式语言让合规团队和工程团队在同一份文件里协作。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>approval-to-rejection 比例</strong>（健康区低于 95%）：放行与拒绝的比值。超过 95% 说明 gate 加了摩擦却几乎不拦截，多半已经在橡皮图章式放行。</li>
+            <li><strong>审批人平均决策时长</strong>（健康区高于 3 秒）：低于 3 秒是明显的 reflex 而非审视，是审批疲劳的直接信号。</li>
+            <li><strong>override path 实际触发率</strong>（健康区接近 0 且不上升）：trust-based 绕过路径的触发频率。一旦发现异常上升立刻停，这是 200 万事故的早期征兆。</li>
+            <li><strong>audit log 完整率</strong>（健康区 100%）：高风险动作留痕的覆盖率。低于 100% 意味着出事时查不清谁批的、凭什么批，直接违反 EU AI Act Article 22 留档要求。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>对每个 action：
+    risk = classify(action)          # reversibility × impact 双轴
+    Stage 1 Deny  → 命中黑名单(查 args 不只查 name) → 拒绝
+    Stage 2 Allow → 命中白名单 且 risk != CRITICAL → 放行
+    Stage 3 Ask:
+        risk == LOW            → 自动放行
+        risk &gt;= MEDIUM         → 路由到人审(无人可审则默认拒绝)
+        risk 超阈值 / 不可逆    → two-person rule 双人独立复核
+返回 ApprovalRecord(action / risk / decision / reviewer / rationale)
+全程写 WORM audit log（满足监管留档）
+</code></pre>
+            <p>工程落地三处必改：risk classifier 换成业务的（金融用 KYC + AML 评分、运维用 blast radius 估算）；人审接口对接真实审批工作流（飞书 / Slack / ServiceNow）而非 console input；双人复核强制 reviewer1 ≠ reviewer2。</p>
+            <h2>企业落地示例</h2>
+            <p>某美国 mid-market 银行的 vendor payment Agent，第一版规则是"1 万美金以下自动付、以上需审批"，前两个月跑得很顺。出事那次，一个老 vendor 通过伪造的 change notice 改了收款账号，Agent 读 notice、走 reconciliation、在季度账到期时自动付了 20 万美金，钱进了攻击者账户。根因不是 Agent 没标风险——它标了 high-amount——而是工程团队为了减少审批人不耐烦，加了一条"累计成功超 50 次的老 vendor 阈值放宽到 5 万美金"的 trust-score override，把这笔本该走审批的大额付款自动放行了。事故后银行定下一条硬规则：no trust-score override on amount triggers，再老的 vendor 金额一过门槛审批人必须按回车。这套修正还包括 30 天内改过账号加大额组合强制双人复核、audit log 七年留档备查。问题的根因不是审批门不够用，是有人为了 UX 把审批门绕过了。</p>
+            <p>在执行型 Agent 的工程实现里，这套门可以做得更轻。当 Agent 有了任务节点和任务状态机之后，敏感任务能在节点处被阻塞、等人工审核通过再继续执行，需要审核的关键操作基于配置声明即可挂上 human-in-the-loop，不必每次都改代码。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>爆炸半径控制（G2）</strong>：治理双柱。审批门是软闸，问"该不该做"；爆炸半径是硬墙，限"做错了能错多大"。审批漏掉的风险，由 G2 的工程边界在事中兜住。</li>
+            <li><strong>渐进承诺（G3）</strong>：互补。审批门是一道静态的门，渐进承诺是一条动态的权力进阶路径。同一个动作两个模式一起决定 routing——当前信任档位越高，需要人审的动作越少。</li>
+            <li><strong>可观测性（G5）</strong>：依赖。审批门必须留 audit log，G5 让这些 log 可被查询、可被回放、可被监管审计。没有 G5，审批记录就是没人看的死数据。</li>
+            <li><strong>钩子流水线（G4）</strong>：审批门是 PreToolUse hook 的一种特殊形态——在动作执行前插入的一道 deterministic 拦截。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Approval Gate 的本质不是 UX 工作流，而是责任承担工程——它把"Agent 出事谁背锅"这个模糊问题，转化成"有人审过的归审批人、自动决定的归 owner"这条明确的责任划分契约。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

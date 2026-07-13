@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>论文 · ADPS</title>
+    <meta name="description" content="提出双轴框架的立场论文。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/research/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/research/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/research/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/" style="color: var(--color-link);">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/research/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+
+        <article class="essay">
+            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">论文</h1>
+            <p style="color: var(--color-text-muted); margin-bottom: 2rem;">ADPS 背后的奠基性论文。</p>
+
+            <h2>立场论文</h2>
+            <p>
+                <strong>A Two-Dimensional Framework for AI Agent Design Patterns: Cognitive Function × Execution Topology</strong><br>
+                Huang &amp; Zhou，2026。<a href="https://arxiv.org/abs/2605.13850" target="_blank" rel="noopener">arXiv:2605.13850</a> · Zenodo DOI <a href="https://doi.org/10.5281/zenodo.19036557" target="_blank" rel="noopener">10.5281/zenodo.19036557</a>
+            </p>
+            <p>
+                这篇论文首次提出双轴框架、27 个命名模式以及 5 条模式选型定律。
+                它为框架建立了 IP 优先权时间戳（在 Manning MEAP 发布两个月前被索引）。
+            </p>
+
+            <h2>摘要</h2>
+            <blockquote style="margin: 1rem 0; padding: 1rem 1.25rem; background: var(--color-quote-bg); border-left: 3px solid var(--color-badge); border-radius: 0 4px 4px 0;">
+                <p>
+                    现有的 AI Agent 设计综述，要么孤立地枚举认知功能（感知、记忆、推理、行动），要么把执行拓扑描述为
+                    架构示意图（链式、并行、层级）。两种视角任何一个单独看都无法识别"一个模式"：相同的拓扑可能
+                    实现架构上完全不同的系统，相同的认知功能也可能通过结构不同的运行时形态来实现。我们提出一个
+                    二维框架，沿两条正交轴——认知功能 × 执行拓扑——对 Agent 设计模式进行分类，形成
+                    7 × 6 = 42 格的矩阵，其中 28 格落有命名模式。这个框架消解了那些原本共享名字的模式之间的
+                    歧义，识别出工业上空白的格子（暗示设计空间中未被充分探索的区域），并为模式选型问题提供了
+                    一套坐标系：给定一个任务，住在<em>这个任务所需认知功能</em>与<em>约束条件所允许执行拓扑</em>
+                    交叉点上的模式有哪些。
+                </p>
+            </blockquote>
+
+            <h2>引用</h2>
+            <p>BibTeX：</p>
+            <pre style="background: var(--color-quote-bg); padding: 1rem; border-radius: 4px; overflow-x: auto; font-size: 0.88rem; font-family: var(--font-mono);">@article{huang2026twoaxis,
+  title  = {A Two-Dimensional Framework for AI Agent Design Patterns:
+            Cognitive Function × Execution Topology},
+  author = {Huang, Jia and Zhou, Joey},
+  year   = {2026},
+  eprint = {2605.13850},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  doi    = {10.5281/zenodo.19036557},
+  url    = {https://arxiv.org/abs/2605.13850}
+}</pre>
+
+            <h2>配套书</h2>
+            <p>
+                框架在 Manning 的英文书
+                <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a>
+                （Huang, 2026–2027, MEAP 于 2026 年 5 月发布）中完整展开。书含十章、二十八个模式的结构化定义、
+                四个真实案例（金融贷款、法律尽调、网络运维、医疗分诊），以及附带完整矩阵的参考附录。
+            </p>
+
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+
+    </main>
+
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

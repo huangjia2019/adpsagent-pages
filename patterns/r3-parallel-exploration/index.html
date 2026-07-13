@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R3 Parallel Exploration · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Within a single query, deliberately launch N independent reasoning chains, then use an aggregation strategy to synthesize one answer. Trade compute for accuracy.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/r3-parallel-exploration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/" class="active">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
+              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>R3</p>
+
+                        <h1>R3 · Parallel Exploration</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Reasoning × Parallel (fan-out)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">High (5–10× a single call)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Reasoning patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Within a single query, deliberately launch N independent reasoning chains, then use an aggregation strategy to synthesize one answer. Trade compute for accuracy.</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>The problem it solves</h2>
+            <p>A single reasoning chain carries a "lucky-draw bias": with the same prompt and the same model, different samples do not necessarily produce the same answer. If one chain happens to go off course, the whole conclusion is wrong, and every step looks correct along the way—the error hides in "the one feature this particular run happened to miss," which is hard to spot in a post-mortem.</p>
+            <p>Parallel exploration replaces "bet on one chain" with "run N independent chains at once, then merge." It does not aim to lower the cost of a single call. Instead, in scenarios where <strong>the cost of being wrong far exceeds the cost of compute</strong>, it spends 3–5× the compute to lift accuracy. It is complementary to complexity routing (R2): routing handles everyday cost savings, parallel exploration buys quality for critical decisions, and the two coexist within the same agent.</p>
+            <h2>Why the coordinate is "Reasoning × Parallel"</h2>
+            <ul>
+            <li><strong>Vertical axis · Reasoning</strong>: what runs in parallel is <em>multiple candidate paths of the same reasoning task</em> (several candidate solutions). This sits at the reasoning-strategy layer, rather than splitting the task across multiple agents. This is the fundamental difference from the collaboration module's "fan-out aggregation (C2)"—the latter parallelizes subtasks, the former parallelizes multiple solutions to the same problem.</li>
+            <li><strong>Horizontal axis · Parallel</strong>: N branches run at the same time, unaware of one another, and are aggregated in a single step at the end. This is a natural parallel structure, neither a serial chain nor an iterative loop.</li>
+            </ul>
+            <h2>Core mechanism</h2>
+            <p>A single round of parallel exploration has three stages:</p>
+            <ol>
+            <li><strong>Dispatch</strong>: replicate the same query into N branches, and create diversity through prompt perturbation (different temperature, possibly a different system prompt or model). The industrial sweet spot for N is <strong>2–5</strong>: research data shows that N=2 already captures about 90% of the gains of N=10, and N=10 is almost never worthwhile in production.</li>
+            <li><strong>Isolated execution</strong>: each branch runs in its own execution environment (independent model client, independent intermediate state, independent error recovery). Cross-talk between branches degrades "independent sampling" into "chained error contagion," and accuracy drops instead of rising.</li>
+            <li><strong>Aggregation</strong>: use an aggregation strategy to synthesize the N results into one. Aggregation is not limited to "majority vote"—it is essentially an <strong>engineered encoding of the cost of error</strong>.</li>
+            </ol>
+            <p>The choice of aggregation strategy depends on the business's "distribution of the cost of being wrong":</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Aggregation strategy</th>
+            <th style="text-align: left;">Suitable scenario</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Majority</td>
+            <td style="text-align: left;">Enumerable answers, symmetric error cost (math, classification)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Weighted</td>
+            <td style="text-align: left;">Branches differ in reliability (different models / different compute tiers)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Verifier</td>
+            <td style="text-align: left;">Open-ended answers (writing, code, planning)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">First-Correct</td>
+            <td style="text-align: left;">A clear success criterion exists (test-driven)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Any-Alarm</td>
+            <td style="text-align: left;">High-risk with asymmetric error cost (healthcare, finance, security)</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>Suitable production scenarios</h2>
+            <ul>
+            <li><strong>High-risk judgments with asymmetric error cost</strong>: medical image triage, financial risk control, anti-money-laundering, security vulnerability review. In these scenarios a "miss" is far more costly than a "false alarm," and pairing with Any-Alarm aggregation expresses the asymmetric cost into the system.</li>
+            <li><strong>Large answer spaces where a single chain is unstable</strong>: complex diagnosis, multi-hop reasoning, and tasks that need self-consistency to improve reliability.</li>
+            <li><strong>Critical one-shot decisions</strong>: nodes where it is worth spending N× the compute to buy certainty (such as a final review before an irreversible business commitment).</li>
+            </ul>
+            <h2>Where it tends to go wrong</h2>
+            <ul>
+            <li><strong>Branches are not independent</strong>: N branches share an execution environment and contaminate each other's buffers or retries; "pseudo-independence" causes accuracy to drop instead. Each branch must have its own runtime.</li>
+            <li><strong>Insufficient prompt perturbation</strong>: all N branches produce nearly identical answers, the effective branch count collapses to 1, and N−1× of compute is wasted. The main causes are temperature set too low and a lack of system-prompt diversity.</li>
+            <li><strong>Blindly defaulting to majority vote</strong>: using Majority in scenarios with asymmetric error cost votes away the genuine alarm of a minority branch—in healthcare this amounts to a missed diagnosis.</li>
+            <li><strong>Terminating early when you should wait for all branches</strong>: Any-Alarm must wait for every branch to return; it cannot use "high-confidence early termination" to save money, or it will miss the alarm signal. Early termination applies only to symmetric-cost scenarios.</li>
+            <li><strong>Overusing parallelism</strong>: running N=5 on simple tasks, low-risk tasks, or tasks where a cheap model already suffices is pure waste.</li>
+            </ul>
+            <h2>Key metrics</h2>
+            <ul>
+            <li><strong>Branch agreement rate</strong> (healthy zone 60–80%): below 50% indicates the task is genuinely complex and well-suited to parallel exploration; above 90% indicates the task is too simple and should not be parallelized.</li>
+            <li><strong>Effective N</strong> (healthy zone close to N): the number of branches among the N that produce <em>different</em> answers. If N=5 but there are only 2 distinct answers, the perturbation is insufficient, and improving prompt diversity beats adding N. This is the most direct signal of cost-effectiveness.</li>
+            <li><strong>Aggregation cost share</strong> (healthy zone &lt;15%): the share of total cost taken by the aggregation step's own compute; if too high, switch to a lighter aggregation strategy.</li>
+            <li><strong>Quality gain</strong> (healthy zone 5–15 percentage points): the accuracy gain of parallel exploration relative to a single chain. Below 3 points means parallelism is not helping; above 25 points means the single-chain configuration itself is flawed, so fix the single chain first.</li>
+            </ul>
+            <h2>Minimal implementation skeleton</h2>
+            <pre><code>replicate query into N branches:
+                each branch → independent runtime → sample at a different temperature → (answer, confidence)
+            aggregate(N results, strategy):
+                Majority   → the answer with the most votes
+                Weighted   → the highest answer after weighting by confidence
+                Verifier   → hand off to an independent verifier model to score and decide
+                Any-Alarm  → if any branch hits a high-risk label, escalate, ignoring the majority
+            return final_answer + complete branch trace (per-branch answer / confidence / aggregation strategy / final decision)
+            </code></pre>
+            <p>Four engineering essentials: prompt perturbation must genuinely create diversity; if the verifier is implemented with a model, use a cheap model; concurrency should reuse a connection pool to avoid rate limiting; the mutual exclusion between Any-Alarm and early termination must be hard-coded.</p>
+            <h2>Enterprise example</h2>
+            <p>A tertiary hospital's medical-imaging assistant agent ran a first version with single-chain reasoning, reading CT scans to mark pulmonary nodules at 89% accuracy, and went into a pilot on that basis. A 12mm nodule was judged low-suspicion, and three months later was diagnosed as early-stage lung adenocarcinoma—the single chain happened to miss the spiculated margin sign. The rewrite switched to N=5 parallel sampling; of the 5 branches, 2 caught the spiculation and pleural indentation. The team changed the aggregation strategy from majority vote to "any single branch ≥ 4a immediately triggers a second review," and accuracy rose to 96.2% while compute rose 4.1×. In a medical setting with such extreme asymmetry in the cost of error, spending 5× compute to buy 7 percentage points of accuracy is entirely worth it. The accompanying engineering decisions also included: an independent runtime per branch (compliance requires genuinely independent sampling), no early termination in Any-Alarm scenarios, and retention of the full N-branch trace for 7 years for regulatory audit.</p>
+            <h2>Relationship to other patterns</h2>
+            <ul>
+            <li><strong>Complexity routing (R2)</strong>: complementary. Routing saves money, parallel exploration buys quality, and the two coexist within the same agent—everyday cases go through routing, critical decisions launch parallel exploration.</li>
+            <li><strong>Chain-of-thought (R1)</strong>: each branch of a parallel run is usually a chain of thought internally; parallel exploration is "multi-sampling" layered on top of R1.</li>
+            <li><strong>Fan-out aggregation (C2)</strong>: same structure, shared aggregation mechanism; the difference lies in what runs in parallel—R3 is multiple solutions to the same problem (a reasoning strategy), while C2 distributes different subtasks to different agents (a collaboration topology).</li>
+            <li><strong>Iterative hypothesis testing (R4)</strong>: a dual relationship. Parallel exploration opens N lines at once along the spatial dimension; iteration runs a single line many times along the temporal dimension.</li>
+            </ul>
+            <h2>What this pattern teaches</h2>
+            <p>The essence of parallel exploration is not "sample a few more times and vote," but <strong>encoding the business's tolerance pattern for error into the system through the aggregation strategy</strong>—choosing which aggregation to use is choosing a cost function.</p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

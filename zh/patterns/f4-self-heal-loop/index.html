@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F4 自愈循环 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/f4-self-heal-loop/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/f4-self-heal-loop/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/" class="active">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>F4
+            </p>
+
+            <h1>F4 · Self-Heal Loop · 自愈循环</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">反思 Reflection × 循环 Loop（转）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（每次修复多几轮调用，但省下人工排查时间）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">反思模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>测试失败、lint 报错、build 挂掉、CI 红了——这些 deterministic 失败信号是 agent 最 valuable 的反馈，因为它们对错明确、不靠主观判断。但每次失败都让工程师手动排查、手动修，重复劳动量大，而且很多失败的修法是模式化的（依赖缺失、配置错位、明显的逻辑错），人来修是浪费。</p>
+            <p>Self-Heal Loop 让 agent 自动消化这些信号闭环修复：失败信号触发 → 诊断根因 → 生成修复 → 应用 → 重新验证，没修好就再来一轮。它是反思模式里最贴近"agent 自主"的形态，也是反思模块唯一一个 mandatory loop——失败一次没修好必须再来，不存在"single-pass self-heal"这种合法形态。Aider 把它做成命令行 flag，Spotify Honk 把它做到 production scale（每月 650+ merged AI PR），GitHub Copilot Rubber Duck 把它做成 cross-model dual-review。</p>
+            <h2>为什么坐标是「反思 × 循环」</h2>
+            <ul>
+            <li><strong>纵轴 · 反思</strong>：agent 自己检测错误并修复，自我修复是反思机制最实用的应用，软件领域尤其常见。它不是改进一个本来可用的输出，而是从一个已经坏掉的状态恢复——agent 把失败信号读懂、诊断、改正，整个过程是对自己产出的审视和纠错。</li>
+            <li><strong>横轴 · 循环</strong>：结构是检测失败 → 诊断 → 修复 → 再测试的强制循环。这个 loop 是结构性的、mandatory 的，跟 Generator-Critic 那种 optional replay 不同——起点是"输出已坏"，loop 是恢复手段，没修好就必须再迭代一轮，终止条件是测试通过、max_iterations 触底、或检测到 regression 触发 rollback。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>一个 production-grade Self-Heal Loop 由六段流水线加三重停止机制构成。流水线：Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify，验证失败时 git revert 回到 Diagnose 重做。</p>
+            <p>三重停止机制是把 Generator-Critic 升级成 Self-Heal 的关键，缺一就有"把 main branch 改坏"的风险：</p>
+            <ol>
+            <li><strong>max_iterations 硬熔断</strong>：loop 最多几轮（Aider 用 3）。防止 agent 无限打地鼠。</li>
+            <li><strong>dual-model critic verifier</strong>：用一个不同 model family 的 reviewer 审修复方案。同 family 的 LLM 有共同盲区，cross-family review 引入独立训练历史的视角打破 self-bias。GitHub Copilot Rubber Duck 在 3 个风险节点（plan 后、实现后、写测试但运行前）强制 cross-model 验证。</li>
+            <li><strong>stability check via signature</strong>：用 failure signature 比对，分辨"修了同一个问题"（hash 重复）还是"换了新问题"，并做 regression detection（severity 升级或 affected files 翻倍即回归，全部 rollback）。</li>
+            </ol>
+            <p>Spotify Honk 的 format/lint/build/test 四级 cascade 值得照搬——便宜信号先跑挡掉明显问题，贵信号留给真正的语义级问题。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>代码 / 测试 / CI 这类对错明确的领域</strong>：CI 失败自动修、lint 自动修、测试失败自动诊断修复，这是 Self-Heal 的主战场，因为有 deterministic ground truth。</li>
+            <li><strong>Coding agent 标配能力</strong>：Aider、Spotify Honk、GitHub Copilot 都把它当默认 feature，是 coding agent 的基础设施。</li>
+            <li><strong>有清晰分层 ground truth 信号的工程流水线</strong>：format/lint/build/test 分层清楚的 CI 才适合上 self-heal，信号越分明、修复越可靠。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>没有 deterministic 失败信号还硬用</strong>：写作、设计这种主观判断没有客观对错信号，走 Generator-Critic（F1）而非 Self-Heal。修复代价大于失败代价的任务（生产数据库改 schema）走治理模块的 Approval Gate 加人审。</li>
+            <li><strong>打地鼠</strong>：没有 stability check，agent 修一个错引入新错，几轮后代码一团糟。防法是 failure signature 比对加 regression detection 加 max_iterations 三层一起上。</li>
+            <li><strong>回归级联</strong>：每轮 fix 不是 atomic commit，一连串 cascade 后 rollback 还原不到正确状态。防法是 per-iteration atomic commit 加 "modify only files in diagnosis" 严格约束。</li>
+            <li><strong>虚假恢复</strong>：agent 改的是 test 而不是 code，把测试改弱让它过——指标全绿、问题全在。防法是 critic 显式审"改的是 production code 还是 test"加 test coverage 不许下降。</li>
+            <li><strong>触底不转人工</strong>："修不好就崩溃"是不可接受的工程做法。HITL handoff 必须是一等公民，触底转人审，且队列要有人每天清。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>自愈成功率</strong>（健康区 60-80%）：自动修复成功的比例，剩余转人工。Spotify Honk 配三重停止后约 70%。低于 50% 说明 ground truth 信号不清或诊断能力不足。</li>
+            <li><strong>平均修复轮数</strong>（健康区 ≤3 轮）：超过 3 轮还不收敛，dev tool 场景应转人工，production scale 才支撑得起更多轮。</li>
+            <li><strong>regression 率</strong>（健康区 &lt;10%）：修复引入新失败的比例。高说明 stability check 或 atomic commit 缺失。</li>
+            <li><strong>HITL 队列清空时延</strong>（健康区 当天清零）：触底转人工后多久有人处理。队列堆积说明组织侧 ops 路径没打通。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>for i in range(MAX_ITERATIONS):           # MAX=3, Aider 同源
+    diagnosis = diagnose(current_failure)
+    fix = generate_fix(diagnosis)         # 只改 diagnosis 里的文件
+    critique = cross_family_critic(fix)   # 不同 vendor, 打破 self-bias
+    if critique.block:
+        return &quot;blocked_by_critic&quot;        # 转 HITL
+    commit = atomic_apply(fix)            # per-iteration atomic commit
+    new_failure = verify()                # format/lint/build/test 四级 cascade
+    if new_failure is None:
+        return &quot;fixed&quot;
+    if is_regression(current_failure, new_failure):   # severity 升 / files 翻倍
+        rollback(all applied commits)
+        return &quot;rolled_back_regression&quot;
+    current_failure = new_failure
+return &quot;max_iterations_human_handoff&quot;     # 触底转人审
+</code></pre>
+            <p>四个工程要点：dual-model critic 用 cross-family 不用同 family 不同 size；regression detection 规则按业务定（可加性能、安全、覆盖率回归）；atomic commit 必须真 atomic，一次别改 5 个文件否则 rollback 不回去；触底必须真有人看 HITL 队列。</p>
+            <h2>企业落地示例</h2>
+            <p>一家 DevTool 公司做 CI/CD 自动修复 Agent。第一版很激进——任何失败都自动修，最多 10 次 iteration，没有 critic、没有 rollback、没有 stability check。第二周 incident：测试失败 → agent 改代码 → 又失败但是不同错误 → 又改 → 改 9 次后把无关代码都改了一遍，main branch 一团糟，rollback 还原不到正确状态因为 9 次 commit 不是 atomic 的。复盘出三个根因：没有 stability check（在打地鼠）、没有 critic 验证（agent 自己说修了就 apply）、没有 git audit trail。第三版彻底重写，加三重停止机制——max iterations 硬熔断、dual-model critic（Sonnet 写、GPT-5.4 审，cross-family）、stability check via signature 比对。验证走 format/lint/build/test 四级 cascade，每轮 atomic commit 便于精确 rollback，触底转 HITL 人审 PR。修完 main branch incident 清零，自愈成功率 70%（剩 30% 转人工），代价是单次修复延迟从约 30 秒涨到约 90 秒——金融场景这点延迟换准确率值得。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>Generator-Critic（F1）</strong>：兄弟模式，边界要钉清楚。Generator-Critic 是"生成后改进"——chain 是线性管道、replay 是 optional、起点是输出可用；Self-Heal Loop 是"失败后修复"——loop 是 mandatory 结构、起点是输出已坏。这点决定了它们的 stop condition、rollback、blast radius 全不同。前者用于主观任务，后者用于有 deterministic 失败信号的任务。</li>
+            <li><strong>Adversarial Review（协作模块）</strong>：cross-family critic 衔接。Rubber Duck 的 dual-model review 是这个思路的轻量版，Adversarial Review 把它推到极端（multi-agent debate）。</li>
+            <li><strong>Iterative Hypothesis（推理模块）</strong>：Loop 同源思路，都是"试—验—再试"的迭代结构。</li>
+            <li><strong>Guardrail Sandwich（行动模块）</strong>：sandbox 同源。Honk 把 agent 放隔离 container 加限权运行，把 blast radius 从"production 全开"压到"sandbox 内全开"。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>Self-Heal Loop 不是简单的自动修代码，而是定义 agent 自主性的边界——能 self-heal 的领域（有 deterministic ground truth）agent 可以独立干，不能的领域（blast radius 不可逆）必须人介入，这条线跟 DevOps 几十年"什么能自动化、什么必须人审"的判断完全同源。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

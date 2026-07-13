@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M4 失败日记 · 模式白皮书 · ADPS</title>
+    <meta name="description" content="Agent 把每次失败结构化记录（哪一步失败、什么错、根因、怎么补救），跨任务持久化，下次类似情况主动召回。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/m4-failure-journals/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/m4-failure-journals/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand">ADPS</a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/" class="active">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>M4
+            </p>
+
+            <h1>M4 · Failure Journals · 失败日记</h1>
+            <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>坐标</strong></td>
+            <td style="text-align: left;">记忆 Memory × 循环 Loop（转）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>成本</strong></td>
+            <td style="text-align: left;">中（结构化存储 + 召回检索）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式组</strong></td>
+            <td style="text-align: left;">记忆模式</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>模式简介</strong></td>
+            <td style="text-align: left;">Agent 把每次失败结构化记录（哪一步失败、什么错、根因、怎么补救），跨任务持久化，下次类似情况主动召回。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>它解决什么问题</h2>
+            <p>绝大多数 agent 系统认真做了进度追踪，却很少有人认真做失败档案。失败被默默丢弃，会话一结束就清零，下次类似情境再来时 agent 又从零踩同一个坑。一个典型场景：agent 修对了主任务后注意力下降，把测试环境的配置写进了生产配置——两周后在另一个项目里它做了几乎一样的事。这不是偶发的不细心，是一个固定模式，而 agent 没有"我以前在这件事上栽过"的记忆。</p>
+            <p>失败日记把失败做成可以反复回看的档案。它的目的不是给运维看错误，是给 agent 自己积累职业经验——让模型在下次类似情境时，主动调出"我栽过这种跟头"的提醒。抹掉失败就等于抹掉证据，模型没了证据就没法适应。</p>
+            <h2>为什么坐标是「记忆 × 循环」</h2>
+            <ul>
+            <li><strong>纵轴 · 记忆</strong>：它把"失败"作为持久化学习材料跨调用累积，是长期记忆里的反例库——一面记成功（程序性记忆），一面记失败（失败日记）。</li>
+            <li><strong>横轴 · 循环</strong>：写一次失败、下次任务读一次、再写一次，是跨调用的 outer loop。失败信号在任务之间循环流动，让 agent 一次次变得更老练。</li>
+            </ul>
+            <h2>核心机制</h2>
+            <p>完整的失败日记系统做四件事，形成闭环：</p>
+            <ol>
+            <li><strong>检测 Detection</strong>：判断这次任务算不算"失败"。包括任务级失败，也包括信息检索本身的失败（如 RAG 索引滞后、漏检、误检——这些是 LLM 时代新增的失败类型）。</li>
+            <li><strong>分类 Classification</strong>：归到哪一类失败。工业级实现会区分十几种——临时性 vs 永久性、客户端 vs 服务端、payload 还是 context、通用 vs 厂商特定、可恢复 vs 不可恢复，每类配专属的 recovery strategy。</li>
+            <li><strong>记录 Recording</strong>：结构化存档，schema 必须比自由文本强。一条失败记录至少含任务指纹、类别、一句话总结、根因、补救动作、可执行的 lessons。</li>
+            <li><strong>召回 Recall</strong>：新任务来时按相似度主动调出相关历史失败，注入 prompt。这是失败日记跟普通 try-catch 的根本差别——后者只当场处理，前者跨任务记忆。召回靠在 inference 时把过去经验注入 context（training-free 路径），无需重训模型。</li>
+            </ol>
+            <p>配套还有两点工程实践：失败 trajectory 默认丢弃是巨大浪费（研究显示约 85% 失败 trajectory 被丢弃），可经反向标注后用于训练；分层留存（如 48 小时存全细节、30 天存压缩摘要、更久只存聚合指标）让召回在工程上可行而不让数据库无限膨胀。</p>
+            <h2>适合的生产场景</h2>
+            <ul>
+            <li><strong>生产级长期运行的 agent</strong>：跑数月、反复处理同类任务的 agent。哪些失败要记、哪些任务来时要翻出来，是它的核心价值所在。</li>
+            <li><strong>多租户 SaaS agent</strong>：跨租户错位这类高风险失败要做特殊处理——永不淘汰、每次任务启动强制召回、连续多条触发报警。task signature 用"租户加意图"双因子，一个租户的失败不该让另一个租户收到无关提醒。</li>
+            <li><strong>高风险不可逆操作的 agent</strong>：错误代价大、同样的错不能犯第二次的场景。DevOps、金融、合同处理。</li>
+            </ul>
+            <h2>容易出错的地方</h2>
+            <ul>
+            <li><strong>任务一次性、没有重复执行场景却硬上</strong>：纯 demo、prototype、一次性脚本，失败被丢弃没问题。失败日记的价值在重复任务，没有重复就没有召回收益。</li>
+            <li><strong>只 free-text 不分类</strong>：第一版 failure log 常是"task / error / timestamp"三字段自由文本，agent 看到完全没法学。必须强制 schema 化（enum 加受限字段），让失败可聚类、可统计、可查询。</li>
+            <li><strong>自由写导致噪声仓库</strong>：让 agent 自由写 failure journal，它会过度悲观每次小不顺都记一笔，半年后 journal 变噪声仓库、召回率断崖。要两层审查：结构化 schema 强制（自由文本 ≤ 200 字符），加 access_count 触发清理（长期没被召回的归档到冷层）。</li>
+            <li><strong>记下来了但召回不匹配</strong>：用 Jaccard 这类粗糙相似度，漏检率太高，记了等于没召回。task signature 之间要用 embedding cosine similarity。</li>
+            <li><strong>高风险失败和普通失败一锅端</strong>：跨租户数据泄露和 API timeout 严重程度差几个数量级，混在一起会让生死线失败被淹没。高风险失败要独立告警加永久保留加强制召回。</li>
+            </ul>
+            <h2>关键指标</h2>
+            <ul>
+            <li><strong>重复失败率下降</strong>（健康区持续下降）：同类任务里 agent 重复犯同一个错的比例。这是失败日记真正的判断标准——failure 数据上 99% 的清洁度若 agent 根本没召回它就没用，重复失败率下降 30% 才是真价值。</li>
+            <li><strong>召回率 / 召回命中率</strong>（健康区合理偏高）：被召回过的失败记录占比、召回的失败与当前任务相关的比例。procedural memory 召回命中率持续偏低，说明记忆架构有问题。</li>
+            <li><strong>首次尝试成功率</strong>（健康区随时间上升）：agent 一次做对的比例，失败 lessons 沉淀后应逐月上升。</li>
+            <li><strong>高风险失败计数</strong>（健康区接近 0 且强监控）：跨租户错位等生死线失败的发生次数，必须独立监控加告警。</li>
+            </ul>
+            <h2>最小实现骨架</h2>
+            <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
+              / root_cause / remediation / lessons[] / access_count
+FailureJournal:
+    record(entry)          → 重复 failure_id 累加 access_count；超额按 access+recency 淘汰
+    by_category(cat)       → 分类查询
+    recall_for_task(sig)   → embedding 相似度 top-K 召回相关历史失败
+    render_for_prompt()    → 格式化注入 prompt（CER 范式：动手前先看一眼过去的坑）
+分层留存：48h 全细节 / 30d 压缩摘要 / 90d+ 聚合指标
+</code></pre>
+            <p>工程落地四个要点：相似度函数用 embedding cosine 而非 Jaccard；召回挂在任务启动和高风险工具调用前（可用 PreToolUse hook）；分层留存真做并分别上不同后端；写入做两层审查（schema 强制加 access_count 清理）。</p>
+            <h2>企业落地示例</h2>
+            <p>某 B2B SaaS 给两百多家企业租户提供客服 agent，每天处理约五万条工单。失败分布大致是工具错误三成、跨租户错位两成五、上下文溢出两成、语义漂移一成五。重写后六个关键决策：跨租户错位（boundary_leak）定为最高优先级——比工具错误严重一百倍（前者是数据泄露事件），永不淘汰、每次任务启动强制召回、连续三条触发 PagerDuty；task signature 用"租户加意图"双因子，ACME 的失败不会让 BETA 收到无关提醒；按 CER 范式把 top-5 相关历史失败作为 system prompt 注入，让 implicit belief update 在动手前发生；失败强制分类不许 free-text；失败档案每周导出 markdown commit 到 git 供团队 review（git diff 是最好的失败趋势可视化）；UNKNOWN 类失败进 needs_review 状态由人审过才进档案，避免噪声污染召回。落地第二个月，boundary_leak 从每天八起降到一起，tool_error 重复率降四成，首次尝试准确率从 78% 升到 85%。</p>
+            <h2>与其他模式的关系</h2>
+            <ul>
+            <li><strong>程序性记忆（M5）</strong>：孪生关系，一起构成 agent 的经验库。失败日记沉淀"过去做错过这件事，别再这么做",程序性记忆沉淀"过去做对过这件事，下次照这个做"。一面记失败，一面记成功。</li>
+            <li><strong>进度追踪（M3）</strong>：同在循环列。进度追踪循环"做对的步骤",失败日记循环"踩过的坑"。两件事看似对称，但工业里待遇完全不对称——前者人人做，后者很少有人认真做。</li>
+            <li><strong>分层保留（M1）</strong>：失败日记是长期记忆层里的专门分区，分层留存（48h / 30d / 90d+）正是分层思想在失败档案上的应用。</li>
+            <li><strong>Self-Heal Loop（行动模块）</strong>：自愈循环只在当前任务内处理失败，不跨任务持久化。失败日记比它多走一步——把当次的失败信号持久化，下次类似任务召回。</li>
+            </ul>
+            <h2>该模式的启发</h2>
+            <p>抹掉失败就等于抹掉证据，模型没法学——失败日记不是错误日志，是 agent 的职业档案，一个跑了半年带失败档案的弱模型 agent，在你具体业务上可能强过一个刚启动的更聪明模型。</p>
+
+                        <h2>蓝皮书 · 企业落地实践</h2>
+            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+
+            <hr>
+            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
+                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
+                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
+            </p>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          this.parentElement.classList.toggle('open');
+        });
+      }
+    })();
+    </script>
+</body>
+</html>
