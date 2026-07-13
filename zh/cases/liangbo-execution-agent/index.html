@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东方屹腾 · 执行型 Agent 完整蓝皮书（案例提供 梁博） · ADPS</title>
+    <title>东方屹腾 · 执行型 Agent 系统案例报告 · ADPS</title>
     <meta name="description" content="从零到稳定交付：控制/叙事二元论、机械状态平面、会话统一状态平面三权分立。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -19,7 +19,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
                 <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -34,10 +33,9 @@
     <main class="container content">
       <div class="docs-layout">
         <aside class="docs-sidebar">
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -83,13 +81,13 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="active sb-home">案例库首页</a>
+              <a href="/zh/cases/" class="active">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -110,8 +108,20 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/cases/" style="color: var(--color-text-muted);">案例库</a><span style="margin:0 0.45rem;">/</span>完整蓝皮书</p>
 
-            <h1>东方屹腾 执行型 Agent 从零到稳定交付</h1>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">案例提供 梁博</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 案例报告 01</p>
+                <h1>东方屹腾 执行型 Agent 从零到稳定交付</h1>
+                <p class="publication-deck">从零到稳定交付：控制/叙事二元论、机械状态平面、会话统一状态平面三权分立。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>案例机构</dt><dd>上海东方屹腾科技有限公司</dd></div>
+                    <div><dt>行业</dt><dd>企业 SaaS · 金融服务</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本文是一线实践者主导的架构复盘。实现主张、业务规模与效果数据由案例方提供，尚未经过独立审计；迁移建议只在文中列明的业务与系统条件下成立。</p>
 
             <hr />
             <h2>一、先把分野划清楚：执行型 Agent 不是内容生成型 Agent</h2>
@@ -184,10 +194,10 @@
             <p>什么条件下别的 SaaS 可以迁移这套架构。最硬的判据是看你的场景是不是执行型——任务步骤明确、步骤间有严格的依赖和状态参数传递、且跨步漏步或参数错一位会直接导致交付失败或破坏业务数据。满足这些，控制平面与叙事平面二元论、Orchestrator、规划执行、尤其是机械状态平面这一整套就值得照搬。机械状态平面能成立还要再加一条前提：你的系统是一个企业级封闭体系，工具由你自己管理注册、不让用户任意接入外部工具，这样才能在启动时确定所有可能的状态键字典，把参数坐标钉死。</p>
             <p>反过来，如果你的场景是内容生成型——查资料、总结、生成报告那一类，步骤松散、容错度高、步骤间传递的是文本内容而非严格机械参数，那 MCP 本来就是好方案，不必引入任务图、状态机、机械状态平面这套重机制，硬上是过度设计。两者的核心复杂性不在一个量级，迁移之前先把自己的场景归到正确的那一类，是用好这套架构的第一步。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾：执行型 Agent 从零到稳定交付》，企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -203,9 +213,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

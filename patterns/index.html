@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Design Pattern White Papers · Pattern Matrix · ADPS</title>
-    <meta name="description" content="ADPS Agent design pattern white papers: a dual-axis matrix of cognitive function × execution topology, 28 core + 5 extension patterns, one enterprise page per pattern. A free, open cross-role technical reference.">
+    <meta name="description" content="ADPS Agent Design Pattern White Paper: a dual-axis catalog of 28 core patterns plus 6 extensions and candidates, with review criteria and implementation boundaries.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/">
@@ -124,16 +124,22 @@
         <div class="docs-main">
 
         <article class="essay">
-            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Pattern White Papers</h1>
-            <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">Cognitive function × execution topology · 28 core + 5 extension patterns · one enterprise-grade page per pattern.</p>
-
-            <div class="callout">
-                <p><strong>A free, open technical reference.</strong> It gives a team a shared vocabulary, a selection framework, and a set of engineering boundaries — so every role in an enterprise (product, architecture, engineering, security &amp; compliance, management) can read what a pattern is, when to use it, and where it tends to break.</p>
-            </div>
-
-            <p>The white papers say what a pattern is; the blue books say how it lands in a real enterprise. Each pattern page carries its matching enterprise-landing slice; cross-pattern complete cases live in the <a href="/cases/">Cases library</a>. The first landing anchor is Bo Liang's execution agent at Dongfang Yiteng.</p>
-            <p>Most "agent architecture" guides give a flat list — Reflection, ReAct, Multi-Agent, Tree of Thoughts, and so on. A flat list answers <em>which patterns exist</em>. It does not answer <em>where my problem sits, and which pattern lives at that coordinate</em>.</p>
-            <p>A loan-assessment agent rarely breaks for lack of Reflection; it breaks because the perception stage's budget allocation dropped the one critical document. A multi-agent code review drifts because the collaboration topology lacks conflict resolution and contradictory edits pile up. <strong>Knowing which axis a failure sits on matters more than knowing the failure's name.</strong></p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>Pattern Catalog and Selection Framework</h1>
+                <p class="publication-deck">Cognitive function × execution topology · 28 core patterns + 6 extensions and candidates · 34 specifications.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Core patterns</dt><dd>28</dd></div>
+                    <div><dt>Extensions and candidates</dt><dd>6</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Scope:</strong> This release defines a shared architecture vocabulary and review framework. It does not certify products, implementations, or organizational readiness.</p>
+            <p>The white paper defines pattern problems, classifications, mechanisms, applicability, failure modes, and verification criteria. The <a href="/cases/">blue-book case reports</a> record how combinations of patterns behave under named enterprise constraints.</p>
+            <p>The catalog uses coordinates rather than a flat list. A coordinate identifies both the cognitive function under pressure and the topology that carries control. This makes architecture choices and failure reports comparable across systems.</p>
 
             <h2>Why agents need a new set of design patterns</h2>
             <p>GoF patterns handle collaboration between objects; distributed-systems patterns handle services, networks, storage, and failure. Agent systems add a new kind of actor: a model that makes judgments under incomplete information and calls tools that affect the outside world. In traditional software, control flow is decided mostly by code; in agent systems, part of the control flow passes through model judgment.</p>
@@ -189,9 +195,9 @@
                 <li><strong>Trace Contract</strong> — every LLM call, tool call, handoff, approval, and state update threaded onto one trace id (Governance).</li>
             </ul>
 
-            <h2>White-paper catalog · 28 core + 5 extension = 33</h2>
-            <p>The <strong>28 core patterns</strong> form the body of the matrix. Five <strong>extension patterns</strong> (M5 Procedural Memory · R5 Talker-Reasoner · A4 Minimal Tool Set · C5 Sub-Agent Isolation · G4 Hooks Pipeline — folded into adjacent lessons for teaching, given their own page in the white papers) make 33. Add the emerging topology C6 Choreography for a full set of 34. Extension patterns are marked <span class="ext-badge">ext</span>.</p>
-            <p>Behind every cell is a same-structured enterprise page: what problem it solves, when to use it, where it tends to break, what metrics to watch in production. Written for product, architecture, engineering, compliance, and management — a clean reference you can take straight to a team.</p>
+            <h2>White-paper catalog · 28 core + 6 extensions and candidates = 34</h2>
+            <p>The <strong>28 core patterns</strong> occupy the reviewed matrix. Six additional specifications cover extension mechanisms or emerging structures: M5 Procedural Memory, R5 Talker-Reasoner, A4 Minimal Tool Set, C5 Sub-Agent Isolation, G4 Hooks Pipeline, and C6 Choreography. C6 remains a candidate topology extension pending evidence across more than the collaboration function. Extension entries are marked <span class="ext-badge">ext</span>.</p>
+            <p>Every specification follows the same review structure: problem, classification, solution and mechanics, applicability, known failure modes, verification metrics, reference implementation, application example, related patterns, and design conclusion.</p>
 
             <h3>Perception · 4 core</h3>
             <p class="grp-intro">The agent's interface to the world — turning heterogeneous, noisy, oversized raw input into a high-signal representation the model can use. Governs what to look at, how small to compress, how deep to drill, how to merge.</p>
@@ -236,7 +242,7 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f3-experience-replay/" style="font-weight: 600;">F3 · Experience Replay</a><span style="color: var(--color-text-muted);"> — When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · Self Heal Loop</a><span style="color: var(--color-text-muted);"> — When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.</span></li>
             </ul>
-            <h3>Collaboration · 4 core + 1 extension</h3>
+            <h3>Collaboration · 4 core + 2 extensions</h3>
             <p class="grp-intro">Division of labor across agents. Collaboration is forced by scale; below that scale a single agent is usually steadier. The floor: each agent has its own context, permissions, output, and failure boundary.</p>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c1-hierarchical-delegation/" style="font-weight: 600;">C1 · Hierarchical Delegation</a><span style="color: var(--color-text-muted);"> — A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</span></li>
@@ -280,7 +286,7 @@
             <p>Its entry point is a <strong>Pattern Selection Card</strong> with three panels: ASSESS (which cognitive functions the task needs), ROUTE (which topology fits the constraints), SELECT (which patterns live at the intersections). The card turns "I want to build an X agent" into a shortlist of candidate patterns in fifteen minutes.</p>
 
             <h2>Related assets</h2>
-            <p>The white papers are the entry to the ADPS pattern language. Each pattern group connects to a set of companion assets — the group's white-paper pages, the matching book chapter, the GitHub code directory, and the enterprise-landing cases in the forthcoming blue books.</p>
+            <p>Each pattern group connects to its specifications, the relevant book chapter, runnable reference code, and reviewed case reports where available.</p>
             <div class="wp-scroll">
             <table class="wp-table">
                 <thead><tr><th>Pattern group</th><th>White papers</th><th>Book chapter</th><th>Code directory</th></tr></thead>
@@ -307,6 +313,7 @@
                 <li>Book: <a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener"><em>Designing AI Agents</em></a> (Manning)</li>
                 <li>Runnable code: <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">agent-design-patterns</a> (28 patterns, LangGraph + LangChain)</li>
             </ul>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper: Pattern Catalog and Selection Framework</em>, v0.3, 2026-07-13.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
 
         </article>
 
@@ -323,6 +330,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

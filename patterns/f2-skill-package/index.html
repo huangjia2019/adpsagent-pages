@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>F2</p>
 
-                        <h1>F2 · Skill Package</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>F2 · Skill Package</h1>
+                <p class="publication-deck">Package a repeatedly successful workflow into a named, loadable, reusable structured asset, so the next task of the same kind calls it directly instead of figuring things out from scratch.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Reflection × Route (selected)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,42 +143,42 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>An agent has done the same kind of task five times and succeeded every time, but it starts from zero on each run—reads the same few references, goes through a few rounds of trial and error, and walks the exact same path it walked last time. When the sixth task of the same kind arrives, the agent retraces the whole path again. Tokens are wasted and the run takes long, and the root cause is that nothing was retained after the agent finished.</p>
             <p>A Skill Package solidifies "the thing done right" into a structured asset, usually a YAML frontmatter (name + description + triggers) plus a markdown body (steps + gotchas + examples) plus bundled scripts. When the next task of the same kind arrives, the agent routes to the corresponding skill and reaches the main path within seconds, without exploring again. It differs from Generator-Critic in granularity—the latter revises a single output, while a Skill Package retains a capability across tasks. The ACT-R cognitive architecture gives this an academic name, proceduralization, the compilation of declarative knowledge into procedural skill; Anthropic turned it into the SKILL.md standard.</p>
-            <h2>Why the coordinate is "Reflection × Route"</h2>
+            <h2>Classification: Reflection × Route</h2>
             <ul>
             <li><strong>Vertical axis · Reflection</strong>: A Skill Package is the solidification that follows reflection, not a single act of reflection. After an agent has repeatedly succeeded at a class of task, it distills and packages the successful path. This is the "retain after thinking" form, one level above Generator-Critic's "revise after thinking."</li>
             <li><strong>Horizontal axis · Route</strong>: The real runtime action of a skill package is matching and selection—a new task arrives, and the system routes it by triggers to the right skill; on a hit it reaches the main path within seconds, and on a miss it falls back to the general flow. What determines the value is "picking the right one," a routing judgment based on task features. The skill's internal atomic–composite layering and Anthropic's three-stage loading (Discovery sees only the name → Activation loads the full SKILL.md → Execution loads scripts on demand) are its storage and loading structure, but the topology coordinate is taken from the moment a skill is hit and selected in the main loop.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>A Skill Package system consists of two pipelines:</p>
             <ol>
             <li><strong>Loading pipeline</strong>: When a task arrives, the agent routes from the skill library to the right skill. Anthropic's three-stage loading is the most token-economical implementation—at startup each skill loads only its name plus a one-line description (about 50 tokens), deep-loads the full SKILL.md (about 500-2000 tokens) only when a task matches, and loads bundled scripts on demand during execution. Fully loading 50 skills would exhaust the context; the three stages keep startup overhead within control.</li>
             <li><strong>Retention pipeline</strong>: how a successful flow enters the library. Two paths—humans write it carefully (the Anthropic Skills route, reviewed, versioned, and committed to git) and the agent distills it automatically (the Hermes route, where a task that calls five or more tools and succeeds is automatically distilled into skill markdown). Self-distilled skills are trusted less than human-written ones; they go through a probation period and live in a separate namespace.</li>
             </ol>
             <p>The engineering discipline Anthropic summarized after using several hundred skills is worth copying: put gotchas at the top of SKILL.md (the LLM remembers earlier content first); use a deterministic script rather than an LLM instruction whenever possible; giving examples works better than giving abstract rules; equip each skill with tests; review usage stats weekly and retire low-usage skills.</p>
-            <h2>Production scenarios it fits</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Recurring tasks with a relatively stable flow</strong>: operations runbooks (batch cluster restarts, configuration changes), customer-service triage SOPs, standard sales processes—tasks of the same kind that recur frequently with flows that do not change daily.</li>
             <li><strong>Enterprise processes that need to be observable and reusable</strong>: structuring the tacit flow in a veteran employee's head into a SKILL.md so that new employees and the agent read and use the same thing, and a sales leader can review and version it.</li>
             <li><strong>Critical processes where mistakes are costly and worth solidifying</strong>: financial approval flows, incident-response steps, and similar processes where a mistake is expensive—solidifying them into a skill is steadier than relying on the agent's improvisation each time.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing a skill onto a task that should not be solidified</strong>: tasks that differ every time (open-domain research), run only once, still iterate rapidly, or are judgment-intensive—these four categories carry more retention risk than reuse benefit. A Skill Package pays off when "recurring + stable flow + costly mistakes" hold together.</li>
             <li><strong>Skill library pollution</strong>: an agent's low-quality self-distilled skills enter the library directly without curation and mislead other agents on recall. The library swells from 50 to 500 but the average success rate drops from 85% to 55%. The defense is multiple distillation trigger conditions plus a probation period plus weekly curation.</li>
             <li><strong>Stale skills</strong>: the infrastructure changed but the skill did not follow, so an agent executing a stale skill makes mistakes instead, especially common in operations scenarios. The defense is success-rate monitoring plus automatic alerts plus version binding (mark tested_with in SKILL.md).</li>
             <li><strong>Description mismatch</strong>: a description written too broad or too narrow makes the agent pick the wrong skill on recall, or fail to use one it should have. The description must contain concrete scenarios, and the triggers list must be fine-grained enough.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Skill hit rate</strong> (healthy range &gt;75%): the proportion of tasks that recall the correct skill on arrival. Below 50% indicates a misaligned description or trigger design, which should be deprecated or rewritten.</li>
             <li><strong>Skill success rate</strong> (healthy range &gt;85%): the proportion of tasks that succeed after calling a given skill. Falling below 80% triggers a review; the skill may be stale.</li>
             <li><strong>Library health</strong> (healthy range: average success rate does not fall with scale): the average success rate should stay stable as the library swells; a decline indicates pollution.</li>
             <li><strong>Loading token share</strong> (healthy range: startup overhead &lt;5% under three-stage loading): full loading blows this number up, while the three stages keep it within control.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code># Stage 1 Discovery: load only name + description at startup
             catalog = [{&quot;name&quot;: s.name, &quot;desc&quot;: s.description} for s in library]
 
@@ -185,20 +199,19 @@
             PROMOTE(use_count &gt; 20 and success_rate &gt; 85%)
             </code></pre>
             <p>Four engineering points: three-stage loading is the core of token economy; a self-distilled skill must pass probation before going live; human-written skills and self-distilled skills carry tiered trust; weekly curation in three tiers (EVICT / REFINE / PROMOTE) is the routine operating action against pollution and staleness.</p>
-            <h2>Enterprise deployment example</h2>
+            <h2>Application example</h2>
             <p>A B2B SaaS company has a top salesperson, Old Zhang—a 38% close rate (team average 12%) and an 82% customer repurchase rate (team average 51%). Old Zhang is leaving for a large company, and the boss worries his skill will walk out the door with him. A team retrospective found that his high close rate lies not in talent but in a highly structured process: a five-minute LinkedIn and company-news check before first contact, a fixed opening on the first call, needs discovery through a five-question funnel, objection handling with a preset script library, and a mandatory "decision checklist" email before signing. The team packaged this process into a SKILL.md, with gotchas at the top ("never pitch the product on the first call—the rejection rate is 80%"), deterministic steps as bundled scripts, and a complete worked example for each stage. In the second month a new employee talked to customers with this skill in hand, and the close rate rose from an industry-entry average of 12% to 24%, compressing the growth curve by about 50%. The accompanying engineering decisions include: the core SOP is human-written, reviewed by the sales leader, and committed to git; agent self-distilled moves go to a separate namespace at a low trust level; customer-facing skills must be human-reviewed; and a weekly review decides EVICT / REFINE / PROMOTE.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Procedural Memory (memory module M5)</strong>: nearly isomorphic in deployment—both are skill libraries, both store procedural knowledge in SKILL.md form, and the difference is design intent. A Skill Package emphasizes "package after reflection"—the agent proactively distills and solidifies the successful path after repeated success (post-reflection); M5 emphasizes "store what is learned"—writing procedural knowledge in as memory. The former is the reflection view, the latter the memory view, with a high overlap in engineering substrate.</li>
             <li><strong>Generator-Critic (F1)</strong>: a sequential link. Generator-Critic is reflection within a single task, while a Skill Package is reflection across tasks, solidifying "the thing done right."</li>
             <li><strong>Experience Replay (F3)</strong>: a paired sibling pattern. A Skill Package holds verified callable units (done many times, all successful, packaged into a skill to call directly), while Experience Replay holds broader reference assets (useful but not necessarily verified). The agent calls a skill first and falls back to experience retrieval when nothing matches.</li>
             <li><strong>RAG (memory module)</strong>: a complementary ensemble. RAG handles "what is known" (declarative, fact retrieval), and a Skill Package handles "how to do the work" (procedural, flow reuse); in enterprise agent deployments the two are used together.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>A Skill Package is not a workflow template but an agent's professional capability—it gives the agent both a manual and retained judgment, moving the tacit flow in a person's head onto the asset layer the organization can reuse. This is the turning point where an agent goes from a demo toy to an organizational asset.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>F2 Skill Package</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -214,6 +227,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

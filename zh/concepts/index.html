@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>概念定义 · 蓝皮书 · ADPS</title>
-    <meta name="description" content="ADPS 蓝皮书概念定义：从东方屹腾执行型 Agent 落地拆出的工程概念。">
+    <meta name="description" content="ADPS 蓝皮书工程概念目录：用于比较企业 Agent 系统架构的案例衍生定义。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/concepts/">
@@ -18,8 +18,7 @@
             <a href="/zh/" class="site-brand">ADPS</a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -34,10 +33,9 @@
     <main class="container content">
       <div class="docs-layout">
         <aside class="docs-sidebar">
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -80,16 +78,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="active sb-home">概念定义首页</a>
+              <a href="/zh/concepts/" class="active">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -110,9 +108,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"></p>
 
-            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">概念定义</h1>
-            <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">从东方屹腾执行型 Agent 落地里拆出来的一组概念（案例提供 梁博）。</p>
-            <p>每一篇讲清一个概念：它是什么、防住哪个失败、什么时候你需要它。概念之间相互链接，合起来是一套执行型 Agent 的工程语言。完整案例见 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 蓝皮书</a>。</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书</p>
+                <h1>工程概念目录</h1>
+                <p class="publication-deck">用于比较执行型 Agent 架构的案例衍生定义。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>概念条目</dt><dd>13</dd></div>
+                    <div><dt>主要来源</dt><dd>东方屹腾案例报告</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>范围：</strong>收录表示该术语有工程解释价值，不表示它已经成为行业标准。</p>
+
+            <p>本目录定义 ADPS 案例报告中使用的工程术语。每个条目说明机制、对应的失败方式与适用条件。当前定义源于 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>，在获得更多独立案例印证前保持“案例衍生”状态。</p>
             <ul style="list-style: none; margin: 1.25rem 0 1.5rem 0; padding: 0;">
                 <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="control-narrative-dualism/" style="font-weight: 600; font-size: 1.02rem;">控制平面与叙事平面：执行型 Agent 的二元论</a><span style="color: var(--color-text-muted);"> — 先把活的不确定的收敛成死的可控的——控制平面机械化，叙事平面靠驾驭。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="execution-vs-content/" style="font-weight: 600; font-size: 1.02rem;">执行型 Agent 不是内容生成型 Agent</a><span style="color: var(--color-text-muted);"> — 参数错一位会破坏业务数据的场景是执行型，文本松传递、可重试的是内容生成型。</span></li>
@@ -129,10 +140,10 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="hitl-block-resume/" style="font-weight: 600; font-size: 1.02rem;">HITL 阻塞-恢复：叙事态续作与机械态阻塞</a><span style="color: var(--color-text-muted);"> — 关键操作执行前阻塞等人审，借任务状态机水到渠成，声明式配置挂人审点。</span></li>
             </ul>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>版本：</strong>企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -148,9 +159,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

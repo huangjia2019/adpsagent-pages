@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>案例库 · 完整蓝皮书 · ADPS</title>
-    <meta name="description" content="ADPS 蓝皮书案例库：完整的企业落地案例。">
+    <meta name="description" content="ADPS 企业 Agent 系统蓝皮书：一线实践者提供的架构案例报告。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/cases/">
@@ -19,7 +19,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
                 <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -34,10 +33,9 @@
     <main class="container content">
       <div class="docs-layout">
         <aside class="docs-sidebar">
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -83,13 +81,13 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="active sb-home">案例库首页</a>
+              <a href="/zh/cases/" class="active">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -110,17 +108,31 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"></p>
 
-            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">案例库 · 完整蓝皮书</h1>
-            <p>蓝皮书完整案例不隶属任何单一模式，讲一个系统从零到稳定交付的演进全貌，模式特写处链回各模式页的落地切片。</p>
-            <ul style="list-style: none; margin: 1.25rem 0 1.5rem 0; padding: 0;">
-                <li style="margin-bottom: 0.8rem; line-height: 1.6;"><a href="liangbo-execution-agent/" style="font-weight: 600; font-size: 1.05rem;">东方屹腾 · 执行型 Agent 完整蓝皮书（案例提供 梁博）</a><span style="color: var(--color-text-muted);"> — 从零到稳定交付：控制/叙事二元论、机械状态平面、会话统一状态平面三权分立。</span></li>
-            </ul>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 做得足够完整、跨多个模式的大案例，欢迎 <a href="/zh/join/">补一篇完整蓝皮书 →</a></p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书</p>
+                <h1>案例报告目录</h1>
+                <p class="publication-deck">由一线实践者提供、经共同体公开评审的企业 Agent 系统架构记录。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>已发布报告</dt><dd>1</dd></div>
+                    <div><dt>证据政策</dt><dd>贡献者披露 · 明示边界</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>收录规则：</strong>案例必须交代系统约束、实现结构、已知失败和迁移边界。收录不等于产品认证或普遍适用性背书。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
-            </p>
+            <p>案例报告以完整系统为单位，记录运行约束、失败历史、架构决策、证据边界与迁移条件。一份报告可以跨越多个模式，相关模式切片从正文链回白皮书定义。</p>
+            <h2>已发布案例报告</h2>
+            <ul style="list-style: none; margin: 1.25rem 0 1.5rem 0; padding: 0;">
+                <li style="margin-bottom: 0.8rem; line-height: 1.6;"><a href="liangbo-execution-agent/" style="font-weight: 600; font-size: 1.05rem;">东方屹腾 · 执行型 Agent 系统案例报告</a><span style="color: var(--color-text-muted);"> — 从零到稳定交付：控制/叙事二元论、机械状态平面、会话统一状态平面三权分立。</span></li>
+            </ul>
+
+            <div class="document-citation">
+                <p><strong>版本：</strong>企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -136,9 +148,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

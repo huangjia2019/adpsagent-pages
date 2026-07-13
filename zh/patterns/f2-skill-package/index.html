@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/f2-skill-package/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/f2-skill-package/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/f2-skill-package/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>F2
             </p>
 
-            <h1>F2 · Skill Package · 技能包</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>F2 · Skill Package · 技能包</h1>
+                <p class="publication-deck">把反复成功的工作流封装成可命名、可加载、可复用的结构化资产，下次同类任务直接调用而非从零摸索。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>反思 Reflection × 路由 Route（选）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,42 +153,42 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>同一类任务 agent 干过 5 次、每次都干成，但每次都从零开始——读同样几份 reference、试错几轮、走完一遍跟上次一模一样的路径。第 6 次同类任务来，agent 又重走一遍。Token 浪费、耗时长，根因是 agent 干完之后没有任何东西被沉淀下来。</p>
             <p>Skill Package 把"做对的事"凝固成一份结构化资产，通常是 YAML frontmatter（name + description + triggers）加 markdown body（steps + gotchas + examples）加 bundled scripts。下次同类任务来，agent 路由到对应 skill，几秒进入主路，不再重新摸索。它和 Generator-Critic 的区别在颗粒度——后者改的是单次输出，Skill Package 沉淀的是跨任务的能力。ACT-R 认知架构给这件事一个学术名字叫 proceduralization，即把陈述性知识编译成程序性技能；Anthropic 把它做成了 SKILL.md 标准。</p>
-            <h2>为什么坐标是「反思 × 路由」</h2>
+            <h2>分类依据：反思 × 路由</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：Skill Package 是反思后的固化，不是单次反思。agent 反复成功做某类任务后，把成功路径提炼封装，这是"想完会沉淀"的形态，比 Generator-Critic 的"想完就改"高一层。</li>
             <li><strong>横轴 · 路由</strong>：技能包真正的运行时动作是匹配与选择——新任务进来，系统按 triggers 把它路由到合适的 skill，命中就几秒进入主路，未命中就走通用流程。决定价值的是"挑对那一个"，这是一次基于任务特征的路由判断。技能内部的原子—复合分层、Anthropic 的三阶段 loading（Discovery 只看名字 → Activation 加载完整 SKILL.md → Execution 按需加载脚本）是它的存储与加载结构，但拓扑坐标取的是它在主循环里命中技能的那一下选择。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一个 Skill Package 系统由两条流水线构成：</p>
             <ol>
             <li><strong>加载流水线</strong>：任务到来时，agent 从 skill library 路由到合适的 skill。Anthropic 的三阶段 loading 是 token 经济上做得最对的实现——启动时每个 skill 只加载 name 加一句 description（约 50 token），任务匹配上才深加载完整 SKILL.md（约 500-2000 token），执行时再按需加载 bundled scripts。50 个 skill 全量加载会吃光 context，三阶段把启动开销压到可控。</li>
             <li><strong>沉淀流水线</strong>：成功流程怎么进库。两条路径——人精心写（Anthropic Skills 路线，经 review 加版本化加进 git）和 agent 自动蒸馏（Hermes 路线，任务调用 5 个以上工具且成功时自动提炼成 skill markdown）。自蒸馏 skill 信任级别低于人写的，要进试用期、放独立 namespace。</li>
             </ol>
             <p>Anthropic 用过几百个 skill 后总结的工程纪律值得照搬：gotchas 放 SKILL.md 顶部（LLM 优先记前面的）；能用 deterministic script 解决就不用 LLM instruction；给 examples 比给抽象规则有效；每个 skill 配 tests；每周 review usage stats 退役低使用率 skill。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>反复出现且流程相对稳定的任务</strong>：运维 runbook（批量重启集群、配置变更）、客服分诊 SOP、销售标准流程——同类任务高频出现，流程不天天变。</li>
             <li><strong>需要可观测加可复用的企业流程</strong>：把老员工脑子里的隐性流程结构化成 SKILL.md，新员工和 agent 同读同用，sales leader 能 review、能版本化。</li>
             <li><strong>错代价高、值得固化的关键流程</strong>：金融审批流程、事故响应步骤这类做错代价大的流程，固化成 skill 比每次靠 agent 临场发挥稳。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>给不该固化的任务硬做 skill</strong>：任务每次都不一样（开放域研究）、只跑一次、流程还在快速迭代、判断密集型——这四类沉淀风险高于复用收益。Skill Package 的价值在"反复出现 + 流程稳定 + 错代价高"三个条件叠加时。</li>
             <li><strong>skill library 污染</strong>：agent 自蒸馏的低质量 skill 不经 curation 直接进库，下次召回误导其他 agent。library 从 50 个膨胀到 500 个但平均成功率从 85% 跌到 55%。防法是多重蒸馏触发条件加试用期加 weekly curation。</li>
             <li><strong>skill 过期</strong>：基础设施变了但 skill 没跟着改，agent 按过期 skill 执行反而错，运维场景尤其常见。防法是成功率监控加自动告警加版本绑定（SKILL.md 里标 tested_with）。</li>
             <li><strong>description 失配</strong>：description 写得太泛或太窄，agent 召回时挑错 skill 或该用没用。description 必须含具体场景，triggers 列表要够细。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>skill 命中率</strong>（健康区 &gt;75%）：任务到来时召回到正确 skill 的比例。低于 50% 说明 description 或 triggers 设计失调，该 deprecate 或重写。</li>
             <li><strong>skill 成功率</strong>（健康区 &gt;85%）：调用某 skill 后任务成功的比例。跌破 80% 触发 review，可能是 skill 过期。</li>
             <li><strong>library 健康度</strong>（健康区 平均成功率不随规模下降）：library 膨胀时平均成功率应保持稳定，下降说明污染。</li>
             <li><strong>加载 token 占比</strong>（健康区 三阶段下启动开销 &lt;5%）：全量加载会让这个数字爆掉，三阶段把它压到可控。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code># Stage 1 Discovery: 启动只加载 name + description
 catalog = [{&quot;name&quot;: s.name, &quot;desc&quot;: s.description} for s in library]
 
@@ -196,27 +209,26 @@ REFINE(use_count &gt; 5 and success_rate &lt; 50%)
 PROMOTE(use_count &gt; 20 and success_rate &gt; 85%)
 </code></pre>
             <p>四个工程要点：三阶段 loading 是 token 经济的核心；自蒸馏 skill 必须经试用期才转正；人写 skill 和自蒸馏 skill 分级信任；weekly curation 三档（EVICT / REFINE / PROMOTE）是抗污染和抗过期的常规运营动作。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>一家 B2B SaaS 公司有一位 Top 销售老张——签单率 38%（团队平均 12%），客户复购率 82%（团队平均 51%）。老张要去大厂，老板担心他的本事随人走。团队复盘发现老张的高签单率不在天赋，在一套高度结构化的流程：客户首次接触前查 LinkedIn 和公司新闻 5 分钟、第一次电话用固定开场、需求挖掘按 5 问漏斗、异议处理用预设话术库、签约前必发"决策清单"邮件。团队把这套流程封装成 SKILL.md，gotchas 放顶部（"绝对不要第一次电话就 pitch 产品，拒绝率 80%"），deterministic 步骤用 bundled scripts，每个环节配完整 worked example。第二个月新员工带着这份 skill 跟客户聊，签单率从入行平均 12% 升到 24%，成长曲线压缩约 50%。配套工程决策包括：核心 SOP 走人写加 sales leader review 加进 git，agent 自蒸馏招式走独立 namespace 加低信任级别，customer-facing skill 必须人审，每周 review 决定 EVICT / REFINE / PROMOTE。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>Procedural Memory（记忆模块 M5）</strong>：落地几乎同构，都是技能库、都用 SKILL.md 形态存程序性知识，区别在设计意图。Skill Package 强调"反思后封装"——agent 反复成功后主动把成功路径提炼固化（post-reflection）；M5 强调"学过就存"——把程序性知识作为记忆写入。前者是反思视角，后者是记忆视角，工程载体重合度很高。</li>
             <li><strong>Generator-Critic（F1）</strong>：上下衔接。Generator-Critic 是单次任务内的反思，Skill Package 是跨任务的反思，把"做对的事"凝固下来。</li>
             <li><strong>Experience Replay（F3）</strong>：配对兄弟模式。Skill Package 装的是 verified 可调用单位（做过多次都成功，封成 skill 直接调），Experience Replay 装的是更宽泛的参考资产（有用但不一定 verified）。agent 优先调 skill，没匹配的回退到 experience 检索。</li>
             <li><strong>RAG（记忆模块）</strong>：互补合奏。RAG 管"知道什么"（declarative，事实检索），Skill Package 管"会做活儿"（procedural，流程复用），企业 agent 落地里两者并用。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>Skill Package 不是工作流模板，是 agent 的职业能力——它让 agent 既有手册又保留判断力，把人脑里的隐性流程搬到组织能复用的资产层，这是 agent 从 demo 玩具变成组织资产的转折点。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《F2 技能包》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -232,9 +244,16 @@ PROMOTE(use_count &gt; 20 and success_rate &gt; 85%)
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

@@ -18,8 +18,7 @@
             <a href="/zh/" class="site-brand">ADPS</a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -34,10 +33,9 @@
     <main class="container content">
       <div class="docs-layout">
         <aside class="docs-sidebar">
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -80,16 +78,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -110,7 +108,21 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/concepts/" style="color: var(--color-text-muted);">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
 
-            <h1>记忆信封：每一步注入给模型的上下文包</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 工程概念</p>
+                <h1>记忆信封：每一步注入给模型的上下文包</h1>
+                <p class="publication-deck">每步封一只信封交给模型：锚 + 投影出的集 + 意图结论 + 召回经验 + 必要机械态。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>状态</dt><dd>案例衍生定义</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>来源案例</dt><dd>东方屹腾执行型 Agent</dd></div>
+                    <div><dt>证据类型</dt><dd>一线实践者复盘</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本概念由单一生产系统案例抽象而来，供比较和公开评审使用；在获得更多独立案例印证前，不表述为行业标准。</p>
+
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
 
             <p><img src="/images/concepts/memory-envelope.png" alt="记忆信封：每一步注入给模型的上下文包" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
@@ -124,10 +136,10 @@
             <h2>何时需要</h2>
             <p>当你的 Agent 执行链路很长，每一步推理都要在原始目标、当前进展和过往经验之间取舍该喂什么给模型，而不是把整段历史无脑拼进 prompt。它装的内容来自<a href="../anchor-ledger-collection/">锚、账、集</a>，调用的源头横跨<a href="../layered-memory/">分层记忆 L1/L2/L3</a>，而封信封这个动作本身可以理解成<a href="../intent-as-compilation/">意图即编译</a>的下游一环。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -143,9 +155,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

@@ -107,7 +107,21 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
 
-            <h1>Task DAG and Task State Machine: The Skeleton of Plan-and-Execute</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Engineering Concept</p>
+                <h1>Task DAG and Task State Machine: The Skeleton of Plan-and-Execute</h1>
+                <p class="publication-deck">Forced out by ReAct&#x27;s step-skipping — take execution order out of the model&#x27;s judgment and pin it into a task graph + state machine.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.2</dd></div>
+                    <div><dt>Status</dt><dd>Case-derived definition</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Source case</dt><dd>Dongfang Yiteng execution agent</dd></div>
+                    <div><dt>Evidence class</dt><dd>Practitioner account</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Evidence boundary:</strong> This term is defined from one production-system account. It is published for comparison and review, not presented as an industry-wide standard.</p>
+
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/task-dag-state-machine.png" alt="Task DAG and Task State Machine: The Skeleton of Plan-and-Execute" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
@@ -121,8 +135,7 @@
             <h2>When you need it</h2>
             <p>When your agent has to deliver a business process whose steps have strict ordering dependencies, where the wrong order means delivery fails, and ReAct's step-by-step free decision can no longer hold down skipped or missed steps. How this plan maintains task-scheduling state and keeps it separate from narrative and mechanical parameters is what the <a href="/concepts/unified-session-state/">separation of powers in the unified session state plane</a> answers; key tasks blocking for human review and resuming the execution flow after approval rely on this state machine, see <a href="/concepts/hitl-block-resume/">HITL block and resume</a>.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This is an ADPS blue-book concept. Back to <a href="/concepts/">Concepts</a> or <a href="/patterns/">the pattern matrix</a>.</p>
+            <div class="document-citation"><p><strong>Source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case report</a> · <a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -138,6 +151,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C3</p>
 
-                        <h1>C3 · Adversarial Review</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>C3 · Adversarial Review</h1>
+                <p class="publication-deck">Pair one generator agent with one or more independent critic agents and improve the output through a structured adversarial loop. The critics must use a different model, a different family, and a different prompt incentive.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Collaboration × Loop (debate)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>The same LLM running three different prompts and pretending to be an "independent reviewer" does not count as independent in the eyes of a regulatory auditor. These three prompts share the same underlying model's training data, the same alignment biases, and the same prior about "what it thinks is right and what is wrong." It is like a judge serving as prosecution, defense, and arbiter at once: formally there is review, but structurally there is none.</p>
             <p>Adversarial review addresses how a high-stakes decision passes audit-grade independent review. It is not as simple as "add a critic to make the agent more accurate." In settings such as financial credit approval, medical diagnosis, legal assessment, and regulatory compliance, independent review is a structural requirement rather than a quality optimization. Frameworks such as SOC 2, HIPAA, FDA, and the EU AI Act explicitly require "different people, different models, different incentives" to do the reviewing; this is the entry ticket to going live, not a bonus. It shares a common origin with single-agent self-examination (Generator-Critic) but operates at a different scale: the former is one LLM process plus two prompts, while the latter requires model routing, independent traces, and cross-vendor billing, an entirely separate set of engineering infrastructure.</p>
-            <h2>Why the coordinate is "Collaboration × Loop"</h2>
+            <h2>Classification: Collaboration × Loop</h2>
             <ul>
             <li><strong>Vertical axis · Collaboration</strong>: This is two or more independent agents genuinely in opposition, one proposing a solution and another dedicated to finding flaws. It is multi-agent, but with the distinctive structure of an adversarial incentive, not merely a division of labor. The critic must use a different model, a different vendor, and a different prompt incentive; otherwise it degenerates into single-agent self-review.</li>
             <li><strong>Horizontal axis · Loop</strong>: The proponent and the critic argue back and forth, propose, object, revise, object again, until the judge converges or the budget runs out. This is the only structural loop within the collaboration group, distinct from the splitting of Hierarchy, the scattering of Parallel, and the passing of Chain.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>A single adversarial review consists of three roles and one loop:</p>
             <ol>
             <li><strong>Proponent proposes</strong>: the generator agent produces the initial solution.</li>
@@ -146,14 +160,14 @@
             <li><strong>Judge rules</strong>: the judge agent synthesizes both sides' arguments and issues the final ruling (approve / conditional / reject).</li>
             </ol>
             <p>The three roles use models from different vendors, and each writes its independent trace into the audit log. The number of rounds has a ceiling: 3 agents × 2 rounds is the standard configuration validated in academic experiments, where 2 rounds already converge most improvements; beyond 3 rounds the marginal returns diminish and oscillation is introduced. The capability of the critic and the generator must not differ too much, or the critic will fail to detect the generator's subtle errors. Crossing families matters more than crossing sizes: models from the same vendor have correlated bias distributions and shared blind spots, and only crossing families introduces the perspective of an independent training history.</p>
-            <h2>Suitable production scenarios</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Compliance scenarios with audit-grade independence requirements</strong>: financial credit approval, medical diagnosis assistance, legal assessment, regulatory compliance. In these scenarios independent review is the entry ticket to going live.</li>
             <li><strong>Critical decisions where errors are costly</strong>: decisions where the cost of error exceeds ten thousand dollars, where trading 9× the cost for an accuracy improvement gives a positive ROI.</li>
             <li><strong>Scenarios where the generator output and the critic share biased training data</strong>: single-model self-review is almost ineffective in these scenarios, and an independent cross-family perspective must be introduced.</li>
             <li><strong>The engineering trade-off of saving money for quality</strong>: pairing a mid-tier model with a cross-family critic can close a considerable portion of the performance gap against running a top-tier model alone, while the total cost is in fact lower.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Model collusion</strong>: nominally cross-vendor, but the critic and the generator share the same batch of web training corpus underneath. "Independent training" is independent on the surface, not in substance, and the two have shared blind spots on certain corner cases. Vendor independence does not equal training-data independence. Critical scenarios should choose models pretrained on different regions and different language corpora, or add a third critic, or attach a compliance human reviewer as the final line of defense.</li>
             <li><strong>Cost cascade explosion</strong>: the context accumulates and grows longer each round, and the nominal 9× cost may actually rise to over 30×. Each round's critic context should be truncated to "the task plus the current draft" without history, and the judge runs only once at the end with the full history.</li>
@@ -161,14 +175,14 @@
             <li><strong>Insufficient diversity in role prompts</strong>: when all agents use the same role prompt, multi-agent is actually worse than single-agent. The engineering focus is not piling up the number of agents but designing role diversity.</li>
             <li><strong>Misuse on simple tasks</strong>: tasks where the cost of error is below one hundred dollars, such as writing polish, and tasks where deterministic verification is available (tests as a critic are far cheaper than an LLM as a critic), are fine with single-agent self-review and should not invoke adversarial review.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Vendor independence</strong> (healthy zone ≥ 2 different vendors): how many different vendors the participating models come from. Fewer than 2 fails to meet compliance-grade independence, and auditors will cross-check against vendor billing records.</li>
             <li><strong>Critic discovery rate issues_per_turn</strong> (healthy zone not persistently zero): the distribution of the number of issues the critic raises per round. Staying near zero for the long term is a signal of sycophancy collapse.</li>
             <li><strong>Number of debate rounds</strong> (healthy zone 2-3 rounds): the back-and-forth rounds needed to converge. More than 3 rounds suggests the task may not suit this pattern, or the judge's convergence logic has a problem.</li>
             <li><strong>Cost per decision</strong> (accounted by business): the real token cost of three cross-family agents. Monitor the spend per round, and downgrade to single-critic mode when it exceeds the threshold.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>AdversarialReview.review(task):
                 check vendor independence (≥2 different vendors)   # refuse to run if not met
                 proposition = proponent(task)
@@ -185,20 +199,19 @@
                 no_issues_found: bool  # note: this is a RED FLAG, not a PASS
             </code></pre>
             <p>Four engineering points: agent_vendors must genuinely cross vendors (auditors verify against billing); the critic's "treat finding no problems as a red flag" is the core of anti-sycophancy; set MAX_ROUNDS to 3; write the compliance attestation field into the audit log and retain it for 7 years.</p>
-            <h2>Enterprise adoption example</h2>
+            <h2>Application example</h2>
             <p>A regional bank's AI decision-assistance system for corporate lending has the agent read a borrower's 43 documents and then recommend approve / reject / approve with added credit support. The first version used a single model plus three role prompts (credit analysis, risk assessment, compliance review), and after half a year the accuracy looked acceptable. But once the SOC 2 audit arrived, the auditor asked three questions: Has this "approve" recommendation gone through independent review? If the same LLM with different prompts was used, how does that count as independent? If regulators impose penalties later, can you produce an audit trail proving that every decision went through independent adversarial review? The engineering team could not answer. This was not a technical problem but a structural one. In the seventh month they completely rebuilt it into adversarial review: the generator used Claude Sonnet to produce the loan recommendation, the critic used GPT-5.4 as the red-team reviewer (with a prompt stating "finding problems is not confirmation; treat finding no issue as a red flag and keep reviewing"), and the judge used Claude Opus to arbitrate. The three agents used models from three different vendors, and each wrote its independent trace into the audit log. In the eighth month they passed the SOC 2 re-review. The cost was that the token cost per decision rose from about $0.30 to about $2.10, a 7× cost for compliant go-live, and in a financial setting that arithmetic is worth it.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Generator-Critic (Reflection group)</strong>: a common origin at a different scale. The former is single-agent self-examination (the same model with different prompts), while the latter is multi-agent independent review (independent agents plus an adversarial incentive plus structural independence). The cost of error, regulatory requirements, and cost budget are the three decision points for upgrading from the former to the latter.</li>
             <li><strong>Fan-out Aggregate (C2)</strong>: a sibling pattern. Both have multiple agents working in parallel, but the fan-out workers are in a collaborative, complementary relationship, while the adversarial review critic is in an adversarial relationship.</li>
             <li><strong>Parallel Exploration (Reasoning group R3)</strong>: a cousin pattern, multi-agent in parallel but without the structure of an adversarial incentive.</li>
             <li><strong>N-version programming (classic engineering lineage)</strong>: adversarial review is its reskinned counterpart in the LLM era. Independent implementations each running on their own plus a judge synthesizing them is equivalent to N-version plus voting.</li>
             </ul>
-            <h2>What the pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>The essence of adversarial review is not adding a critic to make the agent more accurate, but <strong>encoding the procedural justice of humanity's thousands of years of rule-of-law tradition into the agent system</strong>. Truth does not emerge from consensus; it emerges from structured disagreement, and independence is a structural requirement, not a quality optimization.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C3 Adversarial Review</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -214,6 +227,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

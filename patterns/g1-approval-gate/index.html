@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>G1</p>
 
-                        <h1>G1 · Approval Gate</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>G1 · Approval Gate</h1>
+                <p class="publication-deck">Before executing a high-blast-radius or irreversible action, route it by risk to one of three tiers — auto-approve, log-and-execute, or human review — so that a human retains final veto power at the critical decision points.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Governance × Route (selection)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>Once an agent reaches production, the most expensive failure is not that it runs slowly; it is that it commits, on its own, an irreversible high-risk action. A wire transfer, a production deployment, an outbound email to the public — the cost of getting one of these wrong far exceeds the labor saved by running it correctly ten thousand times. Handing every action to the agent for automatic execution is gambling; intercepting every action for human review pushes efficiency back to where it was before the agent existed.</p>
             <p>Approval Gate turns this into routing: each action arrives at a decision point, is first classified by risk, then dispatched to one of three destinations — low risk auto-approved, medium risk executed after logging, high risk forced into human review. It does not aim to intercept every action; it aims only to ensure that the small class of actions whose mistakes are irreversible and enormous always has a human who has pressed enter. This boundary also happens to answer a question enterprises care about most when deploying agents — who is responsible when something goes wrong: when a human has reviewed it, responsibility lies with the approver; when the decision was automatic, responsibility lies with the product owner.</p>
-            <h2>Why the coordinate is "Governance × Route"</h2>
+            <h2>Classification: Governance × Route</h2>
             <ul>
             <li><strong>Vertical axis · Governance</strong>: the approval gate governs whether a high-blast-radius action should be executed at all; it is a core control point of governance. It does not change how the agent reasons, nor does it optimize the quality of its output. It only inserts a human veto at the moment the action is about to land.</li>
             <li><strong>Horizontal axis · Route</strong>: at its core it is a router — classifying each arriving action by reversibility × impact and dispatching it to one of three paths, auto-approve / auto-with-log / human-in-loop. This is a single dispatch decision based on the action's features, not chained sequencing, nor permission limiting by hierarchy.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>A single approval evaluation consists of risk grading plus three-stage routing:</p>
             <table>
             <thead>
@@ -166,28 +180,28 @@
             </tbody>
             </table>
             <p>Risk grading is best done on a reversibility × impact dual axis, rather than slicing linearly by amount alone. Reversible and low-impact actions are auto-approved; irreversible or high-impact actions are forced into human review; those above a certain threshold add a two-person rule requiring two independent reviewers. Claude Code's 5+1 PermissionMode (default / plan / acceptEdits / bypass / dontAsk / auto) is an industrial sample of this tiering design, upgrading the binary "all on / all off" choice into a state machine of multiple tiers plus dynamic judgment.</p>
-            <h2>Production scenarios it fits</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Finance and payments</strong>: irreversible monetary actions such as transfers, refunds, and disbursements must go to human review above a threshold, with high amounts requiring two-person review.</li>
             <li><strong>Operating production environments</strong>: high-impact operations such as deployments, database migrations, and DNS switchovers should be inspected as a plan before execution.</li>
             <li><strong>Outbound publishing and legal documents</strong>: mass emails, contract generation, and regulatory reports carry irreversible reputational and compliance costs when wrong.</li>
             <li><strong>Regulator-facing high-risk AI</strong>: systems deployed in the EU and falling into categories such as hiring, credit, or critical infrastructure fail compliance outright without a human-oversight approval path.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Approval Fatigue</strong>: when the allow list is too narrow and every action raises a prompt, approvers begin reflexively clicking approve. This rubber-stamping is more dangerous than having no approval at all, because it manufactures the false sense of safety that "someone has already reviewed it." Loosen demonstrably safe actions toward auto-approval, and reserve human review for the genuinely high-risk ones.</li>
             <li><strong>False Safety</strong>: when deny rules check only the tool name and not the arguments, a seemingly harmless <code>run_command</code> calling <code>rm -rf</code> bypasses them. Deny must inspect arguments, and high-risk determination is best made with an LLM evaluating whether the arguments are destructive.</li>
             <li><strong>Trust Score Override Drift</strong>: to reduce approver impatience, someone adds a rule that "once an old vendor accumulates N successful transactions, the threshold is loosened." Each bypass assumes the bypassed path will not fail — until the bypassed large payment lands in an attacker's account. The three hard triggers — amount, irreversibility, and regulatory criticality — must never be bypassed by trust optimization.</li>
             <li><strong>Approval rules scattered through agent code</strong>: each agent writes its own set, and a cross-agent system has no unified compliance boundary. The right direction is to extract the policy into a separate centralized layer, using a declarative language so that the compliance team and the engineering team collaborate on the same file.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Approval-to-rejection ratio</strong> (healthy below 95%): the ratio of approvals to rejections. Above 95% means the gate adds friction yet intercepts almost nothing, most likely already rubber-stamping.</li>
             <li><strong>Average approver decision time</strong> (healthy above 3 seconds): below 3 seconds is clearly a reflex rather than scrutiny, a direct signal of approval fatigue.</li>
             <li><strong>Override path actual trigger rate</strong> (healthy near 0 and not rising): the trigger frequency of trust-based bypass paths. Stop immediately once an abnormal rise is detected; this is the early sign of a $2M incident.</li>
             <li><strong>Audit log completeness</strong> (healthy 100%): the coverage of logging for high-risk actions. Below 100% means that when something goes wrong you cannot trace who approved it or on what basis, a direct violation of the recordkeeping requirement in EU AI Act Article 22.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>for each action:
                 risk = classify(action)          # reversibility × impact dual axis
                 Stage 1 Deny  → matches blacklist (inspect args, not just name) → reject
@@ -200,21 +214,20 @@
             write a WORM audit log throughout (to satisfy regulatory recordkeeping)
             </code></pre>
             <p>Three things must change in an engineering deployment: replace the risk classifier with the business's own (KYC + AML scoring for finance, blast-radius estimation for operations); connect the human-review interface to a real approval workflow (Feishu / Slack / ServiceNow) rather than console input; enforce reviewer1 ≠ reviewer2 in two-person review.</p>
-            <h2>Enterprise deployment example</h2>
+            <h2>Application example</h2>
             <p>A US mid-market bank's vendor payment agent had a first version of the rule "pay automatically below $10,000, require approval above." It ran smoothly for the first two months. On the day it failed, an old vendor changed its receiving account through a forged change notice; the agent read the notice, went through reconciliation, and automatically paid $200,000 when the quarterly bill came due — the money went into the attacker's account. The root cause was not that the agent failed to flag the risk — it did flag high-amount — but that the engineering team, to reduce approver impatience, had added a trust-score override that "loosened the threshold to $50,000 for old vendors with over 50 accumulated successes," auto-approving a large payment that should have gone through review. After the incident the bank set a hard rule: no trust-score override on amount triggers — no matter how old the vendor, once the amount crosses the threshold the approver must press enter. The correction also included forced two-person review for the combination of an account change plus a large amount within 30 days, and seven-year retention of the audit log for inspection. The root cause of the problem was not that the approval gate was inadequate; it was that someone bypassed the approval gate for the sake of UX.</p>
             <p>In the engineering implementation of an execution-type agent, this gate can be made lighter. Once the agent has task nodes and a task state machine, sensitive tasks can be blocked at a node and wait for manual review to pass before continuing; critical operations requiring review can have human-in-the-loop attached based on declarative configuration, without changing code each time.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Blast Radius Control (G2)</strong>: the two pillars of governance. The approval gate is a soft gate, asking "should this be done"; blast radius is a hard wall, limiting "how large can the damage be if it is done wrong." Risk that the approval gate misses is caught in the act by G2's engineering boundary.</li>
             <li><strong>Progressive Commitment (G3)</strong>: complementary. The approval gate is a static gate; progressive commitment is a dynamic path of escalating authority. The two patterns together decide the routing for the same action — the higher the current trust tier, the fewer actions require human review.</li>
             <li><strong>Observability (G5)</strong>: a dependency. The approval gate must keep an audit log; G5 makes these logs queryable, replayable, and auditable by regulators. Without G5, the approval records are dead data that no one looks at.</li>
             <li><strong>Hook Pipeline (G4)</strong>: the approval gate is a special form of the PreToolUse hook — a deterministic interception inserted before an action executes.</li>
             </ul>
-            <h2>What the pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>The essence of Approval Gate is not a UX workflow but accountability engineering — it converts the vague question of "who takes the blame when the agent fails" into a clear contract of responsibility: what a human has reviewed belongs to the approver, and what was decided automatically belongs to the owner.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>G1 Approval Gate</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -230,6 +243,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

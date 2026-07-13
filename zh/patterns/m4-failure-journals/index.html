@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/m4-failure-journals/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/m4-failure-journals/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/m4-failure-journals/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>M4
             </p>
 
-            <h1>M4 · Failure Journals · 失败日记</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>M4 · Failure Journals · 失败日记</h1>
+                <p class="publication-deck">Agent 把每次失败结构化记录（哪一步失败、什么错、根因、怎么补救），跨任务持久化，下次类似情况主动召回。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>记忆 Memory × 循环 Loop（转）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>绝大多数 agent 系统认真做了进度追踪，却很少有人认真做失败档案。失败被默默丢弃，会话一结束就清零，下次类似情境再来时 agent 又从零踩同一个坑。一个典型场景：agent 修对了主任务后注意力下降，把测试环境的配置写进了生产配置——两周后在另一个项目里它做了几乎一样的事。这不是偶发的不细心，是一个固定模式，而 agent 没有"我以前在这件事上栽过"的记忆。</p>
             <p>失败日记把失败做成可以反复回看的档案。它的目的不是给运维看错误，是给 agent 自己积累职业经验——让模型在下次类似情境时，主动调出"我栽过这种跟头"的提醒。抹掉失败就等于抹掉证据，模型没了证据就没法适应。</p>
-            <h2>为什么坐标是「记忆 × 循环」</h2>
+            <h2>分类依据：记忆 × 循环</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：它把"失败"作为持久化学习材料跨调用累积，是长期记忆里的反例库——一面记成功（程序性记忆），一面记失败（失败日记）。</li>
             <li><strong>横轴 · 循环</strong>：写一次失败、下次任务读一次、再写一次，是跨调用的 outer loop。失败信号在任务之间循环流动，让 agent 一次次变得更老练。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>完整的失败日记系统做四件事，形成闭环：</p>
             <ol>
             <li><strong>检测 Detection</strong>：判断这次任务算不算"失败"。包括任务级失败，也包括信息检索本身的失败（如 RAG 索引滞后、漏检、误检——这些是 LLM 时代新增的失败类型）。</li>
@@ -157,13 +170,13 @@
             <li><strong>召回 Recall</strong>：新任务来时按相似度主动调出相关历史失败，注入 prompt。这是失败日记跟普通 try-catch 的根本差别——后者只当场处理，前者跨任务记忆。召回靠在 inference 时把过去经验注入 context（training-free 路径），无需重训模型。</li>
             </ol>
             <p>配套还有两点工程实践：失败 trajectory 默认丢弃是巨大浪费（研究显示约 85% 失败 trajectory 被丢弃），可经反向标注后用于训练；分层留存（如 48 小时存全细节、30 天存压缩摘要、更久只存聚合指标）让召回在工程上可行而不让数据库无限膨胀。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>生产级长期运行的 agent</strong>：跑数月、反复处理同类任务的 agent。哪些失败要记、哪些任务来时要翻出来，是它的核心价值所在。</li>
             <li><strong>多租户 SaaS agent</strong>：跨租户错位这类高风险失败要做特殊处理——永不淘汰、每次任务启动强制召回、连续多条触发报警。task signature 用"租户加意图"双因子，一个租户的失败不该让另一个租户收到无关提醒。</li>
             <li><strong>高风险不可逆操作的 agent</strong>：错误代价大、同样的错不能犯第二次的场景。DevOps、金融、合同处理。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>任务一次性、没有重复执行场景却硬上</strong>：纯 demo、prototype、一次性脚本，失败被丢弃没问题。失败日记的价值在重复任务，没有重复就没有召回收益。</li>
             <li><strong>只 free-text 不分类</strong>：第一版 failure log 常是"task / error / timestamp"三字段自由文本，agent 看到完全没法学。必须强制 schema 化（enum 加受限字段），让失败可聚类、可统计、可查询。</li>
@@ -171,14 +184,14 @@
             <li><strong>记下来了但召回不匹配</strong>：用 Jaccard 这类粗糙相似度，漏检率太高，记了等于没召回。task signature 之间要用 embedding cosine similarity。</li>
             <li><strong>高风险失败和普通失败一锅端</strong>：跨租户数据泄露和 API timeout 严重程度差几个数量级，混在一起会让生死线失败被淹没。高风险失败要独立告警加永久保留加强制召回。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>重复失败率下降</strong>（健康区持续下降）：同类任务里 agent 重复犯同一个错的比例。这是失败日记真正的判断标准——failure 数据上 99% 的清洁度若 agent 根本没召回它就没用，重复失败率下降 30% 才是真价值。</li>
             <li><strong>召回率 / 召回命中率</strong>（健康区合理偏高）：被召回过的失败记录占比、召回的失败与当前任务相关的比例。procedural memory 召回命中率持续偏低，说明记忆架构有问题。</li>
             <li><strong>首次尝试成功率</strong>（健康区随时间上升）：agent 一次做对的比例，失败 lessons 沉淀后应逐月上升。</li>
             <li><strong>高风险失败计数</strong>（健康区接近 0 且强监控）：跨租户错位等生死线失败的发生次数，必须独立监控加告警。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
               / root_cause / remediation / lessons[] / access_count
 FailureJournal:
@@ -189,27 +202,26 @@ FailureJournal:
 分层留存：48h 全细节 / 30d 压缩摘要 / 90d+ 聚合指标
 </code></pre>
             <p>工程落地四个要点：相似度函数用 embedding cosine 而非 Jaccard；召回挂在任务启动和高风险工具调用前（可用 PreToolUse hook）；分层留存真做并分别上不同后端；写入做两层审查（schema 强制加 access_count 清理）。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某 B2B SaaS 给两百多家企业租户提供客服 agent，每天处理约五万条工单。失败分布大致是工具错误三成、跨租户错位两成五、上下文溢出两成、语义漂移一成五。重写后六个关键决策：跨租户错位（boundary_leak）定为最高优先级——比工具错误严重一百倍（前者是数据泄露事件），永不淘汰、每次任务启动强制召回、连续三条触发 PagerDuty；task signature 用"租户加意图"双因子，ACME 的失败不会让 BETA 收到无关提醒；按 CER 范式把 top-5 相关历史失败作为 system prompt 注入，让 implicit belief update 在动手前发生；失败强制分类不许 free-text；失败档案每周导出 markdown commit 到 git 供团队 review（git diff 是最好的失败趋势可视化）；UNKNOWN 类失败进 needs_review 状态由人审过才进档案，避免噪声污染召回。落地第二个月，boundary_leak 从每天八起降到一起，tool_error 重复率降四成，首次尝试准确率从 78% 升到 85%。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>程序性记忆（M5）</strong>：孪生关系，一起构成 agent 的经验库。失败日记沉淀"过去做错过这件事，别再这么做",程序性记忆沉淀"过去做对过这件事，下次照这个做"。一面记失败，一面记成功。</li>
             <li><strong>进度追踪（M3）</strong>：同在循环列。进度追踪循环"做对的步骤",失败日记循环"踩过的坑"。两件事看似对称，但工业里待遇完全不对称——前者人人做，后者很少有人认真做。</li>
             <li><strong>分层保留（M1）</strong>：失败日记是长期记忆层里的专门分区，分层留存（48h / 30d / 90d+）正是分层思想在失败档案上的应用。</li>
             <li><strong>Self-Heal Loop（行动模块）</strong>：自愈循环只在当前任务内处理失败，不跨任务持久化。失败日记比它多走一步——把当次的失败信号持久化，下次类似任务召回。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>抹掉失败就等于抹掉证据，模型没法学——失败日记不是错误日志，是 agent 的职业档案，一个跑了半年带失败档案的弱模型 agent，在你具体业务上可能强过一个刚启动的更聪明模型。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《M4 失败日记》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -225,9 +237,16 @@ FailureJournal:
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

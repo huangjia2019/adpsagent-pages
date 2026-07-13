@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/f3-experience-replay/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/f3-experience-replay/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/f3-experience-replay/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>F3
             </p>
 
-            <h1>F3 · Experience Replay · 经验回放</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>F3 · Experience Replay · 经验回放</h1>
+                <p class="publication-deck">agent 在新任务来时主动检索历史相似任务的 trajectory，把可复用部分注入当前 context，让学过的东西不白学。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>反思 Reflection × 层级 Hierarchy（分）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>一家公司运营几年，员工换了几代，工程师做过的所有事都散落在 Slack 消息、Jira ticket、内部 wiki、邮件存档里。这些是企业的"沉默资产"——80% 没人翻，但每一条都可能在新任务接手时省下半天工夫。资深员工离职带走的不只是技能，还有"踩过的坑、试过的失败路径、当年怎么发现某个关键变量的过程"——这些没法用一份 skill 包概括，但同样有复用价值。</p>
             <p>Experience Replay 在 agent 系统里解的是同一个问题——让历史 trajectory 不要变成沉默资产。它在新任务来时主动检索相似的历史轨迹（成功的、失败的、零散的），把可复用部分注入当前 context。它和 Skill Package 的区别在颗粒度：Skill Package 装的是 verified 可调用单位，Experience Replay 装的是更宽泛的参考资产——经验有用但不一定 verified。CER（Contextual Experience Replay）在 WebArena 上把 GPT-4o baseline 的成功率提升了 51%，且完全 training-free。</p>
-            <h2>为什么坐标是「反思 × 层级」</h2>
+            <h2>分类依据：反思 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：学过的东西不能白学，喂回给后续任务，这是基于历史回看的反思。它不改当下输出（Generator-Critic），也不固化成可调用单位（Skill Package），而是把过去的完整经验当作参考资产供 agent 借鉴。</li>
             <li><strong>横轴 · 层级</strong>：历史 trajectory 形成一层"上层经验库"，包裹住当前这次决策——上层经验为下层的当下行动提供参照与约束。经验本身也是分层存放的：原始 trajectory、抽取出的 lesson、可复用 artifact、可转技能候选，由粗到细。多层结构、上层 parametrize 下层，正是层级拓扑的本质，区别于 Skill Package 那一下"路由到哪个技能"的选择。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一个 Experience Replay 闭环由六段组成：Task → Retrieve → Adapt → Execute → Distill → Store。两个核心设计判断决定它能不能工业化：</p>
             <ol>
             <li><strong>multi-level 分层存储</strong>：经验必须分层存，单层要么太散要么太空。AgentRR 给的是双层——low-level（具体 action：调了什么 tool、参数填什么、得到什么 observation，用于 debug）加 high-level（泛化策略：用了什么 approach、应对什么类型问题、什么时候 work，更接近工程师的判断）。Manning 往上延伸成三层抽象阶梯：</li>
@@ -182,27 +195,27 @@
             <ol start="2">
             <li><strong>training-free 注入</strong>：重训 LLM 太贵，CER 的做法是把过去 trajectory（裁剪加摘要后）作为 context 注入当前 prompt，让 LLM 在 context window 里 in-context learning，跳过训练阶段。检索时优先 effectiveness 高加 outcome 成功的经验，复用后回写 effectiveness——没用的 lesson 自动 deprecate。</li>
             </ol>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>累积运行时间长的 agent</strong>：客服、运维、数据分析这类任务反复出现、经验可沉淀的场景。工程价值随时间增长——3 个月后才有显著效果，6 个月后变核心红利。</li>
             <li><strong>组织知识沉淀</strong>：把公司散落在 wiki、Confluence、Notion 的经验接进来，agent 几秒检索整理出来用。enterprise 场景接现有知识库最经济。</li>
             <li><strong>失败资产复用</strong>：80% 的 trajectory 是失败的，AgentHER 用 hindsight relabel 让失败 trajectory 涨值——一个失败追求目标 A 的轨迹往往是某个可达目标 B 的成功示范，在 WebArena 加 ToolBench 上比只用成功轨迹高 7.1 到 11.7 个百分点。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>冷启动死锁</strong>：前 3 个月几乎没价值，但不积累 6 个月后也没价值。团队容易决策"先停掉等系统稳定再上"，结果再也上不来。防法是冷启动期用 synthetic experience seeding，把团队过去 documented 的最佳实践写成 30-50 条 bootstrap 数据灌进库。</li>
             <li><strong>陈旧教训漂移</strong>：半年前对的经验，产品改版后已经不适用，agent 还在注入，反而让人走错方向。防法是 effectiveness_score 持续衰减加 heuristic 时间戳降权加季度 review 主动 deprecate。</li>
             <li><strong>检索偏差放大</strong>：embedding 相似不等于任务结构相似。"用户增长分析"检索出"用户流失分析"经验，把流失的 funnel 框架硬套到增长上——增长和流失是反向问题。防法是加 task type classifier 粗筛、block 跨类型检索、检索后 LLM 二次审查适用性。</li>
             <li><strong>无结构全量 dump</strong>：把所有 trajectory 全塞进 vector DB 让 agent 自己挑，没有 multi-level 分层。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>检索命中率</strong>（健康区 &gt;70%）：召回的历史经验中真正被采用的比例。低说明 task_signature 用了 hash 而非语义，或检索偏差。</li>
             <li><strong>effectiveness 分</strong>（健康区 ≥0.5）：经验被检索后任务成功率。低于 0.5 且复用 5 次以上的 lesson 进 archive，这是抗 superstitious lesson（错误归因伪经验）的关键。</li>
             <li><strong>experience store 增长加 retrieval count</strong>（冷启动期主看这两项）：前 3 个月不看成功率提升，看 store 是否在长、经验是否被检索，给反思工程争取时间。</li>
             <li><strong>质量增量</strong>（健康区 3 个月后显著、6 个月后甩开 baseline）：成功率相对无经验复用的增益，这是 lagging indicator。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code># 检索 + 注入 (CER training-free)
 past = retrieve(task)                      # top-K, 优先 effectiveness 高 + success
 context += render_for_context(past)        # high-level strategy + author metadata
@@ -222,26 +235,25 @@ for e in past:
 monthly_distill_L2(signature)
 </code></pre>
             <p>四个工程要点：embed 和 high-level 提炼都用最便宜的模型（频次高、store 会涨到几十万条）；effectiveness_score 是核心 metric，健康线 ≥0.5；author_id metadata 别省，它让 agent 能告诉用户"这事谁做过、可咨询谁"；task_signature 用语义不用 hash，否则命中率低。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>一家 SaaS 公司的 8 人数据团队，PM 问"Q2 新功能上线后 D7 留存没明显涨，分析一下原因"。8 个数据科学家分头做，一个月后出 5 份独立报告（3 份没做完）。复盘发现 3 份做了几乎一样的 cohort 分析，2 份用不同归因方法但都漏了同一个 confounding variable（黑五时段自然流量基线变了），0 份引用团队 6 个月前做过的同类分析——那份分析是离职的 Sarah 做的，方法搭好了、confounding 那条她也踩过写了 case note，但归档在 Sharepoint 没人翻。团队上 Experience Replay 后，再有类似任务，第一个开干的人触发检索，拿到 Sarah 那份分析（含"留存分析必查时段效应"那条 heuristic），作为 cross-task heuristic 注入 prompt。配套 6 个决策：multi-level schema（high-level approach 加 low-level SQL）、CER 注入 top-5 加 author metadata、embed 用 cheap model、成功加失败加中性轨迹都存、30 天 cold tier、每月自动蒸馏 L2。8 人月浪费压到 1 人月做好新分析。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>Skill Package（F2）</strong>：配对兄弟模式，边界要钉清楚。Skill Package 装 verified 可调用单位（"这事做过 3 次都成功，封成 skill 直接调"），Experience Replay 装更宽泛的参考资产（"这事 Sarah 6 个月前做过，方法和坑都在 trace 里，agent 自己看着学"）。前者是模块，后者是案例库。agent 优先调 skill，没匹配时回退到 experience 检索；experience 反复成功后毕业升级成 skill。</li>
             <li><strong>Failure Journals（记忆模块）</strong>：同源输入。Failure Journals 提供失败 trajectory 库，Experience Replay 提供检索加注入机制，两者配合。AgentHER 之后失败 trajectory 还成了高价值训练原料。</li>
             <li><strong>Generator-Critic（F1）</strong>：层级递进。Generator-Critic 改单次输出，Experience Replay 让累积经验跨任务复用。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>Experience Replay 是反思工程里"时间是朋友"的那类模式——投资在前、红利在后，它把组织里散落的零散经验做成可检索资产，agent 的成熟度不在今天多聪明，而在三个月、六个月后比现在聪明多少。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《F3 经验回放》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -257,9 +269,16 @@ monthly_distill_L2(signature)
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

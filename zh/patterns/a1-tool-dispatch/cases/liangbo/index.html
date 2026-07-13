@@ -17,9 +17,8 @@
         <div class="container">
             <a href="/zh/" class="site-brand">ADPS</a>
             <nav class="site-nav">
-                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -37,7 +36,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -80,16 +78,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -110,7 +108,21 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/a1-tool-dispatch/" style="color: var(--color-text-muted);">A1 工具调度</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
 
-            <h1>A1 · 工具调度 · 蓝皮书 · 东方屹腾执行型 Agent</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
+                <h1>A1 · 工具调度 · 蓝皮书 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">工具不裸调、封装进行动能力，注册时声明机械状态依赖坐标，原 API 不改造即可被编排。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>主模式</dt><dd>A1 工具调度</dd></div>
+                    <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本页是完整案例的模式切片，记录特定系统约束下的实现选择。案例方提供的实现与效果信息未经过独立审计，不构成通用性能承诺。</p>
+
             <table>
             <thead>
             <tr>
@@ -184,10 +196,10 @@
             <h2>一句话</h2>
             <p>工具调度在这个案例里的价值，是把「调哪个工具、用哪个参数」这件事从模型的临场生成里收回工程层——工具封装进行动能力调用，参数靠注册协议声明的机械状态坐标确定性传递，存量 SaaS API 经网关一暴露就能被可靠编排，一行接口改造都不用动。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                这是 ADPS 蓝皮书（企业落地实践）。返回 <a href="/zh/cases/">案例库</a> 或 <a href="/zh/patterns/">模式矩阵</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 工具调度落地》，企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -203,9 +215,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

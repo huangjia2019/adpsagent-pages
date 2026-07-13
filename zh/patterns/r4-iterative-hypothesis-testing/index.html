@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/r4-iterative-hypothesis-testing/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/r4-iterative-hypothesis-testing/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/r4-iterative-hypothesis-testing/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>R4
             </p>
 
-            <h1>R4 · Iterative Hypothesis Testing · 迭代假设验证</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>R4 · Iterative Hypothesis Testing · 迭代假设验证</h1>
+                <p class="publication-deck">Agent 形成假设、用证据验证、根据结果修正，循环到证据收敛或达到迭代上限，把科学方法搬进推理。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>推理 Reasoning × 循环 Loop（转）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>有一类任务一次推理给不出答案：根因不明、证据要逐步收集、第一轮的判断常常是错的。诊断类任务是典型——故障报警时模型先验排序的"最可能原因"可能严重错估，真正的根因排在很后面甚至一开始没被想到。如果只让模型推一次就 commit，它会在错误方向上越走越远；如果只是简单 retry，重试本身并不能解决问题，因为问题不在"结果不稳定"而在"对世界的理解还不对"。</p>
             <p>迭代假设验证把单次推理换成"假设 → 验证 → 修正 → 再假设"的循环。它和普通 retry 的根本差别是：retry 假设重试本身能解决问题，迭代假设假设每次循环都要更新对世界的理解。它的设计中心也不是"重试到成功"，而是通过证伪收敛到唯一一个没被推翻的假设。它和并行探索（R3）是一对对偶：并行是空间维度同时开 N 条线，迭代是时间维度一条线跑多次。</p>
-            <h2>为什么坐标是「推理 × 循环」</h2>
+            <h2>分类依据：推理 × 循环</h2>
             <ul>
             <li><strong>纵轴 · 推理</strong>：它走的是"假设 → 验证 → 修正 → 假设"的经验科学风格推理，不是单次 deduce。每一轮都在主动修正自己的 belief，而不是等结果稳定。</li>
             <li><strong>横轴 · 循环</strong>：多轮迭代直到证据收敛或达到上限，是天然的循环结构。同列的双模架构（R5）也在循环列，但侧重不同——迭代是单 Agent 跟自己循环验证假设，双模是双 Agent 协同分处理"说"和"想"。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>成熟的迭代假设验证常用三 Agent 分工，对应一个严格的循环：</p>
             <ol>
             <li><strong>假设生成（Planner）</strong>：根据症状和历史 case 列出 N 个候选假设，按先验概率排序。这一步用最贵的模型，因为生成"对的假设清单"决定整个 trajectory 的走向。</li>
@@ -156,13 +169,13 @@
             <li><strong>判定（Evaluator）</strong>：综合证据判断假设是被确认、被证伪、还是证据不足。这一步用中档模型，system prompt 要强调证伪而非确认——"你的工作是找出 strong counter-evidence"，这个 framing 能显著提升准确率。</li>
             </ol>
             <p>循环规则是：证伪就回到生成阶段、确认就退出、证据不足就回去取更多证据。两条容易被忽视但关键的工程做法：一是遇到全新证据时要 reset 整个假设树而不是在旧树上微调；二是跑到上限还没收敛时触发人在回路（HITL），而不是让 Agent 强行选一个先验最高的硬撞。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>诊断类任务</strong>：工业故障定位、医疗诊断、安全事故根因分析。根因不明、需要逐步收集证据、单链走偏后能 reset 重启。</li>
             <li><strong>复杂代码 debug</strong>：改一处验证一处，失败信息回流形成新假设，反复收敛到真正的 bug。</li>
             <li><strong>需要严格证据链的判断</strong>：每一步结论都要有可复现证据支撑、最终能向监管解释推理路径的场景。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>时间预算太紧还硬上</strong>：时间预算小于 30 秒、或错误成本低的场景别用迭代——一次推理就够的任务加迭代是过度工程。</li>
             <li><strong>3 次后还不收敛硬撑</strong>：3 次迭代后还没收敛，通常是任务本身错了（症状描述不准、或根本不是这个系统的问题），该 reset 或升人工，而不是继续烧第 4、第 5 轮。</li>
@@ -170,14 +183,14 @@
             <li><strong>新证据来了还在旧树上微调</strong>：出现完全新的证据时应该 reset 假设树重新生成，在旧树上打补丁会被错误的先验带偏。</li>
             <li><strong>没有熔断</strong>：任何迭代都要有 max_iterations 硬上限加成本上限，否则成本爆炸、Agent 卡死。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>收敛率 Convergence Rate</strong>（健康区 &gt;80%）：在达到上限前自动收敛的比例。低于 60% 说明 Agent 经常跑到上限还没结论，要么任务太复杂该拆，要么证据取得不够。这是最综合的指标。</li>
             <li><strong>平均收敛迭代数</strong>（健康区 2-4 次）：成功 case 平均跑几轮收敛。低于 2 次说明任务太简单不需要迭代，高于 5 次说明每轮效率低、假设质量差。</li>
             <li><strong>证伪率 Falsification Rate</strong>（健康区 30-60%）：每轮被证伪的假设占比。低于 20% 说明 Agent 在确认偏误、不主动证伪；高于 80% 说明生成的假设大多是错的。</li>
             <li><strong>人工介入率 HITL Trigger Rate</strong>（健康区 5-15%）：触发人工的比例。低于 2% 说明 Agent 过于自信、不该 commit 也硬 commit；高于 30% 说明 Agent 太弱、什么都要人兜底。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>任务进来 → Planner 生成假设清单（按先验概率排序）
 循环（上限 max_iterations）：
     选先验最高的待验假设
@@ -191,28 +204,27 @@
 全程 trace 留档（合规场景需长期保留）
 </code></pre>
             <p>落地四个要点：三个模型按路由方式分配（贵模型生成假设、便宜模型收证据、中档判定）；证据 schema 严格化，杜绝模型脑补证据；HITL 升级要带完整假设树和证据，不是简单通知；trace 长期留档备审。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某中型化工厂的工业故障诊断 Agent，给一线工程师在报警时辅助定位根因。试点第三周凌晨一条聚乙烯生产线报警——反应釜温度异常上升。Agent 推送 5 个候选假设按可能性排序，工程师逐个验证：冷却泵故障（看流量正常，淘汰）、传感器漂移（对比冗余传感器一致，淘汰）、工艺配方异常（查进料 log 正常，淘汰）。到第四个假设要等实验室分析、生产线已停一小时时，工程师手动喂了一个新事实——PID 控制日志里凌晨有一次远程登录修改。Agent 立即完全重建假设树，下钻发现某个控温参数被改、会导致温度震荡上行、与现状吻合，最终定位是另一班组做参数优化测试忘了回滚。</p>
             <p>事后两个观察很关键：第一，那个真正的根因在第一轮先验里只有 2% 概率，模型先验严重错估，靠反复迭代加人工补事实才挖出来；第二，喂新事实后 Agent 是 reset 重建整棵树而非微调。团队据此重写，加了三层结构（生成假设、收证据、判定），并做了六个关键决策：三层假设树支持下钻、HITL 阈值低（3 轮后置信度不足就升人工、涉及重启关键设备必须人工 confirm）、新证据 reset 而非 compaction、证据 schema 严格化、Evaluator 强调证伪、每次 trace 长期留档。改完后收敛率从 50% 升到 82%，平均故障定位时间从 3.2 小时压到 1.1 小时。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>并行探索（R3）</strong>：对偶关系。并行是空间维度同时开 N 条线一次选优，迭代是时间维度一条线跑多次逐步收敛。</li>
             <li><strong>思维链（R1）</strong>：迭代的每一轮内部就是一条思维链，迭代把多条思维链在时间维度串起来反复修正。</li>
             <li><strong>复杂度路由（R2）</strong>：迭代里三个角色用不同档位模型，正是路由思路在循环内部的应用。</li>
             <li><strong>双模架构（R5）</strong>：同在循环列。迭代是单 Agent 自我循环验证，双模是双 Agent 协同分工。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>迭代假设验证的退出条件不是"找到一个对的假设"，而是"证伪掉所有错的假设"——它把人类几百年的科学方法编码进了概率系统，因为概率系统的可靠性只能靠证伪来建立。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《R4 迭代假设验证》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -228,9 +240,16 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

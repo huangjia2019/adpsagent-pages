@@ -51,11 +51,11 @@
         <section class="intro">
             <div class="intro-text" style="grid-column: 1 / -1;">
                 <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Patterns Society</h1>
-                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">沉淀通用范式，做可成长的 Agent 系统。</p>
+                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">面向生产级 Agent 系统的公共模式语言。</p>
                 <p class="lede">
-                    ADPS 是一个小而认真的研究共同体。我们把中国工程师的一线 agent 实践、软件工程方法、开源 Harness 经验
-                    和企业级落地反馈，把 agent 时代反复出现的架构问题和混乱经验，整理成<strong>一套全球工程师
-                    都可以使用、可以讨论、可以评审、可以传承的模式语言</strong>。
+                    ADPS 是一个独立研究共同体，面向生产级 Agent 系统建设公共技术参考。
+                    我们汇集软件设计研究、开源 Harness 工程和具名企业案例，把反复出现的架构问题整理成
+                    <strong>可比较、可验证、可引用的模式规范</strong>。
                 </p>
             </div>
         </section>
@@ -67,28 +67,22 @@
                      style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
             </a>
             <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
-                28 模式矩阵 &middot; 7 个认知功能 &times; 6 种执行拓扑
-            </p>
-            <p style="margin-top: 0.75rem; max-width: 720px; margin-left: auto; margin-right: auto; font-size: 0.88rem; color: var(--color-text-muted); text-align: left;">
-                <strong style="color: var(--color-text);">关于编舞（Choreography）。</strong>
-                编舞有时被列为一种拓扑。这里没有把它当成独立的列——它是跨拓扑的协调模式，
-                精神上更接近 Teams 模式，不是独立的执行形态。所以放在模式正文里讨论，
-                不单独占一列。
+                28 个核心模式矩阵 &middot; 7 个认知功能 &times; 6 种执行拓扑
             </p>
         </section>
 
         <section class="block">
             <h2>我们做什么</h2>
             <p>
-                ADPS 把反复出现的 agent 架构问题整理成一套连贯的模式语言。工作围绕三件交付物展开：
+                ADPS 发布三组彼此关联的公共技术资料：
             </p>
             <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.5rem;"><strong>模式目录</strong>——28 个命名模式落在 7×6 矩阵
-                （认知功能 × 执行拓扑）上，每一个都有可运行的实现，以及来自真实生产代码的工程切片。</li>
-                <li style="margin-bottom: 0.5rem;"><strong>模式选型方法论</strong>——6 步流程加 5 条定律，
-                把"我要做一个 X 的 agent"在十五分钟内变成候选模式清单。</li>
-                <li style="margin-bottom: 0.5rem;"><strong>生产级 Harness</strong>——开源参考实现，
-                展示模式在成本、时延、治理约束下如何组合。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>模式白皮书</strong>——28 个核心模式与 6 个扩展或候选规范，
+                分别说明问题、机制、适用条件、已知失效方式和验证标准。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>工程蓝皮书</strong>——记录模式组合在具名企业约束下的实际演进，
+                同时交代材料来源、证据等级和可迁移边界。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>开放参考资产</strong>——论文、选型方法、实现示例与工程概念，
+                供团队核验、讨论和按需采用。</li>
             </ul>
         </section>
 
@@ -103,41 +97,41 @@
                 中进一步展开。ADPS 现在作为共同体资产持续维护这套目录。
             </p>
             <p>
-                <a href="/zh/patterns/" class="cta">查看 28 模式矩阵 →</a>
+                <a href="/zh/patterns/" class="cta">查看模式白皮书 →</a>
             </p>
         </section>
 
         <section class="block">
             <h2>创始成员</h2>
             <p>
-                四位创始成员代表四种力量：架构语言、软件工程、开源生态、企业落地。
+                创始团队的工作覆盖 Agent 架构、软件工程、开源基础设施与企业系统落地。
             </p>
             <ul style="margin: 0.8rem 0 1rem 0; list-style: none;">
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-jia.svg" alt="黄佳" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>黄佳</strong> <span style="color: var(--color-text-muted);">— 框架 · 写作 · 全球叙事接口</span><br>
+                        <strong>黄佳（Jia Huang）</strong> <span style="color: var(--color-text-muted);">— Agent 架构 · 模式语言 · 工程教育</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">新加坡 A*STAR AI 研究员。Manning《Designing AI Agents》作者。</span>
                     </div>
                 </li>
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-ru.svg" alt="茹炳晟" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>茹炳晟</strong> <span style="color: var(--color-text-muted);">— 软件工程 · 智能体系统 · 研发效能</span><br>
+                        <strong>茹炳晟（Bingsheng Ru）</strong> <span style="color: var(--color-text-muted);">— 软件工程 · 智能体系统 · 研发效能</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">腾讯研究院产业研究顾问。CCF TF 多智能体系统工程 SIG 副主席。</span>
                     </div>
                 </li>
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-jiang.svg" alt="姜宁" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>姜宁</strong> <span style="color: var(--color-text-muted);">— 开源 · Harness · 工作流</span><br>
+                        <strong>姜宁（Willem Jiang）</strong> <span style="color: var(--color-text-muted);">— 开源基础设施 · 系统集成 · 工作流</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">Apache 软件基金会长期贡献者。DeerFlow 开发者。</span>
                     </div>
                 </li>
                 <li style="padding: 0.85rem 0; display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-liang.svg" alt="梁博" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>梁博</strong> <span style="color: var(--color-text-muted);">— 企业 SaaS · 金融场景 · 生产反馈</span><br>
+                        <strong>梁博（Bo Liang）</strong> <span style="color: var(--color-text-muted);">— 企业 SaaS · 金融服务 · 生产系统</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">上海东方屹腾科技副总裁。银行泛金融 SaaS 转型 Agents 体系。</span>
                     </div>
                 </li>
@@ -189,11 +183,6 @@
                 <li style="padding: 0.55rem 0;">
                     <strong><a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener">Manning &middot; <em>Designing AI Agents</em></a></strong>
                     ——生产级 AI agent 的设计模式目录。
-                    <br>
-                    <span style="font-size: 0.86rem; color: var(--color-text-muted);">
-                        Manning 折扣码：<code>designing-ai</code>（电子书 / MEAP，仅中国大陆，$20.99）&middot;
-                        <code>MLHuang4</code>（全格式 5 折，6 月 9&ndash;23 日有效）。
-                    </span>
                 </li>
             </ul>
         </section>

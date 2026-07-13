@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>C5</p>
 
-                        <h1>C5 · Sub-Agent Isolation</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>C5 · Sub-Agent Isolation</h1>
+                <p class="publication-deck">A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw trajectory.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Collaboration × Hierarchy</dd></div>
+                    <div><dt>Catalog status</dt><dd>Extension pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>The supervisor agent dispatches a sub-agent to do work, the sub-agent dumps its entire working process back, and the supervisor's context is immediately flooded. Returning a detailed 3,000-word analysis for each of 50 contracts is 150,000 words, and once the supervisor receives it, reasoning quality drops off a cliff. The root cause is that the supervisor should not see the sub-agent's raw working process, only the work conclusions—just as the PM at a law firm does not ask each lawyer to report which line they read, but looks only at "which few are abnormal and their key issues."</p>
             <p>Sub-agent isolation solves context pollution in enterprise multi-agent systems. It lets each sub-agent run in its own isolated context and forces a reduce into a structured artifact before returning, so the supervisor consumes only the artifact. The engineering value here is independent enough to warrant its own pattern: it is the internal discipline that lets collaboration patterns such as hierarchical delegation and fan-out aggregation run stably in production. Without it, the supervisor's context is bound to blow up by the third task, and a long-running multi-agent system is bound to cascade.</p>
-            <h2>Why the coordinate is "Collaboration × Hierarchy"</h2>
+            <h2>Classification: Collaboration × Hierarchy</h2>
             <ul>
             <li><strong>Vertical axis · Collaboration</strong>: Giving a sub-agent its own context and permissions is a design that adds boundaries within collaboration. It is not simple task dispatch but adds isolation discipline to collaboration—the information flow between supervisor and sub-agent is deliberately cut down to "pass only refined conclusions."</li>
             <li><strong>Horizontal axis · Hierarchy</strong>: A parent agent schedules a sub-agent, and the sub-agent runs in its own sandbox—this is a structure of hierarchy plus isolation. It shares a cell with hierarchical delegation (both sit at the Collaboration × Hierarchy intersection), but the emphasis differs—hierarchical delegation stresses dispatch, while sub-agent isolation stresses isolation plus summarized return.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>Sub-agent isolation is built from four engineering elements:</p>
             <ol>
             <li><strong>Context isolation</strong>: When the sub-agent starts, it does not inherit the parent's history; it receives only its own system prompt, the specific task instruction, and its own tool set. It cannot see what the supervisor has run or what other sub-agents are doing.</li>
@@ -145,14 +159,14 @@
             <li><strong>Failure boundary isolation</strong>: When a sub-agent times out or throws an exception, the supervisor receives an artifact with verdict=failure rather than being blown up by the exception. If 1 of N sub-agents fails, only 1/N is lost.</li>
             <li><strong>Parallel non-interference</strong>: N sub-agents each run their own context, cannot see each other's intermediate state, and do not communicate directly—exchanging information must go through the supervisor.</li>
             </ol>
-            <h2>Where it fits in production</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Batch tasks where subtasks produce a lot of output and the supervisor's context is tight</strong>: contract review, document scanning, large-scale code search, where each sub-agent handles one item and returns only a refined conclusion.</li>
             <li><strong>Scenarios that must prevent cross-task pollution</strong>: each contract should get an independent fresh review, not be primed by details from other contracts (avoiding anchoring bias), so an independent context is required.</li>
             <li><strong>Scenarios where data scope must not cross over</strong>: sensitive data seen by one sub-agent must not flow to another sub-agent or pollute the supervisor; an isolated context provides a natural data boundary.</li>
             <li><strong>Scenarios that need protection against prompt pollution</strong>: a sub-agent's trial-and-error failure traces and out-of-bounds attempts should not drag down the later reasoning of the supervisor or other sub-agents.</li>
             </ul>
-            <h2>Where it goes wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>The sub-agent inherits the supervisor's history</strong>: it looks fine in the demo stage, but after the third task the supervisor's history accumulates tens of thousands of tokens, and every sub-agent carries those tokens at the starting line—cost explodes and quality drops. The sub-agent must start completely independently with local messages.</li>
             <li><strong>Returning free text instead of a schema artifact</strong>: free text makes usability on the supervisor side 10 times worse—it cannot be parsed with deterministic code, cannot be confidence-ranked, cannot be routed by verdict. A schema must be enforced.</li>
@@ -160,14 +174,14 @@
             <li><strong>Failure has no boundary</strong>: the sub-agent throws an exception that is not caught, the supervisor receives a raw exception, the reasoning loop is interrupted, and the whole task fails. On failure, a schema-formed failure artifact must be returned.</li>
             <li><strong>Wrapping isolation around a subtask whose output is already small</strong>: when a subtask produces less than 500 tokens, or when the supervisor genuinely needs to see intermediate detail, isolation is needless overhead. Its value holds only when output is large, context is tight, and output can be schema-formed all hold at once.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Supervisor context usage</strong> (a healthy range leaves enough room for reasoning): the proportion of the supervisor's context taken up by all sub-agent artifacts combined. Keeping the artifacts for 50 contracts under 10,000 words and leaving the supervisor 40,000 tokens for its own reasoning is a good target.</li>
             <li><strong>Artifact compliance rate</strong> (healthy range &gt; 95%): the proportion of sub-agent returns that conform to the schema. Occasionally bypassing the schema with free-text output triggers re-dispatch and latency.</li>
             <li><strong>Failure cascade rate</strong> (healthy range &lt; 5%): the probability that one sub-agent's failure drags down other sub-agents. Only when all four elements are in place can this metric be held at the healthy line; missing one can make it soar.</li>
             <li><strong>Artifact compression ratio</strong> (higher is healthier): the ratio of the raw trajectory word count to the reduced artifact word count, reflecting how much isolation saves on context.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>IsolatedSubAgent.execute(task):
                 local_context = [system_prompt, task]      # no parent history passed in → context isolation
                 try:
@@ -182,20 +196,19 @@
                 return synthesize_from_artifacts(artifacts) # supervisor sees only artifacts, never raw trajectory
             </code></pre>
             <p>The four engineering points correspond to the four elements: starting from local messages implements context isolation; reduce_to_artifact implements schema-formed return; try/except plus timeout implements the failure boundary; parallel gather plus a separate context each implements non-interference.</p>
-            <h2>Enterprise implementation example</h2>
+            <h2>Application example</h2>
             <p>A law firm's contract review Agent: in the first version, the supervisor dispatched sub-agents to scan 50 contracts, each sub-agent returned the full 3,000-word detailed analysis, and after receiving 150,000 words the supervisor's context blew up completely. The second version added the four isolation elements: each contract gets its own independent sub-agent (context isolation); before returning, each is forced to reduce into a fixed-schema artifact (the three fields verdict, top_3_concerns, recommendation are all required); each contract gets an independent fresh review without being primed by other contracts; one sub-agent failing does not affect the other 49; the supervisor's context is always kept under 50,000 tokens (the 50 artifacts together are under 10,000 words, leaving 40,000 for the supervisor's reasoning); low-confidence contracts are marked for escalation to humans. After the change, 50 contracts run in one hour, the supervisor does high-level synthesis on 10,000 words of artifacts, and the lawyer reviews the report in under an hour. Claude Code's Task tool is the most complete industrial implementation of this pattern—the sub-agent runs in a fully independent context (no supervisor history, independent LLM call, independent tool set), returns only a final summary, and the supervisor cannot see the sub-agent's intermediate thinking and tool calls, so 50 grep calls never enter the supervisor's context.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Hierarchical delegation (C1)</strong>: same cell and two sides of the same coin. Hierarchical delegation is the move (the supervisor dispatches workers), sub-agent isolation is the internal discipline (the worker isolates context plus schema artifact plus failure boundary). Hierarchical delegation without isolation is bound to cause context explosion plus cascade failure; the two must come as a set.</li>
             <li><strong>Fan-out aggregation (C2)</strong>: every parallel branch of the fan-out depends on isolation—an independent context, and the gather stage sees only reduced results. Isolation is the engineering foundation that lets fan-out scale to large parallelism.</li>
             <li><strong>Hierarchical Retention (memory module)</strong>: same root idea. Information is distributed by level and grows more concise the higher up it goes; sub-agent isolation is the landing of this scope-layering principle at the multi-agent collaboration layer.</li>
             <li><strong>Context triage (perception module)</strong>: same line of thinking. The supervisor does not preload the sub-agent's intermediate state but fetches it on demand (usually unnecessary, since the artifact is enough), similar to lazy loading.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>Sub-agent isolation looks like context optimization, but at its core it <strong>encodes the information-layering spirit of organizational management into agent systems</strong>—the CEO looks at the manager's summary rather than every employee's detail, the supervisor looks at the sub-agent's artifact rather than the raw trajectory, and this is the last mile that takes a multi-agent system from demo to production.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C5 Sub Agent Isolation</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -211,6 +224,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

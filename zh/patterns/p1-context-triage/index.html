@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/p1-context-triage/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/p1-context-triage/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/p1-context-triage/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/" class="active">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>P1
             </p>
 
-            <h1>P1 · Context Triage · 上下文分诊</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>P1 · Context Triage · 上下文分诊</h1>
+                <p class="publication-deck">候选信息总量超出 context 窗口预算时，决定谁先进、谁等门外、谁压根不预加载。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>感知 Perception × 路由 Route（选）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>生产级 Agent 的常态不是信息不够，而是信息太多。一个中等 codebase 加三周 git 历史扔进去就是 180K token 起步，企业知识库更是远超任何窗口。当候选信息装不下，最朴素的截断（按文件名排序砍后半段）会留下过期材料、丢掉关键证据，Agent 看着"完整一套"给出错误结论。</p>
             <p>上下文分诊把这件事工程化：把所有候选信息分成 P0/P1/P2/P3 四级，从高到低塞，塞到 token 预算耗尽。它管的是单次请求的窗口分配，目标是“保证最关键的信息不被淹没”。</p>
-            <h2>为什么坐标是「感知 × 路由」</h2>
+            <h2>分类依据：感知 × 路由</h2>
             <ul>
             <li><strong>纵轴 · 感知</strong>：分诊决定 Agent 看什么、不看什么，是感知端的注意力管理。它处理的是信息进入推理之前的环节，不是输出格式的调整，也不是跨会话的记忆。</li>
             <li><strong>横轴 · 路由</strong>：不同优先级的信息走不同处理路径——高优进 context、中优压成摘要、低优只挂句柄等按需拉取。这是基于信息特征做的一次路由决策，不是链式串联也不是循环迭代。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一次分诊把候选信息按优先级分层，再用 token 预算来分配各层额度：</p>
             <table>
             <thead>
@@ -182,14 +195,14 @@
             </tbody>
             </table>
             <p>三个工程要点决定分诊的成败。第一，优先级判定的来源有两条路：人工分诊（如 Claude Code 的五级 CLAUDE.md hierarchy，开发者本人把安全规则放 P0、个人偏好放 P2）和算法分诊（如 Aider 的 RepoMap 用 tree-sitter 抽符号、按图算法打分）。第二，错误堆栈受特殊保护，永远不被分诊掉——它是 Agent 的反馈回路，丢了 Agent 会反复犯同一个错。第三，每次分诊决策必须落 trace，否则线上无法判断关键文件是被分诊扔了还是压根没发现。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>多租户 SaaS 客服 Agent</strong>：一个 Agent 服务上百家租户，每家知识库 30 万 token 量级，合计远超窗口。tenant_id 必须做成 P0 硬约束，其余知识按四级分诊。</li>
             <li><strong>面对陌生 codebase 的代码 Agent</strong>：用户每次给一个不同仓库，无法要求每人都写 CLAUDE.md，必须走算法自动符号抽取这条路。</li>
             <li><strong>长期服务同一团队的工程 Agent</strong>：投资人工写 200 行 CLAUDE.md 换分诊准确度，效率比算法路线更高。</li>
             <li><strong>接入文件系统、知识库或会跑超过 5 轮的任何 Agent</strong>：一旦信息有可能超窗，分诊就不可避免。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>优先级误判</strong>：把一个文件标成 P3，结果它正是 bug 的关键，Agent 推到一半得额外跑一次检索循环把它拉回来，多烧 5K-10K token 还增加级联错误风险。拿不准就升级，多带一份小文件比多跑一次循环便宜。</li>
             <li><strong>分诊过激</strong>：为省 token 把 budget 卡得太死，关键依赖链全被挂起，Agent 反复"我需要再读一下这个文件"，重读率（re-read ratio）飙升——省下的 token 又被重读耗回去。</li>
@@ -197,13 +210,13 @@
             <li><strong>跨租户串数据</strong>：P3 句柄取错租户的数据塞进 context 就是数据泄露事件。带租户前缀的资源在加载时必须强制校验与 P0 tenant_id 一致。</li>
             <li><strong>trace 被采样掉</strong>：用 1% 采样控制存储看不出"某租户一直跨租户串数据"。分诊 trace 走全量结构化日志，用计数而非采样控制存储。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>重读率 re-read ratio</strong>（健康区 &lt; 5%）：Agent 推理中途要求重读已挂起文件的比例。超过 10% 是分诊过激的明确信号，每次重读都是一次完整推理循环。</li>
             <li><strong>dropped_count 的 p99</strong>（关注长尾而非均值）：均值掩盖问题，p99 能暴露"1% 的请求触发分诊雪崩、Agent 几乎啥都看不见"的长尾故障。</li>
             <li><strong>P3 命中率 p3_hit_rate</strong>（健康区 10-30%）：P3 句柄中实际被取的比例。低于 5% 说明句柄挂太宽浪费 token；高于 50% 说明该升 P2 的东西被错降到 P3。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>对候选信息按优先级排序（P0 &gt; P1 &gt; P2 &gt; P3，错误堆栈额外加分）：
     逐条塞入：
         P3            → 进句柄池，不预加载
@@ -213,26 +226,25 @@
 TriageDecision 留下：时间戳 / 预算 / selected / deferred / dropped / tokens_used
 </code></pre>
             <p>工程落地三处必改：token 估算换成真 tokenizer（<code>len // 4</code> 对中文误差大）；错误识别要按领域补关键词；TriageDecision 必须落到 ELK 或 Datadog，每天看 dropped_count 趋势。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>一家区域银行的贷款评审 Agent，标准消费贷（8 份文档）跑得很准。直到一笔商业贷款申请堆进 43 份文档，context 装不下，Agent 按文件名排序做了一刀朴素截断，砍掉的那摞里有 2024 年的抵押物估值报告，留下的那摞里有一份 2019 年早已过期的工商登记拍照件。Agent 看着剩下的"完整一套"给出"建议批准"，两周后这笔贷款进入坏账。重写后改为四级分诊：抵押物估值、当前财报这类强证据进 P0/P1，历史登记件按时间衰减降级，并强制保护所有"异常/缺失"标记不被丢弃。问题的根因不是推理不够强，是没教 Agent 谁该先进门。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>语义压缩（P2）</strong>：互补且常配合。分诊管"哪些信息进 context"（未来 token），压缩管"已经进的怎么压不丢关键"（过去 token），P2 级"压缩后加载"正是两者的衔接点。</li>
             <li><strong>渐进发现（P3）</strong>：天然耦合。分诊的 P3 句柄就是渐进发现按需拉取的对象，一个被动选、一个主动找。</li>
             <li><strong>分层记忆（Memory 模块）</strong>：共用同一套句柄命名规范，但 TTL 不同。代码、文档类句柄永远指向当前版本归分诊管；用户偏好、对话状态类有版本演化归记忆管。建议把 P3 句柄分 <code>immutable://</code> 和 <code>versioned://</code> 两类标记。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>上下文分诊不是 prompt 调优，而是操作系统进程调度在 LLM 时代的回响——context window 是稀缺的 CPU 时间，分诊算法就是那个保证最重要的进程不被饿死的调度器。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《P1 上下文分诊》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -248,9 +260,16 @@ TriageDecision 留下：时间戳 / 预算 / selected / deferred / dropped / tok
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

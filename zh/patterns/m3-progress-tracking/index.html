@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/m3-progress-tracking/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/m3-progress-tracking/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/m3-progress-tracking/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>M3
             </p>
 
-            <h1>M3 · Progress Tracking · 进度追踪</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>M3 · Progress Tracking · 进度追踪</h1>
+                <p class="publication-deck">Agent 在长任务中显式维护一份结构化的 todo list，每一轮把状态外部化，让 agent 自己和用户都能看见做到哪了。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>记忆 Memory × 编排 Orchestrate（协）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>LLM 没有真正的工作记忆，它的"记忆"全活在 context window 里，而 context window 有 U 形 attention 特性——中间段会被淹没。一个长任务跑两三个小时，中间出现一段 debug 或深挖细节的"打野"，原计划里的剩余任务很容易被注意力遗忘。一个常见的故障是：agent 把前三个文件拆好后陷进一个小 bug 调了二十多轮，调完直接跑去写测试，忘了原计划里还有第四个文件没建。</p>
             <p>进度追踪用工程手段兜住这件事：强制把 todos 显式写出来，反复提醒 agent 去看自己的清单。关键在于它不是给人看的，是给 agent 自己看的——agent 看自己写的结构化 todos，比看自己三十轮前夹杂着噪声的对话历史靠谱得多。</p>
-            <h2>为什么坐标是「记忆 × 编排」</h2>
+            <h2>分类依据：记忆 × 编排</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：它给 agent 一份"工作日志",跨 step 保留任务上下文，是记忆最简形式（session memory）——记着"我刚做了什么、现在在做什么、接下来做什么"。</li>
             <li><strong>横轴 · 编排</strong>：进度追踪不落在某一个任务步骤里，而是横切在所有步骤之上——它维护一份贯穿整个长任务的 todo 状态，协调 agent 在多步之间不跑偏、断了能续、跳了能回。这种"站在所有步骤之上做协调"正是编排的做法，而不是某一步把结果传给下一步的链式。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <ol>
             <li><strong>精简的状态机</strong>：核心 schema 极简——任务描述、状态枚举（pending / in_progress / completed）、进行时形式。状态机的硬约束是任何时刻只有一个 in_progress，单线程 agent 一次只能聚焦一件事。</li>
             <li><strong>状态外部化到对话流</strong>：每一轮把进度写出来，让 agent 自己和用户都能看见。这是对抗 LLM 工作记忆缺陷的核心动作——把任务从工作记忆 offload 到外部存储。</li>
@@ -156,13 +169,13 @@
             <li><strong>框架层强制 nudge</strong>：单靠 prompt 教 agent 写 todos 不够，框架层必须有机制。两种工业实现:一是 verification nudge（三项以上的清单关闭时若没有验证步骤，自动追加提醒），二是 context-loss detection（做复杂任务却没写 todos 时自动注入提醒，反复不写则递进式升级压力）。</li>
             <li><strong>按 agent / session 隔离</strong>：每个 agent 或子 agent 维护独立的 todos 池，避免子 agent 的细节 todos 污染主 agent 的高层清单。</li>
             </ol>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>多步长任务</strong>：三步以上、跨多轮、容易在中途打野后失忆的任务。代码重构、多文件改造、复杂调试。</li>
             <li><strong>可恢复的长流程</strong>：任务可能中途崩溃需要 resume 的场景。进度持久化后，第二次会话读 progress、跳过已完成、从中断步恢复，不重做。</li>
             <li><strong>多周持续推进的任务</strong>：跨数周对同一目标推进的场景（如投资研究对一只股票的判断），需要双层 todo——高层研究计划跨周保持，会话内具体动作做完合并回高层。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>单次简单任务强行用</strong>：三步以内的活、纯对话、单次 Q&amp;A 不需要 todo。</li>
             <li><strong>允许多个 in_progress</strong>：违反状态机硬约束。工程师抱怨"想并行做"通常是伪需求——要么任务该拆给多个 agent，要么该排成 chain 顺序做。</li>
@@ -170,14 +183,14 @@
             <li><strong>main agent 与 sub-agent 共享一个池</strong>：main agent 看自己清单时被子 agent 的五到十条细节 todos 淹没，注意力被无关粒度争夺。子 agent 必须独立 todos。</li>
             <li><strong>没有框架层 nudge</strong>：agent 做五步任务却完全没写 todos，框架不提醒，失忆照旧发生。nudge 的递进式压力（建议→要求→强制）三档边界要清楚。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>失忆率</strong>（健康区越低越好）：长任务里 agent 遗漏原计划步骤的比例。这是判断进度追踪做对没的首要指标，再漂亮的 todos UI 也救不回高失忆率。</li>
             <li><strong>验证步骤覆盖率</strong>（健康区接近 100%）：三项以上任务在关闭前包含验证步骤的比例。verification nudge 直接拉这个指标。</li>
             <li><strong>resume 成功率</strong>（健康区 ≥ 95%）：崩溃后从进度恢复且不重做已完成步骤的比例。</li>
             <li><strong>单 in_progress 合规率</strong>（健康区 100%）：任意时刻只有一个 in_progress 的占比，违反即状态机有 bug。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>TodoItem: content（动词原形）/ active_form（进行时）/ status（pending|in_progress|completed）
 TodoList（按 owner_id 隔离）：
     start(id)    → 标 in_progress，自动把其他 in_progress 暂停回 pending（一次只一个）
@@ -190,27 +203,26 @@ ProgressTracker（框架层强制）：
 持久化：增量 append-only + 周期 snapshot + session 兜底
 </code></pre>
             <p>工程落地四个要点：一次只一个 in_progress 必须强制；复杂度估算用便宜模型而非数动词；nudge 递进式压力三档边界清楚；TodoList 按 agent_id 隔离不共享。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某买方研究机构的投资研究 agent，要跟研究员跨四到十二周持续推进对一只股票的判断。普通单层 todo 不够，这里需要"会话统一状态平面"。SessionState 是机械参数态——严格键值结构，记着每只股票的研究计划、当前投资逻辑、关键风险、反向观点，保证连续多步分析时每一步的入参都有唯一可审计来源（比如"用的是哪天的财报数据"）。SessionNarrative 是叙事对齐态——自然语言摘要，记着"我们整体在做什么、这次具体推进了哪个维度",解决产出写回哪里供后续会话消费的问题。配套设计包括:双层 todo（研究计划跨周保持加会话任务做完合并）、状态存为 git 友好的 markdown（研究员能 git diff 看每周变化）、关键风险和反向观点永不清空（每次会话作为 system prompt 注入）、四状态机（多一个 needs_review 等基金经理审过才算 completed，满足监管"所有判断有人审"要求）、active form 带数据时间戳（逼 agent 检查"我用的数据够新吗"）、周末自动周报合并。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>分层保留（M1）</strong>：进度追踪是分层里最 hot 的那一层。Todo list 是 agent 的寄存器——三到七个 item、频繁更新、每次推理都加载，是会话层里专门管"做到哪了"的部分。</li>
             <li><strong>失败日记（M4）</strong>：孪生关系，同在循环列。进度追踪管"做对的路径",失败日记管"踩过的坑"。一个记成功步骤，一个记失败案例。</li>
             <li><strong>Plan-and-Execute（推理模块）</strong>：进度追踪是 Plan 的运行时孪生。规划一次性产出"想做什么"的静态清单，进度追踪循环维护"做到哪了"的动态状态。两件事，不要混。</li>
             <li><strong>Hooks Pipeline（治理模块）</strong>：框架层的 nudge 和持久化挂点天然契合 hook 机制，可用 PreToolUse / PostToolUse hook 实现。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>进度追踪不是给用户的进度可视化，是给 agent 的外置工作记忆——它是 agent 时代工作记忆缺陷的工程化补丁，没有它，越聪明的 agent 在长任务里越危险。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《M3 进度追踪》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -226,9 +238,16 @@ ProgressTracker（框架层强制）：
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

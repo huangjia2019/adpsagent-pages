@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>P4</p>
 
-                        <h1>P4 · Multi-Modal Fusion</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>P4 · Multi-Modal Fusion</h1>
+                <p class="publication-deck">The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning layer.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Perception × Parallel (fan-out)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>What the agent perceives is usually a mix of PDFs, charts, tables, scanned documents, and logs—heterogeneous information jumbled together. Feeding an entire 80-page research report to a vision model gives you dense y-axis tick marks and blurry pixels: a market size of 580 billion gets read as 58 million, off by a factor of a thousand. OCR everything into plain text and you lose all the figures: the genuinely valuable market-size bar chart and competitive-landscape pie chart in the report collapse into a single sentence, "Figure 3 shows market share," and what the agent reads amounts to nothing.</p>
             <p>Multi-modal fusion engineers this problem, and the key is before the data enters the context: which segment should go through vision, which should be converted to text, which should be discarded. It handles the form of the input before the agent has "thought" about anything—if the form is wrong, then no matter how downstream selects, compacts, or explores, it is just continuing to burn resources on the wrong form.</p>
-            <h2>Why the coordinate is "Perception × Parallel"</h2>
+            <h2>Classification: Perception × Parallel</h2>
             <ul>
             <li><strong>Vertical axis · Perception</strong>: Fusion processes multi-channel input (PDF, image, audio, structured data) and synthesizes a unified representation. This is the most primitive "fusion" problem in perception, occurring before reasoning.</li>
             <li><strong>Horizontal axis · Parallel</strong>: Each channel of data is handed simultaneously to its own specialist processor (PDF parser, OCR, table extractor, log sub-agent) for <strong>parallel conversion</strong>. The channels do not depend on each other and can run at the same time, after which a fuser <strong>gathers</strong> the results from the channels into unified prompt content. This is a classic fan-out / gather: N channels processed in parallel + one merge, neither a single sequential chain nor single-point routing.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>The core judgment in fusion is to choose the right carrier for each channel of data, then merge. The decision criterion is: keep it as an image when spatial information is the signal, convert it to markdown when structural information is the signal.</p>
             <table>
             <thead>
@@ -171,27 +185,27 @@
             </tbody>
             </table>
             <p>Two mechanisms hold up industrial-grade fusion. First, the real arithmetic of vision tokens. The same 1024×1024 image differs 16× across three providers (GPT-4o detail=high 765, Gemini 1032, Claude Sonnet 1398, GPT-4o detail=low only 85); prompt cache saves the most, with cache reads at 0.1× the base rate, so re-reading the same PDF saves 90%. Second, the three-layer pipeline for long logs: bash pre-filtering (grep/awk/jq in the shell shrink 500MB to 5-10MB, burning CPU not tokens) → sub-agent processing (a cheap model reads it all and returns a 200-500 token structured summary) → structured artifact back to the main context (JSON rather than free text, with a pointer to the raw log kept in the summary to query again when needed). Pouring 500MB of logs straight into Sonnet costs about $150 and may overflow the window; the three-layer route costs about $0.16, a difference of about 940×.</p>
-            <h2>Production scenarios where it fits</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Financial research report analysis</strong>: PDF tables + analyst text + market-size charts. None of the channels is complete on its own; they must be assembled before a judgment can be made.</li>
             <li><strong>Insurance claims</strong>: Accident photos + claim report text + structured policy data combined.</li>
             <li><strong>Operations incident response</strong>: Monitoring screenshots + long log fragments + configuration files. Long logs must go through the three-layer pipeline.</li>
             <li><strong>Any scenario where input mixes structured and unstructured data</strong>: The decision criterion is whether the channels of information are complementary—if it is just a repeated expression of the same information, skip fusion and go straight to reasoning, since fusion has a cost.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Misreading figures</strong>: Reading 580 billion in a research report as 58 million belongs to this category. Chart-direct accuracy is inherently low, and it is contagious across multi-turn—a misread in an early turn carries the error forward. The countermeasure is a cross-field consistency check (numbers extracted from a figure must match the same-named numbers in the text region; a mismatch triggers manual review), re-validating the figure source each turn and not still reasoning with the misread number from the first turn by the third turn.</li>
             <li><strong>Image input blows up the end-of-month bill</strong>: $50 per month at the POC stage becomes $2.5M/month in production. The root cause is that every step of the agent loop repackages and resends the entire prompt (including that 800KB image), so the image is paid for N times, not once. Three-layer countermeasure: budget guard (four ceilings—USD/token/wall-clock/recursion-depth—with halt on any one triggering), thumbnail-first (low resolution by default, request high-res only when detail is needed), and prompt cache.</li>
             <li><strong>Sub-agent infinite loop, lost findings</strong>: Four agents calling each other burned $47,000 / 264 hours over an unattended weekend. The root cause is that long-form context is truncated at handoff, so the downstream receives a truncated instruction and turns back to ask the upstream, and a loop forms. The countermeasure is the Memory Pointer Pattern (the complete finding is stored in a state store, and only the pointer ID is passed in the context) + pre-execution budget enforcement (each sub-agent must declare a budget before starting, and is killed if it exceeds it).</li>
             <li><strong>One-size-fits-all truncation threshold</strong>: Thresholds should be set per tool semantics—for bash, keep half from the head and half from the tail (errors are often in the trailing stack trace); for read_file, head-only (information density is concentrated in the front). A one-size-fits-all cut, no matter how large, will distort on some tool.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Token share by form</strong> (alert if image &gt; 50% or log &gt; 40%): When some form's share quietly drifts—say image suddenly rises to 60%—it is almost certainly a figure that should have been converted to a table/markdown but was not. This diagnosis alerts earlier than "total tokens went up" and can catch the problem before the bill explodes.</li>
             <li><strong>Budget triggers in the agent loop</strong> (a pre-execution cap is mandatory): The trigger and interception records of the four ceilings (USD/token/wall-clock/recursion-depth). A cap that never triggers, or triggers too late, is the $47K risk.</li>
             <li><strong>Secondary extraction rate on the chart path</strong>: Of the charts that go through vision, how many do a chart→CSV extraction before computing. Taking a vision-output number directly for reasoning is a high-risk signal.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>fuse(inputs):                       # inputs are multiple heterogeneous channels
                 for each channel, dispatch by form:
                     TEXT   → straight into content
@@ -204,19 +218,18 @@
             health_check: watch token share by form, alert early on anomalous forms
             </code></pre>
             <p>Specialist tools (ocr / stt / pdf_extract / log_subagent / bash_filter) should be injected rather than wrapped, so that migrating environments only swaps the injected implementation (e.g., OCR from Textract to a local engine) without touching the fuser's main flow. Multi-modal dependencies (cv2, pyaudio, pdfplumber) should be lazy-imported inside the function body with an ImportError fallback, to avoid crashing on startup in a headless environment.</p>
-            <h2>Enterprise implementation example</h2>
+            <h2>Application example</h2>
             <p>A brokerage research-report analysis agent went through three versions. V1 fed the entire 80-page PDF to vision, about 90K tokens and $0.27 per run, and the bar-chart market size of 580 billion was read as 58 million. V2 OCR'd everything into plain text, dropping tokens to 35K and halving the cost, but while the summary sentences were fluent the sales takeaways were all empty—the valuable information lived precisely in the charts, and converting to text collapsed all spatial information. V3 did not touch the prompt again but redesigned the pipeline: the PDF first had its TOC extracted, key pages located, key figures kept as original images through vision, tables converted to markdown, decorative images dropped outright, and finally 18K tokens were handed to the model—80% less than V1, and the number checks passed too. An account manager queries a single PDF about 8 times a day on average, and with prompt cache turned on the daily cost per document dropped from $2.16 to $0.46. The engineer's retrospective was that three weeks of writing prompts achieved nothing, and what finally saved the day was rethinking what shape the data should be in.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Context triage (P1), semantic compaction (P2), progressive discovery (P3)</strong>: Fusion sits at the very front of the four perception blades. If the form is wrong, then no matter how downstream Triage selects, Compaction compacts, or Discovery explores, it is just continuing to burn resources on the wrong form.</li>
             <li><strong>Fan-out gather (C2, collaboration module)</strong>: In the three-layer pipeline for long logs, handing the filtered data to a sub-agent for processing is fan-out gather expressed at the perception layer—multiple specialist processors process in parallel and converge at a central fuser.</li>
             <li><strong>Layered memory (Memory module)</strong>: The countermeasure for sub-agent infinite loops, the Memory Pointer Pattern, shares the same idea as the memory module—store the complete artifact in an external store and pass only the pointer in the context.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>Multi-modal fusion is not prompt engineering, it is data-form engineering—good fusion lets the agent see the appropriate little rather than the complete much.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P4 Multi Modal Fusion</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -232,6 +245,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

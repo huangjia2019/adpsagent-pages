@@ -51,13 +51,12 @@
         <section class="intro">
             <div class="intro-text" style="grid-column: 1 / -1;">
                 <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent Design Patterns Society</h1>
-                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">A design language for production AI agent systems.</p>
+                <p class="intro-role" style="font-size: 1.05rem; margin-bottom: 1.25rem;">A public pattern language for production AI agent systems.</p>
                 <p class="lede">
-                    ADPS is a small but serious research community sedimenting the field experience of
-                    Chinese engineers — agent practice, software engineering methodology, open-source
-                    harness work, enterprise deployment feedback — together with the recurring architectural
-                    problems and messy experience of the agent era, into
-                    <strong>a pattern language the world's engineers can use, debate, review, and pass on.</strong>
+                    ADPS is an independent research community developing shared technical references for
+                    production AI agent systems. It brings together software design research, open-source
+                    harness engineering, and attributed enterprise field reports, then turns recurring
+                    problems into <strong>pattern specifications that engineers can compare, test, and cite.</strong>
                 </p>
             </div>
         </section>
@@ -69,30 +68,24 @@
                      style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
             </a>
             <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
-                The 28-pattern matrix &middot; 7 cognitive functions &times; 6 execution topologies
-            </p>
-            <p style="margin-top: 0.75rem; max-width: 720px; margin-left: auto; margin-right: auto; font-size: 0.88rem; color: var(--color-text-muted); text-align: left;">
-                <strong style="color: var(--color-text);">A note on Choreography.</strong>
-                Choreography is sometimes listed as a topology. We treat it instead as a coordination
-                mode that operates <em>across</em> topologies — closer in spirit to the Teams pattern
-                than to an independent execution shape — so it is described in the patterns text rather
-                than given its own column.
+                The 28-core-pattern matrix &middot; 7 cognitive functions &times; 6 execution topologies
             </p>
         </section>
 
         <section class="block">
             <h2>What we do</h2>
             <p>
-                ADPS organizes recurring agent-system architecture problems into a coherent pattern
-                language. The work is structured around three deliverables:
+                ADPS publishes three connected sets of technical references:
             </p>
             <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.5rem;"><strong>The pattern catalog</strong> — 28 named patterns on a 7×6 matrix
-                (cognitive function × execution topology), each with a runnable implementation and an engineering slice from a real production codebase.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>The pattern selection methodology</strong> — a 6-step process plus 5 laws that
-                turn "I'm building an agent for X" into a candidate pattern list in under fifteen minutes.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>The production harness</strong> — open-source reference implementations
-                that show how patterns compose under cost, latency, and governance constraints.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Pattern white papers</strong> — 28 core patterns and
+                6 extension or candidate specifications, each stating its problem, mechanics, applicability,
+                known failure modes, and verification criteria.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Engineering blue books</strong> — attributed field cases
+                that record how pattern combinations behave under real organizational and system constraints,
+                with evidence and transfer boundaries stated explicitly.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Open reference assets</strong> — papers, selection methods,
+                implementation examples, and engineering concepts that teams can inspect and adapt.</li>
             </ul>
         </section>
 
@@ -107,22 +100,22 @@
                 ADPS now stewards the catalog as a community asset.
             </p>
             <p>
-                <a href="/patterns/" class="cta">See the 28-pattern matrix →</a>
+                <a href="/patterns/" class="cta">Browse the pattern white papers →</a>
             </p>
         </section>
 
         <section class="block">
             <h2>Founders</h2>
             <p>
-                Four founding members, four forces: architecture language, software engineering, open-source ecosystem,
-                enterprise deployment.
+                The founding team works across agent architecture, software engineering,
+                open-source infrastructure, and enterprise systems.
             </p>
             <ul style="margin: 0.8rem 0 1rem 0; list-style: none;">
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-jia.svg" alt="Jia Huang" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>Jia Huang</strong> <span style="color: var(--color-text-muted);">— Framework · Writing · Global Narrative</span><br>
-                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">A*STAR Singapore. Author, <em>Designing AI Agents</em> (Manning).</span>
+                        <strong>Jia Huang (黄佳)</strong> <span style="color: var(--color-text-muted);">— Agent Architecture · Pattern Language · Engineering Education</span><br>
+                        <span style="font-size: 0.92rem; color: var(--color-text-muted);">AI researcher at A*STAR Singapore. Author of <em>Designing AI Agents</em> (Manning).</span>
                     </div>
                 </li>
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
@@ -135,14 +128,14 @@
                 <li style="padding: 0.85rem 0; border-bottom: 1px dotted var(--color-rule); display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-jiang.svg" alt="Willem Jiang" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>Willem Jiang (姜宁)</strong> <span style="color: var(--color-text-muted);">— Open Source · Harness · Workflow</span><br>
+                        <strong>Willem Jiang (姜宁)</strong> <span style="color: var(--color-text-muted);">— Open-source Infrastructure · Integration · Workflow</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">Apache Software Foundation contributor. DeerFlow.</span>
                     </div>
                 </li>
                 <li style="padding: 0.85rem 0; display: grid; grid-template-columns: 60px 1fr; gap: 1rem; align-items: center;">
                     <img src="/images/avatar-liang.svg" alt="Bo Liang" style="width: 60px; height: 60px; border-radius: 50%;">
                     <div>
-                        <strong>Bo Liang (梁博)</strong> <span style="color: var(--color-text-muted);">— Enterprise SaaS · FinTech · Production Feedback</span><br>
+                        <strong>Bo Liang (梁博)</strong> <span style="color: var(--color-text-muted);">— Enterprise SaaS · Financial Services · Production Systems</span><br>
                         <span style="font-size: 0.92rem; color: var(--color-text-muted);">VP, Shanghai Dongfang Yiteng. Banking &amp; FinTech SaaS, agent transformation.</span>
                     </div>
                 </li>
@@ -194,11 +187,6 @@
                 <li style="padding: 0.55rem 0;">
                     <strong><a href="https://www.manning.com/books/designing-ai-agents" target="_blank" rel="noopener">Manning &middot; <em>Designing AI Agents</em></a></strong>
                     — the design-pattern catalogue for production AI agents.
-                    <br>
-                    <span style="font-size: 0.86rem; color: var(--color-text-muted);">
-                        Reader codes at Manning: <code>designing-ai</code> (eBook / MEAP, mainland China only &mdash; $20.99) &middot;
-                        <code>MLHuang4</code> (50% off all formats, valid Jun 9&ndash;23).
-                    </span>
                 </li>
             </ul>
         </section>

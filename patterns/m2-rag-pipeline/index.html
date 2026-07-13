@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M2</p>
 
-                        <h1>M2 · RAG Pipeline · Retrieval-Augmented Generation</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>M2 · RAG Pipeline · Retrieval-Augmented Generation</h1>
+                <p class="publication-deck">Give the agent an attached library, so that whenever it needs knowledge beyond what the context can hold, it can search, filter, and iteratively pull that knowledge back to use.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Memory × Chain (pass)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>An enterprise knowledge base routinely holds hundreds of thousands of documents plus a history of tickets, and no LLM context window can fit all of it. But the agent cannot answer "I don't know" for that reason. On each question it needs to pick, out of a vast corpus, the few most relevant documents and temporarily place them into context. This is what RAG addresses: pulling in facts that live outside the input, on demand.</p>
             <p>By 2026, the engineering difficulty of production-grade RAG is no longer "can it find anything" but "does it know how to search." Naive RAG is one query, one return, whereas RAG that actually ships to production lets the agent drive multi-step retrieval—if the first batch of results is unsatisfactory it rewrites the query and searches again, when it finds a candidate answer it actively looks for counterexamples to verify, and it cross-compares across multiple corpora.</p>
-            <h2>Why the coordinate is "Memory × Chain"</h2>
+            <h2>Classification: Memory × Chain</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: RAG is an attached knowledge base that pulls in facts outside the input. At its core it is about "which facts to record and how to recall them," which belongs to the part of the memory module that manages declarative knowledge.</li>
             <li><strong>Horizontal axis · Chain</strong>: RAG is a sequential pipeline—the query is embedded first, then top-K is retrieved, then reranked, then injected into the prompt, and finally handed to generation. The output of each step is the input to the next; each step passes to the one after it, the textbook form of chain passing. The name "RAG pipeline" itself points to its chained backbone. Even when hybrid retrieval (semantic plus BM25) is used to select sources, that is one link in the chain and does not change the overall sequential-pipeline form.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <ol>
             <li><strong>Two pipelines meet at the vector store</strong>: RAG is not a single step. The offline side chunks documents, embeds them, and builds the index; the online side embeds the query, retrieves top-K, reranks, and injects into generation. The two independent pipelines share one vector store.</li>
             <li><strong>Hybrid retrieval</strong>: Embeddings are good at semantics ("ACME earnings report" ≈ "ACME performance"), but exact keywords (product names, error codes, specific IDs) are often missed. Combine semantic retrieval with BM25 keyword retrieval, then fuse with RRF (Reciprocal Rank Fusion).</li>
@@ -145,13 +159,13 @@
             <li><strong>Agent-driven multi-step retrieval</strong>: Upgrade RAG from a one-shot pipeline to an agent-driven process—decompose sub-queries, iteratively rewrite, find counterexamples, triangulate across corpora, and synthesize weighted by evidence strength. This is the engineered version of a human researcher's methodology.</li>
             <li><strong>A hard iteration ceiling</strong>: Multi-step retrieval must have a hard ceiling, otherwise the agent will keep feeling "it isn't enough yet" and retrieve continuously.</li>
             </ol>
-            <h2>Suitable production scenarios</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Large-scale natural-language knowledge bases</strong>: academic literature reviews, legal case libraries, customer-service FAQs. Large volume, containing synonyms and implicit relationships, relatively stable, public or semi-public—these are the best scenarios for RAG.</li>
             <li><strong>Complex queries across many documents</strong>: scenarios that need answers synthesized from multiple sources and that need traceable citations.</li>
             <li><strong>Organizing enterprise know-how</strong>: organizing the knowledge scattered across wikis, Confluence, Slack, email, and tickets into a form the agent can retrieve in five minutes. This is RAG's real proposition for enterprise deployment.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Deploying RAG before governing the knowledge source</strong>: 90% of enterprise RAG failures are rooted not in technology but in the knowledge itself never having been organized—the wiki holds many documents that contradict each other, key decisions are not in any document, all the versions are outdated, and the same concept has several names. Embedding garbage into vectors and retrieving it back is still garbage, and worse than not doing RAG at all. Do ontology and knowledge governance before building enterprise RAG.</li>
             <li><strong>Forcing RAG where Agentic Search belongs</strong>: dev workflows, code search, and internal sensitive data—these three categories mostly should not use RAG. Code changes by the minute, and a just-written function cannot be found before it is indexed (data latency); the index itself is an attack surface, and a malicious insider may peek beyond their authorization (a security hazard). Such scenarios should use grep- and glob-based Agentic Search.</li>
@@ -159,14 +173,14 @@
             <li><strong>Blindly chasing retrieval precision</strong>: choosing an embedding model that is a few points better is a marginal optimization; whether the agent's multi-step retrieval resembles a person who truly knows how to search is the qualitative change. Pushing chunk recall to 80% is not necessarily useful; the final synthesized quality resembling a senior researcher's is the real value.</li>
             <li><strong>Untraceable citations</strong>: in academic, legal, and medical scenarios, every conclusion must trace back to the original chunk plus page number—this is a necessary condition for compliance.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Retrieval failure rate</strong> (lower is healthier): the fraction of cases where no relevant chunk appears in top-K. Stacking the three—context enhancement plus hybrid retrieval plus reranking—reduces the failure rate by about two-thirds in industrial data.</li>
             <li><strong>Retrieval hit rate / citation rate</strong> (healthy zone ≥ 70%): the fraction of retrieved chunks actually cited by the agent. Too low indicates noisy recall or a query written too broadly.</li>
             <li><strong>Number of multi-step retrieval rounds</strong> (healthy zone 3–5 rounds with a hard ceiling): the actual number of iterative retrieval rounds. Continuously hitting the ceiling indicates the task is genuinely hard or that single-pass recall is too poor.</li>
             <li><strong>Final synthesized quality</strong> (business judgment): whether the agent's output resembles the work of a senior practitioner. This is the real criterion for judging a RAG system; reaching 70% can already change how a team works.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>Offline indexing side:
                 doc → chunk → prepended context summary (cheap model) → embed → vector store + BM25 index
 
@@ -181,20 +195,19 @@
             return answer + evidence + counter_evidence + full trace (with traceable citations)
             </code></pre>
             <p>Four points for engineering deployment: the retriever layer does context enhancement plus hybrid retrieval plus reranking; set a hard ceiling on max_iterations plus a hard ceiling on the token budget; the trace records every retrieval in full; citations must be traceable to the original document plus page number.</p>
-            <h2>Enterprise deployment example</h2>
+            <h2>Application example</h2>
             <p>A research institution's academic literature-review agent had to answer arbitrary researcher questions over a million-paper library. The first version used keyword retrieval and returned five thousand papers already read; switching to embeddings returned only the 2018–2020 "classics." After a rewrite, all five canonical patterns were on: decompose sub-queries, iteratively refine, negate hypotheses to find counterexamples, triangulate across arXiv plus bioRxiv plus PubMed, and synthesize weighted by evidence strength. Six business decisions accompanied this—corpora kept in separate stores but not separate tables (peer-reviewed weight 1.5, preprint 1.0, unpublished 0.5), time-decay weighting (half-life 18 months), counterexample retrieval forced on, citations at the chunk level, and an author-relationship graph across corpora. After deployment the agent returned a precise twenty papers plus five counterexamples plus three implicitly related ones, each with a traceable citation; a researcher's review went from six hours down to an hour and a half, with higher quality.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Layered Retention (M1)</strong>: M1 addresses "how long-term, already-known memory is loaded by scope," while RAG addresses "how to look up, on demand, the vast knowledge that the scope cannot hold." Layering manages the known; RAG manages the attached.</li>
             <li><strong>Procedural Memory (M5)</strong>: RAG manages declarative memory (retrieving factual knowledge), while M5 manages procedural memory (reusing the ability to get work done). RAG retrieves "what is known," M5 retrieves "how a past task was done." The two play in concert in enterprise agent deployment.</li>
             <li><strong>Context Triage (perception module)</strong>: RAG pulls candidate information in, and triage decides which of these candidates enters first. RAG is recall; triage is the entry ordering.</li>
             <li><strong>Progressive Discovery (perception module)</strong>: the two are structurally similar but have different goals. Progressive discovery is the agent exploring structure in an unfamiliar space, while RAG retrieves relevant fragments from a known large library. One leans cognitive, the other leans retrieval.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>RAG is not "the more precise the better" but "the better it searches the better"—its engineering ceiling lies not in the model, the embeddings, or the vector store, but in the organizational quality of the knowledge source itself.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M2 RAG Pipeline</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -210,6 +223,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

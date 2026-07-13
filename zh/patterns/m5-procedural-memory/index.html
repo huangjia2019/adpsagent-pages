@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/m5-procedural-memory/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/m5-procedural-memory/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/m5-procedural-memory/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>M5
             </p>
 
-            <h1>M5 · Procedural Memory · 程序性记忆</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>M5 · Procedural Memory · 程序性记忆</h1>
+                <p class="publication-deck">把一类任务的成功执行流程凝固成可命名、可加载、可复用的结构化资产，下次同类任务直接调用，跳过试错进入主路。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>记忆 Memory × 层级 Hierarchy（分）</dd></div>
+                    <div><dt>目录地位</dt><dd>扩展模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>同一类任务 agent 干过五次，每次都干成，但每次都从零开始——读五个 reference、试错三次、走完一遍跟上次一模一样的路径。第六次同样的任务来，agent 又走一遍。Token 烧、时间长、用户烦。根本问题是 agent 干完之后没有任何东西被沉淀下来，那次漂亮的"成功路径"丢了。</p>
             <p>程序性记忆解决的就是这个：agent 做成一件事后，把"怎么做成的"凝固成一个可复用招式，下次同类任务直接加载这个招式，五秒进入主路。它解决的根本问题一句话——<strong>agent 不会因为做过一遍而变得更快</strong>。在企业语境里，它还是把组织 process 沉淀成 agent 能消化形态的工程载体——老员工脑子里那些"会做"，第一次有了能精确表达的容器。</p>
-            <h2>为什么坐标是「记忆 × 层级」</h2>
+            <h2>分类依据：记忆 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：它把成功工作流封装为可复用的"技能",对应认知科学里的 procedural memory（程序性记忆，"怎么做"），区别于 declarative memory（陈述性记忆，"知道什么",即 RAG 的对象）。</li>
             <li><strong>横轴 · 层级</strong>：技能库本身分层——atomic skill（原子技能）到 composite skill（组合技能）到 workflow（完整流程），由简到繁层级组织。它跟分层保留同列：分层保留是货架，程序性记忆是货架上专门的"招式区"。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <ol>
             <li><strong>三阶段加载</strong>：启动时只加载每个 skill 的 name 加 description（discovery，约 50 token/skill），任务匹配时才读完整 SKILL.md 进 context（activation，几百到两千 token），执行时按需加载脚本和资源（execution）。这是程序性记忆在 token 经济上做得最对的实现——五十个 skill 全量加载会吃光 context。</li>
             <li><strong>两种来源</strong>：人精心写（Anthropic Agent Skills 路线，审过、版本化、进 git）和 agent 自动蒸馏（Hermes 路线，干完任务自己写）。来源字段影响信任级别。</li>
@@ -156,13 +169,13 @@
             <li><strong>人机同读格式</strong>：用 markdown 加 YAML frontmatter，人能读、git 能 diff、agent 自己能读。人机同读的格式胜过任何专为机器设计的格式。</li>
             <li><strong>lifecycle 管理</strong>：跟踪每个 skill 的 use_count 和 success_rate，低成功率自动 evict（总误导 agent 的招式），长期不召回的进冷层。生产基础设施在变，过期 skill 会从"招式"变成"坑"。</li>
             </ol>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>周期性、模板性任务</strong>：同一类任务反复出现、有相对稳定的成功路径、有明确的入口出口条件。DevOps 标准运维事件（集群配置变更、批量重启、备份恢复）是最佳场景。</li>
             <li><strong>企业 process 沉淀</strong>：律所的客户分级判断逻辑、医院的急诊分诊五步法、企业的标准退款流程——过去全靠资深员工传帮带、跳槽带不走、wiki 只占一成完整度的隐性资产，现在能写成 SKILL.md 变成组织可复用的资产层。</li>
             <li><strong>需要带判断执行的场景</strong>：skill 给的是"通常这么做"的范式，agent 加载后仍保留判断权——决定哪些步骤照搬、哪些按当前 context 调整、什么时候放弃 skill 改 explore。这是它区别于死板 RPA 的关键。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>任务每次都不一样却硬沉淀</strong>：开放域研究这类任务沉淀不出固定流程，强行做成 skill 是浪费。</li>
             <li><strong>任务只跑一次</strong>：沉淀成本高于复用收益，不该做。</li>
@@ -171,14 +184,14 @@
             <li><strong>自蒸馏 skill 直接投产</strong>：agent 自己蒸馏的招式应进"试用期"双轨执行（按招式跑一份、按 explore 跑一份，对比一致多次才转正），且首次召回时加注解提醒"这是自动蒸馏的，先验证再照做"。自蒸馏和人写的要分级信任，这在企业 agent 里是合规要求。</li>
             <li><strong>库只增不减</strong>：不做 lifecycle，过期低成功率的 skill 持续误导 agent。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>复用率</strong>（健康区随时间上升）：同类任务命中已有 skill 而非从零 explore 的比例。这是程序性记忆是否起作用的首要信号。</li>
             <li><strong>skill 成功率</strong>（健康区 ≥ 80%）：调用某 skill 后任务成功的比例。跌破 80% 触发告警，去 review 是不是底层服务变了导致 skill 过期。</li>
             <li><strong>token / 时间节省</strong>（对照 explore 基线）：复用 skill 相比从零做省下的 token 和时间。做对时单个高频任务可省一个数量级（如三万 token 加十分钟压到五千 token 加九十秒）。</li>
             <li><strong>自蒸馏转正率</strong>（业务判定）：自蒸馏招式通过试用期转为正式 skill 的比例，过低说明蒸馏触发条件或质量校验有问题。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>Skill = SKILL.md 的结构化形态：
     name / description（用于 discovery）/ body（workflow + best practices）
     triggers[] / preconditions[] / steps[] / failure_handling[]
@@ -191,27 +204,26 @@ SkillLibrary：
     evict_stale(...)              → 低成功率或长期不用的清除
 </code></pre>
             <p>工程落地四个要点：蒸馏的 LLM 调用用便宜模型加结构化 prompt 并做 schema 校验；蒸馏触发条件不止"5+ tool calls"（还要 success、工具间有非平凡逻辑、无用户多次纠错）；lifecycle 做 success_rate 跟踪；自蒸馏 skill 与人写 skill 分级信任。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某中厂运维团队五到八个工程师管三十多个生产服务，DevOps agent 要接住反复遇到的标准运维事件——Redis 集群配置变更、Kubernetes 批量重启、PostgreSQL 备份恢复。六个关键决策:skill 分两类，团队精心写的 runbook 走 Anthropic Skills 路线（SRE leader review 才入库，放 runbooks/），agent 自蒸馏的放独立 namespace（auto-skills/，七天后进 review 队列）；触发条件 schema 化（frontmatter 的 triggers 字段列关键词或正则，让"该不该用这个 skill"可测试，规则匹配加 LLM 混合判断）；preconditions 强制前置检查（执行前先验"当前用户有 SSH 权限""目标 namespace 存在",这是生产事故最大防火墙）；steps 可回滚（每步标 idempotent 或带 rollback，类似分布式系统 Saga）；成功率监控加告警（任何 skill 跌破 80% 告警去查是不是底层服务变了）；自蒸馏招式试用期双轨执行（两份结果一致五次以上才转正）。落地第三个月，开篇"半年第三次手动改 maxmem-policy"的场景再来时，agent 走 discovery 加 activation 加自动 precondition 检查加自动 rollback 保护，三万 token 加十分钟的活儿压到五千 token 加九十秒，省下的运维时间相当于半个 SRE 全职。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>反思模块 F2 Skill Package（技能包）</strong>：两者落地几乎同构——都是技能库、都用 SKILL.md、都做三阶段加载和 lifecycle。区别在设计意图：M5 强调"学过就存"（memory 写入，agent 完成任务后自动把成功流程沉淀进记忆），F2 强调"反思后封装"（post-reflection 固化，agent 反思评估后才把验证过的流程固化为技能）。同一份技能库，从记忆视角看是 M5 的写入端，从反思视角看是 F2 的产出端。课程把它并入 06-03 技能包讲，但它本身是记忆模块的独立模式。</li>
             <li><strong>失败日记（M4）</strong>：孪生关系，一起构成 agent 的经验库。程序性记忆沉淀"做对的活儿",失败日记沉淀"踩过的坑"。一面记成功，一面记失败。</li>
             <li><strong>分层保留（M1）</strong>：同在层级列。M1 是货架（容器），M5 是货架上专门的招式区。技能库本身也分层（atomic 到 composite 到 workflow）。</li>
             <li><strong>RAG（M2）</strong>：互补的两种记忆。RAG 管 declarative（知道什么，事实检索），M5 管 procedural（会做什么，流程复用）。企业 agent 落地里两者是合奏。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>程序性记忆不是工作流模板，是 agent 的职业能力——它让 agent 在保留判断力的同时拿到老员工的手艺，agent 的价值跟它累积的经验等比，跟它今天有多聪明反而关系不大。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《M5 程序性记忆》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -227,9 +239,16 @@ SkillLibrary：
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

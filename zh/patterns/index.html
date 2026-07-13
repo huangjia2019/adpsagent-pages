@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent 设计模式白皮书 · 模式矩阵 · ADPS</title>
-    <meta name="description" content="ADPS Agent 设计模式白皮书：认知功能 × 执行拓扑的双轴矩阵，28 核心 + 5 扩展模式，每个模式一页企业级说明。免费公开的跨角色技术参考。">
+    <meta name="description" content="ADPS Agent 设计模式白皮书：认知功能 × 执行拓扑的双轴目录，28 个核心模式加 6 个扩展与候选模式，包含评审标准与实现边界。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -56,7 +56,7 @@
 
     <main class="container content">
       <div class="docs-layout">
-        <aside class="docs-sidebar">
+        <aside class="docs-sidebar docs-sidebar-flat">
             <a href="/zh/patterns/" class="docs-nav-title">模式矩阵白皮书</a>
             <h4>感知 Perception</h4>
             <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
@@ -107,22 +107,23 @@
         <div class="docs-main">
 
         <article class="essay">
-            <h1 style="font-size: 2.1rem; margin-bottom: 0.5rem;">Agent 设计模式白皮书</h1>
-            <p style="color: var(--color-text-muted); margin-bottom: 1.5rem;">认知功能 × 执行拓扑 · 28 核心 + 5 扩展模式 · 每个模式一页企业级说明。</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>模式目录与选型框架</h1>
+                <p class="publication-deck">认知功能 × 执行拓扑 · 28 个核心模式 + 6 个扩展与候选模式 · 34 份模式规范。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>核心模式</dt><dd>28</dd></div>
+                    <div><dt>扩展与候选</dt><dd>6</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>范围：</strong>本版提供共同的架构词汇与评审框架，不对产品、实现或组织成熟度作认证。</p>
 
-            <div class="callout">
-                <p><strong>这是一份免费公开的技术参考。</strong>它给团队一套对齐用的词汇、一个选型框架和一组工程边界，面向企业里的每一个角色——产品、架构、研发、安全合规、管理——都能读懂某个模式是什么、什么时候该用、哪里容易出错。</p>            </div>
-
-            <p>
-                白皮书讲模式是什么，蓝皮书讲模式在真实企业里怎么落地。每个模式页下面都挂着对应的企业落地切片，跨模式的完整案例收在 <a href="/zh/cases/">案例库</a> 里。第一个落地锚点是梁博 · 东方屹腾的执行型 Agent。
-            </p>
-
-            <p>
-                大部分"Agent 架构"指南给的是一张平铺的清单——Reflection、ReAct、Multi-Agent、Tree of Thoughts，等等。平铺清单回答的是<em>有哪些模式</em>，它不回答<em>我的问题坐落在哪里、那个坐标上住着哪个模式</em>。
-            </p>
-            <p>
-                一个贷款评估 Agent 崩掉，往往不是因为缺了 Reflection，而是因为感知阶段的预算分配把那份关键文档丢了。一个多 Agent 代码评审系统漂移，根因常在协作拓扑缺少冲突解决机制，互相矛盾的编辑不断累积。<strong>知道失败发生在哪条轴上，比知道失败模式叫什么更重要。</strong>
-            </p>
+            <p>白皮书定义模式的问题、分类、机制、适用条件、失效方式与验证标准。<a href="/zh/cases/">蓝皮书案例报告</a>记录模式组合在具名企业约束下的实际表现。</p>
+            <p>目录用坐标组织模式。坐标同时指出承压的认知功能和承载控制流的执行拓扑，使不同系统的架构选择与失败记录可以比较。</p>
 
             <h2>为什么 Agent 需要一套新的设计模式</h2>
             <p>
@@ -196,12 +197,12 @@
                 <li><strong>Trace Contract</strong>——每个 LLM call、tool call、handoff、approval、state update 串到同一个 trace id（对应治理）。</li>
             </ul>
 
-            <h2>模式白皮书目录 · 28 核心 + 5 扩展 = 33</h2>
+            <h2>模式白皮书目录 · 28 核心 + 6 扩展与候选 = 34</h2>
             <p>
-                双轴框架的 <strong>28 个核心模式</strong>构成矩阵主体。另有 <strong>5 个扩展模式</strong>（M5 程序性记忆 · R5 双模架构 · A4 最简工具集 · C5 子代理隔离 · G4 钩子流水线——教学时并入相邻讲，白皮书单独成篇），合为 33。再加新兴拓扑 C6 编舞，是 34 篇全集。扩展模式标 <span class="ext-badge">扩展</span>。
+                双轴框架的 <strong>28 个核心模式</strong>构成已评审矩阵。另有 6 份扩展或候选规范：M5 程序性记忆、R5 双模架构、A4 最简工具集、C5 子代理隔离、G4 钩子流水线和 C6 编舞。C6 在获得跨越协作功能的更多证据前，保持候选拓扑扩展状态。扩展条目标 <span class="ext-badge">扩展</span>。
             </p>
             <p>
-                矩阵里的每一格背后，都有一页结构相同的企业级说明文档：它解决什么问题、什么时候该用、哪里容易出错、上线后看哪些指标。面向产品、架构、研发、合规、管理各类角色，是可以直接拿去对齐团队的干净技术参考。
+                每份规范采用同一评审结构：问题、分类依据、解决方案与机制、适用条件、已知失效方式、验证指标、参考实现、应用示例、相关模式和设计结论。
             </p>
 
             <h3>感知 Perception · 4 核心</h3>
@@ -252,7 +253,7 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · 自愈循环</a><span style="color: var(--color-text-muted);"> — agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。</span></li>
             </ul>
 
-            <h3>协作 Collaboration · 4 核心 + 1 扩展</h3>
+            <h3>协作 Collaboration · 4 核心 + 2 扩展</h3>
             <p class="grp-intro">多个 Agent 之间分工与协同。协作是规模逼出来的，量没起来时单 Agent 往往更稳。底线是每个 Agent 都有自己的上下文、权限、产出和失败边界。</p>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/c1-hierarchical-delegation/" style="font-weight: 600;">C1 · 层级委派</a><span style="color: var(--color-text-muted);"> — 一个 supervisor agent 动态拆分任务、派给 N 个 worker agent 执行、再把结果合并，是经典的多 agent 主管-工人协作。</span></li>
@@ -309,7 +310,7 @@
 
             <h2>相关资产地图</h2>
             <p>
-                白皮书是 ADPS 模式语言的入口。每个模式组背后还连着一组配套资产——本组各模式的白皮书页、付费专栏对应模块、Manning 书对应章、GitHub 代码对应目录，以及后续蓝皮书的企业落地案例。下面是资产骨架，具体链接随讨论逐步补全。
+                每个模式组连接模式规范、深度课程、Manning 对应章节、GitHub 参考实现，以及已经通过公开评审的蓝皮书案例报告。
             </p>
             <div class="wp-scroll">
             <table class="wp-table">
@@ -325,9 +326,7 @@
                 </tbody>
             </table>
             </div>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted);">
-                每个具体模式向下还可以挂自己的资产清单：该模式的白皮书页、专栏对应讲、Manning 对应小节、GitHub 双框架实现（LangGraph + LangChain），以及引用它的企业落地案例。这一层会随蓝皮书案例的积累持续补全。
-            </p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted);">模式页只列已经存在的关联资料。未附现场记录的模式会明确标注“当前无公开评审案例”，不以示例代替证据。</p>
 
             <h2>关于《Agent 设计模式之美》专栏</h2>
             <p>
@@ -347,6 +346,11 @@
                 <li>可运行代码目录：<a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">agent-design-patterns</a>（28 模式 LangGraph + LangChain 双框架）</li>
             </ul>
 
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《Agent 设计模式白皮书：模式目录与选型框架》，v0.3，2026-07-13。</p>
+                <p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+
         </article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem; max-width: 52rem;">
@@ -360,5 +364,22 @@
 
     <script data-goatcounter="https://adps.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
 </body>
 </html>

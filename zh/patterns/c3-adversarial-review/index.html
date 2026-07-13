@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/c3-adversarial-review/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/c3-adversarial-review/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/c3-adversarial-review/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>C3
             </p>
 
-            <h1>C3 · Adversarial Review · 对抗评审</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>C3 · Adversarial Review · 对抗评审</h1>
+                <p class="publication-deck">把一个 generator agent 跟一个或多个独立 critic agent 配在一起，通过结构化对抗循环改进输出，critic 必须用不同模型、不同 family、不同 prompt 激励。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>协作 Collaboration × 循环 Loop（转）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>同一个 LLM 用三段不同 prompt 假装"独立审查"，在监管审计师眼里不算独立——这三个 prompt 共享同一个底层模型的训练数据、同一套对齐偏差、同一份"它觉得什么对什么错"的先验。这就像一个法官同时担任控方、辩方和裁判，形式上有审查，结构上没有。</p>
             <p>对抗评审解决的是高 stake 决策怎么经过 audit-grade 独立审查。它不是"加一个 critic 让 agent 更准"这么简单——在金融授信、医疗诊断、法律评估、监管合规这些场景里，独立审查是结构性要求而不是质量优化。SOC 2、HIPAA、FDA、EU AI Act 这些框架明确要求"不同的人、不同的模型、不同的激励"来审，这是上线门票，不是加分项。它和单 agent 自我审视（Generator-Critic）是同源不同 scale：前者一个 LLM 进程加两段 prompt，后者要 model routing、独立 trace、跨 vendor billing，工程基础设施完全两套。</p>
-            <h2>为什么坐标是「协作 × 循环」</h2>
+            <h2>分类依据：协作 × 循环</h2>
             <ul>
             <li><strong>纵轴 · 协作</strong>：这是两个或多个独立 agent 真正对抗——一个提方案，另一个专门挑毛病。它是多 agent，但带对抗激励这一独特结构，不是单纯分工。critic 必须用不同 model、不同 vendor、不同 prompt 激励，否则就退化成单 agent 自评。</li>
             <li><strong>横轴 · 循环</strong>：proponent 跟 critic 来回辩论——提议、反对、修正、再反对——直到 judge 收敛或预算耗尽。这是协作模块里唯一一个结构性 loop，区别于层级的分、并行的撒、链式的传。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一次对抗评审由三个角色和一个循环组成：</p>
             <ol>
             <li><strong>proponent 提议</strong>：generator agent 产出初始方案。</li>
@@ -157,14 +170,14 @@
             <li><strong>judge 裁定</strong>：judge agent 综合双方论证，给出最终裁决（approve / conditional / reject）。</li>
             </ol>
             <p>三个角色用不同 vendor 的模型，独立 trace 各自写进 audit log。轮数有上限——3 agent × 2 round 是学术实测的标准配置，2 轮已收敛大部分改进，超过 3 轮边际收益递减、还会引入震荡。critic 和 generator 的能力不能差太多，否则 critic 看不出 generator 的细微错误。跨 family 比跨 size 更重要：同一 vendor 的模型有相关的偏差分布和共同盲区，跨 family 才能引入独立训练历史的视角。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>有 audit-grade 独立性要求的合规场景</strong>：金融授信、医疗诊断辅助、法律评估、监管合规，这些场景独立审查是上线门票。</li>
             <li><strong>错误代价很高的关键决策</strong>：错代价超过一万美元的决策，9 倍成本换准确性提升的 ROI 为正。</li>
             <li><strong>generator 输出与 critic 训练数据共享偏差的场景</strong>：单模型自评在这些场景几乎无效，必须引入跨 family 的独立视角。</li>
             <li><strong>省钱换质量的工程取舍</strong>：中档模型加跨 family critic 配对，能闭合相当一部分跟顶档模型单跑的性能 gap，总成本反而更低。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>模型共谋</strong>：名义上跨 vendor，但 critic 和 generator 底层共享同一批 web 训练语料，"独立训练"是字面独立不是实质独立，两者在某些 corner case 上有共同盲区。vendor 独立不等于训练数据独立。关键场景要选不同 region、不同语言语料预训练的模型，或加第三家 critic，或接合规人审做最终防线。</li>
             <li><strong>成本级联爆炸</strong>：每轮 context 越累积越长，名义上的 9× 成本实际可能涨到 30× 以上。每轮 critic 的 context 要截短为"任务加当前 draft"不带 history，judge 只在最后跑一次拿全 history。</li>
@@ -172,14 +185,14 @@
             <li><strong>角色 prompt 不够多样</strong>：所有 agent 用同一个 role prompt 时，多 agent 反而比单 agent 更差。工程重点不是堆 agent 数量，是设计 role 多样性。</li>
             <li><strong>简单任务误用</strong>：写作润色这种错代价低于一百美元的任务、有确定性验证可用的任务（测试当 critic 比 LLM 当 critic 便宜得多），用单 agent 自评就够，不该上对抗评审。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>vendor 独立性</strong>（健康区 ≥ 2 个不同 vendor）：参与的模型来自几个不同 vendor。少于 2 个不满足合规级独立性，审计师会拿 vendor billing 记录核对。</li>
             <li><strong>critic 发现率 issues_per_turn</strong>（健康区不长期为零）：critic 每轮提出 issue 的数量分布。长期接近零是谄媚崩塌的信号。</li>
             <li><strong>辩论轮数</strong>（健康区 2-3 轮）：收敛所需的来回轮数。超过 3 轮说明任务可能不适合这个模式，或 judge 收敛逻辑有问题。</li>
             <li><strong>单笔决策成本</strong>（按业务核算）：跨 family 三 agent 的真实 token 成本，要监控每轮 spend，超阈值降级到 single-critic mode。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>AdversarialReview.review(task):
     校验 vendor 独立性(≥2 个不同 vendor)   # 不满足直接拒绝运行
     proposition = proponent(task)
@@ -196,27 +209,26 @@ CritiqueVerdict:
     no_issues_found: bool  # 注意:这是 RED FLAG 不是 PASS
 </code></pre>
             <p>四个工程要点：agent_vendors 必须真的跨 vendor（审计看 billing 验证）；critic 的"找不到问题视为 red flag"是反谄媚核心；MAX_ROUNDS 设 3；compliance attestation 字段落 audit log 留 7 年。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某区域银行的对公贷款 AI 决策辅助系统，agent 看完借款人的 43 份文档给出批/拒/增信后批的建议，第一版用单模型加三个角色 prompt（信贷分析、风险评估、合规审查），跑了半年准确率看着还行。但 SOC 2 audit 来了之后审计师问了三个问题：这个"批准"建议经过独立审查了吗？如果用的是同一个 LLM 加不同 prompt 怎么算独立？以后被监管处罚能拿出 audit trail 证明每笔决策都经过独立对抗审查吗？工程团队答不上来——这不是技术问题，是结构问题。第七个月彻底重构成对抗评审：generator 用 Claude Sonnet 出贷款建议，critic 用 GPT-5.4 当红队 reviewer（prompt 写"找问题不是确认，找不到 issue 视为 red flag 继续审"），judge 用 Claude Opus 仲裁，三个 agent 用三个不同 vendor 的模型，独立 trace 各自写进 audit log。第八个月通过 SOC 2 复审。代价是单笔决策 token 成本从约 0.30 美元涨到约 2.10 美元——7 倍成本换合规上线，金融场景这笔账划得来。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>Generator-Critic（反思模块）</strong>：同源不同 scale。前者是单 agent 自我审视（同一模型加不同 prompt），后者是多 agent 独立审查（独立 agent 加对抗激励加结构独立）。错代价、监管要求、成本预算这三件事是从前者升级到后者的判断点。</li>
             <li><strong>扇出聚合（C2）</strong>：兄弟模式，都是多个 agent 并行工作，但扇出的 worker 是 collaborative 互补关系，对抗评审的 critic 是 adversarial 对抗关系。</li>
             <li><strong>并行探索（推理模块 R3）</strong>：cousin 模式，多 agent 并行但没有对抗激励这一结构。</li>
             <li><strong>N-version programming（经典工程谱系）</strong>：对抗评审是它在 LLM 时代的同源换皮——独立实现各自运行加 judge 综合，等价于 N-version 加 voting。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>对抗评审的本质不是加个 critic 让 agent 更准，而是<strong>把人类几千年法治传统的程序正义编码进 agent 系统</strong>——真相不是从共识里浮现的，是从结构化分歧里浮现的，独立性是结构要求不是质量优化。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《C3 对抗评审》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -232,9 +244,16 @@ CritiqueVerdict:
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

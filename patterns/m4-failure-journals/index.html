@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M4</p>
 
-                        <h1>M4 · Failure Journals</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>M4 · Failure Journals</h1>
+                <p class="publication-deck">The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the next time a similar situation arises.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Memory × Loop (turn)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>Most agent systems take progress tracking seriously, yet few take failure records seriously. Failures are quietly discarded, wiped clean the moment a session ends, and the next time a similar situation comes around the agent falls into the same pit from scratch. A typical scenario: after correctly fixing the main task, the agent's attention drops and it writes the test-environment configuration into the production configuration—two weeks later, on another project, it does almost exactly the same thing. This is not occasional carelessness; it is a fixed pattern, and the agent has no memory of "I have stumbled on this before."</p>
             <p>A failure journal turns failures into an archive that can be reviewed repeatedly. Its purpose is not to show errors to operations; it is to let the agent accumulate professional experience of its own—so that next time a similar situation arises, the model proactively retrieves the reminder "I have taken this kind of fall." Erasing failures is the same as erasing evidence, and without evidence the model cannot adapt.</p>
-            <h2>Why the coordinate is "Memory × Loop"</h2>
+            <h2>Classification: Memory × Loop</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: It accumulates "failure" as persistent learning material across calls, a library of negative examples within long-term memory—one side records successes (procedural memory), the other records failures (failure journals).</li>
             <li><strong>Horizontal axis · Loop</strong>: Write a failure once, read it once on the next task, then write again. This is a cross-call outer loop. Failure signals circulate between tasks, making the agent more seasoned with each pass.</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>A complete failure journal system does four things, forming a closed loop:</p>
             <ol>
             <li><strong>Detection</strong>: Decide whether this task counts as a "failure." This includes task-level failures, as well as failures of information retrieval itself (such as RAG index lag, missed retrieval, or false retrieval—new failure types introduced in the LLM era).</li>
@@ -146,13 +160,13 @@
             <li><strong>Recall</strong>: When a new task arrives, proactively retrieve relevant historical failures by similarity and inject them into the prompt. This is the fundamental difference between a failure journal and an ordinary try-catch—the latter only handles the failure on the spot, the former remembers across tasks. Recall works by injecting past experience into the context at inference time (the training-free path), without retraining the model.</li>
             </ol>
             <p>Two supporting engineering practices come with it: discarding failure trajectories by default is an enormous waste (research shows about 85% of failure trajectories are discarded), and they can be used for training after reverse annotation; tiered retention (for example, full detail kept for 48 hours, compressed summaries for 30 days, only aggregate metrics beyond that) makes recall feasible in engineering terms without letting the database grow without bound.</p>
-            <h2>Production scenarios where it fits</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Production-grade, long-running agents</strong>: Agents that run for months and repeatedly handle the same class of tasks. Which failures to record and which to pull up when a task arrives is where its core value lies.</li>
             <li><strong>Multi-tenant SaaS agents</strong>: High-risk failures such as cross-tenant misrouting require special handling—never evicted, force-recalled at the start of every task, alarm triggered on several consecutive records. The task signature uses a two-factor "tenant plus intent" key, so one tenant's failure should not cause another tenant to receive irrelevant reminders.</li>
             <li><strong>Agents performing high-risk, irreversible operations</strong>: Scenarios where the cost of an error is large and the same mistake cannot be made twice. DevOps, finance, contract processing.</li>
             </ul>
-            <h2>Where it tends to go wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing it onto one-off tasks with no repeated execution</strong>: For pure demos, prototypes, and one-off scripts, discarding failures is fine. The value of a failure journal lies in repeated tasks; without repetition there is no recall payoff.</li>
             <li><strong>Free text only, no classification</strong>: The first version of a failure log is often free text with three fields, "task / error / timestamp," from which the agent can learn nothing. The schema must be enforced (enums plus constrained fields) so failures can be clustered, counted, and queried.</li>
@@ -160,14 +174,14 @@
             <li><strong>Recorded but recall does not match</strong>: Coarse similarity measures such as Jaccard have too high a miss rate, so recording is as good as not recalling. Task signatures should be compared with embedding cosine similarity.</li>
             <li><strong>Lumping high-risk and ordinary failures together</strong>: A cross-tenant data leak and an API timeout differ by several orders of magnitude in severity; mixing them lets life-or-death failures get drowned out. High-risk failures need independent alerting plus permanent retention plus forced recall.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Repeat failure rate decline</strong> (healthy zone: sustained decline): The proportion of times the agent repeats the same error within the same class of task. This is the true criterion for a failure journal—99% cleanliness of failure data is useless if the agent never recalls it; a 30% drop in repeat failure rate is the real value.</li>
             <li><strong>Recall rate / recall hit rate</strong> (healthy zone: reasonably high): The share of failure records that have been recalled, and the proportion of recalled failures relevant to the current task. A persistently low recall hit rate for procedural memory indicates a problem with the memory architecture.</li>
             <li><strong>First-attempt success rate</strong> (healthy zone: rising over time): The proportion of times the agent gets it right on the first try, which should rise month over month once failure lessons accumulate.</li>
             <li><strong>High-risk failure count</strong> (healthy zone: near 0 with strong monitoring): The number of life-or-death failures such as cross-tenant misrouting, which must be monitored and alerted independently.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
                           / root_cause / remediation / lessons[] / access_count
             FailureJournal:
@@ -178,20 +192,19 @@
             Tiered retention: 48h full detail / 30d compressed summary / 90d+ aggregate metrics
             </code></pre>
             <p>Four points for engineering deployment: use embedding cosine for the similarity function rather than Jaccard; hook recall at task startup and before high-risk tool calls (a PreToolUse hook works); actually implement tiered retention and place each tier on a different backend; and apply two-layer review on writes (schema enforcement plus access_count cleanup).</p>
-            <h2>Enterprise deployment example</h2>
+            <h2>Application example</h2>
             <p>A B2B SaaS company provides a customer-service agent to more than two hundred enterprise tenants, handling about fifty thousand tickets a day. The failure distribution is roughly thirty percent tool errors, twenty-five percent cross-tenant misrouting, twenty percent context overflow, and fifteen percent semantic drift. The rewrite produced six key decisions: cross-tenant misrouting (boundary_leak) was set as the highest priority—a hundred times more severe than tool errors (the former is a data-leak incident), never evicted, force-recalled at the start of every task, with three consecutive records triggering PagerDuty; the task signature uses a two-factor "tenant plus intent" key, so ACME's failure does not cause BETA to receive irrelevant reminders; following the CER paradigm, the top-5 relevant historical failures are injected as a system prompt so that the implicit belief update happens before acting; failures must be classified, free text is not allowed; the failure archive is exported weekly as markdown and committed to git for team review (a git diff is the best visualization of failure trends); UNKNOWN-class failures enter a needs_review state and only enter the archive after human review, avoiding noise that pollutes recall. In the second month after deployment, boundary_leak dropped from eight cases a day to one, the tool_error repeat rate fell by forty percent, and first-attempt accuracy rose from 78% to 85%.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Procedural memory (M5)</strong>: A twin relationship; together they form the agent's experience base. The failure journal records "I did this wrong before, don't do it this way again," while procedural memory records "I did this right before, follow this next time." One side records failures, the other records successes.</li>
             <li><strong>Progress tracking (M3)</strong>: Also in the Loop column. Progress tracking loops over "the steps done right," the failure journal loops over "the pits stepped in." The two look symmetric, but in industry their treatment is completely asymmetric—everyone does the former, few do the latter seriously.</li>
             <li><strong>Layered retention (M1)</strong>: The failure journal is a dedicated partition within the long-term memory layer, and tiered retention (48h / 30d / 90d+) is precisely the application of layering to the failure archive.</li>
             <li><strong>Self-Heal Loop (Action module)</strong>: The self-heal loop only handles failures within the current task and does not persist across tasks. The failure journal goes one step further—it persists the current failure signal and recalls it on the next similar task.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>Erasing failures is the same as erasing evidence, and the model cannot learn—a failure journal is not an error log, it is the agent's professional record. A weaker-model agent that has run for half a year with a failure archive may, on your specific business, outperform a smarter model that has just started up.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M4 Failure Journals</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -207,6 +220,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

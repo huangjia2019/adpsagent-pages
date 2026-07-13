@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/c4-handoff-chain/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/c4-handoff-chain/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/c4-handoff-chain/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>C4
             </p>
 
-            <h1>C4 · Handoff Chain · 交接链</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>C4 · Handoff Chain · 交接链</h1>
+                <p class="publication-deck">把一个长流程拆成 N 个职责清晰的 agent，前一棒处理完后通过结构化 HandoffPacket（不是裸文本）把关键状态传给下一棒，每一棒只擅长一件事。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>协作 Collaboration × 链式 Chain（传）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>多 agent 系统翻车，很多时候不是因为单个 agent 不够强，是因为交接掉了棒。一线 agent 拿到客户的全部信息，转给二线时只传"客户上一句话的原文"，二线接手就像一个刚走进来的同事——对客户是谁、为什么烦、已经说过什么完全无知，于是又问一遍。</p>
             <p>交接链解决的是任务在多个 agent 之间顺序传递时，每次交接信息无损、责任明确、失败可追溯。它的设计重心藏在一个命名判断里：handoff 译"交接"不是"接力"——接力是动作（跑），交接是状态（交班）。Agent 之间真正传递的不是跑的动作，而是上一棒完成的状态，这个状态必须显式 schema 化才不会丢。人类客服中心 30 年前就解决过这个问题，叫 warm handoff：交接前几秒前一个客服跟接手的客服把事情说清楚，再把电话切过去。</p>
-            <h2>为什么坐标是「协作 × 链式」</h2>
+            <h2>分类依据：协作 × 链式</h2>
             <ul>
             <li><strong>纵轴 · 协作</strong>：上一个 agent 的输出就是下一个 agent 的输入，接力式的多 agent 协作。每一棒都是职责清晰的 peer，没有 supervisor 作为稳定锚点——这是它跟层级委派最大的区别。</li>
             <li><strong>横轴 · 链式</strong>：N 个 agent 严格按顺序传递，不并行也不循环。区别于扇出聚合的 N 个 worker 同时干，也区别于对抗评审的来回辩论。顺序敏感是它的硬特征。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一次交接由三件事保证不掉棒：</p>
             <ol>
             <li><strong>职责切分</strong>：长流程拆成 N 个职责清晰的 agent，每一棒只擅长一件事、不需要懂整个流程。</li>
@@ -186,14 +199,14 @@
             </tr>
             </tbody>
             </table>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>分级客户支持</strong>：L1 分诊、L2 技术、L3 工程、Director 升级，模型逐级增强、工具权限逐级放开、SLA 逐级升级。</li>
             <li><strong>专业分工的审批流程</strong>：医疗的分诊护士到全科到专科到主任、法律的 paralegal 到 associate 到 partner、销售的 SDR 到 AE 到 CSM 到 VP。</li>
             <li><strong>执行型 agent 的控制权回交</strong>：当一个 agent 完成自己职责需要把控制权交还给上层时（详见企业落地一例）。</li>
             </ul>
             <p>四个条件要同时满足：专业分工明确、顺序可定、state 可结构化、SLA 升级机制是业务核心。</p>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>冷转接</strong>：只传"用户最后一句话"给下一棒，下一棒没拿到任何前面的上下文。识别信号是客户在交接后立刻被问已回答过的问题、情绪从 calm 转 frustrated 的转折点跟交接时点重合。修法是 HandoffPacket 必须含至少五层 schema。</li>
             <li><strong>决策溯源丢失</strong>：Artifacts 都传过去了，但决策的 why 没传——下一棒看着一堆产出却不知道前任凭什么走这条路，于是重走流程或推翻前任决策。"Artifacts survive handoff, decisions don't"，除非给 decisions 单独留一个 schema 字段。</li>
@@ -201,14 +214,14 @@
             <li><strong>过度交接</strong>：LLM 默认有 over-handoff 倾向，碰到稍微难的事就想踢给下一个 agent。可以在交接前加一道 classifier 审视"这次交接合理吗，是不是该自己做完"。</li>
             <li><strong>短任务或无清晰角色误用</strong>：整体 30 秒能搞定的任务、"通用助理"这种本质单 agent 的场景、实时对话延迟敏感的场景，交接的开销反而是负担。Loop 风险高的场景应该用层级委派让 supervisor 当锚点。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>链长跳数</strong>（健康区 ≤ 4）：单条 chain 经过的交接次数。超过 4 跳要强制升人工，这是防震荡循环失控的关键防线。</li>
             <li><strong>交接后重复提问率</strong>（健康区接近 0）：客户在交接后被问已回答过问题的比例。这是冷转接最直接的症状。</li>
             <li><strong>决策保留率</strong>（健康区高）：前一棒的决策被完整传给下一棒的比例。低说明 HandoffPacket 退化成了 raw history dump。</li>
             <li><strong>SLA 达成率</strong>（按分级核算）：各级 agent 在自己 SLA 窗口内完成的比例，配合 sentiment carry over 监控升级链路里的客户情绪变化。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>HandoffChain.execute(request, initial_agent, max_hops=4):
     current, prev_packet = initial_agent, None
     for sequence in 1..max_hops:
@@ -225,27 +238,26 @@
 HandoffPacket: 五层 schema(Goal / Artifacts / Decisions / Rejected Paths / Next Required)
 </code></pre>
             <p>四个工程要点：每棒的 system prompt 和 tool 权限严格分级（一线不能给退款权限）；can_handoff_to 显式列允许的下一棒；max_hops 设 3-4 超过强制升人工；audit log 满足跨棒数据流转的合规留档。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某中型 SaaS 公司用 LangGraph 部署了一套 L1/L2/L3/Director 四级客户支持 Agent，6 月上线 10 月被砍，导火索是一张被转了 1.8 万次的截图：客户说"webhook 收不到事件，2 万订单卡着"，一线转给二线，二线开口又问"请问遇到什么问题""请问您的账户邮箱"，客户回"我刚才说了""上面已经有了"。根因分析的结论是：四级架构每个交接环节都是重新开一个 session，前一棒只传客户上一句话的原文。这不是技术 bug，是设计选择，当初觉得"前面处理过的下一个不需要看了，省 token"。修法是给每次交接打包五层 HandoffPacket：客户诉求、已查过的 KB 和跑过的脚本、做过的决策含 why、已排除的方向、下一步动作，配合模型分级（一线 Haiku 跑量、工程层 Opus 处理复杂）、工具权限渐进（一线只读、Director 才能批退款）、链长上限 4 棒超过升人工。另一个值得引用的落地是执行型 Agent 的控制权回交：当一个 ReAct agent 判断当前决策类型是 plan（或 Skill 契约约定为 PlanExecute）时，它不自己往下执行，而是通过 handoff 把控制权交回 orchestrator，由 orchestrator 决定后续编排——这把交接链用在了 agent 内部的控制流移交上，不只是面向用户的分级支持。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>Prompt Chaining（行动模块）</strong>：同源对偶。Prompt Chaining 是单 agent 多 prompt 串联（context 自然延续），交接链是多 agent 跨 session 显式 state 传递（必须 schema 化）。关键差别在 context 是否需要显式 schema 化。</li>
             <li><strong>层级委派（C1）</strong>：交接链没有主管、每一棒都是 peer，层级委派有 supervisor 作为稳定锚点。Loop 风险高时回到层级委派让 supervisor 当锚点反而更稳。</li>
             <li><strong>扇出聚合（C2）</strong>：交接链是 N 个 agent 顺序干，扇出是 N 个 worker 同时干。</li>
             <li><strong>子代理隔离（C5）</strong>：交接链关注跨棒的 state 显式传递，子代理隔离关注 sub-agent 的 context 边界，两者关注点不同但都涉及 agent 间的信息流设计。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>交接链的工程本质不是数据传递，是<strong>把企业里已经存在 30 年的人类组织流程 schema 化成 agent 能执行的工程结构</strong>——赢面在五层 schema 都被工程化的场景，输面在只 dump 对话历史还假装那叫交接的场景。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《C4 交接链》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -261,9 +273,16 @@ HandoffPacket: 五层 schema(Goal / Artifacts / Decisions / Rejected Paths / Nex
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

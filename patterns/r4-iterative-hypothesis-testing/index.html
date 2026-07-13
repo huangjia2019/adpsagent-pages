@@ -107,8 +107,22 @@
         <article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>R4</p>
 
-                        <h1>R4 · Iterative Hypothesis Testing</h1>
-            <table>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>R4 · Iterative Hypothesis Testing</h1>
+                <p class="publication-deck">The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scientific method into reasoning.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Reasoning × Loop (transition)</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
@@ -129,15 +143,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>What problem it solves</h2>
+            <h2>Problem</h2>
             <p>Some tasks cannot be answered in a single pass of reasoning: the root cause is unknown, the evidence must be gathered step by step, and the first judgment is often wrong. Diagnostic tasks are the typical case—when a fault alarm fires, the "most likely cause" that the model ranks by prior may be badly miscalibrated, with the true root cause ranked far down or not even considered at first. If the model reasons once and then commits, it walks further and further in the wrong direction; if it simply retries, the retry itself does not solve the problem, because the issue is not that "the result is unstable" but that "the understanding of the world is still wrong."</p>
             <p>Iterative hypothesis testing replaces single-pass reasoning with a loop of "hypothesize → validate → revise → hypothesize again." The fundamental difference from ordinary retry is this: retry assumes that the retry itself can solve the problem, while iterative hypothesis testing assumes that each loop must update the understanding of the world. Its design center is also not "retry until success," but converging through falsification to the single hypothesis that has not been refuted. It is the dual of parallel exploration (R3): parallel opens N lines at once along the spatial dimension, while iteration runs one line many times along the time dimension.</p>
-            <h2>Why the coordinate is "Reasoning × Loop"</h2>
+            <h2>Classification: Reasoning × Loop</h2>
             <ul>
             <li><strong>Vertical axis · Reasoning</strong>: It follows empirical, scientific-style reasoning of "hypothesize → validate → revise → hypothesize," not a single deduction. Each round actively revises its own belief rather than waiting for the result to stabilize.</li>
             <li><strong>Horizontal axis · Loop</strong>: Multiple iterations until the evidence converges or a limit is reached form a natural loop structure. The dual-mode architecture (R5) in the same column is also in the Loop column but has a different emphasis—iteration is a single agent looping with itself to validate hypotheses, while dual-mode is two agents collaborating to split the handling of "talking" and "thinking."</li>
             </ul>
-            <h2>Core mechanism</h2>
+            <h2>Solution and mechanics</h2>
             <p>A mature iterative hypothesis-testing setup often uses a three-agent division of labor that maps to a strict loop:</p>
             <ol>
             <li><strong>Hypothesis generation (Planner)</strong>: List N candidate hypotheses based on the symptoms and historical cases, ranked by prior probability. This step uses the most expensive model, because generating the "right hypothesis list" determines the direction of the entire trajectory.</li>
@@ -145,13 +159,13 @@
             <li><strong>Judgment (Evaluator)</strong>: Combine the evidence to decide whether the hypothesis is confirmed, falsified, or insufficiently supported. This step uses a mid-tier model, and the system prompt should emphasize falsification over confirmation—"your job is to find strong counter-evidence." This framing measurably improves accuracy.</li>
             </ol>
             <p>The loop rules are: falsified goes back to the generation stage, confirmed exits, and insufficient evidence goes back to gather more. Two engineering practices are easy to overlook but critical: first, when entirely new evidence appears, reset the whole hypothesis tree rather than fine-tuning the old one; second, when the limit is reached without convergence, trigger human-in-the-loop (HITL) rather than letting the agent force-pick the hypothesis with the highest prior and ram into it.</p>
-            <h2>Where it fits in production</h2>
+            <h2>Applicability</h2>
             <ul>
             <li><strong>Diagnostic tasks</strong>: Industrial fault localization, medical diagnosis, safety incident root-cause analysis. The root cause is unknown, evidence must be gathered step by step, and a single line that goes astray can be reset and restarted.</li>
             <li><strong>Complex code debugging</strong>: Change one place, validate one place, let the failure information flow back to form new hypotheses, and repeatedly converge to the real bug.</li>
             <li><strong>Judgments that require a strict evidence chain</strong>: Scenarios where every step's conclusion must be backed by reproducible evidence and the reasoning path must ultimately be explainable to a regulator.</li>
             </ul>
-            <h2>Where it goes wrong</h2>
+            <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing it through under too tight a time budget</strong>: When the time budget is under 30 seconds, or the cost of error is low, do not use iteration—adding iteration to a task that one pass of reasoning could handle is over-engineering.</li>
             <li><strong>Forcing it past 3 rounds without convergence</strong>: If it has not converged after 3 iterations, the task itself is usually wrong (the symptom description is inaccurate, or it is simply not a problem in this system), and it should be reset or escalated to a human, not burn a 4th and 5th round.</li>
@@ -159,14 +173,14 @@
             <li><strong>Fine-tuning the old tree when new evidence arrives</strong>: When entirely new evidence appears, the hypothesis tree should be reset and regenerated; patching the old tree will be dragged off course by the wrong prior.</li>
             <li><strong>No circuit breaker</strong>: Every iteration must have a hard max_iterations cap plus a cost cap, or the cost explodes and the agent hangs.</li>
             </ul>
-            <h2>Key metrics</h2>
+            <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Convergence Rate</strong> (healthy range &gt;80%): The share of cases that converge automatically before reaching the limit. Below 60% means the agent often reaches the limit without a conclusion—either the task is too complex and should be decomposed, or evidence collection is inadequate. This is the most comprehensive metric.</li>
             <li><strong>Average iterations to convergence</strong> (healthy range 2-4): How many rounds successful cases take on average to converge. Below 2 means the task is too simple to need iteration; above 5 means each round is inefficient and hypothesis quality is poor.</li>
             <li><strong>Falsification Rate</strong> (healthy range 30-60%): The share of hypotheses falsified each round. Below 20% means the agent is in confirmation bias and not actively falsifying; above 80% means most generated hypotheses are wrong.</li>
             <li><strong>HITL Trigger Rate</strong> (healthy range 5-15%): The share of cases that escalate to a human. Below 2% means the agent is overconfident and commits even when it should not; above 30% means the agent is too weak and needs a human to backstop everything.</li>
             </ul>
-            <h2>Minimal implementation skeleton</h2>
+            <h2>Reference implementation</h2>
             <pre><code>Task arrives → Planner generates a hypothesis list (ranked by prior probability)
             Loop (limit max_iterations):
                 Pick the unvalidated hypothesis with the highest prior
@@ -180,21 +194,20 @@
             Keep a trace on file throughout (compliance scenarios require long-term retention)
             </code></pre>
             <p>Four points for landing it: assign the three models by routing (the expensive model generates hypotheses, the cheap model collects evidence, the mid-tier model judges); make the evidence schema strict to prevent the model from inventing evidence; let HITL escalation carry the full hypothesis tree and evidence, not a simple notification; keep the trace on file for the long term for audit.</p>
-            <h2>Enterprise landing example</h2>
+            <h2>Application example</h2>
             <p>A mid-sized chemical plant's industrial fault-diagnosis agent assists front-line engineers in locating the root cause when an alarm fires. In the early hours of the pilot's third week, a polyethylene production line raised an alarm—the reactor temperature was rising abnormally. The agent pushed 5 candidate hypotheses ranked by likelihood, and the engineer validated them one by one: cooling pump failure (flow looked normal, eliminated), sensor drift (compared against the redundant sensor and they agreed, eliminated), process recipe anomaly (the feed log looked normal, eliminated). When the fourth hypothesis required waiting for lab analysis and the line had already been down for an hour, the engineer manually fed in a new fact—the PID control log showed a remote login that had modified settings in the early hours. The agent immediately rebuilt the hypothesis tree from scratch, drilled down to find that a temperature-control parameter had been changed, which would cause the temperature to oscillate upward and matched the current state, and finally located the cause: another shift had run a parameter-optimization test and forgotten to roll it back.</p>
             <p>Two observations afterward were key. First, the true root cause had only a 2% prior in the first round—the model's prior was badly miscalibrated, and it was dug out only by repeated iteration plus a human supplying a fact. Second, after the new fact was fed in, the agent reset and rebuilt the entire tree rather than fine-tuning it. The team rewrote the system on this basis, adding a three-layer structure (generate hypotheses, collect evidence, judge) and making six key decisions: a three-layer hypothesis tree that supports drill-down; a low HITL threshold (escalate to a human when confidence is insufficient after 3 rounds, and require human confirmation whenever critical equipment is restarted); reset on new evidence rather than compaction; a strict evidence schema; an Evaluator that emphasizes falsification; and a long-term trace on file for every run. After the changes, the convergence rate rose from 50% to 82%, and the average fault-localization time was compressed from 3.2 hours to 1.1 hours.</p>
-            <h2>Relationship to other patterns</h2>
+            <h2>Related patterns</h2>
             <ul>
             <li><strong>Parallel exploration (R3)</strong>: A dual relationship. Parallel opens N lines at once along the spatial dimension and selects the best in one shot; iteration runs one line many times along the time dimension and converges step by step.</li>
             <li><strong>Chain of thought (R1)</strong>: The interior of each iteration round is a chain of thought; iteration strings multiple chains of thought together along the time dimension and revises them repeatedly.</li>
             <li><strong>Complexity routing (R2)</strong>: Using different model tiers for the three roles inside iteration is exactly the application of routing thinking inside a loop.</li>
             <li><strong>Dual-mode architecture (R5)</strong>: Also in the Loop column. Iteration is a single agent looping to validate against itself; dual-mode is two agents collaborating and dividing the work.</li>
             </ul>
-            <h2>What this pattern teaches</h2>
+            <h2>Design conclusion</h2>
             <p>The exit condition of iterative hypothesis testing is not "find a correct hypothesis" but "falsify all the wrong hypotheses"—it encodes centuries of the human scientific method into a probabilistic system, because the reliability of a probabilistic system can only be built through falsification.</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">This page is part of the ADPS pattern white papers. Back to <a href="/patterns/">the pattern matrix</a>, or see the <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a>.</p>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R4 Iterative Hypothesis Testing</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -210,6 +223,10 @@
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
           var sec=this.parentElement, open=sec.classList.contains('open');

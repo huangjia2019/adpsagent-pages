@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/a3-prompt-chaining/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/a3-prompt-chaining/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/a3-prompt-chaining/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>A3
             </p>
 
-            <h1>A3 · Prompt Chaining · 提示链</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>A3 · Prompt Chaining · 提示链</h1>
+                <p class="publication-deck">把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>行动 Action × 链式 Chain（传）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>一个 prompt 想一次干完所有事，往往哪件都做不透。某财经媒体的内容编辑 agent 第一版把校对、改写、统一风格、核查数字、起标题、写摘要、配图建议七件事写在一段提示里喂给模型，结果一篇稿子里"GMV 增长 35%"被改成了 53%——模型那一刻在"改写"模式而非"核对"模式，顺手就把数字看走了眼；越往后的任务越敷衍，配图建议永远是那三句套话。</p>
             <p>Prompt Chaining 把大任务拆成几段独立的 prompt 串行处理，每段只干一件事、有自己的角色和最合适的模型、有自己的成功标准。它和单个超大 prompt 的区别，就是复杂度只能靠拆分降下来，塞进一个更大的盒子是降不下来的。</p>
-            <h2>为什么坐标是「行动 × 链式」</h2>
+            <h2>分类依据：行动 × 链式</h2>
             <ul>
             <li><strong>纵轴 · 行动</strong>：一个 prompt 完不成的任务被拆成几段串行的 prompt，每一段都要触发一次模型调用或工具输出，落点是"做事"而不是单点"想事"，所以属于行动模块。</li>
             <li><strong>横轴 · 链式</strong>：prompt1 → prompt2 → prompt3 是典型的线性 pipeline，前段输出即后段输入，既不是路由分流也不是图状依赖。它和规划-执行（A2）同属链式，区别在 A3 是纯直线、无 replan，A2 是 DAG、有 replan。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>它的工程原型是 Unix 管道。<code>cat data.csv | grep ERROR | sort | uniq -c</code> 把几个单一职责的小程序靠 stdin/stdout 串起来，每个程序只读输入、写输出，不需要知道前后是谁。Prompt chain 是同一件事在 LLM 这一层的复刻，每一段 prompt 就是一个"小程序"。</p>
             <p>比 Unix 管道多出来的那一层是闸门（gate）。Unix 程序匹配不到就空跑，LLM 却会自信地胡说，所以两段之间要插一段廉价的程序化检查——不是模型，是 Python 的 if 判断——不通过就重试或升级。研究员阶段写"找至少三篇参考"，闸门就是 <code>if len(refs) &lt; 3</code>，过关才往下流。</p>
             <p>几个落地要点：</p>
@@ -159,26 +172,26 @@
             <li><strong>重试要回喂失败原因</strong>：把"上次哪里不达标"告诉模型，而不是瞎重跑，命中率才会涨。</li>
             </ul>
             <p>Claude Code 把 chain 做出了三种工业形态：感知-推理-行动主循环里每个工具结果就是一节链节（隐式链）；slash command 是预制链（<code>/commit</code> 是 status → diff → 推理 → 起草 → 提交的五步模板）；SKILL.md 是可组合的链段（声明式定义多步流程，被嵌进更大的链里）。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>工作流有清晰阶段、阶段间能用一两行代码描述"什么算合格"</strong>：内容编辑、合同审阅、客服工单分诊。生产里大部分团队最后落在 3 到 5 步。</li>
             <li><strong>要把工作流产品化成可复用入口</strong>：slash command 就是把领域专属工作流封装成预制链，用户一条命令触发整链，不用每次手写步骤。</li>
             <li><strong>需要可追溯、可信任的产出</strong>：整链 trace 留档，让业务方逆向看 agent 怎么从原稿一步步变到终稿。内容编辑案例里，trace 让编辑信任度从 42% 涨到 91%，比任何 prompt 工程都管用。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>信息饥饿</strong>：每一步只接收前一步的输出，第 3 步需要的信息在第 1 步出现过、但第 2 步没保留就丢了。chain 只传递前一步的输出，不会自动让早期信息流到后面。应对是另带一个所有步骤都能读的累积上下文对象（分布式系统里叫 saga context）。</li>
             <li><strong>闸门暴政</strong>：闸门设得太死永远过不去，"恰好 500 词"会无限拒绝 499 和 501，烧光 token 才发现。应对是范围加必要条件。</li>
             <li><strong>乘积效应被低估</strong>：单步通过率 95%、七步串起来整链通过率只剩约 70%。chain 越长，对单步通过率的要求越高。</li>
             <li><strong>第一个 prompt 的装配被忽略</strong>：生产 system prompt 通常由基础指令、用户身份、历史、当前任务、工具清单、风格、格式约束等多个数据源拼成，硬编成一坨长字符串会让最高频更新的那部分无法独立维护。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>整链成功率</strong>（健康区 &gt;85%）：任一步过不了闸门即算失败。低于 70% 通常是某步闸门太严或步骤间信息断了。注意按整链算，不按单步。</li>
             <li><strong>每步耗时 p99</strong>（健康区每步 p99 &lt;3 倍中位数）：chain 变慢时，这张分布图能最快找到拖后腿的那一步。</li>
             <li><strong>闸门重试分布</strong>（健康区 90% 一次过、9% 两次、1% 三次）：某步重试率突然升高，几乎一定是闸门与模型当前能力不匹配。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>chain = [step1, step2, step3]        # 每步自带 system_prompt + model + gate
 current = initial_input
 for step in chain:
@@ -194,26 +207,25 @@ for step in chain:
 return 成功(current, total_tokens, trace)
 </code></pre>
             <p>工程落地要点：闸门带容差；trace 的 tokens 和耗时结构化落到日志系统；中途需要时主动取回原始输入做参照（如数字核查回到原稿，不让前面改写产生的版本污染数字）。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>财经媒体内容编辑 agent 第二版改成七步链：校对（便宜模型，闸门校验输出长度不低于输入 95%）、改写（强模型，保留作者风格）、统一风格、数字核查（中等模型加 thinking，关键设计是回到原稿做参照，闸门要求数字 100% 匹配原稿）、起标题（输出 3 个候选）、写摘要、配图建议（三类必齐）。每步独立选模型是为了控制成本。结果：数字核查准确率从 87% 涨到 99.4%，编辑信任度从 42% 涨到 91%，代价是单稿成本涨约 30%、延迟从 12 秒涨到 38 秒。这套模板可直接平移到合同审阅、医疗影像辅助、客服分诊——每步独立目标、独立模型、独立闸门。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>规划-执行（A2）</strong>：一对对偶，一轻一重。A3 是直线，A2 是图。任务能画成 DAG（有并行、有跨步依赖）就用 A2，是一根直线就用 A3。生产里常见 A2 在外、A3 在内的混合形态。</li>
             <li><strong>工具调度（A1）</strong>：嵌套关系而非替代。chain 的某一步内部可能调工具，那一步是 A1（在多个工具中选一个），但它发生在 chain 的某一节里。</li>
             <li><strong>护栏三明治（A5）</strong>：chain 的闸门是同步的程序化检查，A5 的 hook 是套在工具调用前后的夹层。两者都是"让流程在卡点处可拦截"。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>只要你的系统跟 LLM 多轮对话，你其实已经在用 prompt chain 了，区别只在它是显式还是隐式——显式的链你能给每段配模型、加闸门、留 trace、replay 失败步骤，隐式的链你只能祈祷模型这次别翻车。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《A3 提示链》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -229,9 +241,16 @@ return 成功(current, total_tokens, trace)
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

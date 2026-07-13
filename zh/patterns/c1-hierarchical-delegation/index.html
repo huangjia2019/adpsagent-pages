@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/c1-hierarchical-delegation/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/c1-hierarchical-delegation/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/c1-hierarchical-delegation/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>C1
             </p>
 
-            <h1>C1 · Hierarchical Delegation · 层级委派</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>C1 · Hierarchical Delegation · 层级委派</h1>
+                <p class="publication-deck">一个 supervisor agent 动态拆分任务、派给 N 个 worker agent 执行、再把结果合并，是经典的多 agent 主管-工人协作。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>协作 Collaboration × 层级 Hierarchy（分）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>单个 agent 同时干查资料、写正文、配图、出报告，每一项都不专精，长流程里 context 还会越积越长。更隐蔽的问题是：当一个 agent 顺序处理多个子任务时，前面任务的执行细节会一直留在它的 context 里，跑到第三、第四个任务时推理质量就开始下滑。</p>
             <p>层级委派把"一个全能 agent"换成"一个 supervisor 加多个专门 worker"。Supervisor 负责拆任务、监控进度、合并产出；每个 worker 只干自己擅长的一类活，跑在自己独立的 context 里。这样既让每一段工作由合适的模型和提示来处理，又把 supervisor 的 context 从执行细节里解放出来，让它专注协调。代价是 token 消耗成倍上升，所以它只适合任务价值能覆盖这个倍数的场景。</p>
-            <h2>为什么坐标是「协作 × 层级」</h2>
+            <h2>分类依据：协作 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 协作</strong>：这是真正的多 agent 角色分化——supervisor 和 worker 是不同的 agent，承担不同的职责，不是一个 agent 内部的工程抽象。Researcher、Writer、Visualizer 各自对应一种专业能力，这种按职业能力切分的分工是经典的多 agent 协作形态。</li>
             <li><strong>横轴 · 层级</strong>：拓扑是一棵树。Orchestrator 在上，多个 worker 在下，worker 之间不直接通信，要交换信息必须经过 supervisor。这是天然的层级结构，区别于并行的扇出聚合、对抗的评审循环、顺序的交接链。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一次层级委派由三段组成：</p>
             <ol>
             <li><strong>动态拆分</strong>：supervisor 根据具体输入决定拆几个 worker、每个 worker 干什么。研究 AI 行业和研究咖啡行业拆出的子任务结构不一样，拆分必须跟输入相关，不能写死。</li>
@@ -179,13 +192,13 @@
             </tr>
             </tbody>
             </table>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>专业分工明确的长流程任务</strong>：行业研究报告生成、投研分析、新药研发流程，每个环节需要不同专业能力。</li>
             <li><strong>批量同类任务的隔离处理</strong>：合同审阅、简历筛查、文档合规扫描，每份独立交给一个 worker，避免相互污染和 context 爆炸。</li>
             <li><strong>价值高到能覆盖 token 倍数的任务</strong>：多 agent 至少 2-3 倍 token 是常态，Anthropic 实测复杂研究任务可达 15 倍换 90% 胜率，只有高价值任务才划算。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>有派工的形、没隔离的神</strong>：supervisor 看到 worker 的完整执行过程而不是 schema artifact，跑几个任务后 context 被前面任务的细节占满，推理质量断崖式下降。worker 必须 reduce 成结构化 artifact 返回。</li>
             <li><strong>worker 之间直接通信</strong>：为了省事让 worker A 调 worker B，会把树结构变成网状结构，cascade failure 风险飙升。层级委派的本质是树，破坏树结构就是破坏隔离。</li>
@@ -193,14 +206,14 @@
             <li><strong>并行 worker 数量过多</strong>：超过 5 个并行 worker，supervisor 综合时会出现取舍困难，第 6 个 worker 的边际价值开始下降。复杂度上限不在算力，在模型综合的认知带宽。</li>
             <li><strong>Collaboration Light 场景误用</strong>：如果系统里并没有真正的多种角色，只是工程层面的抽象切分（比如同一个 agent 换几个 prompt），不该套层级委派。它要求真有专业分化的多个 agent。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>协作开销占比</strong>（健康区 &lt; 30%）：supervisor 和 worker 来回通信消耗的 token 占总 token 的比例。超过一半说明真正干活的预算所剩无几，要让 artifact 更严格地 schema 化、协作消息走轻量 channel。</li>
             <li><strong>worker 失败级联率</strong>（健康区 &lt; 5%）：一个 worker 失败拖垮其他 worker 的概率。这是最该优先压的指标，它高了会带动其他三个指标一起恶化。</li>
             <li><strong>artifact 合规率</strong>（健康区 &gt; 95%）：worker 返回符合 schema 的比例。worker 偶尔输出自由文本绕过 schema 会触发重派和延迟。</li>
             <li><strong>token 倍数</strong>（健康区 &lt; 5×）：多 agent 比单 agent 多花的 token 倍数。15× 是高价值任务的可接受上限，普通业务 5× 已经偏高，不匹配就退回单 agent。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>SupervisorAgent.execute(task):
     plan = decompose(task)              # 动态拆分,跟输入相关
     artifacts = 并行 gather(            # 并发上限设 5
@@ -216,27 +229,26 @@ IsolatedSubAgent.execute(subtask):
     return reduce_to_artifact(raw)      # 强制压缩成 verdict/findings/confidence
 </code></pre>
             <p>四个工程要点：每个 worker 独立 context 起跑；worker 强制 reduce 成 schema artifact；每个 worker 用 timeout 加异常包裹隔离失败；用信号量控制并发上限，worker 之间不共享 state。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某律所的合同审阅 Agent，第一版主 agent 派 sub-agent 扫描 50 份合同找异常条款，sub-agent 跑完把每份 3000 字的详细分析全部回传，主 agent 接到 15 万字后 context 完全爆炸，后续推理质量断崖式下降。工程团队复盘后想清楚一件事：主 agent 不该看 sub-agent 的 raw 工作过程，只该看结论——就像律所的 PM 不会要求每个律师汇报每份合同读了哪一行，只看"50 份里有 3 份异常加它们的关键问题清单"。第二版给每份合同分配一个独立 worker，每个 worker 跑在隔离 context 里，返回前必须 reduce 成固定 schema 的 artifact（contract_id、risk_level、top_3_concerns、recommendation，外加 contract_hash 防篡改）。50 份合同的 artifact 加起来不到 1 万字，主 agent 看着轻松。配套的工程纪律还包括：HIGH 以上风险合同强制进律师 review 队列，不允许 agent 自动放行；每个 worker timeout 收紧到 180 秒，失败时返回 failure artifact 而不是炸掉全局；portfolio report 落文件作为审计留痕。改完之后 50 份合同 1 小时跑完。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>子代理隔离（C5）</strong>：实现核心。层级委派是招式（supervisor 派 worker），子代理隔离是内功（worker 隔离 context 加 schema artifact 加失败 boundary）。没有隔离的层级委派必定 context 爆炸加 cascade failure，两者必须配套。</li>
             <li><strong>扇出聚合（C2）</strong>：同为一对多，但分工逻辑不同。层级委派是一对多分专业（每个 worker 干不同的事），扇出聚合是一对多分量（多个 worker 同时干同一类活的不同部分）。</li>
             <li><strong>交接链（C4）</strong>：层级委派有 supervisor 作为稳定锚点，交接链没有主管、每一棒都是 peer。</li>
             <li><strong>Plan-and-Execute（行动模块）</strong>：层级委派是它在多 agent 层的扩展，把"一个 agent 内 plan-execute 分家"扩展成"多个 agent 分家"。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>层级委派的本质不是把任务拆开派出去，而是<strong>把人类金字塔组织 50 年沉淀的信息分层纪律编码进 agent 系统</strong>——supervisor 只看下一层的精炼结论，是这套纪律的工程载体。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《C1 层级委派》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -252,9 +264,16 @@ IsolatedSubAgent.execute(subtask):
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();

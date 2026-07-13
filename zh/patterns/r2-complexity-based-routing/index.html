@@ -11,6 +11,7 @@
 
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/r2-complexity-based-routing/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/r2-complexity-based-routing/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/r2-complexity-based-routing/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
@@ -24,7 +25,6 @@
             <nav class="site-nav">
                 <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
                 <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -42,7 +42,6 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/patterns/" class="sb-home">模式矩阵首页</a>
               <h4>感知 Perception</h4>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
@@ -85,16 +84,16 @@
               <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="sb-home">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
             </div></div>
-          <div class="sb-section open">
+          <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/concepts/" class="sb-home">概念定义首页</a>
+              <a href="/zh/concepts/">概念定义首页</a>
               <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
               <a href="/zh/concepts/unified-session-state/">三权分立</a>
@@ -118,7 +117,21 @@
                 <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>R2
             </p>
 
-            <h1>R2 · Complexity-Based Routing · 复杂度路由</h1>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书</p>
+                <h1>R2 · Complexity-Based Routing · 复杂度路由</h1>
+                <p class="publication-deck">在查询进入主循环之前按复杂度信号选模型加 effort 档位，让简单查询走便宜模型、复杂查询才用贵模型，用分流换账单。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>分类</dt><dd>推理 Reasoning × 路由 Route（选）</dd></div>
+                    <div><dt>目录地位</dt><dd>核心模式</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+
             <table>
             <tbody>
             <tr>
@@ -140,15 +153,15 @@
             </tbody>
             </table>
             <hr />
-            <h2>它解决什么问题</h2>
+            <h2>问题</h2>
             <p>把最贵最强的模型当默认选项用，是 2026 年 Agent 工业最常见的浪费。GPT-4o 和 GPT-4o-mini 之间价差 16 倍，Opus 和 Haiku 之间也接近这个量级。如果一个 Agent 把所有查询都路由到最贵的模型，而其中一大半其实是模板填空级的简单任务，那这部分账单就是纯冤枉钱。</p>
             <p>复杂度路由把"全用贵模型"换成"按需分流"。它的前提是真实流量里易例多、难例少——简单查询占大头，复杂查询是少数。把简单查询路由到便宜模型，把贵模型留给真正需要的复杂查询，账单立刻砍掉一大半，质量基本不损失。行业数据显示做对路由的团队普遍能拿到 47% 到 80% 的成本下降。它和并行探索（R3）互补：路由负责日常省钱，并行负责关键决策买质量，两者在同一个 Agent 里并存。</p>
-            <h2>为什么坐标是「推理 × 路由」</h2>
+            <h2>分类依据：推理 × 路由</h2>
             <ul>
             <li><strong>纵轴 · 推理</strong>：路由决策的本质是"这道题用便宜的快思考还是贵的慢思考"，选的是 reasoning policy，是推理策略层的事，不是把任务拆给多个 Agent。</li>
             <li><strong>横轴 · 路由</strong>：按输入的复杂度信号，把不同查询分发到不同的 reasoning depth（模型档 + effort 档）。这是天然的分支选择结构，一个查询进来选一条路走。</li>
             </ul>
-            <h2>核心机制</h2>
+            <h2>解决方案与机制</h2>
             <p>一次复杂度路由由三段组成：</p>
             <ol>
             <li><strong>提取信号 + 分类</strong>：从查询里提取复杂度信号（长度、关键词、领域、历史成功率），交给一个 classifier 判定走哪一档。Classifier 本身要用便宜模型或规则做，决策成本控制在整体的 5% 以内——不能上来就调贵模型做路由判断。</li>
@@ -183,13 +196,13 @@
             </tbody>
             </table>
             <p>严肃的生产 Agent 一般走 Harness 显式路线，因为成本控制是产品经济学的核心，把这个权力交给模型厂商或第三方都是放弃 control。PoC 和小项目可以用另两条。</p>
-            <h2>适合的生产场景</h2>
+            <h2>适用条件</h2>
             <ul>
             <li><strong>易例多难例少、且 cost 敏感而 accuracy 不能掉</strong>：内部 BI 自助查询、客服问答、文档处理——大部分查询简单、少部分复杂，路由能精准把钱花在刀刃上。</li>
             <li><strong>多厂商混用场景</strong>：团队同时用 Claude / DeepSeek / 自家微调模型，没法把路由交给单一厂商，必须工程层做。</li>
             <li><strong>按动作类型分流的专门 Agent</strong>：代码改动用主模型、git 操作用 weak 模型这类，按动作而非按查询复杂度路由，是路由思路的一个变体。</li>
             </ul>
-            <h2>容易出错的地方</h2>
+            <h2>已知失效方式</h2>
             <ul>
             <li><strong>classifier 用纯规则</strong>：关键词匹配对没见过的查询形态泛化差，会把复杂查询错判到便宜档。生产里应该用便宜模型做分类，泛化更好，成本也只占整体 5% 以内。</li>
             <li><strong>acceptable 校验只看长度</strong>：只检查输出够不够长，放过了 schema 不符、数值越界、引错源数据的结果。要做 schema-aware 校验。</li>
@@ -197,14 +210,14 @@
             <li><strong>高风险查询也走便宜档</strong>：财务、隐私、合规相关的查询即使看起来简单也不能省，错的代价比 token 贵 100 倍，要强制走最稳的档。</li>
             <li><strong>单模型团队硬上路由</strong>：只用一个模型、或任务永远同一类、或便宜模型已经够用的场景，路由没有意义。</li>
             </ul>
-            <h2>关键指标</h2>
+            <h2>验证指标</h2>
             <ul>
             <li><strong>每查询成本分布</strong>（健康区 long-tail）：便宜档 60-80%、中档 15-30%、贵档 &lt;10%。贵档占比超过 30%，要么业务真的复杂，要么 classifier 把太多简单查询错路由到了贵档。</li>
             <li><strong>路由准确率</strong>（健康区 &gt;90%）：便宜档处理后未升档的比例。只有 60% 不升档，说明 classifier 把太多复杂查询塞进了便宜档。</li>
             <li><strong>升档率 Fallback Rate</strong>（健康区 &lt;10%）：便宜档触发升档的比例。这是其他指标的先行信号——它一高，成本分布立刻偏移、准确率立刻下降，要先把它压下来。</li>
             <li><strong>平均决策时间</strong>（健康区 &lt;100ms）：classifier 自己做决定花多久。超过这个值说明路由判断太重，Agent 还没干活就先等。</li>
             </ul>
-            <h2>最小实现骨架</h2>
+            <h2>参考实现</h2>
             <pre><code>查询进来 → 提取复杂度信号（长度 / 关键词 / 领域 / 历史）
 classifier（便宜模型或规则）→ 选定档位 + 置信度
 高风险查询（财务 / 隐私 / 合规）→ 强制最贵档，跳过分流
@@ -215,28 +228,27 @@ classifier（便宜模型或规则）→ 选定档位 + 置信度
 每次路由决策打 trace（查询摘要 / 档位 / 信号 / 置信度 / 实际成本 / 是否升档）
 </code></pre>
             <p>落地四个要点：classifier 用便宜模型替代纯规则；acceptable 校验做 schema-aware；fallback 链加成本上限避免极端 case 爆炸；定期把反复升档的查询类型直接默认到高档，省去重复升档开销。</p>
-            <h2>企业落地示例</h2>
+            <h2>应用示例</h2>
             <p>某中型 SaaS 公司的内部数据分析 Agent，让产品、增长、财务团队用自然语言查 BI 数据。第一版默认全用最贵的模型（"反正最强免得出错"），上线三个月后财务收到一张 48 万的月账单。团队拆开流量一看：41% 的查询是 SQL 模板填空（"上周注册用户数"），22% 是加个分组（"按地区分组的留存曲线"），真正需要多步归因的复杂查询只占 19%，需要因果建模的只占 4%。把模板填空类查询喂给最贵模型，等于花 15 倍冤枉钱。</p>
             <p>重写时做了六个关键决策：三档分流加一档兜底（便宜档跑模板填空、中档跑分组、贵档跑归因、顶档跑因果建模）；classifier 用规则加便宜模型双轨（80% 走规则、20% 走便宜模型，路由成本压到每月 200 元以内）；升档时先估算总成本避免升了反而更贵；财务、隐私、合规三类高风险查询强制走最贵档；每次路由决策全量 trace、每周生成 health report；每 30 天把反复升档的查询类型直接默认到高档。三周后账单从 48 万降到 12 万，错误率维持在 0.5% 以内，p99 延迟也下降了。</p>
-            <h2>与其他模式的关系</h2>
+            <h2>相关模式</h2>
             <ul>
             <li><strong>并行探索（R3）</strong>：互补。路由是单时间点选一档省钱，并行是同时开 N 条线买质量，同一个 Agent 里日常走路由、关键决策启动并行。</li>
             <li><strong>思维链（R1）</strong>：路由选的档位里就含 CoT 的 effort 档，路由是 CoT effort 控制从单次调用上升到任务级的版本。</li>
             <li><strong>双模架构（R5）</strong>：双模是路由的架构极致——普通路由是"选一档跑"，双模是"两档同时跑"，把"选档"推到了"拆 Agent"。</li>
             <li><strong>失败日记 / 守卫类模式</strong>：高风险查询强制走最稳档，和"有些边界不能省钱"的防护思路同源。</li>
             </ul>
-            <h2>该模式的启发</h2>
+            <h2>设计结论</h2>
             <p>复杂度路由的本质不是"看查询选模型"，而是把 token、延迟、质量三个变量做成 Pareto 前沿，按业务 SLA 在曲线上选具体的点——这是产品经济学的工作，不是模型调参的工作。</p>
 
-                        <h2>蓝皮书 · 企业落地实践</h2>
-            <p>我们希望收集这个模式在真实企业系统里如何落地。一个模式可以挂多篇实践，下面是已落档的案例切片。</p>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted); border-left: 3px solid var(--color-rule); padding-left: 0.9rem;">虚位以待 · 你手上有把这个模式做深的真实系统？欢迎 <a href="/zh/join/">补一篇企业落地实践 →</a></p>
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <hr>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);">
-                本页属于 ADPS 模式白皮书。返回 <a href="/zh/patterns/">模式矩阵与白皮书目录</a>，
-                或查看配套 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">可运行代码目录</a>。
-            </p>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《R2 复杂度路由》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
@@ -252,9 +264,16 @@ classifier（便宜模型或规则）→ 选定档位 + 置信度
     <script>
     (function(){
       var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
       for(var i=0;i<heads.length;i++){
         heads[i].addEventListener('click',function(){
-          this.parentElement.classList.toggle('open');
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
         });
       }
     })();
