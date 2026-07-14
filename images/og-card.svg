@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Agent Design Patterns Society</title>
+  <desc id="desc">ADPS identity card with a six by seven pattern coordinate field.</desc>
+  <rect width="1200" height="630" fill="#0c2f4c"/>
+  <rect x="58" y="58" width="1084" height="514" fill="none" stroke="#31536e" stroke-width="2"/>
+
+  <g transform="translate(84 86)">
+    <rect width="96" height="96" rx="8" fill="#f8fafc"/>
+    <g fill="#0f3a5f" opacity="0.35">
+      <circle cx="15" cy="9" r="1.6"/><circle cx="28" cy="9" r="1.6"/><circle cx="41" cy="9" r="1.6"/><circle cx="54" cy="9" r="1.6"/><circle cx="67" cy="9" r="1.6"/><circle cx="80" cy="9" r="1.6"/>
+      <circle cx="15" cy="22" r="1.6"/><circle cx="28" cy="22" r="1.6"/><circle cx="41" cy="22" r="1.6"/><circle cx="54" cy="22" r="1.6"/><circle cx="67" cy="22" r="1.6"/><circle cx="80" cy="22" r="1.6"/>
+      <circle cx="15" cy="35" r="1.6"/><circle cx="28" cy="35" r="1.6"/><circle cx="41" cy="35" r="1.6"/><circle cx="54" cy="35" r="1.6"/><circle cx="67" cy="35" r="1.6"/><circle cx="80" cy="35" r="1.6"/>
+      <circle cx="15" cy="48" r="1.6"/><circle cx="28" cy="48" r="1.6"/><circle cx="41" cy="48" r="1.6"/><circle cx="54" cy="48" r="1.6"/><circle cx="67" cy="48" r="1.6"/><circle cx="80" cy="48" r="1.6"/>
+      <circle cx="15" cy="61" r="1.6"/><circle cx="28" cy="61" r="1.6"/><circle cx="41" cy="61" r="1.6"/><circle cx="54" cy="61" r="1.6"/><circle cx="67" cy="61" r="1.6"/><circle cx="80" cy="61" r="1.6"/>
+      <circle cx="15" cy="74" r="1.6"/><circle cx="28" cy="74" r="1.6"/><circle cx="41" cy="74" r="1.6"/><circle cx="54" cy="74" r="1.6"/><circle cx="67" cy="74" r="1.6"/><circle cx="80" cy="74" r="1.6"/>
+      <circle cx="15" cy="87" r="1.6"/><circle cx="28" cy="87" r="1.6"/><circle cx="41" cy="87" r="1.6"/><circle cx="54" cy="87" r="1.6"/><circle cx="67" cy="87" r="1.6"/><circle cx="80" cy="87" r="1.6"/>
+    </g>
+    <g fill="none" stroke="#b8842b" stroke-linecap="square" stroke-linejoin="miter">
+      <path d="M17 77 47 18 77 77" stroke-width="5.7"/>
+      <path d="M31 54h32" stroke-width="5.7"/>
+    </g>
+  </g>
+
+  <text x="208" y="151" fill="#f8fafc" font-family="Arial, Helvetica, sans-serif" font-size="70" font-weight="700">ADPS</text>
+  <text x="84" y="300" fill="#f8fafc" font-family="Georgia, 'Times New Roman', serif" font-size="56">Agent Design Patterns Society</text>
+  <text x="87" y="357" fill="#cbd5e1" font-family="Arial, Helvetica, sans-serif" font-size="27">A public pattern language for production AI agent systems.</text>
+
+  <g transform="translate(807 103)">
+    <g fill="#f8fafc" opacity="0.25">
+      <circle cx="0" cy="0" r="4"/><circle cx="55" cy="0" r="4"/><circle cx="110" cy="0" r="4"/><circle cx="165" cy="0" r="4"/><circle cx="220" cy="0" r="4"/><circle cx="275" cy="0" r="4"/>
+      <circle cx="0" cy="48" r="4"/><circle cx="55" cy="48" r="4"/><circle cx="110" cy="48" r="4"/><circle cx="165" cy="48" r="4"/><circle cx="220" cy="48" r="4"/><circle cx="275" cy="48" r="4"/>
+      <circle cx="0" cy="96" r="4"/><circle cx="55" cy="96" r="4"/><circle cx="110" cy="96" r="4"/><circle cx="165" cy="96" r="4"/><circle cx="220" cy="96" r="4"/><circle cx="275" cy="96" r="4"/>
+      <circle cx="0" cy="144" r="4"/><circle cx="55" cy="144" r="4"/><circle cx="110" cy="144" r="4"/><circle cx="165" cy="144" r="4"/><circle cx="220" cy="144" r="4"/><circle cx="275" cy="144" r="4"/>
+      <circle cx="0" cy="192" r="4"/><circle cx="55" cy="192" r="4"/><circle cx="110" cy="192" r="4"/><circle cx="165" cy="192" r="4"/><circle cx="220" cy="192" r="4"/><circle cx="275" cy="192" r="4"/>
+      <circle cx="0" cy="240" r="4"/><circle cx="55" cy="240" r="4"/><circle cx="110" cy="240" r="4"/><circle cx="165" cy="240" r="4"/><circle cx="220" cy="240" r="4"/><circle cx="275" cy="240" r="4"/>
+      <circle cx="0" cy="288" r="4"/><circle cx="55" cy="288" r="4"/><circle cx="110" cy="288" r="4"/><circle cx="165" cy="288" r="4"/><circle cx="220" cy="288" r="4"/><circle cx="275" cy="288" r="4"/>
+    </g>
+    <path d="M0 240h55v-48h55v48h55v-96h55V96h55" fill="none" stroke="#c49136" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter"/>
+    <rect x="-7" y="233" width="14" height="14" fill="#f8fafc"/>
+    <rect x="268" y="89" width="14" height="14" fill="#f8fafc"/>
+  </g>
+
+  <line x1="84" y1="466" x2="1116" y2="466" stroke="#31536e" stroke-width="2"/>
+  <text x="84" y="521" fill="#c49136" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">ADPSAGENT.COM</text>
+  <text x="1116" y="521" text-anchor="end" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="21">Patterns · Evidence · Engineering Practice</text>
+</svg>

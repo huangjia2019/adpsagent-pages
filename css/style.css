@@ -1,5 +1,5 @@
 /* ========================================================================
-   adpsagent.com  ·  style.css   v0.1
+   adpsagent.com  ·  style.css   v0.2
    Agent Design Patterns Society — research community site.
    Cool palette (deep blue + brass) for institutional / society feel.
    Structural CSS forked from kage-ai.com v0.7, colors re-themed.
@@ -80,19 +80,41 @@ hr {
 }
 .site-header .container {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
 }
 .site-brand {
-    font-size: 1.05rem;
-    font-weight: 600;
+    align-items: center;
     color: var(--color-text);
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 0.65rem;
     text-decoration: none;
-    letter-spacing: -0.01em;
 }
 .site-brand:hover { color: var(--color-link); }
+.site-brand-mark {
+    flex: 0 0 auto;
+    height: 2.3rem;
+    width: 2.3rem;
+}
+.site-brand-copy {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+.site-brand-name {
+    font-size: 1rem;
+    font-weight: 750;
+}
+.site-brand-full {
+    color: var(--color-text-muted);
+    font-size: 0.58rem;
+    font-weight: 500;
+    margin-top: 0.22rem;
+    white-space: nowrap;
+}
 .site-nav {
     display: flex;
     gap: 1.25rem;
@@ -107,6 +129,20 @@ hr {
 .site-nav .lang-switch {
     border-left: 1px solid var(--color-rule);
     padding-left: 1.25rem;
+}
+
+@media (max-width: 760px) {
+    .site-header { padding-bottom: 0.75rem; }
+    .site-header .container { display: block; }
+    .site-nav {
+        flex-wrap: nowrap;
+        gap: 1.05rem;
+        margin-top: 0.8rem;
+        overflow-x: auto;
+        padding-bottom: 0.25rem;
+        scrollbar-width: thin;
+    }
+    .site-nav a { flex: 0 0 auto; white-space: nowrap; }
 }
 
 /* --- intro / blocks --- */
@@ -157,7 +193,7 @@ hr {
     font-size: 1.85rem;
     font-weight: 700;
     margin-bottom: 0.4rem;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 1.15;
 }
 .intro-role {
@@ -854,7 +890,7 @@ hr {
     font-size: 1.7rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
 }
 .writing-index .lede { margin-bottom: 2rem; }
 
@@ -893,7 +929,7 @@ article.essay h1 {
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 0.6rem;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
 }
 article.essay .essay-meta {
     color: var(--color-text-faint);
@@ -1014,7 +1050,7 @@ article.essay footer a { color: var(--color-link); }
     font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1.25rem;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
 }
 .about-content p,
 .books-content p {
@@ -1200,7 +1236,7 @@ article.essay footer a { color: var(--color-link); }
     font-size: 1.45rem;
     color: #c96838;
     line-height: 0.96;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     margin: 0 0 0.35rem 0;
 }
 .mock-subtitle {

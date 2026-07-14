@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">ADPS pattern coordinate mark</title>
+  <desc id="desc">A brass architectural A drawn over a six by seven coordinate field.</desc>
+  <rect x="2" y="2" width="60" height="60" rx="5" fill="#0f3a5f"/>
+  <g fill="#f8fafc" opacity="0.42">
+    <circle cx="12" cy="9" r="1"/><circle cx="20" cy="9" r="1"/><circle cx="28" cy="9" r="1"/><circle cx="36" cy="9" r="1"/><circle cx="44" cy="9" r="1"/><circle cx="52" cy="9" r="1"/>
+    <circle cx="12" cy="17" r="1"/><circle cx="20" cy="17" r="1"/><circle cx="28" cy="17" r="1"/><circle cx="36" cy="17" r="1"/><circle cx="44" cy="17" r="1"/><circle cx="52" cy="17" r="1"/>
+    <circle cx="12" cy="25" r="1"/><circle cx="20" cy="25" r="1"/><circle cx="28" cy="25" r="1"/><circle cx="36" cy="25" r="1"/><circle cx="44" cy="25" r="1"/><circle cx="52" cy="25" r="1"/>
+    <circle cx="12" cy="33" r="1"/><circle cx="20" cy="33" r="1"/><circle cx="28" cy="33" r="1"/><circle cx="36" cy="33" r="1"/><circle cx="44" cy="33" r="1"/><circle cx="52" cy="33" r="1"/>
+    <circle cx="12" cy="41" r="1"/><circle cx="20" cy="41" r="1"/><circle cx="28" cy="41" r="1"/><circle cx="36" cy="41" r="1"/><circle cx="44" cy="41" r="1"/><circle cx="52" cy="41" r="1"/>
+    <circle cx="12" cy="49" r="1"/><circle cx="20" cy="49" r="1"/><circle cx="28" cy="49" r="1"/><circle cx="36" cy="49" r="1"/><circle cx="44" cy="49" r="1"/><circle cx="52" cy="49" r="1"/>
+    <circle cx="12" cy="57" r="1"/><circle cx="20" cy="57" r="1"/><circle cx="28" cy="57" r="1"/><circle cx="36" cy="57" r="1"/><circle cx="44" cy="57" r="1"/><circle cx="52" cy="57" r="1"/>
+  </g>
+  <g fill="none" stroke="#c49136" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M13 49 31.5 13 50 49" stroke-width="3.6"/>
+    <path d="M21.5 34.5h20" stroke-width="3.6"/>
+  </g>
+  <g fill="#f8fafc">
+    <rect x="11.2" y="47.2" width="3.6" height="3.6"/>
+    <rect x="29.7" y="11.2" width="3.6" height="3.6"/>
+    <rect x="48.2" y="47.2" width="3.6" height="3.6"/>
+  </g>
+</svg>
