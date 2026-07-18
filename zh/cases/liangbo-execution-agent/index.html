@@ -58,8 +58,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -76,8 +76,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -141,7 +141,7 @@
             <p>第一步就从最简单的地方开始：先把用户对话和 Agent 答复这套基本数据管道接通，让人能和 Agent 连续对话即可。注意力不放在技能工具怎么定义、怎么注册、怎么被自主使用上，那些都往后排。</p>
             <p>这里有两条来自企业落地的经验，跟个人开发者自由发挥很不一样。</p>
             <p>第一条是前端要尽早同步做，而且要在交互和样式上多花精力做精美。个人开发者爱看命令行无可厚非，但在团队和企业里落地一个项目，尽早把展示界面按真实情况做漂亮，对提高开发效率、降低公司内部阻力至关重要。一个像样的前端会给团队提振信心，碰到长期攻坚的技术难题时减轻挫败感，因为每次看到它都觉得已经像个产品了。更现实的一面在企业内部：项目启动一个月后就会有人没耐心，业务侧、市场侧的同事也会开始关注，他们不会耐着性子听你在命令行或代码里讲落地了多牛的设计，只会从可展示的前端去体会。每个阶段都能看到美观像样的页面，外部阻碍就小很多，甚至能换来资源。反过来，废了九牛二虎之力实现复杂机制，可能只因一个页面样式不好看就被人觉得团队 going nowhere。现在有 AI IDE，尽早做个漂亮前端并不难，这事应该早做。</p>
-            <p>第二条是一开始就把可观测性搭足，这是重点推荐的经验。这里的可观测有特定语义，指的不是 Agent 对它所处世界的观测，指的是让 Agent 的意识和行为对开发者自己可观测——完整展现一次对话里 Agent 产生的一系列行动，以及驱动这些行动的思考和推理，即它的精神活动和躯体活动。具体落地是把一次对话的整个执行过程按时间轴清晰展示出来，而不是只在用户输入和最终回复这两层做展示、中间过程全黑盒。对每一步，既要看到 Agent 产生了什么动作，也要按时间顺序看到这一步的 LLM 调用细节——运行态实际用的提示词、LLM 的输出、这一步相关的各种成本。对动作这一侧，做法是把 Agent 的活动和程序逻辑全部封装抽象成带语义的事件，比如用户意图识别、意图网关路由判定、ReAct 执行。这些调试详情在生产投放时可以关掉，开发态时在前端打开。这样开发体验就接近于在一个透明玻璃罩里组装或修理一块瑞士机械手表——虽然复杂精细，但总能直接看到每个零件在哪里工作，系统越复杂越能压住心智负担。这一块的深度落地见 <a href="/zh/patterns/g5-observability-harness/">G5 可观测性切片</a>。</p>
+            <p>第二条是一开始就把可观测性搭足，这是重点推荐的经验。这里的可观测有特定语义，指的不是 Agent 对它所处世界的观测，指的是让 Agent 的意识和行为对开发者自己可观测——完整展现一次对话里 Agent 产生的一系列行动，以及驱动这些行动的思考和推理，即它的精神活动和躯体活动。具体落地是把一次对话的整个执行过程按时间轴清晰展示出来，而不是只在用户输入和最终回复这两层做展示、中间过程全黑盒。对每一步，既要看到 Agent 产生了什么动作，也要按时间顺序看到这一步的 LLM 调用细节——运行态实际用的提示词、LLM 的输出、这一步相关的各种成本。对动作这一侧，做法是把 Agent 的活动和程序逻辑全部封装抽象成带语义的事件，比如用户意图识别、意图网关路由判定、ReAct 执行。这些调试详情在生产投放时可以关掉，开发态时在前端打开。这样开发体验就接近于在一个透明玻璃罩里组装或修理一块瑞士机械手表——虽然复杂精细，但总能直接看到每个零件在哪里工作，系统越复杂越能压住心智负担。这一块的深度落地见 <a href="/zh/patterns/g4-observability-harness/">G4 可观测性切片</a>。</p>
             <p>对话管道通了、附件能上传了，相当于 Agent 的主要输入进来了，再把完整的可观测基础设施铺好，就具备了往上逐步堆能力的地基。</p>
             <h2>四、二元论：先把活的不确定的，转成死的可控的</h2>
             <p>往上堆的第一个能力是意图识别。这属于感知，但这里要的感知更进一步——理解了用户对话不能就反馈对话结束，得在这里明确拿到控制信号，用来选择驱动 Agent 往下游走的逻辑分支。最核心的工程逻辑是：以用户对话为输入，用提示词引导 LLM 返回结构化输出，把用户意图收敛抽象到系统内可接纳的几个下游控制信号上。</p>

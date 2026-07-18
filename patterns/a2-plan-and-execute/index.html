@@ -57,8 +57,8 @@
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/" class="active">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
-              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
-              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
               <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
@@ -75,8 +75,8 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
-              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -199,7 +199,7 @@
             <ul>
             <li><strong>Prompt chaining (A3)</strong>: a dual pair, one heavy and one light. A2 is a complete plan plus DAG parallelism plus replanning; A3 is linear chaining with no replanning. The most common form in production is A2 on the outside and A3 on the inside—each planned subtask runs a prompt chain internally.</li>
             <li><strong>Tool dispatch (A1)</strong>: each execution step in A2 internally does one round of A1 tool selection. The idea of using heterogeneous models for Planner and Executor shares its origin with A1's Programmatic Tool Calling.</li>
-            <li><strong>Guard sandwich (A5)</strong>: the approval nodes and compliance checks in the plan are often implemented by A5's pre-check at deployment time. Both hand control back to the user.</li>
+            <li><strong>Guard sandwich (A4)</strong>: the approval nodes and compliance checks in the plan are often implemented by A4's pre-check at deployment time. Both hand control back to the user.</li>
             <li><strong>Iterative hypothesis testing (R4)</strong>: R4 is the reasoning side's "adjust as you go," while A2 is the action side's "fix first, then adjust." A2's local replanning borrows R4's feedback-adjustment idea.</li>
             </ul>
             <h2>Design conclusion</h2>

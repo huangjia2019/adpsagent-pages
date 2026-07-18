@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/" class="active">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -160,7 +160,7 @@
             <h2>分类依据：行动 × 路由</h2>
             <ul>
             <li><strong>纵轴 · 行动</strong>：agent 要把决策变成对外影响，靠的就是工具调用。多工具场景下"调哪个"是行动端最前置、也最高频的决策，所以它属于行动模块而非推理模块。</li>
-            <li><strong>横轴 · 路由</strong>：它的工作方式是基于当前 intent 和 context，把这一次调用导向最合适的那个工具，是典型的路由结构，而不是链式串联或层级包装。同模块的最简工具集（A4）也落在路由这一侧，但分工不同——A1 解决"怎么挑"，A4 解决"挑之前先砍"。</li>
+            <li><strong>横轴 · 路由</strong>：它的工作方式是基于当前 intent 和 context，把这一次调用导向最合适的那个工具，是典型的路由结构，而不是链式串联或层级包装。同模块的最简工具集（A5）也落在路由这一侧，但分工不同——A1 解决"怎么挑"，A5 解决"挑之前先砍"。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <p>工业级 Tool Dispatch 的质量，主要由工具元数据的丰富度决定。OpenAI 早期 function calling 只有 name、description、parameters 三个字段，够 demo 用。Claude Code 的工具 schema 扩到了 14 个字段，按用途大致分成八类：标识、动态描述、双 schema、执行特性、UI 行为、来源标记、渐进披露、生命周期。</p>
@@ -224,9 +224,9 @@
             <p>梁博团队的执行型 agent 把工具、技能、知识库分成三种角色：工具是"手"，技能是"套路"，知识库是"地图加手册"。agent 通过 <code>retrieve</code> 看地图、<code>use_skill</code> 读套路、<code>call_tool</code> 出手——出手前先看图读套路，正是 Tool Dispatch 在工程层做选择的体现。落到那个城配派单 agent 上，团队重写 dispatch 层时加了五件事：工具元数据扩展、selection guidance、写操作前强制状态刷新、单 session 内同一司机派单配额、saga 副作用追踪。准确率从 60% 升到 96%，代价是 dispatch 层多了约 800 行代码。多出来的每一行，本质都是把工程师踩过的坑固化成了机器执行的规则。</p>
             <h2>相关模式</h2>
             <ul>
-            <li><strong>最简工具集（A4）</strong>：同格互补。A1 在给定工具集里挑得准，A4 先把工具集砍到合理规模让 A1 挑得动。</li>
+            <li><strong>最简工具集（A5）</strong>：同格互补。A1 在给定工具集里挑得准，A5 先把工具集砍到合理规模让 A1 挑得动。</li>
             <li><strong>规划-执行（A2）</strong>：A1 是单步决策的优化，A2 是多步任务的整体编排。Programmatic Tool Calling 是两者的交汇——工程层定调用序列，每步内部仍是一次 dispatch。</li>
-            <li><strong>护栏三明治（A5）</strong>：A5 在 dispatch 的前后套 pre-check 和 post-check，与 A1 的 quota、state refresh 是嵌套关系——A1 选对工具，A5 保证选错时也兜得住。</li>
+            <li><strong>护栏三明治（A4）</strong>：A4 在 dispatch 的前后套 pre-check 和 post-check，与 A1 的 quota、state refresh 是嵌套关系——A1 选对工具，A4 保证选错时也兜得住。</li>
             <li><strong>复杂度路由（R2）</strong>：思路同源，都是基于 context 做路由，区别在 R2 路由的是推理档位，A1 路由的是工具。</li>
             </ul>
             <h2>设计结论</h2>

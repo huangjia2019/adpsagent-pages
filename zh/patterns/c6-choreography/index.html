@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -159,7 +159,7 @@
             <p>编舞解决的就是这种规模下的耦合问题。它把中央指挥拿掉，让每个 agent 成为一个自治单元：它只订阅自己关心的事件，事件来了就反应，反应完把结果作为新事件发回到共享的事件流里，不向任何中心汇报。系统的整体行为不再写在某一处的流程图里，而是从所有 agent 的局部"订阅—反应—发布"规则中涌现出来。加一个新 agent，只要让它订阅该订阅的事件，其余 agent 一行都不用改。</p>
             <p>这件事值得单独成一个模式，是因为它不是编排的一个参数变体，而是协作拓扑的另一极：控制权从集中变成了分散。它跟扇出聚合、层级委派这些有中心的协作模式，在结构取向上是相反的。</p>
             <h2>分类依据：协作 × 编舞</h2>
-            <p>这是协作模块里第一个不落在核心 6 拓扑列上的模式，需要专门说清楚，就像行动模块的最简工具集（A4）落在"约束"而非具体拓扑列上一样。</p>
+            <p>这是协作模块里第一个不落在核心 6 拓扑列上的模式，需要专门说清楚，就像行动模块的最简工具集（A5）落在"约束"而非具体拓扑列上一样。</p>
             <ul>
             <li><strong>纵轴 · 协作</strong>：编舞描述的是多个 agent 怎么协同，没有单个 agent 的版本，所以纵轴稳稳落在协作模块。</li>
             <li><strong>横轴 · 编舞（新兴拓扑，不是核心 6 列之一）</strong>：核心的 6 个拓扑（链式、路由、并行、循环、层级、编排）有一个共同的隐含前提——存在一个可设计的控制点。链有顺序、路由有路由器、并行有 fan-out/gather、循环有迭代器、层级有经理、编排有指挥。编舞的定义特征就是取消这个控制点。所以它不是核心轴上的第 7 个取值，而是"控制权在不在中心"这根维度的负极。它和编排是一对孪生：编排由指挥协调，编舞由事件协调。</li>
@@ -182,7 +182,7 @@
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>没有可观测就上编舞</strong>：涌现行为没有中央 trace，出了问题无从查起。编舞强依赖可观测性（G5）——每个事件必须带关联 ID、可按因果链 replay。先有 Observability Harness 再上编舞，顺序反了必踩坑。</li>
+            <li><strong>没有可观测就上编舞</strong>：涌现行为没有中央 trace，出了问题无从查起。编舞强依赖可观测性（G4）——每个事件必须带关联 ID、可按因果链 replay。先有 Observability Harness 再上编舞，顺序反了必踩坑。</li>
             <li><strong>事件风暴 / 无限回环</strong>：A 发事件触发 B，B 反应又发事件触发 A，循环不收敛。必须做幂等、加事件 TTL、做回环检测。</li>
             <li><strong>完成态无人宣布</strong>：去中心化之后，"这个任务到底结束没有"变成一个没人能直接回答的问题。要用显式终止事件或 saga 补偿来界定，不能含糊。</li>
             <li><strong>拿编舞当万金油</strong>：绝大多数系统的默认应该是编排，编舞只在规模、耦合、可用性顶到天花板时才挣得到它的位置。为了"先进"而上编舞，等于用最难调试的拓扑解一个本来一个编排器就够的问题。</li>
@@ -190,7 +190,7 @@
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>事件可追溯率</strong>（健康区 &gt; 95%）：能从关联 ID 的事件日志里完整重建一条因果链的比例。这是编舞能不能上生产的前置闸门，直接绑定 G5 可观测性。</li>
+            <li><strong>事件可追溯率</strong>（健康区 &gt; 95%）：能从关联 ID 的事件日志里完整重建一条因果链的比例。这是编舞能不能上生产的前置闸门，直接绑定 G4 可观测性。</li>
             <li><strong>收敛率 / 事件风暴率</strong>（健康区：失控回环 &lt; 1%）：一段协作里正常到达终止事件、而非陷入无限回环的比例。</li>
             <li><strong>耦合影响面</strong>（健康区 ≈ 0）：新增或下线一个 agent，需要改动的其他 agent 数量。这个数趋近于零，正是上编舞的核心收益，也是检验它有没有做对的最直接指标。</li>
             <li><strong>端到端延迟</strong>（健康区：与编排版可比）：去中心化不应该用大幅延迟换弹性，否则得重新评估值不值。</li>
@@ -224,7 +224,7 @@ bus.publish(initial_event)                   # 点火，之后全靠涌现
             <p>代价也很诚实：他们先补齐了可观测性，每个事件强制带 correlation ID、可按 case 全链路 replay，否则涌现行为根本没法查；并且在最后一段"案件是否彻底处置完"上，保留了一个薄薄的编排式 saga 来界定完成态，因为纯编舞回答不了"这个 case 结没结"。这正是生产里最常见的形态——<strong>编舞为主、关键收口处留一个薄编排的混合式</strong>，而不是非此即彼。当代主流框架里，AutoGen 在 0.4 版把运行时重构为事件驱动的 actor 模型，是这种编舞倾向最接近主流工程的一个实现；A2A 协议（已捐给 Linux Foundation）也在把多 agent 互操作往事件驱动方向带。</p>
             <h2>相关模式</h2>
             <ul>
-            <li><strong>可观测性（G5）</strong>：硬前置依赖。编舞没有中央 trace，全靠关联 ID 的事件日志回溯因果。没有 G5，编舞不可调试、不可上生产。</li>
+            <li><strong>可观测性（G4）</strong>：硬前置依赖。编舞没有中央 trace，全靠关联 ID 的事件日志回溯因果。没有 G4，编舞不可调试、不可上生产。</li>
             <li><strong>编排（散落在层级 / 治理）</strong>：一对孪生，互为对立面。编排由指挥协调、控制集中；编舞由事件协调、控制分散。生产系统多是两者的混合，而非纯种。</li>
             <li><strong>扇出聚合（C2）</strong>：形似而神不同。扇出有中心负责 fan-out 和 gather，worker 并行但要回到中心收口；编舞连这个中心都没有，反应结果直接进事件流。扇出是有中心的并行，编舞是无中心的协作。</li>
             <li><strong>失败日记（记忆模块 M4）</strong>：event sourcing 是编舞在记忆行的回声——把状态变化记成不可变事件流，本质同源。</li>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 Guardrail Sandwich · Pattern White Paper · ADPS</title>
+    <meta name="description" content="Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from &quot;free action&quot; to &quot;supervised action.&qu">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/a4-guardrail-sandwich/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/" class="active">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>A4</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+                <h1>A4 · Guardrail Sandwich</h1>
+                <p class="publication-deck">Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from &quot;free action&quot; to &quot;supervised action.&quot;</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
+                    <div><dt>Classification</dt><dd>Action × Hierarchy</dd></div>
+                    <div><dt>Catalog status</dt><dd>Core pattern</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+
+                        <table>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Coordinate</strong></td>
+            <td style="text-align: left;">Action × Hierarchy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Cost</strong></td>
+            <td style="text-align: left;">Cross-cutting (a cross-cutting concern; overhead scales with risk tier)</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Pattern group</strong></td>
+            <td style="text-align: left;">Action patterns</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Summary</strong></td>
+            <td style="text-align: left;">Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from "free action" to "supervised action."</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>Problem</h2>
+            <p>The previous four patterns all teach the agent how to do the right thing, but a production-grade agent must also answer another question: how to stop it when it does the wrong thing. In the third week after a bank's corporate-transfer agent went live, it parsed an account number from a customer email, "...XX23," as "...XX32," and 3.2 million yuan was transferred to the wrong account. The reconciliation system did not catch it until 12 hours later, by which point the other party had already withdrawn part of the funds. The agent completed the whole process confidently, with no check at any point—no one verified the account number, the amount, or the customer's intent before the call, and no one reviewed receipt or compliance after the call.</p>
+            <p>The problem is not that the agent is dumb; it is that there was no sandwiched protection. In the Agentic Top 10 that OWASP officially released in 2026, A1 (Agent Goal Hijack) and A2 (Tool Misuse) are exactly about this; surveys show that 88% of organizations have experienced at least one AI agent security incident. It is not a question of whether an incident will happen, but of which day it will happen. Guardrail Sandwich wraps structured pre- and post-action review around every destructive action, so that an incident is blocked before execution or rolled back after execution.</p>
+            <h2>Classification: Action × Hierarchy</h2>
+            <ul>
+            <li><strong>Vertical axis · Action</strong>: What it wraps is the agent's action execution—inserting guards before, during, and after a tool call. This belongs to execution control on the action side.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: pre-guard → tool call → post-guard is a layered wrapping structure, homologous with middleware in web frameworks—one layer wraps another, where the outer layer runs before the inner layer and finishes after it. Although it shares layering with Plan-Execute (A2), the direction differs: A2 is "strategy-tactics" layering (think first, then act), while A4 is "safety-execution" layering (review first, then act).</li>
+            </ul>
+            <h2>Solution and mechanics</h2>
+            <p>The best engineering implementation is a hook—one hook can wrap any tool, configured once and benefiting every agent, without changing code for each tool. Claude Code's hooks system lays out 12 lifecycle events, and the most central is a pair:</p>
+            <ul>
+            <li><strong>PreToolUse</strong>: Triggered before a tool call. It is the only hook in the whole system that can block (exit code 2 blocks directly). It can intercept, modify parameters, and add context. Typical use cases are path allowlists, command blocklists, quota checks, and approval gates.</li>
+            <li><strong>PostToolUse</strong>: Triggered after a tool call. It cannot undo an action that has already happened; it can only validate output, prompt the next step, and trigger an audit or saga rollback. Typical use cases are output schema validation, sensitive-data scanning, and side-effect confirmation.</li>
+            </ul>
+            <p>There are three key disciplines for putting this into practice:</p>
+            <ul>
+            <li><strong>Tier by risk_level</strong>: Read operations can run bare and should not be sandwiched; ordinary writes get 2 to 3 layers; destructive ones get the full set; CRITICAL actions in finance, healthcare, and the like get the full set plus an Approval Gate. The hook configuration file is itself the agent's risk map.</li>
+            <li><strong>Order hooks "cheap first, expensive last"</strong>: An RBAC check (a single dict lookup) goes first to fail fast, and an AML scan (which queries an anti-money-laundering database) goes later, saving compute.</li>
+            <li><strong>Three-phase rollout</strong>: monitor mode in weeks 1-2 (log only, do not block, collect false-positive samples), soft enforcement in weeks 3-4 (block clear violations, flag edge cases), and full enforcement from month 2 on. Going straight to full enforcement will lock up the agent and seriously affect the business side's use—tuning guardrails is like tuning machine learning: you must collect data online and then tune.</li>
+            </ul>
+            <h2>Applicability</h2>
+            <ul>
+            <li><strong>Side-effecting actions where a wrong call is costly</strong>: transfers, deleting data, sending messages, calling external APIs. Read operations (read file, search, read-only fetch) need not be sandwiched—every added layer is extra latency overhead.</li>
+            <li><strong>Strongly regulated verticals</strong>: finance, healthcare, law, government. The hard constraints in such scenarios (amount thresholds, prescription dosages, sanction lists) can be encoded 1:1 into the pre-check.</li>
+            <li><strong>Hybrid gating combined with an Approval Gate</strong>: low-risk actions pass automatically through the sandwich, while high-risk actions are double-gated with the sandwich plus human approval.</li>
+            </ul>
+            <h2>Known failure modes</h2>
+            <ul>
+            <li><strong>Composition Bypass</strong>: Each individual action is permitted (read a file, base64-encode, write a URL), but strung together they amount to data exfiltration. Single-point checks all pass, because they do not analyze the sequence. Research shows that a compromised agent can poison 87% of downstream decisions within 4 hours, largely for this reason. The response is, beyond single-point hooks, to add a session-level scope analyzer that examines whether the combination of actions over the past few minutes constitutes a known attack pattern—this is the SIEM of the LLM era.</li>
+            <li><strong>Sandwich Overhead Tax</strong>: Sandwiching every tool with the full set uniformly raises overall latency by 5 to 10 times. Wrapping a file read in RBAC plus AML plus auditing is a huge waste. The response is to tier strictly by risk_level and let LOW pass directly.</li>
+            <li><strong>Schema Drift</strong>: The schema validated by the pre-check is inconsistent with what the downstream tool actually expects, so the pre-check passes but the tool fails. The response is to use OpenAPI / JSON Schema as the single source of truth, generating the validation logic on both sides from the same schema.</li>
+            </ul>
+            <p>The common root cause of all three failures is this: Guardrail Sandwich is not plug-and-play; it is engineering governance—installing a hook does not equal doing governance right. You must continuously maintain hook order, the risk map, and schema sourcing, just as a database index runs fast once added but becomes a burden if not maintained.</p>
+            <h2>Verification and metrics</h2>
+            <ul>
+            <li><strong>Block rate</strong> (observed during the monitor phase; healthy range &lt;5% after full enforcement): going straight to full enforcement often produces a block rate over 30% in the first week, a sign that thresholds are not tuned.</li>
+            <li><strong>Mis-transfer / wrong-call rate</strong> (healthy range set by the business; &lt;0.01% in financial scenarios): the bank case dropped from 0.3% to 0.001%.</li>
+            <li><strong>Sandwich latency overhead</strong> (healthy range matched to risk_level): the full set of 6 hooks in finance adds about 800ms, a reasonable cost; if a read operation rises by the same amount, that is the sandwich tax.</li>
+            <li><strong>Audit completeness rate</strong> (healthy range 100%): a trace_id threads the entire process, with records retained for 7 years in financial scenarios. Auditing is a byproduct of the sandwich, not extra effort.</li>
+            </ul>
+            <h2>Reference implementation</h2>
+            <pre><code>wrap(tool, ctx):
+                for hook in pre_hooks:            # order: cheap first, expensive last
+                    verdict = hook(ctx)
+                    if verdict.block → short-circuit, return blocked + trace
+                    if verdict.modify_args → update ctx.args
+                result = tool(**ctx.args)          # execute inside an isolated sandbox
+                for hook in post_hooks:
+                    verdict = hook(ctx, result)
+                    if verdict.rollback → trigger saga inverse, return rolled_back
+                    if verdict.modify_result → update result
+                return ok + result + full trace (each hook's passed/reason/latency)
+            </code></pre>
+            <p>Engineering points: wrap every destructive tool with it; hooks must be idempotent (safe to retry—network jitter must not transfer money twice); persist trace_id as the key for threading audits together.</p>
+            <h2>Application example</h2>
+            <p>A bank's corporate-transfer agent wraps all destructive tools in a sandwich, realized as six decision points. Pre layer: RBAC permission check, three-tier triage by amount (under 100,000 automatic / 100,000 to 1 million SMS confirmation / over 1 million human review), recipient-account allowlist match, and pre-execution sanction-list scan. Post layer: post-execution anti-money-laundering scan (highly suspicious cases trigger automatic saga rollback, moderately suspicious cases are flagged to risk control) and 7-year retention of audit logs. Hook order is critical—amount triage comes before the allowlist, but both must come before the sanction scan, because sanctions are a legal red line. After installation, the mis-transfer rate dropped from 0.3% to 0.001%, and per-transaction latency rose from 2 seconds to 4 to 5 seconds. Back to the opening, the <code>account_whitelist</code> layer would have first caught that "...XX32 is not in the customer's allowlist" and required a second SMS confirmation—one hook, configured once, blocks an entire class of incident. The same structure ported to healthcare becomes role permissions, prescription-dosage thresholds, medical-history allowlists, an FDA blocklist, drug-interaction scanning, and HIPAA auditing—the business constraints change, the pattern does not.</p>
+            <h2>Related patterns</h2>
+            <ul>
+            <li><strong>Tool Dispatch (A1)</strong>: Nested and complementary. A1's quota and state refresh are lightweight guards built into the dispatch, while A4 is a general sandwich wrapped around the dispatch—A1 picks the right tool, and A4 ensures you are covered even when the pick is wrong.</li>
+            <li><strong>Plan-Execute (A2)</strong>: The approval nodes and compliance checks in an A2 plan are, in practice, often implemented by A4's pre-check.</li>
+            <li><strong>Approval Gate (governance module)</strong>: Homologous but with a different division of labor. The Approval Gate is human-in-the-loop (waiting for a person to approve), while A4 is a deterministic check (the machine directly performs rule matching). The two often work together—low-risk goes through the sandwich, and high-risk adds the Approval Gate to the sandwich.</li>
+            <li><strong>Failure Diary (perception module)</strong>: Failures like composition bypass and memory poisoning cannot be blocked by a single sandwich layer; they must be defended together with the memory module's audit.</li>
+            </ul>
+            <h2>Design conclusion</h2>
+            <p>Guardrail Sandwich encodes thousands of years of humanity's procedural-justice wisdom into the agent's action layer—the pre-check is the prior hearing, execution is carrying out the judgment, and the post-check is after-the-fact remedy. The mark of maturity in agent engineering is not how cool the demo runs, but that when an incident occurs, nothing goes wrong.</p>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>A4 Guardrail Sandwich</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/" class="active">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -241,8 +241,8 @@
             <ul>
             <li><strong>审批门（G1）</strong>：静态门 vs 动态档位。审批门是一道固定的门，渐进承诺是一条会演化的权力路径。两者整合后，当前信任档位直接决定哪些动作还需要人审。</li>
             <li><strong>爆炸半径控制（G2）</strong>：双柱。爆炸半径限制单次动作的损失上限，渐进承诺限制 Agent 随时间累积的权限档位。一个管深度，一个管广度。</li>
-            <li><strong>可观测性（G5）</strong>：依赖。每次档位晋升降级都要可解释、可审计，trust level 变化的 trace 全靠 G5 记录，否则没法向监管说明"为什么现在它有这个权限"。</li>
-            <li><strong>钩子流水线（G4）</strong>：实现层。within-session 的并行 probe 在 Claude Code 里就是多个 PreToolUse hook 并行校验，任一 veto 即 abort。</li>
+            <li><strong>可观测性（G4）</strong>：依赖。每次档位晋升降级都要可解释、可审计，trust level 变化的 trace 全靠 G4 记录，否则没法向监管说明"为什么现在它有这个权限"。</li>
+            <li><strong>钩子流水线（G5）</strong>：实现层。within-session 的并行 probe 在 Claude Code 里就是多个 PreToolUse hook 并行校验，任一 veto 即 abort。</li>
             </ul>
             <h2>设计结论</h2>
             <p>渐进承诺把信任从 day 1 的假设变成 day N 的挣得，对应整个 Agent 体系的核心判断——Agent 的价值跟它累积的经验等比，而这种累积只属于这个特定 Agent 在这个特定业务里的 track record，模型更新给不了。</p>

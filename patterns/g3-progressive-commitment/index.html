@@ -57,8 +57,8 @@
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
-              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
-              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
               <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
@@ -75,8 +75,8 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/" class="active">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
-              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -231,8 +231,8 @@
             <ul>
             <li><strong>Approval Gate (G1)</strong>: Static gate vs. dynamic level. The approval gate is a fixed gate; progressive commitment is a power path that evolves. Once integrated, the current trust level directly determines which actions still need human review.</li>
             <li><strong>Blast Radius Control (G2)</strong>: Twin pillars. Blast radius limits the maximum loss of a single action; progressive commitment limits the permission level the agent accumulates over time. One governs depth, the other governs breadth.</li>
-            <li><strong>Observability (G5)</strong>: Dependency. Every level escalation and demotion must be explainable and auditable, and the trace of trust-level changes relies entirely on G5 to record; otherwise there is no way to explain to regulators "why it has this permission now."</li>
-            <li><strong>Hook Pipeline (G4)</strong>: Implementation layer. The within-session parallel probes are, in Claude Code, multiple PreToolUse hooks validating in parallel, with any veto causing an abort.</li>
+            <li><strong>Observability (G4)</strong>: Dependency. Every level escalation and demotion must be explainable and auditable, and the trace of trust-level changes relies entirely on G4 to record; otherwise there is no way to explain to regulators "why it has this permission now."</li>
+            <li><strong>Hook Pipeline (G5)</strong>: Implementation layer. The within-session parallel probes are, in Claude Code, multiple PreToolUse hooks validating in parallel, with any veto causing an abort.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Progressive commitment turns trust from a day-1 assumption into a day-N earning, which maps to a core judgment about the entire agent system—an agent's value scales with the experience it accumulates, and that accumulation belongs only to this specific agent in this specific business, as its track record, something a model update cannot provide.</p>

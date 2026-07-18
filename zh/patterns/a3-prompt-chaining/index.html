@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/" class="active">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -214,7 +214,7 @@ return 成功(current, total_tokens, trace)
             <ul>
             <li><strong>规划-执行（A2）</strong>：一对对偶，一轻一重。A3 是直线，A2 是图。任务能画成 DAG（有并行、有跨步依赖）就用 A2，是一根直线就用 A3。生产里常见 A2 在外、A3 在内的混合形态。</li>
             <li><strong>工具调度（A1）</strong>：嵌套关系而非替代。chain 的某一步内部可能调工具，那一步是 A1（在多个工具中选一个），但它发生在 chain 的某一节里。</li>
-            <li><strong>护栏三明治（A5）</strong>：chain 的闸门是同步的程序化检查，A5 的 hook 是套在工具调用前后的夹层。两者都是"让流程在卡点处可拦截"。</li>
+            <li><strong>护栏三明治（A4）</strong>：chain 的闸门是同步的程序化检查，A4 的 hook 是套在工具调用前后的夹层。两者都是"让流程在卡点处可拦截"。</li>
             </ul>
             <h2>设计结论</h2>
             <p>只要你的系统跟 LLM 多轮对话，你其实已经在用 prompt chain 了，区别只在它是显式还是隐式——显式的链你能给每段配模型、加闸门、留 trace、replay 失败步骤，隐式的链你只能祈祷模型这次别翻车。</p>

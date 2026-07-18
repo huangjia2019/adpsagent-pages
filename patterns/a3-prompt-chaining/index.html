@@ -57,8 +57,8 @@
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/" class="active">A3 Prompt Chaining</a>
-              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
-              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
               <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
@@ -75,8 +75,8 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
-              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -204,7 +204,7 @@
             <ul>
             <li><strong>Plan-Execute (A2)</strong>: a dual pair, one light and one heavy. A3 is a straight line, A2 is a graph. If the task can be drawn as a DAG (with parallelism and cross-step dependencies), use A2; if it is a straight line, use A3. A common hybrid form in production is A2 on the outside, A3 on the inside.</li>
             <li><strong>Tool Dispatch (A1)</strong>: a nesting relationship rather than a substitution. A step inside a chain may call a tool, and that step is A1 (choosing one among several tools), but it happens within one link of the chain.</li>
-            <li><strong>Guardrail Sandwich (A5)</strong>: a chain's gate is a synchronous programmatic check, while A5's hook is a sandwich layer wrapped around tool calls before and after. Both make "the process interceptable at checkpoints."</li>
+            <li><strong>Guardrail Sandwich (A4)</strong>: a chain's gate is a synchronous programmatic check, while A4's hook is a sandwich layer wrapped around tool calls before and after. Both make "the process interceptable at checkpoints."</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>As long as your system holds a multi-turn conversation with an LLM, you are already using a prompt chain; the only difference is whether it is explicit or implicit. With an explicit chain you can assign a model to each segment, add gates, keep a trace, and replay failed steps; with an implicit chain you can only pray the model does not crash this time.</p>

@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/" class="active">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -209,7 +209,7 @@ while plan 未完成:
             <ul>
             <li><strong>提示链（A3）</strong>：一对对偶模式，一重一轻。A2 是完整 plan 加 DAG 并行加 replan，A3 是线性串联无 replan。生产里最常见的形态是 A2 在外、A3 在内——每个被规划出来的子任务内部跑一条 prompt chain。</li>
             <li><strong>工具调度（A1）</strong>：A2 的每个执行步骤内部都要做一次 A1 的工具选择。Planner 和 Executor 用异构模型的思路，与 A1 的 Programmatic Tool Calling 同源。</li>
-            <li><strong>护栏三明治（A5）</strong>：plan 里的审批节点和合规校验，落地时常由 A5 的 pre-check 实现。两者都把控制权交还给用户。</li>
+            <li><strong>护栏三明治（A4）</strong>：plan 里的审批节点和合规校验，落地时常由 A4 的 pre-check 实现。两者都把控制权交还给用户。</li>
             <li><strong>迭代假设验证（R4）</strong>：R4 是推理端的"边做边调"，A2 是行动端的"先定后调"。A2 的局部 replan 借鉴了 R4 的反馈调整思路。</li>
             </ul>
             <h2>设计结论</h2>

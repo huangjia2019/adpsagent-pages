@@ -57,8 +57,8 @@
               <a href="/patterns/a1-tool-dispatch/" class="active">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
-              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
-              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
               <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
@@ -75,8 +75,8 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
-              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -150,7 +150,7 @@
             <h2>Classification: Action × Route</h2>
             <ul>
             <li><strong>Vertical axis · Action</strong>: an agent turns decisions into outward effect through tool calls. In multi-tool scenarios, "which one to call" is the earliest and most frequent decision on the action side, so it belongs to the action module rather than the reasoning module.</li>
-            <li><strong>Horizontal axis · Route</strong>: it works by directing a given call to the most suitable tool based on current intent and context. This is a typical routing structure, not a chained sequence or a hierarchical wrapper. The minimal tool set (A4) in the same module also falls on the routing side, but with a different division of labor—A1 addresses "how to pick," while A4 addresses "trim before picking."</li>
+            <li><strong>Horizontal axis · Route</strong>: it works by directing a given call to the most suitable tool based on current intent and context. This is a typical routing structure, not a chained sequence or a hierarchical wrapper. The minimal tool set (A5) in the same module also falls on the routing side, but with a different division of labor—A1 addresses "how to pick," while A5 addresses "trim before picking."</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>The quality of industrial-grade Tool Dispatch is determined mainly by the richness of tool metadata. OpenAI's early function calling had only three fields—name, description, parameters—which is enough for a demo. Claude Code's tool schema expands to 14 fields, grouped roughly into eight categories by purpose: identification, dynamic description, dual schema, execution characteristics, UI behavior, source marking, progressive disclosure, and lifecycle.</p>
@@ -214,9 +214,9 @@
             <p>Liang Bo's team's execution agent divides tools, skills, and knowledge bases into three roles: tools are the "hands," skills are the "playbooks," and the knowledge base is the "map plus manual." The agent uses <code>retrieve</code> to read the map, <code>use_skill</code> to read the playbook, and <code>call_tool</code> to act—reading the map and playbook before acting is exactly Tool Dispatch making the selection at the engineering layer. Applied to that intra-city dispatch agent, the team added five things when rewriting the dispatch layer: tool metadata expansion, selection guidance, mandatory state refresh before write operations, a quota on dispatching to the same driver within a single session, and saga side-effect tracking. Accuracy rose from 60% to 96%, at the cost of about 800 additional lines in the dispatch layer. Each extra line is, in essence, a pitfall an engineer once stepped into, hardened into a rule the machine executes.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Minimal tool set (A4)</strong>: complementary within the same cell. A1 picks accurately within a given tool set; A4 first trims the tool set to a reasonable size so that A1 can pick at all.</li>
+            <li><strong>Minimal tool set (A5)</strong>: complementary within the same cell. A1 picks accurately within a given tool set; A5 first trims the tool set to a reasonable size so that A1 can pick at all.</li>
             <li><strong>Plan-and-execute (A2)</strong>: A1 optimizes single-step decisions, while A2 orchestrates the whole multi-step task. Programmatic Tool Calling is where the two meet—the engineering layer sets the call sequence, and within each step it is still a single dispatch.</li>
-            <li><strong>Guardrail sandwich (A5)</strong>: A5 wraps a pre-check and a post-check around the dispatch, nesting with A1's quota and state refresh—A1 picks the right tool, and A5 ensures the wrong pick is still caught.</li>
+            <li><strong>Guardrail sandwich (A4)</strong>: A4 wraps a pre-check and a post-check around the dispatch, nesting with A1's quota and state refresh—A1 picks the right tool, and A4 ensures the wrong pick is still caught.</li>
             <li><strong>Complexity routing (R2)</strong>: same line of thinking, both routing based on context. The difference is that R2 routes the reasoning tier, while A1 routes the tool.</li>
             </ul>
             <h2>Design conclusion</h2>

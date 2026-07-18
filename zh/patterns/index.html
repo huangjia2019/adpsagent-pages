@@ -80,8 +80,8 @@
             <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
             <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
             <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-            <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-            <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+            <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+            <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
             <h4>反思 Reflection</h4>
             <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
             <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -98,8 +98,8 @@
             <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
             <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
             <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-            <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-            <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+            <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+            <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             <h4>案例</h4>
             <a href="/zh/cases/" class="sb-home">案例库 · 蓝皮书</a>
             <h4>概念</h4>
@@ -175,10 +175,10 @@
                     <tr><td class="fn">感知</td><td class="filled">P2 语义压缩</td><td class="filled">P1 上下文分诊</td><td class="filled">P4 多模态融合</td><td class="empty">—</td><td class="filled">P3 渐进发现</td><td class="empty">—</td></tr>
                     <tr><td class="fn">记忆</td><td class="filled">M2 RAG（naive）</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 进度追踪</td><td class="filled">M2 Agentic RAG · M4 失败日记</td><td class="filled">M1 分层保留</td></tr>
                     <tr><td class="fn">推理</td><td class="filled">R1 思维链</td><td class="filled">R2 复杂度路由</td><td class="filled">R3 并行探索</td><td class="empty">—</td><td class="filled">R4 迭代假设验证</td><td class="empty">—</td></tr>
-                    <tr><td class="fn">行动</td><td class="filled">A3 提示链</td><td class="filled">A1 工具调度</td><td class="empty">—</td><td class="filled">A2 规划执行</td><td class="empty">—</td><td class="filled">A5 守卫三明治</td></tr>
+                    <tr><td class="fn">行动</td><td class="filled">A3 提示链</td><td class="filled">A1 工具调度</td><td class="empty">—</td><td class="filled">A2 规划执行</td><td class="empty">—</td><td class="filled">A4 守卫三明治</td></tr>
                     <tr><td class="fn">反思</td><td class="filled">F1 生成批评</td><td class="filled">F2 技能包</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 自愈循环</td><td class="filled">F3 经验回放</td></tr>
                     <tr><td class="fn">协作</td><td class="filled">C4 交接链</td><td class="empty">—</td><td class="filled">C2 扇出聚合</td><td class="empty">—</td><td class="filled">C3 对抗评审</td><td class="filled">C1 层级委派</td></tr>
-                    <tr><td class="fn">治理</td><td class="filled">G3 渐进承诺</td><td class="filled">G1 审批门</td><td class="empty">—</td><td class="filled">G5 可观测性</td><td class="empty">—</td><td class="filled">G2 爆炸半径控制</td></tr>
+                    <tr><td class="fn">治理</td><td class="filled">G3 渐进承诺</td><td class="filled">G1 审批门</td><td class="empty">—</td><td class="filled">G4 可观测性</td><td class="empty">—</td><td class="filled">G2 爆炸半径控制</td></tr>
                 </tbody>
             </table>
             </div>
@@ -200,7 +200,7 @@
 
             <h2>模式白皮书目录 · 28 核心 + 6 扩展与候选 = 34</h2>
             <p>
-                双轴框架的 <strong>28 个核心模式</strong>构成已评审矩阵。另有 6 份扩展或候选规范：M5 程序性记忆、R5 双模架构、A4 最简工具集、C5 子代理隔离、G4 钩子流水线和 C6 编舞。C6 在获得跨越协作功能的更多证据前，保持候选拓扑扩展状态。扩展条目标 <span class="ext-badge">扩展</span>。
+                双轴框架的 <strong>28 个核心模式</strong>构成已评审矩阵。另有 6 份扩展或候选规范：M5 程序性记忆、R5 双模架构、A5 最简工具集、C5 子代理隔离、G5 钩子流水线和 C6 编舞。C6 在获得跨越协作功能的更多证据前，保持候选拓扑扩展状态。扩展条目标 <span class="ext-badge">扩展</span>。
             </p>
             <p>
                 每份规范采用同一评审结构：问题、分类依据、解决方案与机制、适用条件、已知失效方式、验证指标、参考实现、应用示例、相关模式和设计结论。
@@ -241,8 +241,8 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a1-tool-dispatch/" style="font-weight: 600;">A1 · 工具调度</a><span style="color: var(--color-text-muted);"> — Agent 在每一步行动前，由工程层依据工具元数据从工具集中挑出最合适的工具，而不是让模型自己临场决定。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a2-plan-and-execute/" style="font-weight: 600;">A2 · 规划执行</a><span style="color: var(--color-text-muted);"> — Agent 先生成完整 plan（含依赖结构、资源预估、审批节点），再由编排者按 plan 执行，遇到偏离时局部 replan 而非全局重写。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a3-prompt-chaining/" style="font-weight: 600;">A3 · 提示链</a><span style="color: var(--color-text-muted);"> — 把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a4-minimal-tool-set/" style="font-weight: 600;">A4 · 最简工具集</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把 agent 的工具集控制在合理上限（通常 10 到 30 个），砍掉低频、合并相似、把次要工具下沉到 sub-agent，给模型留下选择的专注力。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a5-guardrail-sandwich/" style="font-weight: 600;">A5 · 守卫三明治</a><span style="color: var(--color-text-muted);"> — 在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从"自由行动"约束到"被监督的行动"。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a4-guardrail-sandwich/" style="font-weight: 600;">A4 · 守卫三明治</a><span style="color: var(--color-text-muted);"> — 在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从"自由行动"约束到"被监督的行动"。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a5-minimal-tool-set/" style="font-weight: 600;">A5 · 最简工具集</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把 agent 的工具集控制在合理上限（通常 10 到 30 个），砍掉低频、合并相似、把次要工具下沉到 sub-agent，给模型留下选择的专注力。</span></li>
             </ul>
 
             <h3>反思 Reflection · 4 核心</h3>
@@ -270,8 +270,8 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g1-approval-gate/" style="font-weight: 600;">G1 · 审批门</a><span style="color: var(--color-text-muted);"> — 高 blast radius 或不可逆的动作执行前，按风险路由到自动放行 / 留痕 / 人审三档之一，让人在关键决策点保留最后否决权。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g2-blast-radius-control/" style="font-weight: 600;">G2 · 爆炸半径控制</a><span style="color: var(--color-text-muted);"> — 给动作分级（readonly / mutating / catastrophic），用嵌套的工程边界把单次失败的最大损失硬上限锁死。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · 渐进承诺</a><span style="color: var(--color-text-muted);"> — Agent 的权限从只读起步，按阶段顺序解锁到可写、再到不可逆，每升一档要拿证据挣，出事立即降级。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g4-hooks-pipeline/" style="font-weight: 600;">G4 · 钩子流水线</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 在工具调用与 agent step 的前后挂上 deterministic 拦截层，把不该让模型思考的事从 prompt 剥离到 hook 来保证。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g5-observability-harness/" style="font-weight: 600;">G5 · 可观测性</a><span style="color: var(--color-text-muted);"> — 给 Agent 全生命周期挂五维 telemetry，跨 agent 串联 trace，让事后能回放、监管能审计、产品能决策。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g4-observability-harness/" style="font-weight: 600;">G4 · 可观测性</a><span style="color: var(--color-text-muted);"> — 给 Agent 全生命周期挂五维 telemetry，跨 agent 串联 trace，让事后能回放、监管能审计、产品能决策。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/g5-hooks-pipeline/" style="font-weight: 600;">G5 · 钩子流水线</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 在工具调用与 agent step 的前后挂上 deterministic 拦截层，把不该让模型思考的事从 prompt 剥离到 hook 来保证。</span></li>
             </ul>
 
             <h2>编舞 Choreography：编排的去中心化孪生</h2>
@@ -282,15 +282,15 @@
                 编舞里没有中央指挥。每个 Agent 成为一个自治单元，只订阅自己关心的事件，事件来了就反应，反应完把结果作为新事件发回共享的事件流，不向任何中心汇报。系统的整体行为不写在某一处的流程图里，而是从所有 Agent 的局部"订阅—反应—发布"规则中涌现出来。加一个新 Agent，只要让它订阅该订阅的事件，其余 Agent 一行都不用改。它和编排是一对孪生：编排由指挥协调，编舞由事件协调。
             </p>
             <p>
-                ADPS 暂时把编舞登记为新兴拓扑、不升为核心第七列。判据是：一个拓扑要配当核心列，必须能横切多个认知功能，而编舞目前几乎只在协作这一行密集成立。再加上到 2026 年绝大多数上了生产的多 Agent 系统仍是编排式的，证据还不够厚。它强依赖可观测性（G5）——没有中央 trace，涌现行为出了问题无从查起。生产里最常见的形态，是编舞为主、关键收口处留一个薄编排的混合式。完整说明见 <a href="/zh/patterns/c6-choreography/">C6 编舞白皮书</a>。
+                ADPS 暂时把编舞登记为新兴拓扑、不升为核心第七列。判据是：一个拓扑要配当核心列，必须能横切多个认知功能，而编舞目前几乎只在协作这一行密集成立。再加上到 2026 年绝大多数上了生产的多 Agent 系统仍是编排式的，证据还不够厚。它强依赖可观测性（G4）——没有中央 trace，涌现行为出了问题无从查起。生产里最常见的形态，是编舞为主、关键收口处留一个薄编排的混合式。完整说明见 <a href="/zh/patterns/c6-choreography/">C6 编舞白皮书</a>。
             </p>
 
             <h2>三套起步组合</h2>
-            <p>第一次做 Agent 不知从哪入手，下面三套组合覆盖了大部分场景。任何带写权限的 Agent，G1 审批门和 G5 可观测性是底线。</p>
+            <p>第一次做 Agent 不知从哪入手，下面三套组合覆盖了大部分场景。任何带写权限的 Agent，G1 审批门和 G4 可观测性是底线。</p>
             <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.6rem;"><strong>知识问答型 Agent。</strong>P1 上下文分诊 + M2 RAG + R2 复杂度路由 + G5 可观测性。边界提醒：RAG 只提供业务证据，不提供机械真值，所有引用必须可追溯。</li>
-                <li style="margin-bottom: 0.6rem;"><strong>执行型 SaaS Agent。</strong>P1 + M2 RAG + M3 进度追踪 + R2 复杂度路由 + A1 工具调度 + A2 规划执行 + G1 审批门 + G2 爆炸半径控制 + G5 可观测性。边界提醒：employee_id、amount、approval_id 这类机械状态必须来自工具和 SessionState，不能让模型当场合成。</li>
-                <li style="margin-bottom: 0.6rem;"><strong>多 Agent 研究或审查系统。</strong>P3 渐进发现 + M2 RAG + R3 并行探索 + C1 层级委派 + C2 扇出聚合 + C3 对抗评审 + G5 可观测性。边界提醒：多 Agent 的收益来自任务规模、角色边界和独立审查，不来自"看起来更先进"。</li>
+                <li style="margin-bottom: 0.6rem;"><strong>知识问答型 Agent。</strong>P1 上下文分诊 + M2 RAG + R2 复杂度路由 + G4 可观测性。边界提醒：RAG 只提供业务证据，不提供机械真值，所有引用必须可追溯。</li>
+                <li style="margin-bottom: 0.6rem;"><strong>执行型 SaaS Agent。</strong>P1 + M2 RAG + M3 进度追踪 + R2 复杂度路由 + A1 工具调度 + A2 规划执行 + G1 审批门 + G2 爆炸半径控制 + G4 可观测性。边界提醒：employee_id、amount、approval_id 这类机械状态必须来自工具和 SessionState，不能让模型当场合成。</li>
+                <li style="margin-bottom: 0.6rem;"><strong>多 Agent 研究或审查系统。</strong>P3 渐进发现 + M2 RAG + R3 并行探索 + C1 层级委派 + C2 扇出聚合 + C3 对抗评审 + G4 可观测性。边界提醒：多 Agent 的收益来自任务规模、角色边界和独立审查，不来自"看起来更先进"。</li>
             </ul>
 
             <h2>方法论</h2>
@@ -320,10 +320,10 @@
                     <tr><td>感知 Perception</td><td>P1–P4</td><td>感知模块</td><td>Ch3 Perception</td><td><code>perception/</code></td></tr>
                     <tr><td>记忆 Memory</td><td>M1–M4（+M5 扩展）</td><td>记忆模块</td><td>Ch4 Memory</td><td><code>memory/</code></td></tr>
                     <tr><td>推理 Reasoning</td><td>R1–R4（+R5 扩展）</td><td>推理模块</td><td>Ch5 Reasoning</td><td><code>reasoning/</code></td></tr>
-                    <tr><td>行动 Action</td><td>A1–A3、A5（+A4 扩展）</td><td>行动模块</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
+                    <tr><td>行动 Action</td><td>A1–A3、A4（+A5 扩展）</td><td>行动模块</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
                     <tr><td>反思 Reflection</td><td>F1–F4</td><td>反思模块</td><td>Ch7 Reflection</td><td><code>reflection/</code></td></tr>
                     <tr><td>协作 Collaboration</td><td>C1–C4（+C5、C6 扩展）</td><td>协作模块</td><td>Ch8 Collaboration</td><td><code>collaboration/</code></td></tr>
-                    <tr><td>治理 Governance</td><td>G1–G3、G5（+G4 扩展）</td><td>治理模块</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                    <tr><td>治理 Governance</td><td>G1–G3、G4（+G5 扩展）</td><td>治理模块</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
                 </tbody>
             </table>
             </div>

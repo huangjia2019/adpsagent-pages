@@ -76,8 +76,8 @@
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
-              <a href="/patterns/a4-minimal-tool-set/">A4 Minimal Tool Set <span class="ext">ext</span></a>
-              <a href="/patterns/a5-guardrail-sandwich/">A5 Guardrail Sandwich</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
               <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
@@ -94,8 +94,8 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
-              <a href="/patterns/g5-observability-harness/">G5 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -177,10 +177,10 @@
                     <tr><td class="fn">Perception</td><td class="filled">P2 Semantic Compaction</td><td class="filled">P1 Context Triage</td><td class="filled">P4 Multi-Modal Fusion</td><td class="empty">—</td><td class="filled">P3 Progressive Discovery</td><td class="empty">—</td></tr>
                     <tr><td class="fn">Memory</td><td class="filled">M2 RAG (naive)</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 Progress Tracking</td><td class="filled">M2 Agentic RAG · M4 Failure Journals</td><td class="filled">M1 Hierarchical Retention</td></tr>
                     <tr><td class="fn">Reasoning</td><td class="filled">R1 Chain-of-Thought</td><td class="filled">R2 Complexity-Based Routing</td><td class="filled">R3 Parallel Exploration</td><td class="empty">—</td><td class="filled">R4 Iterative Hypothesis Testing</td><td class="empty">—</td></tr>
-                    <tr><td class="fn">Action</td><td class="filled">A3 Prompt Chaining</td><td class="filled">A1 Tool Dispatch</td><td class="empty">—</td><td class="filled">A2 Plan-and-Execute</td><td class="empty">—</td><td class="filled">A5 Guardrail Sandwich</td></tr>
+                    <tr><td class="fn">Action</td><td class="filled">A3 Prompt Chaining</td><td class="filled">A1 Tool Dispatch</td><td class="empty">—</td><td class="filled">A2 Plan-and-Execute</td><td class="empty">—</td><td class="filled">A4 Guardrail Sandwich</td></tr>
                     <tr><td class="fn">Reflection</td><td class="filled">F1 Generator-Critic</td><td class="filled">F2 Skill Package</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 Self-Heal Loop</td><td class="filled">F3 Experience Replay</td></tr>
                     <tr><td class="fn">Collaboration</td><td class="filled">C4 Handoff Chain</td><td class="empty">—</td><td class="filled">C2 Fan-out Gather</td><td class="empty">—</td><td class="filled">C3 Adversarial Review</td><td class="filled">C1 Hierarchical Delegation</td></tr>
-                    <tr><td class="fn">Governance</td><td class="filled">G3 Progressive Commitment</td><td class="filled">G1 Approval Gate</td><td class="empty">—</td><td class="filled">G5 Observability</td><td class="empty">—</td><td class="filled">G2 Blast-Radius Control</td></tr>
+                    <tr><td class="fn">Governance</td><td class="filled">G3 Progressive Commitment</td><td class="filled">G1 Approval Gate</td><td class="empty">—</td><td class="filled">G4 Observability</td><td class="empty">—</td><td class="filled">G2 Blast-Radius Control</td></tr>
                 </tbody>
             </table>
             </div>
@@ -197,7 +197,7 @@
             </ul>
 
             <h2>White-paper catalog · 28 core + 6 extensions and candidates = 34</h2>
-            <p>The <strong>28 core patterns</strong> occupy the reviewed matrix. Six additional specifications cover extension mechanisms or emerging structures: M5 Procedural Memory, R5 Talker-Reasoner, A4 Minimal Tool Set, C5 Sub-Agent Isolation, G4 Hooks Pipeline, and C6 Choreography. C6 remains a candidate topology extension pending evidence across more than the collaboration function. Extension entries are marked <span class="ext-badge">ext</span>.</p>
+            <p>The <strong>28 core patterns</strong> occupy the reviewed matrix. Six additional specifications cover extension mechanisms or emerging structures: M5 Procedural Memory, R5 Talker-Reasoner, A5 Minimal Tool Set, C5 Sub-Agent Isolation, G5 Hooks Pipeline, and C6 Choreography. C6 remains a candidate topology extension pending evidence across more than the collaboration function. Extension entries are marked <span class="ext-badge">ext</span>.</p>
             <p>Every specification follows the same review structure: problem, classification, solution and mechanics, applicability, known failure modes, verification metrics, reference implementation, application example, related patterns, and design conclusion.</p>
 
             <h3>Perception · 4 core</h3>
@@ -232,8 +232,8 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a1-tool-dispatch/" style="font-weight: 600;">A1 · Tool Dispatch</a><span style="color: var(--color-text-muted);"> — Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a2-plan-and-execute/" style="font-weight: 600;">A2 · Plan and Execute</a><span style="color: var(--color-text-muted);"> — The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full rewrite when it drifts.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a3-prompt-chaining/" style="font-weight: 600;">A3 · Prompt Chaining</a><span style="color: var(--color-text-muted);"> — Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to complete the work.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a4-minimal-tool-set/" style="font-weight: 600;">A4 · Minimal Tool Set</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Keep the agent&#x27;s tool set within a reasonable ceiling (usually 10 to 30 tools): drop low-frequency tools, merge similar ones, and push secondary tools down into sub-agents, so the model has the focus to choose.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a5-guardrail-sandwich/" style="font-weight: 600;">A5 · Guardrail Sandwich</a><span style="color: var(--color-text-muted);"> — Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from &quot;free action&quot; to &quot;supervised action.&quot;</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a4-guardrail-sandwich/" style="font-weight: 600;">A4 · Guardrail Sandwich</a><span style="color: var(--color-text-muted);"> — Wrap a pre-check and a post-check layer around every side-effecting or high-risk action the agent takes, constraining it from &quot;free action&quot; to &quot;supervised action.&quot;</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a5-minimal-tool-set/" style="font-weight: 600;">A5 · Minimal Tool Set</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Keep the agent&#x27;s tool set within a reasonable ceiling (usually 10 to 30 tools): drop low-frequency tools, merge similar ones, and push secondary tools down into sub-agents, so the model has the focus to choose.</span></li>
             </ul>
             <h3>Reflection · 4 core</h3>
             <p class="grp-intro">The agent checks itself, corrects itself, and accrues experience — the core of cumulative intelligence. It must bind to external feedback, failure signals, or past trajectories, not self-congratulatory summary.</p>
@@ -258,20 +258,20 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g1-approval-gate/" style="font-weight: 600;">G1 · Approval Gate</a><span style="color: var(--color-text-muted);"> — Before executing a high-blast-radius or irreversible action, route it by risk to one of three tiers — auto-approve, log-and-execute, or human review — so that a human retains final veto power at the critical decision points.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g2-blast-radius-control/" style="font-weight: 600;">G2 · Blast Radius Control</a><span style="color: var(--color-text-muted);"> — Classify actions by severity (readonly / mutating / catastrophic) and use nested engineering boundaries to lock down the maximum loss a single failure can cause.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · Progressive Commitment</a><span style="color: var(--color-text-muted);"> — The agent&#x27;s permissions start read-only and unlock in stages toward writable, then toward irreversible. Each step up must be earned with evidence, and any incident triggers an immediate downgrade.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g4-hooks-pipeline/" style="font-weight: 600;">G4 · Hooks Pipeline</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that guarantee them.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g5-observability-harness/" style="font-weight: 600;">G5 · Observability Harness</a><span style="color: var(--color-text-muted);"> — Attach five-dimensional telemetry across the full agent lifecycle and stitch traces across agents, so the system can be replayed after the fact, audited by regulators, and used to drive product decisions.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g4-observability-harness/" style="font-weight: 600;">G4 · Observability Harness</a><span style="color: var(--color-text-muted);"> — Attach five-dimensional telemetry across the full agent lifecycle and stitch traces across agents, so the system can be replayed after the fact, audited by regulators, and used to drive product decisions.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g5-hooks-pipeline/" style="font-weight: 600;">G5 · Hooks Pipeline</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that guarantee them.</span></li>
             </ul>
             <h2>Choreography: the decentralized twin of orchestration</h2>
             <p>All six core topologies share one implicit premise — a designable control point. A chain has order, routing has a router, parallel has fan-out and gather, a loop has an iterator, hierarchy has a manager, orchestration has a conductor. <strong>The defining trait of choreography is to remove that control point.</strong></p>
             <p>In choreography there is no central conductor. Each agent becomes an autonomous unit that subscribes only to events it cares about, reacts when one arrives, and publishes its result as a new event back to a shared stream — reporting to no center. The system's overall behavior is not written in any single flowchart; it emerges from every agent's local subscribe-react-publish rules. Add a new agent and you only wire its subscriptions; no other agent changes a line. It is orchestration's twin: orchestration is coordinated by a conductor, choreography by events.</p>
-            <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. The test: to be a core column a topology must cut across multiple cognitive functions, and choreography so far holds densely only in collaboration. As of 2026 the vast majority of production multi-agent systems are still orchestration-based — the evidence isn't thick enough. It depends heavily on observability (G5): without a central trace, emergent misbehavior is hard to debug. The most common production form is a hybrid — choreography-led with a thin orchestration at the critical close. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
+            <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. The test: to be a core column a topology must cut across multiple cognitive functions, and choreography so far holds densely only in collaboration. As of 2026 the vast majority of production multi-agent systems are still orchestration-based — the evidence isn't thick enough. It depends heavily on observability (G4): without a central trace, emergent misbehavior is hard to debug. The most common production form is a hybrid — choreography-led with a thin orchestration at the critical close. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
 
             <h2>Three starter combos</h2>
-            <p>First time building an agent and unsure where to start — these three combos cover most scenarios. For any agent with write permission, G1 Approval Gate and G5 Observability are the floor.</p>
+            <p>First time building an agent and unsure where to start — these three combos cover most scenarios. For any agent with write permission, G1 Approval Gate and G4 Observability are the floor.</p>
             <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + G5 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + G5 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + G5 Observability. Boundary: multi-agent gains come from task scale, role boundaries, and independent review — not from looking more advanced.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + G4 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + G4 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + G4 Observability. Boundary: multi-agent gains come from task scale, role boundaries, and independent review — not from looking more advanced.</li>
             </ul>
 
             <h2>Methodology</h2>
@@ -295,10 +295,10 @@
                     <tr><td>Perception</td><td>P1–P4</td><td>Ch3 Perception</td><td><code>perception/</code></td></tr>
                     <tr><td>Memory</td><td>M1–M4 (+M5 ext)</td><td>Ch4 Memory</td><td><code>memory/</code></td></tr>
                     <tr><td>Reasoning</td><td>R1–R4 (+R5 ext)</td><td>Ch5 Reasoning</td><td><code>reasoning/</code></td></tr>
-                    <tr><td>Action</td><td>A1–A3, A5 (+A4 ext)</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
+                    <tr><td>Action</td><td>A1–A3, A4 (+A5 ext)</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
                     <tr><td>Reflection</td><td>F1–F4</td><td>Ch7 Reflection</td><td><code>reflection/</code></td></tr>
                     <tr><td>Collaboration</td><td>C1–C4 (+C5, C6 ext)</td><td>Ch8 Collaboration</td><td><code>collaboration/</code></td></tr>
-                    <tr><td>Governance</td><td>G1–G3, G5 (+G4 ext)</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                    <tr><td>Governance</td><td>G1–G3, G4 (+G5 ext)</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
                 </tbody>
             </table>
             </div>

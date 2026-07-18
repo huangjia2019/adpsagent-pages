@@ -64,8 +64,8 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-minimal-tool-set/">A4 最简工具集 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/a5-guardrail-sandwich/">A5 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
@@ -82,8 +82,8 @@
               <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/g5-observability-harness/">G5 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -232,8 +232,8 @@
             <ul>
             <li><strong>爆炸半径控制（G2）</strong>：治理双柱。审批门是软闸，问"该不该做"；爆炸半径是硬墙，限"做错了能错多大"。审批漏掉的风险，由 G2 的工程边界在事中兜住。</li>
             <li><strong>渐进承诺（G3）</strong>：互补。审批门是一道静态的门，渐进承诺是一条动态的权力进阶路径。同一个动作两个模式一起决定 routing——当前信任档位越高，需要人审的动作越少。</li>
-            <li><strong>可观测性（G5）</strong>：依赖。审批门必须留 audit log，G5 让这些 log 可被查询、可被回放、可被监管审计。没有 G5，审批记录就是没人看的死数据。</li>
-            <li><strong>钩子流水线（G4）</strong>：审批门是 PreToolUse hook 的一种特殊形态——在动作执行前插入的一道 deterministic 拦截。</li>
+            <li><strong>可观测性（G4）</strong>：依赖。审批门必须留 audit log，G4 让这些 log 可被查询、可被回放、可被监管审计。没有 G4，审批记录就是没人看的死数据。</li>
+            <li><strong>钩子流水线（G5）</strong>：审批门是 PreToolUse hook 的一种特殊形态——在动作执行前插入的一道 deterministic 拦截。</li>
             </ul>
             <h2>设计结论</h2>
             <p>Approval Gate 的本质不是 UX 工作流，而是责任承担工程——它把"Agent 出事谁背锅"这个模糊问题，转化成"有人审过的归审批人、自动决定的归 owner"这条明确的责任划分契约。</p>
