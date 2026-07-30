@@ -30,7 +30,6 @@
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/" style="color: var(--color-link);">团队</a>
-                <a href="/zh/contributors/">贡献者</a>
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
@@ -193,6 +192,54 @@
                 </p>
                 <p><strong>在 ADPS 的工作：</strong>把 ADPS 通用范式带入极客邦的工程教学生态与腾讯云架构师社区，推动企业级 Agent 工程实践的落地与传播。</p>
             </div>
+
+
+            <hr>
+
+            <h2>蓝皮书贡献者</h2>
+
+            <p style="margin-top: 1.25rem;">
+                模式规范来自公开研究与书稿，但模式能不能站住，要看它在真实系统里是否被反复用到、
+                在什么条件下失效。这一层证据只能由一线实践者提供。下面记录向共同体交付过
+                <a href="/zh/cases/">案例报告</a>的贡献者与所在机构，以便读者判断证据的来源与边界。
+            </p>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 0.2rem;">梁博（Bo Liang）</h3>
+                <p style="color: var(--color-badge); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.04em; margin: 0 0 0.6rem 0;">案例报告 01 · 企业 SaaS · 执行型 Agent</p>
+                <p>
+                    上海东方屹腾科技有限公司副总裁，同时是 ADPS 创始成员（详见上方创始成员一节）。
+                </p>
+                <p>
+                    贡献
+                    <a href="/zh/cases/liangbo-execution-agent/">案例报告 01 · 东方屹腾执行型 Agent 从零到稳定交付</a>。
+                    报告记录了一套企业 SaaS 业务流程自动化 Agent 的完整演进：为什么 MCP 那套让模型生成参数的做法在执行型场景里走不通，
+                    控制平面与叙事平面怎么分开，机械状态平面怎么解决长随机 ID 的传递问题，以及会话统一状态平面的三权分立结构。
+                </p>
+            </div>
+
+            <div style="margin-top: 2.5rem;">
+                <h3 style="margin-bottom: 0.2rem;">熊钰柯（Yuke Xiong）</h3>
+                <p style="color: var(--color-badge); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.04em; margin: 0 0 0.6rem 0;">案例报告 02 · 地理信息 · 领域 Agent</p>
+                <p>
+                    成都玄宿科技有限公司技术架构师、创业合伙人。成都玄宿科技是一家专业从事 GIS 软件产品及系统研发与服务的高新技术企业，
+                    拥有自主知识产权的国产化二次开发框架，具备基于「GIS 加二三维可视化」的基础底座支撑能力。
+                    他长期在「GIS 加」领域主导产品与项目落地，目前专注于把 Agent 能力嵌入并赋能企业级业务系统。
+                </p>
+                <p>
+                    贡献
+                    <a href="/zh/cases/xuanxu-gis-agent/">案例报告 02 · 成都玄宿 GIS 数据发布 Agent</a>。
+                    报告记录了一个把决策整体前置到设计期的领域 Agent：运行期整条链路没有任何模型调用，
+                    路由是查表，编排是静态六阶段链，而系统仍具备感知、决策、行动、验证、回退、生长的完整闭环。
+                    报告提出的「推理资产化」「磁盘事实平面」「失败日记器官化」，为强规则、精确数据类行业提供了一条可参照的路径。
+                </p>
+                <p><strong>在 ADPS 的工作：</strong>强规则、精确数据处理类行业的落地证据。验证「Agent 负责理解意图与串联流程，领域专业工具继续负责精确计算与执行」这条分工在生产系统里的边界。</p>
+            </div>
+
+            <p style="margin-top: 2.5rem; font-size: 0.92rem; color: var(--color-text-muted); border-left: 2px solid var(--color-rule); padding-left: 0.9rem;">
+                案例报告署名到具体贡献者与所在机构。机构信息由贡献者提供，业务规模与效果数据未经独立审计。
+                收录不等于产品认证，也不构成普遍适用性背书。欢迎经<a href="/zh/join/">加入我们</a>提交新的案例报告或模式修订。
+            </p>
 
         </article>
 
