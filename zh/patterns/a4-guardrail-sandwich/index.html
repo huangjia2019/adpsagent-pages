@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A4 守卫三明治 · 模式白皮书 · ADPS</title>
+    <title>A4 护栏三明治 · 模式白皮书 · ADPS</title>
     <meta name="description" content="在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从&quot;自由行动&quot;约束到&quot;被监督的行动&quot;。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -64,7 +64,7 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-guardrail-sandwich/" class="active">A4 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/" class="active">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
@@ -159,7 +159,7 @@
             <p>问题不是 agent 笨，是没有夹层防护。OWASP 2026 年正式发布的 Agentic Top 10 里，A1（Agent Goal Hijack）和 A2（Tool Misuse）说的就是这件事；调研显示 88% 的组织至少出过一次 AI agent 安全事故。这不是会不会出事的问题，是哪天出事的问题。Guardrail Sandwich 给每个 destructive 动作套上结构化的事前事后审查，让事故在执行前被拦下、或在执行后被回滚。</p>
             <h2>分类依据：行动 × 层级</h2>
             <ul>
-            <li><strong>纵轴 · 行动</strong>：它包装的是 agent 的动作执行——在工具调用的前、中、后插入守卫，属于行动端的执行控制。</li>
+            <li><strong>纵轴 · 行动</strong>：它包装的是 agent 的动作执行——在工具调用的前、中、后插入护栏，属于行动端的执行控制。</li>
             <li><strong>横轴 · 层级</strong>：pre-guard → tool call → post-guard 是一个层级包装结构，与 Web 框架的 middleware 完全同源——一层夹一层，外层先于内层执行、后于内层收尾。它和规划-执行（A2）虽同涉分层，但方向不同：A2 是"战略-战术"分层（先想后干），A4 是"安全-执行"分层（先审后干）。</li>
             </ul>
             <h2>解决方案与机制</h2>
@@ -212,7 +212,7 @@
             <p>银行对公转账 agent 给所有 destructive 工具套上 sandwich，落地为六个决策点。pre 层：RBAC 权限校验、金额阈值三档分诊（10 万以下自动 / 10 到 100 万短信确认 / 100 万以上人审）、收款账号白名单匹配、制裁名单事前扫描。post 层：反洗钱事后扫描（高度可疑自动 saga 回滚、中度可疑 flag 给风控）、审计日志 7 年留档。hook 顺序极其关键——金额分诊在白名单之前，但都必须在制裁扫描之前，因为制裁是法律红线。装上之后误转账率从 0.3% 降到 0.001%，每笔交易延迟从 2 秒涨到 4 到 5 秒。回到开场，<code>account_whitelist</code> 这一层会先抓住"...XX32 不在客户白名单内"并要求短信二次确认——一个 hook 配置一次，挡掉一类事故。同一套结构换到医疗就是角色权限、处方剂量阈值、病史白名单、FDA 黑名单、药物相互作用扫描、HIPAA 审计——业务约束变了，模式不变。</p>
             <h2>相关模式</h2>
             <ul>
-            <li><strong>工具调度（A1）</strong>：嵌套互补。A1 的 quota、state refresh 是 dispatch 内置的轻量守卫，A4 是套在 dispatch 前后的通用夹层——A1 选对工具，A4 保证选错时也兜得住。</li>
+            <li><strong>工具调度（A1）</strong>：嵌套互补。A1 的 quota、state refresh 是 dispatch 内置的轻量护栏，A4 是套在 dispatch 前后的通用夹层——A1 选对工具，A4 保证选错时也兜得住。</li>
             <li><strong>规划-执行（A2）</strong>：A2 plan 里的审批节点和合规校验，落地时常由 A4 的 pre-check 实现。</li>
             <li><strong>Approval Gate（治理模块）</strong>：同源但分工不同。Approval Gate 是 human-in-loop（等人按批准），A4 是 deterministic check（机器直接做规则匹配）。两者常配合——低风险走 sandwich，高风险 sandwich 加 Approval Gate。</li>
             <li><strong>失败日记（感知模块）</strong>：组合绕过、记忆中毒这类失败 sandwich 单层挡不住，要配合记忆模块的 audit 一起防。</li>
@@ -225,7 +225,7 @@
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《A4 守卫三明治》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《A4 护栏三明治》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

@@ -80,7 +80,7 @@
             <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
             <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
             <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-            <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+            <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
             <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
             <h4>反思 Reflection</h4>
             <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
@@ -175,7 +175,7 @@
                     <tr><td class="fn">感知</td><td class="filled">P2 语义压缩</td><td class="filled">P1 上下文分诊</td><td class="filled">P4 多模态融合</td><td class="empty">—</td><td class="filled">P3 渐进发现</td><td class="empty">—</td></tr>
                     <tr><td class="fn">记忆</td><td class="filled">M2 RAG（naive）</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 进度追踪</td><td class="filled">M2 Agentic RAG · M4 失败日记</td><td class="filled">M1 分层保留</td></tr>
                     <tr><td class="fn">推理</td><td class="filled">R1 思维链</td><td class="filled">R2 复杂度路由</td><td class="filled">R3 并行探索</td><td class="empty">—</td><td class="filled">R4 迭代假设验证</td><td class="empty">—</td></tr>
-                    <tr><td class="fn">行动</td><td class="filled">A3 提示链</td><td class="filled">A1 工具调度</td><td class="empty">—</td><td class="filled">A2 规划执行</td><td class="empty">—</td><td class="filled">A4 守卫三明治</td></tr>
+                    <tr><td class="fn">行动</td><td class="filled">A3 提示链</td><td class="filled">A1 工具调度</td><td class="empty">—</td><td class="filled">A2 规划执行</td><td class="empty">—</td><td class="filled">A4 护栏三明治</td></tr>
                     <tr><td class="fn">反思</td><td class="filled">F1 生成批评</td><td class="filled">F2 技能包</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 自愈循环</td><td class="filled">F3 经验回放</td></tr>
                     <tr><td class="fn">协作</td><td class="filled">C4 交接链</td><td class="empty">—</td><td class="filled">C2 扇出聚合</td><td class="empty">—</td><td class="filled">C3 对抗评审</td><td class="filled">C1 层级委派</td></tr>
                     <tr><td class="fn">治理</td><td class="filled">G3 渐进承诺</td><td class="filled">G1 审批门</td><td class="empty">—</td><td class="filled">G4 可观测性</td><td class="empty">—</td><td class="filled">G2 爆炸半径控制</td></tr>
@@ -241,7 +241,7 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a1-tool-dispatch/" style="font-weight: 600;">A1 · 工具调度</a><span style="color: var(--color-text-muted);"> — Agent 在每一步行动前，由工程层依据工具元数据从工具集中挑出最合适的工具，而不是让模型自己临场决定。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a2-plan-and-execute/" style="font-weight: 600;">A2 · 规划执行</a><span style="color: var(--color-text-muted);"> — Agent 先生成完整 plan（含依赖结构、资源预估、审批节点），再由编排者按 plan 执行，遇到偏离时局部 replan 而非全局重写。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a3-prompt-chaining/" style="font-weight: 600;">A3 · 提示链</a><span style="color: var(--color-text-muted);"> — 把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a4-guardrail-sandwich/" style="font-weight: 600;">A4 · 守卫三明治</a><span style="color: var(--color-text-muted);"> — 在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从"自由行动"约束到"被监督的行动"。</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a4-guardrail-sandwich/" style="font-weight: 600;">A4 · 护栏三明治</a><span style="color: var(--color-text-muted);"> — 在 agent 每个有副作用或高风险的动作前后套上 pre-check 和 post-check 夹层，把它从"自由行动"约束到"被监督的行动"。</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/zh/patterns/a5-minimal-tool-set/" style="font-weight: 600;">A5 · 最简工具集</a> <span class="ext-badge">扩展</span><span style="color: var(--color-text-muted);"> — 把 agent 的工具集控制在合理上限（通常 10 到 30 个），砍掉低频、合并相似、把次要工具下沉到 sub-agent，给模型留下选择的专注力。</span></li>
             </ul>
 

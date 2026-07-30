@@ -67,7 +67,7 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
@@ -147,7 +147,7 @@
             <h2>二、为什么不让通用 LLM Agent 直接调 GeoServer</h2>
             <p>把 GeoServer REST API 包装成 MCP 工具、让模型现场决定调哪个接口、传什么参数，这条路团队在动手之前就否决了。理由是 GIS 发布的每一步之间存在严格的参数绑定与状态依赖。</p>
             <p>workspace 名、store 名、layer 名、SRS 字符串、bbox 四个数，都是上一步产出、下一步必须逐位准确引用的机械真值。而 LLM 是概率模型，它不会「取用」参数，只会「尝试生成」参数。生成错一位，轻则服务发布失败，重则发布成功但渲染全错，而且不可预料、不可复现。</p>
-            <p>这个判断与案例报告 01 中<a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>的结论同源。两个团队在完全不同的行业里，因为同一个原因走到了同一个岔口：他们要的不是内容生成，是执行。执行传递的是机械参数，而机械参数不能交给概率模型生成。ADPS 把这条分野写进了<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>的概念定义。</p>
+            <p>这个判断与案例报告 01 中<a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>的结论同源。两个团队在完全不同的行业里，因为同一个原因走到了同一个岔口：两边要的不是内容生成，是执行。执行传递的是机械参数，而机械参数不能交给概率模型生成。ADPS 把这条分野写进了<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>的概念定义。</p>
             <p>判断一个场景落在哪一侧，看四件事。</p>
             <table>
                 <thead><tr><th>维度</th><th>内容生成型</th><th>执行型</th></tr></thead>

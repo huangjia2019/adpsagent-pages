@@ -64,7 +64,7 @@
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
-              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 守卫三明治</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
@@ -237,7 +237,7 @@ classifier（便宜模型或规则）→ 选定档位 + 置信度
             <li><strong>并行探索（R3）</strong>：互补。路由是单时间点选一档省钱，并行是同时开 N 条线买质量，同一个 Agent 里日常走路由、关键决策启动并行。</li>
             <li><strong>思维链（R1）</strong>：路由选的档位里就含 CoT 的 effort 档，路由是 CoT effort 控制从单次调用上升到任务级的版本。</li>
             <li><strong>双模架构（R5）</strong>：双模是路由的架构极致——普通路由是"选一档跑"，双模是"两档同时跑"，把"选档"推到了"拆 Agent"。</li>
-            <li><strong>失败日记 / 守卫类模式</strong>：高风险查询强制走最稳档，和"有些边界不能省钱"的防护思路同源。</li>
+            <li><strong>失败日记 / 护栏类模式</strong>：高风险查询强制走最稳档，和"有些边界不能省钱"的防护思路同源。</li>
             </ul>
             <h2>设计结论</h2>
             <p>复杂度路由的本质不是"看查询选模型"，而是把 token、延迟、质量三个变量做成 Pareto 前沿，按业务 SLA 在曲线上选具体的点——这是产品经济学的工作，不是模型调参的工作。</p>
