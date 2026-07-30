@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>案例库 · 完整蓝皮书 · ADPS</title>
-    <meta name="description" content="ADPS 企业 Agent 系统蓝皮书：一线实践者提供的架构案例报告。">
+    <title>贡献者 · ADPS</title>
+    <meta name="description" content="向 ADPS 共同体交付公开材料的一线实践者与所在机构。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://adpsagent.com/zh/cases/">
+    <link rel="canonical" href="https://adpsagent.com/zh/contributors/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+      .contributor { margin: 2.25rem 0 0 0; padding-top: 1.75rem;
+        border-top: 1px solid var(--color-rule); }
+      .contributor:first-of-type { border-top: none; padding-top: 0.5rem; }
+      .contributor h3 { margin-bottom: 0.2rem; font-size: 1.25rem; }
+      .contributor-role { color: var(--color-badge); font-weight: 600;
+        font-size: 0.92rem; letter-spacing: 0.02em; margin: 0 0 0.9rem 0; }
+      .contributor-detail { font-size: 0.92rem; color: var(--color-text-muted);
+        border-left: 2px solid var(--color-rule); padding-left: 0.9rem;
+        margin-top: 1.1rem; }
+    </style>
 </head>
 <body class="page-essay page-docs">
 
@@ -19,7 +30,7 @@
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/cases/">案例库</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
@@ -83,10 +94,10 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="active">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">成都玄宿 · GIS 发布 Agent</a>
-              <a href="/zh/contributors/">贡献者</a>
+              <a href="/zh/contributors/" class="active">贡献者</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -110,35 +121,58 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"></p>
-
             <header class="publication-head">
-                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书</p>
-                <h1>案例报告目录</h1>
-                <p class="publication-deck">由一线实践者提供、经共同体公开评审的企业 Agent 系统架构记录。</p>
+                <p class="publication-series">ADPS · Agent Design Patterns Society</p>
+                <h1>贡献者</h1>
+                <p class="publication-deck">把一线落地经验交给共同体的人，以及他们所在的机构。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
-                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
-                    <div><dt>已发布报告</dt><dd>2</dd></div>
-                    <div><dt>证据政策</dt><dd>贡献者披露 · 明示边界</dd></div>
-                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                    <div><dt>版本</dt><dd>v0.1</dd></div>
+                    <div><dt>更新日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>蓝皮书贡献者</dt><dd>2</dd></div>
+                    <div><dt>署名政策</dt><dd>案例署名到人与机构</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>收录规则：</strong>案例必须交代系统约束、实现结构、已知失败和迁移边界。收录不等于产品认证或普遍适用性背书。</p>
 
-            <p>案例报告以完整系统为单位，记录运行约束、失败历史、架构决策、证据边界与迁移条件。一份报告可以跨越多个模式，相关模式切片从正文链回白皮书定义。</p>
-            <h2>已发布案例报告</h2>
-            <ul style="list-style: none; margin: 1.25rem 0 1.5rem 0; padding: 0;">
-                <li style="margin-bottom: 0.8rem; line-height: 1.6;"><a href="liangbo-execution-agent/" style="font-weight: 600; font-size: 1.05rem;">东方屹腾 · 执行型 Agent 系统案例报告</a><span style="color: var(--color-text-muted);"> — 从零到稳定交付：控制/叙事二元论、机械状态平面、会话统一状态平面三权分立。</span></li>
-                <li style="margin-bottom: 0.8rem; line-height: 1.6;"><a href="xuanxu-gis-agent/" style="font-weight: 600; font-size: 1.05rem;">成都玄宿 · GIS 数据发布 Agent 案例报告</a><span style="color: var(--color-text-muted);"> — 运行期零 LLM 的执行型系统：推理资产化、磁盘事实平面、失败日记器官化。</span></li>
-            </ul>
+            <p>ADPS 的模式规范来自公开研究与书稿，但模式能不能站住，要看它在真实系统里是否被反复用到、在什么条件下失效。这一层证据只能由一线实践者提供。</p>
+            <p>本页记录向共同体交付过公开材料的贡献者。案例报告署名到人，同时标注其所在机构与该机构提供的场景，以便读者判断证据的来源与边界。</p>
+
+            <h2>蓝皮书贡献者</h2>
+            <p>蓝皮书案例报告由一线实践者主导复盘，交代系统约束、实现结构、已知失败与迁移边界。收录不等于产品认证，也不构成普遍适用性背书。</p>
+
+            <section class="contributor">
+                <h3>梁博（Bo Liang）</h3>
+                <p class="contributor-role">上海东方屹腾科技有限公司 副总裁 · 创办期股东与合伙人</p>
+                <p>负责技术与产品。东方屹腾核心团队来自银行互联网渠道领域，聚焦银行泛金融生态场景的 SaaS 服务。其薪享通 SaaS 服务矩阵已与 20 余家银行建立联合运营体系，服务 5 万余家企业客户，目前正把整个 SaaS 产品矩阵转型为 Agent 体系。</p>
+                <p>他同时是 ADPS 的创始成员之一，在共同体里承担企业部署证据与金融 SaaS 向 Agent 转型的一线实践这条线。</p>
+                <p><strong>贡献的案例报告：</strong><a href="/zh/cases/liangbo-execution-agent/">案例报告 01 · 东方屹腾执行型 Agent 从零到稳定交付</a></p>
+                <p>这份报告记录了一套企业 SaaS 业务流程自动化 Agent 的完整演进：为什么 MCP 那套让模型生成参数的做法在执行型场景里走不通，控制平面与叙事平面怎么分开，机械状态平面怎么解决长随机 ID 的传递问题，以及会话统一状态平面的三权分立结构。报告里那句「团队要的是确定，确定就不能只靠概率」，后来成了共同体讨论执行型场景时反复引用的判据。</p>
+                <p class="contributor-detail">在 ADPS 的工作：企业部署证据，金融 SaaS 向 Agent 系统转型的一线实践。把模式语言放进银行泛金融、HR SaaS、薪酬、考勤、个税、薪资代发等复杂业务流程里验证，并持续把真实企业问题、架构反馈与产品边界带回框架。</p>
+            </section>
+
+            <section class="contributor">
+                <h3>熊钰柯（Yuke Xiong）</h3>
+                <p class="contributor-role">成都玄宿科技有限公司 技术架构师 · 创业合伙人</p>
+                <p>成都玄宿科技是一家专业从事 GIS 软件产品及系统研发与服务的高新技术企业，拥有自主知识产权的国产化二次开发框架，具备基于「GIS 加二三维可视化」的基础底座支撑能力。</p>
+                <p>他长期从事软件研发，在「GIS 加」领域深度参与并主导产品与项目的落地实施，维护二次开发框架，目前专注于把 Agent 能力嵌入并赋能企业级业务系统。</p>
+                <p><strong>贡献的案例报告：</strong><a href="/zh/cases/xuanxu-gis-agent/">案例报告 02 · 成都玄宿 GIS 数据发布 Agent</a></p>
+                <p>这份报告记录了一个把决策整体前置到设计期的领域 Agent：运行期整条链路没有任何模型调用，路由是查表，编排是静态六阶段链，而系统仍然具备感知、决策、行动、验证、回退、生长的完整闭环。报告里提出的「推理资产化」「磁盘事实平面」「失败日记器官化」三个说法，给强规则、精确数据类行业提供了一条可参照的路径。</p>
+                <p>他自己对双轴框架的使用心得是：专业领域 Agent 相比通用 Agent，在一些地方必须取舍，而这套框架最大的价值是让人看清楚哪些是必须取舍的。这份案例报告里那张 42 格落位图，把取舍逐格标了出来，包括主动留空的格子和判定存在分歧的格子。</p>
+                <p class="contributor-detail">在 ADPS 的工作：强规则、精确数据处理类行业的落地证据。验证「Agent 负责理解意图与串联流程，领域专业工具继续负责精确计算与执行」这条分工在生产系统里的边界。</p>
+            </section>
+
+            <h2>怎样成为贡献者</h2>
+            <p>共同体接收两类贡献。</p>
+            <p><strong>案例报告</strong>是完整系统的架构记录，以系统为单位，需要交代运行约束、失败历史、架构决策、证据边界与迁移条件。一份报告可以跨越多个模式，正文中的模式切片链回白皮书定义。案例报告经共同体公开评审后收录。</p>
+            <p><strong>模式修订</strong>是对已发布模式规范的补充或反驳，包括新的失效方式、新的适用条件，或者对某个坐标判定的异议。共同体欢迎带证据的反驳，尤其欢迎「这个模式在我们的场景里不成立」这类材料。</p>
+            <p>两类贡献都可以经<a href="/zh/join/">加入我们</a>页面提出。</p>
 
             <div class="document-citation">
-                <p><strong>版本：</strong>企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
-                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p><strong>署名政策：</strong>案例报告署名到具体贡献者与所在机构。机构信息由贡献者提供，业务规模与效果数据未经独立审计。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/founders/">团队介绍</a> · <a href="/zh/join/">加入我们</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>
+
+
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
