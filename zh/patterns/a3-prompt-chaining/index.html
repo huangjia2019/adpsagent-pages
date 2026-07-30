@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A3 提示链 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。">
+    <meta name="description" content="将复杂任务拆成线性步骤，每步使用独立 prompt 和验收闸门，前一步输出作为下一步输入。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -77,7 +77,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -90,24 +90,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -121,11 +122,11 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>A3 · Prompt Chaining · 提示链</h1>
-                <p class="publication-deck">把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</p>
+                <p class="publication-deck">将复杂任务拆成线性步骤，每步使用独立 prompt 和验收闸门，前一步输出作为下一步输入。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>分类</dt><dd>行动 Action × 链式 Chain（传）</dd></div>
                     <div><dt>目录地位</dt><dd>核心模式</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -149,31 +150,31 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">把一个复杂任务拆成一串小任务，每一步用一段独立的 prompt 跑，前一步的输出作为下一步的输入，串起来完成。</td>
+            <td style="text-align: left;">将复杂任务拆成线性步骤，每步使用独立 prompt 和验收闸门，前一步输出作为下一步输入。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
-            <p>一个 prompt 想一次干完所有事，往往哪件都做不透。某财经媒体的内容编辑 agent 第一版把校对、改写、统一风格、核查数字、起标题、写摘要、配图建议七件事写在一段提示里喂给模型，结果一篇稿子里"GMV 增长 35%"被改成了 53%——模型那一刻在"改写"模式而非"核对"模式，顺手就把数字看走了眼；越往后的任务越敷衍，配图建议永远是那三句套话。</p>
+            <p>单个 prompt 同时承担多个目标时，不同约束会竞争模型注意力。某财经媒体的内容编辑 Agent 将校对、改写、风格统一、数字核查、标题、摘要和配图建议放在同一段提示中，曾把“GMV 增长 35%”改为 53%，后续步骤的输出也趋于模板化。</p>
             <p>Prompt Chaining 把大任务拆成几段独立的 prompt 串行处理，每段只干一件事、有自己的角色和最合适的模型、有自己的成功标准。它和单个超大 prompt 的区别，就是复杂度只能靠拆分降下来，塞进一个更大的盒子是降不下来的。</p>
-            <h2>分类依据：行动 × 链式</h2>
+            <h2>坐标说明：行动 × 链式</h2>
             <ul>
             <li><strong>纵轴 · 行动</strong>：一个 prompt 完不成的任务被拆成几段串行的 prompt，每一段都要触发一次模型调用或工具输出，落点是"做事"而不是单点"想事"，所以属于行动模块。</li>
             <li><strong>横轴 · 链式</strong>：prompt1 → prompt2 → prompt3 是典型的线性 pipeline，前段输出即后段输入，既不是路由分流也不是图状依赖。它和规划-执行（A2）同属链式，区别在 A3 是纯直线、无 replan，A2 是 DAG、有 replan。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <p>它的工程原型是 Unix 管道。<code>cat data.csv | grep ERROR | sort | uniq -c</code> 把几个单一职责的小程序靠 stdin/stdout 串起来，每个程序只读输入、写输出，不需要知道前后是谁。Prompt chain 是同一件事在 LLM 这一层的复刻，每一段 prompt 就是一个"小程序"。</p>
-            <p>比 Unix 管道多出来的那一层是闸门（gate）。Unix 程序匹配不到就空跑，LLM 却会自信地胡说，所以两段之间要插一段廉价的程序化检查——不是模型，是 Python 的 if 判断——不通过就重试或升级。研究员阶段写"找至少三篇参考"，闸门就是 <code>if len(refs) &lt; 3</code>，过关才往下流。</p>
+            <p>提示链在步骤之间增加程序化闸门。闸门可以使用 Python 条件判断，不通过时重试或升级。例如，研究阶段要求至少三篇参考文献，可用 <code>if len(refs) &lt; 3</code> 阻止流程进入下一步。</p>
             <p>几个落地要点：</p>
             <ul>
             <li><strong>每段 prompt 用五件套结构</strong>：role、task、context、format、constraints，全部 wrap 在 XML 标签里。下一段的契约越显式，解析失败率越低，可靠性可测得约 8 到 15 个点的提升。</li>
             <li><strong>每段独立选模型</strong>：校对用便宜模型扛细节，创意改写用强模型，数字核查用中等模型加 thinking。把语言细节丢给便宜模型，能让总成本只比单 prompt 版多约 30%，而不是每步都用强模型的数倍。</li>
             <li><strong>闸门要带容差</strong>：写"恰好 500 词"会让 chain 永远卡死，要写成"450 到 550 词"加"必须包含三个论点"这样的范围加必要条件。</li>
-            <li><strong>重试要回喂失败原因</strong>：把"上次哪里不达标"告诉模型，而不是瞎重跑，命中率才会涨。</li>
+            <li><strong>重试携带失败原因</strong>：将上一次未通过的字段和规则反馈给模型，避免无条件重复调用。</li>
             </ul>
             <p>Claude Code 把 chain 做出了三种工业形态：感知-推理-行动主循环里每个工具结果就是一节链节（隐式链）；slash command 是预制链（<code>/commit</code> 是 status → diff → 推理 → 起草 → 提交的五步模板）；SKILL.md 是可组合的链段（声明式定义多步流程，被嵌进更大的链里）。</p>
-            <h2>适用条件</h2>
+            <h2>适用场景</h2>
             <ul>
             <li><strong>工作流有清晰阶段、阶段间能用一两行代码描述"什么算合格"</strong>：内容编辑、合同审阅、客服工单分诊。生产里大部分团队最后落在 3 到 5 步。</li>
             <li><strong>要把工作流产品化成可复用入口</strong>：slash command 就是把领域专属工作流封装成预制链，用户一条命令触发整链，不用每次手写步骤。</li>
@@ -182,9 +183,9 @@
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>信息饥饿</strong>：每一步只接收前一步的输出，第 3 步需要的信息在第 1 步出现过、但第 2 步没保留就丢了。chain 只传递前一步的输出，不会自动让早期信息流到后面。应对是另带一个所有步骤都能读的累积上下文对象（分布式系统里叫 saga context）。</li>
-            <li><strong>闸门暴政</strong>：闸门设得太死永远过不去，"恰好 500 词"会无限拒绝 499 和 501，烧光 token 才发现。应对是范围加必要条件。</li>
+            <li><strong>闸门条件过严</strong>：要求“恰好 500 词”会拒绝 499 和 501 词的有效结果。应使用范围和必要条件。</li>
             <li><strong>乘积效应被低估</strong>：单步通过率 95%、七步串起来整链通过率只剩约 70%。chain 越长，对单步通过率的要求越高。</li>
-            <li><strong>第一个 prompt 的装配被忽略</strong>：生产 system prompt 通常由基础指令、用户身份、历史、当前任务、工具清单、风格、格式约束等多个数据源拼成，硬编成一坨长字符串会让最高频更新的那部分无法独立维护。</li>
+            <li><strong>system prompt 缺少分区装配</strong>：生产 system prompt 通常由基础指令、用户身份、历史、当前任务、工具清单、风格和格式约束组成。应保留独立数据源和更新边界。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
@@ -192,7 +193,7 @@
             <li><strong>每步耗时 p99</strong>（健康区每步 p99 &lt;3 倍中位数）：chain 变慢时，这张分布图能最快找到拖后腿的那一步。</li>
             <li><strong>闸门重试分布</strong>（健康区 90% 一次过、9% 两次、1% 三次）：某步重试率突然升高，几乎一定是闸门与模型当前能力不匹配。</li>
             </ul>
-            <h2>参考实现</h2>
+            <h2>最小实现</h2>
             <pre><code>chain = [step1, step2, step3]        # 每步自带 system_prompt + model + gate
 current = initial_input
 for step in chain:
@@ -207,24 +208,24 @@ for step in chain:
             return 失败(step, trace)
 return 成功(current, total_tokens, trace)
 </code></pre>
-            <p>工程落地要点：闸门带容差；trace 的 tokens 和耗时结构化落到日志系统；中途需要时主动取回原始输入做参照（如数字核查回到原稿，不让前面改写产生的版本污染数字）。</p>
+            <p>生产实现为闸门设置合理容差；将 token 和耗时写入结构化 trace；数字核查等步骤重新读取原始输入，避免前序改写污染事实。</p>
             <h2>应用示例</h2>
             <p>财经媒体内容编辑 agent 第二版改成七步链：校对（便宜模型，闸门校验输出长度不低于输入 95%）、改写（强模型，保留作者风格）、统一风格、数字核查（中等模型加 thinking，关键设计是回到原稿做参照，闸门要求数字 100% 匹配原稿）、起标题（输出 3 个候选）、写摘要、配图建议（三类必齐）。每步独立选模型是为了控制成本。结果：数字核查准确率从 87% 涨到 99.4%，编辑信任度从 42% 涨到 91%，代价是单稿成本涨约 30%、延迟从 12 秒涨到 38 秒。这套模板可直接平移到合同审阅、医疗影像辅助、客服分诊——每步独立目标、独立模型、独立闸门。</p>
-            <h2>相关模式</h2>
+            <h2>相邻模式</h2>
             <ul>
-            <li><strong>规划-执行（A2）</strong>：一对对偶，一轻一重。A3 是直线，A2 是图。任务能画成 DAG（有并行、有跨步依赖）就用 A2，是一根直线就用 A3。生产里常见 A2 在外、A3 在内的混合形态。</li>
+            <li><strong>规划-执行（A2）</strong>：线性任务可使用 A3；存在并行或跨步依赖的 DAG 使用 A2。生产系统常由 A2 编排外层任务，在子任务内部运行 A3。</li>
             <li><strong>工具调度（A1）</strong>：嵌套关系而非替代。chain 的某一步内部可能调工具，那一步是 A1（在多个工具中选一个），但它发生在 chain 的某一节里。</li>
             <li><strong>护栏三明治（A4）</strong>：chain 的闸门是同步的程序化检查，A4 的 hook 是套在工具调用前后的夹层。两者都是"让流程在卡点处可拦截"。</li>
             </ul>
-            <h2>设计结论</h2>
-            <p>只要你的系统跟 LLM 多轮对话，你其实已经在用 prompt chain 了，区别只在它是显式还是隐式——显式的链你能给每段配模型、加闸门、留 trace、replay 失败步骤，隐式的链你只能祈祷模型这次别翻车。</p>
+            <h2>工程判断</h2>
+            <p>多轮 LLM 调用已经形成事实上的 prompt chain。将链路显式化后，团队可以分别配置模型、校验门、trace 和失败重放，避免控制关系只存在于对话历史中。</p>
 
                         <h2>企业证据</h2>
             <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《A3 提示链》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《A3 提示链》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

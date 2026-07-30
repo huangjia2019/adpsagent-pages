@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方屹腾 · 审批门 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="敏感节点执行前等待审批，通过后重新校验并从原任务节点恢复。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/g1-approval-gate/cases/liangbo/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/g1-approval-gate/" style="color: var(--color-text-muted);">G1 审批门</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
+                <h1>G1 · 审批门 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">敏感节点执行前等待审批，通过后重新校验并从原任务节点恢复。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>主模式</dt><dd>G1 审批门</dd></div>
+                    <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本页是完整案例的模式切片，记录特定系统约束下的实现选择。案例方提供的实现与效果信息未经过独立审计，不构成通用性能承诺。</p>
+
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">主模式</td>
+            <td style="text-align: left;">G1 审批门 Approval Gate（治理 × 路由）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">结合模式</td>
+            <td style="text-align: left;">A2 规划执行 · G4 可观测性</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">案例</td>
+            <td style="text-align: left;">上海东方屹腾科技 · HR/薪酬 SaaS · 服务 2 万+ 企业 · 执行型 Agent</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对应白皮书</td>
+            <td style="text-align: left;"><a href="https://adpsagent.com/zh/patterns/g1-approval-gate/">/zh/patterns/g1-approval-gate/</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">源</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第五章末 · PPT 第 19 页</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">敏感节点在执行前进入等待审批状态；审批通过后重新校验上下文，并从原任务节点恢复。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>场景约束</h2>
+            <p>东方屹腾的 Agent 可以修改薪资项和社保配置，并连接银行与税务接口。代发、申报和批量数据修改等操作具有高错误成本，需要在最终写入前获得人工授权。</p>
+            <p>审批门包含两个不同的问题：</p>
+            <ol>
+            <li>哪些任务或工具必须暂停；</li>
+            <li>审批后如何恢复同一条执行流，而非从头重跑。</li>
+            </ol>
+            <h2>两种续作</h2>
+            <table>
+            <thead>
+            <tr>
+            <th>形态</th>
+            <th>运行方式</th>
+            <th>所需状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td>叙事续作</td>
+            <td>当前会话结束，用户在后续会话确认</td>
+            <td>原始目标与进展摘要</td>
+            </tr>
+            <tr>
+            <td>执行流恢复</td>
+            <td>当前任务节点暂停，收到审批事件后继续</td>
+            <td>任务图、节点状态、业务参数和幂等记录</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>内容修改等任务可以采用叙事续作。代发、报税和终端命令等操作通常需要执行流恢复。</p>
+            <h2>状态机接入</h2>
+            <p>东方屹腾复用规划执行的任务 DAG 和节点状态机。敏感节点在执行前由 <code>ready</code> 转为 <code>awaiting_approval</code>。审批通过后重新校验，再返回 <code>ready</code>；拒绝或超时后进入 <code>blocked</code>、<code>cancelled</code> 或替代流程。</p>
+            <p>下游依赖节点在审批完成前保持不可调度。无依赖的并行分支可以继续运行，具体由任务图决定。</p>
+            <p>审批规则使用声明式配置，至少包括：</p>
+            <ul>
+            <li>任务或工具标识；</li>
+            <li>风险等级与触发条件；</li>
+            <li>所需审批角色；</li>
+            <li>超时和拒绝策略；</li>
+            <li>参数摘要与展示字段；</li>
+            <li>审批后的再次校验要求。</li>
+            </ul>
+            <h2>恢复校验</h2>
+            <p>审批通过不等于立即调用工具。恢复前需要检查：</p>
+            <ol>
+            <li>任务图版本和依赖是否仍有效；</li>
+            <li>SessionState 中的参数是否过期或被覆盖；</li>
+            <li>用户权限和审批主体是否匹配；</li>
+            <li>相同幂等键是否已经成功执行；</li>
+            <li>外部系统状态是否发生变化。</li>
+            </ol>
+            <p>通过检查后，调度器重新计算可运行节点，并从原阻塞点继续。</p>
+            <h2>案例运行</h2>
+            <p>薪资代发节点进入 <code>awaiting_approval</code> 后，界面显示任务、金额摘要、参数来源和待审批原因。审批事件写入统一时间线。批准后，系统核对代发批次、权限和幂等记录，再执行工具；依赖该节点的后续查询或报税任务随后才可调度。</p>
+            <h2>失效信号</h2>
+            <ul>
+            <li>界面显示暂停，后台任务仍继续；</li>
+            <li>审批通过后从头重跑全部任务；</li>
+            <li>下游节点在上游等待审批时被调度；</li>
+            <li>所有写操作都要求审批，审批人形成机械放行；</li>
+            <li>审批规则写死在工具代码中；</li>
+            <li>审批后不重新检查参数、权限和幂等状态；</li>
+            <li>审批记录没有关联任务版本和执行事件。</li>
+            </ul>
+            <h2>验证指标</h2>
+            <ul>
+            <li>高风险操作的审批覆盖率；</li>
+            <li>误拦截率和审批通过率；</li>
+            <li>审批等待时长与超时率；</li>
+            <li>恢复后重复副作用次数；</li>
+            <li>下游节点提前运行次数；</li>
+            <li>审批记录到任务、参数和业务回执的关联完整率。</li>
+            </ul>
+            <h2>与白皮书的对应</h2>
+            <p>G1 白皮书要求在高风险动作前设置显式准入点，并保存审批证据。东方屹腾用规划执行状态机表达阻塞和恢复，用 G4 时间线展示等待、批准和继续执行的全过程。</p>
+            <h2>迁移条件</h2>
+            <p>Agent 执行不可逆、敏感或受监管操作时，应采用执行流审批。系统需要先具备可持久化的任务节点、状态机和幂等机制。只涉及内容确认的场景可以使用较轻的叙事续作。</p>
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 审批门》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

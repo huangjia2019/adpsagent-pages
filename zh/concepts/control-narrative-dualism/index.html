@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>控制平面与叙事平面：执行型 Agent 的二元论 · 概念 · ADPS</title>
-    <meta name="description" content="先把活的不确定的收敛成死的可控的——控制平面机械化，叙事平面靠驾驭。">
+    <title>控制平面与叙事平面 · 概念 · ADPS</title>
+    <meta name="description" content="控制信号驱动程序分支，叙事上下文为模型推理提供语义输入。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/concepts/control-narrative-dualism/">
@@ -71,7 +71,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -84,24 +84,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/" class="active">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/" class="active">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -111,12 +112,12 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 工程概念</p>
-                <h1>控制平面与叙事平面：执行型 Agent 的二元论</h1>
-                <p class="publication-deck">先把活的不确定的收敛成死的可控的——控制平面机械化，叙事平面靠驾驭。</p>
+                <h1>控制平面与叙事平面</h1>
+                <p class="publication-deck">控制信号驱动程序分支，叙事上下文为模型推理提供语义输入。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>案例衍生定义</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>来源案例</dt><dd>东方屹腾执行型 Agent</dd></div>
                     <div><dt>证据类型</dt><dd>一线实践者复盘</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -124,19 +125,22 @@
             </header>
             <p class="publication-note"><strong>证据边界：</strong>本概念由单一生产系统案例抽象而来，供比较和公开评审使用；在获得更多独立案例印证前，不表述为行业标准。</p>
 
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
-
-            <p><img src="/images/concepts/control-narrative-dualism.png" alt="控制平面与叙事平面：执行型 Agent 的二元论" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <p><img src="/images/concepts/control-narrative-dualism.png" alt="执行型 Agent 的控制平面与叙事平面" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
             <h2>概念定义</h2>
-            <p>一个执行型 Agent 的运行态上下文，从一开始就该分成两个性质不同的平面。</p>
-            <p>控制平面是机械的、确定的、离散的信号，决定程序下一步走哪个分支：是闲聊就结束，是查询就检索，是任务就规划。叙事平面是自然语言形态的语义上下文，它作为每一步推理的输入，又在推理之后产出新的控制信号。两个平面并行，才构成一个能跑起来的 Agentic 系统——没有控制信号，工程驱动不起来；没有叙事上下文，每一步推理就没有原料。</p>
-            <p>这条二元论是整套系统的认知地基。它要解决的，是一个人刚上手 Agent 开发时最容易卡住的地方：面对"智能""不确定"这些词无从下手。办法是先把活的、不确定的，收敛成死的、可控的——因为只有死的东西才先能被控制，而控制本身就是机械。</p>
-            <h2>使用说明</h2>
-            <p>控制平面必须机械化。叙事平面也有它的管理机制，包括语义压缩、拼装、写入、按场景注入，但那不是严格的状态控制，更接近"驾驭"。这两件事的区别，梁博用骑马来讲最清楚：控制平面像缰绳和马镫，能让马大部分时间按你的预期走；叙事平面像马的脑子，你能驾驭它，却不能担保它下一刻一定听话。Kubernetes 把集群分成数据平面和控制平面，背后是同一个判断。</p>
-            <p>不分平面会怎样。如果把业务流程的执行顺序也当成叙事上下文喂给模型，指望它在循环里自己跑出正确的步骤，实测的结果是有时跑对、有时明显跨一步或漏一步，而且什么时候出错既不可控也无法预料。根因是 LLM 是概率模型，把确定性的控制流交给它临场判断，在根上就冲突。</p>
-            <p>东方屹腾第一次看到这两个平面，是在最早的意图识别环节：一个能力环节的输出里，已经能分出驱动程序走向的控制信号，和供下游推理消费的叙事内容。这之后，整套架构的每一个取舍都建立在这条分界上。</p>
-            <h2>何时需要</h2>
-            <p>当你的 Agent 在执行一连串有严格状态依赖的业务流程，而不是在生成内容。把控制平面里的状态进一步拆开，就是<a href="../unified-session-state/">会话统一状态平面的三权分立</a>；叙事平面自己怎么组织，就是<a href="../anchor-ledger-collection/">锚、账、集</a>。</p>
+            <p>执行型 Agent 的运行时信息分为两个职责不同的平面：</p>
+            <ul>
+            <li><strong>控制平面</strong>保存离散、可校验的信号，例如意图类型、路由结果、任务状态和审批结果，用于选择程序分支；</li>
+            <li><strong>叙事平面</strong>保存自然语言形式的目标、分析和执行摘要，为模型推理提供语义上下文。</li>
+            </ul>
+            <p>模型可以把叙事输入转换为结构化控制信号，程序再依据控制信号执行确定性逻辑。执行结果分别更新业务状态和叙事记录，供后续步骤使用。</p>
+            <h2>工程机制</h2>
+            <p>控制信号应采用枚举、状态机或结构化对象，并为未知值配置兜底分支。叙事内容可以压缩、检索和投影，但不能替代任务依赖、参数来源或审批状态。</p>
+            <p>Kubernetes 对控制平面和数据平面的划分提供了相近的系统设计参照：一类数据描述期望状态和调度决策，另一类组件执行实际工作。Agent 系统中的叙事平面并不等同于 Kubernetes 数据平面，但两者都通过职责分离降低运行状态的混用风险。</p>
+            <h2>案例用法</h2>
+            <p>东方屹腾在意图识别环节形成了最早的分界。模型把用户请求归为 <code>chat</code>、<code>analyze</code>、<code>resolve</code> 或 <code>unknown</code>，这些枚举进入控制平面；用户原始请求和分析结论进入叙事平面。后续的意图网关只读取控制信号，推理模块则读取经过裁剪的叙事上下文。</p>
+            <p>若把流程顺序写成自然语言并交给 ReAct 临场解释，测试中会出现跨步和漏步。团队因此把顺序转入任务 DAG，把 API 参数转入机械状态平面。叙事平面只保留目标和进展。</p>
+            <h2>适用条件</h2>
+            <p>当 Agent 需要执行有严格状态依赖的业务流程时，应显式区分两个平面。控制状态的进一步拆分见<a href="../unified-session-state/">会话统一状态的三个平面</a>，叙事状态的组织方式见<a href="../anchor-ledger-collection/">锚、账、集</a>。</p>
 
             <div class="document-citation">
                 <p><strong>来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>。</p>

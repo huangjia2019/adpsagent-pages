@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P3 渐进发现 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。">
+    <meta name="description" content="Agent 面对未知信息空间时，通过广扫、精读和深追逐轮缩小检索范围。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -77,7 +77,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -90,24 +90,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -121,11 +122,11 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>P3 · Progressive Discovery · 渐进发现</h1>
-                <p class="publication-deck">Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。</p>
+                <p class="publication-deck">Agent 面对未知信息空间时，通过广扫、精读和深追逐轮缩小检索范围。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>分类</dt><dd>感知 Perception × 循环 Loop（转）</dd></div>
                     <div><dt>目录地位</dt><dd>核心模式</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -149,18 +150,18 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">Agent 面对陌生信息空间且不知道相关信息在哪时，先看一眼再决定钻多深，通过广扫→精读→深追三阶段循环把它探明白。</td>
+            <td style="text-align: left;">Agent 面对未知信息空间时，通过广扫、精读和深追逐轮缩小检索范围。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
-            <p>Agent 面对一个 15000 文件的遗留 codebase、一份没看过的合同、一个长长的事故日志，它不知道相关代码叫什么、不知道关键证据在哪一页。把整个 codebase 喂进去会爆窗口，做 RAG 又常常召不回（相关代码的变量名是 <code>merge_user_state</code>，注释里没有 "order" 字样，语义检索匹配不上）。</p>
-            <p>渐进发现把这件事工程化：用广扫拿一批候选，让看到的内容重塑下一步该看什么，迭代到信号足够强为止。它管的是当下 session 内对未知空间的主动探索，核心约束是成本——一轮探索约 18K token、约 45 秒，远比把整个 codebase 索引进 prompt 划算。</p>
-            <h2>分类依据：感知 × 循环</h2>
+            <p>面对包含 15000 个文件的遗留 codebase、未建立索引的合同或长事故日志时，Agent 往往不知道相关代码的名称或证据所在位置。全量载入 codebase 会超出窗口；RAG 也可能漏召回，例如相关变量名为 <code>merge_user_state</code>，注释中没有 “order”，语义查询难以建立关联。</p>
+            <p>渐进发现先通过广扫获得候选，再根据已有发现调整下一轮查询，直到证据充分或预算耗尽。该模式管理当前 session 对未知空间的主动探索；一轮探索约消耗 18K token、45 秒。</p>
+            <h2>坐标说明：感知 × 循环</h2>
             <ul>
-            <li><strong>纵轴 · 感知</strong>：渐进发现是"先看一眼再决定钻不钻深"的阶段性信息获取，属于感知端的渐进式注意力。它决定 Agent 接下来去看什么，是输入侧的事，不是推理或记忆。</li>
-            <li><strong>横轴 · 循环</strong>：看→决定→再看→决定，每轮带着前一轮的发现做下一轮决策，终止条件是"信息够了"或"成本到顶"。它是迭代式的，不是分诊那种单次完成的路由，也不是压缩那种线性级联。</li>
+            <li><strong>纵轴 · 感知</strong>：渐进发现分阶段获取信息，并决定下一步读取对象，位于推理之前的输入侧。</li>
+            <li><strong>横轴 · 循环</strong>：每轮使用前一轮结果调整检索条件，终止条件为证据充分、预算耗尽或连续无新增发现。分诊通常是单次路由，压缩采用线性级联，渐进发现则重复执行检索与评估。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <p>一次发现走 forage-focus-deepen 三阶段，广度递减、深度递增：</p>
@@ -190,8 +191,8 @@
             </tr>
             </tbody>
             </table>
-            <p>三个机制决定发现的成败。第一，给 Agent grep、read、glob 三件 atomic 工具，不要给 <code>search_codebase()</code> 这种高级封装——只有 atomic 工具支持"看到的内容重塑下一步"的反馈循环。第二，硬上限。循环数封顶（多为 3 轮，事故场景 2 轮），单循环 token 封顶（约 20K），3 轮还没找到说明关键词不对或需要人介入，继续循环不会有新收益。第三，关键词推导是杠杆。第一轮的关键词决定 forage 的命中质量，做得粗糙后面再多循环也救不回来，建议先用一个轻量模型把任务描述翻译成 5-8 个精确关键词再 grep。一轮信号不够时回到 forage 用更准的关键词重来，而不是硬猜。</p>
-            <h2>适用条件</h2>
+            <p>工具层应提供 grep、read、glob 等原子操作，使 Agent 能根据已读内容调整下一次查询。循环数通常限制为 3 轮，事故场景可限制为 2 轮；单轮 token 预算约为 20K。达到上限仍无结果时，应修改关键词或转人工处理。首轮 forage 可先由轻量模型将任务描述转换为 5-8 个精确关键词；后续轮次依据新增证据更新关键词。</p>
+            <h2>适用场景</h2>
             <ul>
             <li><strong>陌生 codebase 的 bug 根因定位</strong>：原作者跑了、文档稀疏，没人知道某条 pipeline 走哪几个文件。Anthropic 披露 Q1 2026 有 78% 的 Claude Code 会话涉及多文件编辑，意味着 Agent 越来越频繁面对不熟悉的代码区域。</li>
             <li><strong>运维事故响应</strong>：接到告警后从 metric 反推关键词，按时间窗口裁剪日志，三阶段定位故障源，给值班工程师初判报告和"第一步该做什么"建议。</li>
@@ -203,7 +204,7 @@
             <li><strong>Forage 关键词太宽</strong>：任务"用户登录变慢了"被写成 <code>["login", "slow"]</code>，返回 5000 个候选，forage 阶段 token 直接爆。让关键词窄而准，<code>["LoginController", "auth_timeout", "session_create"]</code> 精确得多。</li>
             <li><strong>Focus 阶段挑错文件</strong>：scorer 算分错把测试文件排在生产文件前，Agent 读了一堆 spec 文件，关键的 <code>services/auth.rb</code> 没读到。给 scorer 带业务权重：生产文件 &gt; 测试文件、最近修改 &gt; 旧代码、核心目录 &gt; 边缘目录。</li>
             <li><strong>Deepen 死胡同</strong>：追依赖追到第三方库源码，读几百行没拿到任何 signal。给 Deepen 划边界：不追第三方库（除非 bug 报告点名）、不追超过 2 跳的依赖。</li>
-            <li><strong>Discovery 跟 RAG 撞车</strong>：同一个 Agent 同时上 Discovery 和 RAG，两边结果重叠或冲突，Agent 不知道信谁。选一个，不要混用——&lt; 50K 文件用 Discovery，&gt; 400K 用 persistent indexing。</li>
+            <li><strong>Discovery 与 RAG 结果冲突</strong>：两条检索路径可能返回重叠或矛盾的结果。应为信息源设置明确优先级；小于 50K 文件时可优先使用 Discovery，大于 400K 文件时可采用 persistent indexing。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
@@ -211,7 +212,7 @@
             <li><strong>forage/focus token 比</strong>（健康区 0.3-0.5）：forage 应比 focus 轻。超过 0.7 是关键词太宽（拿了太多无关候选），低于 0.2 是关键词太窄（没拿到足够候选）。</li>
             <li><strong>零信号率 zero_signal_rate</strong>（健康线 &lt; 5%）：跑完三阶段还没找到任何 signal 的 session 占比。涨高几乎一定是 atomic 工具坏了（grep 索引过时、read 权限错配、scorer bug），比任务失败率更早报警。</li>
             </ul>
-            <h2>参考实现</h2>
+            <h2>最小实现</h2>
             <pre><code>discover(task, keywords):
     循环 至多 max_cycles（默认 3）：
         Forage：对每个 keyword 跑 grep → 汇总候选 → 按 task 相关性打分 → 留 top-30
@@ -222,24 +223,24 @@
         否则 → 用已发现内容 refine keywords，再来一轮
     每阶段落一条 DiscoveryEvent（phase / keyword / 候选数 / files_read / tokens / wall_time）
 </code></pre>
-            <p>三件 atomic 工具（grep / read / scorer）用注入而非封装，让同一份代码能跑在本地文件系统、MCP server 或外部索引引擎上，只换注入实现。</p>
+            <p>grep、read 和 scorer 通过依赖注入接入，使同一流程可运行于本地文件系统、MCP server 或外部索引引擎。</p>
             <h2>应用示例</h2>
-            <p>一个电商客户的 bug：订单确认邮件偶尔混入其他客户的订单条目。开发团队面对 15000 文件的遗留 monolith，试过把整库喂给 Agent（800K token 爆窗口）、试过 RAG（相关代码无 "order" 字样召不回），最后让 Agent 用 grep + read 自己探。Forage：<code>grep "send.*confirm"</code> 拿 30 个候选，按文件名挑出 <code>mailers/order_confirmed.rb</code>。Focus：完整读 5 个文件，看到调用链 <code>MailerWorker → Cache.get_user → render</code>。Deepen：追 <code>Cache.get_user</code>，发现 cache key 用了 <code>order_id</code> 却没用 <code>customer_id</code>，不同客户订单 id 撞桶就命中错误缓存——bug 找到了。一轮、约 18K token、约 75 秒。复盘结论是这个 bug 跟语义没关系、跟代码结构有关系，只有直接接触结构的 grep + read + follow imports 才能找到。</p>
-            <h2>相关模式</h2>
+            <p>一个电商系统的订单确认邮件偶尔混入其他客户的订单条目。代码库包含 15000 个文件，全量载入需要约 800K token；RAG 也未召回相关代码，因为其中没有 “order” 字样。Agent 在 Forage 阶段执行 <code>grep "send.*confirm"</code>，得到 30 个候选并定位 <code>mailers/order_confirmed.rb</code>；在 Focus 阶段读取 5 个文件，得到调用链 <code>MailerWorker → Cache.get_user → render</code>；在 Deepen 阶段继续检查 <code>Cache.get_user</code>，发现 cache key 使用 <code>order_id</code> 而未包含 <code>customer_id</code>，导致不同客户的同号订单命中相同缓存。整个过程执行一轮，约消耗 18K token、75 秒。该缺陷依赖代码调用关系，直接遍历文件结构比语义召回更有效。</p>
+            <h2>相邻模式</h2>
             <ul>
-            <li><strong>上下文分诊（P1）</strong>：天然耦合。分诊的 P3 句柄就是渐进发现按需拉取的入口，一个被动选、一个主动找。最关键的区别是主动性——分诊和压缩都被动（信息送来或窗口满才动），发现是 Agent 自己决定 grep 什么、读什么。</li>
-            <li><strong>语义压缩（P2）</strong>：三者按 token 的不同时间维度分工，发现管未知 token（决定哪些找）。把探索推给 sub-agent、主 agent 只拿回摘要，正是压缩里 ObservationMasking 思路在发现层的复刻。</li>
-            <li><strong>程序性记忆（Memory 模块）</strong>：建议做成"discovery 找到 + memory 沉淀"双层架构。这次探出的 final_files 跨 session 保留下来，下次类似任务先查记忆，没命中再启动发现，Agent 的经验就开始累积。</li>
+            <li><strong>上下文分诊（P1）</strong>：分诊产生的 P3 句柄可作为渐进发现按需获取的入口。分诊筛选已有候选，渐进发现主动选择查询和读取对象。</li>
+            <li><strong>语义压缩（P2）</strong>：把探索交给 sub-agent、主 Agent 只接收摘要，可以减少探索过程对主 context 的占用。</li>
+            <li><strong>程序性记忆（Memory 模块）</strong>：可将本次得到的 final_files 跨 session 保存。后续同类任务先检索记忆，未命中时再启动渐进发现。</li>
             </ul>
-            <h2>设计结论</h2>
-            <p>最强的 Agent 不是知道得最多的，是知道哪里去找的——渐进发现是信息觅食理论在 LLM 时代的回响，Agent 不试图理解整个 codebase，它找够用的就停。</p>
+            <h2>工程判断</h2>
+            <p>渐进发现通过多轮检索逐步缩小范围。每轮都要更新查询依据，并在证据足够、预算耗尽或连续无新增发现时停止。</p>
 
                         <h2>企业证据</h2>
             <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《P3 渐进发现》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《P3 渐进发现》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

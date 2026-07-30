@@ -3,23 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>成都玄宿 · GIS 数据发布 Agent 案例报告 · ADPS</title>
-    <meta name="description" content="运行期零 LLM 的执行型 Agent：推理资产化、磁盘事实平面、失败日记器官化。">
+    <title>玄宿科技 · GIS 数据发布 Agent 案例报告 · ADPS</title>
+    <meta name="description" content="运行期采用确定性规则与六阶段管线；模型用于设计期管线生成和知识沉淀。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/cases/xuanxu-gis-agent/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-      .essay figure { margin: 2rem 0; }
-      .essay figure img { width: 100%; height: auto; border-radius: 6px;
-        border: 1px solid var(--color-rule); display: block; }
-      .essay figcaption { font-size: 0.88rem; color: var(--color-text-muted);
-        margin-top: 0.6rem; line-height: 1.65; }
-      .essay table { font-size: 0.92rem; }
-      .essay table small { color: var(--color-text-faint); font-size: 0.82rem; }
-    </style>
 </head>
 <body class="page-essay page-docs">
 
@@ -80,7 +71,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -91,27 +82,27 @@
           <div class="sb-section open">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
             <div class="sb-body">
-              <a href="/zh/cases/" class="active">案例库首页</a>
+              <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/" class="active">成都玄宿 · GIS 发布 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/" class="active">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -121,179 +112,340 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 案例报告 02</p>
-                <h1>成都玄宿 GIS 数据发布 Agent：运行期零 LLM 的执行型系统</h1>
-                <p class="publication-deck">推理资产化、磁盘事实平面、失败日记器官化：一个把决策全部前置到设计期的领域 Agent。</p>
+                <h1>玄宿科技 GIS 数据发布 Agent 案例报告</h1>
+                <p class="publication-deck">运行期采用确定性规则与六阶段管线；模型用于设计期管线生成和知识沉淀。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.1</dd></div>
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
                     <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
-                    <div><dt>案例机构</dt><dd>成都玄宿科技有限公司</dd></div>
-                    <div><dt>行业</dt><dd>地理信息 · 空间数据服务</dd></div>
+                    <div><dt>案例机构</dt><dd>玄宿科技</dd></div>
+                    <div><dt>行业</dt><dd>GIS 软件与数据服务</dd></div>
                     <div><dt>案例提供</dt><dd>熊钰柯（Yuke Xiong）</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本文由案例方一线实践者主导复盘，落位判断与取舍理由出自案例方自述。系统规模、性能数字与实现主张未经独立审计。文中的模式落位是案例方按 ADPS 定义自评的结果，个别格子的判定分歧已在正文中标出。迁移建议只在第十章列出的四条约束内成立。</p>
+            <p class="publication-note"><strong>证据边界：</strong>本文是一线实践者主导的架构复盘。实现主张、业务规模与效果数据由案例方提供，尚未经过独立审计；迁移建议只在文中列明的业务与系统条件下成立。</p>
 
             <hr />
-
-            <h2>一、先把三笔账算清楚：传统 GIS 发布痛在哪里</h2>
-            <p>把一份地理数据变成浏览器里能打开的在线地图，这件事在每个 GIS 团队里都发生过几百次。它从来不难，每一步都是熟手的日常操作，但它也从来没被真正简化过。格式识别、坐标系、样式、瓦片缓存、图层组，每一步都摊着一串要人选、要人配的参数，而且选错一个往往不报错。</p>
-            <p>成都玄宿是一家做 GIS 软件产品与系统研发的公司，拥有自主知识产权的国产化二次开发框架。团队做这套 Agent 的起点，是把上面这件反复发生的事拆成三笔结构性的账。</p>
-            <p><strong>第一笔，步骤跨工具，靠人串。</strong>数据在桌面 GIS、GDAL 命令行、GeoServer 管理界面、GWC 配置页之间来回搬运，顺序和参数全在当事人脑子里。同样的链路重复一百次，总有几步会错，而且事后无法复盘是哪一次、哪一步错的。</p>
-            <p><strong>第二笔，坑在细节里，知识随人走。</strong>以 S-57 电子海图发布为例，一组海图导入 PostGIS 会按物标类建出上百张表，要逐表建 store、逐类发布图层，再手工组成图层组，叠放顺序还不能错。这里有一个典型的坑：图层组若选成 OPAQUE_CONTAINER，成员图层会从 WMS 列表消失，直接 GetMap 报 LayerNotDefined，而这个报错以 HTTP 200 的 ServiceException 形式返回，不细查就是「成功」。GeoServer 的一切配置看上去都正常，排查链路极长。这类结论不踩过不会知道，踩过了也只留在当事人的记忆里。半年后同类数据再来，人换了或者没换但忘了，整条链路重新趟一遍。</p>
-            <p><strong>第三笔，结果不可验收。</strong>手工点出来的服务，「能用」停留在当事人当时打开看过的那一刻。没有自动化的验收证据，出问题只能等用户报。</p>
-            <p>这三笔账跟团队用不用 AI 无关。它们描述的是这个领域固有的形状：链路长、参数机械、失败静默。</p>
-
-            <h2>二、为什么不让通用 LLM Agent 直接调 GeoServer</h2>
-            <p>把 GeoServer REST API 包装成 MCP 工具、让模型现场决定调哪个接口、传什么参数，这条路团队在动手之前就否决了。理由是 GIS 发布的每一步之间存在严格的参数绑定与状态依赖。</p>
-            <p>workspace 名、store 名、layer 名、SRS 字符串、bbox 四个数，都是上一步产出、下一步必须逐位准确引用的机械真值。而 LLM 是概率模型，它不会「取用」参数，只会「尝试生成」参数。生成错一位，轻则服务发布失败，重则发布成功但渲染全错，而且不可预料、不可复现。</p>
-            <p>这个判断与案例报告 01 中<a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>的结论同源。两个团队在完全不同的行业里，因为同一个原因走到了同一个岔口：两边要的不是内容生成，是执行。执行传递的是机械参数，而机械参数不能交给概率模型生成。ADPS 把这条分野写进了<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>的概念定义。</p>
-            <p>判断一个场景落在哪一侧，看四件事。</p>
+            <h2>1. 传统 GIS 发布流程的约束</h2>
+            <p>GIS 数据发布需要依次处理格式识别、坐标系、样式、瓦片缓存和图层组。各环节包含需要人工选择和配置的参数，部分错误不会在配置阶段直接报告。</p>
+            <p>玄宿科技从事 GIS 软件产品与系统研发，并拥有自主知识产权的国产化二次开发框架。团队将原有发布流程归纳为三类约束。</p>
+            <p><strong>跨工具顺序依赖。</strong> 数据需要在桌面 GIS、GDAL 命令行、GeoServer 管理界面和 GWC 配置页之间流转，操作顺序和参数依赖人工记忆。重复执行后，很难定位具体哪次运行、哪个步骤发生偏差。</p>
+            <p><strong>领域知识难以复用。</strong> 以 S-57 电子海图发布为例，一组海图导入 PostGIS 后会按物标类生成上百张表，需要逐表创建 store、逐类发布图层，再按顺序组成图层组。图层组若配置为 OPAQUE_CONTAINER，成员图层会从 WMS 列表消失，直接 GetMap 返回 LayerNotDefined；该 ServiceException 的 HTTP 状态仍为 200，只检查状态码会误判为成功。此类平台行为如果只保留在操作人员记忆中，后续同类数据仍需重新排查。</p>
+            <p><strong>缺少自动验收。</strong> 手工发布只能证明操作者在某一时刻打开过服务。系统没有持续生成可查询的验收证据，故障通常由用户反馈后才被发现。</p>
+            <p>这三类约束与是否使用 AI 无关，分别对应长链路、机械参数和静默失败。</p>
+            <h2>2. 运行期模型的适用性判断</h2>
+            <p>团队没有采用“将 GeoServer REST API 包装为 MCP 工具，再由模型运行时选择接口和参数”的方案。GIS 发布步骤之间存在严格的参数绑定和状态依赖。</p>
+            <p>workspace、store、layer、SRS 和 bbox 都由上一步产生，并在下一步逐值引用。若由 LLM 重新生成这些机械参数，单个字符或数值偏差可能导致发布失败，也可能在发布成功后产生错误渲染。</p>
+            <p>案例报告 01 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>也将机械参数从模型生成内容中分离。两个案例均属于执行型系统：步骤之间传递机械参数，模型负责形成控制信号，不负责生成这些参数。相关定义见<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>。</p>
+            <p>场景分类使用以下四个维度。</p>
             <table>
-                <thead><tr><th>维度</th><th>内容生成型</th><th>执行型</th></tr></thead>
-                <tbody>
-                    <tr><td>步骤关系</td><td>松散，顺序可调</td><td>严格依赖，跨一步全盘错</td></tr>
-                    <tr><td>步骤间传递</td><td>文本内容，语义偏差不致命</td><td>机械参数（id、名称、坐标），错一位即事故</td></tr>
-                    <tr><td>错误代价</td><td>内容质量下降，一般无副作用</td><td>交付失败或破坏业务数据</td></tr>
-                    <tr><td>对模型的要求</td><td>生成质量</td><td>确定性，而确定性不能只靠概率</td></tr>
-                </tbody>
+            <thead>
+            <tr>
+            <th style="text-align: left;">维度</th>
+            <th style="text-align: left;">内容生成型</th>
+            <th style="text-align: left;">执行型</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">步骤关系</td>
+            <td style="text-align: left;">松散，顺序可调</td>
+            <td style="text-align: left;">严格依赖，跨一步全盘错</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">步骤间传递</td>
+            <td style="text-align: left;">文本内容，语义偏差不致命</td>
+            <td style="text-align: left;">机械参数（id、名称、坐标），错一位即事故</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">错误代价</td>
+            <td style="text-align: left;">内容质量下降，一般无副作用</td>
+            <td style="text-align: left;">交付失败或破坏业务数据</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对模型的要求</td>
+            <td style="text-align: left;">生成质量</td>
+            <td style="text-align: left;">确定性，而确定性不能只靠概率</td>
+            </tr>
+            </tbody>
             </table>
-            <p>GIS 数据发布逐条落在右列：六个阶段有硬依赖，阶段间传递的是 layer_name、processed_crs、processed_bbox 这类机械真值，发错的服务被前端真实消费，GetTile 全部返回 400 就是生产事故。</p>
-
-            <h2>三、推理资产化：把决策从运行期挪到设计期</h2>
-            <p>执行型场景都要面对同一个矛盾：系统要确定，模型给概率。常见的工程解法是保留运行期的模型，再用控制结构约束它。这套系统把同一逻辑推到了更彻底的位置——运行期整条链路没有任何模型调用。</p>
-            <p>路由决策是二十行查表代码，重试回退是两张 YAML 规则表，编排是静态的六阶段链。模型只出现在管线的生长期：新数据格式来了，Coding Agent 帮人设计新管线，人审阅、显式首跑、认证转正之后，运行期永远不再碰模型。</p>
-            <p>能做到这一点，原因不在实现技巧，在这个场景的意图空间形状。对话式场景的意图只能从自然语言里识别，模型必须留在运行期。而 GIS 发布的意图载体不是自然语言，是数据本身：目录里是 .000 文件，意图就是发布 S-57 海图，是 .tif，意图就是发布栅格。<strong>输入签名即意图</strong>，意图识别因此从「模型推断」退化为「确定性判定」，兜底也变成显式报错。</p>
-            <p>案例方把这件事命名为<strong>推理资产化</strong>：这个系统不是没有推理，而是把推理前置了。每个「该走哪条管线、怎么发布」的判断，都在管线设计期由模型加人做一次，结论固化进管线声明，运行期查表执行。从「每次调用付费给模型」变成「一次付费、固化成 YAML、永久复用」。</p>
-            <p>判断标准只有一条：这个决策是高频且有标准答案，还是低频且开放。</p>
+            <p>GIS 数据发布符合执行型特征：六个阶段存在硬依赖，阶段之间传递 layer_name、processed_crs 和 processed_bbox 等机械真值；发布结果由前端直接消费，GetTile 全部返回 400 即构成生产故障。</p>
+            <h2>3. 推理资产化</h2>
+            <p>执行型系统需要确定性输出，而模型调用具有概率性。该案例在运行期不调用模型，所有运行期决策由规则和静态管线完成。</p>
+            <p>路由由约二十行查表代码实现，重试与回退由两张 YAML 规则表实现，编排采用静态六阶段链。模型只用于新管线设计：Coding Agent 生成草案，经人工审阅、显式首跑和认证后，活跃管线在运行期按规则执行。</p>
+            <p>该设计成立的条件是意图可由数据签名确定。目录包含 <code>.000</code> 文件时路由到 S-57 海图管线，包含 <code>.tif</code> 时路由到栅格管线。<strong>输入签名即意图</strong>，因此意图识别可以使用确定性判定；未匹配签名时返回显式错误。</p>
+            <p>案例方将这种做法称为<strong>推理资产化</strong>：管线选择和发布方法在设计期由模型与人员共同确定，结论写入管线声明，运行期查表执行。模型调用成本发生在设计期，产物以 YAML 规则长期复用。</p>
+            <p>决策依据是频率和开放程度。</p>
             <table>
-                <thead><tr><th>决策</th><th>特征</th><th>归宿</th></tr></thead>
-                <tbody>
-                    <tr><td>复用哪条管线</td><td>高频、有标准答案</td><td>规则下沉：管线声明 accepts，运行期查表</td></tr>
-                    <tr><td>失败后怎么办</td><td>高频、错误签名可枚举</td><td>规则下沉：error_map 加 retry_policy，按签名路由</td></tr>
-                    <tr><td>发布成什么</td><td>管线设计期一次性决定</td><td>写死在 produces / publish 字段</td></tr>
-                    <tr><td>生长还是复用</td><td>低频、一次性、需要领域知识</td><td>模型加人，发生在生长期</td></tr>
-                </tbody>
+            <thead>
+            <tr>
+            <th style="text-align: left;">决策</th>
+            <th style="text-align: left;">特征</th>
+            <th style="text-align: left;">归宿</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">复用哪条管线</td>
+            <td style="text-align: left;">高频、有标准答案</td>
+            <td style="text-align: left;">规则下沉：管线声明 accepts，运行期查表</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">失败后怎么办</td>
+            <td style="text-align: left;">高频、错误签名可枚举</td>
+            <td style="text-align: left;">规则下沉：error_map 加 retry_policy，按签名路由</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">发布成什么</td>
+            <td style="text-align: left;">管线设计期一次性决定</td>
+            <td style="text-align: left;">写死在 produces / publish 字段</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">生长还是复用</td>
+            <td style="text-align: left;">低频、一次性、需要领域知识</td>
+            <td style="text-align: left;">模型加人，发生在生长期</td>
+            </tr>
+            </tbody>
             </table>
-            <p>用双轴框架的语言讲，这是把推理行的格子大面积重定位到设计期，把省下来的不确定性预算花在治理行和记忆行上。代价是明确的：系统只承诺处理已认证管线覆盖的输入签名，签名之外一律明确拒绝，绝不现场发挥。</p>
-            <p class="publication-note"><strong>案例方自述的边界：</strong>「运行期零 LLM」不等于系统不需要智能。管线的设计、错误规则的沉淀、新格式的识别，这些真正需要判断的地方仍然由模型加人完成，只是被挪出了运行期。用「系统内含多少推理能力」衡量，本系统得分很低。用「每次运行的确定性与成本」衡量，这是设计目标本身。</p>
-
-            <h2>四、Agent 性不在有没有模型，在闭不闭环</h2>
-            <p>运行期没有模型，路由是查表，编排是静态链，那它和一个自动化脚本有什么区别。这个问题必须正面回答，否则前三章的立场就是在为「写了个脚本」找说法。</p>
-            <p>区别不在内部用了什么技术，在结构属性。脚本是 fire-and-forget 的线性执行，命令发出去就算完。Agent 是感知、决策、行动、验证的闭环，带状态、会生长。逐条对齐这套系统：</p>
+            <p>在 ADPS 双轴框架中，运行期推理被前移到设计期，运行资源主要投入治理和记忆。系统只处理已认证管线覆盖的输入签名，其他输入明确拒绝。</p>
+            <blockquote>
+            <p><strong>案例边界：</strong> “运行期零 LLM”只描述运行路径。管线设计、错误规则沉淀和新格式识别仍由模型与人员共同完成。该系统优先优化单次运行的确定性和成本。</p>
+            </blockquote>
+            <h2>4. 系统的 Agent 属性</h2>
+            <p>运行期没有模型，路由采用查表，编排采用静态链，因此需要说明该系统与普通自动化脚本的边界。</p>
+            <p>分类依据是结构属性。普通脚本通常采用 fire-and-forget 线性执行；该系统包含感知、决策、行动、验证、回退和能力生命周期。</p>
             <ul>
-                <li><strong>感知</strong>：意图从数据里读出来，不靠人传。validate 阶段按活跃管线的 accepts 声明遍历输入目录，自行识别格式签名。</li>
-                <li><strong>决策</strong>：查表是决策的实现方式，不是决策的消失。新管线注册后路由自动覆盖新签名，平台代码不动。</li>
-                <li><strong>行动</strong>：对真实系统产生可观察的副作用。publish 阶段操作 GeoServer REST、写 PostGIS、落托管目录，世界的状态因它改变，且改变可被第三方独立观察。</li>
-                <li><strong>验证</strong>：发出去不算完。verify 阶段自发 GetMap/GetTile 嗅探加截图，判定以「HTTP 200 且 content-type 为 image/*」为准。这条判据是踩出来的：ServiceException 也返回 200，只看状态码会把失败误判成成功。</li>
-                <li><strong>回退</strong>：遇错按知识路由，不是直接崩。失败按错误签名匹配回退步骤，签名之外的未知错误显式上抛，绝不静默吞掉。</li>
-                <li><strong>记忆与生长</strong>：状态落盘成磁盘事实，失败沉淀成知识卡，管线走 draft、candidate、active 生命周期。能力集合随使用扩展。</li>
+            <li><strong>感知</strong>：意图从数据里读出来，不靠人传。validate 阶段按活跃管线的 accepts 声明遍历输入目录，自行识别格式签名。</li>
+            <li><strong>决策</strong>：查表实现确定性决策。新管线注册后，路由自动覆盖新签名，无需修改平台代码。</li>
+            <li><strong>行动</strong>：publish 阶段调用 GeoServer REST、写入 PostGIS 并更新托管目录，产生可观察的外部副作用。</li>
+            <li><strong>验证</strong>：verify 阶段主动执行 GetMap/GetTile 请求和截图，成功条件为 HTTP 200 且 content-type 为 <code>image/*</code>。ServiceException 同样可能返回 200，因此不能只检查状态码。</li>
+            <li><strong>回退</strong>：失败按错误签名匹配回退步骤；未知错误显式上抛，不静默吞掉。</li>
+            <li><strong>记忆与生长</strong>：状态落盘成磁盘事实，失败沉淀成知识卡，管线走 draft、candidate、active 生命周期。能力集合随使用扩展。</li>
             </ul>
-            <p>和 CI/CD 流水线的区别也在同一张清单里：流水线由人显式触发、配置显式给定、跑完即止，既不感知输入、不路由决策，也不验收领域语义，更不会把失败沉淀成下次的知识。</p>
-            <p>六条合起来，这个系统的自主性是<strong>有界</strong>的：意图空间封闭，签名之外一律明确拒绝。有界自主不是能力残缺，正是执行型 Agent 的题中之义。它承诺的不是什么都能聊，是接下的活一定干成、干错能查、下次更稳。</p>
-
-            <h2>五、磁盘事实平面：进程之间不传对象，传文件</h2>
+            <p>与常规 CI/CD 流水线相比，该系统会识别输入签名、选择管线、验收 GIS 领域结果，并将失败沉淀为后续运行可消费的规则。</p>
+            <p>该系统采用<strong>有界自主</strong>：意图空间封闭，签名之外明确拒绝；已接受任务要求执行结果可验收、失败可追踪、规则可复用。</p>
+            <h2>5. 磁盘事实平面</h2>
             <p>系统主干是六个阶段组成的固定流水线：validate 识别格式与路由管线，process 重投影并归一坐标系，generate_sld 生成模板样式，publish 过契约门禁后落 GeoServer，viewer 生成浏览页，verify 截图与请求验收。</p>
-            <p>每个阶段是独立子进程。编排器把阶段跑成 subprocess，对它是黑盒：运行内能拿到的信息只有返回码和输出文本，成败判定靠错误签名匹配，不靠结构化返回值。这个黑盒约束反过来决定了状态必须走另一条信道——磁盘。</p>
-            <p>阶段之间要传的状态全部写进一份 metadata.json。写入纪律是<strong>一个事实一个写入者</strong>：validate 写识别结果，process 追加处理结果，下游阶段只读不重算。「bbox 只在 process 算一次」这条硬约束的本质，是让真相在磁盘上只有一个版本。任何阶段本地重算，都可能与落盘值漂移出两个「事实」。</p>
-            <p>磁盘事实平面分三层，职责正交，只做指针不复制：metadata.json 是管线契约层，run-state.json 是编排层，verify_report.json 是验收层。控制台的全部数据源就是这几份 JSON 加三份索引投影，静态托管，没有 API 层。</p>
+            <p>每个阶段是独立子进程。编排器通过 subprocess 启动阶段，只接收返回码和输出文本，并按错误签名判断成败。阶段状态通过磁盘文件传递。</p>
+            <p>阶段状态写入 <code>metadata.json</code>，并遵守<strong>一个事实一个写入者</strong>：validate 写识别结果，process 追加处理结果，下游阶段只读不重算。bbox 只由 process 计算一次，避免本地重算与落盘值发生漂移。</p>
+            <p>磁盘事实平面包含三层：<code>metadata.json</code> 保存管线契约，<code>run-state.json</code> 保存编排状态，<code>verify_report.json</code> 保存验收结果。各层通过指针关联，不复制事实。控制台使用这些 JSON 和三份索引投影作为数据源，静态托管，不设置 API 层。</p>
             <figure>
-                <img src="assets/console-overview.jpg" alt="GIS Agent 控制台总览：左栏管线目录，右侧数据集与六阶段进度" loading="lazy">
-                <figcaption>控制台实貌。左栏是管线目录，每条管线一张卡；右侧列出该管线发布的数据集，六阶段进度逐格可见。每张卡展开的「详情」里，metadata、processed、viewer、verify_report 一排磁盘路径直接摊在页面上——页面上的每个元素都对应磁盘上的一份事实。</figcaption>
+              <img src="assets/console-overview.jpg" alt="GIS Agent 控制台总览：左栏管线目录，右侧数据集与六阶段进度">
+              <figcaption>控制台总览。左栏为管线目录，右侧列出数据集和六阶段进度；详情区显示 metadata、processed、viewer 和 verify_report 路径。页面元素均对应磁盘文件。</figcaption>
             </figure>
-            <p>这个选择换来四个性质。<strong>可审计</strong>：阶段边界即文件边界，任何一次运行事后可完整复盘，不依赖任何进程的内存还活着。<strong>可恢复</strong>：重跑时回读落盘的输入路径，批量中断后续跑，已成功的数据集靠落盘状态自动跳过，恢复不需要专门的状态机，文件就是状态机。<strong>可热更新</strong>：执行代理收到写操作后新起子进程，跑的是磁盘上最新的代码，改编排、阶段、SDK 下一次运行即生效。<strong>跨语言可消费</strong>：前端控制台、执行代理、命令行三方不共享任何代码，只共享文件契约。</p>
-            <p>代价同样明确：<strong>文件契约即系统契约</strong>，而没有任何框架替你管这件事。系统里真实的耦合点全部以防复发注释的形式记着，三条典型：前端判定「这次轮询拉到的状态是不是我触发的那次运行」，靠的是时间戳加五秒容差，命令行端若改时间精度，前端的在途结算必须同步改。validate 无匹配管线时的报错必须以固定前缀开头，规则表的第一条靠这个前缀命中，任何一端改文案，链路就静默断掉。状态文件各带 schema 版本号，字段集变更即 bump，这是文件契约唯一的显式版本管理机制。</p>
-            <p class="publication-note"><strong>案例方自述的脆弱点：</strong>这套文件契约的维护方式是纪律而非框架。schema 版本、防复发注释、单元测试，三样都靠人守。清晰、可审计，但没有任何编译器替你检查两端是否还同步。</p>
 
-            <h2>六、把失败日记做成器官：三层循环嵌套</h2>
-            <p>ADPS 把 <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>列为核心模式之一，坐标是记忆行乘循环列。这套系统把它从一个模式做成了一个器官：一套持续生长的知识卡片、两张规则表、一条带质量门的管线生命周期，嵌套成三层循环。</p>
-            <p><strong>内层是运行期的秒级循环，零模型。</strong>阶段失败后匹配错误签名，动作只有三值：retry、abort、skip。真实条目比如「源矢量缺少空间参考，无法判定坐标系」判 abort，「WMTS 瓦片图层启用失败，可能缓存服务未就绪」判 retry。这里有一条设计细节值得点名：action 为 abort 的条目都是<strong>不许自愈</strong>的失败。缺空间参考、海图更新链断号，这些错了就该停，重试只会把废图发出去。自愈的前提是可自愈，认不出来的、不该自愈的，必须显式停。</p>
-            <p><strong>外层是沉淀期的周级循环，人在环。</strong>每次真实踩坑写成一张失败卡，固定五段结构。以「WMTS 瓦片请求除零报错」这张卡为例：signature 段写怎么认出它，这里是 GetTile 返回 400、响应含「/ by zero」。root_cause 段写为什么发生，并交代证据边界：瓦片图层的 metatile 尺寸被配成 0×0，而官方文档对取 0 的合法性与后果无任何记载，这条是纯平台实测发现的。fallback 段写当下怎么办。fixed_by 段把结论固化进 SDK 默认参数，让防复发落在发布机制层，而不是落在人的记忆里。related_rules 段回链到运行期查的规则表。</p>
+            <p>该设计提供四项能力。<strong>可审计</strong>：阶段边界对应文件边界，运行记录不依赖进程内存。<strong>可恢复</strong>：重跑时读取落盘输入路径，已成功数据集按状态跳过。<strong>可热更新</strong>：执行代理为写操作启动新子进程，下一次运行读取磁盘上的最新代码。<strong>跨语言消费</strong>：前端控制台、执行代理和命令行只共享文件契约，不共享实现代码。</p>
+            <p>相应代价是文件契约需要人工维护。前端使用时间戳加 5 秒容差判断轮询状态是否属于本次运行，命令行修改时间精度时必须同步更新前端。validate 无匹配管线时使用固定错误前缀，规则表按该前缀匹配。每个状态文件携带 schema 版本号，字段变更时同步 bump。</p>
+            <blockquote>
+            <p><strong>案例边界：</strong> 文件契约依赖 schema 版本、防复发注释和单元测试，缺少编译期的跨端一致性检查。</p>
+            </blockquote>
+            <h2>6. 失败记录与规则闭环</h2>
+            <p>ADPS 将 <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>定义在记忆 × 循环坐标。该系统以知识卡片、两张规则表和带质量门的管线生命周期实现三层循环。</p>
+            <p><strong>内层为运行期秒级循环，不调用模型。</strong> 阶段失败后匹配错误签名，动作只有 retry、abort、skip 三种。例如，“源矢量缺少空间参考，无法判定坐标系”对应 abort，“WMTS 瓦片图层启用失败，可能缓存服务未就绪”对应 retry。缺少空间参考、海图更新链断号等失败不允许自愈，必须显式停止。</p>
+            <p><strong>外层为沉淀期周级循环，包含人工审核。</strong> 每次实际失败写入一张五段式失败卡。以“WMTS 瓦片请求除零报错”为例：signature 记录 GetTile 返回 400 且响应包含 <code>/ by zero</code>；root_cause 记录 metatile 尺寸被配置为 0×0，并说明官方文档未描述该取值的后果，该结论来自平台实测；fallback 记录即时处理；fixed_by 将结论写入 SDK 默认参数；related_rules 关联运行期规则表。</p>
             <figure>
-                <img src="assets/knowledge-card2.jpg" alt="知识卡图谱视图：卡片按管线聚簇、卡间关联连成网" loading="lazy">
-                <figcaption>知识层的图谱视图。卡片按管线聚成簇、卡间关联连成网，点开节点右侧是卡片全文。知识不是文档目录，是被消费的数据：卡片的 frontmatter 里有 source 字段指到具体出处文件，控制台按 source 把卡片自动关联到对应管线。</figcaption>
+              <img src="assets/knowledge-card2.jpg" alt="知识卡图谱视图：卡片按管线聚簇、卡间关联连成网">
+              <figcaption>知识图谱视图。卡片按管线分组并建立关联，节点详情显示卡片全文。frontmatter 的 source 字段指向出处文件，控制台据此将卡片关联到对应管线。</figcaption>
             </figure>
-            <p>这个项目有一条写进协作约定的纪律：凡涉及领域知识或平台机制的修复，必须同步沉淀失败卡或规则条目，否则不算完成。判断标准是「下次别人或 Agent 遇到同样现象，能否靠卡片定位」。</p>
-            <p>知识层不只有失败卡。卡片分六类，各回答一个不同的问题：capabilities 记一条管线能做什么，profiles 记数据画像与处理基线，patterns 记跨管线的强制纪律，failures 记真实失败的五段解剖，decisions 记平台级取舍与理由，refs 记组件行为基线。接入的要求不止是把文档堆进目录，还要遵守两条机器可消费的关联规则：能力卡与管线同名，其余卡的 source 字段必须含管线路径。卡片写得对不对，直接决定控制台里管线有没有知识视图。</p>
 
-            <h2>七、管线生命周期：能力凭什么被信任</h2>
-            <p><strong>中层是生长期的天级循环，模型只出现在脚手架环节。</strong>ADPS 把管线这类构件落位在 <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>。官方模式描述的是静态结构，可复用的技能以结构化形式存取。这套系统补上的是技能包怎么来，以及它凭什么被信任。</p>
-            <p>一条管线从脚手架到自动接活，要过两道质量门。<strong>门一管证据</strong>：首跑由人的意图显式触发，跑完整六阶段，publish 前过契约门禁查最小事实集，结构不对不许碰 GeoServer。verify 阶段发真实请求、截图加图像分析，结果不对不算过。首跑成功后自动翻 candidate。<strong>门二管判断</strong>：candidate 升 active 必须人点认证。每升一档拿证据挣，但证据够不够，人拍板。</p>
-            <p>最值得单独说的是<strong>版本漂移监控</strong>：活跃管线的当前版本与被认证过的版本不一致时，系统自动把它退回候选态。意思是「你改过的代码不再是被认证过的那一份」。认证不是一次性事件，是持续状态。</p>
-            <p>人在环的位置精确到两个动作：新管线第一次运行必须人显式指定，候选升活跃必须人点认证。其余全部自动。于是生长的权责划分很清楚：模型负责把领域知识组织成管线草案（快），人负责判断它该不该接活（准），系统负责保证未认证的能力永远不自动接活（稳）。</p>
-            <p>三层循环合起来，是这个系统「可生长」三个字的具体所指：内层兜运行期可自愈的失败，中层管能力怎么长出来，外层把失败变成资产，而外层沉淀的规则正是内层查的表。</p>
-
-            <h2>八、42 格落位：14 个实格、4 个薄格、1 格落在官方空白</h2>
-            <p>案例方把系统放到双轴矩阵上逐格交代。这里的读法有三点需要先说明。</p>
-            <p><strong>着色口径</strong>：实格指有直接代码实体，薄格指概念沾边但不是该坐标官方模式的典型形态，其余为不做或不需要。<strong>落位不等于采用官方模式</strong>：感知乘链式、推理乘路由、反思乘链式三格，案例方的实现与该格官方模式机制不同，已在格内注明。若按更严格的定义，比如 F1 必须是模型自评，相应格子应改判为空。案例方选择这样标注，是为了让分歧停在定义层面而不是事实层面，这个态度本身值得记一笔。<strong>按行看资源投向，按列看拓扑偏好</strong>。</p>
+            <p>项目协作约定要求：涉及领域知识或平台机制的修复，必须同步写入失败卡或规则条目。验收条件是后续人员或 Agent 能否通过卡片定位同类现象。</p>
+            <p>知识卡分为六类：capabilities 记录管线能力，profiles 记录数据画像与处理基线，patterns 记录跨管线约束，failures 记录五段式失败，decisions 记录平台取舍与理由，refs 记录组件行为基线。能力卡与管线同名，其余卡的 source 字段包含管线路径，控制台按这些规则生成知识视图。</p>
+            <h2>7. 管线生命周期与认证</h2>
+            <p><strong>中层为生长期天级循环，模型只参与脚手架生成。</strong> ADPS 将管线类构件映射到 <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>。该案例进一步实现技能包的生成、验证和认证过程。</p>
+            <p>管线从脚手架进入自动运行需要通过两类质量门。<strong>证据门</strong>：首次运行由人员显式触发，完整执行六个阶段；publish 前检查最小事实集，结构校验失败时禁止调用 GeoServer；verify 发送真实请求并执行截图与图像分析。首跑成功后状态自动转为 candidate。<strong>认证门</strong>：candidate 升级为 active 必须由人员确认。</p>
+            <p><strong>版本漂移监控</strong>比较活跃管线当前版本与已认证版本。两者不一致时，系统自动将管线退回 candidate，要求重新验证和认证。</p>
+            <p>HITL 只位于两个动作：新管线首次运行由人员显式指定，candidate 升 active 由人员认证。模型生成管线草案，人员决定是否允许自动运行，系统阻止未认证管线自动接收任务。</p>
+            <p>三层循环分别处理运行期可恢复失败、管线能力生命周期和跨运行失败沉淀；外层生成的规则供内层运行期查询。</p>
+            <h2>8. ADPS 双轴矩阵映射</h2>
+            <p>案例方将系统逐格映射到 ADPS 双轴矩阵。映射口径如下。</p>
+            <p><strong>着色口径</strong>：实格表示存在直接代码实体；薄格表示存在相关机制，但不属于该坐标官方模式的典型实现；其余表示未采用或不需要。<strong>落位不等于采用官方模式</strong>：感知 × 链式、推理 × 路由、反思 × 链式三个格子的实现与官方模式不同，已在表内注明。若要求 F1 必须由模型自评，反思 × 链式应判为空格。阅读时可按行观察资源投入，按列观察拓扑偏好。</p>
             <table>
-                <thead><tr><th>认知功能</th><th>链式</th><th>路由</th><th>并行</th><th>循环</th><th>层级</th><th>编排</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>感知</strong></td><td>薄格：validate 输入签名到磁盘事实<br><small>官方 P2 语义压缩，机制不同</small></td><td>—</td><td>—<br><small>P4 不做</small></td><td>—</td><td>—</td><td>—</td></tr>
-                    <tr><td><strong>记忆</strong></td><td>—<br><small>M2 记忆不给模型读</small></td><td>—</td><td>—</td><td><strong>实格</strong>：失败日记<br><small>M4，见第六章</small></td><td><strong>实格</strong>：三层记忆各有实体<br><small>M1，载体是规则与事实</small></td><td><strong>实格</strong>：运行状态外部化<br><small>M3，消费者是人与控制台</small></td></tr>
-                    <tr><td><strong>推理</strong></td><td>—<br><small>R1 运行期无模型</small></td><td>薄格：路由与回退纯查表<br><small>官方 R2，规则表替代模型路由</small></td><td>—<br><small>R3 不做</small></td><td>—</td><td>—</td><td>—</td></tr>
-                    <tr><td><strong>行动</strong></td><td>—<br><small>A3 无 prompt</small></td><td><strong>实格</strong>：manifest 调度管线与 SDK<br><small>A1，命令白名单</small></td><td>—</td><td>—</td><td><strong>实格</strong>：发布前门禁加发布后验收<br><small>A4 护栏三明治</small></td><td><strong>实格</strong>：静态计划加批量先审批<br><small>A2，计划设计期固定</small></td></tr>
-                    <tr><td><strong>反思</strong></td><td>薄格：外部验收替代模型自评<br><small>官方 F1，外部探针</small></td><td><strong>实格</strong>：管线即凝固的成功流程<br><small>F2 技能包</small></td><td>—</td><td><strong>实格</strong>：签名到回退自愈<br><small>F4 自愈循环</small></td><td>—<br><small>F3 不自动回放</small></td><td>—</td></tr>
-                    <tr><td><strong>协作</strong></td><td>薄格：子进程加结构化交接<br><small>官方 C4，交接方是确定性进程</small></td><td>—</td><td>—<br><small>C2 主动不做</small></td><td>—<br><small>C3 不做</small></td><td><strong>实格</strong>：人机权责分工<br><small>C1，人拍板认证</small></td><td>—</td></tr>
-                    <tr><td><strong>治理</strong></td><td><strong>实格</strong>：管线生命周期逐级解锁<br><small>G3 渐进承诺</small></td><td><strong>实格</strong>：人审认证与两步确认<br><small>G1 审批门</small></td><td>—</td><td><strong>实格</strong>：版本漂移自动降级<br><small>官方空格，本系统有实现</small></td><td><strong>实格</strong>：白名单加名称校验加删除分级<br><small>G2 爆炸半径控制</small></td><td><strong>实格</strong>：状态全落盘加控制台可视<br><small>G4 可观测性</small></td></tr>
-                </tbody>
+            <thead>
+            <tr>
+            <th style="text-align: left;">认知功能</th>
+            <th style="text-align: left;">链式</th>
+            <th style="text-align: left;">路由</th>
+            <th style="text-align: left;">并行</th>
+            <th style="text-align: left;">循环</th>
+            <th style="text-align: left;">层级</th>
+            <th style="text-align: left;">编排</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>感知</strong></td>
+            <td style="text-align: left;">薄格：validate 输入签名到磁盘事实<br>官方 P2 语义压缩，机制不同</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—<br>P4 不做</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>记忆</strong></td>
+            <td style="text-align: left;">—<br>M2 记忆不给模型读</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><strong>实格</strong>：失败日记<br>M4，见第六章</td>
+            <td style="text-align: left;"><strong>实格</strong>：三层记忆各有实体<br>M1，载体是规则与事实</td>
+            <td style="text-align: left;"><strong>实格</strong>：运行状态外部化<br>M3，消费者是人与控制台</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>推理</strong></td>
+            <td style="text-align: left;">—<br>R1 运行期无模型</td>
+            <td style="text-align: left;">薄格：路由与回退纯查表<br>官方 R2，规则表替代模型路由</td>
+            <td style="text-align: left;">—<br>R3 不做</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>行动</strong></td>
+            <td style="text-align: left;">—<br>A3 无 prompt</td>
+            <td style="text-align: left;"><strong>实格</strong>：manifest 调度管线与 SDK<br>A1，命令白名单</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><strong>实格</strong>：发布前门禁加发布后验收<br>A4 护栏三明治</td>
+            <td style="text-align: left;"><strong>实格</strong>：静态计划加批量先审批<br>A2，计划设计期固定</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>反思</strong></td>
+            <td style="text-align: left;">薄格：外部验收替代模型自评<br>官方 F1，外部探针</td>
+            <td style="text-align: left;"><strong>实格</strong>：管线即凝固的成功流程<br>F2 技能包</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><strong>实格</strong>：签名到回退自愈<br>F4 自愈循环</td>
+            <td style="text-align: left;">—<br>F3 不自动回放</td>
+            <td style="text-align: left;">—</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>协作</strong></td>
+            <td style="text-align: left;">薄格：子进程加结构化交接<br>官方 C4，交接方是确定性进程</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;">—<br>C2 主动不做</td>
+            <td style="text-align: left;">—<br>C3 不做</td>
+            <td style="text-align: left;"><strong>实格</strong>：人机权责分工<br>C1，人拍板认证</td>
+            <td style="text-align: left;">—</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>治理</strong></td>
+            <td style="text-align: left;"><strong>实格</strong>：管线生命周期逐级解锁<br>G3 渐进承诺</td>
+            <td style="text-align: left;"><strong>实格</strong>：人审认证与两步确认<br>G1 审批门</td>
+            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><strong>实格</strong>：版本漂移自动降级<br>官方空格，本系统有实现</td>
+            <td style="text-align: left;"><strong>实格</strong>：白名单加名称校验加删除分级<br>G2 爆炸半径控制</td>
+            <td style="text-align: left;"><strong>实格</strong>：状态全落盘加控制台可视<br>G4 可观测性</td>
+            </tr>
+            </tbody>
             </table>
-            <p>整张图里有三处值得单独拎出来。</p>
-            <p><strong>治理行六格里落了五格，是全系统资源最重的一行。</strong>「可生长」的前提不是能加管线，而是加进来的管线不敢烂：生命周期逐级解锁、转正人审、写操作爆炸半径收窄、改动后自动降级，四个机制合起来保证未验证的能力永远不自动接活。</p>
-            <p><strong>循环列贯穿记忆、反思、治理三行，是「可生长」的结构性原因。</strong>失败到规则、失败到自愈回退、改动到降级重认证，三层循环嵌套。</p>
-            <p><strong>治理乘循环在官方矩阵里是空白格，这套系统落了一格实现。</strong>案例方对此的表述很克制：官方空格不代表不能落，代表工业界尚无成熟共识，这个实现只是一格证据，不构成模式。这是蓝皮书希望看到的落位态度。</p>
-
-            <h2>九、五笔取舍与它们的失效信号</h2>
-            <p>第八章标出了哪些格子是空的，这一章把空格背后的取舍记成账。每笔放弃了什么、换来什么，以及最重要的一项——什么信号出现时这笔账该重算。</p>
+            <p>矩阵显示出三项结构特征。</p>
+            <p><strong>治理行六格中落位五格，是资源投入最多的一行。</strong> 生命周期逐级解锁、active 认证、写操作 blast radius 控制和代码变更后自动降级，共同阻止未验证能力自动运行。</p>
+            <p><strong>循环列覆盖记忆、反思和治理三行。</strong> 失败记录转为规则，运行失败进入自愈回退，代码改动触发降级和重新认证。</p>
+            <p><strong>治理 × 循环在官方矩阵中为空格，本案例提供了一个实现。</strong> 该实现作为案例证据记录，不据此定义新模式。</p>
+            <h2>9. 架构取舍与失效信号</h2>
+            <p>下表记录各项架构取舍、收益和需要重新评估的失效信号。</p>
             <table>
-                <thead><tr><th>取舍</th><th>放弃了什么</th><th>换来什么</th><th>失效信号</th></tr></thead>
-                <tbody>
-                    <tr><td>运行期零 LLM<br>（推理资产化）</td><td>开放性：签名之外一律明确拒绝</td><td>每次运行确定；零模型边际成本；每个决策可审计到规则行</td><td>意图载体从数据签名变成开放对话；签名空间膨胀到规则表维护不动</td></tr>
-                    <tr><td>顺序链<br>（不做并行）</td><td>吞吐</td><td>任何一次运行可精确复现；资源竞争类抖动从「回归」降级为「已知现象」</td><td>批量规模大到排队不可接受</td></tr>
-                    <tr><td>单 Agent 加人机分工<br>（不做多智能体）</td><td>多角色并行协商、对抗评审</td><td>权责链短：每个决策能找到唯一的责任人或机制</td><td>出现开放性强、需要多视角对抗判断的任务类型</td></tr>
-                    <tr><td>静态编排<br>（无运行期重规划）</td><td>运行期自适应</td><td>新增数据格式编排层零改动；执行计划可在设计期评审</td><td>链路需要按数据特征动态分叉</td></tr>
-                    <tr><td>磁盘事实平面<br>（文件即状态）</td><td>跨机扩展、多租户并发写</td><td>可审计、可恢复、热更新、跨语言消费</td><td>部署形态从单主机单租户变成多机多租户</td></tr>
-                </tbody>
+            <thead>
+            <tr>
+            <th style="text-align: left;">取舍</th>
+            <th style="text-align: left;">放弃了什么</th>
+            <th style="text-align: left;">换来什么</th>
+            <th style="text-align: left;">失效信号</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">运行期零 LLM<br>（推理资产化）</td>
+            <td style="text-align: left;">开放性：未匹配签名的输入明确拒绝</td>
+            <td style="text-align: left;">每次运行确定；零模型边际成本；每个决策可审计到规则行</td>
+            <td style="text-align: left;">意图载体从数据签名变成开放对话；签名空间膨胀到规则表维护不动</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">顺序链<br>（不做并行）</td>
+            <td style="text-align: left;">吞吐</td>
+            <td style="text-align: left;">任何一次运行可精确复现；资源竞争类抖动从「回归」降级为「已知现象」</td>
+            <td style="text-align: left;">批量规模大到排队不可接受</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">单 Agent 加人机分工<br>（不做多智能体）</td>
+            <td style="text-align: left;">多角色并行协商、对抗评审</td>
+            <td style="text-align: left;">权责链短：每个决策能找到唯一的责任人或机制</td>
+            <td style="text-align: left;">出现开放性强、需要多视角对抗判断的任务类型</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">静态编排<br>（无运行期重规划）</td>
+            <td style="text-align: left;">运行期自适应</td>
+            <td style="text-align: left;">新增数据格式编排层零改动；执行计划可在设计期评审</td>
+            <td style="text-align: left;">链路需要按数据特征动态分叉</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">磁盘事实平面<br>（文件即状态）</td>
+            <td style="text-align: left;">跨机扩展、多租户并发写</td>
+            <td style="text-align: left;">可审计、可恢复、热更新、跨语言消费</td>
+            <td style="text-align: left;">部署形态从单主机单租户变成多机多租户</td>
+            </tr>
+            </tbody>
             </table>
-            <p>这五笔账不是五次独立的选择，是同一个立场的五个推论。运行期引入模型，静态编排就守不住，计划开始依赖模型当场的判断。引入并发，磁盘事实的「一个事实一个写入者」纪律就要加锁机制。引入多租户，文件契约就得换介质，热更新与可审计同时消失。</p>
-            <p>所以看待这套架构的正确姿势不是逐条问「这个能不能更好」，而是问「确定性优先这个整体假设，在这个场景里还成不成立」。</p>
-            <p>取舍也不是白做的，系统里留着具体的学费证据。两个数据集并发发布时，一方 verify 曾出现零个瓦片请求成功的瞬时抖动。案例方没有把这条当成回归去改管线，而是作为「已知瞬时抖动」写进知识库。这是并行代价的标准处理姿势：不是免费吞吐，是需要显式记录、归因、隔离的复杂性来源。以确定性为核心卖点的领域平台，吞吐靠排队获得，不靠并发获得。</p>
-            <p>拒绝开放性也有看得见的账单。所有不在已认证管线签名内的数据，系统直接说不会。GeoJSON、KML 这些常见格式今天一律报「无匹配管线」。能力清单短是设计结果，不是没来得及做，新格式的入口一直开着，但进不进、何时进，由人和证据决定。</p>
-
-            <h2>十、迁移边界：什么能搬走，什么带不走</h2>
+            <p>这些取舍相互关联。运行期引入模型后，计划会依赖模型的即时判断；引入并发后，“一个事实一个写入者”需要增加锁或事务；引入多租户后，文件契约需要迁移到支持并发和隔离的存储介质。</p>
+            <p>架构评审的主要问题是：确定性优先这一前提是否仍符合当前场景。</p>
+            <p>系统保留了相应运行证据。两个数据集并发发布时，其中一个数据集的 verify 曾短暂出现零个瓦片请求成功。案例方将其记录为“已知瞬时抖动”，没有修改顺序管线。该平台以排队控制吞吐，避免并发引入资源竞争。</p>
+            <p>系统明确拒绝未被已认证管线覆盖的输入。GeoJSON、KML 当前均返回“无匹配管线”。新格式需要经过管线设计、首跑验证和人工认证后才进入能力清单。</p>
+            <h2>10. 迁移条件与限制</h2>
             <p>本文的全部主张只在这一章的约束清单内有效。</p>
-            <p><strong>可迁移的是机制。</strong>第一是推理资产化的判定标准，高频且有标准答案的决策下沉为规则表，低频开放的留给模型并挪出关键路径。第二是契约门禁加外部验收，发布前校验最小事实集，发布后用真实请求验收，不信配置接口的自报。第三是失败日记的器官化，固定五段结构、回链规则、「不沉淀不算修完」的纪律。第四是能力生命周期加版本漂移监控。第五是磁盘事实平面。</p>
-            <p><strong>成立条件是四条约束。</strong>其一，意图空间封闭枚举。查表路由成立是因为输入签名即意图，意图载体一旦变成自然语言对话，查表路由立即失效，此时的正解不是给查表打补丁，而是重新引入运行期模型，让意图收敛成枚举控制信号，机械参数仍然不许模型生成。其二，错误代价是执行级的。这套系统的全部重量都压在「错了是事故」上，如果错误代价只是内容质量下降，这套治理会重得不划算。其三，错误签名可枚举。失败模式开放、签名不可枚举的领域，规则表退化成日志。其四，链路重复发生。沉淀的回报来自同类数据还会再来，一次性任务没有沉淀价值。</p>
-            <p><strong>带不走的有三样。</strong>规则资产带不走，每一条错误规则、每张失败卡都是这个领域具体的坑转化来的，换一个领域全部作废，能迁移的是产生它们的机制而不是它们本身。空格地图不能照抄，这套系统的空格由 GIS 发布的痛点决定，另一个场景的痛点会填上不同的格子。「零 LLM」也不是目标本身，它是本场景约束下的解，把「不用模型」当卖点搬到别的场景，是把结论当立场。</p>
+            <p><strong>可迁移机制。</strong> 高频且有标准答案的决策可以下沉为规则表，低频开放决策保留模型并移出关键路径；发布前校验最小事实集，发布后用真实请求验收；失败日记采用固定五段结构并回链规则；能力使用生命周期和版本漂移监控；进程间可通过事实平面交换状态。</p>
+            <p><strong>成立条件。</strong> 1. 意图空间可以封闭枚举。输入签名无法表达自然语言意图时，需要重新引入运行期模型，将意图转换为枚举控制信号；机械参数仍由工具和状态提供。2. 错误代价达到执行级；仅影响内容质量时，这套治理成本可能过高。3. 错误签名可以枚举；失败模式开放时，规则表只能作为日志。4. 链路重复发生；一次性任务难以获得沉淀收益。</p>
+            <p><strong>不可直接迁移的内容。</strong> 错误规则和失败卡来自 GIS 与 GeoServer 的具体行为；双轴矩阵中的空格由本案例约束决定；“运行期零 LLM”也是当前意图空间下的实现结果，不能作为其他场景的默认目标。</p>
             <figure>
-                <img src="assets/cesium-s57-viewer.jpg" alt="S-57 电子海图 WMTS 服务在三维地球浏览页中的实际渲染" loading="lazy">
-                <figcaption>第一章那笔账的另一端：S-57 电子海图 WMTS 在浏览页中按简化海图符号体系实际渲染。verify 阶段以这类真实截图加瓦片请求判定服务可用，而不是看发布接口有没有报错。</figcaption>
+              <img src="assets/cesium-s57-viewer.jpg" alt="S-57 电子海图 WMTS 服务在三维地球浏览页中的实际渲染">
+              <figcaption>S-57 电子海图 WMTS 在浏览页中的实际渲染。verify 阶段结合真实截图和瓦片请求判定服务可用性，不依赖发布接口自报。</figcaption>
             </figure>
-            <p>回到第一章的三笔账——步骤跨工具靠人串、坑在细节里知识随人走、结果不可验收。这套系统的答案是：把链路固化成平台与管线，把知识沉淀成规则与卡片，把验收做成每次运行的必经阶段。</p>
-            <p>双轴框架在这份复盘里的作用，是提供了拆解这份答案的语言。42 格里 14 个实格、4 个薄格、1 格落在官方空白，其余留白。这套落位图的价值不在格子数量，在于每个格子都能被指认、被推翻、被重算。</p>
 
+            <p>针对第一章的三类流程约束，系统将链路固化为平台和管线，将领域知识写入规则和卡片，并将验收设置为每次运行的必经阶段。</p>
+            <p>双轴矩阵中包含 14 个实格、4 个薄格和 1 个官方空白格实现，其余留白。每个落位均可依据代码实体和运行证据重新评估。</p>
             <h2>与案例报告 01 的对照</h2>
-            <p>两份蓝皮书放在一起读，会看到一组有意思的对照。<a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>做的是企业 SaaS 业务流程自动化，意图从自然语言对话来，所以运行期必须保留模型，它的解法是把机械参数从叙事上下文里彻底分离出去，建一个机械状态平面。成都玄宿做的是领域数据处理发布，意图从数据签名来，所以运行期可以完全没有模型，它的解法是把决策整体前置到设计期。</p>
+            <p>案例 01 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>面向企业 SaaS 业务流程自动化，意图来自自然语言，因此运行期保留模型，并以机械状态平面承载业务参数。玄宿科技面向领域数据处理发布，意图来自数据签名，因此将运行决策前移到设计期。</p>
             <table>
-                <thead><tr><th>维度</th><th>案例 01 东方屹腾</th><th>案例 02 成都玄宿</th></tr></thead>
-                <tbody>
-                    <tr><td>意图载体</td><td>自然语言对话</td><td>数据文件签名</td></tr>
-                    <tr><td>运行期模型</td><td>保留，收敛为控制信号</td><td>完全没有</td></tr>
-                    <tr><td>机械参数怎么办</td><td>分离出机械状态平面，带来源坐标</td><td>落盘成磁盘事实，一个事实一个写入者</td></tr>
-                    <tr><td>编排</td><td>动态：ReAct 与规划执行按清晰度切换</td><td>静态：六阶段固定，设计期评审</td></tr>
-                    <tr><td>资源最重的一行</td><td>行动与治理</td><td>治理</td></tr>
-                </tbody>
+            <thead>
+            <tr>
+            <th style="text-align: left;">维度</th>
+            <th style="text-align: left;">案例 01 东方屹腾</th>
+            <th style="text-align: left;">案例 02 玄宿科技</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">意图载体</td>
+            <td style="text-align: left;">自然语言对话</td>
+            <td style="text-align: left;">数据文件签名</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">运行期模型</td>
+            <td style="text-align: left;">保留，收敛为控制信号</td>
+            <td style="text-align: left;">完全没有</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">机械参数怎么办</td>
+            <td style="text-align: left;">分离出机械状态平面，带来源坐标</td>
+            <td style="text-align: left;">落盘成磁盘事实，一个事实一个写入者</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">编排</td>
+            <td style="text-align: left;">动态：ReAct 与规划执行按清晰度切换</td>
+            <td style="text-align: left;">静态：六阶段固定，设计期评审</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">资源最重的一行</td>
+            <td style="text-align: left;">行动与治理</td>
+            <td style="text-align: left;">治理</td>
+            </tr>
+            </tbody>
             </table>
-            <p>两者的共同点比差异更值得记住：都在同一个地方否决了「让模型生成机械参数」这条路，也都把大量资源投在治理行上。这不是巧合，是执行型场景的共同形状。ADPS 收集案例的目的正在于此：让不同行业的落地结论可以放在同一套坐标上比较，而不是各说各话。</p>
+            <p>两份案例都禁止模型生成机械参数，并在治理模块投入较多资源。ADPS 使用同一套坐标记录这些实现，以便比较不同行业的结构和边界。</p>
 
             <div class="document-citation">
-                <p><strong>案例提供：</strong>熊钰柯（Yuke Xiong），成都玄宿科技有限公司技术架构师、创业合伙人。原始技术复盘由案例方撰写，本文为 ADPS 蓝皮书体例下的重新组织，落位判断与取舍理由保持案例方原意。</p>
-                <p><strong>版本：</strong>企业 Agent 系统蓝皮书案例报告 02，v0.1，2026-07-30。</p>
-                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="/zh/founders/">贡献者</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p><strong>引用建议：</strong>ADPS、熊钰柯，《玄宿科技 GIS 数据发布 Agent 案例报告》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>
-
-
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

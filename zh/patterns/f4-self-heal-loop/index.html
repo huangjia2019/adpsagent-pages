@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F4 自愈循环 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。">
+    <meta name="description" content="deterministic 失败信号触发后，自动执行诊断、修复和验证，直到通过或熔断。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -77,7 +77,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -90,24 +90,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -121,11 +122,11 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>F4 · Self-Heal Loop · 自愈循环</h1>
-                <p class="publication-deck">agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。</p>
+                <p class="publication-deck">deterministic 失败信号触发后，自动执行诊断、修复和验证，直到通过或熔断。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>分类</dt><dd>反思 Reflection × 循环 Loop（转）</dd></div>
                     <div><dt>目录地位</dt><dd>核心模式</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -149,7 +150,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">agent 在 deterministic 失败信号触发时自动诊断、修复、验证、循环到收敛或熔断。</td>
+            <td style="text-align: left;">deterministic 失败信号触发后，自动执行诊断、修复和验证，直到通过或熔断。</td>
             </tr>
             </tbody>
             </table>
@@ -157,21 +158,21 @@
             <h2>问题</h2>
             <p>测试失败、lint 报错、build 挂掉、CI 红了——这些 deterministic 失败信号是 agent 最 valuable 的反馈，因为它们对错明确、不靠主观判断。但每次失败都让工程师手动排查、手动修，重复劳动量大，而且很多失败的修法是模式化的（依赖缺失、配置错位、明显的逻辑错），人来修是浪费。</p>
             <p>Self-Heal Loop 让 agent 自动消化这些信号闭环修复：失败信号触发 → 诊断根因 → 生成修复 → 应用 → 重新验证，没修好就再来一轮。它是反思模式里最贴近"agent 自主"的形态，也是反思模块唯一一个 mandatory loop——失败一次没修好必须再来，不存在"single-pass self-heal"这种合法形态。Aider 把它做成命令行 flag，Spotify Honk 把它做到 production scale（每月 650+ merged AI PR），GitHub Copilot Rubber Duck 把它做成 cross-model dual-review。</p>
-            <h2>分类依据：反思 × 循环</h2>
+            <h2>坐标说明：反思 × 循环</h2>
             <ul>
-            <li><strong>纵轴 · 反思</strong>：agent 自己检测错误并修复，自我修复是反思机制最实用的应用，软件领域尤其常见。它不是改进一个本来可用的输出，而是从一个已经坏掉的状态恢复——agent 把失败信号读懂、诊断、改正，整个过程是对自己产出的审视和纠错。</li>
-            <li><strong>横轴 · 循环</strong>：结构是检测失败 → 诊断 → 修复 → 再测试的强制循环。这个 loop 是结构性的、mandatory 的，跟 Generator-Critic 那种 optional replay 不同——起点是"输出已坏"，loop 是恢复手段，没修好就必须再迭代一轮，终止条件是测试通过、max_iterations 触底、或检测到 regression 触发 rollback。</li>
+            <li><strong>纵轴 · 反思</strong>：Agent 读取失败信号，诊断自身产出并尝试修复，适用于具有明确正确性判据的软件任务。</li>
+            <li><strong>横轴 · 循环</strong>：检测失败 → 诊断 → 修复 → 再测试构成 mandatory loop。终止条件为测试通过、达到 max_iterations 或检测到 regression 后 rollback。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <p>一个 production-grade Self-Heal Loop 由六段流水线加三重停止机制构成。流水线：Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify，验证失败时 git revert 回到 Diagnose 重做。</p>
             <p>三重停止机制是把 Generator-Critic 升级成 Self-Heal 的关键，缺一就有"把 main branch 改坏"的风险：</p>
             <ol>
-            <li><strong>max_iterations 硬熔断</strong>：loop 最多几轮（Aider 用 3）。防止 agent 无限打地鼠。</li>
+            <li><strong>max_iterations 硬熔断</strong>：限制 loop 最大轮数，Aider 使用 3，防止连续修复产生新的失败。</li>
             <li><strong>dual-model critic verifier</strong>：用一个不同 model family 的 reviewer 审修复方案。同 family 的 LLM 有共同盲区，cross-family review 引入独立训练历史的视角打破 self-bias。GitHub Copilot Rubber Duck 在 3 个风险节点（plan 后、实现后、写测试但运行前）强制 cross-model 验证。</li>
             <li><strong>stability check via signature</strong>：用 failure signature 比对，分辨"修了同一个问题"（hash 重复）还是"换了新问题"，并做 regression detection（severity 升级或 affected files 翻倍即回归，全部 rollback）。</li>
             </ol>
-            <p>Spotify Honk 的 format/lint/build/test 四级 cascade 值得照搬——便宜信号先跑挡掉明显问题，贵信号留给真正的语义级问题。</p>
-            <h2>适用条件</h2>
+            <p>Spotify Honk 按 format、lint、build、test 顺序执行四级 cascade，先运行低成本检查，再进入语义和测试级检查。</p>
+            <h2>适用场景</h2>
             <ul>
             <li><strong>代码 / 测试 / CI 这类对错明确的领域</strong>：CI 失败自动修、lint 自动修、测试失败自动诊断修复，这是 Self-Heal 的主战场，因为有 deterministic ground truth。</li>
             <li><strong>Coding agent 标配能力</strong>：Aider、Spotify Honk、GitHub Copilot 都把它当默认 feature，是 coding agent 的基础设施。</li>
@@ -180,7 +181,7 @@
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>没有 deterministic 失败信号还硬用</strong>：写作、设计这种主观判断没有客观对错信号，走 Generator-Critic（F1）而非 Self-Heal。修复代价大于失败代价的任务（生产数据库改 schema）走治理模块的 Approval Gate 加人审。</li>
-            <li><strong>打地鼠</strong>：没有 stability check，agent 修一个错引入新错，几轮后代码一团糟。防法是 failure signature 比对加 regression detection 加 max_iterations 三层一起上。</li>
+            <li><strong>失败签名持续变化</strong>：没有 stability check 时，Agent 可能修复一个错误并引入另一个错误。应同时使用 failure signature 比对、regression detection 和 max_iterations。</li>
             <li><strong>回归级联</strong>：每轮 fix 不是 atomic commit，一连串 cascade 后 rollback 还原不到正确状态。防法是 per-iteration atomic commit 加 "modify only files in diagnosis" 严格约束。</li>
             <li><strong>虚假恢复</strong>：agent 改的是 test 而不是 code，把测试改弱让它过——指标全绿、问题全在。防法是 critic 显式审"改的是 production code 还是 test"加 test coverage 不许下降。</li>
             <li><strong>触底不转人工</strong>："修不好就崩溃"是不可接受的工程做法。HITL handoff 必须是一等公民，触底转人审，且队列要有人每天清。</li>
@@ -192,7 +193,7 @@
             <li><strong>regression 率</strong>（健康区 &lt;10%）：修复引入新失败的比例。高说明 stability check 或 atomic commit 缺失。</li>
             <li><strong>HITL 队列清空时延</strong>（健康区 当天清零）：触底转人工后多久有人处理。队列堆积说明组织侧 ops 路径没打通。</li>
             </ul>
-            <h2>参考实现</h2>
+            <h2>最小实现</h2>
             <pre><code>for i in range(MAX_ITERATIONS):           # MAX=3, Aider 同源
     diagnosis = diagnose(current_failure)
     fix = generate_fix(diagnosis)         # 只改 diagnosis 里的文件
@@ -209,25 +210,25 @@
     current_failure = new_failure
 return &quot;max_iterations_human_handoff&quot;     # 触底转人审
 </code></pre>
-            <p>四个工程要点：dual-model critic 用 cross-family 不用同 family 不同 size；regression detection 规则按业务定（可加性能、安全、覆盖率回归）；atomic commit 必须真 atomic，一次别改 5 个文件否则 rollback 不回去；触底必须真有人看 HITL 队列。</p>
+            <p>生产实现的 dual-model Critic 使用 cross-family 模型；regression detection 按业务加入性能、安全和覆盖率规则；每轮使用 atomic commit；达到上限后进入由人员实际处理的 HITL 队列。</p>
             <h2>应用示例</h2>
-            <p>一家 DevTool 公司做 CI/CD 自动修复 Agent。第一版很激进——任何失败都自动修，最多 10 次 iteration，没有 critic、没有 rollback、没有 stability check。第二周 incident：测试失败 → agent 改代码 → 又失败但是不同错误 → 又改 → 改 9 次后把无关代码都改了一遍，main branch 一团糟，rollback 还原不到正确状态因为 9 次 commit 不是 atomic 的。复盘出三个根因：没有 stability check（在打地鼠）、没有 critic 验证（agent 自己说修了就 apply）、没有 git audit trail。第三版彻底重写，加三重停止机制——max iterations 硬熔断、dual-model critic（Sonnet 写、GPT-5.4 审，cross-family）、stability check via signature 比对。验证走 format/lint/build/test 四级 cascade，每轮 atomic commit 便于精确 rollback，触底转 HITL 人审 PR。修完 main branch incident 清零，自愈成功率 70%（剩 30% 转人工），代价是单次修复延迟从约 30 秒涨到约 90 秒——金融场景这点延迟换准确率值得。</p>
-            <h2>相关模式</h2>
+            <p>一家 DevTool 公司构建 CI/CD 自动修复 Agent。第一版对所有失败自动修复，最多执行 10 次 iteration，但没有 Critic、rollback 和 stability check。第二周发生 incident：Agent 连续修改 9 次并影响无关代码，且 9 次 commit 不是 atomic，无法精确 rollback。第三版加入 max_iterations 熔断、dual-model Critic（Sonnet 生成、GPT-5.4 审查）和 failure signature stability check。验证按 format、lint、build、test 四级执行，每轮使用 atomic commit，达到上限后生成 PR 并进入 HITL。改造后 main branch incident 清零，自愈成功率为 70%，其余 30% 转人工；单次修复延迟从约 30 秒增加到约 90 秒。</p>
+            <h2>相邻模式</h2>
             <ul>
-            <li><strong>Generator-Critic（F1）</strong>：兄弟模式，边界要钉清楚。Generator-Critic 是"生成后改进"——chain 是线性管道、replay 是 optional、起点是输出可用；Self-Heal Loop 是"失败后修复"——loop 是 mandatory 结构、起点是输出已坏。这点决定了它们的 stop condition、rollback、blast radius 全不同。前者用于主观任务，后者用于有 deterministic 失败信号的任务。</li>
+            <li><strong>Generator-Critic（F1）</strong>：Generator-Critic 从可用输出开始做可选质量改进；Self-Heal Loop 从确定性失败开始执行 mandatory loop。两者的 stop condition、rollback 和 blast radius 不同。</li>
             <li><strong>Adversarial Review（协作模块）</strong>：cross-family critic 衔接。Rubber Duck 的 dual-model review 是这个思路的轻量版，Adversarial Review 把它推到极端（multi-agent debate）。</li>
             <li><strong>Iterative Hypothesis（推理模块）</strong>：Loop 同源思路，都是"试—验—再试"的迭代结构。</li>
             <li><strong>Guardrail Sandwich（行动模块）</strong>：sandbox 同源。Honk 把 agent 放隔离 container 加限权运行，把 blast radius 从"production 全开"压到"sandbox 内全开"。</li>
             </ul>
-            <h2>设计结论</h2>
-            <p>Self-Heal Loop 不是简单的自动修代码，而是定义 agent 自主性的边界——能 self-heal 的领域（有 deterministic ground truth）agent 可以独立干，不能的领域（blast radius 不可逆）必须人介入，这条线跟 DevOps 几十年"什么能自动化、什么必须人审"的判断完全同源。</p>
+            <h2>工程判断</h2>
+            <p>Self-Heal Loop 适用于存在确定性失败信号、可验证修复和可用回滚的任务。缺少这些条件，或错误影响不可逆时，循环必须转入人工处理。</p>
 
                         <h2>企业证据</h2>
             <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《F4 自愈循环》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《F4 自愈循环》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

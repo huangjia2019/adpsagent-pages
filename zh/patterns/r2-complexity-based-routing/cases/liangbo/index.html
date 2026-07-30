@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方屹腾 · 复杂度路由 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="入口分类器生成有限控制信号，意图网关按成本和风险选择执行链。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/r2-complexity-based-routing/cases/liangbo/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/" class="active">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/r2-complexity-based-routing/" style="color: var(--color-text-muted);">R2 复杂度路由</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
+                <h1>R2 · 复杂度路由 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">入口分类器生成有限控制信号，意图网关按成本和风险选择执行链。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>主模式</dt><dd>R2 复杂度路由</dd></div>
+                    <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本页是完整案例的模式切片，记录特定系统约束下的实现选择。案例方提供的实现与效果信息未经过独立审计，不构成通用性能承诺。</p>
+
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">主模式</td>
+            <td style="text-align: left;">R2 复杂度路由 Complexity-Based Routing（推理 × 路由）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">结合模式</td>
+            <td style="text-align: left;">P1 上下文分诊 · G1 审批门</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">案例</td>
+            <td style="text-align: left;">上海东方屹腾科技 · HR/薪酬 SaaS · 服务 2 万+ 企业 · 执行型 Agent</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对应白皮书</td>
+            <td style="text-align: left;"><a href="https://adpsagent.com/zh/patterns/r2-complexity-based-routing/">/zh/patterns/r2-complexity-based-routing/</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">源</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第三章 · PPT 第 9–12 页</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">入口分类器把自然语言转换为有限控制信号，意图网关据此选择不同成本和风险的执行链。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>场景约束</h2>
+            <p>企业 HR 与薪酬入口会收到不同类型的请求：领域外闲聊、薪资表分析、薪资组配置、算薪或代发。若所有请求都进入链式推理和行动编排，简单请求会占用不必要的模型和工具成本，高风险事务也缺少独立治理入口。</p>
+            <p>复杂度路由在主循环入口完成分类，并把请求分配到深度不同的执行链。</p>
+            <h2>控制信号</h2>
+            <p>早期系统使用四个枚举：</p>
+            <table>
+            <thead>
+            <tr>
+            <th>信号</th>
+            <th>下游处理</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td><code>chat</code></td>
+            <td>固定答复或低成本对话</td>
+            </tr>
+            <tr>
+            <td><code>analyze</code></td>
+            <td>一次推理，必要时增加 RAG</td>
+            </tr>
+            <tr>
+            <td><code>resolve</code></td>
+            <td>链式推理、行动或规划执行</td>
+            </tr>
+            <tr>
+            <td><code>unknown</code></td>
+            <td>澄清、拒绝或安全兜底</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>随着场景增加，枚举演化为 <code>task</code>、<code>information</code>、<code>produce</code>、<code>chat</code> 等类型，并增加第二层业务场景绑定，用于推荐相关 Skill 和工具候选。枚举由下游流程倒推，不直接复用其他产品的分类。</p>
+            <h2>路由流程</h2>
+            <pre><code class="language-text">用户输入
+  -&gt; 受 Schema 约束的意图分类
+  -&gt; 输出校验
+  -&gt; 意图网关
+  -&gt; chat / analyze / resolve / unknown 执行链
+</code></pre>
+            <p>分类器固定在一到两次模型调用内完成。输出必须符合 Schema，无法解析或置信度不足时转入 <code>unknown</code>。意图结论的自然语言摘要写入叙事状态，离散枚举进入控制平面。</p>
+            <p>会话仍保持 <code>pre / middle / post</code> 三段边界：</p>
+            <ul>
+            <li><code>pre</code> 接收输入并完成意图分类；</li>
+            <li><code>middle</code> 执行所选能力链；</li>
+            <li><code>post</code> 合成结果并返回。</li>
+            </ul>
+            <p>Orchestrator 管理三段流程，意图网关只负责从信号映射到执行链。</p>
+            <h2>案例运行</h2>
+            <p>“你叫什么名字”可以在 <code>chat</code> 链路结束；上传薪资表并请求说明进入 <code>analyze</code>，按需检索领域知识；搭建薪资组进入 <code>resolve</code>，继续使用 R1 链式推理和行动模块。代发等敏感事务在后续控制信号中进入审批门。</p>
+            <p>第二层场景绑定可以提前缩小 Skill 和工具候选，但不能跳过工具准入、参数校验和审批。</p>
+            <h2>失效信号</h2>
+            <ul>
+            <li>分类结果是一段描述，没有离散枚举；</li>
+            <li>未知输出直接进入默认重链路；</li>
+            <li>所有请求都被路由到最高成本路径；</li>
+            <li>枚举过细，入口分类承担了完整业务规划；</li>
+            <li>业务分类和工具准入混为同一步；</li>
+            <li>路由结果没有进入事件时间线，无法分析误分流。</li>
+            </ul>
+            <h2>验证指标</h2>
+            <ul>
+            <li>Schema 解析成功率和 <code>unknown</code> 比例；</li>
+            <li>各路由档位的流量分布；</li>
+            <li><code>chat</code>、<code>analyze</code> 被误送入 <code>resolve</code> 的比例；</li>
+            <li>事务请求被误送到轻链路的比例；</li>
+            <li>各档平均 Token、延迟和工具调用次数；</li>
+            <li>二层场景绑定后的候选工具缩减率与正确率。</li>
+            </ul>
+            <h2>与白皮书的对应</h2>
+            <p>R2 白皮书以信号提取、分类和分档执行描述复杂度路由。东方屹腾按动作类型和执行链深度分类，而非只按模型档位分类；<code>unknown</code> 承担解析失败和低置信度的回退。</p>
+            <h2>迁移条件</h2>
+            <p>自然语言入口对应多条成本、能力或风险差异明显的下游流程时，应使用复杂度路由。入口已经结构化，或所有请求使用同一流程时，可以直接进入主链。信号枚举、兜底和路由指标必须在上线前定义。</p>
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 复杂度路由》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

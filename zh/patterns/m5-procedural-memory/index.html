@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M5 程序性记忆 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="把一类任务的成功执行流程凝固成可命名、可加载、可复用的结构化资产，下次同类任务直接调用，跳过试错进入主路。">
+    <meta name="description" content="将已验证的任务流程保存为可命名、可加载、可版本化的结构化资产，供后续同类任务复用。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -77,7 +77,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -90,24 +90,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -121,11 +122,11 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>M5 · Procedural Memory · 程序性记忆</h1>
-                <p class="publication-deck">把一类任务的成功执行流程凝固成可命名、可加载、可复用的结构化资产，下次同类任务直接调用，跳过试错进入主路。</p>
+                <p class="publication-deck">将已验证的任务流程保存为可命名、可加载、可版本化的结构化资产，供后续同类任务复用。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>分类</dt><dd>记忆 Memory × 层级 Hierarchy（分）</dd></div>
                     <div><dt>目录地位</dt><dd>扩展模式</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -149,40 +150,40 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">把一类任务的成功执行流程凝固成可命名、可加载、可复用的结构化资产，下次同类任务直接调用，跳过试错进入主路。</td>
+            <td style="text-align: left;">将已验证的任务流程保存为可命名、可加载、可版本化的结构化资产，供后续同类任务复用。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
-            <p>同一类任务 agent 干过五次，每次都干成，但每次都从零开始——读五个 reference、试错三次、走完一遍跟上次一模一样的路径。第六次同样的任务来，agent 又走一遍。Token 烧、时间长、用户烦。根本问题是 agent 干完之后没有任何东西被沉淀下来，那次漂亮的"成功路径"丢了。</p>
-            <p>程序性记忆解决的就是这个：agent 做成一件事后，把"怎么做成的"凝固成一个可复用招式，下次同类任务直接加载这个招式，五秒进入主路。它解决的根本问题一句话——<strong>agent 不会因为做过一遍而变得更快</strong>。在企业语境里，它还是把组织 process 沉淀成 agent 能消化形态的工程载体——老员工脑子里那些"会做"，第一次有了能精确表达的容器。</p>
-            <h2>分类依据：记忆 × 层级</h2>
+            <p>同一类任务即使已经成功执行多次，Agent 仍可能在每次请求中重新读取 reference、重复试错并执行相同路径。原因是执行结果没有转化为可复用的流程资产。</p>
+            <p>程序性记忆在任务成功后提取触发条件、执行步骤、工具依赖和验收规则，保存为可复用 skill。后续同类任务可以加载该 skill，减少重新探索。它也为组织 process 提供机器可读、可审查的表达形式。</p>
+            <h2>坐标说明：记忆 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：它把成功工作流封装为可复用的"技能",对应认知科学里的 procedural memory（程序性记忆，"怎么做"），区别于 declarative memory（陈述性记忆，"知道什么",即 RAG 的对象）。</li>
-            <li><strong>横轴 · 层级</strong>：技能库本身分层——atomic skill（原子技能）到 composite skill（组合技能）到 workflow（完整流程），由简到繁层级组织。它跟分层保留同列：分层保留是货架，程序性记忆是货架上专门的"招式区"。</li>
+            <li><strong>横轴 · 层级</strong>：技能库按 atomic skill、composite skill 和 workflow 分层组织，上一层可以组合下一层能力。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <ol>
-            <li><strong>三阶段加载</strong>：启动时只加载每个 skill 的 name 加 description（discovery，约 50 token/skill），任务匹配时才读完整 SKILL.md 进 context（activation，几百到两千 token），执行时按需加载脚本和资源（execution）。这是程序性记忆在 token 经济上做得最对的实现——五十个 skill 全量加载会吃光 context。</li>
+            <li><strong>三阶段加载</strong>：启动时只加载每个 skill 的 name 和 description（discovery，约 50 token/skill）；任务匹配后再读取完整 SKILL.md（activation，数百至两千 token）；执行阶段按需加载脚本和资源。该设计避免 50 个 skill 全量占用 context。</li>
             <li><strong>两种来源</strong>：人精心写（Anthropic Agent Skills 路线，审过、版本化、进 git）和 agent 自动蒸馏（Hermes 路线，干完任务自己写）。来源字段影响信任级别。</li>
             <li><strong>自动蒸馏</strong>：足够复杂的任务（如五个以上工具调用）成功完成后，agent 分析 trajectory、识别可复用模式（输入、工具序列、输出格式）、写成结构化 skill。简单任务不触发，否则蒸馏出的低通用性 skill 会污染库。</li>
-            <li><strong>人机同读格式</strong>：用 markdown 加 YAML frontmatter，人能读、git 能 diff、agent 自己能读。人机同读的格式胜过任何专为机器设计的格式。</li>
-            <li><strong>lifecycle 管理</strong>：跟踪每个 skill 的 use_count 和 success_rate，低成功率自动 evict（总误导 agent 的招式），长期不召回的进冷层。生产基础设施在变，过期 skill 会从"招式"变成"坑"。</li>
+            <li><strong>人机同读格式</strong>：使用 markdown 和 YAML frontmatter，使人工审查、git diff 和 Agent 加载共用同一份源文件。</li>
+            <li><strong>lifecycle 管理</strong>：跟踪每个 skill 的 use_count 和 success_rate；低成功率 skill 自动退出活动集，长期未召回项进入冷层。基础设施变化后，过期 skill 需要重新验证。</li>
             </ol>
-            <h2>适用条件</h2>
+            <h2>适用场景</h2>
             <ul>
             <li><strong>周期性、模板性任务</strong>：同一类任务反复出现、有相对稳定的成功路径、有明确的入口出口条件。DevOps 标准运维事件（集群配置变更、批量重启、备份恢复）是最佳场景。</li>
-            <li><strong>企业 process 沉淀</strong>：律所的客户分级判断逻辑、医院的急诊分诊五步法、企业的标准退款流程——过去全靠资深员工传帮带、跳槽带不走、wiki 只占一成完整度的隐性资产，现在能写成 SKILL.md 变成组织可复用的资产层。</li>
-            <li><strong>需要带判断执行的场景</strong>：skill 给的是"通常这么做"的范式，agent 加载后仍保留判断权——决定哪些步骤照搬、哪些按当前 context 调整、什么时候放弃 skill 改 explore。这是它区别于死板 RPA 的关键。</li>
+            <li><strong>企业 process 沉淀</strong>：律所的客户分级逻辑、医院的急诊分诊流程和企业退款流程可以写入 SKILL.md，形成可复用、可审查的组织资产。</li>
+            <li><strong>需要带判断执行的场景</strong>：skill 提供默认流程，Agent 仍需根据当前 context 决定是否调整步骤或退出 skill 进入 explore。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>任务每次都不一样却硬沉淀</strong>：开放域研究这类任务沉淀不出固定流程，强行做成 skill 是浪费。</li>
             <li><strong>任务只跑一次</strong>：沉淀成本高于复用收益，不该做。</li>
-            <li><strong>成功路径还在变就过早凝固</strong>：底层流程没稳定时凝固，skill 反而成为 agent 的枷锁。</li>
-            <li><strong>流程没梳理就上 procedural memory</strong>：跟 enterprise RAG 同源的坑——schema 字段错了、触发条件含糊、lifecycle 没设计，再好的系统也空跑。做 enterprise procedural memory 之前先做流程梳理。</li>
-            <li><strong>自蒸馏 skill 直接投产</strong>：agent 自己蒸馏的招式应进"试用期"双轨执行（按招式跑一份、按 explore 跑一份，对比一致多次才转正），且首次召回时加注解提醒"这是自动蒸馏的，先验证再照做"。自蒸馏和人写的要分级信任，这在企业 agent 里是合规要求。</li>
+            <li><strong>流程尚未稳定就固化</strong>：底层流程持续变化时，skill 会快速过期并误导执行。</li>
+            <li><strong>流程未经梳理</strong>：schema 字段、触发条件和 lifecycle 未定义时，procedural memory 无法稳定工作。应先完成流程梳理。</li>
+            <li><strong>自蒸馏 skill 直接投产</strong>：Agent 自动蒸馏的 skill 应进入试用期，分别按 skill 和 explore 路径执行并比较结果，多次一致后再转为正式版本。自蒸馏项和人工编写项需要不同信任级别。</li>
             <li><strong>库只增不减</strong>：不做 lifecycle，过期低成功率的 skill 持续误导 agent。</li>
             </ul>
             <h2>验证指标</h2>
@@ -190,9 +191,9 @@
             <li><strong>复用率</strong>（健康区随时间上升）：同类任务命中已有 skill 而非从零 explore 的比例。这是程序性记忆是否起作用的首要信号。</li>
             <li><strong>skill 成功率</strong>（健康区 ≥ 80%）：调用某 skill 后任务成功的比例。跌破 80% 触发告警，去 review 是不是底层服务变了导致 skill 过期。</li>
             <li><strong>token / 时间节省</strong>（对照 explore 基线）：复用 skill 相比从零做省下的 token 和时间。做对时单个高频任务可省一个数量级（如三万 token 加十分钟压到五千 token 加九十秒）。</li>
-            <li><strong>自蒸馏转正率</strong>（业务判定）：自蒸馏招式通过试用期转为正式 skill 的比例，过低说明蒸馏触发条件或质量校验有问题。</li>
+            <li><strong>自蒸馏转正率</strong>（业务判定）：自动蒸馏产物通过试用期并转为正式 skill 的比例。偏低说明蒸馏触发条件或质量校验需要调整。</li>
             </ul>
-            <h2>参考实现</h2>
+            <h2>最小实现</h2>
             <pre><code>Skill = SKILL.md 的结构化形态：
     name / description（用于 discovery）/ body（workflow + best practices）
     triggers[] / preconditions[] / steps[] / failure_handling[]
@@ -204,25 +205,25 @@ SkillLibrary：
     distill_from_trajectory(...)  → 5+ tool calls 且 success 时自动蒸馏
     evict_stale(...)              → 低成功率或长期不用的清除
 </code></pre>
-            <p>工程落地四个要点：蒸馏的 LLM 调用用便宜模型加结构化 prompt 并做 schema 校验；蒸馏触发条件不止"5+ tool calls"（还要 success、工具间有非平凡逻辑、无用户多次纠错）；lifecycle 做 success_rate 跟踪；自蒸馏 skill 与人写 skill 分级信任。</p>
+            <p>生产实现可使用成本较低的模型和结构化 prompt 完成蒸馏，并执行 schema 校验；触发条件除 5 次以上 tool call 外，还应包括任务成功、工具之间存在非平凡逻辑且没有多次用户纠错；lifecycle 持续跟踪 success_rate；自蒸馏和人工编写的 skill 使用不同信任级别。</p>
             <h2>应用示例</h2>
-            <p>某中厂运维团队五到八个工程师管三十多个生产服务，DevOps agent 要接住反复遇到的标准运维事件——Redis 集群配置变更、Kubernetes 批量重启、PostgreSQL 备份恢复。六个关键决策:skill 分两类，团队精心写的 runbook 走 Anthropic Skills 路线（SRE leader review 才入库，放 runbooks/），agent 自蒸馏的放独立 namespace（auto-skills/，七天后进 review 队列）；触发条件 schema 化（frontmatter 的 triggers 字段列关键词或正则，让"该不该用这个 skill"可测试，规则匹配加 LLM 混合判断）；preconditions 强制前置检查（执行前先验"当前用户有 SSH 权限""目标 namespace 存在",这是生产事故最大防火墙）；steps 可回滚（每步标 idempotent 或带 rollback，类似分布式系统 Saga）；成功率监控加告警（任何 skill 跌破 80% 告警去查是不是底层服务变了）；自蒸馏招式试用期双轨执行（两份结果一致五次以上才转正）。落地第三个月，开篇"半年第三次手动改 maxmem-policy"的场景再来时，agent 走 discovery 加 activation 加自动 precondition 检查加自动 rollback 保护，三万 token 加十分钟的活儿压到五千 token 加九十秒，省下的运维时间相当于半个 SRE 全职。</p>
-            <h2>相关模式</h2>
+            <p>某运维团队由 5-8 名工程师管理 30 多个生产服务，DevOps Agent 处理 Redis 集群配置变更、Kubernetes 批量重启和 PostgreSQL 备份恢复等重复事件。人工编写的 runbook 经 SRE leader review 后进入 <code>runbooks/</code>，Agent 自动蒸馏的内容进入 <code>auto-skills/</code> 并在 7 天后进入 review 队列。frontmatter 的 triggers 使用关键词或正则，结合规则和 LLM 判断；preconditions 检查 SSH 权限和目标 namespace；每个 step 标记 idempotent 或提供 rollback；skill 成功率低于 80% 时告警；自动蒸馏 skill 经过至少 5 次双轨一致性验证后转正。上线第三个月，同类 maxmem-policy 变更从约 30K token、10 分钟降至 5K token、90 秒。</p>
+            <h2>相邻模式</h2>
             <ul>
-            <li><strong>反思模块 F2 Skill Package（技能包）</strong>：两者落地几乎同构——都是技能库、都用 SKILL.md、都做三阶段加载和 lifecycle。区别在设计意图：M5 强调"学过就存"（memory 写入，agent 完成任务后自动把成功流程沉淀进记忆），F2 强调"反思后封装"（post-reflection 固化，agent 反思评估后才把验证过的流程固化为技能）。同一份技能库，从记忆视角看是 M5 的写入端，从反思视角看是 F2 的产出端。课程把它并入 06-03 技能包讲，但它本身是记忆模块的独立模式。</li>
-            <li><strong>失败日记（M4）</strong>：孪生关系，一起构成 agent 的经验库。程序性记忆沉淀"做对的活儿",失败日记沉淀"踩过的坑"。一面记成功，一面记失败。</li>
-            <li><strong>分层保留（M1）</strong>：同在层级列。M1 是货架（容器），M5 是货架上专门的招式区。技能库本身也分层（atomic 到 composite 到 workflow）。</li>
-            <li><strong>RAG（M2）</strong>：互补的两种记忆。RAG 管 declarative（知道什么，事实检索），M5 管 procedural（会做什么，流程复用）。企业 agent 落地里两者是合奏。</li>
+            <li><strong>反思模块 F2 Skill Package（技能包）</strong>：两者共用技能库、SKILL.md、三阶段加载和 lifecycle。M5 描述成功流程如何写入记忆，F2 描述反思验证后如何封装技能。</li>
+            <li><strong>失败日记（M4）</strong>：程序性记忆保存经过验证的成功流程，失败日记保存失败路径。</li>
+            <li><strong>分层保留（M1）</strong>：M1 定义记忆作用域，M5 是长期记忆中的程序性分区；技能库内部也可按 atomic、composite 和 workflow 分层。</li>
+            <li><strong>RAG（M2）</strong>：RAG 管理 declarative memory，M5 管理 procedural memory。</li>
             </ul>
-            <h2>设计结论</h2>
-            <p>程序性记忆不是工作流模板，是 agent 的职业能力——它让 agent 在保留判断力的同时拿到老员工的手艺，agent 的价值跟它累积的经验等比，跟它今天有多聪明反而关系不大。</p>
+            <h2>工程判断</h2>
+            <p>程序性记忆保存经过验证的触发条件、步骤、工具依赖和验收规则。它让 Agent 复用稳定做法，同时保留对例外情况的判断和退出路径。</p>
 
                         <h2>企业证据</h2>
             <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《M5 程序性记忆》，Agent 设计模式白皮书 v0.3，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《M5 程序性记忆》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

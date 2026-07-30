@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>可观测性：玻璃罩里的瑞士机械表 · 概念 · ADPS</title>
-    <meta name="description" content="把 Agent 的精神活动与躯体活动封装成带语义事件，按时间轴对开发者完整可见。">
+    <title>可观测性：活动事件与执行时间线 · 概念 · ADPS</title>
+    <meta name="description" content="Activity 与 Frame 关联模型、工具、状态变化、耗时和成本。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/concepts/observability-glass-dome/">
@@ -71,7 +71,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -84,24 +84,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/" class="active">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/" class="active">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -111,12 +112,12 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 工程概念</p>
-                <h1>可观测性：玻璃罩里的瑞士机械表</h1>
-                <p class="publication-deck">把 Agent 的精神活动与躯体活动封装成带语义事件，按时间轴对开发者完整可见。</p>
+                <h1>可观测性：活动事件与执行时间线</h1>
+                <p class="publication-deck">Activity 与 Frame 关联模型、工具、状态变化、耗时和成本。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>案例衍生定义</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>来源案例</dt><dd>东方屹腾执行型 Agent</dd></div>
                     <div><dt>证据类型</dt><dd>一线实践者复盘</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -124,18 +125,29 @@
             </header>
             <p class="publication-note"><strong>证据边界：</strong>本概念由单一生产系统案例抽象而来，供比较和公开评审使用；在获得更多独立案例印证前，不表述为行业标准。</p>
 
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">出自东方屹腾执行型 Agent 落地（案例提供 梁博）</p>
-
-            <p><img src="/images/concepts/observability-glass-dome.png" alt="可观测性：玻璃罩里的瑞士机械表" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <p><img src="/images/concepts/observability-glass-dome.png" alt="Agent 活动事件与执行时间线" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
             <h2>概念定义</h2>
-            <p>执行型 Agent 的一次对话，背后是一长串看不见的动作：识别意图、路由分支、链式推理、调用工具、读写状态、合成回复。如果开发者只能看到两层——用户输入和最终回复——中间全是黑盒，那么这台系统每出一次问题，定位都要靠猜。可观测性要解决的就是这件事：把 Agent 的每一步动作和驱动这步动作的思考，按时间轴完整地暴露给开发者自己。</p>
-            <p>这里的"可观测"有一层需要先说清的语义。它指的不是 Agent 对它所处世界的感知，而是反过来——让 Agent 的意识和行为对开发者可见。Agent 在一次对话里产生的一系列行动是它的躯体活动，驱动这些行动的推理和判断是它的精神活动，可观测性要把这两者都摊开来看。</p>
-            <h2>使用说明</h2>
-            <p>玻璃罩这个比喻就出在这里。开发态把全部可观测事件打开之后，组装这台复杂精密的 Agent，体验接近在一个透明玻璃罩里修一块瑞士机械表。机械表零件多、咬合精密，但只要罩子是透明的，每个齿轮在哪里转、哪根游丝在动，都看得见。Agent 同理：意图识别这一环识别出了什么、意图网关把它路由到了哪条下游链、ReAct 跑到第几步、这一步的 LLM 调用用的是什么提示词、模型返回了什么、花了多少成本，都在时间轴上按顺序排开。系统越复杂，这层透明罩越能减轻开发者的心智负担——它没有降低系统本身的复杂度，但让复杂度变得可见、可查。</p>
-            <p>它防住的失败很具体。执行型 Agent 链路长、环节多，一旦某次交付不符合预期，问题可能出在意图识别误判、可能出在某步推理跑偏、也可能出在一次工具调用的参数绑定。没有时间轴，开发者只能反复重放整个对话去推测哪一环出了岔，调试周期被拉得很长。把每一步的动作和 LLM 调用细节都摊在时间轴上，定位就从猜测变成查看——哪一步的输出和预期不符，一眼就能落到那一格。</p>
-            <p>东方屹腾把这条经验放在了起步阶段，而不是等系统复杂了再补。项目从最朴素的对话管道接通起步，第一件认真做足的基础设施就是可观测性。做法是把 Agent 的活动和程序逻辑统一封装抽象成带语义的事件——用户意图识别、意图网关路由判定、ReAct 执行都是这样的事件——再把一次对话的整个执行过程按时间轴清晰展示出来。每一步既能看到 Agent 产生了什么动作，也能按时间顺序看到这一步的 LLM 调用细节：运行态实际用的提示词、模型的输出、这一步相关的各种成本。这些调试详情在生产投放时可以关掉，开发态时在前端打开。地基铺好之后，后面往上逐步堆意图识别、推理、行动这些能力，每堆一层都能直接看见它在罩子里怎么工作。</p>
-            <h2>何时需要</h2>
-            <p>当你的 Agent 一次对话要走多步、跨多个能力环节，且每一步都可能出错。环节越多、链路越长，把执行过程在开发态摊成一条透明的时间轴，回报就越大。这层时间轴展示的对象，是 <a href="../orchestrator/">Orchestrator</a> 在运行态编排出的那一串活动事件。</p>
+            <p>Agent 可观测性记录一次会话中发生的意图识别、路由、推理、工具调用、状态读写和回复合成。目标是让开发者能够根据结构化事件定位执行偏差，而非只比较用户输入和最终输出。</p>
+            <p>东方屹腾把会话拆为 Activity，并在 Activity 下记录 Frame。Frame 可包含模型输入输出、工具请求与回执、状态变化、耗时和成本。</p>
+            <h2>工程机制</h2>
+            <p>各运行模块发布统一事件：</p>
+            <pre><code class="language-text">event_id
+session_id
+activity_type
+step_id
+started_at / ended_at
+input_ref / output_ref
+model_or_tool
+cost
+status
+</code></pre>
+            <p>前端按时间排序显示事件，并允许展开具体 Frame。开发环境可显示完整提示词和回执；生产环境按权限脱敏或关闭调试字段。事件 ID 用于关联叙事、机械状态和任务节点的变化。</p>
+            <p>可观测性应从第一阶段进入运行时接口。后补日志很难还原模块边界、状态来源和模型当时看到的上下文。</p>
+            <h2>案例用法</h2>
+            <p>东方屹腾在接通对话管道后即建设事件时间线。意图识别结果、网关路由、ReAct 轮次和工具调用都以 Activity 展示；每次模型调用的提示词、输出、耗时和成本记录在 Frame 中。</p>
+            <p>当薪资组配置结果异常时，开发者可以定位到意图误判、推理选择错误、参数来源校验失败或业务回执不符合验收条件，无需反复重放整段会话进行猜测。</p>
+            <h2>适用条件</h2>
+            <p>当一次请求跨越多个能力模块，且错误需要定位到具体步骤、输入和状态变化时，应建立活动事件与执行时间线。事件生产方通常由<a href="../orchestrator/">Orchestrator</a>统一协调。</p>
 
             <div class="document-citation">
                 <p><strong>来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>。</p>

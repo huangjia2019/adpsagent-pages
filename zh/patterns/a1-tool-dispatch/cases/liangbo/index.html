@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东方屹腾 · 工具调度落地 · 蓝皮书 · ADPS</title>
-    <meta name="description" content="工具不裸调、封装进行动能力，注册时声明机械状态依赖坐标，原 API 不改造即可被编排。">
+    <title>东方屹腾 · 工具调度 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="工具由行动模块调用，注册时声明机械状态的生产坐标和消费坐标。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/a1-tool-dispatch/cases/liangbo/">
@@ -71,7 +71,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -84,24 +84,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -111,12 +112,12 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
-                <h1>A1 · 工具调度 · 蓝皮书 · 东方屹腾执行型 Agent</h1>
-                <p class="publication-deck">工具不裸调、封装进行动能力，注册时声明机械状态依赖坐标，原 API 不改造即可被编排。</p>
+                <h1>A1 · 工具调度 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">工具由行动模块调用，注册时声明机械状态的生产坐标和消费坐标。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>主模式</dt><dd>A1 工具调度</dd></div>
                     <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
                     <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
@@ -150,55 +151,117 @@
             </tr>
             <tr>
             <td style="text-align: left;">源</td>
-            <td style="text-align: left;">梁博 AICon 逐字稿 第三章 · PPT 14–15 页，第六章 · PPT 22 页</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第三章、PPT 14–15 页；第六章、PPT 22 页</td>
             </tr>
             <tr>
-            <td style="text-align: left;">一句话</td>
-            <td style="text-align: left;">工具不在编排器层裸调，而是封装进行动能力里调用，调用规范统一到「每个工具声明自己依赖和产出哪个机械状态坐标」的注册协议上，原有 SaaS API 经网关暴露即可被感知调用、不需要改造。</td>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">工具由行动模块统一调用；工具注册时声明机械状态的生产坐标和消费坐标；存量 SaaS API 通过网关接入，无需修改原接口。</td>
             </tr>
             </tbody>
             </table>
             <hr />
-            <h2>场景：这一格在案例里解决什么</h2>
-            <p>东方屹腾的执行型 Agent 要做的事，是把用户口语化的业务意图转成对一连串业务 API 的可靠编排调用。工具调用因此是这个系统的行动落点：搭薪资组、算薪、代发、入职办理，每一个场景最终都落到若干次真实的 SaaS 接口调用上。</p>
-            <p>这一格要解决的问题有两层。第一层是工具该怎么调——是让编排器直接拿到推理产出的工具名就裸调一次函数，还是把这次调用放进一个能观察、能续作的结构里。第二层是工具该怎么注册——几百个原有 SaaS API 怎么进入 Agent 的世界、怎么让 Agent 知道某个工具要哪个参数、这个参数又该从哪里取，而不是交给模型临场生成。前一层决定调用的运行形态，后一层决定调用的可靠性地基。</p>
-            <h2>落地演进：问题怎么把它逼出来</h2>
-            <p>最直接的写法是让推理直接产出工具调用信号，编排器拿到信号用对应函数承接一下就完事。逐字稿里梁博明确说过这条路在编码上没什么不可以，但不符合执行型 Agent 的实际形态。原因是推理每次只推出「下一步做什么」，不是一次推出全部步骤——因为一旦发生行动，世界状态就变了，下一步要看最新上下文再定。这意味着工具调用天然要嵌在一个「干一步、看一步、没到目标就再干」的循环里，而不是孤立的一次函数调用。</p>
-            <p>于是工具调用被收进了行动能力。ReAct 里每一轮有 Thought、Action、Observation 三件套，作为一个 block 追加到 scratchpad 草稿纸看板上，后面的步骤读 scratchpad 的 block 链就能接着之前已完成的事继续推理。<strong>工具调用是这条链里 Action 的一种具体形态，所以它不在编排器层裸调，而是封装在行动能力中——一次调用其实有环绕它的很多能力和场景要进行</strong>：要先读看板知道前面干了啥、要把调用结果观察进看板、要比对用户目标判断要不要再来一轮。把工具从这个上下文里拎出来单独裸调，等于丢掉了它周围的这一整套机制。</p>
-            <p>注册侧的演进更曲折。一开始团队按 MCP 那套思路设想：把 API 全描述成工具，参数交给 LLM 从对话上下文里解析生成、绑定到下游调用。这条路在内容生成型场景里能走通，但东方屹腾的参数大量是雪花算法生成的 64 位甚至 128 位随机 id（如 <code>template_id</code>）。LLM 是无状态概率模型，每次调用都是一次新生成，它只能尝试生成参数、不能本质意义上原样取用你给它的参数，让它原样吐出一个 64 位随机串，出错概率极大。id 缺一位会校验失败、错一位更糟——Agent 执行成功，却破坏了业务数据。把参数交给模型生成这条路在本质上行不通，问题逼出了一套机械状态平面，以及配套的工具注册协议。</p>
-            <h2>关键设计：数据结构 / 控制信号 / 机制</h2>
-            <p><strong>工具调用封装在行动能力里。</strong> 工具不是编排器的直接被调方，编排器只负责按控制信号把控制权交给行动能力，由行动能力在 ReAct 循环里发起这次调用。调用的输入、结果、对目标的比对，都在 scratchpad 这个数据结构里串起来。技能、工具、知识库检索在这一层是同构的——它们都是 Action 的可选形态，由推理产出的控制信号选中哪一种。</p>
-            <p><strong>工具与技能的统一注册协议。</strong> 这是这一格最实的部分。因为系统是一套企业级封闭体系，所有工具都由团队自己管理注册，不接外部不可信工具，所以 Agent 启动时就能把它感知的世界里所有可能的状态键字典确定下来。注册协议要求每个工具声明自己的机械状态参数依赖坐标：它需要哪个参数、这个参数的 key 是什么、应该由哪个工具在哪个运行层级上产出。每个工具因此既是机械状态平面的生产者，也是消费者。</p>
-            <p><strong>机械状态平面只管坐标的唯一性和最新值。</strong> 它不替工具决定谁该读谁该写，只负责两件事：用「键名 + 作用域」确定出的键坐标的唯一性，以及每个键在会话时间轴上的最新状态维护。哪个消费者要取哪个坐标上的参数，由消费者自己声明和校验。运行态里每个参数对应一个 Provenance 结构体，由各项注册描述解析组装而成，是这个坐标的唯一身份。可以想象成 Agent 启动时就砌好了一整墙小格子，一格一个机械状态参数，格子按会话时间轴维护最新值，消费者要哪个就去哪个格子读。系统级参数（如用户登录会话里的身份、权限）在关键事件处写入,比如用户登录时。</p>
-            <p><strong>原有 SaaS API 经网关暴露即可。</strong> 有了统一状态平面和注册协议，原有的所有 SaaS API 只要通过网关暴露出来就能直接被 Agent 感知使用，按场景编排组合任意数量的连贯调用，而不会发生参数写入、读取、绑定的错误。API 本身不需要任何改造。这是这套设计落到存量系统上的关键收益——两万多家企业背后那套成熟的 SaaS 接口矩阵不用为了上 Agent 而重写。</p>
-            <h2>踩过的坑与取舍</h2>
+            <h2>场景约束</h2>
+            <p>东方屹腾需要把用户的自然语言请求转换为一组连续的 SaaS API 调用。薪资组配置、算薪、代发和员工入职都包含真实的写操作，工具调度必须同时解决两个问题：</p>
+            <ol>
+            <li>工具调用如何进入可观察、可续作、可检查的运行结构；</li>
+            <li>下游工具如何取得上游工具产生的准确参数。</li>
+            </ol>
+            <p>第二个问题直接影响业务数据。企业系统中的 <code>template_id</code>、员工 ID 和流水号通常是 64 位或 128 位字符串。它们必须来自指定的工具回执，不能由模型根据上下文重新输出。</p>
+            <h2>调用边界</h2>
+            <p>Orchestrator 不直接执行工具函数。它根据控制信号把控制权交给行动模块，行动模块在 ReAct 循环中完成调用。每一轮包含：</p>
+            <pre><code class="language-text">Thought -&gt; Action -&gt; Observation
+</code></pre>
+            <p>三类数据作为 block 追加到 scratchpad。下一轮读取已有 block chain，核对上一轮结果，再决定继续调用、转入规划执行、转人工或结束。</p>
+            <p>工具、技能和知识检索在这一层具有相同的调用形态。它们都是 <code>Action</code> 的候选，由结构化控制信号选中。调用前校验、结果解析、失败处理和目标核对都留在行动模块内，Orchestrator 只管理模式切换和会话级流程。</p>
+            <h2>工具注册协议</h2>
+            <p>东方屹腾采用企业管理的封闭工具体系。所有工具由团队注册，Agent 启动时可以建立完整的状态键字典。每个工具在注册时声明：</p>
+            <table>
+            <thead>
+            <tr>
+            <th>声明项</th>
+            <th>含义</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td>输入参数</td>
+            <td>调用所需的业务参数</td>
+            </tr>
+            <tr>
+            <td>消费坐标</td>
+            <td>参数应从哪个作用域、哪个生产者读取</td>
+            </tr>
+            <tr>
+            <td>输出参数</td>
+            <td>调用成功后产生的业务状态</td>
+            </tr>
+            <tr>
+            <td>生产坐标</td>
+            <td>输出写入哪个作用域和运行层级</td>
+            </tr>
+            <tr>
+            <td>前置条件</td>
+            <td>调用前必须满足的状态或权限</td>
+            </tr>
+            <tr>
+            <td>副作用等级</td>
+            <td>只读、可回滚写入、不可逆写入</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>工具可以同时是机械状态的生产者和消费者。例如，模板匹配工具生产 <code>template_id</code>，模板导入工具消费该值。消费者不从叙事上下文解析 ID，而是按注册坐标读取。</p>
+            <h2>机械状态与 Provenance</h2>
+            <p>机械状态平面使用 <code>scope + key</code> 标识 Cell，并保存当前值及其来源。每次写入都附带 Provenance，至少包含生产工具、调用实例、运行层级和原始回执引用。</p>
+            <pre><code class="language-go">type Provenance struct {
+    ProducerTool string
+    RunID        string
+    StepID       string
+    ReceiptRef   string
+}
+
+type Cell struct {
+    Scope      string
+    Key        string
+    Value      any
+    Provenance Provenance
+}
+</code></pre>
+            <p>工具调用前，RunPipeline 根据消费坐标解析 Cell，并校验来源、作用域和前置条件。缺少参数、来源不匹配或状态过期时立即终止，不向模型请求补值。</p>
+            <p>完整执行链如下：</p>
+            <pre><code class="language-text">Skill 声明 SOP
+  -&gt; Workspace 确定当前步骤
+  -&gt; Tool 声明输入与输出坐标
+  -&gt; SessionState 读取 Cell 与 Provenance
+  -&gt; RunPipeline 校验并调用 API
+  -&gt; 回执解析后写回新的 Cell
+</code></pre>
+            <h2>存量 API 接入</h2>
+            <p>原有 SaaS API 经网关注册即可进入工具目录。API 的 URL、鉴权和请求结构保持不变；Agent 侧增加工具元数据、状态坐标和调用治理。这样可以复用服务两万多家企业的现有接口矩阵，同时把 Agent 的语义推理与业务参数传递分开。</p>
+            <h2>失效信号</h2>
             <ul>
-            <li>
-            <p><strong>不要让编排器裸调工具。</strong> 看上去最省事，但工具调用一旦脱离行动能力的循环，就没有看板上下文、没有观察、没有「看一步再走」的续作能力。执行型 Agent 的每次调用都需要它周围这一整套环绕能力，裸调省下的代码会在可靠性上加倍还回来。</p>
-            </li>
-            <li>
-            <p><strong>不要让 LLM 生成机械状态参数。</strong> 这是团队真踩过的坑。把上游调用结果追加进上下文、让模型解析生成下游参数，在内容型参数（像「上海」「中雨」变「有雨」这种语义不变形即可的）上能容忍偏差，但在 64 位随机 id 上是灾难。机械状态必须从概率模型里彻底拿出来，交给确定性的数据结构和程序维护。</p>
-            </li>
-            <li>
-            <p><strong>唯一性坐标要靠「键名 + 作用域 + 产出环节」一起确定，不能只靠 key 名。</strong> 同名参数可能在不同运行层级被不同工具产出，光有 key 名定不出唯一坐标。Provenance 把供给者和产出运行环节一起编进坐标，才保证消费者读到的是对的那一个。</p>
-            </li>
-            <li>
-            <p><strong>封闭体系是这套注册协议成立的前提。</strong> 团队明确不接外部任意工具，所以才能在启动时枚举出全部状态键、才能在注册环节一次性把坐标注册齐。如果你的场景要热插拔不可信的外部工具，这条前提不成立，机械状态平面的封闭枚举就得另想办法。</p>
-            </li>
+            <li>Orchestrator 直接调用工具，绕过行动模块的观察和校验；</li>
+            <li>下游参数从自然语言上下文解析，或由模型重新生成；</li>
+            <li>工具只声明 JSON Schema，没有声明参数来源；</li>
+            <li>同名参数缺少作用域或生产者，无法确定唯一 Cell；</li>
+            <li>写操作没有副作用等级、幂等键或调用后检查；</li>
+            <li>外部工具可以任意热插拔，但系统仍假设状态键可在启动时完整枚举。</li>
             </ul>
-            <h2>边界与指标</h2>
-            <p>这套工具调度的重量不在「挑哪个工具」的算法上，而在注册协议和机械状态坐标的工程纪律上。它只在「多步 API 调用之间有严格的状态参数绑定传递、且参数是不可由模型生成的机械值」时才值得上。要盯的是几条:工具注册时机械状态依赖坐标是否声明完整、机械状态平面里每个键坐标是否唯一、写操作绑定的参数是不是从坐标里取的真实值而非模型生成值、以及连贯多步调用里上游产出的 id 能否被下游准确读到。任何一处让模型重新生成了机械参数，就是这格失守的信号。</p>
-            <h2>对应白皮书的哪几节</h2>
-            <p>这是 A1 工具调度（行动 × 路由）的一个企业落地实例。它对应白皮书「核心机制」里「靠元数据和工程契约而非更聪明的提示来选工具」这条总判断——东方屹腾把工具元数据扩成了带机械状态依赖坐标的注册协议，正是把工程师对参数从哪来的判断编码成机器可读的契约。它也对应白皮书「容易出错的地方」里「副作用工具没配套」与「元数据太薄」两条，案例给出的解法是用 Provenance 坐标把每个参数的来源和作用域钉死。与白皮书略有不同的是,案例的语境是封闭企业体系,所以「工具中毒」「外部来源不可信」那一类外部威胁不是它的主战场,它的主战场是机械状态参数的确定性绑定。</p>
-            <h2>可迁移判据：别的 SaaS 什么条件下照搬</h2>
-            <p>满足这几条就该照搬这套工具调度：工具调用要嵌在「干一步看一步」的循环里而非一次到底、多步调用之间有严格的入参出参绑定传递、且传递的是机械值（数据库 id、流水号、不可由模型重新生成的随机串）。这种场景下，把工具封装进行动能力 + 用注册协议声明机械状态坐标 + 经网关暴露存量 API，是一套能直接复用的骨架。</p>
-            <p>反过来，如果你的工具调用之间传递的主要是内容型文本（城市名、天气描述、可容忍语义偏差的参数），像旅行助手、投研报告生成那一类，那 MCP 那套让 LLM 从上下文生成参数的玩法本来就够用，没必要引入机械状态平面和坐标协议这套重机制。判别点很干脆：你下游绑定的参数错一位会不会破坏业务数据。会，就上这套。不会，就别上。</p>
-            <p>另外有个顺带的红利：一旦工具调用统一封装进行动能力、参数统一走机械状态坐标，多步任务的整体编排（见 <a href="/zh/patterns/a2-plan-and-execute/cases/liangbo/">A2 规划执行切片</a>）就能直接复用同一套调用基座，每个任务节点内部仍是一次走协议的 dispatch，不用再为规划执行单独造一套工具调用机制。</p>
-            <h2>一句话</h2>
-            <p>工具调度在这个案例里的价值，是把「调哪个工具、用哪个参数」这件事从模型的临场生成里收回工程层——工具封装进行动能力调用，参数靠注册协议声明的机械状态坐标确定性传递，存量 SaaS API 经网关一暴露就能被可靠编排，一行接口改造都不用动。</p>
+            <h2>验证指标</h2>
+            <ul>
+            <li>工具注册时，输入参数的来源坐标完整率；</li>
+            <li>同一会话内 Cell 坐标的唯一性；</li>
+            <li>写操作参数的 Provenance 覆盖率；</li>
+            <li>多步调用中上游 ID 到下游入参的逐字一致率；</li>
+            <li>缺失、冲突或过期参数的调用前拦截率；</li>
+            <li>工具调用、状态读写与业务回执的事件关联完整率。</li>
+            </ul>
+            <h2>迁移条件</h2>
+            <p>当多步 API 之间传递数据库 ID、流水号或其他不可重新生成的机械值，并且参数错误会破坏业务数据时，可以采用这套设计。必要条件是工具由组织统一注册，能够声明输入输出坐标并接受调用前校验。</p>
+            <p>若工具之间主要传递可容忍语义偏差的文本，且错误可以低成本重试，MCP 等开放工具协议通常已经足够，无需引入完整的机械状态平面。</p>
+            <p>任务级编排复用同一套调用基座，见 <a href="/zh/patterns/a2-plan-and-execute/cases/liangbo/">A2 规划执行切片</a>。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 工具调度落地》，企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 工具调度》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

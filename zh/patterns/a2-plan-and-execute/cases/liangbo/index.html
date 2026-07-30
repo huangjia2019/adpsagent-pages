@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东方屹腾 · 规划执行落地 · 蓝皮书 · ADPS</title>
-    <meta name="description" content="ReAct 跨步漏步逼出来的任务 DAG + 状态机，把执行顺序从模型判断里拿出来钉进任务图。">
+    <title>东方屹腾 · 规划执行 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="严格步骤依赖写入任务 DAG，由节点状态机调度、验收和恢复。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/patterns/a2-plan-and-execute/cases/liangbo/">
@@ -71,7 +71,7 @@
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
               <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
-              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
@@ -84,24 +84,25 @@
             <div class="sb-body">
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制/叙事二元论</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
               <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三权分立</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
               <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">可观测性 · 玻璃罩</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞-恢复</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -111,12 +112,12 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
-                <h1>A2 · 规划执行 · 蓝皮书 · 东方屹腾执行型 Agent</h1>
-                <p class="publication-deck">ReAct 跨步漏步逼出来的任务 DAG + 状态机，把执行顺序从模型判断里拿出来钉进任务图。</p>
+                <h1>A2 · 规划执行 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">严格步骤依赖写入任务 DAG，由节点状态机调度、验收和恢复。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.2</dd></div>
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-13</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>主模式</dt><dd>A2 规划执行</dd></div>
                     <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
                     <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
@@ -150,49 +151,113 @@
             </tr>
             <tr>
             <td style="text-align: left;">源</td>
-            <td style="text-align: left;">梁博 AICon 逐字稿 第五章 · PPT 第 16–19 页</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第五章 · PPT 16–19 页</td>
             </tr>
             <tr>
-            <td style="text-align: left;">一句话</td>
-            <td style="text-align: left;">当任务的几步有严格依赖、ReAct 走一步看一步会跨步漏步时，先把步骤规划成任务图钉死，再按图调度执行。</td>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">把严格步骤依赖写入任务 DAG，由状态机调度、验收和恢复；ReAct 负责探索，规划执行负责已明确的流程。</td>
             </tr>
             </tbody>
             </table>
             <hr />
-            <h2>场景：这一格在案例里解决什么</h2>
-            <p>东方屹腾要验证的第一个完整业务场景，是帮用户快速搭建薪资组：用户用自然语言说出薪资组诉求，系统从模板库里向量匹配出最贴合的薪资组模板，先给企业原有薪资组数据建好快照，确认快照建立后再导入模板，导入失败就用快照回滚。这一串动作的顺序不能乱，每一步都依赖前一步的结果，跟开场举的报销例子是同一类问题——「先创建申请、再上传发票、再提交审批、再查询结果」这种有严格递进依赖的多步事务。</p>
-            <p>这类场景下，光靠 ReAct 的「走一步看一步」不够稳。</p>
-            <h2>落地演进：问题怎么把它逼出来</h2>
-            <p>最早的设想很自然：把所有 API 描述成 Agent 能感知的工具，再在技能里描述每个场景该怎么编排，把「这个场景要先调哪步、再调哪步」作为叙事上下文喂给 Agent，期望它在 ReAct 里自己跑出正确顺序——调完第一步，观察到完成了，再调第二步。</p>
-            <p>听上去合理，实测不行。技能编排作为叙事上下文给到模型后，它有时能跑对顺序，有时会明显跨步或漏一步，导致整个任务不符合预期。根因还是 LLM 的不确定性：把执行顺序交给概率模型临场判断，就没法保证每次都对。</p>
-            <p>于是团队识别出还缺一种行动模式——规划执行。它的定位是把要完成的几步<strong>先明确规划下来钉死</strong>，而不是走一步看一步。顺序从模型的临场判断里拿出来，落进一份可调度、可审计的任务图。</p>
-            <h2>关键设计：数据结构 / 控制信号 / 机制</h2>
-            <p>规划执行的落地复杂度比 ReAct 高一个量级。ReAct 的核心控制结构本质上是一个带退出边界的链式循环，概念理解了，数据结构和逻辑很容易写出来。规划执行不一样，它要明确规划并管理连续多个任务的调度与依赖，得维护一套更复杂的任务规划与调度状态。</p>
-            <p>落地下来有几个核心构件。</p>
+            <h2>场景约束</h2>
+            <p>薪资组快速搭建包含四个连续步骤：</p>
+            <ol>
+            <li>根据用户诉求匹配薪资组模板；</li>
+            <li>为企业现有薪资组数据建立快照；</li>
+            <li>快照成功后导入模板；</li>
+            <li>导入失败时使用快照回滚。</li>
+            </ol>
+            <p>步骤之间存在严格依赖。团队曾把这套顺序写入 Skill，再交给 ReAct 逐步执行。模拟测试中出现过跨步和漏步，说明叙事说明不能代替调度约束。</p>
+            <h2>模式边界</h2>
+            <p>ReAct 和规划执行承担不同任务：</p>
+            <table>
+            <thead>
+            <tr>
+            <th>模式</th>
+            <th>适用状态</th>
+            <th>控制结构</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td>ReAct</td>
+            <td>目标仍需探索，下一步依赖最新观察</td>
+            <td>带退出条件的循环</td>
+            </tr>
+            <tr>
+            <td>规划执行</td>
+            <td>步骤及依赖已经明确</td>
+            <td>DAG 与节点状态机</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>ReAct 在任务结构明确后把控制权交还 Orchestrator。Orchestrator 创建或更新任务图，再进入规划执行。工具失败或新证据改变前提时，执行器可以触发局部 replan，无需重写整个计划。</p>
+            <h2>核心数据结构</h2>
+            <p>任务 DAG 保存节点及其依赖。节点至少包含目标、状态、前置依赖、验收条件和执行结果引用。</p>
+            <pre><code class="language-go">type TaskStatus string
+
+const (
+    Pending         TaskStatus = &quot;pending&quot;
+    Ready           TaskStatus = &quot;ready&quot;
+    InProgress      TaskStatus = &quot;in_progress&quot;
+    AwaitingApproval TaskStatus = &quot;awaiting_approval&quot;
+    Completed       TaskStatus = &quot;completed&quot;
+    Failed          TaskStatus = &quot;failed&quot;
+    Blocked         TaskStatus = &quot;blocked&quot;
+)
+
+type TaskNode struct {
+    ID          string
+    Goal        string
+    DependsOn   []string
+    Status      TaskStatus
+    Acceptance  []Criterion
+    ResultRef   string
+}
+</code></pre>
+            <p>一个节点只有在所有依赖节点均为 <code>completed</code>、自身前置条件通过时，才能从 <code>pending</code> 进入 <code>ready</code>。执行器领取 <code>ready</code> 节点后置为 <code>in_progress</code>，验收器根据业务回执决定进入 <code>completed</code>、<code>failed</code> 或 <code>blocked</code>。</p>
+            <h2>运行组件</h2>
             <ul>
-            <li><strong>任务 DAG 图</strong>：把目标分解成一张任务依赖图，独立任务可以并行展开，有依赖的任务按拓扑序串行。这跟传统的 DAG 调度（Airflow、Prefect 那一类）是同一个工程范式。</li>
-            <li><strong>规划器、执行器、验收器</strong>：规划器产出任务图，执行器按图推进，验收器判断每个节点是否达成。三者分开，各管一段。</li>
-            <li><strong>任务状态机</strong>：这是最花功夫的一块。每个任务节点有自己的状态（ready、in_progress、completed 等），下游节点要能被调度启动，前提是它依赖的上游节点全部 completed、且本节点状态为 ready。整套调度语义靠这台状态机驱动。</li>
+            <li><strong>Planner</strong>：把业务目标转换为任务图，声明依赖和验收条件；</li>
+            <li><strong>Scheduler</strong>：根据依赖和状态选择可运行节点；</li>
+            <li><strong>Executor</strong>：通过 A1 工具调度执行节点；</li>
+            <li><strong>Validator</strong>：核对回执、业务状态和节点验收条件；</li>
+            <li><strong>Workspace</strong>：持久化任务图和状态迁移；</li>
+            <li><strong>Orchestrator</strong>：管理 ReAct、规划执行和人工审批之间的控制权。</li>
             </ul>
-            <p>控制权在 Orchestrator 和具体行动模式之间流转。ReAct 跑着跑着如果发现任务脉络清晰了，可以明确规划成若干并行或串行任务，就把控制权交还 Orchestrator，切到规划执行模式。两种模式不是二选一，而是按任务的清晰程度切换。</p>
-            <h2>踩过的坑与取舍</h2>
+            <p>独立节点可以并行执行，有依赖的节点按拓扑顺序推进。调度方式与 Airflow、Prefect 等 DAG 系统相近，但节点内容可以由 Agent 在运行中生成或局部修订。</p>
+            <h2>Checkpoint 与恢复</h2>
+            <p>Checkpoint 至少保存任务图版本、节点状态、已完成结果引用和当前控制权。恢复时，调度器重新计算可运行节点，不依赖模型复述此前步骤。</p>
+            <p>局部 replan 只替换受失败影响的子图，并保留已验收节点及其业务回执。计划版本写入事件日志，便于追溯“哪个计划产生了这次执行”。</p>
+            <h2>HITL 接入</h2>
+            <p>敏感节点可以在执行前进入 <code>awaiting_approval</code>。审批通过后转为 <code>ready</code>，拒绝后转为 <code>blocked</code> 或触发替代计划。由于任务状态机已经保存中断点和依赖，HITL 不需要单独维护一套恢复机制。相关设计见 <a href="/zh/patterns/g1-approval-gate/cases/liangbo/">G1 审批门切片</a>。</p>
+            <h2>失效信号</h2>
             <ul>
-            <li><strong>不要一次性生成一份漂亮 plan 然后就不动了。</strong> 真实世界会变、工具会失败、证据会补充，计划必须允许局部 replan，而不是全局重写。</li>
-            <li><strong>ReAct 与规划执行的边界要钉清楚。</strong> 脉络不清、需要边做边看的，走 ReAct。步骤明确、有严格依赖和状态传递的，走规划执行。把后者套到前者的场景上是过度设计，把前者用在后者的场景上则会跨步漏步。</li>
-            <li><strong>状态机模型值得花一番功夫精巧设计。</strong> 这块是规划执行可靠性的地基，书里给得了概念抽象，给不了这种底层工程细节，是团队额外花了较多设计心血才做好的。</li>
+            <li>计划只是一段文本，没有可执行的节点 ID、依赖和验收条件；</li>
+            <li>计划生成后不再更新，工具失败只能从头重跑；</li>
+            <li>节点完成仅依据模型判断，没有核对业务回执；</li>
+            <li>调度状态、业务参数和叙事摘要混在同一结构中；</li>
+            <li>并行节点共享可变状态，却没有作用域和冲突检测；</li>
+            <li>审批只暂停界面，没有持久化任务节点与恢复位置。</li>
             </ul>
-            <h2>边界与指标</h2>
-            <p>规划执行不是免费的。它引入了任务图、状态机、调度器这些重构件，只有当任务确实是「多步、有依赖、顺序错了就交付失败」时才值回票价。关键要盯的是：关键节点有没有 checkpoint、出错能不能局部 replan、独立任务有没有真正并行起来、以及一次规划产出多个任务后任务图全局状态的维护是否正确。</p>
-            <h2>对应白皮书的哪几节</h2>
-            <p>这是 A2 规划执行（行动 × 编排）的一个企业落地实例，对应白皮书里「核心机制」的 Planner / Executor / Orchestrator 三分，「最小骨架」的 PlanStep 依赖结构与 checkpoint，以及「容易出错的地方」里「一次性生成漂亮计划然后不再更新」那一条。案例把白皮书的抽象骨架填上了真实的任务状态机细节。</p>
-            <h2>可迁移判据：别的 SaaS 什么条件下照搬</h2>
-            <p>当你的场景满足这几条，就该上规划执行而不是硬扛 ReAct：任务步骤明确、步骤间有严格的依赖和状态参数传递、且跨步漏步会直接导致交付失败或破坏业务数据。反过来，内容生成型、步骤松散、容错度高的场景（先查资料再总结再生成报告那一类），ReAct 甚至简单的提示链就够了，不必引入任务图和状态机这套重机制。</p>
-            <p>另外有个顺带的红利值得提前规划进去：一旦把任务 DAG、状态机、调度器、执行器搭好了，关键任务的人审阻塞与续作（见 <a href="/zh/patterns/g1-approval-gate/">G1 审批门切片</a>）就能水到渠成地接上去，不用再单独造一套阻塞机制。</p>
-            <h2>一句话</h2>
-            <p>规划执行的价值，是把「按什么顺序做」这件最不能交给概率的事，从模型的临场判断里拿出来，钉进一张可调度、可回滚、可人审的任务图。</p>
+            <h2>验证指标</h2>
+            <ul>
+            <li>关键步骤依赖覆盖率；</li>
+            <li>跨步、漏步和重复执行次数；</li>
+            <li>节点验收条件的回执覆盖率；</li>
+            <li>失败后局部 replan 的范围与恢复时间；</li>
+            <li>Checkpoint 恢复后任务图的一致性；</li>
+            <li>可并行节点的实际并发率；</li>
+            <li>审批恢复后重复副作用次数。</li>
+            </ul>
+            <h2>迁移条件</h2>
+            <p>任务步骤明确、步骤间有严格依赖，且顺序错误会造成交付失败或数据损坏时，应采用规划执行。任务图、状态机和 Checkpoint 的成本由错误代价来决定。</p>
+            <p>资料检索、总结和报告生成等松散流程可以使用 ReAct 或提示链。此类任务通常不需要为每一步维护持久化节点状态。</p>
+            <p>规划执行中的每个节点继续使用 <a href="/zh/patterns/a1-tool-dispatch/cases/liangbo/">A1 工具调度切片</a> 的注册协议和机械状态坐标。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 规划执行落地》，企业 Agent 系统蓝皮书 v0.2，2026-07-13。</p>
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 规划执行》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

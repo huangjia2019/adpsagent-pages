@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方屹腾 · 进度追踪 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="Anchor 固定目标，Ledger 追加关键进展，Collection 提供当前步骤的读取视图。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/m3-progress-tracking/cases/liangbo/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/" class="active">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/m3-progress-tracking/" style="color: var(--color-text-muted);">M3 进度追踪</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
+                <h1>M3 · 进度追踪 · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">Anchor 固定目标，Ledger 追加关键进展，Collection 提供当前步骤的读取视图。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>主模式</dt><dd>M3 进度追踪</dd></div>
+                    <div><dt>案例机构</dt><dd>东方屹腾</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>证据边界：</strong>本页是完整案例的模式切片，记录特定系统约束下的实现选择。案例方提供的实现与效果信息未经过独立审计，不构成通用性能承诺。</p>
+
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">主模式</td>
+            <td style="text-align: left;">M3 进度追踪 Progress Tracking（记忆 × 编排）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">结合模式</td>
+            <td style="text-align: left;">P1 上下文分诊 · M1 分层保留</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">案例</td>
+            <td style="text-align: left;">上海东方屹腾科技 · HR/薪酬 SaaS · 服务 2 万+ 企业 · 执行型 Agent</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对应白皮书</td>
+            <td style="text-align: left;"><a href="https://adpsagent.com/zh/patterns/m3-progress-tracking/">/zh/patterns/m3-progress-tracking/</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">源</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第六章 · PPT 第 25 页</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">Anchor 固定原始目标，Ledger 追加关键进展，Collection 为当前推理提供按需投影。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>场景约束</h2>
+            <p>东方屹腾的长程任务跨越多个能力边界和十余次模型调用。后续步骤需要持续回答两个问题：用户最初要求什么，系统已经完成什么。</p>
+            <p>若每一步只继承上一轮叙事输出，原始目标会被中间分析逐步稀释。若完整携带历史，Prompt 会持续增长。进度追踪需要把目标和里程碑外置为可持续读写的状态。</p>
+            <h2>状态结构</h2>
+            <pre><code class="language-text">SessionNarrative
+  Anchor: 原始目标
+  Ledger: 追加式里程碑事件
+  Collection: 当前步骤的临时投影
+</code></pre>
+            <p>Anchor 在任务创建时写入，后续不由摘要覆盖。Ledger 只记录关键变化，例如意图确认、模板匹配完成、快照创建成功、审批等待和任务失败。每条事件保留：</p>
+            <pre><code class="language-text">event_id
+task_id
+event_type
+summary
+artifact_ref
+created_at
+producer
+</code></pre>
+            <p>Collection 由上下文分诊模块在关键推理入口生成，不是新的持久化真源。</p>
+            <h2>写入规则</h2>
+            <p>Ledger 采用追加写，历史事件不原地改写。需要纠正时追加更正事件，并引用被更正条目。摘要应说明发生了什么、产生了什么结果、哪些约束仍有效，同时保留指向原始 Artifact 或业务回执的引用。</p>
+            <p>机械参数不以 Ledger 摘要为调用真源，任务节点状态也不从摘要推断。它们分别写入 SessionState 和 Workspace。</p>
+            <h2>案例运行</h2>
+            <p>用户提出薪资组配置目标后，系统写入 Anchor。模板匹配、快照和导入等关键结果依次写入 Ledger。若用户在新一轮只输入“继续”，上下文组装器仍可读取 Anchor，并从 Ledger 选择尚未完成任务所需的里程碑。</p>
+            <p>这套状态也支持中断恢复。恢复过程先读取任务图确定可执行节点，再读取 Anchor 和相关 Ledger 事件恢复语义；API 参数从机械状态平面读取。</p>
+            <h2>失效信号</h2>
+            <ul>
+            <li>目标只存在于首轮消息，没有独立 Anchor；</li>
+            <li>每个内部推理片段都写入 Ledger，导致事件失去里程碑粒度；</li>
+            <li>Ledger 摘要没有原始证据引用；</li>
+            <li>历史事件被覆盖，无法还原进展；</li>
+            <li>Collection 被持久化后当作完整事实；</li>
+            <li>任务调度和业务参数从自然语言摘要中推断。</li>
+            </ul>
+            <h2>验证指标</h2>
+            <ul>
+            <li>后段推理的 Anchor 可用率；</li>
+            <li>关键里程碑写入完整率；</li>
+            <li>Ledger 事件到 Artifact 或回执的引用完整率；</li>
+            <li>用户输入“继续”后的正确恢复率；</li>
+            <li>因目标漂移导致的错误规划次数；</li>
+            <li>每个任务的 Ledger 规模和摘要压缩比。</li>
+            </ul>
+            <h2>与白皮书的对应</h2>
+            <p>M3 白皮书把进度追踪定义为 Agent 的外置工作记忆。东方屹腾的 SessionNarrative 提供了具体实现：Anchor 保存目标，Ledger 保存进展，Collection 提供当前读取视图。P1 负责读取侧的投影，M3 负责状态的写入、持久化和恢复。</p>
+            <h2>迁移条件</h2>
+            <p>当任务跨多轮、多模块或可中断恢复时，应显式维护进度状态。单轮短任务可以直接使用消息历史。若系统尚未区分叙事、机械和调度状态，应先建立状态边界，再引入 Anchor、Ledger 和 Collection。</p>
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 进度追踪》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>
