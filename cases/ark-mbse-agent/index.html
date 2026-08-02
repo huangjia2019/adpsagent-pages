@@ -134,7 +134,7 @@
                     <div><dt>Case contributor</dt><dd>Liangding Yuan (袁良锭)</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Evidence boundary:</strong> This report documents the practitioner account of AI4MBSE at Ark (Yage). The case contributor supplied the implementation path, failure observations, and engineering decisions. They have not been independently audited. Illustrations describe interaction and state semantics. Runtime screenshots and demonstration videos are published with the contributor&#x27;s permission. The data contracts in this report are an ADPS architectural reconstruction of the disclosed mechanisms; they are not the implementation&#x27;s class or field names.</p>
+            <p class="publication-note"><strong>Evidence boundary:</strong> This report documents the practitioner account of AI4MBSE at Ark (Yage). The case contributor supplied the implementation path, failure observations, and engineering decisions. They have not been independently audited. Illustrations describe interaction and state semantics. Runtime screenshots are published with the contributor&#x27;s permission. The data contracts in this report are an ADPS architectural reconstruction of the disclosed mechanisms; they are not the implementation&#x27;s class or field names.</p>
 
             <hr />
 
@@ -421,7 +421,7 @@
 </ol>
 <p>These controls reduce the input surface of each decision. The contributor reports better stability and cost than the earlier one-response design followed by whole-operation retries. Public materials do not include comparative token, latency, or success-rate data, so this report records that statement as practitioner evidence rather than a measured result.</p>
 <h2>10. Public runtime evidence</h2>
-<p>The earlier illustrations describe interaction and state semantics. The following host screenshot, logs, model diagrams, and videos come from the contributor's runtime environment.</p>
+<p>The earlier illustrations describe interaction and state semantics. The following host screenshot, logs, and model diagrams come from the contributor's runtime environment.</p>
 <figure>
   <img src="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg" alt="Flying-car project in Magic Systems of Systems Architect with the AI4MBSE panel">
   <figcaption>Host environment. The project tree is on the left, the model view is in the center, and AI4MBSE is embedded as a panel on the right.</figcaption>
@@ -440,22 +440,6 @@
 <figure>
   <img src="/zh/cases/ark-mbse-agent/assets/log-relation-writeback.jpg" alt="Relationship write-back log using stable relationship and endpoint identifiers">
   <figcaption>The write-back record connects <code>BLK_ADCS_THRUSTER</code> and <code>ITF_1553B_BUS</code> through <code>REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION</code>. It demonstrates stable references in this run, not an aggregate success rate.</figcaption>
-</figure>
-
-<figure>
-  <video controls preload="metadata" poster="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-    <source src="/zh/cases/ark-mbse-agent/assets/demo-short.mp4" type="video/mp4">
-    If inline video is unavailable, download <a href="/zh/cases/ark-mbse-agent/assets/demo-short.mp4">demo-short.mp4</a>.
-  </video>
-  <figcaption>Overview demonstration, 2 minutes 58 seconds, with Chinese and English subtitles. It covers data preparation, intent confirmation, modeling, and diagram generation.</figcaption>
-</figure>
-
-<figure>
-  <video controls preload="metadata" poster="/zh/cases/ark-mbse-agent/assets/shot-satellite-bdd.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-    <source src="/zh/cases/ark-mbse-agent/assets/demo-long.mp4" type="video/mp4">
-    If inline video is unavailable, download <a href="/zh/cases/ark-mbse-agent/assets/demo-long.mp4">demo-long.mp4</a>.
-  </video>
-  <figcaption>Full walkthrough, 13 minutes 47 seconds. The satellite-platform example includes element planning, validation, and relationship write-back logs.</figcaption>
 </figure>
 
 <h2>11. Evaluation protocol: published evidence and missing measurements</h2>
@@ -480,9 +464,9 @@
 <td style="text-align: left;">One runtime record</td>
 </tr>
 <tr>
-<td style="text-align: left;">The assistant is embedded in a modeling tool and completes multi-turn demonstrations</td>
-<td style="text-align: left;">Host screenshot and two videos</td>
-<td style="text-align: left;">Visual evidence</td>
+<td style="text-align: left;">The assistant is embedded in a modeling tool</td>
+<td style="text-align: left;">Host screenshot and runtime logs</td>
+<td style="text-align: left;">Visual evidence and single-run records</td>
 </tr>
 <tr>
 <td style="text-align: left;">The three-stage chain is more stable and less expensive than one-response generation</td>

@@ -136,7 +136,7 @@
                     <div><dt>案例提供</dt><dd>袁良锭（Liangding Yuan）</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong> 本文记录 Ark · 雅格 AI4MBSE 的一线实践。系统路径、失败现象与工程取舍由案例方提供，尚未经过独立审计。界面示意图用于说明交互与状态，真实截图和演示视频已获案例方同意发布。文中的数据契约是 ADPS 依据公开机制做的架构级还原，不代表案例方的实际类名或字段名。</p>
+            <p class="publication-note"><strong>证据边界：</strong> 本文记录 Ark · 雅格 AI4MBSE 的一线实践。系统路径、失败现象与工程取舍由案例方提供，尚未经过独立审计。界面示意图用于说明交互与状态，真实截图已获案例方同意发布。文中的数据契约是 ADPS 依据公开机制做的架构级还原，不代表案例方的实际类名或字段名。</p>
 
             <hr />
 
@@ -423,7 +423,7 @@
 </ol>
 <p>这些做法缩小了每次决策的输入面。案例方报告其稳定性和成本优于单次生成后整轮重试的早期实现，但未公布 token、时延或成功率的对照数据。蓝皮书因此将其记为实践判断，不写成量化结论。</p>
 <h2>10. 公开运行证据</h2>
-<p>本节区分界面示意与真实运行记录。示意图用于表达交互和状态语义，不是生产界面截图。下面的宿主环境、日志、模型图和视频来自案例方运行环境。</p>
+<p>本节区分界面示意与真实运行记录。示意图用于表达交互和状态语义，不是生产界面截图。下面的宿主环境、日志和模型图来自案例方运行环境。</p>
 <figure>
   <img src="assets/shot-magicdraw-flycar.jpg" alt="Magic Systems of Systems Architect 中的飞行汽车工程与 AI4MBSE 助手">
   <figcaption>宿主环境。左侧是工程树，中间是模型视图，右侧为 AI4MBSE 面板。助手以插件形式嵌入建模工具。</figcaption>
@@ -442,22 +442,6 @@
 <figure>
   <img src="assets/log-relation-writeback.jpg" alt="关系写回日志，关系与端点使用稳定标识">
   <figcaption>关系写回记录。<code>REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION</code> 连接 <code>BLK_ADCS_THRUSTER</code> 与 <code>ITF_1553B_BUS</code>。记录证明实际写回使用稳定标识，但单张截图不能代替整体成功率评估。</figcaption>
-</figure>
-
-<figure>
-  <video controls preload="metadata" poster="assets/shot-magicdraw-flycar.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-    <source src="assets/demo-short.mp4" type="video/mp4">
-    浏览器不支持内嵌视频时，可直接下载 <a href="assets/demo-short.mp4">demo-short.mp4</a>。
-  </video>
-  <figcaption>概览演示（2 分 58 秒，带中英文字幕）：数据清洗、意图确认、建模与绘图。</figcaption>
-</figure>
-
-<figure>
-  <video controls preload="metadata" poster="assets/shot-satellite-bdd.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-    <source src="assets/demo-long.mp4" type="video/mp4">
-    浏览器不支持内嵌视频时，可直接下载 <a href="assets/demo-long.mp4">demo-long.mp4</a>。
-  </video>
-  <figcaption>完整走查（13 分 47 秒）：卫星平台系统的多轮建模，包含元素规划、校验和关系写回记录。</figcaption>
 </figure>
 
 <h2>11. 评估协议：已公开证据与待补数据</h2>
@@ -482,9 +466,9 @@
 <td style="text-align: left;">有单次运行记录</td>
 </tr>
 <tr>
-<td style="text-align: left;">系统已嵌入建模工具并完成多轮演示</td>
-<td style="text-align: left;">宿主截图和两段视频</td>
-<td style="text-align: left;">可视证据</td>
+<td style="text-align: left;">系统已嵌入建模工具</td>
+<td style="text-align: left;">宿主截图与运行日志</td>
+<td style="text-align: left;">可视证据与单次运行记录</td>
 </tr>
 <tr>
 <td style="text-align: left;">三段链比单次生成更稳、更省</td>
