@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/memory-envelope.png" alt="The Memory Envelope: The Context Package Injected to the Model at Each Step" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: each step needs a different slice of context</h2>
+            <p>While checking Singapore provident-fund rules, the agent needs the original goal, the selected pay group, confirmed policy evidence, and perhaps one relevant prior failure. It does not need the full conversation replay or sensitive records for unrelated employees.</p>
+            <p>Reasoning input should therefore be assembled for the current step as a bounded, inspectable package, rather than formed by concatenating all available history.</p>
             <h2>Definition</h2>
             <p>Every reasoning step of an execution-type agent first assembles an input struct before handing it to the model. In Dongfang Yiteng's code this struct is called ReasonContext; the name ADPS gives it is the memory envelope — at every step you seal an envelope and hand it to the model, and it holds only what this step needs to see.</p>
             <p>An envelope usually holds four things: the anchor, the original goal of the user session; the current progress (collection) projected and trimmed out of the ledger; the conclusion drawn by upstream intent recognition; and the relevant lessons recalled from the experience store. When needed, it also attaches the necessary mechanical state. Once this package is assembled, the model at this step knows where it is going, how far it has come, and what mistakes others made in similar spots. What goes into the envelope is narrative content, the semantics the model is to understand; the control signals the program branches on travel through a separate channel and do not enter the envelope.</p>

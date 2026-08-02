@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/unified-session-state.png" alt="会话统一状态的三个平面" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：一个任务同时有三种进度</h2>
+            <p>完成一次薪资配置，系统既要记住用户为什么这样设置，也要保存工具返回的 <code>pay_group_id</code>，还要知道“关联员工”是否已经完成。这三件事会沿着同一次会话推进，却有不同的结构和校验规则。</p>
+            <p>把它们塞进一段对话摘要，精确 ID 和任务依赖容易在压缩中丢失；把所有信息放进一张通用状态表，语义记录、业务参数和调度状态又会相互污染。</p>
             <h2>概念定义</h2>
             <p>会话运行时包含语义、业务参数和任务调度三类状态。三者可以共享会话 ID 和事件时间线，但采用独立的数据模型。</p>
             <table>

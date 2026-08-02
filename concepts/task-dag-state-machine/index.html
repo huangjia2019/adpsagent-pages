@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/task-dag-state-machine.png" alt="Task DAG and Task State Machine: The Skeleton of Plan-and-Execute" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: steps have order, and each step has a lifecycle</h2>
+            <p>A payroll job creates a pay group, attaches employees, calculates results, obtains approval, and submits. Approval depends on the calculation result. The approval node itself may be pending, running, waiting for a person, completed, or failed.</p>
+            <p>A prompt that says "run these steps in order" cannot reliably support parallel nodes, recovery, or local retry. Dependencies and node state need to be program-readable data.</p>
             <h2>Definition</h2>
             <p>Plan-and-execute is an action pattern that first lays out and fixes the several steps a business process has to take, then schedules execution by dependency, instead of deciding one step at a time. The two core data structures that carry this plan are the task DAG and the task state machine. The task DAG is a directed acyclic graph that organizes task nodes by dependency, fixing the ordering constraints between steps; the task state machine maintains each node's own state and drives the whole graph forward.</p>
             <h2>How it works</h2>

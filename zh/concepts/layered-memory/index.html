@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/layered-memory.png" alt="L1 L2 L3 分层记忆" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：一句“可以提交”背后有三层记忆</h2>
+            <p>用户本轮只说了“可以提交”。Agent 还要从当前任务中取回待提交的薪资组、审批节点和工具回执，必要时再参考“同类任务曾因时区设置失败”的跨任务经验。</p>
+            <p>这些信息的时效、精度和保留期不同。分层之后，当前步骤可以保持轻量，任务事实仍可审计，经验检索也不会把原始记录全部塞回模型。</p>
             <h2>概念定义</h2>
             <p>东方屹腾按时效和用途划分三层记忆：</p>
             <table>

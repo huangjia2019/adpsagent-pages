@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/hitl-block-resume.png" alt="HITL Block and Resume: Narrative-Plane Continuation and Control-Plane Blocking" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: waiting for approval is still part of the job</h2>
+            <p>After payroll calculation, the agent pauses before submission and presents the batch, employee count, total, and exceptions. Approval may arrive hours later. The browser may disconnect, and business data may change in the meantime.</p>
+            <p>This requires more than a confirmation dialog. The runtime persists a waiting state, the proposed action, and parameter provenance, then revalidates execution conditions after authorization.</p>
             <h2>Definition</h2>
             <p>When an execution-type agent runs a business process on its own, there are a few positions where it should not be allowed to execute all the way through. Deleting a batch of data, issuing a payroll disbursement, filing a tax return — once one of these actions goes wrong, it cannot be rolled back. Human-in-the-loop (HITL) means stopping the execution flow at these critical positions, waiting for a person to review and confirm, and only then letting the agent continue all the way down. The hard part is not the stop, but how to fully restore the execution state once you have stopped.</p>
             <h2>How it works</h2>

@@ -113,9 +113,10 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <h2>Start with a type false positive</h2>
-            <p>The model plans with a domain-specific type, the host API expects a different metamodel name, and write-back may return a normalized type. Direct string equality rejects legal structures and may allow a coarse type into the wrong diagram.</p>
+            <p>This problem appears when an agent writes into an established engineering tool. Users and planners speak in domain terms, while the host system already has fixed types, enums, and versioned schemas. Two labels may refer to the same business object without being equal strings.</p>
+            <p>For example, a user asks for a "system actor" in a SysML model. The planner emits <code>SystemActor</code>, the modeling tool stores <code>uml:Actor</code>, and the write-back API returns the normalized type <code>Actor</code>. A validator that compares strings rejects a legal write.</p>
+            <p>The same issue appears between customer, account, and contact in a CRM; layer, feature class, and published service in GIS; and user, principal, and service account in cloud IAM. These systems need a tested semantic-equivalence mapping, not scattered alias checks in prompts and adapters.</p>
             <h2>Definition</h2>
             <p>A vocabulary equivalence layer explicitly maps planning terms, canonical domain types, host metamodel types, and returned write-back types.</p>
             <pre><code class="language-text">planning type

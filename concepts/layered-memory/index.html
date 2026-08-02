@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/layered-memory.png" alt="L1/L2/L3 Layered Memory and Experience Recall" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: three memory horizons behind one approval</h2>
+            <p>The user's current message may be only "submit it." The agent still needs this job's pay-group ID, approval node, and tool receipts. It may also recall that a similar job once failed because of a time-zone setting.</p>
+            <p>These records have different lifetimes, precision requirements, and retention policies. Layering keeps the current step small, the current job auditable, and cross-job recall linked to source evidence.</p>
             <h2>Definition</h2>
             <p>For an execution-type agent to keep working in enterprise-grade scenarios, the context of the current turn alone is not enough; it also needs a memory system that stores information of different lifespans and uses in separate places. Dongfang Yiteng splits memory into three layers. L1 is the current stream of consciousness — the minimal necessary set the model should see at this moment, the direct input to the current reasoning or reply. L2 is the milestone log, which records where work has reached and what was just completed, persisted in a database in structured form. L3 is lessons learned, produced when a task succeeds or fails by distilling and summarizing the narrative context at that time, stored in a vector store and indexed semantically through embeddings. Each layer governs one span of time: L1 is the immediate present, L2 is the trajectory of this task, and L3 is the experience accumulated across tasks.</p>
             <h2>How it works</h2>

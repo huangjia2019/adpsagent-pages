@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/observability-glass-dome.png" alt="Observability: A Swiss Mechanical Watch Under a Glass Dome" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: "completed" is not enough for diagnosis</h2>
+            <p>A user sees "pay group configured" and later finds that two employees were never attached. The developer needs one timeline showing how intent was classified, which node the scheduler selected, which parameters the tool received, what the API returned, and when the state changed to completed.</p>
+            <p>Ordinary service logs can show that a process ran. Agent diagnosis also needs the decision chain and its effects represented as correlated events.</p>
             <h2>Definition</h2>
             <p>A single conversation with an execution-type agent sits on top of a long string of invisible actions: recognizing intent, routing branches, chained reasoning, calling tools, reading and writing state, synthesizing a reply. If the developer can see only two layers — the user input and the final reply — and everything in between is a black box, then every time the system goes wrong, locating the fault comes down to guessing. Observability is what addresses this: it exposes every action the agent takes, and the thinking that drives each action, to the developer along a complete timeline.</p>
             <p>The word "observable" here carries a sense that should be made clear first. It does not refer to the agent's perception of the world it inhabits, but the reverse — making the agent's consciousness and behavior visible to the developer. The series of actions an agent produces within a conversation is its bodily activity; the reasoning and judgment that drive those actions are its mental activity. Observability lays both of them out to be seen.</p>

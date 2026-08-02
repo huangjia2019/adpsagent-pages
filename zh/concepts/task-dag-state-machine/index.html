@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/task-dag-state-machine.png" alt="任务 DAG 与节点状态机" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：业务步骤有顺序，每一步还有生命周期</h2>
+            <p>薪酬任务要先创建薪资组，再关联员工，然后计算、审批和提交。“审批”依赖计算结果；审批节点自身又会经历待执行、进行中、等待人工、完成或失败等状态。</p>
+            <p>只在提示词里写“请按顺序执行”，无法支持并行节点、中断恢复和局部重试。依赖关系与节点状态需要成为程序可读的一等数据。</p>
             <h2>概念定义</h2>
             <p>任务 DAG 用有向无环图表示步骤依赖，节点状态机记录每个任务的运行状态。二者共同把流程顺序从自然语言说明转换为可调度数据。</p>
             <p>节点通常包含 ID、目标、依赖、状态、验收条件和结果引用。下游节点只有在所有依赖节点完成、前置条件通过后才能进入 <code>ready</code>。</p>

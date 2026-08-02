@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/execution-vs-content.png" alt="An execution-type agent is not a content-generation agent: classify the scenario first" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: inspect the delivered change</h2>
+            <p>The same model can draft a payroll policy memo or create a pay group in a production system. A memo can be revised or regenerated. A pay-group action writes employee, calculation, and approval data; one bad call can leave a real side effect for every later step.</p>
+            <p>The label "agent" therefore says little about the required runtime. The delivery object and failure cost determine whether the system needs explicit state, idempotency, approvals, and resumable execution.</p>
             <h2>Definition</h2>
             <p>Before designing an agent, answer a question that comes earlier than the technology: is it meant to deliver content, or to deliver execution? This classification decides which way the whole architecture leans afterward.</p>
             <p>A content-generation agent is centered on output. Tools are loosely orchestrated, and parameters can be synthesized on the spot by the LLM. Research reports, travel assistants, and slide writing all fall in this category: query sources in parallel, summarize, feed the result into report generation, then add a review-and-quality-check pass. What each step passes along is mainly text content, with no strict mechanical state binding. An execution-type agent is different. It takes the user's business intent as input and, through a reliable orchestrated sequence of business API calls, delivers a complete business process automatically. It values delivery over generation; the steps have strict ordered dependencies, and what they pass along are mechanical parameters such as ids, status codes, and entity references. One step out of order, or one parameter wrong, and the delivery fails.</p>

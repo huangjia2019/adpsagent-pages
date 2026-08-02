@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/orchestrator.png" alt="Orchestrator 与 MessageHandler 职责边界" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：网页断开不能让任务换一套逻辑</h2>
+            <p>用户从网页发起薪酬配置后，浏览器通过 SSE 接收进度。页面刷新或网络重连时，后台任务仍应按原有状态继续，新连接只需重放可见事件。如果输入处理器同时掌管任务图、工具调用和恢复，换一个入口协议就可能改变执行语义。</p>
+            <p>稳定的控制流应独立于 Web、CLI 或消息通道。外层组件处理协议与呈现，编排器处理任务生命周期。</p>
             <h2>概念定义</h2>
             <p>Orchestrator 管理一次会话的运行时控制流。它读取控制信号，调用推理、记忆、知识检索和行动模块，并处理模块间的控制权交接。</p>
             <p>MessageHandler 是外层门面。它接收用户消息、调用 Orchestrator、订阅活动事件，并通过 SSE 等协议向界面推送进度和结果。</p>

@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/mechanical-state-plane.png" alt="机械状态平面与 Provenance 来源坐标" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：下一步需要的是原值</h2>
+            <p>创建薪资组后，API 返回 <code>pay_group_id=pg_84721</code>。下一步关联员工必须使用这个精确 ID，而且要能证明它来自哪次调用、属于哪个租户。如果先让模型摘要“已创建新加坡薪资组”，再让它回忆 ID，工具返回的事实就变成了一次概率生成。</p>
+            <p>凡是后续 API 会直接消费的值，包括实体 ID、币种、时间范围和幂等键，都应由程序保留原值与来源。</p>
             <h2>概念定义</h2>
             <p>机械状态平面保存业务 API 调用所需的严格参数。参数由程序从工具回执中解析、存储和传递，不经过模型重新生成。每个值都附带 Provenance，用于记录生产工具、调用实例、作用域和原始回执。</p>
             <p>一个状态 Cell 可以表示为：</p>

@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/control-narrative-dualism.png" alt="Control Plane and Narrative Plane: the dualism of execution-type agents" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: one request carries two kinds of information</h2>
+            <p>A payroll specialist says, "Create next month's pay group for the Singapore team, reuse the headquarters rules, and ask me before submission." The team, period, and policy provide semantic context for later reasoning. "Create" and "ask before submission" must also become a known route and an approval node.</p>
+            <p>Keeping only the sentence leaves the program without a stable branch. Keeping only a <code>create_pay_group</code> enum strips away the business context that later reasoning needs. Both forms belong in the runtime, but different mechanisms consume them.</p>
             <h2>Definition</h2>
             <p>The runtime context of an execution-type agent should be split, from the very first step, into two planes of different character.</p>
             <p>The control plane is mechanical, deterministic, and discrete: a small set of signals that decide which branch the program takes next — small talk ends the turn, a query triggers retrieval, a task triggers planning. The narrative plane is semantic context in natural language: it feeds every reasoning step and, after reasoning, produces new control signals. Both run in parallel. Without control signals the engineering has nothing to drive it; without narrative context each reasoning step has no raw material.</p>

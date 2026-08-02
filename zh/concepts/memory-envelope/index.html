@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/memory-envelope.png" alt="推理步骤的记忆信封" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：每一步需要的上下文不同</h2>
+            <p>当 Agent 正在核对新加坡团队的公积金规则时，它需要原始目标、当前薪资组、已确认的政策证据和一条相关失败经验。它不需要重放整段会话，也不应看到无关员工的敏感数据。</p>
+            <p>因此，推理输入应当按当前步骤组装。它是一个有边界、可检查的上下文包，而不是会话历史的简单拼接。</p>
             <h2>概念定义</h2>
             <p>记忆信封是每个推理步骤接收的结构化上下文包。在东方屹腾的实现中，对应的数据结构名为 <code>ReasonContext</code>。它通常包含：</p>
             <ul>

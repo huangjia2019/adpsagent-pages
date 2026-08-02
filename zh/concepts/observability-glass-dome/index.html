@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/observability-glass-dome.png" alt="Agent 活动事件与执行时间线" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：一句“任务完成”无法用来排错</h2>
+            <p>用户看到“薪资组配置完成”，事后却发现两名员工没有被关联。开发者需要沿同一条时间线查到：意图如何识别，调度器选了哪个节点，工具收到什么参数，API 返回什么，状态又是何时被标记为完成。</p>
+            <p>一般应用日志可以证明进程在运行，却很难还原 Agent 的决策链。这里需要统一的活动事件和可关联的执行帧。</p>
             <h2>概念定义</h2>
             <p>Agent 可观测性记录一次会话中发生的意图识别、路由、推理、工具调用、状态读写和回复合成。目标是让开发者能够根据结构化事件定位执行偏差，而非只比较用户输入和最终输出。</p>
             <p>东方屹腾把会话拆为 Activity，并在 Activity 下记录 Frame。Frame 可包含模型输入输出、工具请求与回执、状态变化、耗时和成本。</p>

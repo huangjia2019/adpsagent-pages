@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/orchestrator.png" alt="The Orchestrator and the MessageHandler Facade: the trunk of control flow and the facade of performance" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: a browser reconnect should not change task semantics</h2>
+            <p>A user starts a payroll job from the web interface and receives progress over SSE. If the page refreshes, the backend job should continue from its durable state while the new connection resumes event delivery. When the message handler also owns the task graph, tool calls, and recovery logic, changing the input protocol can change execution behavior.</p>
+            <p>Control flow should remain independent of Web, CLI, or messaging transport. The outer component adapts protocols and presentation; the orchestrator owns the task lifecycle.</p>
             <h2>Definition</h2>
             <p>Once an execution-type agent is running, every capability needs a home. That home is the Orchestrator — the orchestrator of the entire runtime execution flow, the core skeleton on which the agent runs. From the moment it receives user conversational input, it parses the control signals along the chain and orchestrates the actions at each stage according to those signals: invoking a capability, distilling memory at one stage, retrieving external knowledge, judging that the current turn is complete and synthesizing a reply. The agent's apparent understanding of intent, its memory, its ability to summarize experience, its ability to call skills and tools — all of these are, in essence, branches that grow on this trunk of control flow.</p>
             <h2>How it works</h2>

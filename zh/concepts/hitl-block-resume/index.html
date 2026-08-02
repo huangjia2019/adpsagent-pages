@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/hitl-block-resume.png" alt="HITL 阻塞审批与恢复" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：等人确认不等于结束任务</h2>
+            <p>薪资计算完成后，Agent 应在真正提交前停下，给审批人展示批次、人数、金额和异常项。审批可能在几小时后才到达，期间网页会断开，业务数据也可能发生变化。</p>
+            <p>这不是在工具调用前弹出一个确认框就结束。系统要把任务持久化为“等待审批”，记住待执行动作与参数来源，收到授权后再校验一次执行条件。</p>
             <h2>概念定义</h2>
             <p>人在回路（HITL）在敏感任务开始前暂停执行，等待授权，并在审批后从保存的状态恢复。删除数据、薪资代发和税务申报等操作应由策略明确标记。</p>
             <p>恢复对象分为两类：</p>

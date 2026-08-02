@@ -62,7 +62,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
-              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
@@ -135,9 +135,11 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/execution-vs-content.png" alt="执行型与内容生成型 Agent 的设计差异" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>应用背景：先看最终改变了什么</h2>
+            <p>同一个模型既能起草薪酬制度说明，也能调用系统创建薪资组。第一个任务交付文档，用户可以修改或重新生成；第二个任务会写入员工、计薪和审批数据，错误调用可能给后续步骤留下真实副作用。</p>
+            <p>因此，“使用了 Agent”还不足以决定架构。先识别交付对象和失败成本，才能判断是否需要状态机、幂等、审批和可恢复执行。</p>
             <h2>概念定义</h2>
             <p>Agent 的交付对象决定运行时设计。</p>
             <table>

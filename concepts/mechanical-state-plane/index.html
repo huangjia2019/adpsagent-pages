@@ -113,10 +113,12 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/mechanical-state-plane.png" alt="The Mechanical State Plane and Provenance Coordinates" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: the next call needs the original value</h2>
+            <p>After creating a pay group, an API returns <code>pay_group_id=pg_84721</code>. The employee-assignment step needs that exact value and evidence of which call and tenant produced it. If a model first summarizes "the Singapore pay group was created" and later reconstructs the identifier, a tool fact has become a probabilistic generation.</p>
+            <p>Values consumed directly by later APIs, including entity IDs, currencies, time ranges, and idempotency keys, need programmatic storage with provenance.</p>
             <h2>Definition</h2>
             <p>The mechanical state plane is the layer of an execution-type agent's runtime context that governs business API parameters. It separates the reading, writing, binding, and passing of state values entirely from the content the LLM touches, so that every API call's input parameters have a single, auditable, fail-fast mechanical source rather than being generated on the spot by a model that drifts.</p>
             <p>Picture it as a whole wall of small cells, built when the agent starts. Each cell corresponds to one mechanical parameter, and its key is determined by two things together: which tool supplies the parameter, and at which runtime stage it is produced. Along the session's timeline, each cell holds only the latest value of that parameter. Whoever needs a piece of state reads it from the corresponding cell, instead of letting the model guess it out of a long stretch of narrative context. Every parameter in the runtime corresponds to a Provenance structure, assembled by parsing the various specifications and descriptions into a single coordinate — key name plus scope plus supplier plus production stage. All reads and writes go by this coordinate, so a parameter's ownership and value stay unambiguous.</p>
