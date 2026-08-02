@@ -2336,6 +2336,9 @@ article.essay footer a { color: var(--color-link); }
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
+    /* 长标识符（如 REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION）在窄屏无断点可换，
+       会把整页撑出横向滚动条。只在小屏允许任意位置断行。 */
+    article.essay code { overflow-wrap: anywhere; }
 }
 @media (max-width: 460px) {
     .publication-meta { grid-template-columns: 1fr; }
