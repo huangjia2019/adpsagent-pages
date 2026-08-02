@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xuanxu Technology&#x27;s GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines · ADPS</title>
+    <meta name="description" content="A field report on deterministic GIS pipelines, disk facts, external acceptance probes, failure rules, and capability certification.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/cases/xuanxu-gis-agent/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/xuanxu-gis-agent/">
+    <link rel="alternate" hreflang="zh-CN" href="https://adpsagent.com/zh/cases/xuanxu-gis-agent/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/xuanxu-gis-agent/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/" style="color: var(--color-link);">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/cases/xuanxu-gis-agent/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/cases/xuanxu-gis-agent/" class="active">Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/ark-mbse-agent/">Ark (Yage) · AI4MBSE</a>
+
+
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Blue Book</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Case Report 02</p>
+                <h1>Xuanxu Technology&#x27;s GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines</h1>
+                <p class="publication-deck">Certified pipelines run through deterministic rules, and real map requests provide the final acceptance evidence.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.4</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Issued</dt><dd>2026-07-30</dd></div>
+                    <div><dt>Case organization</dt><dd>Xuanxu Technology</dd></div>
+                    <div><dt>Sector</dt><dd>GIS software · Data services</dd></div>
+                    <div><dt>Case contributor</dt><dd>Yuke Xiong (熊钰柯)</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Evidence boundary:</strong> This report documents Xuanxu Technology&#x27;s GIS data-publishing system. Yuke Xiong supplied the workflow, failure cases, and architecture decisions. The material has not been independently audited. Screenshots come from the case environment. ADPS reconstructed the example contracts to explain the disclosed mechanisms; they are not the implementation&#x27;s field names.</p>
+
+            <hr />
+
+<h2>Case at a glance</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Field account</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Business task</td>
+<td style="text-align: left;">Process multiple GIS formats, publish them to GeoServer, and deliver a map service that a consuming application can use</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hardest failure to detect</td>
+<td style="text-align: left;">A publish call can report success while real GetMap or GetTile requests fail; some ServiceException responses still use HTTP 200</td>
+</tr>
+<tr>
+<td style="text-align: left;">Main decision</td>
+<td style="text-align: left;">Use models to help design a new pipeline; run certified pipelines through rules; verify publication with real requests and screenshots</td>
+</tr>
+<tr>
+<td style="text-align: left;">Runtime structures</td>
+<td style="text-align: left;">Six-stage pipeline, disk facts, error rules, failure cards, and a draft/candidate/active lifecycle</td>
+</tr>
+<tr>
+<td style="text-align: left;">Current evidence</td>
+<td style="text-align: left;">Runtime console, knowledge cards, rendered map output, and contributor failure retrospectives</td>
+</tr>
+<tr>
+<td style="text-align: left;">Useful when</td>
+<td style="text-align: left;">Input types are enumerable, the processing chain repeats, failures are costly, and the external result can be probed automatically</td>
+</tr>
+</tbody>
+</table>
+<h2>1. Understand the GIS delivery chain</h2>
+<p>Publishing GIS data involves more than uploading a file. A system identifies the format, resolves the coordinate reference system, processes data, generates a style, registers resources with GeoServer, configures caching, and verifies the resulting map service.</p>
+<p>The following fields appear throughout the workflow.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Operational meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>workspace</code></td>
+<td style="text-align: left;">A GeoServer namespace that separates a group of resources</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>store</code></td>
+<td style="text-align: left;">A connection to the underlying source, such as PostGIS or a raster file</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>layer</code></td>
+<td style="text-align: left;">The map layer exposed to clients</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SRS</code></td>
+<td style="text-align: left;">The spatial reference system used by the data</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>bbox</code></td>
+<td style="text-align: left;">The geographic extent used for positioning and zooming</td>
+</tr>
+</tbody>
+</table>
+<p>Each value is produced upstream and consumed downstream. A changed name or coordinate may reject a request or publish a map in the wrong place.</p>
+<p>The original process crossed desktop GIS, GDAL, PostGIS, GeoServer, and GWC. Engineers remembered sequence and parameters. After repeated runs, it became difficult to identify which run and stage introduced a fault.</p>
+<h2>2. Two production failures changed the design</h2>
+<p>The first involved S-57 electronic navigational charts. Importing a chart set into PostGIS can create more than one hundred feature-class tables. The workflow then creates stores, publishes layers, and assembles a layer group. When the group used <code>OPAQUE_CONTAINER</code>, member layers could disappear from the WMS listing. A direct GetMap request returned <code>LayerNotDefined</code>, yet the ServiceException still carried HTTP 200. A status-only check recorded a false success.</p>
+<p>The second failure appeared in WMTS tile requests. GetTile returned 400 with <code>/ by zero</code> in the response. The root cause was a metatile size configured as <code>0x0</code>. The official documentation did not describe that consequence; the team learned it through platform testing.</p>
+<p>These incidents produced two requirements:</p>
+<ol>
+<li>The publishing API cannot grade its own final result.</li>
+<li>Tested platform behavior has to enter rules that a later run can consume.</li>
+</ol>
+<h2>3. Why the runtime does not call a model</h2>
+<p>The team considered exposing GeoServer REST operations as tools and asking a model to choose calls and parameters at runtime. That path did not enter the main system. <code>workspace</code>, <code>store</code>, <code>layer</code>, <code>SRS</code>, and <code>bbox</code> have exact provenance, and regeneration introduces avoidable drift.</p>
+<p>Input intent is also available in the data. A directory containing <code>.000</code> files selects the S-57 pipeline; <code>.tif</code> selects a raster pipeline. An unmatched signature returns an explicit error.</p>
+<p>Open-ended work happens during pipeline design: a coding agent drafts the pipeline, an engineer reviews it and triggers a first full run, and a person certifies it after the system records the evidence. Runtime execution then uses certified rules.</p>
+<p>The contributor calls this <strong>reasoning assetization</strong>: an open design decision becomes a pipeline declaration or an error rule that repeated runs can reuse.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Decision</th>
+<th style="text-align: left;">Where it happens</th>
+<th style="text-align: left;">Runtime operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Select an existing pipeline</td>
+<td style="text-align: left;">Signature defined during design</td>
+<td style="text-align: left;">Look up <code>accepts</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Handle a known error</td>
+<td style="text-align: left;">Rule created after a failure review</td>
+<td style="text-align: left;">Select retry, abort, or skip by signature</td>
+</tr>
+<tr>
+<td style="text-align: left;">Support a new format</td>
+<td style="text-align: left;">Model-assisted design and human validation</td>
+<td style="text-align: left;">Reject until certification</td>
+</tr>
+</tbody>
+</table>
+<p>"No LLM at runtime" describes this bounded input space. It is not a general objective for agent systems.</p>
+<h2>4. One publication runs through six stages</h2>
+<p>Each stage runs as a separate subprocess. The orchestrator consumes exit status, structured output, and error signatures.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Stage</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Required fact</th>
+<th style="text-align: left;">Failure policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>validate</code></td>
+<td style="text-align: left;">Identify the format and active pipeline</td>
+<td style="text-align: left;">Signature, pipeline ID, source files</td>
+<td style="text-align: left;">Reject when no pipeline matches</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>process</code></td>
+<td style="text-align: left;">Reproject, load, or normalize data</td>
+<td style="text-align: left;"><code>processed_crs</code>, <code>processed_bbox</code>, output path</td>
+<td style="text-align: left;">Do not guess a missing CRS</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>generate_sld</code></td>
+<td style="text-align: left;">Generate or select a style</td>
+<td style="text-align: left;">Traceable style file</td>
+<td style="text-align: left;">Stop when the style contract fails</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>publish</code></td>
+<td style="text-align: left;">Call GeoServer and configure resources</td>
+<td style="text-align: left;">workspace, store, layer, and receipt</td>
+<td style="text-align: left;">Check minimum facts before the call</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>viewer</code></td>
+<td style="text-align: left;">Generate a viewer and access configuration</td>
+<td style="text-align: left;">Reproducible service URL and view settings</td>
+<td style="text-align: left;">Do not treat page creation as acceptance</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>verify</code></td>
+<td style="text-align: left;">Send real requests and capture evidence</td>
+<td style="text-align: left;"><code>verify_report.json</code>, screenshots, request counts</td>
+<td style="text-align: left;">Route known failures; escalate unknown ones</td>
+</tr>
+</tbody>
+</table>
+<figure>
+  <img src="/zh/cases/xuanxu-gis-agent/assets/console-overview.jpg" alt="GIS agent console with pipeline catalog, datasets, and six-stage progress">
+  <figcaption>The console maps each stage to real state files. An operator can see where a dataset stopped and open the corresponding metadata, viewer, and verification report.</figcaption>
+</figure>
+
+<p>The current path is sequential. A concurrent test once produced a transient verification run with zero successful tile requests for one dataset. At the current scale, the team accepts queueing in exchange for reproducibility. This choice should be revisited when queue delay threatens the service objective.</p>
+<h2>5. Why state lives on disk</h2>
+<p>Stages exchange files and do not share in-process objects.</p>
+<pre><code class="language-text">run/
+  metadata.json       # input signature, pipeline, processed facts, publish coordinates
+  run-state.json      # current stage, retry count, state transitions
+  verify_report.json  # real requests, screenshots, acceptance outcome
+</code></pre>
+<p><code>validate</code> writes identification facts. <code>process</code> adds the coordinate system and bounding box. Downstream stages read those values and do not recompute them. The case calls this the disk fact plane and follows one rule: one fact has one authoritative writer.</p>
+<p>The design survives process exit, supports restart from persisted stages, lets the frontend and CLI share contracts, and loads current code in a new subprocess. Its costs are equally concrete. Every state file needs a schema version. Timestamp precision must remain aligned between the CLI and frontend. An error prefix used as a rule signature becomes part of the contract.</p>
+<p>A multi-host, multi-tenant system with concurrent writers would need transactional and isolated storage in place of these files.</p>
+<h2>6. Verify the map from the consumer side</h2>
+<p><code>verify</code> does not accept a success field from <code>publish</code> as final evidence. It sends a real GetMap or GetTile request and checks at least three conditions.</p>
+<ol>
+<li>The HTTP status is expected.</li>
+<li><code>content-type</code> is <code>image/*</code>, and the body is not an XML ServiceException.</li>
+<li>A screenshot or image check observes meaningful map content.</li>
+</ol>
+<figure>
+  <img src="/zh/cases/xuanxu-gis-agent/assets/cesium-s57-viewer.jpg" alt="S-57 WMTS service rendered in a 3D globe viewer">
+  <figcaption>The acceptance target is a map that a consuming application can use. A successful API call, a registered layer, and usable output are three separate facts.</figcaption>
+</figure>
+
+<p>ADPS calls this mechanism an external acceptance probe. The same structure applies when the final fact lives in a database readback, delivered file, payment receipt, or deployed page.</p>
+<h2>7. Convert one failure into a rule for the next run</h2>
+<p>Runtime handles only known signatures. Available actions are retry, abort, and skip. A missing spatial reference or a broken chart-update sequence stops the run; the system does not invent the missing value.</p>
+<p>A new failure enters a five-part card after human review.</p>
+<pre><code class="language-yaml">signature: &quot;GetTile=400 and body contains '/ by zero'&quot;
+root_cause: &quot;metatile size was configured as 0x0&quot;
+fallback: &quot;disable the invalid metatile setting and rerun verify&quot;
+fixed_by: &quot;set a safe SDK default&quot;
+related_rules: [&quot;wmts-metatile-zero&quot;]
+</code></pre>
+<p>The card preserves the symptom, root cause, immediate action, permanent fix, and runtime rule. Later runs consume a compact signature and action; an engineer can still follow <code>source</code> back to the full account.</p>
+<figure>
+  <img src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card2.jpg" alt="Knowledge-card graph grouped by pipeline and linked to sources">
+  <figcaption>Cards are grouped by pipeline. Runtime rules consume compact conclusions while engineers retain the failure account and source.</figcaption>
+</figure>
+
+<h2>8. How a new capability earns automatic execution</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">State</th>
+<th style="text-align: left;">Permission</th>
+<th style="text-align: left;">Promotion condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>draft</code></td>
+<td style="text-align: left;">Generate, edit, and inspect</td>
+<td style="text-align: left;">A person explicitly starts the first complete run</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>candidate</code></td>
+<td style="text-align: left;">Retain first-run evidence and await certification</td>
+<td style="text-align: left;">All six stages and external verification pass</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>active</code></td>
+<td style="text-align: left;">Match input and execute automatically</td>
+<td style="text-align: left;">A person certifies the candidate</td>
+</tr>
+</tbody>
+</table>
+<p>When the current pipeline version differs from the certified version, the system returns it to candidate. A code change cannot keep an earlier certification silently.</p>
+<p>During capability growth, the model creates scaffolding and a person grants certification; runtime accepts only active pipelines. This adds evidence and accountability without requiring approval for every routine run.</p>
+<h2>9. Why this still belongs in an agent case catalog</h2>
+<p>The classification does not depend on an LLM call in every run. This system senses input signatures, selects a capability, changes an external system, verifies the result, applies bounded recovery, and expands its capability set through failure cards and pipeline lifecycle.</p>
+<p>Its autonomy is deliberately narrow: unknown signatures are rejected, and accepted work must leave a verifiable result and queryable state. If the implementation were only one fixed script without sensing, selection, external acceptance, or capability lifecycle, the agent label would add little explanatory value.</p>
+<h2>10. A seven-step transfer method</h2>
+<ol>
+<li>Select a repeated delivery workflow with limited input types and observable failure.</li>
+<li>Divide it into stages; define one authoritative output and error signature per stage.</li>
+<li>Mark exact parameters that downstream stages must read rather than regenerate.</li>
+<li>Add an acceptance check outside the publishing process: a real request, database readback, or delivered-file inspection.</li>
+<li>Record three real failures before deciding which may retry and which must abort.</li>
+<li>Give capabilities draft, candidate, and active states; revoke certification after code changes.</li>
+<li>Measure sequential operation before adding concurrency, dynamic planning, or a runtime model.</li>
+</ol>
+<p>The structure can support media transcoding, model deployment, report publication, static-site release, and other repetitive delivery workflows.</p>
+<h2>11. Failure signals and evidence gaps</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Current choice</th>
+<th style="text-align: left;">Valid while</th>
+<th style="text-align: left;">Redesign signal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Runtime lookup</td>
+<td style="text-align: left;">Input signatures are enumerable</td>
+<td style="text-align: left;">User intent becomes open language; rules keep growing</td>
+</tr>
+<tr>
+<td style="text-align: left;">Sequential execution</td>
+<td style="text-align: left;">Queue delay is acceptable</td>
+<td style="text-align: left;">Batch volume breaks the service objective</td>
+</tr>
+<tr>
+<td style="text-align: left;">Disk facts</td>
+<td style="text-align: left;">Single host and low write concurrency</td>
+<td style="text-align: left;">Multiple hosts, tenants, or writers compete for state</td>
+</tr>
+<tr>
+<td style="text-align: left;">Signature-based recovery</td>
+<td style="text-align: left;">Failures are stable enough to identify</td>
+<td style="text-align: left;">Unknown or misclassified failures keep rising</td>
+</tr>
+<tr>
+<td style="text-align: left;">Human capability certification</td>
+<td style="text-align: left;">New-pipeline volume is manageable</td>
+<td style="text-align: left;">Certification becomes the main delivery bottleneck</td>
+</tr>
+</tbody>
+</table>
+<p>The current material supports file-signature routing, the HTTP-200 false-success failure, the metatile root cause, and the lifecycle mechanism. It does not establish superiority under large-scale concurrency. A later report should add per-pipeline run count, success and takeover rates, false successes found by verification, rule hit rate, and recertification time.</p>
+<h2>12. ADPS mapping</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pattern or concept</th>
+<th style="text-align: left;">Implementation in this case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Failure Journals</td>
+<td style="text-align: left;">Five-part failure cards linked to runtime rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">Skill Package</td>
+<td style="text-align: left;">Pipeline declaration, code, evidence, and lifecycle</td>
+</tr>
+<tr>
+<td style="text-align: left;">Plan and Execute</td>
+<td style="text-align: left;">Fixed six-stage plan reviewed during design</td>
+</tr>
+<tr>
+<td style="text-align: left;">Guardrail Sandwich</td>
+<td style="text-align: left;">Pre-publish fact checks and post-publish probes</td>
+</tr>
+<tr>
+<td style="text-align: left;">Progressive Commitment</td>
+<td style="text-align: left;">Draft, candidate, and active permission stages</td>
+</tr>
+<tr>
+<td style="text-align: left;">Observability Harness</td>
+<td style="text-align: left;">File state, console, request records, and screenshots</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reasoning Assetization</td>
+<td style="text-align: left;">Design conclusions become reusable pipelines and rules</td>
+</tr>
+<tr>
+<td style="text-align: left;">Disk Fact Plane</td>
+<td style="text-align: left;">Versioned JSON carries authoritative state across stages</td>
+</tr>
+</tbody>
+</table>
+<h2>Contributor and citation</h2>
+<p><strong>Case contributor:</strong> Yuke Xiong, Xuanxu Technology.</p>
+<p><strong>Suggested citation:</strong> ADPS and Yuke Xiong, "Xuanxu Technology's GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines," ADPS Enterprise Agent Systems Blue Book, Case Report 02, v0.4, 2026.</p>
+
+            <div class="document-citation">
+                <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

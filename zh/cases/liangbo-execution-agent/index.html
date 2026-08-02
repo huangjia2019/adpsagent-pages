@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>东方屹腾 · 执行型 Agent 系统案例报告 · ADPS</title>
-    <meta name="description" content="以薪资组配置为入口，建立任务 DAG、机械状态平面和可恢复的会话运行时。">
+    <title>东方屹腾执行型 Agent：让业务状态沿流程准确传递 · ADPS</title>
+    <meta name="description" content="模型理解意图，程序保存业务参数来源，任务图与状态机维护严格执行顺序。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/cases/liangbo-execution-agent/">
@@ -27,7 +27,7 @@
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/cases/liangbo-execution-agent/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -124,167 +124,275 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 案例报告 01</p>
-                <h1>东方屹腾执行型 Agent 案例报告</h1>
-                <p class="publication-deck">以薪资组配置为入口，建立任务 DAG、机械状态平面和可恢复的会话运行时。</p>
+                <h1>东方屹腾执行型 Agent：让业务状态沿流程准确传递</h1>
+                <p class="publication-deck">模型理解意图，程序保存业务参数来源，任务图与状态机维护严格执行顺序。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-06-19</dd></div>
                     <div><dt>案例机构</dt><dd>上海东方屹腾科技有限公司</dd></div>
                     <div><dt>行业</dt><dd>企业 SaaS · 薪酬与人力资源服务</dd></div>
                     <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本文是一线实践者主导的架构复盘。实现主张、业务规模与效果数据由案例方提供，尚未经过独立审计；迁移建议只在文中列明的业务与系统条件下成立。</p>
+            <p class="publication-note"><strong>证据边界：</strong>本文记录东方屹腾执行型 Agent 的项目实践。业务背景、原型问题和架构取舍由案例方梁博提供，尚未经过独立审计。示例数据结构由 ADPS 根据案例机制整理，用于解释设计，不代表案例方实际类名或字段名。</p>
 
-            <hr />
-            <h2>1. 执行型与内容生成型的系统边界</h2>
-            <p>东方屹腾是一家企业 SaaS 公司，产品覆盖人事、组织、考勤、审批和薪酬，并连接银行与税务系统，支持算薪、代发和报税。目前，这套产品矩阵已服务两万多家企业。</p>
-            <p>团队最初考虑把现有 API 按 MCP 协议封装为 MCP Server，再由 Agent 完成业务流程。原型验证很快暴露出一个边界问题：通用工具调用通常允许模型根据上下文组织参数，东方屹腾的核心场景却要求多个业务 API 严格传递状态。薪资组配置、考勤组配置、算薪代发和员工入职都包含连续操作；其中的实体标识、依赖关系和执行顺序必须准确。</p>
-            <p>以报销流程为例，常见步骤是创建申请、上传发票、提交审批和查询结果。GUI 程序会把刚创建的申请 ID 直接传给发票上传接口。改由 Agent 执行后，这个 ID 仍须来自上一步的真实回执，不能从自然语言上下文重新生成。团队曾把每步工具回执追加到上下文，再让模型组织下一步参数。测试结果存在偶发的 ID 误写和参数错绑。JSON Schema 可以约束字段类型和格式，却不能证明参数来自哪一次调用。</p>
-            <p>因此，团队把目标系统区分为两类：</p>
-            <ul>
-            <li><strong>内容生成型 Agent</strong>：步骤之间主要传递文本，适合资料检索、报告生成、PPT 生成和内容评审。局部语义偏差通常可以在后续生成环节修正。</li>
-            <li><strong>执行型 Agent</strong>：步骤之间传递业务状态，任何漏步、跨步或参数错绑都可能造成任务失败或数据破坏。</li>
-            </ul>
-            <p>MCP 仍适合开放工具发现和内容型协作。东方屹腾需要补充的是一套面向执行流程的状态、调度和治理机制。这个分类决定了后续架构。</p>
-            <h2>2. 业务目标与首个场景</h2>
-            <p>团队首先评估了用工分析、薪酬结构优化和考勤报表分析等候选场景。这些场景容易演示，但并未覆盖客户使用系统时的主要阻力。东方屹腾的客户以中小企业为主。访谈显示，新客户最困难的环节是首次配置：建立薪资组和薪资项、导入员工与组织、完成定薪，并配置考勤和审批规则。</p>
-            <p>同一套产品在两类客户中的反馈差异明显。由运营交付团队完成初始配置的客户，通常能在第一个月顺利使用；自行配置的客户更容易在启用阶段中断。部分客户还希望把每月核对、算薪、代发和报税继续自动化。</p>
-            <p>典型需求可以表述为：企业计划以每月 1 万元的综合成本使用一名员工，希望系统自动拆分基本工资、补贴、奖金、社保和公积金，并完成后续发放与申报。客户关注综合成本和合规结果，系统负责维护底层业务数据。</p>
-            <p>团队据此把“薪资组快速搭建”确定为第一个锚点场景。它范围明确，同时覆盖意图理解、模板匹配、连续 API 调用、状态传递、失败回滚和人工确认，足以检验执行型 Agent 的关键机制。</p>
-            <h2>3. 渐进式实施与可观测性</h2>
-            <p>后端使用 Go，初期没有引入 Agent 框架。第一阶段只接通连续对话、附件上传和回复流，暂不实现完整的技能注册与工具编排。这样可以先固定输入输出契约，再逐步增加推理和行动能力。</p>
-            <p>Web 界面与后端同步建设。对企业项目而言，界面不仅承担最终交互，也用于业务评审、阶段演示和问题复现。团队可以在同一页面核对用户输入、执行过程和结果，业务人员也能尽早验证流程是否符合实际操作。</p>
-            <p>可观测性从第一阶段开始进入运行时设计。一次对话被拆成按时间排序的 Activity；每个 Activity 下包含一个或多个 Frame，记录运行态提示词、模型输出、工具调用、耗时和成本。意图识别、网关路由、ReAct 循环等程序动作均发布为带语义的结构化事件。开发环境显示完整时间线，生产环境可按权限关闭调试详情。相关实现见 <a href="/zh/patterns/g4-observability-harness/cases/liangbo/">G4 可观测性切片</a>。</p>
-            <p>至此，系统具备连续输入、结构化事件和运行过程回放能力，可以在稳定接口上增加后续模块。</p>
-            <h2>4. 控制平面与叙事平面</h2>
-            <p>第一个新增模块是意图识别。它接收用户对话，通过结构化输出生成下游可以消费的控制信号。早期系统定义了三类意图：</p>
-            <ul>
-            <li><code>chat</code>：领域外闲聊，直接结束或返回固定答复；</li>
-            <li><code>analyze</code>：业务知识咨询，检索领域知识后生成回答；</li>
-            <li><code>resolve</code>：需要推理、规划和工具执行的业务任务。</li>
-            </ul>
-            <p>解析失败时统一返回 <code>unknown</code>，由下游执行兜底逻辑。后来，团队根据业务路由把信号扩展为 <code>task</code>、<code>information</code>、<code>produce</code>、<code>chat</code> 等类型。</p>
-            <p>这一实现形成了两个并行平面：</p>
-            <ul>
-            <li><strong>控制平面</strong>保存意图类型、路由结果、任务状态和准入信号，用于驱动程序分支；</li>
-            <li><strong>叙事平面</strong>保存用户请求、分析结论和执行摘要，为模型推理提供语义上下文。</li>
-            </ul>
-            <p>这个划分与分布式系统中的控制平面和数据平面类似。模型负责把自然语言收敛为有限的结构化信号，程序根据这些信号执行确定性逻辑；执行结果再写回叙事上下文，供下一次推理使用。控制信号和叙事内容采用不同的数据结构、校验规则和持久化策略。意图识别的进一步设计见 <a href="/zh/patterns/r2-complexity-based-routing/cases/liangbo/">R2 复杂度路由切片</a>。</p>
-            <h2>5. Orchestrator 与意图网关</h2>
-            <p>Orchestrator 负责一次会话的运行时编排。它接收用户输入，读取控制信号，调用推理、记忆、知识检索和行动模块，并在任务完成后合成回复。各能力模块通过明确的输入输出契约注册到 Orchestrator。</p>
-            <p>系统最外层保留一个轻量的 <code>MessageHandler</code>。它接收用户消息并调用 Orchestrator，同时订阅统一活动事件，通过 SSE 向 Web 界面推送执行进度和回复。这样，界面呈现逻辑与运行时控制分开，Orchestrator 只处理流程和状态。Go 的协程与通道用于实现事件发布和订阅。</p>
-            <p>意图网关消费意图识别结果，并选择对应执行链。<code>chat</code> 可以直接结束，<code>analyze</code> 进入检索与回答链，<code>resolve</code> 进入推理和行动链，<code>unknown</code> 进入兜底流程。整个会话分为三个阶段：</p>
-            <ol>
-            <li><code>pre</code>：接收原始输入并完成意图识别；</li>
-            <li><code>middle</code>：按控制信号编排具体能力；</li>
-            <li><code>post</code>：合成结果并向用户返回。</li>
-            </ol>
-            <p>这个边界使新增能力可以接入 <code>middle</code> 阶段，而不改动入口、流式输出和结束协议。</p>
-            <h2>6. 链式推理与控制信号</h2>
-            <p><code>resolve</code> 只表示请求需要执行，尚未给出可操作的下一步。系统使用链式推理逐步收敛任务：每轮读取上一轮结果，直到模型返回完成信号或达到步数上限。</p>
-            <p>推理输入由 <code>ReasonContext</code> 统一组织。它同时包含用户原始请求、意图识别结论、已有进展和当前可用能力。推理输出采用结构化数据，至少给出下一步动作类型，并映射到程序内可调用的逻辑，例如检索知识、调用技能、进入任务规划、继续推理或结束会话。</p>
-            <p>这里仅决定下一步动作。工具执行会改变业务状态，后续动作需要基于最新回执和当前目标重新判断。完整计划只在任务依赖已经明确时生成。相关实现见 <a href="/zh/patterns/r1-chain-of-thought/cases/liangbo/">R1 思维链切片</a>。</p>
-            <h2>7. ReAct 与工具执行</h2>
-            <p>当下一步动作仍需要边执行边判断时，系统进入 ReAct。每轮由 <code>Thought</code>、<code>Action</code> 和 <code>Observation</code> 三个结构组成，并作为一个 block 追加到 scratchpad。下一轮读取已有 block chain，结合最新观察继续推理。</p>
-            <p><code>Action</code> 可以调用工具、检索知识或再次调用模型。工具调用由行动模块封装，Orchestrator 只负责模式切换和控制权交接。这样，调用前校验、状态解析、调用后检查和失败处理可以与具体工具一起演进。</p>
-            <p>控制信号由业务场景定义。除继续、完成和失败外，系统也可以定义立即终止、转人工或转规划执行等信号。工具选择与机械状态坐标的设计见 <a href="/zh/patterns/a1-tool-dispatch/cases/liangbo/">A1 工具调度切片</a>。</p>
-            <h2>8. 规划执行与任务状态机</h2>
-            <p>早期工具与技能先使用生产级接口契约和模拟数据接入，以验证 Agent 能否召回正确能力。薪资组快速搭建的模拟流程包含四个连续步骤：匹配薪资组模板、创建现有数据快照、导入模板、失败时按快照回滚。</p>
-            <p>团队最初把步骤说明作为技能上下文交给 ReAct。测试中出现过跨步和漏步，说明仅靠语义提示不能稳定维护严格依赖。系统因此增加规划执行模式，在执行前把任务拆成 DAG，并通过状态机管理节点。</p>
-            <p>规划执行包含任务图、规划器、执行器、验收器和节点状态机。下游节点只有在所有上游节点为 <code>completed</code>、自身为 <code>ready</code> 时才能调度。并行节点也由同一组状态转换规则管理。</p>
-            <p>ReAct 与规划执行按任务状态切换。任务边界尚不明确时使用 ReAct 探索；依赖关系明确后，控制权返回 Orchestrator，由规划执行维护顺序和验收。详细设计见 <a href="/zh/patterns/a2-plan-and-execute/cases/liangbo/">A2 规划执行切片</a>。</p>
-            <h2>9. HITL 阻塞与恢复</h2>
-            <p>任务状态机为人在回路（HITL）提供了基础。敏感操作开始前，执行器把节点置为等待审批；人工通过后，系统从持久化状态恢复上下文并继续执行。</p>
-            <p>HITL 有两种常见形态：</p>
-            <ul>
-            <li><strong>叙事续作</strong>：本轮会话结束，用户在下一轮输入“继续”或“确认”，系统根据会话上下文恢复任务；</li>
-            <li><strong>执行流阻塞</strong>：当前会话保持运行，任务节点暂停并等待审批事件，收到批准后从原节点恢复。</li>
-            </ul>
-            <p>第二种形态需要持久化节点状态、任务图状态和下游依赖。规划执行模块已经提供这些结构，因此审批策略只需声明哪些任务或工具必须阻塞，并把审批结果写入状态机。相关实现见 <a href="/zh/patterns/g1-approval-gate/cases/liangbo/">G1 审批门切片</a>。</p>
-            <h2>10. 机械状态平面</h2>
-            <p>接入真实 API 后，团队再次遇到参数传递问题。第一步根据用户 ID、企业 ID 和业务目标匹配模板，接口返回 <code>template_id</code>；后续导入接口必须使用同一个值。企业系统中的 ID 常由雪花算法或其他方案生成，长度可达 64 位或 128 位。模型即使在上下文中看到该值，也可能在重新输出时误写字符。</p>
-            <p>这类错误有两种后果：格式校验发现错误并终止；错误值恰好通过校验，导致任务作用于错误实体。后一种风险要求系统同时验证参数值和参数来源。</p>
-            <p>团队没有找到能直接复用的公开实现，于是增加机械状态平面。工具回执中的业务状态由程序解析和保存，后续工具按坐标读取，不经过模型重新生成。叙事上下文仍可记录“已匹配模板”等摘要，但不再承担 ID 传递。</p>
-            <p>该方案依赖一个前提：系统是由企业管理的封闭工具体系。工具注册表在运行前已知，因此 Agent 启动时可以建立状态键字典。系统级状态在登录等关键事件写入，API 级状态由工具调用产生。</p>
-            <p>每个工具声明机械状态依赖，包括参数名、作用域、生产工具和运行层级。工具既可以生产状态，也可以消费状态。<code>SessionState</code> 维护由作用域和键名确定的 Cell；每个值同时保存 <code>Provenance</code>，记录生产者、调用实例和来源回执。消费者按坐标读取，并在调用前校验来源。</p>
-            <p>执行链路由五个部件组成：</p>
-            <ul>
-            <li>Skill 声明业务 SOP；</li>
-            <li>Workspace 维护任务顺序；</li>
-            <li>Tool 声明状态生产与消费；</li>
-            <li>SessionState 保存值和 Provenance；</li>
-            <li>RunPipeline 统一解析、校验和注入参数。</li>
-            </ul>
-            <p>这套机制不要求改造原有 SaaS API。API 通过网关注册后，Agent 可以按场景组合调用；严格参数由程序传递，模型处理意图、语义和计划。工程实现见 <a href="/zh/patterns/a1-tool-dispatch/cases/liangbo/">A1 工具调度切片</a>。</p>
-            <h2>11. 会话统一状态平面</h2>
-            <p>随着叙事状态和机械状态被分离，规划执行中的任务状态也被单独整理。最终的会话运行时包含三个状态平面：</p>
+            <h2>案例速览</h2>
             <table>
             <thead>
             <tr>
-            <th>状态平面</th>
-            <th>回答的问题</th>
-            <th>主要数据</th>
-            <th>持久化真源</th>
-            <th>主要读取方</th>
+            <th style="text-align: left;">项目</th>
+            <th style="text-align: left;">现场信息</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td>SessionNarrative</td>
-            <td>用户要求什么，当前进展如何</td>
-            <td>原始目标、摘要、经验和上下文投影</td>
-            <td>Anchor 与 Ledger</td>
-            <td>推理、记忆和回复合成</td>
+            <td style="text-align: left;">业务任务</td>
+            <td style="text-align: left;">帮助中小企业完成薪资组配置，并逐步覆盖算薪、代发、报税等连续业务流程</td>
             </tr>
             <tr>
-            <td>SessionState</td>
-            <td>API 参数来自哪里，是否有效</td>
-            <td>scope、key、value、producer、provenance</td>
-            <td>Timeline 事件物化的 Cell</td>
-            <td>RunPipeline、治理和前置校验</td>
+            <td style="text-align: left;">最早暴露的问题</td>
+            <td style="text-align: left;">模型能选对工具，却会偶发误写上一步返回的业务 ID，或跳过有严格依赖的步骤</td>
             </tr>
             <tr>
-            <td>Workspace</td>
-            <td>哪个任务可以执行，是否完成</td>
-            <td>DAG、节点状态和依赖</td>
-            <td>任务图与状态迁移记录</td>
-            <td>规划器、调度器和执行器</td>
+            <td style="text-align: left;">核心做法</td>
+            <td style="text-align: left;">模型处理意图和语义，程序保存业务参数来源，任务图与状态机维护执行顺序</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">关键运行结构</td>
+            <td style="text-align: left;">Orchestrator、Activity/Frame 时间线、Workspace、SessionState、SessionNarrative</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">当前证据</td>
+            <td style="text-align: left;">案例方项目复盘、系统结构和运行机制说明</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">适用范围</td>
+            <td style="text-align: left;">API 由组织管理，步骤依赖严格，参数错绑会造成真实业务后果的企业流程</td>
             </tr>
             </tbody>
             </table>
-            <p>任务执行产生的叙事摘要写入 SessionNarrative，业务参数写入 SessionState，节点状态写入 Workspace。三个平面可以通过统一事件关联，但不混用数据职责。</p>
-            <p>这个划分解决了三个不同问题：语义上下文供模型理解，业务参数供程序精确读取，任务图供调度器控制顺序。相关切片见 <a href="/zh/patterns/m3-progress-tracking/cases/liangbo/">M3 进度追踪</a> 和 <a href="/zh/patterns/p1-context-triage/cases/liangbo/">P1 上下文分诊</a>。</p>
-            <h2>12. 叙事状态：锚、账、集</h2>
-            <p>SessionNarrative 用于维护目标与进展，由 Anchor、Ledger 和 Collection 三类数据组成。</p>
-            <p><strong>锚（Anchor）</strong>保存用户在会话或任务入口提交的原始目标。长链路中的推理、行动和压缩都会改写信息形态，后续推理仍需显式读取原始目标。用户只输入“继续”时，锚也用于恢复该指令所指向的业务目标。</p>
-            <p><strong>账（Ledger）</strong>按时间追加关键进展。每个重要推理或行动完成后，系统把结果压缩为可检索的事件摘要，记录完成了什么、产生了哪些结果以及仍有哪些约束。</p>
-            <p><strong>集（Collection）</strong>是在关键推理入口按当前任务从 Ledger 投影出的临时上下文。它只选择与当前步骤相关的事件，并与 Anchor 一起注入模型，控制上下文长度。</p>
-            <p>Anchor 保持目标稳定，Ledger 保留过程事实，Collection 提供当前步骤所需的最小语义视图。上下文投影见 <a href="/zh/patterns/p1-context-triage/cases/liangbo/">P1 上下文分诊</a>，进度语义见 <a href="/zh/patterns/m3-progress-tracking/cases/liangbo/">M3 进度追踪</a>。</p>
-            <h2>13. L1/L2/L3 分层记忆</h2>
-            <p>团队把记忆分为 L1、L2 和 L3。L1 服务当前执行上下文，L2 保存可追溯的历史事实，L3 保存从成功或失败任务中提炼的经验。L3 使用向量索引召回相似经验，并保留指向 L2 原始事实的 ID；需要核对详情时再加载 L2。</p>
-            <p>例如，历史任务已经验证某个 Skill 可以处理相同场景，新的推理可以优先选择该 Skill。若某个接口曾在中间步骤失败，规划器可以先调用健康检查，再决定是否执行成本较高的前序任务。</p>
-            <p>记忆召回集中在链式推理首次调用、ReAct 首轮和任务规划等能力边界，避免每一步都检索。这个安排与操作系统按需加载内存页的思路相近：常用上下文留在近端，历史事实持久化，经验通过索引按需加载。详细设计见 <a href="/zh/patterns/m1-hierarchical-retention/cases/liangbo/">M1 分层保留切片</a>。</p>
-            <h2>14. 架构全貌与迁移条件</h2>
-            <p>东方屹腾的实现可以概括为一条逐步扩展的运行链：</p>
+            <h2>1. 先找客户真正卡住的那一步</h2>
+            <p>东方屹腾的 SaaS 产品覆盖人事、组织、考勤、审批和薪酬，并连接银行与税务系统。产品矩阵已服务两万多家企业。团队最初评估过用工分析、薪酬结构优化和报表分析，这些场景容易演示，却没有击中客户启用系统时最费力的环节。</p>
+            <p>客户访谈指向了首次配置。新企业需要建立薪资组和薪资项，导入员工与组织，完成定薪，再配置考勤和审批规则。由运营团队代为配置的客户通常能顺利启用，自行配置的客户更容易中途放弃。</p>
+            <p>团队把“薪资组快速搭建”定为首个场景。它的范围不大，却包含模板匹配、数据快照、连续 API 调用、失败回滚和人工确认。一个 Agent 若能稳定完成这条链，才有资格继续进入算薪、代发和报税。</p>
+            <h2>2. 第一个原型：工具选对了，状态仍会传错</h2>
+            <p>最初的设想很直接：把现有 API 封装为 MCP Server，让模型按用户意图选择工具并组织参数。工具发现很快跑通，连续调用暴露了另一个问题。</p>
+            <p>以报销为例，流程依次创建申请、上传发票、提交审批和查询结果。上传接口使用的 <code>application_id</code> 必须来自刚才那次创建调用。薪资组配置也一样，模板匹配返回的 <code>template_id</code> 要原样进入后续导入接口。</p>
+            <p>早期原型把每步回执追加到对话上下文，再让模型生成下一步参数。测试中出现过 ID 误写和参数错绑。JSON Schema 可以检查字段类型和格式，无法证明一个值来自哪次调用。对于 64 位或 128 位业务标识，只错一个字符也可能访问错误实体。</p>
+            <p>这次失败划出了一条系统边界。</p>
+            <ul>
+            <li>报告、摘要和 PPT 在步骤间传递文本，局部偏差通常还能重写。</li>
+            <li>薪酬、审批和报销在步骤间传递业务状态，漏步、跨步和参数错绑会改变真实数据。</li>
+            </ul>
+            <p>东方屹腾继续使用模型理解用户和选择业务路径，同时把严格参数从语言上下文中拿出来，交给程序保存和注入。</p>
+            <h2>3. 先把运行过程看清楚</h2>
+            <p>后端使用 Go，初期没有引入 Agent 框架。第一阶段只接通连续对话、附件上传和流式回复，先固定入口和输出协议。Web 界面同步建设，业务人员可以在同一页面检查用户输入、执行进度和最终结果。</p>
+            <p>运行时从第一天就记录结构化事件。一次对话拆成按时间排序的 <code>Activity</code>，每个 Activity 下包含一个或多个 <code>Frame</code>。Frame 保存当时的输入、模型输出、工具调用、耗时和费用。意图识别、路由、ReAct 循环和状态变化也写入同一时间线。</p>
+            <p>这套记录先解决开发问题：哪一步选错了工具，哪个 ID 来自哪次调用，任务为何停在审批节点。生产环境再按权限隐藏调试详情。可观测性在这里不是上线后的监控补丁，它是业务评审和问题复现的共同底座。</p>
+            <h2>4. 一次请求怎样流过系统</h2>
+            <p>用户输入先经过意图识别，得到有限的控制信号。早期信号包括 <code>chat</code>、<code>analyze</code> 和 <code>resolve</code>，解析失败则进入 <code>unknown</code>。后续类型可随业务扩展，但每个类型都必须对应明确的程序分支。</p>
+            <pre><code class="language-text">用户消息
+  -&gt; MessageHandler 接收并建立事件流
+  -&gt; 意图识别生成控制信号
+  -&gt; Orchestrator 选择执行链
+  -&gt; 推理或规划确定下一步
+  -&gt; 行动模块调用工具
+  -&gt; 状态、任务进度和叙事摘要分别落盘
+  -&gt; 统一事件流向界面返回进度与结果
+</code></pre>
+            <p><code>MessageHandler</code> 处理消息入口、SSE 和结束协议。<code>Orchestrator</code> 读取控制信号，调用推理、记忆、检索和行动模块。业务能力注册在明确的输入输出契约上，新增能力主要接入中段流程，不需要改动消息入口。</p>
+            <p>系统也把两类信息分开保存。控制信号、任务状态和准入结果驱动程序分支；用户目标、分析结论和执行摘要进入模型上下文。前者要求枚举和校验，后者允许语言表达。案例方把它们分别称为控制平面和叙事平面。</p>
+            <h2>5. 什么时候探索，什么时候按计划执行</h2>
+            <p><code>resolve</code> 说明用户要完成一件事，还没有给出稳定步骤。任务边界模糊时，系统使用链式推理或 ReAct 边执行边判断。每轮把 <code>Thought</code>、<code>Action</code> 和 <code>Observation</code> 追加到 scratchpad，下一轮读取最新观察。</p>
+            <p>严格依赖出现后，控制权交给规划执行。规划器把任务拆成 DAG，执行器只调度所有上游节点已经完成的 <code>ready</code> 节点，验收器决定节点能否进入 <code>completed</code>。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">现场状态</th>
+            <th style="text-align: left;">使用方式</th>
+            <th style="text-align: left;">原因</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">目标仍需澄清，下一步取决于刚取得的信息</td>
+            <td style="text-align: left;">ReAct</td>
+            <td style="text-align: left;">保留探索空间</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">步骤和依赖已经明确</td>
+            <td style="text-align: left;">任务 DAG 与状态机</td>
+            <td style="text-align: left;">防止跨步、漏步和重复执行</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">某一步会产生高风险副作用</td>
+            <td style="text-align: left;">状态机加人工审批</td>
+            <td style="text-align: left;">在原节点暂停并保留恢复位置</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">只需查询或生成内容</td>
+            <td style="text-align: left;">短链或直接回答</td>
+            <td style="text-align: left;">不为低风险任务引入完整调度成本</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>薪资组快速搭建的模拟链包含模板匹配、现有数据快照、模板导入和失败回滚。它曾仅以文字步骤交给 ReAct，测试中出现跨步和漏步。任务图正是由这次失败推动出来的。</p>
+            <h2>6. 业务 ID 由程序保管来源</h2>
+            <p>工具回执中的严格参数进入 <code>SessionState</code>。后续工具按坐标读取，模型只看到“模板已经匹配”这类叙事摘要。每个状态值同时保存来源信息，调用前可以核对生产工具和调用实例。</p>
+            <p>下面是 ADPS 根据案例机制整理的示意结构。</p>
+            <pre><code class="language-json">{
+  &quot;scope&quot;: &quot;session/payroll_setup&quot;,
+  &quot;key&quot;: &quot;template_id&quot;,
+  &quot;value&quot;: &quot;9287461350021&quot;,
+  &quot;producer&quot;: &quot;match_salary_template&quot;,
+  &quot;call_id&quot;: &quot;call_0187&quot;,
+  &quot;receipt_ref&quot;: &quot;events/0187/tool-result&quot;
+}
+</code></pre>
+            <p>工具注册时声明自己生产和消费哪些状态。<code>RunPipeline</code> 在调用前完成四件事：根据坐标取值，核对来源，注入参数，记录本次消费关系。模型不会再次拼写 <code>template_id</code>。</p>
+            <p>这套机制成立于封闭工具体系。组织需要事先管理工具注册、状态键、作用域和权限。开放网络中的任意工具无法自动获得同样的来源保证。</p>
+            <h2>7. 审批要能停住，也要能从原处继续</h2>
+            <p>敏感节点开始前，执行器将节点置为等待审批。人工批准后，系统重新读取持久化状态，校验任务与工具条件，再从原节点继续。拒绝或超时则进入明确的终止或改计划路径。</p>
+            <p>案例包含两种人机衔接。</p>
+            <ul>
+            <li><strong>下一轮继续</strong>：当前会话结束，用户之后输入“继续”或补充信息，系统从已保存目标和进度恢复。</li>
+            <li><strong>执行中等待</strong>：会话运行仍存在，某个任务节点阻塞，审批事件到达后恢复。</li>
+            </ul>
+            <p>第二种方式需要持久化 DAG、节点状态、审批结果和参数来源。一个确认弹窗并不能提供恢复能力，真正的断点位于任务状态机。</p>
+            <h2>8. 长程状态分放三处</h2>
+            <p>系统逐步形成三个状态平面，各自回答一个问题。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">状态平面</th>
+            <th style="text-align: left;">回答的问题</th>
+            <th style="text-align: left;">真源</th>
+            <th style="text-align: left;">主要读取方</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><code>SessionNarrative</code></td>
+            <td style="text-align: left;">用户要什么，已经发生了什么</td>
+            <td style="text-align: left;">Anchor、Ledger 与上下文投影</td>
+            <td style="text-align: left;">模型推理和回复合成</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>SessionState</code></td>
+            <td style="text-align: left;">业务参数是什么，从哪里来</td>
+            <td style="text-align: left;">带 Provenance 的状态 Cell</td>
+            <td style="text-align: left;">工具调用和前置校验</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>Workspace</code></td>
+            <td style="text-align: left;">哪个任务现在可以执行</td>
+            <td style="text-align: left;">DAG 与节点状态迁移</td>
+            <td style="text-align: left;">规划器、调度器和执行器</td>
+            </tr>
+            </tbody>
+            </table>
+            <p><code>Anchor</code> 保存原始目标，避免长任务反复摘要后偏离。<code>Ledger</code> 追加关键进展，<code>Collection</code> 在当前步骤选择必要记录。它们服务语义理解，不承担业务 ID 传递。</p>
+            <p>记忆再按使用距离分层：L1 服务当前步骤，L2 保存可追溯事实，L3 保存从多次任务中提炼的经验。L3 召回结果仍保留指向 L2 的来源 ID，需要核对时再加载原始记录。召回集中在首次推理、ReAct 首轮和任务规划等边界，不在每一步重复检索。</p>
+            <h2>9. 当前证据能说明什么</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">主张</th>
+            <th style="text-align: left;">当前依据</th>
+            <th style="text-align: left;">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">首次配置是中小客户启用产品的重要阻力</td>
+            <td style="text-align: left;">客户访谈与交付反馈</td>
+            <td style="text-align: left;">案例方业务证据</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">把工具回执放回上下文仍会出现 ID 误写</td>
+            <td style="text-align: left;">早期原型测试</td>
+            <td style="text-align: left;">案例方复盘，未公开错误率</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">DAG 与状态机可以阻止未满足依赖的节点调度</td>
+            <td style="text-align: left;">调度规则与状态结构</td>
+            <td style="text-align: left;">架构机制说明</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">SessionState 保留参数来源并由程序注入</td>
+            <td style="text-align: left;">状态坐标和调用链设计</td>
+            <td style="text-align: left;">架构机制说明</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">系统已经在两万多家企业场景中产生量化收益</td>
+            <td style="text-align: left;">尚无公开对照数据</td>
+            <td style="text-align: left;">本版不作此结论</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>后续公开材料最值得增加三类数据：严格流程的成功率与人工接管率，参数来源校验拦截的错误数，以及审批暂停后的恢复成功率。</p>
+            <h2>10. 迁移时可以照着做的七步</h2>
             <ol>
-            <li>ChatLoop 接通对话、附件和流式回复；</li>
-            <li>Activity 与 Frame 提供运行过程观测；</li>
-            <li>意图识别把自然语言转换为有限控制信号；</li>
-            <li>Orchestrator 与意图网关选择执行链；</li>
-            <li>链式推理和 ReAct 处理逐步收敛的任务；</li>
-            <li>规划执行用 DAG 与状态机管理严格依赖；</li>
-            <li>HITL 在敏感节点阻塞并恢复；</li>
-            <li>SessionState 与 Provenance 保证参数来源；</li>
-            <li>SessionNarrative、SessionState 和 Workspace 分别管理语义、参数与调度；</li>
-            <li>Anchor、Ledger、Collection 以及 L1/L2/L3 记忆维持长程任务上下文。</li>
+            <li>选择一条会修改真实业务状态的连续流程，不从开放问答开始。</li>
+            <li>列出每一步的输入、输出、副作用、回滚方式和人工责任人。</li>
+            <li>标记所有不能由模型重新生成的值，例如业务 ID、版本号、金额和权限范围。</li>
+            <li>为每个严格值登记生产工具、消费工具、作用域和回执位置。</li>
+            <li>把已知依赖写成任务图，由程序决定节点是否可执行。</li>
+            <li>将高风险节点设为可持久化的等待状态，测试批准、拒绝、超时和重复事件。</li>
+            <li>用统一时间线串起模型、工具、状态和任务事件，再开始扩大场景。</li>
             </ol>
-            <p>这套架构适用于步骤明确、依赖严格、需要连续传递业务状态的执行型场景。若漏步、跨步或参数错误会导致交付失败或业务数据损坏，任务图、状态机和机械状态平面具有直接价值。机械状态平面还要求工具由组织统一注册和管理，以便在运行前确定状态键、来源和作用域。</p>
-            <p>资料检索、总结和报告生成等内容型场景通常允许更松散的步骤和文本传递，可以优先采用 MCP 等开放工具协议，不必同时引入完整任务图和机械状态平面。迁移前应先确认错误成本、状态依赖和工具边界，再选择相应机制。</p>
+            <p>第一条流程跑稳后，再判断哪些任务需要 ReAct，哪些可以直接进入固定计划。这样能把探索能力留给开放部分，把确定性留给业务状态。</p>
+            <h2>11. 何时不该照搬</h2>
+            <p>这套设计适合步骤明确、状态依赖严格、错误会改变业务数据的执行型任务。工具需要由组织注册和管理，状态键与来源能够事先定义。</p>
+            <p>资料检索、总结和报告生成通常不需要完整 DAG、机械状态平面和审批恢复。一次性脚本也未必值得建设长期会话状态。若工具来自开放生态，或同一业务值存在多个并发写入者，还需要补充信任策略、事务、锁和冲突处理，本案例没有覆盖这些问题。</p>
+            <h2>12. ADPS 对照</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">模式</th>
+            <th style="text-align: left;">本案例中的实现</th>
+            <th style="text-align: left;">进一步阅读</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">工具调度</td>
+            <td style="text-align: left;">工具注册、状态生产消费声明、调用前注入</td>
+            <td style="text-align: left;"><a href="/zh/patterns/a1-tool-dispatch/cases/liangbo/">A1 工具调度</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">规划执行</td>
+            <td style="text-align: left;">DAG、节点状态机和验收器</td>
+            <td style="text-align: left;"><a href="/zh/patterns/a2-plan-and-execute/cases/liangbo/">A2 规划执行</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">进度追踪</td>
+            <td style="text-align: left;">Workspace 与持久化节点状态</td>
+            <td style="text-align: left;"><a href="/zh/patterns/m3-progress-tracking/cases/liangbo/">M3 进度追踪</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">上下文分诊</td>
+            <td style="text-align: left;">Anchor、Ledger 与当前 Collection</td>
+            <td style="text-align: left;"><a href="/zh/patterns/p1-context-triage/cases/liangbo/">P1 上下文分诊</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">审批门</td>
+            <td style="text-align: left;">高风险节点等待审批并从原处恢复</td>
+            <td style="text-align: left;"><a href="/zh/patterns/g1-approval-gate/cases/liangbo/">G1 审批门</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">可观测性</td>
+            <td style="text-align: left;">Activity、Frame 与统一事件时间线</td>
+            <td style="text-align: left;"><a href="/zh/patterns/g4-observability-harness/cases/liangbo/">G4 可观测性</a></td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>案例提供与引用</h2>
+            <p><strong>案例提供：</strong>梁博（Bo Liang），上海东方屹腾科技有限公司。</p>
+            <p><strong>建议引用：</strong>ADPS、梁博，《东方屹腾执行型 Agent：让业务状态沿流程准确传递》，ADPS 企业 Agent 系统蓝皮书·案例报告 01，v0.4，2026。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾执行型 Agent 案例报告》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

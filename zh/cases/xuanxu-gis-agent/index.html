@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>玄宿科技 · GIS 数据发布 Agent 案例报告 · ADPS</title>
-    <meta name="description" content="运行期采用确定性规则与六阶段管线；模型用于设计期管线生成和知识沉淀。">
+    <title>玄宿科技 GIS 数据发布 Agent：把运行经验固化成可验收管线 · ADPS</title>
+    <meta name="description" content="模型参与新管线设计，已认证管线按规则运行，真实地图请求负责最终验收。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/cases/xuanxu-gis-agent/">
@@ -27,7 +27,7 @@
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/cases/xuanxu-gis-agent/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -124,10 +124,10 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 案例报告 02</p>
-                <h1>玄宿科技 GIS 数据发布 Agent 案例报告</h1>
-                <p class="publication-deck">运行期采用确定性规则与六阶段管线；模型用于设计期管线生成和知识沉淀。</p>
+                <h1>玄宿科技 GIS 数据发布 Agent：把运行经验固化成可验收管线</h1>
+                <p class="publication-deck">模型参与新管线设计，已认证管线按规则运行，真实地图请求负责最终验收。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
                     <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
                     <div><dt>案例机构</dt><dd>玄宿科技</dd></div>
@@ -135,326 +135,380 @@
                     <div><dt>案例提供</dt><dd>熊钰柯（Yuke Xiong）</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本文是一线实践者主导的架构复盘。实现主张、业务规模与效果数据由案例方提供，尚未经过独立审计；迁移建议只在文中列明的业务与系统条件下成立。</p>
+            <p class="publication-note"><strong>证据边界：</strong>本文记录玄宿科技 GIS 数据发布系统的项目实践。流程、失败案例和架构取舍由案例方熊钰柯提供，尚未经过独立审计。页面截图来自案例运行环境；示例契约由 ADPS 根据公开机制整理，不代表案例方实际字段名。</p>
 
-            <hr />
-            <h2>1. 传统 GIS 发布流程的约束</h2>
-            <p>GIS 数据发布需要依次处理格式识别、坐标系、样式、瓦片缓存和图层组。各环节包含需要人工选择和配置的参数，部分错误不会在配置阶段直接报告。</p>
-            <p>玄宿科技从事 GIS 软件产品与系统研发，并拥有自主知识产权的国产化二次开发框架。团队将原有发布流程归纳为三类约束。</p>
-            <p><strong>跨工具顺序依赖。</strong> 数据需要在桌面 GIS、GDAL 命令行、GeoServer 管理界面和 GWC 配置页之间流转，操作顺序和参数依赖人工记忆。重复执行后，很难定位具体哪次运行、哪个步骤发生偏差。</p>
-            <p><strong>领域知识难以复用。</strong> 以 S-57 电子海图发布为例，一组海图导入 PostGIS 后会按物标类生成上百张表，需要逐表创建 store、逐类发布图层，再按顺序组成图层组。图层组若配置为 OPAQUE_CONTAINER，成员图层会从 WMS 列表消失，直接 GetMap 返回 LayerNotDefined；该 ServiceException 的 HTTP 状态仍为 200，只检查状态码会误判为成功。此类平台行为如果只保留在操作人员记忆中，后续同类数据仍需重新排查。</p>
-            <p><strong>缺少自动验收。</strong> 手工发布只能证明操作者在某一时刻打开过服务。系统没有持续生成可查询的验收证据，故障通常由用户反馈后才被发现。</p>
-            <p>这三类约束与是否使用 AI 无关，分别对应长链路、机械参数和静默失败。</p>
-            <h2>2. 运行期模型的适用性判断</h2>
-            <p>团队没有采用“将 GeoServer REST API 包装为 MCP 工具，再由模型运行时选择接口和参数”的方案。GIS 发布步骤之间存在严格的参数绑定和状态依赖。</p>
-            <p>workspace、store、layer、SRS 和 bbox 都由上一步产生，并在下一步逐值引用。若由 LLM 重新生成这些机械参数，单个字符或数值偏差可能导致发布失败，也可能在发布成功后产生错误渲染。</p>
-            <p>案例报告 01 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>也将机械参数从模型生成内容中分离。两个案例均属于执行型系统：步骤之间传递机械参数，模型负责形成控制信号，不负责生成这些参数。相关定义见<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>。</p>
-            <p>场景分类使用以下四个维度。</p>
+            <h2>案例速览</h2>
             <table>
             <thead>
             <tr>
-            <th style="text-align: left;">维度</th>
-            <th style="text-align: left;">内容生成型</th>
-            <th style="text-align: left;">执行型</th>
+            <th style="text-align: left;">项目</th>
+            <th style="text-align: left;">现场信息</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td style="text-align: left;">步骤关系</td>
-            <td style="text-align: left;">松散，顺序可调</td>
-            <td style="text-align: left;">严格依赖，跨一步全盘错</td>
+            <td style="text-align: left;">业务任务</td>
+            <td style="text-align: left;">将不同格式的 GIS 数据处理后发布到 GeoServer，并生成可供业务使用的地图服务</td>
             </tr>
             <tr>
-            <td style="text-align: left;">步骤间传递</td>
-            <td style="text-align: left;">文本内容，语义偏差不致命</td>
-            <td style="text-align: left;">机械参数（id、名称、坐标），错一位即事故</td>
+            <td style="text-align: left;">最难发现的失败</td>
+            <td style="text-align: left;">发布接口返回成功，真实 GetMap/GetTile 请求仍可能失败；部分 ServiceException 的 HTTP 状态也是 200</td>
             </tr>
             <tr>
-            <td style="text-align: left;">错误代价</td>
-            <td style="text-align: left;">内容质量下降，一般无副作用</td>
-            <td style="text-align: left;">交付失败或破坏业务数据</td>
+            <td style="text-align: left;">核心做法</td>
+            <td style="text-align: left;">模型参与新管线设计，已认证管线在运行期按规则执行；发布后必须用真实请求和截图验收</td>
             </tr>
             <tr>
-            <td style="text-align: left;">对模型的要求</td>
-            <td style="text-align: left;">生成质量</td>
-            <td style="text-align: left;">确定性，而确定性不能只靠概率</td>
+            <td style="text-align: left;">关键运行结构</td>
+            <td style="text-align: left;">六阶段管线、磁盘事实文件、错误规则、失败卡、draft/candidate/active 生命周期</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">当前证据</td>
+            <td style="text-align: left;">运行控制台、知识卡、实际地图结果和案例方失败复盘</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">适用范围</td>
+            <td style="text-align: left;">输入类型可枚举、处理链重复、错误代价高、外部结果可以自动探测的数据发布任务</td>
             </tr>
             </tbody>
             </table>
-            <p>GIS 数据发布符合执行型特征：六个阶段存在硬依赖，阶段之间传递 layer_name、processed_crs 和 processed_bbox 等机械真值；发布结果由前端直接消费，GetTile 全部返回 400 即构成生产故障。</p>
-            <h2>3. 推理资产化</h2>
-            <p>执行型系统需要确定性输出，而模型调用具有概率性。该案例在运行期不调用模型，所有运行期决策由规则和静态管线完成。</p>
-            <p>路由由约二十行查表代码实现，重试与回退由两张 YAML 规则表实现，编排采用静态六阶段链。模型只用于新管线设计：Coding Agent 生成草案，经人工审阅、显式首跑和认证后，活跃管线在运行期按规则执行。</p>
-            <p>该设计成立的条件是意图可由数据签名确定。目录包含 <code>.000</code> 文件时路由到 S-57 海图管线，包含 <code>.tif</code> 时路由到栅格管线。<strong>输入签名即意图</strong>，因此意图识别可以使用确定性判定；未匹配签名时返回显式错误。</p>
-            <p>案例方将这种做法称为<strong>推理资产化</strong>：管线选择和发布方法在设计期由模型与人员共同确定，结论写入管线声明，运行期查表执行。模型调用成本发生在设计期，产物以 YAML 规则长期复用。</p>
-            <p>决策依据是频率和开放程度。</p>
+            <h2>1. 先认识这条 GIS 发布链</h2>
+            <p>GIS 数据发布不等于上传一个文件。系统需要识别格式，确定坐标系，处理数据，生成样式，把数据注册到 GeoServer，配置缓存，最后验证地图服务。</p>
+            <p>几个常见字段可以先用业务语言理解。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">在流程中的含义</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><code>workspace</code></td>
+            <td style="text-align: left;">GeoServer 中隔离一组资源的命名空间</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>store</code></td>
+            <td style="text-align: left;">指向 PostGIS、栅格文件等真实数据源的连接</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>layer</code></td>
+            <td style="text-align: left;">对外发布和请求的地图图层</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>SRS</code></td>
+            <td style="text-align: left;">数据使用的空间参考或坐标系</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>bbox</code></td>
+            <td style="text-align: left;">数据覆盖的地理边界，浏览器据此定位和缩放</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>这些值在前一步产生，后一步逐值引用。名称或坐标错一位，接口可能直接失败，也可能发布出位置错误的地图。</p>
+            <p>玄宿科技的流程还跨越桌面 GIS、GDAL、PostGIS、GeoServer 和 GWC。操作顺序长期依赖工程师记忆，重复发布后很难回答“哪一次运行的哪一步出了问题”。</p>
+            <h2>2. 两个现场失败改变了设计</h2>
+            <p>第一个失败来自 S-57 电子海图。一组海图导入 PostGIS 后会按物标类生成上百张表，随后逐表建立 store、发布图层并组成图层组。图层组配置为 <code>OPAQUE_CONTAINER</code> 后，成员图层可能从 WMS 列表消失。直接请求 GetMap 返回 <code>LayerNotDefined</code>，HTTP 状态仍是 200。只看状态码，系统会把错误结果登记成成功。</p>
+            <p>第二个失败出现在 WMTS 瓦片请求。GetTile 返回 400，响应含有 <code>/ by zero</code>。排查后发现 metatile 尺寸被配置为 <code>0×0</code>。官方文档没有说明这个取值的后果，结论来自平台实测。</p>
+            <p>两个问题分别给出了明确要求。</p>
+            <ol>
+            <li>发布接口自报成功不能作为最终验收。</li>
+            <li>平台实测经验必须进入下一次运行能读取的规则，不能只留在操作人员记忆里。</li>
+            </ol>
+            <h2>3. 为什么运行期没有调用模型</h2>
+            <p>团队评估过将 GeoServer REST API 封装为工具，再让模型运行时选择接口和参数。这个方案没有进入主链。GIS 发布的 <code>workspace</code>、<code>store</code>、<code>layer</code>、<code>SRS</code> 和 <code>bbox</code> 都有严格来源，模型重新生成会增加参数漂移风险。</p>
+            <p>与此同时，输入意图可以从数据签名确定。目录中包含 <code>.000</code> 文件时进入 S-57 管线，包含 <code>.tif</code> 时进入栅格管线。未匹配签名就返回明确错误。这里不需要模型猜测用户意图。</p>
+            <p>团队把开放判断放到设计期：Coding Agent 起草新管线，工程师审阅并完成首次运行，系统验证通过后再认证为 active。运行期只使用已认证规则。</p>
+            <p>案例方把这项取舍称为<strong>推理资产化</strong>。这个名称指一件具体的事：一次开放推理的结论写成管线声明和错误规则，后续高频运行直接复用。</p>
             <table>
             <thead>
             <tr>
             <th style="text-align: left;">决策</th>
-            <th style="text-align: left;">特征</th>
-            <th style="text-align: left;">归宿</th>
+            <th style="text-align: left;">发生位置</th>
+            <th style="text-align: left;">运行期动作</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td style="text-align: left;">复用哪条管线</td>
-            <td style="text-align: left;">高频、有标准答案</td>
-            <td style="text-align: left;">规则下沉：管线声明 accepts，运行期查表</td>
+            <td style="text-align: left;">输入应进入哪条已有管线</td>
+            <td style="text-align: left;">设计期定义签名</td>
+            <td style="text-align: left;">查 <code>accepts</code> 表</td>
             </tr>
             <tr>
-            <td style="text-align: left;">失败后怎么办</td>
-            <td style="text-align: left;">高频、错误签名可枚举</td>
-            <td style="text-align: left;">规则下沉：error_map 加 retry_policy，按签名路由</td>
+            <td style="text-align: left;">某个已知错误如何处理</td>
+            <td style="text-align: left;">失败复盘后写规则</td>
+            <td style="text-align: left;">按 signature 选择 retry、abort 或 skip</td>
             </tr>
             <tr>
-            <td style="text-align: left;">发布成什么</td>
-            <td style="text-align: left;">管线设计期一次性决定</td>
-            <td style="text-align: left;">写死在 produces / publish 字段</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">生长还是复用</td>
-            <td style="text-align: left;">低频、一次性、需要领域知识</td>
-            <td style="text-align: left;">模型加人，发生在生长期</td>
+            <td style="text-align: left;">新格式如何处理</td>
+            <td style="text-align: left;">设计期由模型和人员共同完成</td>
+            <td style="text-align: left;">未认证前拒绝自动运行</td>
             </tr>
             </tbody>
             </table>
-            <p>在 ADPS 双轴框架中，运行期推理被前移到设计期，运行资源主要投入治理和记忆。系统只处理已认证管线覆盖的输入签名，其他输入明确拒绝。</p>
-            <blockquote>
-            <p><strong>案例边界：</strong> “运行期零 LLM”只描述运行路径。管线设计、错误规则沉淀和新格式识别仍由模型与人员共同完成。该系统优先优化单次运行的确定性和成本。</p>
-            </blockquote>
-            <h2>4. 系统的 Agent 属性</h2>
-            <p>运行期没有模型，路由采用查表，编排采用静态链，因此需要说明该系统与普通自动化脚本的边界。</p>
-            <p>分类依据是结构属性。普通脚本通常采用 fire-and-forget 线性执行；该系统包含感知、决策、行动、验证、回退和能力生命周期。</p>
-            <ul>
-            <li><strong>感知</strong>：意图从数据里读出来，不靠人传。validate 阶段按活跃管线的 accepts 声明遍历输入目录，自行识别格式签名。</li>
-            <li><strong>决策</strong>：查表实现确定性决策。新管线注册后，路由自动覆盖新签名，无需修改平台代码。</li>
-            <li><strong>行动</strong>：publish 阶段调用 GeoServer REST、写入 PostGIS 并更新托管目录，产生可观察的外部副作用。</li>
-            <li><strong>验证</strong>：verify 阶段主动执行 GetMap/GetTile 请求和截图，成功条件为 HTTP 200 且 content-type 为 <code>image/*</code>。ServiceException 同样可能返回 200，因此不能只检查状态码。</li>
-            <li><strong>回退</strong>：失败按错误签名匹配回退步骤；未知错误显式上抛，不静默吞掉。</li>
-            <li><strong>记忆与生长</strong>：状态落盘成磁盘事实，失败沉淀成知识卡，管线走 draft、candidate、active 生命周期。能力集合随使用扩展。</li>
-            </ul>
-            <p>与常规 CI/CD 流水线相比，该系统会识别输入签名、选择管线、验收 GIS 领域结果，并将失败沉淀为后续运行可消费的规则。</p>
-            <p>该系统采用<strong>有界自主</strong>：意图空间封闭，签名之外明确拒绝；已接受任务要求执行结果可验收、失败可追踪、规则可复用。</p>
-            <h2>5. 磁盘事实平面</h2>
-            <p>系统主干是六个阶段组成的固定流水线：validate 识别格式与路由管线，process 重投影并归一坐标系，generate_sld 生成模板样式，publish 过契约门禁后落 GeoServer，viewer 生成浏览页，verify 截图与请求验收。</p>
-            <p>每个阶段是独立子进程。编排器通过 subprocess 启动阶段，只接收返回码和输出文本，并按错误签名判断成败。阶段状态通过磁盘文件传递。</p>
-            <p>阶段状态写入 <code>metadata.json</code>，并遵守<strong>一个事实一个写入者</strong>：validate 写识别结果，process 追加处理结果，下游阶段只读不重算。bbox 只由 process 计算一次，避免本地重算与落盘值发生漂移。</p>
-            <p>磁盘事实平面包含三层：<code>metadata.json</code> 保存管线契约，<code>run-state.json</code> 保存编排状态，<code>verify_report.json</code> 保存验收结果。各层通过指针关联，不复制事实。控制台使用这些 JSON 和三份索引投影作为数据源，静态托管，不设置 API 层。</p>
-            <figure>
-              <img src="assets/console-overview.jpg" alt="GIS Agent 控制台总览：左栏管线目录，右侧数据集与六阶段进度">
-              <figcaption>控制台总览。左栏为管线目录，右侧列出数据集和六阶段进度；详情区显示 metadata、processed、viewer 和 verify_report 路径。页面元素均对应磁盘文件。</figcaption>
-            </figure>
-
-            <p>该设计提供四项能力。<strong>可审计</strong>：阶段边界对应文件边界，运行记录不依赖进程内存。<strong>可恢复</strong>：重跑时读取落盘输入路径，已成功数据集按状态跳过。<strong>可热更新</strong>：执行代理为写操作启动新子进程，下一次运行读取磁盘上的最新代码。<strong>跨语言消费</strong>：前端控制台、执行代理和命令行只共享文件契约，不共享实现代码。</p>
-            <p>相应代价是文件契约需要人工维护。前端使用时间戳加 5 秒容差判断轮询状态是否属于本次运行，命令行修改时间精度时必须同步更新前端。validate 无匹配管线时使用固定错误前缀，规则表按该前缀匹配。每个状态文件携带 schema 版本号，字段变更时同步 bump。</p>
-            <blockquote>
-            <p><strong>案例边界：</strong> 文件契约依赖 schema 版本、防复发注释和单元测试，缺少编译期的跨端一致性检查。</p>
-            </blockquote>
-            <h2>6. 失败记录与规则闭环</h2>
-            <p>ADPS 将 <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>定义在记忆 × 循环坐标。该系统以知识卡片、两张规则表和带质量门的管线生命周期实现三层循环。</p>
-            <p><strong>内层为运行期秒级循环，不调用模型。</strong> 阶段失败后匹配错误签名，动作只有 retry、abort、skip 三种。例如，“源矢量缺少空间参考，无法判定坐标系”对应 abort，“WMTS 瓦片图层启用失败，可能缓存服务未就绪”对应 retry。缺少空间参考、海图更新链断号等失败不允许自愈，必须显式停止。</p>
-            <p><strong>外层为沉淀期周级循环，包含人工审核。</strong> 每次实际失败写入一张五段式失败卡。以“WMTS 瓦片请求除零报错”为例：signature 记录 GetTile 返回 400 且响应包含 <code>/ by zero</code>；root_cause 记录 metatile 尺寸被配置为 0×0，并说明官方文档未描述该取值的后果，该结论来自平台实测；fallback 记录即时处理；fixed_by 将结论写入 SDK 默认参数；related_rules 关联运行期规则表。</p>
-            <figure>
-              <img src="assets/knowledge-card2.jpg" alt="知识卡图谱视图：卡片按管线聚簇、卡间关联连成网">
-              <figcaption>知识图谱视图。卡片按管线分组并建立关联，节点详情显示卡片全文。frontmatter 的 source 字段指向出处文件，控制台据此将卡片关联到对应管线。</figcaption>
-            </figure>
-
-            <p>项目协作约定要求：涉及领域知识或平台机制的修复，必须同步写入失败卡或规则条目。验收条件是后续人员或 Agent 能否通过卡片定位同类现象。</p>
-            <p>知识卡分为六类：capabilities 记录管线能力，profiles 记录数据画像与处理基线，patterns 记录跨管线约束，failures 记录五段式失败，decisions 记录平台取舍与理由，refs 记录组件行为基线。能力卡与管线同名，其余卡的 source 字段包含管线路径，控制台按这些规则生成知识视图。</p>
-            <h2>7. 管线生命周期与认证</h2>
-            <p><strong>中层为生长期天级循环，模型只参与脚手架生成。</strong> ADPS 将管线类构件映射到 <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>。该案例进一步实现技能包的生成、验证和认证过程。</p>
-            <p>管线从脚手架进入自动运行需要通过两类质量门。<strong>证据门</strong>：首次运行由人员显式触发，完整执行六个阶段；publish 前检查最小事实集，结构校验失败时禁止调用 GeoServer；verify 发送真实请求并执行截图与图像分析。首跑成功后状态自动转为 candidate。<strong>认证门</strong>：candidate 升级为 active 必须由人员确认。</p>
-            <p><strong>版本漂移监控</strong>比较活跃管线当前版本与已认证版本。两者不一致时，系统自动将管线退回 candidate，要求重新验证和认证。</p>
-            <p>HITL 只位于两个动作：新管线首次运行由人员显式指定，candidate 升 active 由人员认证。模型生成管线草案，人员决定是否允许自动运行，系统阻止未认证管线自动接收任务。</p>
-            <p>三层循环分别处理运行期可恢复失败、管线能力生命周期和跨运行失败沉淀；外层生成的规则供内层运行期查询。</p>
-            <h2>8. ADPS 双轴矩阵映射</h2>
-            <p>案例方将系统逐格映射到 ADPS 双轴矩阵。映射口径如下。</p>
-            <p><strong>着色口径</strong>：实格表示存在直接代码实体；薄格表示存在相关机制，但不属于该坐标官方模式的典型实现；其余表示未采用或不需要。<strong>落位不等于采用官方模式</strong>：感知 × 链式、推理 × 路由、反思 × 链式三个格子的实现与官方模式不同，已在表内注明。若要求 F1 必须由模型自评，反思 × 链式应判为空格。阅读时可按行观察资源投入，按列观察拓扑偏好。</p>
+            <p>“运行期零 LLM”是当前输入空间下的结果，不是系统目标，也不适合被推广为通用准则。</p>
+            <h2>4. 六个阶段怎样完成一次发布</h2>
+            <p>主链固定为六个阶段。每个阶段在独立子进程中运行，编排器只读取返回码、结构化输出和错误签名。</p>
             <table>
             <thead>
             <tr>
-            <th style="text-align: left;">认知功能</th>
-            <th style="text-align: left;">链式</th>
-            <th style="text-align: left;">路由</th>
-            <th style="text-align: left;">并行</th>
-            <th style="text-align: left;">循环</th>
-            <th style="text-align: left;">层级</th>
-            <th style="text-align: left;">编排</th>
+            <th style="text-align: left;">阶段</th>
+            <th style="text-align: left;">主要动作</th>
+            <th style="text-align: left;">必须落下的结果</th>
+            <th style="text-align: left;">失败时</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td style="text-align: left;"><strong>感知</strong></td>
-            <td style="text-align: left;">薄格：validate 输入签名到磁盘事实<br>官方 P2 语义压缩，机制不同</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—<br>P4 不做</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><code>validate</code></td>
+            <td style="text-align: left;">识别格式并选择 active 管线</td>
+            <td style="text-align: left;">输入签名、管线 ID、原始文件清单</td>
+            <td style="text-align: left;">无匹配管线则拒绝</td>
             </tr>
             <tr>
-            <td style="text-align: left;"><strong>记忆</strong></td>
-            <td style="text-align: left;">—<br>M2 记忆不给模型读</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：失败日记<br>M4，见第六章</td>
-            <td style="text-align: left;"><strong>实格</strong>：三层记忆各有实体<br>M1，载体是规则与事实</td>
-            <td style="text-align: left;"><strong>实格</strong>：运行状态外部化<br>M3，消费者是人与控制台</td>
+            <td style="text-align: left;"><code>process</code></td>
+            <td style="text-align: left;">重投影、入库或归一数据</td>
+            <td style="text-align: left;"><code>processed_crs</code>、<code>processed_bbox</code>、处理后路径</td>
+            <td style="text-align: left;">不猜缺失坐标系</td>
             </tr>
             <tr>
-            <td style="text-align: left;"><strong>推理</strong></td>
-            <td style="text-align: left;">—<br>R1 运行期无模型</td>
-            <td style="text-align: left;">薄格：路由与回退纯查表<br>官方 R2，规则表替代模型路由</td>
-            <td style="text-align: left;">—<br>R3 不做</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><code>generate_sld</code></td>
+            <td style="text-align: left;">生成或选择样式</td>
+            <td style="text-align: left;">可追溯的样式文件</td>
+            <td style="text-align: left;">样式契约失败则停止发布</td>
             </tr>
             <tr>
-            <td style="text-align: left;"><strong>行动</strong></td>
-            <td style="text-align: left;">—<br>A3 无 prompt</td>
-            <td style="text-align: left;"><strong>实格</strong>：manifest 调度管线与 SDK<br>A1，命令白名单</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：发布前门禁加发布后验收<br>A4 护栏三明治</td>
-            <td style="text-align: left;"><strong>实格</strong>：静态计划加批量先审批<br>A2，计划设计期固定</td>
+            <td style="text-align: left;"><code>publish</code></td>
+            <td style="text-align: left;">调用 GeoServer REST 并配置资源</td>
+            <td style="text-align: left;">workspace、store、layer 等发布回执</td>
+            <td style="text-align: left;">过最小事实检查后才调用</td>
             </tr>
             <tr>
-            <td style="text-align: left;"><strong>反思</strong></td>
-            <td style="text-align: left;">薄格：外部验收替代模型自评<br>官方 F1，外部探针</td>
-            <td style="text-align: left;"><strong>实格</strong>：管线即凝固的成功流程<br>F2 技能包</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：签名到回退自愈<br>F4 自愈循环</td>
-            <td style="text-align: left;">—<br>F3 不自动回放</td>
-            <td style="text-align: left;">—</td>
+            <td style="text-align: left;"><code>viewer</code></td>
+            <td style="text-align: left;">生成浏览页和访问配置</td>
+            <td style="text-align: left;">可复现的服务地址和视图配置</td>
+            <td style="text-align: left;">不把页面生成当作验收</td>
             </tr>
             <tr>
-            <td style="text-align: left;"><strong>协作</strong></td>
-            <td style="text-align: left;">薄格：子进程加结构化交接<br>官方 C4，交接方是确定性进程</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—<br>C2 主动不做</td>
-            <td style="text-align: left;">—<br>C3 不做</td>
-            <td style="text-align: left;"><strong>实格</strong>：人机权责分工<br>C1，人拍板认证</td>
-            <td style="text-align: left;">—</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>治理</strong></td>
-            <td style="text-align: left;"><strong>实格</strong>：管线生命周期逐级解锁<br>G3 渐进承诺</td>
-            <td style="text-align: left;"><strong>实格</strong>：人审认证与两步确认<br>G1 审批门</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：版本漂移自动降级<br>官方空格，本系统有实现</td>
-            <td style="text-align: left;"><strong>实格</strong>：白名单加名称校验加删除分级<br>G2 爆炸半径控制</td>
-            <td style="text-align: left;"><strong>实格</strong>：状态全落盘加控制台可视<br>G4 可观测性</td>
+            <td style="text-align: left;"><code>verify</code></td>
+            <td style="text-align: left;">发送真实请求并截图</td>
+            <td style="text-align: left;"><code>verify_report.json</code>、截图、请求统计</td>
+            <td style="text-align: left;">失败签名进入规则或人工复盘</td>
             </tr>
             </tbody>
             </table>
-            <p>矩阵显示出三项结构特征。</p>
-            <p><strong>治理行六格中落位五格，是资源投入最多的一行。</strong> 生命周期逐级解锁、active 认证、写操作 blast radius 控制和代码变更后自动降级，共同阻止未验证能力自动运行。</p>
-            <p><strong>循环列覆盖记忆、反思和治理三行。</strong> 失败记录转为规则，运行失败进入自愈回退，代码改动触发降级和重新认证。</p>
-            <p><strong>治理 × 循环在官方矩阵中为空格，本案例提供了一个实现。</strong> 该实现作为案例证据记录，不据此定义新模式。</p>
-            <h2>9. 架构取舍与失效信号</h2>
-            <p>下表记录各项架构取舍、收益和需要重新评估的失效信号。</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">取舍</th>
-            <th style="text-align: left;">放弃了什么</th>
-            <th style="text-align: left;">换来什么</th>
-            <th style="text-align: left;">失效信号</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">运行期零 LLM<br>（推理资产化）</td>
-            <td style="text-align: left;">开放性：未匹配签名的输入明确拒绝</td>
-            <td style="text-align: left;">每次运行确定；零模型边际成本；每个决策可审计到规则行</td>
-            <td style="text-align: left;">意图载体从数据签名变成开放对话；签名空间膨胀到规则表维护不动</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">顺序链<br>（不做并行）</td>
-            <td style="text-align: left;">吞吐</td>
-            <td style="text-align: left;">任何一次运行可精确复现；资源竞争类抖动从「回归」降级为「已知现象」</td>
-            <td style="text-align: left;">批量规模大到排队不可接受</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">单 Agent 加人机分工<br>（不做多智能体）</td>
-            <td style="text-align: left;">多角色并行协商、对抗评审</td>
-            <td style="text-align: left;">权责链短：每个决策能找到唯一的责任人或机制</td>
-            <td style="text-align: left;">出现开放性强、需要多视角对抗判断的任务类型</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">静态编排<br>（无运行期重规划）</td>
-            <td style="text-align: left;">运行期自适应</td>
-            <td style="text-align: left;">新增数据格式编排层零改动；执行计划可在设计期评审</td>
-            <td style="text-align: left;">链路需要按数据特征动态分叉</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">磁盘事实平面<br>（文件即状态）</td>
-            <td style="text-align: left;">跨机扩展、多租户并发写</td>
-            <td style="text-align: left;">可审计、可恢复、热更新、跨语言消费</td>
-            <td style="text-align: left;">部署形态从单主机单租户变成多机多租户</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>这些取舍相互关联。运行期引入模型后，计划会依赖模型的即时判断；引入并发后，“一个事实一个写入者”需要增加锁或事务；引入多租户后，文件契约需要迁移到支持并发和隔离的存储介质。</p>
-            <p>架构评审的主要问题是：确定性优先这一前提是否仍符合当前场景。</p>
-            <p>系统保留了相应运行证据。两个数据集并发发布时，其中一个数据集的 verify 曾短暂出现零个瓦片请求成功。案例方将其记录为“已知瞬时抖动”，没有修改顺序管线。该平台以排队控制吞吐，避免并发引入资源竞争。</p>
-            <p>系统明确拒绝未被已认证管线覆盖的输入。GeoJSON、KML 当前均返回“无匹配管线”。新格式需要经过管线设计、首跑验证和人工认证后才进入能力清单。</p>
-            <h2>10. 迁移条件与限制</h2>
-            <p>本文的全部主张只在这一章的约束清单内有效。</p>
-            <p><strong>可迁移机制。</strong> 高频且有标准答案的决策可以下沉为规则表，低频开放决策保留模型并移出关键路径；发布前校验最小事实集，发布后用真实请求验收；失败日记采用固定五段结构并回链规则；能力使用生命周期和版本漂移监控；进程间可通过事实平面交换状态。</p>
-            <p><strong>成立条件。</strong> 1. 意图空间可以封闭枚举。输入签名无法表达自然语言意图时，需要重新引入运行期模型，将意图转换为枚举控制信号；机械参数仍由工具和状态提供。2. 错误代价达到执行级；仅影响内容质量时，这套治理成本可能过高。3. 错误签名可以枚举；失败模式开放时，规则表只能作为日志。4. 链路重复发生；一次性任务难以获得沉淀收益。</p>
-            <p><strong>不可直接迁移的内容。</strong> 错误规则和失败卡来自 GIS 与 GeoServer 的具体行为；双轴矩阵中的空格由本案例约束决定；“运行期零 LLM”也是当前意图空间下的实现结果，不能作为其他场景的默认目标。</p>
             <figure>
-              <img src="assets/cesium-s57-viewer.jpg" alt="S-57 电子海图 WMTS 服务在三维地球浏览页中的实际渲染">
-              <figcaption>S-57 电子海图 WMTS 在浏览页中的实际渲染。verify 阶段结合真实截图和瓦片请求判定服务可用性，不依赖发布接口自报。</figcaption>
+              <img src="assets/console-overview.jpg" alt="GIS Agent 控制台总览，展示管线目录、数据集和六阶段进度">
+              <figcaption>控制台把六个阶段映射到真实状态文件。用户可以看到当前数据集停在哪一步，也能打开相应的 metadata、viewer 和验收报告。</figcaption>
             </figure>
 
-            <p>针对第一章的三类流程约束，系统将链路固化为平台和管线，将领域知识写入规则和卡片，并将验收设置为每次运行的必经阶段。</p>
-            <p>双轴矩阵中包含 14 个实格、4 个薄格和 1 个官方空白格实现，其余留白。每个落位均可依据代码实体和运行证据重新评估。</p>
-            <h2>与案例报告 01 的对照</h2>
-            <p>案例 01 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾</a>面向企业 SaaS 业务流程自动化，意图来自自然语言，因此运行期保留模型，并以机械状态平面承载业务参数。玄宿科技面向领域数据处理发布，意图来自数据签名，因此将运行决策前移到设计期。</p>
+            <p>这条链刻意没有并行。案例方记录过两个数据集并发发布时，其中一个 verify 短暂出现零个瓦片请求成功。当前规模下，团队选择排队执行，换取可复现性。吞吐要求超过排队能力时，这项取舍需要重新评估。</p>
+            <h2>5. 状态为什么落在磁盘上</h2>
+            <p>阶段之间不共享进程内对象，状态通过文件传递。</p>
+            <pre><code class="language-text">run/
+  metadata.json       # 输入签名、管线、处理结果和发布坐标
+  run-state.json      # 当前阶段、重试次数和状态迁移
+  verify_report.json  # 真实请求、截图和验收结论
+</code></pre>
+            <p><code>validate</code> 写识别结果，<code>process</code> 追加坐标系和 bbox，下游阶段读取这些值，不重新计算。案例方称这套结构为磁盘事实平面。它遵守“一个事实一个写入者”：同一个 bbox 只有一个权威生产阶段。</p>
+            <p>文件方式带来四个直接收益：进程退出后仍可审计；重跑时可以跳过已完成阶段；前端、命令行和执行代理共享文件契约；新子进程会加载磁盘上的最新实现。</p>
+            <p>代价也很具体。状态文件需要 schema 版本，前端轮询与命令行时间精度必须一致，错误前缀若被规则表使用就不能随意改名。部署进入多机、多租户和高并发写入后，文件真源需要迁移到支持事务和隔离的存储。</p>
+            <h2>6. 发布后怎样证明地图真的能用</h2>
+            <p><code>verify</code> 不读取 publish 阶段的“成功”字段来替代验收。它请求真实的 GetMap 或 GetTile 地址，至少核对下面三项。</p>
+            <ol>
+            <li>HTTP 状态符合预期。</li>
+            <li><code>content-type</code> 是 <code>image/*</code>，响应体不是 XML ServiceException。</li>
+            <li>截图或图像分析能观察到有效地图内容。</li>
+            </ol>
+            <figure>
+              <img src="assets/cesium-s57-viewer.jpg" alt="S-57 电子海图 WMTS 服务在三维地球中的实际渲染">
+              <figcaption>S-57 服务的最终验收对象是业务可以使用的地图结果。发布接口成功、图层已注册和地图可用是三个不同事实。</figcaption>
+            </figure>
+
+            <p>这项机制在 ADPS 中对应<a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>：系统离开自身状态，到真实消费端检查结果。它适用于数据库写入、文件交付、支付回执和网页发布等无法只靠内部调用结果判定的任务。</p>
+            <h2>7. 一次失败怎样进入下一次运行</h2>
+            <p>运行期只处理已经认识的错误签名，动作限定为 retry、abort 和 skip。缺少空间参考、海图更新链断号等问题不允许自动补猜，系统直接停止。</p>
+            <p>新的失败由人复盘，并写成五段式失败卡。</p>
+            <pre><code class="language-yaml">signature: &quot;GetTile=400 and body contains '/ by zero'&quot;
+root_cause: &quot;metatile size was configured as 0x0&quot;
+fallback: &quot;disable the invalid metatile setting and rerun verify&quot;
+fixed_by: &quot;set a safe SDK default&quot;
+related_rules: [&quot;wmts-metatile-zero&quot;]
+</code></pre>
+            <p>这张卡同时保存现象、原因、当前处置、永久修复和运行规则。后续运行不需要重新阅读整篇复盘，只读取压缩后的错误签名与动作。原始事实仍可沿 source 字段回查。</p>
+            <figure>
+              <img src="assets/knowledge-card2.jpg" alt="知识卡图谱视图，卡片按管线分组并关联到来源">
+              <figcaption>知识卡按管线关联。运行规则消费压缩结论，工程师仍能打开卡片核对故障经过和出处。</figcaption>
+            </figure>
+
+            <h2>8. 新能力怎样取得自动运行资格</h2>
+            <p>新管线经过三个状态。</p>
             <table>
             <thead>
             <tr>
-            <th style="text-align: left;">维度</th>
-            <th style="text-align: left;">案例 01 东方屹腾</th>
-            <th style="text-align: left;">案例 02 玄宿科技</th>
+            <th style="text-align: left;">状态</th>
+            <th style="text-align: left;">可以做什么</th>
+            <th style="text-align: left;">进入下一状态的条件</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td style="text-align: left;">意图载体</td>
-            <td style="text-align: left;">自然语言对话</td>
-            <td style="text-align: left;">数据文件签名</td>
+            <td style="text-align: left;"><code>draft</code></td>
+            <td style="text-align: left;">生成、修改和人工检查</td>
+            <td style="text-align: left;">人员显式触发首次完整运行</td>
             </tr>
             <tr>
-            <td style="text-align: left;">运行期模型</td>
-            <td style="text-align: left;">保留，收敛为控制信号</td>
-            <td style="text-align: left;">完全没有</td>
+            <td style="text-align: left;"><code>candidate</code></td>
+            <td style="text-align: left;">保存首跑证据，等待认证</td>
+            <td style="text-align: left;">六阶段通过，真实请求和截图验收成功</td>
             </tr>
             <tr>
-            <td style="text-align: left;">机械参数怎么办</td>
-            <td style="text-align: left;">分离出机械状态平面，带来源坐标</td>
-            <td style="text-align: left;">落盘成磁盘事实，一个事实一个写入者</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">编排</td>
-            <td style="text-align: left;">动态：ReAct 与规划执行按清晰度切换</td>
-            <td style="text-align: left;">静态：六阶段固定，设计期评审</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">资源最重的一行</td>
-            <td style="text-align: left;">行动与治理</td>
-            <td style="text-align: left;">治理</td>
+            <td style="text-align: left;"><code>active</code></td>
+            <td style="text-align: left;">自动匹配输入并运行</td>
+            <td style="text-align: left;">人员确认认证</td>
             </tr>
             </tbody>
             </table>
-            <p>两份案例都禁止模型生成机械参数，并在治理模块投入较多资源。ADPS 使用同一套坐标记录这些实现，以便比较不同行业的结构和边界。</p>
+            <p>活跃管线的当前版本与认证版本不一致时，系统自动退回 candidate。一次代码修改不会沿用旧认证继续自动运行。</p>
+            <p>模型在生长期生成脚手架，人员决定是否认证，运行时只接受 active 管线。这个生命周期比“生成后直接上线”多了首跑证据和明确责任人，也比每次运行都请人批准更适合重复任务。</p>
+            <h2>9. 没有运行期模型，为什么仍把它作为 Agent 案例</h2>
+            <p>名称并不由是否每次调用 LLM 决定。这个系统会感知输入签名，选择能力，修改外部环境，主动验收，按错误签名回退，并通过失败卡和管线生命周期扩展能力。</p>
+            <p>它的自主范围很窄。签名空间封闭，未知输入拒绝；已接受任务必须留下可验收结果和可查询状态。若只剩一条固定脚本，没有输入识别、能力选择、外部验收和生命周期管理，把它称为 Agent 就没有额外解释价值。</p>
+            <h2>10. 复制这套做法时从哪里开始</h2>
+            <ol>
+            <li>选一条每周重复发生、输入类型有限、失败可以观察的发布流程。</li>
+            <li>把完整流程拆成阶段，为每个阶段定义唯一输出和错误签名。</li>
+            <li>标出必须由程序传递的机械参数，禁止下游重新计算或由模型生成。</li>
+            <li>设计一项离开系统内部的验收，例如真实请求、回读数据库或打开交付文件。</li>
+            <li>先记录三次真实失败，再决定哪些可以进入自动 retry，哪些必须 abort。</li>
+            <li>为能力设置 draft、candidate、active，代码变更后取消旧认证。</li>
+            <li>连续运行后再评估是否需要并行、动态规划或运行期模型。</li>
+            </ol>
+            <p>这七步不依赖 GIS。数据导入、媒体转码、模型部署、报表发布和静态网站发布都可以使用同样的骨架。</p>
+            <h2>11. 失效信号与迁移边界</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">当前取舍</th>
+            <th style="text-align: left;">成立条件</th>
+            <th style="text-align: left;">出现这些信号时重新设计</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">运行期查表</td>
+            <td style="text-align: left;">输入签名可枚举</td>
+            <td style="text-align: left;">用户意图转为开放语言，规则表持续膨胀</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">顺序执行</td>
+            <td style="text-align: left;">排队时间可接受</td>
+            <td style="text-align: left;">批量规模导致 SLA 无法满足</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">磁盘事实</td>
+            <td style="text-align: left;">单主机、低并发写</td>
+            <td style="text-align: left;">多机、多租户或多个写入者竞争同一状态</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">错误签名回退</td>
+            <td style="text-align: left;">失败模式可稳定识别</td>
+            <td style="text-align: left;">未知错误占比持续上升，规则误匹配增加</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">人工认证能力</td>
+            <td style="text-align: left;">新管线增长速度可控</td>
+            <td style="text-align: left;">认证队列成为主要交付瓶颈</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>错误规则和失败卡来自 GeoServer 与 GIS 领域，不能原样迁移。可复用的是阶段契约、单一事实生产者、外部验收、失败到规则的路径和能力认证过程。</p>
+            <h2>12. 当前证据与下一步数据</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">主张</th>
+            <th style="text-align: left;">当前依据</th>
+            <th style="text-align: left;">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">S-57 与栅格输入可按文件签名路由</td>
+            <td style="text-align: left;">管线 accepts 机制</td>
+            <td style="text-align: left;">架构与运行说明</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">HTTP 200 不能证明 WMS 结果可用</td>
+            <td style="text-align: left;"><code>LayerNotDefined</code> 实测</td>
+            <td style="text-align: left;">案例方运行证据</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><code>/ by zero</code> 来自 0×0 metatile</td>
+            <td style="text-align: left;">失败复盘与知识卡</td>
+            <td style="text-align: left;">案例方运行证据</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">版本漂移会使 active 管线退回 candidate</td>
+            <td style="text-align: left;">生命周期机制</td>
+            <td style="text-align: left;">架构说明</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">该设计在大规模并发下仍优于动态系统</td>
+            <td style="text-align: left;">尚无对照数据</td>
+            <td style="text-align: left;">本版不作此结论</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>下一版应记录每条管线的运行次数、成功率、人工接管率、verify 发现的假成功数、规则命中率和代码变更后的重新认证耗时。</p>
+            <h2>13. ADPS 对照</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">模式或概念</th>
+            <th style="text-align: left;">本案例中的实现</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a></td>
+            <td style="text-align: left;">五段式失败卡回链错误规则</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/f2-skill-package/">F2 技能包</a></td>
+            <td style="text-align: left;">一条带声明、代码、证据和生命周期的管线</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a></td>
+            <td style="text-align: left;">六阶段静态计划，依赖在设计期固定</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a></td>
+            <td style="text-align: left;">发布前事实检查，发布后真实请求验收</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a></td>
+            <td style="text-align: left;">draft、candidate、active 逐级开放权限</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a></td>
+            <td style="text-align: left;">文件状态、控制台、请求记录和截图</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/concepts/reasoning-assetization/">推理资产化</a></td>
+            <td style="text-align: left;">设计期结论进入管线和规则，运行期复用</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a></td>
+            <td style="text-align: left;">阶段通过版本化 JSON 交换权威状态</td>
+            </tr>
+            </tbody>
+            </table>
+            <h2>案例提供与引用</h2>
+            <p><strong>案例提供：</strong>熊钰柯（Yuke Xiong），玄宿科技。</p>
+            <p><strong>建议引用：</strong>ADPS、熊钰柯，《玄宿科技 GIS 数据发布 Agent：把运行经验固化成可验收管线》，ADPS 企业 Agent 系统蓝皮书·案例报告 02，v0.4，2026。</p>
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS、熊钰柯，《玄宿科技 GIS 数据发布 Agent 案例报告》，企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

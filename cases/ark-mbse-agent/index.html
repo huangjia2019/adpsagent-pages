@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Natural Language to SysML: A Modeling Agent That Delivers One Diagram at a Time · ADPS</title>
-    <meta name="description" content="A practitioner case on typed intermediate representations, semantic gates, resumable HITL, and receipt-backed write-back for natural-language-to-SysML modeling.">
+    <meta name="description" content="A field report on typed planning artifacts, resumable scope clarification, structural checks, and receipt-backed SysML write-back.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/cases/ark-mbse-agent/">
-    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/zh/cases/ark-mbse-agent/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/ark-mbse-agent/">
+    <link rel="alternate" hreflang="zh-CN" href="https://adpsagent.com/zh/cases/ark-mbse-agent/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/ark-mbse-agent/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
@@ -84,8 +86,9 @@
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
-              <a href="/cases/ark-mbse-agent/" class="active">Ark · AI4MBSE</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/ark-mbse-agent/" class="active">Ark (Yage) · AI4MBSE</a>
+
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
@@ -124,108 +127,112 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Case Report 03</p>
                 <h1>Natural Language to SysML: A Modeling Agent That Delivers One Diagram at a Time</h1>
-                <p class="publication-deck">The model drafts typed structures within a bounded scope; semantic gates and a single write-back path protect the engineering repository.</p>
+                <p class="publication-deck">Element, relationship, and view plans are checked before one bounded write enters the engineering repository.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
-                    <div><dt>Version</dt><dd>v0.4</dd></div>
+                    <div><dt>Version</dt><dd>v0.5</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
                     <div><dt>Issued</dt><dd>2026-08-02</dd></div>
-                    <div><dt>Case organization</dt><dd>Ark (Yage) · <a href="https://mbse.ltd/en/" target="_blank" rel="noopener">mbse.ltd</a></dd></div>
-                    <div><dt>Sector</dt><dd>MBSE · Industrial software · Systems-engineering toolchain</dd></div>
+                    <div><dt>Case organization</dt><dd>Ark (Yage)</dd></div>
+                    <div><dt>Sector</dt><dd>MBSE · Industrial software · Systems engineering</dd></div>
                     <div><dt>Case contributor</dt><dd>Liangding Yuan (袁良锭)</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Evidence boundary:</strong> This report documents the practitioner account of AI4MBSE at Ark (Yage). The case contributor supplied the implementation path, failure observations, and engineering decisions. They have not been independently audited. Illustrations describe interaction and state semantics. Runtime screenshots are published with the contributor&#x27;s permission. The data contracts in this report are an ADPS architectural reconstruction of the disclosed mechanisms; they are not the implementation&#x27;s class or field names.</p>
+            <p class="publication-note"><strong>Evidence boundary:</strong> This report documents the practitioner account of AI4MBSE at Ark (Yage). Liangding Yuan supplied the implementation path, observed failures, and engineering decisions. The material has not been independently audited. Illustrations explain interaction, and the contributor approved the runtime screenshots for publication. ADPS reconstructed the example contracts to explain the disclosed mechanisms; they are not the implementation&#x27;s class or field names.</p>
 
             <hr />
 
-<h2>1. System boundary: the deliverable is engineering state</h2>
-<p>AI4MBSE runs alongside systems-modeling tools such as MagicDraw and Cameo. Packages, blocks, use cases, states, and relationships enter a shared model repository and may be referenced by later design, simulation, review, and documentation work. An agent write-back changes that shared state.</p>
-<p>The model repository and a SysML diagram are separate layers. The repository stores elements and relationships. A diagram projects a selected subset for a particular concern. A diagram can look plausible while the repository contains a dangling reference, an incorrect owner, or a duplicate element. Acceptance therefore has to inspect both repository state and canvas state.</p>
-<p>The case assigns two different responsibilities. The LLM interprets a business request and drafts candidate structures. Program logic and the project index own the scope reference, stable identifiers, relationship endpoints, and write authority. These fields can break downstream work when one value is wrong, so the model does not serve as their sole source of truth.</p>
-<blockquote>
-<p>A user requests one diagram in natural language. The system writes a structurally valid, reversible change to a resolved project location. An unresolved scope or invalid structure moves the operation to clarification or blocks it.</p>
-</blockquote>
-<h2>2. Running example: create a turnstile use-case diagram</h2>
-<p>The following request provides a compact example for the rest of the report.</p>
-<blockquote>
-<p>Under the "Turnstile Control" package, create a use-case diagram with three cases: a visitor enters with a card, an administrator opens the gate remotely, and an operations system resets a fault. The visitor and administrator are people; operations is an external system.</p>
-</blockquote>
-<p>The request carries at least four kinds of constraints.</p>
+<h2>Case at a glance</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Constraint</th>
-<th style="text-align: left;">Content in this example</th>
-<th style="text-align: left;">Check</th>
+<th style="text-align: left;">Item</th>
+<th style="text-align: left;">Field account</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Scope</td>
-<td style="text-align: left;">An existing <code>Turnstile Control</code> package</td>
-<td style="text-align: left;">The project index resolves it uniquely</td>
+<td style="text-align: left;">Business task</td>
+<td style="text-align: left;">Accept a natural-language modeling request and create or modify one SysML diagram in a tool such as MagicDraw or Cameo</td>
 </tr>
 <tr>
-<td style="text-align: left;">Elements</td>
-<td style="text-align: left;">Three use cases, two human actors, one system actor, and one subject</td>
-<td style="text-align: left;">Count, type, and ownership are complete</td>
+<td style="text-align: left;">Main risk</td>
+<td style="text-align: left;">The canvas may look correct while the model repository contains a wrong owner, dangling relationship, duplicate element, or empty change reported as success</td>
 </tr>
 <tr>
-<td style="text-align: left;">Relationships</td>
-<td style="text-align: left;">Each actor associates with the corresponding use case</td>
-<td style="text-align: left;">Both endpoints already exist</td>
+<td style="text-align: left;">Main decision</td>
+<td style="text-align: left;">Separate element, relationship, and view planning into typed artifacts; resolve the project location and check structural invariants before write-back</td>
 </tr>
 <tr>
-<td style="text-align: left;">View</td>
-<td style="text-align: left;">The subject, actors, use cases, and relationships relevant to this diagram</td>
-<td style="text-align: left;">The view is a legal projection of the accepted model</td>
+<td style="text-align: left;">Smallest delivery unit</td>
+<td style="text-align: left;">One diagram type, one resolved location, one change receipt, and one rollback handle</td>
+</tr>
+<tr>
+<td style="text-align: left;">Current evidence</td>
+<td style="text-align: left;">Host screenshots, an intent log, a relationship write-back log, and contributor retrospective</td>
+</tr>
+<tr>
+<td style="text-align: left;">Useful when</td>
+<td style="text-align: left;">Generated structures enter an authoritative repository whose types, references, and write scope can be checked by program logic</td>
 </tr>
 </tbody>
 </table>
+<h2>1. For non-MBSE readers: a model is more than a diagram</h2>
+<p>SysML represents the composition, behavior, requirements, and relationships of a complex system. Tools such as MagicDraw and Cameo maintain an engineering repository and display diagrams over that repository. A diagram is one view of the model.</p>
+<p>A block-definition diagram may show a turnstile controller and a card reader. The repository also stores stable identifiers, ownership, type, and relationship endpoints. Correct box placement on a canvas does not prove that the relationship endpoints resolve or that the elements were written to the intended package.</p>
+<p>AI4MBSE changes authoritative engineering state. Later design, simulation, review, and documentation can consume that state, so acceptance has to inspect both the repository and the canvas.</p>
+<p>The report uses one compact request throughout:</p>
+<blockquote>
+<p>In the "Turnstile Control" package, create a use-case diagram containing Card Entry, QR Entry, and Administrator Override.</p>
+</blockquote>
+<p>Before planning, the system must know which operation the user requested, which diagram type applies, and which existing project location should receive the change.</p>
+<h2>2. Why one large response leaves structural defects</h2>
+<p>An early path produced elements, relationships, and view data in one model response. It reduced calls and made failure difficult to isolate.</p>
+<ul>
+<li>An element name may be plausible while its owner does not exist.</li>
+<li>A relationship may read well while an endpoint ID refers to no accepted element.</li>
+<li>Three objects may reach the repository while the canvas displays only two.</li>
+<li>The user may name three use cases, the plan may contain two, and the operation may still report success.</li>
+</ul>
+<p>Repairing the entire response could also alter correct portions. The team divided the main path into element, relationship, and view stages so each artifact can be checked before the next stage begins.</p>
+<h2>3. Connect three typed plans</h2>
+<p>The entry step converts the request into a job card with an operation, diagram type, and project scope.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-01-progress-line.jpg" alt="Modeling assistant showing a single progress line below the user request">
-  <figcaption>The user sees one progress line. Element, relationship, and view stages remain available in runtime diagnostics instead of becoming a multi-step wizard.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-a1-intent-card.jpg" alt="Modeling job card containing operation, diagram type, and scope">
+  <figcaption>The job card fixes the operation boundary. Element planning does not start while scope remains unresolved.</figcaption>
 </figure>
 
-<figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-02-canvas-writeback.jpg" alt="Turnstile use-case diagram in the project browser and modeling canvas">
-  <figcaption>The write-back changes both the project tree and the canvas. Both are part of acceptance.</figcaption>
-</figure>
-
-<h2>3. Main path: from natural language to typed intermediate representations</h2>
-<p>An early implementation asked the model to emit elements, relationships, and the view in one response. Four failures recurred: a relationship referred to a name missing from the element list; the same object appeared under near-synonymous names; long context caused omissions late in the response; and the projected view diverged from the repository content. A one-call design reduced call count, but a failed response required the whole structure to be regenerated and provided little stage-level diagnosis.</p>
-<p>The current path follows three modeling responsibilities.</p>
+<p>Each stage consumes only accepted upstream artifacts.</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Stage</th>
 <th style="text-align: left;">Input</th>
-<th style="text-align: left;">Output contract</th>
-<th style="text-align: left;">The stage must not</th>
+<th style="text-align: left;">Output</th>
+<th style="text-align: left;">Out-of-scope behavior</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Elements</td>
-<td style="text-align: left;">Request summary, resolved scope, element allowlist, nearby reusable objects</td>
+<td style="text-align: left;">Element planning</td>
+<td style="text-align: left;">Request summary, resolved scope, type allowlist, nearby reusable elements</td>
 <td style="text-align: left;"><code>ElementPlan</code></td>
-<td style="text-align: left;">Create relationships or layout</td>
+<td style="text-align: left;">No relationships or layout</td>
 </tr>
 <tr>
-<td style="text-align: left;">Relationships</td>
-<td style="text-align: left;"><code>ElementPlan</code>, relationship allowlist, short business summary</td>
+<td style="text-align: left;">Relationship planning</td>
+<td style="text-align: left;"><code>ElementPlan</code>, relationship allowlist, short domain summary</td>
 <td style="text-align: left;"><code>RelationPlan</code></td>
-<td style="text-align: left;">Invent an unlisted element or change a stable reference</td>
+<td style="text-align: left;">No new off-plan elements and no changed stable IDs</td>
 </tr>
 <tr>
-<td style="text-align: left;">View</td>
-<td style="text-align: left;"><code>ElementPlan</code>, <code>RelationPlan</code>, diagram projection rules</td>
+<td style="text-align: left;">View planning</td>
+<td style="text-align: left;">Accepted elements, relationships, and current diagram rules</td>
 <td style="text-align: left;"><code>ViewPlan</code></td>
-<td style="text-align: left;">Redefine repository structure</td>
+<td style="text-align: left;">No reinvention of model structure</td>
 </tr>
 </tbody>
 </table>
-<p>The disclosed mechanism implies a job state similar to the following. This is an architecture-level representation, not source code from the product.</p>
+<p>An ADPS reconstruction of the job state follows.</p>
 <pre><code class="language-text">ModelingJob
   action: chat | create | modify
   diagram_type: use_case | bdd | ibd | state | ...
@@ -233,51 +240,43 @@
   stage: intent | elements | relations | view | validated | applied
   element_plan: typed elements with stable references
   relation_plan: typed edges whose endpoints resolve
-  view_plan: projection over accepted elements and relations
+  view_plan: projection over accepted model objects
   outcome: applied | applied_with_warnings | blocked | noop
   writeback_receipt: state delta + rollback handle
 </code></pre>
-<p>ADPS interprets <code>ElementPlan -&gt; RelationPlan -&gt; ViewPlan</code> as a chain of typed intermediate representations. An LLM drafts a candidate IR at each stage, and downstream work consumes only an accepted upstream result. The structure has parallels with a compiler front end and semantic checker, and with referential-integrity constraints in a database.</p>
-<figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a1-intent-card.jpg" alt="Intent card with modeling action, diagram type, and scope">
-  <figcaption>The entry step reduces language to a finite action, diagram type, and scope reference. This job record anchors later resumption and acceptance.</figcaption>
-</figure>
-
-<p>The three stages may run as independent agents or as functions in one runtime. Process count does not determine the design. Context isolation, independent failure semantics, and explicit ownership would be required before the implementation should be classified as a multi-agent handoff.</p>
-<h2>4. One diagram per operation: transaction and acceptance boundary</h2>
-<p>"Complete the turnstile model" has no stable completion criterion. It might include package, requirement, use-case, block-definition, internal-block, and state diagrams. An error in an early artifact can propagate through the rest. The case constrains one operation to:</p>
+<p>ADPS describes the sequence as a typed intermediate-representation chain. In practical terms, a downstream stage reads checkable fields, types, and references rather than free-form upstream prose.</p>
+<p>Three separate agents can implement the stages, as can three functions in one runtime. Input boundaries, isolated failure, and data contracts provide the engineering value; process count does not.</p>
+<h2>4. Deliver one diagram per operation</h2>
+<p>"Complete the turnstile model" has no stable boundary. It may require requirement, use-case, block-definition, internal-block, and state diagrams. An early deviation can propagate through later diagrams.</p>
+<p>The case limits one operation to:</p>
 <blockquote>
-<p>one diagram type + one resolved model scope.</p>
+<p>one diagram type + one resolved project location.</p>
 </blockquote>
-<p>This constraint defines the write set, the acceptance set, the rollback delta, and the smallest reproducible regression test. In software-engineering terms, it combines a Unit of Work with a Command and provides a transaction boundary for implementation and testing.</p>
-<p>The case retrospective describes a path that applies a change after deterministic gates pass and exposes one-step undo. The public product description also supports human confirmation before write-back. A deployment can choose either interaction policy according to risk. Both policies should share the same transaction boundary, validation rules, and rollback receipt.</p>
+<p>That limit defines the write scope, pre-write acceptance set, rollback change set, and smallest regression test. The user receives one diagram, a change summary, and a rollback action.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a2-canvas-result.jpg" alt="Canvas result with a change summary and undo action">
-  <figcaption>The visible result of one transaction is one diagram, a state-delta summary, and an executable rollback handle.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-a2-canvas-result.jpg" alt="Canvas result with change summary and rollback action">
+  <figcaption>One operation owns one diagram. The summary distinguishes created, reused, and unresolved items and preserves a rollback handle.</figcaption>
 </figure>
 
-<h2>5. Scope resolution and resumable HITL</h2>
-<p>If the project index cannot uniquely resolve <code>Turnstile Control</code>, the system stops before element planning. When two or three plausible candidates exist, the interface presents them. When none is suitable, it asks for a more precise package or for the package to be created first. It does not silently write to the project root or synthesize a parent-package tree.</p>
+<p>This boundary also limits the impact of a defect. Branch merging, concurrent project writes, permission partitions, and long transactions remain outside the published case.</p>
+<h2>5. Pause the job when the project location is ambiguous</h2>
+<p>"Turnstile Control" may match multiple packages or none, so the runtime queries the project index first. A unique allowed match proceeds, a small candidate set goes to user selection, and no credible match asks for a more precise name or a separately created scope.</p>
+<p>The system does not default to the project root or silently create a parent package tree.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-04-clarify-scope.jpg" alt="Scope clarification card with candidate locations and pending job state">
-  <figcaption>The card preserves the selected diagram type and the missing scope. Expensive planning has not started.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-04-clarify-scope.jpg" alt="Clarification card and pending job state for unresolved scope">
+  <figcaption>The clarification card retains the known operation and diagram type and asks only for the missing scope.</figcaption>
 </figure>
 
-<p>This interaction requires a persisted pending operation. It records the resolved <code>action</code> and <code>diagram_type</code>, the missing <code>scope_ref</code>, the current stage, and the options offered to the user. Once the user supplies a package, the runtime resumes that operation rather than performing a fresh full intent classification.</p>
-<figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-05-resume-timeline.jpg" alt="Development timeline showing a frozen job and ResumePendingOperation">
-  <figcaption>The user sees a short clarification and continuation. The diagnostic timeline records job suspension and resumption from a defined stage.</figcaption>
-</figure>
-
-<p>HITL is a resumable transaction in this design. The prompt collects the missing information. Correctness depends on freezing and persisting the job, then resuming from the designated point.</p>
-<h2>6. Write-back gate: invariants, outcomes, and receipts</h2>
-<p>The case reports five recurring failure classes: an empty change reported as success, a dangling relationship, an omitted item from an explicit list, a view that diverges from repository content, and an invented scope or reusable object. A deterministic gate checks them through explicit invariants.</p>
+<p>While waiting, a pending operation stores <code>action</code>, <code>diagram_type</code>, candidate scopes, current stage, and available choices. A later response resumes at scope resolution instead of rerunning the complete intent and planning path.</p>
+<p>The durable job provides resumability. The dialog only collects the missing fact.</p>
+<h2>6. Check explicit facts before write-back</h2>
+<p>The contributor grouped recurring defects into conditions that program logic can verify. This report calls them write-back checks: deterministic conditions that must hold before an authoritative repository changes.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Invariant</th>
 <th style="text-align: left;">Check</th>
-<th style="text-align: left;">Failure handling</th>
+<th style="text-align: left;">Program assertion</th>
+<th style="text-align: left;">Failure action</th>
 </tr>
 </thead>
 <tbody>
@@ -287,47 +286,47 @@
 <td style="text-align: left;">Clarify or block</td>
 </tr>
 <tr>
-<td style="text-align: left;">Legal types</td>
-<td style="text-align: left;">Elements, relationships, and diagram type match the current profile</td>
-<td style="text-align: left;">Repair only when the mapping is unique; otherwise block</td>
+<td style="text-align: left;">Legal type</td>
+<td style="text-align: left;">Element, relationship, and diagram types belong to the active profile</td>
+<td style="text-align: left;">Repair only when unambiguous; otherwise block</td>
 </tr>
 <tr>
 <td style="text-align: left;">Reference closure</td>
-<td style="text-align: left;">Every relationship endpoint belongs to the accepted or reusable element set</td>
+<td style="text-align: left;">Every relationship endpoint resolves to an accepted or reusable element</td>
 <td style="text-align: left;">Block</td>
 </tr>
 <tr>
 <td style="text-align: left;">Explicit completeness</td>
-<td style="text-align: left;">A countable user list matches the accepted plan</td>
-<td style="text-align: left;">Clarify before write-back or let the user explicitly skip</td>
+<td style="text-align: left;">Every user-named countable item appears in the plan</td>
+<td style="text-align: left;">Clarify or obtain confirmation to omit</td>
 </tr>
 <tr>
 <td style="text-align: left;">View subset</td>
-<td style="text-align: left;">Every item on the diagram belongs to the accepted repository result</td>
-<td style="text-align: left;">Remove the item or block</td>
+<td style="text-align: left;">Every canvas object comes from accepted model results</td>
+<td style="text-align: left;">Remove or block</td>
 </tr>
 <tr>
-<td style="text-align: left;">Delta consistency</td>
-<td style="text-align: left;">A write request produces an observable state delta or an explicit idempotent <code>noop</code></td>
-<td style="text-align: left;">An unexplained empty delta cannot be success</td>
+<td style="text-align: left;">Observable change</td>
+<td style="text-align: left;">Write-back produces a state delta or an explicit idempotent <code>noop</code></td>
+<td style="text-align: left;">An empty delta cannot report success</td>
 </tr>
 <tr>
-<td style="text-align: left;">Single writer</td>
-<td style="text-align: left;">Repository and view updates pass through one channel that emits a receipt and rollback handle</td>
-<td style="text-align: left;">A partial update cannot be reported as complete success</td>
+<td style="text-align: left;">Single write path</td>
+<td style="text-align: left;">Repository and view updates share one path and produce a receipt</td>
+<td style="text-align: left;">Partial success cannot masquerade as complete success</td>
 </tr>
 </tbody>
 </table>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a3-prewrite-clarify.jpg" alt="Pre-write comparison showing three requested use cases and only two planned cases">
-  <figcaption>The user named three use cases and the current plan contains two. The system identifies the missing item before any write-back.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-a3-prewrite-clarify.jpg" alt="Pre-write comparison between three requested use cases and a two-item plan">
+  <figcaption>The user named three use cases and the current plan contains two. The discrepancy becomes visible before side effects.</figcaption>
 </figure>
 
-<p>The user-visible outcome can be expressed as four states.</p>
+<p>An operation ends in one of four states.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">State</th>
+<th style="text-align: left;">Outcome</th>
 <th style="text-align: left;">Write performed</th>
 <th style="text-align: left;">Meaning</th>
 </tr>
@@ -336,295 +335,240 @@
 <tr>
 <td style="text-align: left;"><code>APPLIED</code></td>
 <td style="text-align: left;">Yes</td>
-<td style="text-align: left;">Plan, gate result, and write-back receipt agree</td>
+<td style="text-align: left;">Plan, checks, and receipt agree</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>APPLIED_WITH_WARNINGS</code></td>
 <td style="text-align: left;">Yes</td>
-<td style="text-align: left;">The main structure is valid; a named non-destructive omission remains</td>
+<td style="text-align: left;">The main structure is usable; non-destructive omissions are named</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>BLOCKED</code></td>
 <td style="text-align: left;">No</td>
-<td style="text-align: left;">An invariant failed and project state is unchanged</td>
+<td style="text-align: left;">A structural condition failed; repository state remains unchanged</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>NOOP</code></td>
 <td style="text-align: left;">No</td>
-<td style="text-align: left;">The target already existed, or no writable delta was produced; these reasons are recorded separately</td>
+<td style="text-align: left;">The target already exists or the operation has no delta; the two reasons remain distinct</td>
 </tr>
 </tbody>
 </table>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-03-writeback-summary.jpg" alt="Successful write-back summary with created, reused, and undo information">
-  <figcaption><code>APPLIED</code>: the summary reports the actual state delta and an undo action.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-03-writeback-summary.jpg" alt="Successful write-back summary with created, reused, and rollback information">
+  <figcaption>A successful receipt reports the actual state delta and exposes rollback.</figcaption>
 </figure>
 
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-06-degraded-success.jpg" alt="Canvas with a warning that names an omitted relationship">
-  <figcaption><code>APPLIED_WITH_WARNINGS</code>: the written structure is usable and the remaining omission is explicit.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/fig-07-blocked-failure.jpg" alt="Unchanged canvas and a blocked result describing a dangling relationship">
+  <figcaption>An unresolved endpoint blocks the write and returns an actionable reason.</figcaption>
 </figure>
 
-<figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-07-blocked-failure.jpg" alt="Unchanged canvas with a blocked relationship failure">
-  <figcaption><code>BLOCKED</code>: no write occurred and the reason can guide a correction.</figcaption>
-</figure>
-
-<h2>7. Choosing deterministic validation and model reflection</h2>
-<p>The team tested a generate, model-review, revise, review sequence. Its retrospective lists three problems: the review prompt used criteria that did not match the host schema, latency and model cost increased, and long review prose did not directly improve write-back validity. The team removed the post-write model-review loop. It retained at most one bounded repair before assembly, followed by deterministic admission.</p>
-<p>The decision applies under specific conditions.</p>
+<h2>7. Assign program checks and model review to different questions</h2>
+<p>The case previously tested generation, model review, revision, and another review. Three issues appeared: review instructions diverged from the tool schema, latency and cost increased, and long comments did not improve write-back usability directly.</p>
+<p>The team removed post-write model self-review. It retained at most one bounded repair before assembly and gave write admission to program checks.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Error property</th>
+<th style="text-align: left;">Question</th>
 <th style="text-align: left;">Suitable mechanism</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Type, reference, scope, count, or actual state delta is programmatically decidable</td>
-<td style="text-align: left;">Synchronous deterministic gate</td>
+<td style="text-align: left;">Can type, scope, reference, count, or state delta be computed?</td>
+<td style="text-align: left;">Synchronous program check</td>
 </tr>
 <tr>
-<td style="text-align: left;">The operation has side effects, the user is waiting, and invalid state must be stopped immediately</td>
-<td style="text-align: left;">Gate plus transaction receipt</td>
+<td style="text-align: left;">Will a wrong write create an immediate side effect?</td>
+<td style="text-align: left;">Check plus transaction receipt</td>
 </tr>
 <tr>
-<td style="text-align: left;">Semantic quality cannot be fully encoded in rules and no side effect has occurred</td>
-<td style="text-align: left;">Generator-critic review or human review</td>
+<td style="text-align: left;">Does naming or modeling granularity meet a semantic standard?</td>
+<td style="text-align: left;">Pre-write generated review or human review</td>
 </tr>
 <tr>
-<td style="text-align: left;">A failure becomes visible only across runs</td>
-<td style="text-align: left;">Failure journal, experience replay, or offline analysis</td>
+<td style="text-align: left;">Does one omission recur across many projects?</td>
+<td style="text-align: left;">Failure records and offline analysis</td>
 </tr>
 </tbody>
 </table>
-<p>Validation and reflection can coexist. This case assigns write-back admission to deterministic checks. It does not establish that structured artifacts never benefit from reflection. Offline review can still help analyze omission patterns, improve diagram profiles, and assess modeling granularity. Selection depends on decidability, side effects, repair window, and latency requirements.</p>
-<h2>8. Type-equivalence layer: align planning vocabulary with the host metamodel</h2>
-<p>The team found that an import layer can collapse a fine-grained relationship type into a coarser host type. The LLM may plan with a domain-specific name, the host API may use a metamodel name, and the write-back result may return another normalized label. Direct string equality can reject a legal result or admit a coarse type into the wrong diagram profile.</p>
-<p>A stable implementation needs an explicit type-equivalence layer.</p>
+<p>Reflection remains useful for semantic quality and cross-project improvement. Program checks own structural correctness. The choice follows computability, side-effect timing, and acceptable user wait.</p>
+<h2>8. Translate types explicitly across planning and host tools</h2>
+<p>Planning, a host API, and a write-back receipt may use different type names. The model may choose a fine domain name, the MagicDraw or Cameo API may use a metamodel name, and an import layer may return a normalized coarse type. Exact string comparison can reject a valid result or accept a coarse type in the wrong diagram.</p>
+<p>The adapter therefore needs an explicit translation table.</p>
 <pre><code class="language-text">planning type
-    -&gt; canonical domain type
-    -&gt; host metamodel type
-    -&gt; write-back type returned by the tool
+  -&gt; canonical domain type
+  -&gt; host metamodel type
+  -&gt; returned write-back type
 </code></pre>
-<p>The mapping is selected by diagram profile and host adapter. It retains both original and normalized types for diagnostics and regression tests. This confines host differences to adapters and profiles instead of distributing domain-term guesses throughout orchestration code.</p>
-<p>This detail matters because the resulting log can look like an LLM type error when the defect is in deterministic semantic adaptation. Without the mapping trace, a team may classify an adapter bug as hallucination and tune prompts that were not responsible.</p>
-<h2>9. Context construction and model routing</h2>
-<p>As a project grows, full rules for all diagram types, complete chat history, and the entire project tree should not enter every model call. The case uses five controls.</p>
+<p>The table varies by diagram type and host adapter. Logs retain the original and normalized values. A conversion defect can then be assigned to the adapter or profile rather than recorded generically as model hallucination.</p>
+<p>ADPS currently catalogs this mechanism as a vocabulary-equivalence layer. Implementations should use the terminology familiar to their domain team.</p>
+<h2>9. Give each stage only the project context it needs</h2>
+<p>The full project tree, rules for every diagram type, and complete conversation history do not belong in every model call. The case applies five constraints.</p>
 <ol>
 <li>Inject only the active diagram profile.</li>
-<li>Produce one stable business summary; relationship and view stages consume the summary and accepted upstream IR.</li>
-<li>Layer project context. Distant context carries project constraints and session progress; local context carries a bounded projection of nearby packages, blocks, and reusable elements.</li>
-<li>Route intent, clarification, and simple structure filling to a lighter model where appropriate. Reserve the primary model for element and relationship planning. Use rules for view selection when the profile is deterministic.</li>
-<li>Vary execution depth by diagram complexity while keeping write-back invariants common across routes.</li>
+<li>Produce one stable business summary for relationship and view stages.</li>
+<li>Supply nearby packages, elements, and reusable objects as local context; keep distant project constraints and progress as summaries.</li>
+<li>Use a lighter model for intent and clarification where appropriate; reserve the primary model for element and relationship planning.</li>
+<li>Let program rules perform deterministic view filtering.</li>
 </ol>
-<p>These controls reduce the input surface of each decision. The contributor reports better stability and cost than the earlier one-response design followed by whole-operation retries. Public materials do not include comparative token, latency, or success-rate data, so this report records that statement as practitioner evidence rather than a measured result.</p>
-<h2>10. Public runtime evidence</h2>
-<p>The earlier illustrations describe interaction and state semantics. The following host screenshot, logs, and model diagrams come from the contributor's runtime environment.</p>
+<p>The contributor reports better stability and cost than whole-response retry. Public material contains no comparative token, latency, or success-rate data, so the report records this as a project judgment.</p>
+<h2>10. Published runtime evidence</h2>
+<p>The following screenshots come from the contributor's runtime environment. They demonstrate host integration, one intent result, and one relationship write-back. They do not establish a longitudinal success rate.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg" alt="Flying-car project in Magic Systems of Systems Architect with the AI4MBSE panel">
-  <figcaption>Host environment. The project tree is on the left, the model view is in the center, and AI4MBSE is embedded as a panel on the right.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg" alt="Flying-car project in Magic Systems of Systems Architect with AI4MBSE">
+  <figcaption>AI4MBSE is embedded as a host panel. The project tree is on the left, the model view is in the center, and the assistant is on the right.</figcaption>
 </figure>
 
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/log-intent-recognition.jpg" alt="Intent log with action chat and null diagram type and scope">
-  <figcaption>A consultation request produced <code>action=chat</code>; <code>diagramType</code>, <code>scope</code>, and <code>modelAction</code> are null; <code>confidence=0.98</code>; and <code>generatedJson non-empty=false</code>. This single record supports a limited claim: the request did not enter the modeling write-back path.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/log-intent-recognition.jpg" alt="Intent log with chat action and null diagram type and scope">
+  <figcaption>One consultation request produced <code>action=chat</code> and did not enter the modeling write path. The screenshot supports only this run.</figcaption>
 </figure>
 
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/shot-satellite-bdd.jpg" alt="Satellite platform block-definition diagram and element-planning panel">
-  <figcaption>A satellite-platform demonstration project. The canvas shows the attitude-control subsystem and the panel lists planned elements and ownership.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/shot-satellite-bdd.jpg" alt="Satellite-system block-definition diagram and element-planning panel">
+  <figcaption>A block-definition diagram in a satellite-system project. The right panel lists planned elements and ownership.</figcaption>
 </figure>
 
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/log-relation-writeback.jpg" alt="Relationship write-back log using stable relationship and endpoint identifiers">
-  <figcaption>The write-back record connects <code>BLK_ADCS_THRUSTER</code> and <code>ITF_1553B_BUS</code> through <code>REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION</code>. It demonstrates stable references in this run, not an aggregate success rate.</figcaption>
+  <img src="/zh/cases/ark-mbse-agent/assets/log-relation-writeback.jpg" alt="Relationship write-back log using stable element and relationship identifiers">
+  <figcaption>The record uses stable element and relationship identifiers. One log cannot represent aggregate performance across diagram types.</figcaption>
 </figure>
 
-<h2>11. Evaluation protocol: published evidence and missing measurements</h2>
-<p>The published material shows the architecture path, selected intermediate structures, and write-back inside a real host tool. It does not establish long-term reliability across projects, diagram types, and concurrent users.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Claim</th>
-<th style="text-align: left;">Current public evidence</th>
-<th style="text-align: left;">Evidence status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Consultation requests can bypass the modeling path</td>
-<td style="text-align: left;">Intent log with <code>action=chat</code> and no generated JSON</td>
-<td style="text-align: left;">One runtime record</td>
-</tr>
-<tr>
-<td style="text-align: left;">Relationship write-back uses stable structural identifiers</td>
-<td style="text-align: left;">Relationship and endpoint log</td>
-<td style="text-align: left;">One runtime record</td>
-</tr>
-<tr>
-<td style="text-align: left;">The assistant is embedded in a modeling tool</td>
-<td style="text-align: left;">Host screenshot and runtime logs</td>
-<td style="text-align: left;">Visual evidence and single-run records</td>
-</tr>
-<tr>
-<td style="text-align: left;">The three-stage chain is more stable and less expensive than one-response generation</td>
-<td style="text-align: left;">Contributor retrospective</td>
-<td style="text-align: left;">No published comparison data</td>
-</tr>
-<tr>
-<td style="text-align: left;">Gates reduce dirty writes over time</td>
-<td style="text-align: left;">Failure classes and corresponding controls</td>
-<td style="text-align: left;">No longitudinal incident data</td>
-</tr>
-</tbody>
-</table>
-<p>A later version should record the following measures on a fixed test set. Results should be stratified by diagram type, create versus modify, novice versus expert interaction, and host adapter.</p>
+<h2>11. The next report should add these measurements</h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Measure</th>
-<th style="text-align: left;">Definition</th>
+<th style="text-align: left;">Question answered</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;">Scope-resolution accuracy</td>
-<td style="text-align: left;">Proportion of automatically resolved <code>scope_ref</code> values confirmed by a reviewer</td>
+<td style="text-align: left;">How many automatic <code>scope_ref</code> selections survive human review?</td>
 </tr>
 <tr>
 <td style="text-align: left;">Explicit-element recall</td>
-<td style="text-align: left;">Proportion of user-named elements present in the accepted <code>ElementPlan</code></td>
+<td style="text-align: left;">How many user-named items reach the accepted plan?</td>
 </tr>
 <tr>
 <td style="text-align: left;">Escaped dangling references</td>
-<td style="text-align: left;">Invalid relationship endpoints discovered after write-back; target is zero</td>
+<td style="text-align: left;">How many invalid endpoints pass the checks? The target is zero.</td>
 </tr>
 <tr>
-<td style="text-align: left;">Silent scope-expansion incidents</td>
-<td style="text-align: left;">Unapproved package creation, ownership movement, or writes to the wrong scope</td>
+<td style="text-align: left;">Silent scope expansion</td>
+<td style="text-align: left;">How often does a run write to an unconfirmed location or create a parent structure?</td>
 </tr>
 <tr>
 <td style="text-align: left;">False-success rate</td>
-<td style="text-align: left;">Operations reported as successful with an empty receipt or failed structural acceptance</td>
+<td style="text-align: left;">How often does success accompany an empty receipt or failed structural acceptance?</td>
 </tr>
 <tr>
 <td style="text-align: left;">Clarification-resume accuracy</td>
-<td style="text-align: left;">Clarifications that preserve the operation and diagram type and resume from the correct stage</td>
+<td style="text-align: left;">Does a supplied fact resume the correct operation and stage?</td>
 </tr>
 <tr>
 <td style="text-align: left;">Rollback completeness</td>
-<td style="text-align: left;">Undo operations that restore both repository and canvas state</td>
+<td style="text-align: left;">Do repository and canvas return to their pre-write states?</td>
 </tr>
 <tr>
 <td style="text-align: left;">Stage cost</td>
-<td style="text-align: left;">Tokens, latency, retries, and model cost for intent, element, relationship, and view stages</td>
-</tr>
-<tr>
-<td style="text-align: left;">Gate quality</td>
-<td style="text-align: left;">Block rate, false-block rate, and bounded-repair success by rule</td>
+<td style="text-align: left;">What latency, retry, token use, and model cost belong to each stage?</td>
 </tr>
 </tbody>
 </table>
-<p>This protocol turns a working demonstration into comparable system evidence. The next evidence revision should prioritize these measurements over additional architectural adjectives.</p>
-<h2>12. ADPS pattern mapping</h2>
-<p>The strongest evidence lies in Action and Governance. ADPS lists only coordinates supported by disclosed mechanisms; empty cells do not need to be filled.</p>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Pattern</th>
-<th style="text-align: left;">Case evidence</th>
-<th style="text-align: left;">Boundary</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a></td>
-<td style="text-align: left;">Element, relationship, and view contract chain</td>
-<td style="text-align: left;">A stage may be a function or an agent</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a></td>
-<td style="text-align: left;">Scope gate, inter-stage contracts, and write-back gate</td>
-<td style="text-align: left;">The gate validates structure, not every aspect of modeling quality</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a></td>
-<td style="text-align: left;">One diagram per operation, single write channel, reversible change set</td>
-<td style="text-align: left;">Concurrent project-level write policy is not disclosed</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/g1-approval-gate/">G1 Approval Gate</a></td>
-<td style="text-align: left;">Clarification for unresolved scope; product path supports confirmation before write-back</td>
-<td style="text-align: left;">Confirmation policy can vary by deployment risk</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a></td>
-<td style="text-align: left;">Pending operation retains diagram type, scope, and current stage</td>
-<td style="text-align: left;">Cross-process crash-recovery measurements are not public</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a></td>
-<td style="text-align: left;">Model tiering and diagram-specific execution depth</td>
-<td style="text-align: left;">Routing thresholds and model comparisons are not public</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="/patterns/g4-observability-harness/">G4 Observability Harness</a></td>
-<td style="text-align: left;">Stage inputs and outputs, gate decisions, and write-back logs</td>
-<td style="text-align: left;">Current evidence is primarily from development views</td>
-</tr>
-</tbody>
-</table>
-<p><a href="/patterns/p1-context-triage/">P1 Context Triage</a>, <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>, and <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a> are also relevant. Public material provides less detail about their code entities and runtime measures, so this revision does not classify them as primary placements. <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a> applies only when the stages run as independently isolated agents with explicit failure and handoff semantics.</p>
-<h2>13. Shared finding and variation across three case reports</h2>
-<p>All three ADPS case reports move high-precision structural coordinates out of model-generated prose. Their execution and validation timing differ.</p>
+<p>Results should be stratified by diagram type, create versus modify, host tool, and user experience.</p>
+<h2>12. An eight-step transfer method</h2>
+<ol>
+<li>Select one diagram type and one real project scope.</li>
+<li>Reduce the request to an operation, diagram type, and stable scope reference.</li>
+<li>Separate element, relationship, and view work into typed stage artifacts.</li>
+<li>Define each stage's input allowlist, output schema, and forbidden behavior.</li>
+<li>List scope, type, reference, count, and state-delta conditions that program logic can decide.</li>
+<li>Send all writes through one path and produce a change summary, receipt, and rollback handle.</li>
+<li>Persist a pending operation for ambiguous scope; test completion, resume, cancellation, and timeout.</li>
+<li>Measure false success, dangling references, and rollback completeness before expanding diagram coverage.</li>
+</ol>
+<p>EDA, BIM, ERP master data, CMDB, and process-route systems can share local conditions: structures enter an authoritative repository, references must resolve, and a wrong write affects later work. Transfer the stage contracts, stable references, deterministic checks, and receipt-backed write path rather than the SysML type table.</p>
+<h2>13. Compare the three case reports</h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Case</th>
-<th style="text-align: left;">Program-owned coordinates</th>
-<th style="text-align: left;">Validation timing</th>
-<th style="text-align: left;">Repair window</th>
+<th style="text-align: left;">Exact facts owned by program state</th>
+<th style="text-align: left;">Acceptance point</th>
+<th style="text-align: left;">Main recovery path</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><a href="/cases/liangbo-execution-agent/">Report 01: Dongfang Yiteng</a></td>
-<td style="text-align: left;">Business identifiers, state provenance, workflow nodes</td>
-<td style="text-align: left;">Before and after workflow steps and business calls</td>
-<td style="text-align: left;">In-session suspension, approval, and resumption</td>
+<td style="text-align: left;">Dongfang Yiteng</td>
+<td style="text-align: left;">Business IDs, source receipts, and task nodes</td>
+<td style="text-align: left;">Before and after each business call</td>
+<td style="text-align: left;">Pause, approve, and resume inside a session</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="/zh/cases/xuanxu-gis-agent/">Report 02: Xuanxu Technology</a></td>
-<td style="text-align: left;">Workspace, store, SRS, bounding box, and pipeline state</td>
-<td style="text-align: left;">External probes in a static six-stage pipeline</td>
-<td style="text-align: left;">Runtime rule fallback and cross-run failure records</td>
+<td style="text-align: left;">Xuanxu Technology</td>
+<td style="text-align: left;">File signatures, SRS, bbox, and pipeline state</td>
+<td style="text-align: left;">Real request after publication</td>
+<td style="text-align: left;">Rule fallback and cross-run failure capture</td>
 </tr>
 <tr>
-<td style="text-align: left;">Report 03: Ark (Yage)</td>
-<td style="text-align: left;">Scope, stable identifiers, relationship endpoints, and type mappings</td>
-<td style="text-align: left;">Pre-write gate in an interactive turn</td>
+<td style="text-align: left;">Ark (Yage)</td>
+<td style="text-align: left;">Project location, stable IDs, endpoints, and type translation</td>
+<td style="text-align: left;">Before repository write-back</td>
 <td style="text-align: left;">Bounded repair, clarification, blocking, or rollback</td>
 </tr>
 </tbody>
 </table>
-<p>These reports support an engineering proposition for further testing: <strong>precise structural coordinates should travel through traceable program state, which remains authoritative; model output supplies a candidate plan</strong>. Three independent cases make the proposition more useful, but they do not constitute a statistically validated industry result.</p>
-<p>The variation also improves pattern selection. Choose validation according to external observability, side effects, user wait time, and the repair window. A programmatically decidable error belongs in a synchronous gate. An error visible only after execution belongs in outcome verification. A pattern that emerges across runs belongs in a failure journal or offline review.</p>
-<h2>14. Transfer boundary and SysML v2</h2>
-<p>The design fits systems whose outputs enter a governed repository, carry type and reference constraints, can affect existing engineering assets, and pass through controllable tool interfaces. Parts of EDA, BIM, ERP master data, CMDB, and manufacturing process planning share these conditions. A transfer should preserve four structures: typed IR, stable references, deterministic validation, and a single write channel with a receipt.</p>
-<p>The complete gate is unnecessary for reports, slide decks, and open-ended retrieval outputs where a flawed result can be regenerated at low cost. Two additional limits apply. First, the public evidence comes mainly from demonstration projects and is not certification for a large safety-critical deployment. Second, the available material does not cover concurrent team writes, model-branch merges, permission partitions, or compensation for long transactions.</p>
-<p>OMG finalized SysML 2.0 in 2025 together with work on the Systems Modeling API and Services. SysML v2 adds a more precise semantic foundation, textual notation, and standardized model-access mechanisms. OMG also expects SysML v1 to remain in use during a multi-year transition. AI4MBSE therefore needs to accommodate established desktop toolchains and newer SysML v2 environments. A standard API can reduce proprietary adapter surface, but it does not remove scope resolution, reference integrity, profile policy, or transaction receipts. See the <a href="https://www.omg.org/spec/SysML/2.0">OMG SysML 2.0 specification</a> and <a href="https://www.omg.org/sysml/index.htm">OMG's SysML release overview</a>.</p>
-<h2>15. Case contributor and citation</h2>
-<p>This case comes from <a href="https://mbse.ltd/en/">Ark (Yage)</a> in Chengdu. Founder <strong>Liangding Yuan</strong> has sixteen years of experience in industrial software and platform development, including workflow, search, collaboration, and knowledge systems. His current work focuses on productizing AI-assisted SysML and MBSE.</p>
-<p>Ark's public product set includes AI4MBSE, an engineering knowledge base for modeling tasks, and configurations for MagicGrid, OOSEM, and Harmony-SE. The AI4MBSE product page lists MagicDraw, Cameo, Capella, and SysON host integrations and identifies the SysML v2 API as a product direction.</p>
-<figure>
-  <a href="https://mbse.ltd/en/" target="_blank" rel="noopener"><img src="/zh/cases/ark-mbse-agent/assets/shot-ark-site.jpg" alt="Ark Yage website home page"></a>
-  <figcaption>Ark (Yage) describes its product workflow as one diagram at a time, with human confirmation before write-back.</figcaption>
-</figure>
-
-<p><strong>Case contributor:</strong> Liangding Yuan, founder of Ark (Yage). The contributor wrote the original technical retrospective. ADPS reorganized it for the Blue Book. Sections 3, 6, 11, 12, and 13 include ADPS contract reconstruction, evaluation guidance, and cross-case analysis.</p>
-<p><strong>Suggested citation:</strong> ADPS and Liangding Yuan. "Natural Language to SysML: A Modeling Agent That Delivers One Diagram at a Time." <em>ADPS Enterprise Agent Systems Blue Book</em>, Case Report 03, v0.4, 2026.</p>
+<p>All three cases support one engineering observation: exact structural coordinates should travel through traceable program state, while a model proposes intent and plans. The location of validation depends on side effects, external observability, and the available repair window. More cases are needed before treating this observation as a general result.</p>
+<h2>14. Limits and ADPS mapping</h2>
+<p>This design fits bounded writes to authoritative model repositories. Reports, slide decks, and open-ended retrieval usually permit regeneration and do not require the full structural-checking path. The published case does not cover concurrent team writes, model-branch merging, permission partitions, long-transaction compensation, or safety-critical certification.</p>
+<p>SysML v2 offers stronger semantics and standardized model access, which can reduce proprietary adapter work. Scope resolution, reference integrity, and transaction receipts remain application-runtime concerns.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Pattern</th>
+<th style="text-align: left;">Implementation in this case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Prompt Chaining</td>
+<td style="text-align: left;">Element, relationship, and view plans</td>
+</tr>
+<tr>
+<td style="text-align: left;">Guardrail Sandwich</td>
+<td style="text-align: left;">Scope checks, stage checks, and pre-write checks</td>
+</tr>
+<tr>
+<td style="text-align: left;">Blast-Radius Control</td>
+<td style="text-align: left;">One diagram, one write path, and rollback change set</td>
+</tr>
+<tr>
+<td style="text-align: left;">Approval Gate</td>
+<td style="text-align: left;">Clarification for unresolved scope; optional confirmation for high-risk deployment</td>
+</tr>
+<tr>
+<td style="text-align: left;">Progress Tracking</td>
+<td style="text-align: left;">Pending operation with diagram type, scope, and stage</td>
+</tr>
+<tr>
+<td style="text-align: left;">Complexity-Based Routing</td>
+<td style="text-align: left;">Light and primary model routing with depth by diagram type</td>
+</tr>
+<tr>
+<td style="text-align: left;">Observability Harness</td>
+<td style="text-align: left;">Stage artifacts, check decisions, and write-back logs</td>
+</tr>
+</tbody>
+</table>
+<h2>Contributor and citation</h2>
+<p>This case comes from <a href="https://mbse.ltd/en/">Ark (Yage)</a> in Chengdu. Founder <strong>Liangding Yuan</strong> has worked in industrial software and platform engineering and now focuses on AI-assisted SysML and MBSE products.</p>
+<p><strong>Case contributor:</strong> Liangding Yuan, founder of Ark (Yage).</p>
+<p><strong>Suggested citation:</strong> ADPS and Liangding Yuan, "Natural Language to SysML: A Modeling Agent That Delivers One Diagram at a Time," ADPS Enterprise Agent Systems Blue Book, Case Report 03, v0.5, 2026.</p>
 
             <div class="document-citation">
                 <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
