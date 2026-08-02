@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ark · 雅格 · 自然语言到 SysML 建模 Agent 案例报告 · ADPS</title>
-    <meta name="description" content="元素、关系、视图三段契约链，结构坐标由程序保管，写回前由确定性门禁裁决。MBSE 建模 Agent 一线实践复盘。">
+    <title>自然语言到 SysML：一张图交付的建模 Agent · ADPS</title>
+    <meta name="description" content="从自然语言到 SysML 模型库：类型化中间表示、语义门禁、可恢复 HITL 与带回执的单一写回通道。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/cases/ark-mbse-agent/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/ark-mbse-agent/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
@@ -26,7 +27,7 @@
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/cases/ark-mbse-agent/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -114,283 +115,528 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 案例报告 03</p>
                 <h1>自然语言到 SysML：一张图交付的建模 Agent</h1>
-                <p class="publication-deck">模型只在白名单内起草结构，程序保管标识与挂载，写回前由确定性门禁裁决。</p>
+                <p class="publication-deck">模型在有界范围内起草类型化结构，程序通过语义门禁和单一写回通道保护工程模型库。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
                     <div><dt>发布日期</dt><dd>2026-08-02</dd></div>
                     <div><dt>案例机构</dt><dd>Ark · 雅格（<a href="https://mbse.ltd/zh/" target="_blank" rel="noopener">mbse.ltd</a>）</dd></div>
                     <div><dt>行业</dt><dd>MBSE · 工业软件 · 系统工程工具链</dd></div>
-                    <div><dt>案例提供</dt><dd>袁良锭（Yuan Liangding）</dd></div>
+                    <div><dt>案例提供</dt><dd>袁良锭（Liangding Yuan）</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本文是一线实践者主导的架构复盘，实现路径、工程取舍与效果判断由案例方提供，尚未经过独立审计。文中的界面示意图由案例方用 SVG 绘制，用于在不涉及具体项目内容的前提下说明交互形态。真实运行截图与演示视频经案例方同意后发布。迁移建议只在文中列明的系统条件下成立。</p>
+            <p class="publication-note"><strong>证据边界：</strong> 本文记录 Ark · 雅格 AI4MBSE 的一线实践。系统路径、失败现象与工程取舍由案例方提供，尚未经过独立审计。界面示意图用于说明交互与状态，真实截图和演示视频已获案例方同意发布。文中的数据契约是 ADPS 依据公开机制做的架构级还原，不代表案例方的实际类名或字段名。</p>
 
             <hr />
 
-            <h2>1. 交付物不是文字，是工程状态</h2>
-            <p>先设想用户打开的不是聊天窗口，而是一台正经的系统建模软件，MagicDraw 或 Cameo 这一类。软件里已经存着一堆构件：包、块、用例、状态。它们会被下游的设计、仿真和文档直接引用，属于正式模型而非草稿。</p>
-            <p>SysML 可以粗看成系统工程界的图纸语言。九类常见图各管一件事，包图管文件夹怎么分，用例图管谁要用系统做什么，块定义图管系统由哪些积木组成，内部块图管某一块积木内部怎么连线，状态图管有哪些状态和跳转，时序图管谁先发消息谁后回。</p>
-            <p>案例方强调了一条容易被忽略的事实：在建模工具里，<strong>模型库和图是两层</strong>。模型库里可以有很多元素，某一张图只是把其中一部分摊到画布上给人看。人自己建图时也遵循同一顺序，先想有哪些对象，再想它们怎么连，最后决定这张图画哪些。</p>
-            <p>这条事实决定了整个系统的形状，也决定了它和内容型助手的分野。报告用一句话概括产品目标。</p>
-            <blockquote><p>用户用自然语言点名要一张图，系统在正确位置写出结构正确、可撤销的结果；说错了就拦或者问清楚，而不是用漂亮话假装成功。</p></blockquote>
-            <p>错一位的代价在两类任务里完全不同。报告写歪了，重写一版即可。模型写错了，可能导入成功、画布好看，但引用悬空、范围扩歪，后面所有图都跟着踩坑。这个差别把早期一个很自然的想法否掉了：把建模工具的接口全部暴露给模型，让它自由编排。案例方的结论是，问题不在接口不够，而在于<strong>模型不适合独自保管不可错的结构坐标</strong>——挂在哪个包、连到哪个已有块、关系两端是谁。这些交给程序和工程索引保管，模型负责在规矩内起草。</p>
+<h2>1. 系统边界：交付物是工程状态</h2>
+<p>AI4MBSE 运行在 MagicDraw、Cameo 一类系统建模工具的工程环境中。包、块、用例、状态和关系都会进入正式模型库，并被后续设计、仿真、评审和文档引用。一次 Agent 写回会改变这个共享状态。</p>
+<p>SysML 的模型库与图是两层结构。模型库保存元素和关系，图是其中一部分内容在特定关注点下的投影。图上看得见的结果可能正常，模型库中仍可能存在悬空引用、错误归属或重复元素。验收因此需要同时检查模型状态和画布结果。</p>
+<p>案例方的设计边界很明确：LLM 负责理解业务表述并起草候选结构，程序与工程索引保管挂载位置、稳定标识、关系端点和写回权限。这些字段错一位就会影响下游，不经过模型自由生成。</p>
+<blockquote>
+<p>用户用自然语言指定一张图；系统在已确认的位置写入结构正确、可撤销的结果；范围或结构无法确定时，进入澄清或阻断。</p>
+</blockquote>
+<h2>2. 运行例：一句话创建“闸机控制”用例图</h2>
+<p>本文用一条简化指令贯穿后续设计。</p>
+<blockquote>
+<p>在“闸机控制”包下建一张用例图：访客刷卡进门、管理员远程开闸、运维人员复位故障。访客和管理员是人，运维是运维系统。</p>
+</blockquote>
+<p>这条指令至少包含四类约束。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">约束</th>
+<th style="text-align: left;">本例的内容</th>
+<th style="text-align: left;">校验点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">挂载位置</td>
+<td style="text-align: left;">已有“闸机控制”包</td>
+<td style="text-align: left;">工程索引能否唯一解析</td>
+</tr>
+<tr>
+<td style="text-align: left;">元素集</td>
+<td style="text-align: left;">3 个用例、2 个人类参与者、1 个系统参与者和 1 个主体</td>
+<td style="text-align: left;">数量、类型、归属是否完整</td>
+</tr>
+<tr>
+<td style="text-align: left;">关系集</td>
+<td style="text-align: left;">参与者与对应用例之间的关联</td>
+<td style="text-align: left;">两端是否都已存在</td>
+</tr>
+<tr>
+<td style="text-align: left;">视图集</td>
+<td style="text-align: left;">与本用例图有关的主体、参与者、用例和关系</td>
+<td style="text-align: left;">进图集合是否为模型结果的合法投影</td>
+</tr>
+</tbody>
+</table>
+<figure>
+  <img src="assets/fig-01-progress-line.jpg" alt="建模助手会话界面：用户指令下方为单行生成进度">
+  <figcaption>用户界面只显示一条进度信息。元素、关系和视图的内部阶段保留在运行时记录中。</figcaption>
+</figure>
 
-            <h2>2. 一条贯穿例子：一句话建「闸机」用例图</h2>
-            <p>报告用一个小例子串起全部难点，不熟悉建模的读者也能跟着走。用户说：</p>
-            <blockquote><p>在「闸机控制」包下建一张用例图：访客刷卡进门、管理员远程开闸、运维人员复位故障。访客和管理员是人，运维是运维系统。</p></blockquote>
-            <p>人接到这句话会拆成四件事。挂哪里，「闸机控制」这个包必须已经存在。有哪些东西，三个用例加两个人参与者加一个系统参与者，还需要一个主体说明这张图在讲哪个系统。怎么连，人和系统各自关联到对应用例。图画什么，把上述内容放进用例图画布，而不是把整个工程摊开。</p>
-            <figure>
-              <img src="assets/fig-01-progress-line.jpg" alt="建模助手会话界面：用户指令气泡下方是一行「正在生成用例图…」的进度提示">
-              <figcaption>用户侧只保留一行进度。内部的元素、关系、视图三次调用不展开成多步向导，耗时较长时在同一行追加「仍在处理…」，不切换界面形态。</figcaption>
-            </figure>
-            <figure>
-              <img src="assets/fig-02-canvas-writeback.jpg" alt="左侧工程浏览器树中新增闸机系统等元素，右侧画布显示闸机控制用例图">
-              <figcaption>写回后的结果。左栏工程树新增元素，右侧画布是一张用例图，主体边界内三个用例，外侧三个参与者连线。画布即结果。</figcaption>
-            </figure>
-            <p>如果让模型一次调用把这些全做完，表面上省事。案例方实测的结果是在引用对不上、漏用例、图画歪之间随机翻车。后面几节都是从这里长出来的。</p>
+<figure>
+  <img src="assets/fig-02-canvas-writeback.jpg" alt="工程浏览器和画布中的闸机控制用例图">
+  <figcaption>写回结果同时改变工程树和画布。两处状态都是验收对象。</figcaption>
+</figure>
 
-            <h2>3. 一次调用生成「元素 + 关系 + 图」为什么更贵</h2>
-            <p>早期提示词大致是「请直接输出完整建模结果：所有元素、所有关系、以及图」。有时能成，更多时候会出现四类故障：关系指向一个话说到了但清单里没建出来的名字；同一角色写了两个近似称呼，线挂在其中一个上，另一个成孤儿；上下文太长，模型后半段开始漏项；图上堆了不该出现的工程杂物，或者该进图的反而没有。</p>
-            <p>报告把背后的错误直觉点得很准：一次调用等于少延迟少花钱，这个判断对内容生成有时成立，对结构交付不成立，因为<strong>失败重试加人工排障才是成本的大头</strong>。</p>
-            <p>解法是按建模手艺把主链拆成三个子能力，边界取自人建 SysML 的自然顺序。</p>
-            <table>
-            <thead><tr><th style="text-align: left;">阶段</th><th style="text-align: left;">这一步只准想什么</th><th style="text-align: left;">落到闸机例子</th></tr></thead>
-            <tbody>
-            <tr><td style="text-align: left;"><strong>① 元素</strong></td><td style="text-align: left;">包已锁定；建或复用哪些参与者与用例；主体是谁</td><td style="text-align: left;">访客、管理员、运维系统；三个用例；主体＝闸机系统</td></tr>
-            <tr><td style="text-align: left;"><strong>② 关系</strong></td><td style="text-align: left;">在上一步的名单上连关联，端点必须已存在</td><td style="text-align: left;">访客—刷卡进门；管理员—远程开闸；运维系统—复位故障</td></tr>
-            <tr><td style="text-align: left;"><strong>③ 视图</strong></td><td style="text-align: left;">按用例图规则挑进图内容并生成视图</td><td style="text-align: left;">一张用例图，而不是全工程导览</td></tr>
-            </tbody>
-            </table>
-            <p>先元素后关系的理由是关系离开端点就不成立。让模型同时发明元素和关系，等于一边造牌一边连线。把元素阶段钉死之后，关系阶段的任务收敛成在一张已知牌桌上连线。视图放到最后，是因为模型库和画布本来就是两层，第三步只做投影和筛选，不重新发明结构。</p>
-            <p>这套拆法同时解决三件事。每一步目标单一，失败时可以定位到是元素漏了、关系断了还是视图没筛对。Token 自然降下来，关系阶段主要吃元素表，不必把整段需求规范再贴一遍，视图阶段吃筛选规则，不必重新描述对象。子能力边界按建模语义切开，上游产出是下游的契约输入，下游不得偷偷改上游已承诺的标识与归属。</p>
-            <p>关于这三段是三个子 Agent 还是一条流水线上的三个阶段，报告留了个口子，也把判断说清楚了：<strong>重要的是职责边界与数据契约，而不是进程形态</strong>。这句话对应到 ADPS 矩阵上是两个格子的差别，第十一节会回到这里。</p>
+<h2>3. 主链：从自然语言到类型化中间表示</h2>
+<p>早期实现让模型在一次调用中输出元素、关系和视图。失败主要集中在四处：关系引用了元素清单中不存在的名称，同一对象出现近义命名，长上下文导致后半段漏项，视图筛选与模型内容不一致。单次调用数减少了，但失败后需要重做整份结构，定位也缺少阶段边界。</p>
+<p>当前主链按建模语义拆成三段。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">阶段</th>
+<th style="text-align: left;">输入</th>
+<th style="text-align: left;">输出契约</th>
+<th style="text-align: left;">不允许做的事</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">元素</td>
+<td style="text-align: left;">用户摘要、已解析范围、元素白名单、邻近可复用集合</td>
+<td style="text-align: left;"><code>ElementPlan</code></td>
+<td style="text-align: left;">生成关系或布局</td>
+</tr>
+<tr>
+<td style="text-align: left;">关系</td>
+<td style="text-align: left;"><code>ElementPlan</code>、关系白名单、短业务摘要</td>
+<td style="text-align: left;"><code>RelationPlan</code></td>
+<td style="text-align: left;">创建表外元素或改写稳定标识</td>
+</tr>
+<tr>
+<td style="text-align: left;">视图</td>
+<td style="text-align: left;"><code>ElementPlan</code>、<code>RelationPlan</code>、图类型投影规则</td>
+<td style="text-align: left;"><code>ViewPlan</code></td>
+<td style="text-align: left;">重新发明模型结构</td>
+</tr>
+</tbody>
+</table>
+<p>按案例机制还原，一次运行至少需要下列作业状态。这是架构级示意，用于表达契约，不是案例方实际源码。</p>
+<pre><code class="language-text">ModelingJob
+  action: chat | create | modify
+  diagram_type: use_case | bdd | ibd | state | ...
+  scope_ref: stable project reference | pending
+  stage: intent | elements | relations | view | validated | applied
+  element_plan: typed elements with stable references
+  relation_plan: typed edges whose endpoints resolve
+  view_plan: projection over accepted elements and relations
+  outcome: applied | applied_with_warnings | blocked | noop
+  writeback_receipt: state delta + rollback handle
+</code></pre>
+<p>ADPS 将 <code>ElementPlan → RelationPlan → ViewPlan</code> 解读为一条类型化中间表示（typed intermediate representation, IR）链。LLM 在每个阶段产生候选 IR，下游只读取已验收的上游结果。这个结构接近编译器的前端、中间表示和语义检查，也接近数据库的引用完整性约束。</p>
+<figure>
+  <img src="assets/fig-a1-intent-card.jpg" alt="建模作业的意图卡，包含操作、图类型与范围">
+  <figcaption>入口先将语言收敛成有限操作、图类型和范围引用。这份作业单是后续续跑与验收的基准。</figcaption>
+</figure>
 
-            <h2>4. 一次一图：可验收的单次承诺</h2>
-            <p>用户很自然会说「帮我把闸机系统的完整模型建好」。早期系统若顺着这句话自动做完包图、需求图、用例图、块定义图、内部块图、状态图，结果几乎总是范围失控、中间一步歪掉后面全歪、Token 与延迟爆炸，而且验收无法对账，因为「完整」没有客观的完成定义。</p>
-            <p>产品纪律因此写死为一句话。</p>
-            <blockquote><p>一次用户操作 ＝ 一种图类型 ＋ 一个明确挂载位置。</p></blockquote>
-            <p>「完整模型」拆成用户驱动的多轮。做完包图，系统可以建议常见的下一步是用例或块定义，但下一句仍由用户点名。九图联调是九次独立操作。回到闸机例子，用户只点了用例图就只交付用例图，即使需求文本里顺便提到了故障状态机，也不擅自去建状态图。</p>
-            <p>案例方给出的可迁移技巧，是把用户一句话里的野心和系统的单次承诺拆开。野心记进会话摘要当建议，承诺必须可验证、可撤销、可回归。开放域助手喜欢多做一点显得智能，在结构交付里，多做一点常常就是事故。</p>
+<p>三段可以由三个独立 Agent 执行，也可以由一个运行时内的三个函数完成。案例能力来自输入边界和数据契约，进程数量不是判定条件。若实现方案没有上下文隔离、独立失败和责任分界，就不应为了形式把三段称为多 Agent。</p>
+<h2>4. 一次一图：单次事务与验收单元</h2>
+<p>“完成闸机系统模型”没有稳定的完成定义。它可能包含包图、需求图、用例图、块定义图、内部块图和状态图，且前面的偏差会传递到后续步骤。案例方将单次交付约束为：</p>
+<blockquote>
+<p>一次用户操作 = 一种图类型 + 一个已解析的挂载位置。</p>
+</blockquote>
+<p>这条约束定义了本轮可修改的范围、写回前的验收集合、撤销所需的变更集，以及可回归测试的最小操作。从软件工程角度看，它是 Unit of Work 和 Command 的组合，承担实现和测试中的事务边界。</p>
+<p>案例复盘记录了“确定性门禁通过后默认写回，并提供一步撤销”的交互路径。对外产品页同时强调人员确认后写回。两种策略可按部署环境和写操作风险设置，但共用同一个事务边界、门禁和撤销回执。蓝皮书不把其中一种交互策略写成唯一答案。</p>
+<figure>
+  <img src="assets/fig-a2-canvas-result.jpg" alt="写回后的画布结果和撤销入口">
+  <figcaption>单次事务的可见结果是一张图、一份变更摘要和一个可执行的撤销句柄。</figcaption>
+</figure>
 
-            <h2>5. 找不到挂载点时，最危险的是「好心」</h2>
-            <p>用户说在「闸机控制」包下建图，工程里却没有这个包。早期模型会好心新建一棵包树，顺手造几个听起来很完整的父包。画布上看着成功了，工程却被扩脏。</p>
-            <p>错误直觉是「Agent 应该主动补齐缺失上下文」。在文档助手里这或许是优点，在正式模型库里，静默扩域等于越权。</p>
-            <p>解法是挂载位置在工程索引里对不上就停，而且尽量停在昂贵的规划之前，然后用人话问。有两三个近似候选就列出来让用户选，超过这个数量再要求更精确的名字。禁止静默默认丢到项目根，禁止为了演示完整而虚构骨架。</p>
-            <figure>
-              <img src="assets/fig-04-clarify-scope.jpg" alt="澄清卡片：未找到闸机中控包，列出三个候选选项，底部标注作业单已保留">
-              <figcaption>范围不明时的澄清卡片。优先列出两到三个候选而不是静默扩域。底部一行标注了作业单状态：diagramType 已确定为用例图，待补 scope，尚未进入元素规划。</figcaption>
-            </figure>
-            <p>这张卡片底部那一行才是重点所在。报告把它总结成一句话：<strong>HITL 的难点不是弹窗，是续跑状态机</strong>。问一句很容易，问完还记得自己在干嘛才是工程。案例方把 pending 操作做成显式状态，包含图类型、范围、已完成阶段和用户是补充还是跳过。用户补了包名之后从断点继续，而不是重新做一次意图识别，把图类型弄丢，跑去闲聊或者建了别的图。</p>
-            <figure>
-              <img src="assets/fig-05-resume-timeline.jpg" alt="左侧会话流，右侧深色开发态时间轴，标注 ResumePendingOperation 而非重新识别意图">
-              <figcaption>开发态时间轴。左侧用户只看到「补一句 → 出图」，右侧记录了作业单冻结与 <code>ResumePendingOperation</code> 的实际路径，并刻意标出未发生的两条：重新意图识别与从头重启。</figcaption>
-            </figure>
+<h2>5. 范围解析与可续跑的 HITL</h2>
+<p>当“闸机控制”包无法在工程索引中唯一命中时，系统不进入元素规划。候选项较少时，界面列出候选位置；无合理候选时，要求用户提供更精确的包名或先创建范围。系统不默认写到项目根目录，也不自动生成父包树。</p>
+<figure>
+  <img src="assets/fig-04-clarify-scope.jpg" alt="范围未命中时的澄清卡片和作业状态">
+  <figcaption>澄清卡保留已确定的图类型和待补充的范围。昂贵的规划阶段尚未启动。</figcaption>
+</figure>
 
-            <h2>6. 幻觉里最毒的一种：成功的假结构</h2>
-            <p>大模型胡说句子，用户看得懂。更毒的是写回报告说成功，工程里却没有对应变更，或者变更语义是错的。案例方至少打过五类。</p>
-            <p><strong>空变更假成功。</strong> 用户要求给用例图补上「紧急解锁」，规划或匹配失败，最终增量是空的，早期却仍然返回成功。对策是把「用户要写入」和「实际可写增量」对齐，空增量不算成功，本来就是那样的幂等跳过除外。报告这句话值得单独摘出来：<strong>验证语义必须等于写回语义</strong>。</p>
-            <p><strong>关系悬空。</strong> 元素表里没有「紧急解锁」，关系表却连了一笔。对策是关系阶段的契约规定端点必须落在本轮元素结果或工程可复用集合里，门禁扫一遍，修不了就拦。</p>
-            <p><strong>漏项却装作完整。</strong> 用户点名三个用例，只产出两个。对策分两种情况：能从用户话里结构化数得清的清单，写前对照计划数量，少了就澄清或阻断；数不清的时候不要假装很懂去硬拦，放行后写回时用一句降级警告说实话，让用户下一句补。</p>
-            <figure>
-              <img src="assets/fig-a3-prewrite-clarify.jpg" alt="写回前结构化对照：用户列举 3 个用例，当前计划仅 2 个，给出补充或跳过两个选项">
-              <figcaption>写前澄清。左上角把用户列举数量与当前元素计划数量并排放，差异指名到具体用例，两个选项都不写入工程。</figcaption>
-            </figure>
-            <p><strong>视图撒谎。</strong> 模型库里有对象，图上没有；或者图上出现了不该进本图的东西。对策是第三阶段单独做按图类型筛选，验收以画布与模型结构为准，不以聊天自述为准。</p>
-            <p><strong>编造挂载与复用。</strong> 即第五节那一类，元素阶段就用工程索引核对，能复用的标记复用，找不到范围就阻断。</p>
-            <p>处理这些问题时，案例方把质量分成三类，策略才写得死。</p>
-            <table>
-            <thead><tr><th style="text-align: left;">类型</th><th style="text-align: left;">含义</th><th style="text-align: left;">谁处理</th></tr></thead>
-            <tbody>
-            <tr><td style="text-align: left;">结构可判定</td><td style="text-align: left;">类型非法、引用可确定纠正、层放错</td><td style="text-align: left;">程序自动修或阻断</td></tr>
-            <tr><td style="text-align: left;">用户说过但模型漏了</td><td style="text-align: left;">明确列举未兑现</td><td style="text-align: left;">写前问或写后警告，禁止瞎猜补全</td></tr>
-            <tr><td style="text-align: left;">品味与建议</td><td style="text-align: left;">粒度粗细、要不要某条最佳实践</td><td style="text-align: left;">忽略或等用户下一句</td></tr>
-            </tbody>
-            </table>
-            <p>还有一条硬规矩：绝对不用行业词表在程序里猜语义。今天演示的是闸机，明天换成化工装置，词表会把维护拖死。程序只认类型、引用、归属、白名单这些结构事实。</p>
-            <p>三种结果的用户可见形态被刻意做成三张不同的脸。</p>
-            <figure>
-              <img src="assets/fig-03-writeback-summary.jpg" alt="绿色写回摘要卡：已创建用例图，新建 1 主体 3 用例 3 参与者 3 关联，复用 1 包，可撤销">
-              <figcaption>完全成功。一行统计加撤销提示，不展开长变更表。</figcaption>
-            </figure>
-            <figure>
-              <img src="assets/fig-06-degraded-success.jpg" alt="画布主结构完整，右侧橙色降级提示说明未包含用户提到的 Include 关系">
-              <figcaption>降级成功。主结构已写入且可继续改，漏掉的那一项被指名说清楚，状态标注 <code>DEGRADED · writable=true</code>。</figcaption>
-            </figure>
-            <figure>
-              <img src="assets/fig-07-blocked-failure.jpg" alt="画布未写入任何元素，右侧红色阻断卡说明关联关系指向不存在的用例">
-              <figcaption>阻断失败。工程状态保持原样，原因写成可行动的一句话，状态标注 <code>BLOCKED · writable=false</code>。对照组是假成功，那种情况下画布会留下难以察觉的脏结构。</figcaption>
-            </figure>
+<p>这个交互需要一个持久化的 pending operation。它保存已解析的 <code>action</code>、<code>diagram_type</code>、待补的 <code>scope_ref</code>、当前阶段和用户的处理选项。用户补充包名后，运行时调用 <code>ResumePendingOperation</code>，不重新做一次完整意图分类。</p>
+<figure>
+  <img src="assets/fig-05-resume-timeline.jpg" alt="开发时间轴中的作业冻结与恢复路径">
+  <figcaption>左侧是用户看到的“补充范围后继续”，右侧是开发态作业冻结与恢复事件。</figcaption>
+</figure>
 
-            <h2>7. 砍掉模型自评闭环，换上写回前门禁</h2>
-            <p>案例方早期做过一版「生成 → 让模型写评审意见 → 再改 → 再评」。这套在这个场景里三头受挫：评审提示词和生成提示词的口径互相打架，评审按教科书骂，生成按工具 schema 写；链路又慢又贵，还可能空转；用户被一堆「不足与风险」长文淹没，图却还卡在确认门外。</p>
-            <p>最终的取舍是对用户默认自动写回加一步撤销，像代码补全那样，画布即结果。对质量则用确定性门禁，组装前最多一轮结构修复，修不了就不写入。写回后的模型自我评审循环被整个砍掉，用户不满意就用下一句对话改，而不是让机器自己开会。</p>
-            <p>报告给出的判断是：看起来很 Agent 的反思环，不一定比编译器式门禁更适合结构交付。反思适合开放文本，门禁适合必须可导入、可回归的工件。<strong>把随机性预算花在规划草案上，把确定性预算花在能不能进库上。</strong></p>
-            <p>这是本案例与前两份报告最值得对照的一处取舍，第十二节会展开。</p>
+<p>HITL 在这里是一种可恢复事务。弹窗只负责收集缺失信息，正确性取决于作业单能否冻结、持久化和从指定断点恢复。</p>
+<h2>6. 写回门禁：不变量、结果状态与回执</h2>
+<p>案例方将常见失败分为空变更假成功、关系悬空、明确列举项漏失、视图与模型不一致，以及编造挂载位置或复用对象。门禁用一组可复验的不变量检查这些失败。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">不变量</th>
+<th style="text-align: left;">检查内容</th>
+<th style="text-align: left;">失败处理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">范围唯一</td>
+<td style="text-align: left;"><code>scope_ref</code> 指向已有、允许写入的工程对象</td>
+<td style="text-align: left;">澄清或阻断</td>
+</tr>
+<tr>
+<td style="text-align: left;">类型合法</td>
+<td style="text-align: left;">元素、关系和图类型命中当前 Profile 白名单</td>
+<td style="text-align: left;">唯一可修复时修复，其余阻断</td>
+</tr>
+<tr>
+<td style="text-align: left;">引用闭包</td>
+<td style="text-align: left;">每条关系的两端都在已验收元素集或可复用集合中</td>
+<td style="text-align: left;">阻断</td>
+</tr>
+<tr>
+<td style="text-align: left;">明示完整性</td>
+<td style="text-align: left;">用户可计数列举的对象与计划数量一致</td>
+<td style="text-align: left;">写前澄清或用户确认跳过</td>
+</tr>
+<tr>
+<td style="text-align: left;">视图子集</td>
+<td style="text-align: left;">进图元素和关系属于已验收模型结果</td>
+<td style="text-align: left;">剔除或阻断</td>
+</tr>
+<tr>
+<td style="text-align: left;">变更一致</td>
+<td style="text-align: left;">写入请求产生可观察增量，或明确判定为幂等 <code>noop</code></td>
+<td style="text-align: left;">空增量不得返回成功</td>
+</tr>
+<tr>
+<td style="text-align: left;">单一写回</td>
+<td style="text-align: left;">模型库和视图更新经过唯一通道，同时生成回执和撤销句柄</td>
+<td style="text-align: left;">不允许部分成功对外冒充完整成功</td>
+</tr>
+</tbody>
+</table>
+<figure>
+  <img src="assets/fig-a3-prewrite-clarify.jpg" alt="写回前对照用户列举数量与元素计划">
+  <figcaption>用户点名 3 个用例，当前计划只有 2 个。系统在写回前列出差异，两个选项都不会静默补全。</figcaption>
+</figure>
 
-            <h2>8. 白名单差点把自己绊死</h2>
-            <p>这是个很脏但很真实的细节，外行也能听懂。建模工具的导入层有时会把细类型收成粗类型，好比身份证上只写「连接」，业务上却要区分普通连线和参数绑定线。如果门禁只用收粗以后的名字去对白名单，就会出现三段错位：规划阶段明明写了对的细类型，校验时被收成粗类型，粗类型不在本图允许列表里于是被误杀，或者反过来被放进错误的桶。</p>
-            <p>解法是白名单匹配要承认细名与粗名在导入语义上等价的双向关系，并按图类型选对结构模板，而不是用字符串全等一行搞定。</p>
-            <p>案例方把这一条提炼成通用规则：<strong>凡是「LLM 规划的类型」和「工具写入的类型」不是同一套词表时，中间必须有显式等价层。</strong> 这类 bug 极其隐蔽，日志看起来像模型在胡写，实际上是自己的校验把合法结果翻译坏了。这一段在整份报告里技术含量最高，也最容易被抽象架构图掩盖掉。</p>
+<p>用户可见的结果可归纳为四种状态。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">状态</th>
+<th style="text-align: left;">写入</th>
+<th style="text-align: left;">语义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>APPLIED</code></td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">计划、门禁和写回回执一致</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>APPLIED_WITH_WARNINGS</code></td>
+<td style="text-align: left;">是</td>
+<td style="text-align: left;">主结构合法，存在已指名且可继续处理的非破坏性缺项</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>BLOCKED</code></td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">不变量不成立，工程状态保持原样</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>NOOP</code></td>
+<td style="text-align: left;">否</td>
+<td style="text-align: left;">目标状态已存在，或本轮没有可写增量；两种原因需分开记录</td>
+</tr>
+</tbody>
+</table>
+<figure>
+  <img src="assets/fig-03-writeback-summary.jpg" alt="成功写回摘要，包含新建、复用和撤销信息">
+  <figcaption><code>APPLIED</code>：摘要记录实际变更量和撤销入口。</figcaption>
+</figure>
 
-            <h2>9. Token 治理是产品纪律的副产品</h2>
-            <p>工程一大、历史一长，再把九种图的规范全文塞进每一次调用，截断、漏项和答非所问会一起出现。换更大的窗口只能推迟爆炸。案例方的做法是一套组合拳，六条都不是运维补丁，而是产品与工序纪律的直接结果。</p>
-            <p>一次一图，只带当前图画像。三阶段拆分，每阶段只带该阶段规范加上游结构化结果。分析做一次，关系与视图阶段吃摘要，不反复重读用户长文。工程上下文分层，远处只给一张「这轮会话做到哪了」的提纲，近处才是邻近包、邻近块和可复用元素名单，切硬边界时要可观测，宁可知道少了什么也不假装全看见了。模型分流，意图、澄清和简单填表走轻模型池，复杂的元素与关系规划走主模型，视图筛选能规则化就不必事事上最贵的模型。按图复杂度路由，包图可以压缩分析，时序图和状态图才把三阶段跑饱。</p>
-            <p>三段拆开看似多了几次调用，案例方实测常比一锅炖失败再整锅重来更省，也更稳。报告的收束是：先问这一步决策依赖哪些字节，再拼上下文。上下文工程的本质是删减，子能力拆分是删减的结构手段，不是为了多画几个 Agent 框。</p>
+<figure>
+  <img src="assets/fig-06-degraded-success.jpg" alt="画布已写入主结构，旁边显示明确的降级警告">
+  <figcaption><code>APPLIED_WITH_WARNINGS</code>：已写入的部分可用，缺失项被指名记录。</figcaption>
+</figure>
 
-            <h2>10. 真实运行现场</h2>
-            <p>前面九节的示意图由案例方用 SVG 绘制，用于说明交互形态。这一节放三张真实运行截图与两段演示录像，用来对照示意图与实际系统之间的距离。</p>
-            <figure>
-              <img src="assets/shot-magicdraw-flycar.jpg" alt="Magic Systems of Systems Architect 中打开飞行汽车需求规范视图，右侧是 AI4MBSE 辅助建模助手面板">
-              <figcaption>宿主环境。左侧是工程树与需求包，中间画布是飞行汽车需求规范视图，右侧嵌入 AI4MBSE 辅助建模助手。助手顶部有初学者与专家两档切换，底部有知识库、视图、提示词模板和模型模板库四个入口。助手是宿主工具的插件，不是独立聊天应用。</figcaption>
-            </figure>
-            <p>下面这条日志比任何架构图都更能说明意图收敛这一步在做什么。它来自演示录像中用户提出一个纯咨询问题的时刻。</p>
-            <figure>
-              <img src="assets/log-intent-recognition.jpg" alt="通知窗口日志：意图识别结果 JSON，action 为 chat，diagramType 与 scope 均为 null，最终 generatedJson 非空为 false">
-              <figcaption>意图收敛的实际产物。识别结果是一个结构化契约：<code>action</code> 为 <code>chat</code>，<code>diagramType</code>、<code>scope</code>、<code>modelAction</code> 均为 <code>null</code>，<code>confidence</code> 为 0.98。最后一行 <code>generatedJson 非空=false</code> 说明这一轮没有产生任何写回结构。咨询问题被正确分流到轻路径，昂贵的建模主链没有空转。</figcaption>
-            </figure>
-            <figure>
-              <img src="assets/shot-satellite-bdd.jpg" alt="卫星平台系统块定义图，1553B 总线接口聚合动量轮、姿态敏感器组、轨道控制推进器">
-              <figcaption>另一个演示工程：卫星平台系统。画布上是姿控分系统的块定义图，1553B 总线接口聚合动量轮、姿态敏感器组与轨道控制推进器，右侧面板列出本轮规划的元素表与归属。</figcaption>
-            </figure>
-            <figure>
-              <img src="assets/log-relation-writeback.jpg" alt="通知窗口日志：绘制连线，关系与两端块、接口均以稳定标识表示">
-              <figcaption>关系写回的日志。每一条连线都以稳定标识落地：关系 <code>REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION</code> 连接块 <code>BLK_ADCS_THRUSTER</code> 与接口 <code>ITF_1553B_BUS</code>。这正是第一节那条判断的落地形态——结构坐标由程序与工程索引保管，模型不去口算这串标识。</figcaption>
-            </figure>
-            <p>两段录像分别是三分钟的概览和十四分钟的完整走查。短片带中英文字幕，从数据清洗、意图确认一直到出图。长片走完了卫星平台从需求到内部块图的多轮建模，通知窗口里可以看到每一次 LLM 调用与每一条校验规则的执行。</p>
-            <figure>
-              <video controls preload="metadata" poster="assets/shot-magicdraw-flycar.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-                <source src="assets/demo-short.mp4" type="video/mp4">
-                您的浏览器不支持内嵌视频，可直接下载 <a href="assets/demo-short.mp4">demo-short.mp4</a>。
-              </video>
-              <figcaption>演示一 · 概览（2 分 58 秒，中英文字幕）。从界面进入、数据清洗、意图确认到确认后建模绘图的完整一轮。</figcaption>
-            </figure>
-            <figure>
-              <video controls preload="metadata" poster="assets/shot-satellite-bdd.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
-                <source src="assets/demo-long.mp4" type="video/mp4">
-                您的浏览器不支持内嵌视频，可直接下载 <a href="assets/demo-long.mp4">demo-long.mp4</a>。
-              </video>
-              <figcaption>演示二 · 完整走查（13 分 47 秒）。卫星平台系统的多轮建模，含元素规划清单、逐条校验规则执行与关系写回日志。建议直接拖到 8 分钟之后观察内部块图与关系写回。</figcaption>
-            </figure>
+<figure>
+  <img src="assets/fig-07-blocked-failure.jpg" alt="画布保持未变，阻断卡说明悬空关系">
+  <figcaption><code>BLOCKED</code>：无写入，原因可用于修正输入或工程状态。</figcaption>
+</figure>
 
-            <h2>11. ADPS 双轴矩阵映射</h2>
-            <p>本节由 ADPS 依据报告内容逐格落位，与案例方自述的架构对照。</p>
-            <p><strong>着色口径</strong>：实格表示报告中有明确的机制与实现描述；薄格表示存在相关机制，但不属于该坐标官方模式的典型形态；标注「主动否决」的格子表示案例方试过并明确放弃，理由写在报告里；其余表示未采用。<strong>落位不等于采用官方模式</strong>，差异已在格内注明。</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">认知功能</th>
-            <th style="text-align: left;">链式</th>
-            <th style="text-align: left;">路由</th>
-            <th style="text-align: left;">并行</th>
-            <th style="text-align: left;">循环</th>
-            <th style="text-align: left;">层级</th>
-            <th style="text-align: left;">编排</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>感知</strong></td>
-            <td style="text-align: left;"><strong>实格</strong>：分析做一次，后续阶段吃摘要<br>P2 语义压缩</td>
-            <td style="text-align: left;"><strong>实格</strong>：按图切规范，只带当前图画像<br>P1 上下文分诊</td>
-            <td style="text-align: left;">薄格：图纸与 PDF 先 OCR 转文字再进主链<br>官方 P4，资源隔离而非融合</td>
-            <td style="text-align: left;">薄格：邻近可复用名单检索<br>官方 P3，被动查询而非主动探索</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>记忆</strong></td>
-            <td style="text-align: left;"><strong>实格</strong>：工程索引核对；产品侧 MBSE 知识库按方法论与图类型检索<br>M2 RAG</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—<br>M4 无跨会话失败沉淀</td>
-            <td style="text-align: left;">薄格：工程上下文远近分层<br>官方 M1，单会话内分层</td>
-            <td style="text-align: left;"><strong>实格</strong>：澄清作业单与 pending 状态机，断点续跑<br>M3 进度追踪</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>推理</strong></td>
-            <td style="text-align: left;">薄格：业务理解收成稳定摘要<br>官方 R1，不外显推理链</td>
-            <td style="text-align: left;"><strong>实格</strong>：轻重模型分流加按图复杂度路由<br>R2 复杂度路由</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>行动</strong></td>
-            <td style="text-align: left;"><strong>实格</strong>：元素 → 关系 → 视图三段契约链<br>A3 提示链，本案例主干</td>
-            <td style="text-align: left;"><strong>实格</strong>：类型白名单与细粗名显式等价层<br>A1 工具调度</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：范围门在前，阶段间契约检查在中，结构门禁与单一写回在后<br>A4 护栏三明治</td>
-            <td style="text-align: left;"><strong>实格</strong>：入口收敛意图后调度三阶段与组装门<br>A2 规划执行</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>反思</strong></td>
-            <td style="text-align: left;">—<br><strong>主动否决</strong>：生成后模型自评与生成口径打架，见第七节</td>
-            <td style="text-align: left;">薄格：图画像与 Profile 配置化<br>官方 F2，配置注入而非 Agent 自选</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—<br><strong>主动否决</strong>：写回后自评循环整个砍掉</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>协作</strong></td>
-            <td style="text-align: left;">薄格：三段子能力以契约交接<br>官方 C4，若按独立子 Agent 实现则应判实格</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>治理</strong></td>
-            <td style="text-align: left;"><strong>实格</strong>：一次一图，九图是九次独立承诺<br>G3 渐进承诺</td>
-            <td style="text-align: left;"><strong>实格</strong>：范围不明时列候选澄清，澄清轮次封顶<br>G1 审批门</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;">—</td>
-            <td style="text-align: left;"><strong>实格</strong>：单一写回通道加一步撤销，不静默扩域<br>G2 爆炸半径控制</td>
-            <td style="text-align: left;"><strong>实格</strong>：开发态玻璃罩记录各段输入输出与门禁裁决<br>G4 可观测性</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>按行读这张表，结果相当集中。<strong>治理行四格全实，反思行两格是主动否决。</strong> 这个系统把本该花在自评环上的预算，整体换成了门禁、撤销、承诺边界和可观测性。行动行四格全实则说明主干在执行侧，三阶段链、工具白名单、护栏与编排各占一格。</p>
-            <p>按列读，链式与层级两列最重。链式承载工序，层级承载治理。并行与循环两列几乎是空的，这与结果必须可导入、可回归的任务性质一致：并行会让写回冲突，循环会让延迟不可控。</p>
+<h2>7. 确定性验证与模型反思的选择</h2>
+<p>案例方早期测试过“生成、模型评审、修改、再评审”。公开复盘记录了三个问题：评审提示与工具 schema 的口径不一致，调用时延和成本增加，长评论没有直接提高写回的可用性。团队取消了写回后的模型自评循环，在组装前保留最多一次有界修复，然后由确定性门禁决定是否写入。</p>
+<p>这一取舍有明确的适用条件。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">问题属性</th>
+<th style="text-align: left;">更合适的机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">类型、引用、范围、数量和实际变更可由程序判定</td>
+<td style="text-align: left;">同步门禁</td>
+</tr>
+<tr>
+<td style="text-align: left;">写操作有副作用，用户正在等待，错误需当场阻断</td>
+<td style="text-align: left;">同步门禁加事务回执</td>
+</tr>
+<tr>
+<td style="text-align: left;">语义品质无法由规则完整表达，且输出尚未产生副作用</td>
+<td style="text-align: left;">生成批评或人审</td>
+</tr>
+<tr>
+<td style="text-align: left;">错误需要跨运行累积后才能归纳</td>
+<td style="text-align: left;">失败日记、经验回放或离线分析</td>
+</tr>
+</tbody>
+</table>
+<p>门禁和反思不互相排斥。本案例把写回准入交给门禁，并不能推导出“结构化工件都不需要反思”。当团队要分析跨项目的漏项分布、优化 Profile 或评估建模粒度时，离线反思仍然有位置。选择依据是错误的可判定性、副作用、修复窗口和时延约束。</p>
+<h2>8. 类型等价层：规划词表与工具元模型对齐</h2>
+<p>案例方发现，建模工具的导入层有时会把细类型归并为粗类型。LLM 计划使用业务细名，工具 API 使用元模型名，写回后还可能返回另一个归一化名称。直接做字符串全等比较会误杀合法结果，也可能将粗类型放进错误的图类型。</p>
+<p>稳定的实现需要一个显式类型等价层。</p>
+<pre><code class="language-text">planning type
+    -&gt; canonical domain type
+    -&gt; host metamodel type
+    -&gt; write-back type returned by the tool
+</code></pre>
+<p>该层按图类型和宿主适配器选择映射，保留原始类型与归一化类型，供日志和回归测试对照。问题被收敛到 adapter 和 profile，主编排不需依靠行业词表或大量 <code>if-else</code> 猜测语义。</p>
+<p>这个细节是案例中很有价值的工程证据。日志可能把故障表现为“模型选错类型”，实际原因却在语义适配层。没有这层记录，团队很容易把确定性转换 bug 误判为 LLM 幻觉。</p>
+<h2>9. 上下文与模型路由</h2>
+<p>工程规模增长后，九类图的规则、历史对话和完整工程树不适合每次一起进入模型。案例方采用以下约束。</p>
+<ol>
+<li>当前运行只注入当前图类型的 Profile。</li>
+<li>业务理解形成一次稳定摘要，关系和视图阶段读取摘要与上游 IR。</li>
+<li>工程上下文按远近分层。远端保留会话进度与项目约束摘要，近端提供邻近包、块和可复用元素的有界投影。</li>
+<li>意图、澄清和简单结构填充可使用轻量模型，元素与关系规划使用主模型，视图筛选能规则化时交给程序。</li>
+<li>包图、需求图与状态图、时序图使用不同复杂度路由，但共用同一组写回不变量。</li>
+</ol>
+<p>这些做法缩小了每次决策的输入面。案例方报告其稳定性和成本优于单次生成后整轮重试的早期实现，但未公布 token、时延或成功率的对照数据。蓝皮书因此将其记为实践判断，不写成量化结论。</p>
+<h2>10. 公开运行证据</h2>
+<p>本节区分界面示意与真实运行记录。示意图用于表达交互和状态语义，不是生产界面截图。下面的宿主环境、日志、模型图和视频来自案例方运行环境。</p>
+<figure>
+  <img src="assets/shot-magicdraw-flycar.jpg" alt="Magic Systems of Systems Architect 中的飞行汽车工程与 AI4MBSE 助手">
+  <figcaption>宿主环境。左侧是工程树，中间是模型视图，右侧为 AI4MBSE 面板。助手以插件形式嵌入建模工具。</figcaption>
+</figure>
 
-            <h2>12. 三份案例报告的交点</h2>
-            <p>把这份报告与前两份放在一起读，会发现三个来自完全不同行业的团队在同一个地方作出了同一个决定。</p>
-            <table>
-            <thead><tr><th style="text-align: left;">案例</th><th style="text-align: left;">行业</th><th style="text-align: left;">不让模型生成的东西</th></tr></thead>
-            <tbody>
-            <tr><td style="text-align: left;"><a href="/zh/cases/liangbo-execution-agent/">报告 01 · 东方屹腾</a></td><td style="text-align: left;">企业 SaaS 流程自动化</td><td style="text-align: left;">长随机 ID 等机械参数</td></tr>
-            <tr><td style="text-align: left;"><a href="/zh/cases/xuanxu-gis-agent/">报告 02 · 成都玄宿</a></td><td style="text-align: left;">地理信息与数据服务</td><td style="text-align: left;">workspace、store、SRS、bbox 等发布参数</td></tr>
-            <tr><td style="text-align: left;">报告 03 · Ark · 雅格</td><td style="text-align: left;">MBSE 与工业软件</td><td style="text-align: left;">稳定标识、引用端点与挂载位置</td></tr>
-            </tbody>
-            </table>
-            <p>三个团队用的词不同，指的是同一类东西：<strong>那些错一个字符就让下游失败、而且失败往往不在当场暴露的机械坐标</strong>。ADPS 把这条分野写进了<a href="/zh/concepts/execution-vs-content/">执行型与内容型</a>与<a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>两个概念定义。两个独立案例支持一条观察，三个来自互不相干行业的独立案例支持同一条观察，性质就不一样了。</p>
-            <p>更值得注意的是三者的分歧点。报告 02 建了失败日记，把跨运行的失败沉淀成规则供下一次查询，落在记忆 × 循环。报告 03 把自评闭环整个砍掉，反思行两格主动留空。这个差别不是水平高低，而是失败信号的可判定性和时延要求不同。玄宿的发布结果可以在离线时段由外部探针判定对错，失败沉淀有时间做；雅格的写回发生在用户等待的交互回合里，判定必须当场完成，于是确定性门禁比模型自评更合适。</p>
-            <p>换句话说，<strong>要不要上反思环，取决于错误能不能被离线判定，而不是取决于系统的智能程度</strong>。这条判据由两份报告的对照才浮出来，单看任何一份都得不到。</p>
+<figure>
+  <img src="assets/log-intent-recognition.jpg" alt="意图识别日志：action 为 chat，diagramType 和 scope 为 null">
+  <figcaption>一次咨询请求的结构化意图结果。<code>action=chat</code>，<code>diagramType</code>、<code>scope</code> 和 <code>modelAction</code> 为 <code>null</code>，<code>confidence=0.98</code>，<code>generatedJson 非空=false</code>。这个记录支持一条有限结论：该次咨询没有进入写回主链。</figcaption>
+</figure>
 
-            <h2>13. 迁移边界</h2>
-            <p>案例方自己划出了适用与不适用的两侧，这里照录并稍作展开。</p>
-            <p><strong>适合迁移。</strong> 结果要进正式系统，结构约束强，错一位会伤到存量工程，工具链封闭可治理。除 MBSE 外，EDA、BIM、ERP 主数据、配置管理数据库和工艺路线编排都符合这几条。可以搬走的是四件事：单次承诺的验收口径，按领域自然工序拆子能力并用契约衔接，结构坐标进程序与索引，以及验证语义对齐写回语义。</p>
-            <p>案例方给出的十条可迁移清单里，有三条在其他两份报告中也独立出现过，可视为跨案例的稳定项：假成功比失败更糟；澄清是状态机不是多轮聊天；可观测性要在开发期就做。</p>
-            <p><strong>不适合迁移。</strong> 主要产出是报告、课件或者开放检索拼装的场景，步骤松散、文本漂移可接受，硬上这套门禁和三阶段写回属于过度设计。判断标准很简单：如果一次输出错了只需要重写一版，那么反思环大概率比门禁划算。</p>
-            <p>报告最后一段的自我总结值得原样保留。案例方一度以为难点是让模型更懂 SysML，后来发现更难的是承认模型是概率引擎却要交付确定性工程状态，忍住多做一点的产品冲动，把人在工具里本来就会的建模顺序翻译成可调度、可续跑、可回归的子能力，在用户体验上像补全工具，在内核上像带门禁的编译流水线。方向并不炫：少承诺、严校验、可撤销、可续跑。</p>
+<figure>
+  <img src="assets/shot-satellite-bdd.jpg" alt="卫星平台系统块定义图和元素规划面板">
+  <figcaption>卫星平台演示工程。画布显示姿控分系统的块定义图，右侧面板列出本轮元素规划和归属。</figcaption>
+</figure>
 
-            <h2>14. 关于案例方</h2>
-            <p>本案例来自 <strong>Ark · 雅格</strong>（<a href="https://mbse.ltd/zh/" target="_blank" rel="noopener">mbse.ltd</a>），成都，创始人袁良锭。团队定位是工业 MBSE × AI，产品线包含四块：旗舰产品 AI4MBSE 做知识约束下的对话式 SysML 建模，工程知识库提供面向建模任务的 MBSE RAG，方法论侧覆盖 MagicGrid、OOSEM 与 Harmony-SE 的配置，行业雷达跟踪工业软件与 MBSE 的动向。</p>
-            <figure>
-              <a href="https://mbse.ltd/zh/" target="_blank" rel="noopener"><img src="assets/shot-ark-site.jpg" alt="Ark 雅格官网首页：承托关键，渡过现场"></a>
-              <figcaption>Ark · 雅格官网。品牌主张是「承托关键，渡过现场」，产品主张是「一张图一步步，人确认后再回写」。点击图片进入 <a href="https://mbse.ltd/zh/" target="_blank" rel="noopener">mbse.ltd</a>。</figcaption>
-            </figure>
-            <p>AI4MBSE 的宿主适配覆盖 MagicDraw、Cameo、Capella 与 SysON，并规划支持 SysML v2 API。产品页上有一句话与本文第六节完全同源，值得摘出来：知识库不支持的内容就沉默拒绝，不虚构追溯关系与编号，工程诚实优先于营销话术。</p>
-            <p>ADPS 欢迎读者直接与案例方联系交流。合作方向包括共同研究、工具链共建、知识库落地与开源协作，联系方式见其官网<a href="https://mbse.ltd/zh/about.html" target="_blank" rel="noopener">关于页</a>。</p>
+<figure>
+  <img src="assets/log-relation-writeback.jpg" alt="关系写回日志，关系与端点使用稳定标识">
+  <figcaption>关系写回记录。<code>REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION</code> 连接 <code>BLK_ADCS_THRUSTER</code> 与 <code>ITF_1553B_BUS</code>。记录证明实际写回使用稳定标识，但单张截图不能代替整体成功率评估。</figcaption>
+</figure>
 
-            <hr />
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);"><strong>案例提供：</strong>袁良锭（Yuan Liangding），Ark · 雅格创始人，十六年工业软件与平台研发经验。原始技术复盘由案例方撰写，本文为 ADPS 蓝皮书体例下的重新组织，突破点的取舍理由与技术判断保持案例方原意；第十一、十二两节的矩阵落位与跨案例对照由 ADPS 补充。贡献者介绍见<a href="/zh/founders/">团队页</a>。</p>
-            <p style="font-size: 0.92rem; color: var(--color-text-muted);"><strong>引用格式：</strong>ADPS 企业 Agent 系统蓝皮书 · 案例报告 03《自然语言到 SysML：一张图交付的建模 Agent》，Agent Design Patterns Society，2026。</p>
-</article>
+<figure>
+  <video controls preload="metadata" poster="assets/shot-magicdraw-flycar.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
+    <source src="assets/demo-short.mp4" type="video/mp4">
+    浏览器不支持内嵌视频时，可直接下载 <a href="assets/demo-short.mp4">demo-short.mp4</a>。
+  </video>
+  <figcaption>概览演示（2 分 58 秒，带中英文字幕）：数据清洗、意图确认、建模与绘图。</figcaption>
+</figure>
+
+<figure>
+  <video controls preload="metadata" poster="assets/shot-satellite-bdd.jpg" style="width:100%;height:auto;border:1px solid var(--color-rule);border-radius:4px;">
+    <source src="assets/demo-long.mp4" type="video/mp4">
+    浏览器不支持内嵌视频时，可直接下载 <a href="assets/demo-long.mp4">demo-long.mp4</a>。
+  </video>
+  <figcaption>完整走查（13 分 47 秒）：卫星平台系统的多轮建模，包含元素规划、校验和关系写回记录。</figcaption>
+</figure>
+
+<h2>11. 评估协议：已公开证据与待补数据</h2>
+<p>当前公开材料足以说明架构路径、部分中间结构和实际宿主写回。它们还不足以证明系统在多项目、多图类型和长时间运行下的稳定性。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">主张</th>
+<th style="text-align: left;">当前公开证据</th>
+<th style="text-align: left;">证据状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">咨询请求可以绕开建模写回链</td>
+<td style="text-align: left;">意图日志显示 <code>action=chat</code> 且无生成 JSON</td>
+<td style="text-align: left;">有单次运行记录</td>
+</tr>
+<tr>
+<td style="text-align: left;">关系写回使用稳定结构标识</td>
+<td style="text-align: left;">关系与端点日志截图</td>
+<td style="text-align: left;">有单次运行记录</td>
+</tr>
+<tr>
+<td style="text-align: left;">系统已嵌入建模工具并完成多轮演示</td>
+<td style="text-align: left;">宿主截图和两段视频</td>
+<td style="text-align: left;">可视证据</td>
+</tr>
+<tr>
+<td style="text-align: left;">三段链比单次生成更稳、更省</td>
+<td style="text-align: left;">案例方复盘</td>
+<td style="text-align: left;">尚无公开对照数据</td>
+</tr>
+<tr>
+<td style="text-align: left;">门禁能长期降低脏写入</td>
+<td style="text-align: left;">失败类型与对应机制</td>
+<td style="text-align: left;">尚无长期事故统计</td>
+</tr>
+</tbody>
+</table>
+<p>后续版本建议以固定测试集记录以下指标。每项指标都需按图类型、新建/修改、专家/初学者模式和宿主工具分层，避免用一个总成功率掩盖差异。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">指标</th>
+<th style="text-align: left;">定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">范围解析准确率</td>
+<td style="text-align: left;">自动命中的 <code>scope_ref</code> 中，经人员复核正确的比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">元素清单召回率</td>
+<td style="text-align: left;">用户明确点名的元素中，进入已验收 <code>ElementPlan</code> 的比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">悬空引用逃逸数</td>
+<td style="text-align: left;">写回后才发现的无效关系端点数，目标值为 0</td>
+</tr>
+<tr>
+<td style="text-align: left;">静默扩域事故数</td>
+<td style="text-align: left;">未经确认新建包、移动归属或写入错误范围的次数</td>
+</tr>
+<tr>
+<td style="text-align: left;">假成功率</td>
+<td style="text-align: left;">系统返回成功，但写回回执为空或结构验收失败的比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">澄清续跑正确率</td>
+<td style="text-align: left;">用户补充范围后，保留原操作和图类型并从指定阶段继续的比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">撤销完整率</td>
+<td style="text-align: left;">撤销后工程库和画布都恢复到写回前状态的比例</td>
+</tr>
+<tr>
+<td style="text-align: left;">阶段成本</td>
+<td style="text-align: left;">意图、元素、关系和视图阶段的 token、时延、重试和模型费用</td>
+</tr>
+<tr>
+<td style="text-align: left;">门禁质量</td>
+<td style="text-align: left;">各规则的拦截率、误拦率与修复成功率</td>
+</tr>
+</tbody>
+</table>
+<p>这份协议将“看起来能用”转化为可比较的系统证据。蓝皮书的下一个版本应优先增加这类数据，而不是增加更多架构形容词。</p>
+<h2>12. ADPS 模式映射</h2>
+<p>本案例的证据集中在行动和治理。ADPS 只将有公开机制支撑的坐标列为主要落位，没有为了填满矩阵而推定其他模式。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">模式</th>
+<th style="text-align: left;">案例证据</th>
+<th style="text-align: left;">边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a></td>
+<td style="text-align: left;">元素、关系、视图三段契约链</td>
+<td style="text-align: left;">阶段可以是函数或 Agent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a></td>
+<td style="text-align: left;">范围门、阶段契约和写回门禁</td>
+<td style="text-align: left;">门禁验证结构，不评价全部建模品质</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a></td>
+<td style="text-align: left;">一次一图、单一写回通道、可撤销变更集</td>
+<td style="text-align: left;">项目级并发写入策略未公开</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/g1-approval-gate/">G1 审批门</a></td>
+<td style="text-align: left;">范围不明时澄清；产品化路径支持人员确认后写回</td>
+<td style="text-align: left;">确认策略可随部署风险调整</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a></td>
+<td style="text-align: left;">pending operation 保存图类型、范围和当前阶段</td>
+<td style="text-align: left;">公开材料未提供跨进程故障恢复数据</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a></td>
+<td style="text-align: left;">轻重模型分流与按图类型选择执行深度</td>
+<td style="text-align: left;">路由阈值和模型对照数据未公开</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a></td>
+<td style="text-align: left;">阶段输入输出、门禁裁决和写回日志</td>
+<td style="text-align: left;">当前证据主要来自开发态界面</td>
+</tr>
+</tbody>
+</table>
+<p><a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>、<a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a> 和 <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a> 也有相关机制，但公开材料对它们的代码实体和运行指标描述较少，本版不将其列为主要落位。只有当元素、关系和视图阶段以独立 Agent 实现，并具有上下文隔离和独立失败语义时，才适合增加 <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a> 的落位。</p>
+<h2>13. 三份蓝皮书的共性与差异</h2>
+<p>三份案例都将高精度结构坐标从模型生成内容中分离，但它们使用了不同的执行和验证时机。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">案例</th>
+<th style="text-align: left;">程序保管的结构坐标</th>
+<th style="text-align: left;">验证时机</th>
+<th style="text-align: left;">修复窗口</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="/zh/cases/liangbo-execution-agent/">报告 01 · 东方屹腾</a></td>
+<td style="text-align: left;">业务 ID、状态来源与流程节点</td>
+<td style="text-align: left;">步骤调度和业务调用前后</td>
+<td style="text-align: left;">会话内暂停、审批和恢复</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="/zh/cases/xuanxu-gis-agent/">报告 02 · 玄宿科技</a></td>
+<td style="text-align: left;">workspace、store、SRS、bbox 和管线状态</td>
+<td style="text-align: left;">静态六阶段管线中的外部探针</td>
+<td style="text-align: left;">运行期规则回退与跨运行失败沉淀</td>
+</tr>
+<tr>
+<td style="text-align: left;">报告 03 · Ark · 雅格</td>
+<td style="text-align: left;">挂载位置、稳定标识、关系端点与类型映射</td>
+<td style="text-align: left;">交互回合内的写回前门禁</td>
+<td style="text-align: left;">有界修复、澄清、阻断或撤销</td>
+</tr>
+</tbody>
+</table>
+<p>这三份报告支持一条可供后续案例检验的工程命题：<strong>精确结构坐标应由可追溯的程序状态传递，该状态保留坐标的权威事实，模型输出提供候选计划</strong>。它仍是一条跨案例观察，尚未经过统计显著性检验。</p>
+<p>三份报告的差异也给出了更精确的选型方法。验证机制应根据外部可观测性、副作用、用户等待时间和修复窗口选择。能在调用前由程序判定的问题优先进入同步门禁，只能在运行后由外部结果判定的问题进入验收探针，需要跨运行学习的问题再进入失败日记或离线反思。</p>
+<h2>14. 迁移边界与 SysML v2</h2>
+<p>该设计适合以下系统：产出需进入正式库，存在类型和引用约束，写入会影响存量工程，工具接口和进图规则可以被管理。EDA、BIM、ERP 主数据、CMDB 和工艺路线编排都具有相似的局部条件。迁移时应保留四个核心结构：类型化 IR、稳定结构引用、确定性验证和带回执的单一写入通道。</p>
+<p>以报告、课件、开放检索结果为主要产出，且重写成本较低的场景，不需要复制整套写回门禁。其他两个限制也需要保留。第一，当前公开证据主要来自演示工程，不能代表大型安全关键项目的认证结果。第二，大团队同时写入、模型分支合并、权限分区和长事务补偿没有在公开材料中展开。</p>
+<p>OMG 于 2025 年完成 SysML 2.0 正式规范，并同时推进 Systems Modeling API and Services。SysML v2 提供更精确的语义基础、文本表示和标准化模型访问接口；OMG 也预计 SysML v1 将在迁移期继续使用多年。这意味着 AI4MBSE 在一段时间内仍需同时面对现有桌面工具和 SysML v2 工具链。标准 API 可以缩小专有适配面，但不会取消范围解析、引用完整性、Profile 政策和事务回执。详见 <a href="https://www.omg.org/spec/SysML/2.0">OMG SysML 2.0 规范</a> 与 <a href="https://www.omg.org/sysml/index.htm">OMG SysML 版本说明</a>。</p>
+<h2>15. 案例方与引用</h2>
+<p>本案例来自 <a href="https://mbse.ltd/zh/">Ark · 雅格</a>，成都。创始人袁良锭（<strong>Liangding Yuan</strong>）拥有十六年工业软件与平台研发经验，曾从事流程、搜索、协作与知识系统开发，当前聚焦 AI 辅助 SysML / MBSE 产品化。</p>
+<p>Ark · 雅格的公开产品包括 AI4MBSE、面向建模任务的工程知识库，以及 MagicGrid、OOSEM 和 Harmony-SE 方法配置。AI4MBSE 的公开产品页列出 MagicDraw、Cameo、Capella 和 SysON 宿主适配，并将 SysML v2 API 列为产品化方向。</p>
+<figure>
+  <a href="https://mbse.ltd/zh/" target="_blank" rel="noopener"><img src="assets/shot-ark-site.jpg" alt="Ark 雅格官网首页"></a>
+  <figcaption>Ark · 雅格官网。产品对外采用“一张图一步步，人确认后再回写”的表述。</figcaption>
+</figure>
+
+<p><strong>案例提供：</strong>袁良锭（Liangding Yuan），Ark · 雅格创始人。原始技术复盘由案例方撰写；本版按 ADPS 蓝皮书体例重组，第 3、6、11、12、13 节包含 ADPS 的契约还原、评估协议和跨案例分析。</p>
+<p><strong>建议引用：</strong>ADPS、Liangding Yuan，《自然语言到 SysML：一张图交付的建模 Agent》，ADPS 企业 Agent 系统蓝皮书·案例报告 03，v0.4，2026。</p>
+
+            <div class="document-citation">
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
