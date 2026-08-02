@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可续跑澄清作业 · 概念 · ADPS</title>
+    <meta name="description" content="缺少信息时冻结同一作业，保存已确认字段、候选项和恢复游标。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/concepts/resumable-clarification-job/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/concepts/resumable-clarification-job/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成批评</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · AI4MBSE</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/" class="active">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/concepts/" style="color: var(--color-text-muted);">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 工程概念</p>
+                <h1>可续跑澄清作业：缺信息时暂停同一任务</h1>
+                <p class="publication-deck">缺少信息时冻结同一作业，保存已确认字段、候选项和恢复游标。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
+                    <div><dt>定义地位</dt><dd>ADPS 重述</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-08-02</dd></div>
+                    <div><dt>来源案例</dt><dd>Ark · 雅格 AI4MBSE</dd></div>
+                    <div><dt>案例提供</dt><dd>袁良锭（Liangding Yuan）</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
+
+            <h2>从范围未命中开始</h2>
+            <p>用户要求在“闸机中控”包下建图，工程索引里没有唯一匹配。系统已经识别出创建动作和用例图类型，只缺挂载位置。重新开启一轮对话会丢失已确认字段，也可能重新解释出另一份意图。</p>
+            <h2>定义</h2>
+            <p>可续跑澄清作业把一次提问建模为持久化运行状态。系统保存作业 ID、已确认字段、待确认字段、候选项、当前阶段、恢复游标和宿主工程版本。用户补充信息后恢复原作业。</p>
+            <pre><code class="language-text">PendingOperation = {
+  job_id,
+  confirmed_fields,
+  missing_fields,
+  candidates,
+  stage,
+  resume_cursor,
+  host_revision
+}
+</code></pre>
+            <p>恢复前重新校验候选范围和宿主版本。工程已变化时，系统回到范围解析，避免沿失效坐标继续写入。</p>
+            <h2>工程边界</h2>
+            <p>弹窗只负责采集信息。正确性来自作业冻结、持久化和断点恢复。仅在内存中保存状态，无法覆盖进程重启、延迟回复和多人协作。</p>
+            <h2>来源与谱系</h2>
+            <ul>
+            <li>初始案例：Ark · 雅格 AI4MBSE，案例提供袁良锭（Liangding Yuan）；名称由 ADPS 归纳。</li>
+            <li>历史近邻：durable execution、continuation、checkpointed interrupt、workflow wait state。</li>
+            <li>ADPS 整理：将澄清字段、候选工程对象、恢复游标和宿主版本放进同一作业合同。</li>
+            <li>定义地位：ADPS 重述。</li>
+            </ul>
+
+            <div class="document-citation">
+                <p><strong>初始来源：</strong><a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 AI4MBSE 案例报告</a>；案例提供：袁良锭（Liangding Yuan）。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

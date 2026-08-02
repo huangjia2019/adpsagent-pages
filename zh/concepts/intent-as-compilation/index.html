@@ -19,14 +19,15 @@
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/concepts/intent-as-compilation/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -85,7 +86,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · SysML 建模 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · AI4MBSE</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -96,7 +97,7 @@
               <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
               <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
@@ -104,6 +105,16 @@
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
               <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
               <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -116,15 +127,15 @@
                 <h1>意图编译：从自然语言到控制信号</h1>
                 <p class="publication-deck">入口分类器输出有限枚举，异常结果进入 unknown 兜底。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
-                    <div><dt>状态</dt><dd>案例衍生定义</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
+                    <div><dt>定义地位</dt><dd>案例衍生定义</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-08-02</dd></div>
                     <div><dt>来源案例</dt><dd>东方屹腾执行型 Agent</dd></div>
-                    <div><dt>证据类型</dt><dd>一线实践者复盘</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本概念由单一生产系统案例抽象而来，供比较和公开评审使用；在获得更多独立案例印证前，不表述为行业标准。</p>
+            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
             <p><img src="/images/concepts/intent-as-compilation.png" alt="从自然语言到控制信号的意图编译" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
             <h2>概念定义</h2>
@@ -158,7 +169,7 @@
             <p>当自然语言请求需要进入确定的业务流程时，应在入口处生成并校验控制信号。信号消费者见<a href="../orchestrator/">Orchestrator 与 MessageHandler</a>，运行时分层原则见<a href="../control-narrative-dualism/">控制平面与叙事平面</a>。</p>
 
             <div class="document-citation">
-                <p><strong>来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>。</p>
+                <p><strong>初始来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>；案例提供：梁博（Bo Liang）。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

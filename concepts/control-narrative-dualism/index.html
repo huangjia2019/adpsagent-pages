@@ -1,37 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Plane and Narrative Plane: The Dualism of Execution-Type Agents · Concept · ADPS</title>
-    <meta name="description" content="Convert the live and uncertain into the dead and controllable first — the control plane is mechanized, the narrative plane is steered.">
-    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://adpsagent.com/concepts/control-narrative-dualism/">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control/Narrative Planes · Concept · ADPS</title><meta name="description" content="Separate discrete program control from the language context used for reasoning.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/concepts/control-narrative-dualism/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="page-essay page-docs">
-
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
-                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
-                <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
-                <a href="/founders/">Team</a>
-                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/concepts/" style="color: var(--color-link);">Concepts</a><a href="/research/">Research</a><a href="/positions/">Positions</a><a href="/founders/">Team</a><a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/concepts/control-narrative-dualism/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>
-
-    <main class="container content">
-      <div class="docs-layout">
+    <main class="container content"><div class="docs-layout">
         <aside class="docs-sidebar">
           <div class="sb-section">
             <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
@@ -40,7 +24,7 @@
               <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
               <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
-              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
@@ -49,10 +33,10 @@
               <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
               <h4>Reasoning</h4>
               <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
-              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
               <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
               <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
-              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
               <h4>Action</h4>
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
@@ -60,20 +44,20 @@
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
-              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
-              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
               <h4>Collaboration</h4>
               <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
-              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
-              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
               <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
-              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
               <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
@@ -83,46 +67,53 @@
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">Ark · AI4MBSE</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/" class="active">Control/Narrative Dualism</a>
+              <a href="/concepts/control-narrative-dualism/" class="active">Control/Narrative Planes</a>
               <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
               <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
               <a href="/concepts/memory-envelope/">Memory Envelope</a>
               <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
               <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
             </div></div>
         </aside>
-        <div class="docs-main">
-
-        <article class="essay">
+        <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
-
             <header class="publication-head">
                 <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Control Plane and Narrative Plane: The Dualism of Execution-Type Agents</h1>
-                <p class="publication-deck">Convert the live and uncertain into the dead and controllable first — the control plane is mechanized, the narrative plane is steered.</p>
+                <h1>Control Plane and Narrative Plane: The Dualism of Execution-Type Agents</h1><p class="publication-deck">Separate discrete program control from the language context used for reasoning.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
-                    <div><dt>Version</dt><dd>v0.2</dd></div>
-                    <div><dt>Status</dt><dd>Case-derived definition</dd></div>
-                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
-                    <div><dt>Source case</dt><dd>Dongfang Yiteng execution agent</dd></div>
-                    <div><dt>Evidence class</dt><dd>Practitioner account</dd></div>
+                    <div><dt>Version</dt><dd>v0.4</dd></div>
+                    <div><dt>Definition status</dt><dd>Case-derived definition</dd></div>
+                    <div><dt>Issued</dt><dd>2026-08-02</dd></div>
+                    <div><dt>Source case</dt><dd>Dongfang Yiteng Execution Agent</dd></div>
+                    <div><dt>Case contributor</dt><dd>Bo Liang</dd></div>
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Evidence boundary:</strong> This term is defined from one production-system account. It is published for comparison and review, not presented as an industry-wide standard.</p>
-
+            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/control-narrative-dualism.png" alt="Control Plane and Narrative Plane: the dualism of execution-type agents" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
@@ -135,19 +126,13 @@
             <p>Skip the split and you pay for it. If the execution order of a business process is handed to the model as narrative context, in the hope that it runs the right steps inside a loop, the observed result is that it sometimes runs correctly and sometimes skips or repeats a step — and when it fails is neither controllable nor predictable. The root cause is that an LLM is a probabilistic model; handing deterministic control flow to it for on-the-spot judgment conflicts at the root.</p>
             <p>Dongfang Yiteng first saw these two planes at the earliest intent-recognition step: a single capability's output already separated into a control signal that drives where the program goes, and narrative content for downstream reasoning to consume. Every architectural trade-off after that was built on this line.</p>
             <h2>When you need it</h2>
-            <p>When your agent executes a chain of business steps with strict state dependencies, rather than generating content. Splitting the control plane's state further is the <a href="/concepts/unified-session-state/">unified session state and its separation of powers</a>; how the narrative plane organizes itself is <a href="/concepts/anchor-ledger-collection/">anchor, ledger, collection</a>.</p>
-
-            <div class="document-citation"><p><strong>Source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case report</a> · <a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <p>When your agent executes a chain of business steps with strict state dependencies, rather than generating content. Splitting the control plane's state further is the <a href="../unified-session-state/">unified session state and its separation of powers</a>; how the narrative plane organizes itself is <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>.</p>
+            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
-
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
             </footer>
-
-        </div>
-      </div>
-    </main>
-
+        </div></div></main>
     <script data-goatcounter="https://adps.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
     <script>

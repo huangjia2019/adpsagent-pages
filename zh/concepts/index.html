@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>概念定义 · 蓝皮书 · ADPS</title>
-    <meta name="description" content="ADPS 蓝皮书工程概念目录：用于比较企业 Agent 系统架构的案例衍生定义。">
+    <title>工程概念目录 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="ADPS 工程概念目录：从具体企业案例开始理解 Agent 架构。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/concepts/">
@@ -19,14 +19,15 @@
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/concepts/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -85,7 +86,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · SysML 建模 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · AI4MBSE</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -96,7 +97,7 @@
               <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">ReAct Scratchpad</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
               <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
@@ -104,6 +105,16 @@
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
               <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
               <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -114,37 +125,58 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书</p>
                 <h1>工程概念目录</h1>
-                <p class="publication-deck">用于比较执行型 Agent 架构的案例衍生定义。</p>
+                <p class="publication-deck">从具体案例中提炼，用于比较 Agent 系统的工程语言。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
-                    <div><dt>概念条目</dt><dd>13</dd></div>
-                    <div><dt>主要来源</dt><dd>东方屹腾案例报告</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-08-02</dd></div>
+                    <div><dt>概念条目</dt><dd>23</dd></div>
+                    <div><dt>来源</dt><dd>3 份企业案例报告</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>范围：</strong>收录表示该术语有工程解释价值，不表示它已经成为行业标准。</p>
+            <p class="publication-note"><strong>范围：</strong>收录表示这个术语已有可说清的工程机制和来源，不表示它已成为行业标准。</p>
 
-            <p>本目录定义 ADPS 案例报告中使用的工程术语。每个条目说明机制、对应的失败方式与适用条件。当前定义源于 <a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>，在获得更多独立案例印证前保持“案例衍生”状态。</p>
-            <ul style="list-style: none; margin: 1.25rem 0 1.5rem 0; padding: 0;">
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="control-narrative-dualism/" style="font-weight: 600; font-size: 1.02rem;">控制平面与叙事平面</a><span style="color: var(--color-text-muted);"> — 控制信号驱动程序分支，叙事上下文为模型推理提供语义输入。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="execution-vs-content/" style="font-weight: 600; font-size: 1.02rem;">执行型与内容生成型 Agent</a><span style="color: var(--color-text-muted);"> — 按交付对象、状态依赖和错误成本选择运行时机制。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="unified-session-state/" style="font-weight: 600; font-size: 1.02rem;">会话统一状态：三个状态平面</a><span style="color: var(--color-text-muted);"> — SessionNarrative、SessionState 和 Workspace 分别管理语义、参数与调度。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="mechanical-state-plane/" style="font-weight: 600; font-size: 1.02rem;">机械状态平面与 Provenance 来源坐标</a><span style="color: var(--color-text-muted);"> — 业务参数由程序按来源坐标传递，不经模型重新生成。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="anchor-ledger-collection/" style="font-weight: 600; font-size: 1.02rem;">锚、账、集：叙事状态的数据结构</a><span style="color: var(--color-text-muted);"> — Anchor 保存目标，Ledger 追加事实，Collection 提供当前读取视图。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="scratchpad/" style="font-weight: 600; font-size: 1.02rem;">Scratchpad：ReAct 的工作记忆</a><span style="color: var(--color-text-muted);"> — Thought、Action 和 Observation 以 block 形式追加，供下一轮读取。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="memory-envelope/" style="font-weight: 600; font-size: 1.02rem;">记忆信封：推理步骤的上下文包</a><span style="color: var(--color-text-muted);"> — ReasonContext 按步骤组装目标、进展、意图结论和相关经验。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="layered-memory/" style="font-weight: 600; font-size: 1.02rem;">L1/L2/L3 分层记忆与经验召回</a><span style="color: var(--color-text-muted);"> — 当前输入、任务事实和跨任务经验分层存储，完整事实按引用加载。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="orchestrator/" style="font-weight: 600; font-size: 1.02rem;">Orchestrator 与 MessageHandler 的职责边界</a><span style="color: var(--color-text-muted);"> — Orchestrator 管理控制流，MessageHandler 负责输入适配和流式呈现。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="intent-as-compilation/" style="font-weight: 600; font-size: 1.02rem;">意图编译：从自然语言到控制信号</a><span style="color: var(--color-text-muted);"> — 入口分类器输出有限枚举，异常结果进入 unknown 兜底。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="task-dag-state-machine/" style="font-weight: 600; font-size: 1.02rem;">任务 DAG 与节点状态机</a><span style="color: var(--color-text-muted);"> — 依赖边限定执行顺序，节点状态支持调度、验收和恢复。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="observability-glass-dome/" style="font-weight: 600; font-size: 1.02rem;">可观测性：活动事件与执行时间线</a><span style="color: var(--color-text-muted);"> — Activity 与 Frame 关联模型、工具、状态变化、耗时和成本。</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.6;"><a href="hitl-block-resume/" style="font-weight: 600; font-size: 1.02rem;">HITL：阻塞、审批与恢复</a><span style="color: var(--color-text-muted);"> — 敏感节点暂停并保存状态，审批后重新校验并继续执行。</span></li>
+            <p>这个目录不要求读者先懂行业术语。请先按案例阅读：看懂任务、失败和交付结果，再进入单个概念页。</p>
+            <p>“案例命名”来自具体实践；“ADPS 重述”借助既有软件工程语言重新界定；“候选概念”还需要更多独立案例验证。</p>
+            <h2>东方屹腾 · 长程执行型 Agent</h2>
+            <p>薪酬配置跨越多个依赖步骤。系统要保住原目标、当前进度、参数来源和审批位置。 <a href="/zh/cases/liangbo-execution-agent/">先读案例报告</a></p>
+            <ul style="list-style:none; margin:1.1rem 0 1.7rem; padding:0;">
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="control-narrative-dualism/" style="font-weight:600; font-size:1.02rem;">控制平面与叙事平面</a><span style="color:var(--color-text-muted);"> — 控制信号驱动程序分支，叙事上下文为模型推理提供语义输入。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="execution-vs-content/" style="font-weight:600; font-size:1.02rem;">执行型与内容生成型 Agent</a><span style="color:var(--color-text-muted);"> — 按交付对象、状态依赖和错误成本选择运行时机制。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="unified-session-state/" style="font-weight:600; font-size:1.02rem;">会话统一状态：三个状态平面</a><span style="color:var(--color-text-muted);"> — SessionNarrative、SessionState 和 Workspace 分别管理语义、参数与调度。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="mechanical-state-plane/" style="font-weight:600; font-size:1.02rem;">机械状态平面与 Provenance 来源坐标</a><span style="color:var(--color-text-muted);"> — 业务参数由程序按来源坐标传递，不经模型重新生成。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="anchor-ledger-collection/" style="font-weight:600; font-size:1.02rem;">锚、账、集：叙事状态的数据结构</a><span style="color:var(--color-text-muted);"> — Anchor 保存目标，Ledger 追加事实，Collection 提供当前读取视图。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="scratchpad/" style="font-weight:600; font-size:1.02rem;">草稿纸看板：Agent 的短期工作面</a><span style="color:var(--color-text-muted);"> — 用结构化字段保存当前目标、步骤、观察、阻塞、证据和下一动作。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="memory-envelope/" style="font-weight:600; font-size:1.02rem;">记忆信封：推理步骤的上下文包</a><span style="color:var(--color-text-muted);"> — ReasonContext 按步骤组装目标、进展、意图结论和相关经验。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="layered-memory/" style="font-weight:600; font-size:1.02rem;">L1/L2/L3 分层记忆与经验召回</a><span style="color:var(--color-text-muted);"> — 当前输入、任务事实和跨任务经验分层存储，完整事实按引用加载。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="orchestrator/" style="font-weight:600; font-size:1.02rem;">Orchestrator 与 MessageHandler 的职责边界</a><span style="color:var(--color-text-muted);"> — Orchestrator 管理控制流，MessageHandler 负责输入适配和流式呈现。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="intent-as-compilation/" style="font-weight:600; font-size:1.02rem;">意图编译：从自然语言到控制信号</a><span style="color:var(--color-text-muted);"> — 入口分类器输出有限枚举，异常结果进入 unknown 兜底。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="task-dag-state-machine/" style="font-weight:600; font-size:1.02rem;">任务 DAG 与节点状态机</a><span style="color:var(--color-text-muted);"> — 依赖边限定执行顺序，节点状态支持调度、验收和恢复。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="observability-glass-dome/" style="font-weight:600; font-size:1.02rem;">可观测性：活动事件与执行时间线</a><span style="color:var(--color-text-muted);"> — Activity 与 Frame 关联模型、工具、状态变化、耗时和成本。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="hitl-block-resume/" style="font-weight:600; font-size:1.02rem;">HITL：阻塞、审批与恢复</a><span style="color:var(--color-text-muted);"> — 敏感节点暂停并保存状态，审批后重新校验并继续执行。</span></li>
+            </ul>
+            <h2>玄宿科技 · GIS 数据发布 Agent</h2>
+            <p>一份地图数据要经过处理、发布和用户侧验收。内部日志报成功，不代表用户已经看到结果。 <a href="/zh/cases/xuanxu-gis-agent/">先读案例报告</a></p>
+            <ul style="list-style:none; margin:1.1rem 0 1.7rem; padding:0;">
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="reasoning-assetization/" style="font-weight:600; font-size:1.02rem;">推理资产化</a><span style="color:var(--color-text-muted);"> — 设计期形成可审阅、可认证的能力资产，运行期消费指定版本。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="disk-fact-plane/" style="font-weight:600; font-size:1.02rem;">磁盘事实平面</a><span style="color:var(--color-text-muted);"> — 以版本化外置合同承载阶段事实、运行状态和验收证据。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="external-acceptance-probe/" style="font-weight:600; font-size:1.02rem;">外部验收探针</a><span style="color:var(--color-text-muted);"> — 从用户一侧发出真实请求，以状态、内容和可见结果裁决成功。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="failure-to-rule-loop/" style="font-weight:600; font-size:1.02rem;">失败到规则闭环</a><span style="color:var(--color-text-muted);"> — 事故卡回链规则、默认值、约束或测试，并由后续同类任务验证。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="capability-certification-lifecycle/" style="font-weight:600; font-size:1.02rem;">能力认证生命周期</a><span style="color:var(--color-text-muted);"> — 能力按 draft、candidate、active 逐步取得运行权，版本漂移后自动失效。</span></li>
+            </ul>
+            <h2>Ark · 雅格 · AI4MBSE</h2>
+            <p>自然语言最终要改动共享的工程模型。动手之前，系统必须先说清对象、关系、写入范围和验收条件。 <a href="/zh/cases/ark-mbse-agent/">先读案例报告</a></p>
+            <ul style="list-style:none; margin:1.1rem 0 1.7rem; padding:0;">
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="typed-ir-chain/" style="font-weight:600; font-size:1.02rem;">类型化中间表示链</a><span style="color:var(--color-text-muted);"> — 自然语言逐段收敛为可验证、带类型和稳定引用的候选结构。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="one-diagram-unit-of-work/" style="font-weight:600; font-size:1.02rem;">单图事务</a><span style="color:var(--color-text-muted);"> — 一种图、一个已解析范围、一次写入和一份回执构成提交边界。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="structural-writeback-gate/" style="font-weight:600; font-size:1.02rem;">结构写回门禁</a><span style="color:var(--color-text-muted);"> — 候选结构通过范围、类型、引用、完整性和真实增量检查后才能写入。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="resumable-clarification-job/" style="font-weight:600; font-size:1.02rem;">可续跑澄清作业</a><span style="color:var(--color-text-muted);"> — 缺少信息时冻结同一作业，保存已确认字段、候选项和恢复游标。</span></li>
+                <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="vocabulary-equivalence-layer/" style="font-weight:600; font-size:1.02rem;">词表等价层</a><span style="color:var(--color-text-muted);"> — 以版本化映射对齐规划词表、领域类型和宿主元模型。</span></li>
             </ul>
 
             <div class="document-citation">
-                <p><strong>版本：</strong>企业 Agent 系统蓝皮书 v0.3，2026-07-30。</p>
+                <p><strong>版本：</strong>ADPS 工程概念目录 v0.4，2026-08-02。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

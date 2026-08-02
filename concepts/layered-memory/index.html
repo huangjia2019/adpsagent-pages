@@ -1,37 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L1/L2/L3 Layered Memory and Experience Recall · Concept · ADPS</title>
-    <meta name="description" content="L3 stores semantic lesson summaries plus ids back to L2 facts; recall only at major boundaries, like OS memory paging.">
-    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://adpsagent.com/concepts/layered-memory/">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
-    <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layered Memory L1/L2/L3 · Concept · ADPS</title><meta name="description" content="Separate current input, task facts, and cross-task experience, with references back to source records.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/concepts/layered-memory/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="page-essay page-docs">
-
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
-                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
-                <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
-                <a href="/founders/">Team</a>
-                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/concepts/" style="color: var(--color-link);">Concepts</a><a href="/research/">Research</a><a href="/positions/">Positions</a><a href="/founders/">Team</a><a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/concepts/layered-memory/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>
-
-    <main class="container content">
-      <div class="docs-layout">
+    <main class="container content"><div class="docs-layout">
         <aside class="docs-sidebar">
           <div class="sb-section">
             <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
@@ -40,7 +24,7 @@
               <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
               <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
-              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi Modal Fusion</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
@@ -49,10 +33,10 @@
               <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
               <h4>Reasoning</h4>
               <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
-              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity Based Routing</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
               <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
               <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
-              <a href="/patterns/r5-talker-reasoner/">R5 Talker Reasoner <span class="ext">ext</span></a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
               <h4>Action</h4>
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
@@ -60,20 +44,20 @@
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
-              <a href="/patterns/f1-generator-critic/">F1 Generator Critic</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
-              <a href="/patterns/f4-self-heal-loop/">F4 Self Heal Loop</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
               <h4>Collaboration</h4>
               <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
-              <a href="/patterns/c2-fan-out-gather/">C2 Fan out Gather</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
-              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
               <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
-              <a href="/patterns/g2-blast-radius-control/">G2 Blast Radius Control</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
               <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
@@ -83,46 +67,53 @@
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">Ark · AI4MBSE</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Dualism</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
               <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Separation of Powers</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
               <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor · Ledger · Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
               <a href="/concepts/memory-envelope/">Memory Envelope</a>
               <a href="/concepts/layered-memory/" class="active">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator & Facade</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
               <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG & State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Observability · Glass Dome</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block-Resume</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
             </div></div>
         </aside>
-        <div class="docs-main">
-
-        <article class="essay">
+        <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
-
             <header class="publication-head">
                 <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Engineering Concept</p>
-                <h1>L1/L2/L3 Layered Memory and Experience Recall</h1>
-                <p class="publication-deck">L3 stores semantic lesson summaries plus ids back to L2 facts; recall only at major boundaries, like OS memory paging.</p>
+                <h1>L1/L2/L3 Layered Memory and Experience Recall</h1><p class="publication-deck">Separate current input, task facts, and cross-task experience, with references back to source records.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
-                    <div><dt>Version</dt><dd>v0.2</dd></div>
-                    <div><dt>Status</dt><dd>Case-derived definition</dd></div>
-                    <div><dt>Issued</dt><dd>2026-07-13</dd></div>
-                    <div><dt>Source case</dt><dd>Dongfang Yiteng execution agent</dd></div>
-                    <div><dt>Evidence class</dt><dd>Practitioner account</dd></div>
+                    <div><dt>Version</dt><dd>v0.4</dd></div>
+                    <div><dt>Definition status</dt><dd>Case-derived definition</dd></div>
+                    <div><dt>Issued</dt><dd>2026-08-02</dd></div>
+                    <div><dt>Source case</dt><dd>Dongfang Yiteng Execution Agent</dd></div>
+                    <div><dt>Case contributor</dt><dd>Bo Liang</dd></div>
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Evidence boundary:</strong> This term is defined from one production-system account. It is published for comparison and review, not presented as an industry-wide standard.</p>
-
+            <p class="publication-note"><strong>How to read this page:</strong> Start with the incident, then use the name for the mechanism behind it. The definition status above states its current maturity; publication supports comparison and review, not standardization.</p>
             <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
 
             <p><img src="/images/concepts/en/layered-memory.png" alt="L1/L2/L3 Layered Memory and Experience Recall" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
@@ -133,19 +124,13 @@
             <p>What it avoids is two opposite kinds of waste. One is keeping all historical detail resident in the context, which once the chain grows long will exceed the prompt's capacity limit and drive up the cost of every step. The other is compressing experience into summaries to save context, which then loses the original facts needed for review. Paging-style access strikes a balance between the two: retrieval works only on lightweight summaries, and the original detail is read on demand by id.</p>
             <p>You can see how L3 helps in Dongfang Yiteng's payroll-setup scenario. If a scenario has previously been found to be solvable with a certain skill, this round of reasoning can converge quickly on the strength of a similar past experience, which amounts to a check against a familiar task of the same kind. Conversely, if an interface call in some intermediate step has failed before, this task's planning can first call a health-check interface to confirm that API has recovered, and only then orchestrate the later execution, sparing a heavyweight scenario from running its prior tasks for nothing. There is also a discipline for putting this into practice: L3 recall is expensive, so do not recall it at every reasoning step; recall it only at the large reasoning entry points — the first reasoning step of a reasoning chain, the first reasoning step of ReAct, and when planning the execution of a task. These are the entry points that most need full reference information, and if the first step is done right under more complete information, the later steps are more likely to follow correctly.</p>
             <h2>When you need it</h2>
-            <p>When your agent has to accumulate experience across tasks and you do not want historical detail to blow up the context of every step, you need to layer memory by lifespan and use, keeping lightweight summaries resident and recalling original detail on demand. Its summaries come from the continually distilled progress in <a href="/concepts/anchor-ledger-collection/">anchor, ledger, collection</a>, and the package actually injected into the model at each step is assembled by the <a href="/concepts/memory-envelope/">memory envelope</a>.</p>
-
-            <div class="document-citation"><p><strong>Source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case report</a> · <a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <p>When your agent has to accumulate experience across tasks and you do not want historical detail to blow up the context of every step, you need to layer memory by lifespan and use, keeping lightweight summaries resident and recalling original detail on demand. Its summaries come from the continually distilled progress in <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>, and the package actually injected into the model at each step is assembled by the <a href="../memory-envelope/">memory envelope</a>.</p>
+            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
-
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
             </footer>
-
-        </div>
-      </div>
-    </main>
-
+        </div></div></main>
     <script data-goatcounter="https://adps.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
     <script>

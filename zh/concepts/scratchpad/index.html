@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scratchpad：ReAct 的工作记忆 · 概念 · ADPS</title>
-    <meta name="description" content="Thought、Action 和 Observation 以 block 形式追加，供下一轮读取。">
+    <title>草稿纸看板：Agent 的短期工作面 · 概念 · ADPS</title>
+    <meta name="description" content="用结构化字段保存当前目标、步骤、观察、阻塞、证据和下一动作。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/concepts/scratchpad/">
@@ -19,14 +19,15 @@
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav">
                 <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/" style="color: var(--color-link);">案例库</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/" style="color: var(--color-link);">概念</a>
                 <a href="/zh/research/">论文</a>
                 <a href="/zh/positions/">立场</a>
                 <a href="/zh/founders/">团队</a>
                 <a href="/zh/news/">新闻</a>
                 <a href="/zh/join/">加入我们</a>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/concepts/scratchpad/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -85,7 +86,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · SysML 建模 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">Ark · 雅格 · AI4MBSE</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -96,7 +97,7 @@
               <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
               <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
               <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/" class="active">ReAct Scratchpad</a>
+              <a href="/zh/concepts/scratchpad/" class="active">草稿纸看板</a>
               <a href="/zh/concepts/memory-envelope/">记忆信封</a>
               <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
               <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
@@ -104,6 +105,16 @@
               <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
               <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
               <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -113,44 +124,48 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 工程概念</p>
-                <h1>Scratchpad：ReAct 的工作记忆</h1>
-                <p class="publication-deck">Thought、Action 和 Observation 以 block 形式追加，供下一轮读取。</p>
+                <h1>草稿纸看板：Agent 的短期工作面</h1>
+                <p class="publication-deck">用结构化字段保存当前目标、步骤、观察、阻塞、证据和下一动作。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
-                    <div><dt>版本</dt><dd>v0.3</dd></div>
-                    <div><dt>状态</dt><dd>案例衍生定义</dd></div>
-                    <div><dt>发布日期</dt><dd>2026-07-30</dd></div>
+                    <div><dt>版本</dt><dd>v0.4</dd></div>
+                    <div><dt>定义地位</dt><dd>ADPS 重述</dd></div>
+                    <div><dt>发布日期</dt><dd>2026-08-02</dd></div>
                     <div><dt>来源案例</dt><dd>东方屹腾执行型 Agent</dd></div>
-                    <div><dt>证据类型</dt><dd>一线实践者复盘</dd></div>
+                    <div><dt>案例提供</dt><dd>梁博（Bo Liang）</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>证据边界：</strong>本概念由单一生产系统案例抽象而来，供比较和公开评审使用；在获得更多独立案例印证前，不表述为行业标准。</p>
+            <p class="publication-note"><strong>怎样阅读：</strong>先看案例中发生的事，再看这个名称如何描述其中的机制。上方标出了它当前的定义地位；本页用于比较和评审，不作为行业标准。</p>
 
-            <p><img src="/images/concepts/scratchpad.png" alt="ReAct Scratchpad 工作记忆" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>概念定义</h2>
-            <p>Scratchpad 是 ReAct 循环中的短期工作记录。每一轮把 Thought、Action 和 Observation 作为一个 block 追加到链表，下一轮以已有 block 为输入继续判断。</p>
-            <pre><code class="language-text">Block[n] = Thought[n] + Action[n] + Observation[n]
-Scratchpad = Block[1..n]
+            <h2>从一个长程任务开始</h2>
+            <p>Agent 连续工作几十轮后，完整聊天记录会越来越长。当前目标、刚完成的步骤、阻塞原因和下一动作散落在历史消息里，恢复时很难迅速定位。草稿纸看板把本轮仍在使用的信息放到一个短寿命工作面上。</p>
+            <h2>定义</h2>
+            <p>草稿纸看板记录一次任务运行中的当前目标、已确认计划、当前步骤、最近观察、阻塞、证据引用和下一动作。模型与 Orchestrator 都可以读取；每个字段有明确写入者；任务结束后压缩、归档或丢弃。</p>
+            <pre><code class="language-text">ScratchpadBoard = {
+  goal,
+  accepted_plan,
+  current_step,
+  recent_observations,
+  blockers,
+  evidence_refs,
+  next_action,
+  revision
+}
 </code></pre>
-            <p>模型调用本身无状态，Scratchpad 把执行轨迹外置为可追加、可检查的数据结构。</p>
-            <h2>工程机制</h2>
-            <p>行动模块负责维护 Scratchpad：</p>
-            <ol>
-            <li>读取已完成 block 和当前目标；</li>
-            <li>生成下一步 Thought 与结构化 Action；</li>
-            <li>执行工具、检索或其他动作；</li>
-            <li>把真实回执写入 Observation；</li>
-            <li>判断继续、完成、转规划执行或转人工。</li>
-            </ol>
-            <p>工具调用留在行动模块内，以便统一执行调用前校验、结果解析和目标核对。Orchestrator 管理控制权，不直接拼接 ReAct 内部数据。</p>
-            <h2>案例用法</h2>
-            <p>在薪资组快速搭建的早期原型中，Agent 先匹配模板，把结果写入 Observation，再根据最新结果决定下一步。Scratchpad 保存每轮判断和动作，避免重复查询或遗漏已有结果。</p>
-            <p>当模板匹配、快照、导入和回滚的依赖已经明确后，系统转入任务 DAG。Scratchpad 适合记录探索过程，不负责保证严格步骤顺序，也不作为 API 参数的机械真源。</p>
-            <h2>适用条件</h2>
-            <p>当下一步依赖最新观察，且任务结构尚未完全明确时使用 Scratchpad。可提前确定依赖的流程应转入<a href="../task-dag-state-machine/">任务 DAG 与状态机</a>。长程目标和进展由<a href="../memory-envelope/">记忆信封</a>及其上游叙事状态提供。</p>
+            <p>Thought、Action 和 Observation 可以作为其中的轨迹字段。工具回执、业务 ID 和审批结果仍进入各自的事实平面，草稿纸不充当机械参数的权威来源。</p>
+            <h2>工程边界</h2>
+            <p>草稿纸适合任务结构仍在探索、下一步依赖最新观察的阶段。依赖关系稳定后，应把严格顺序迁入任务 DAG，把业务参数迁入机械状态平面，把跨任务经验迁入长期记忆。</p>
+            <p>完整聊天记录直接充当草稿纸会带来两个问题：读取面持续膨胀，写入权也不清楚。工程化实现需要固定字段、修订号、大小上限和结束策略。</p>
+            <h2>来源与谱系</h2>
+            <ul>
+            <li>初始案例：东方屹腾执行型 Agent，案例提供梁博（Bo Liang）。</li>
+            <li>历史近邻：HEARSAY-II Blackboard、ReAct 轨迹、CoALA working memory、任务看板与 checkpoint。</li>
+            <li>ADPS 整理：把短期推理轨迹扩展为模型、运行时和人工审核共享的可检查工作面。</li>
+            <li>定义地位：ADPS 重述。</li>
+            </ul>
 
             <div class="document-citation">
-                <p><strong>来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>。</p>
+                <p><strong>初始来源：</strong><a href="/zh/cases/liangbo-execution-agent/">东方屹腾执行型 Agent 案例报告</a>；案例提供：梁博（Bo Liang）。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>
