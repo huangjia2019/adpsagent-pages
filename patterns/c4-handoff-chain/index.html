@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -158,7 +158,7 @@
             <hr />
             <h2>Problem</h2>
             <p>When multi-agent systems fail, it is often not because any single agent is too weak, but because the handoff dropped the baton. A front-line agent holds all of the customer's information; when it transfers to the second tier, it passes only "the verbatim text of the customer's last sentence." The second tier picks up like a colleague who just walked in—with no idea who the customer is, why they are upset, or what has already been said—and so it asks again.</p>
-            <p>The Handoff Chain addresses the problem of passing a task sequentially across multiple agents so that each handoff loses no information, assigns clear responsibility, and remains traceable on failure. Its design center sits in a naming judgment: handoff is "handing over," not "relay." A relay is an action (running); a handoff is a state (a shift change). What truly passes between agents is not the act of running but the state the previous leg completed, and that state must be made explicitly schema-driven so it does not get lost. Human call centers solved this 30 years ago, calling it a warm handoff: a few seconds before the transfer, the outgoing agent briefs the incoming agent on the situation, then routes the call over.</p>
+            <p>The Handoff Chain passes a task sequentially across multiple agents while preserving information, responsibility, and traceability. What moves between agents is the state completed by the previous leg, and that state needs an explicit schema. Human call centers use the same idea in a warm handoff: the outgoing representative briefs the incoming one before transferring responsibility.</p>
             <h2>Classification: Collaboration × Chain</h2>
             <ul>
             <li><strong>Vertical axis · Collaboration</strong>: the output of one agent is the input of the next—relay-style multi-agent collaboration. Each leg is a peer with a clearly scoped responsibility, with no supervisor as a stable anchor—this is its biggest difference from Hierarchical Delegation.</li>
@@ -213,19 +213,19 @@
             <ul>
             <li><strong>Cold transfer</strong>: only "the user's last sentence" is passed to the next leg, which receives none of the preceding context. The signal to watch for is the customer being asked questions they have already answered immediately after the handoff, with the shift in mood from calm to frustrated coinciding with the handoff point. The fix is that the HandoffPacket must contain at least the five-layer schema.</li>
             <li><strong>Loss of decision provenance</strong>: the Artifacts all get passed along, but the why behind the decisions does not—so the next leg sees a pile of outputs without knowing on what basis the predecessor took that path, and so reruns the process or overturns the predecessor's decisions. "Artifacts survive handoff, decisions don't," unless decisions are given a dedicated schema field.</li>
-            <li><strong>Oscillation loop</strong>: the same pair of agents hands back and forth repeatedly; L2 thinks L1 should handle it and kicks it back, L1 kicks it back again, and after 8 hops it is still in place. The fix is to set a hard chain-length cap (3-4 legs, beyond which it forcibly escalates to a human), explicitly constrain can_handoff_to (L2 cannot hand back to L1), and record a visited set.</li>
+            <li><strong>Oscillation loop</strong>: the same pair of agents hands back and forth repeatedly. Set a hard chain-length cap from the role graph and SLA, constrain <code>can_handoff_to</code>, record a visited set, and escalate when the cap is reached.</li>
             <li><strong>Over-handoff</strong>: by default an LLM tends to over-hand off, wanting to kick anything slightly difficult to the next agent. You can add a classifier before the handoff to examine "is this handoff reasonable, or should I finish it myself."</li>
-            <li><strong>Misuse on short tasks or without clear roles</strong>: for tasks that take 30 seconds overall, for "general assistant" scenarios that are essentially single-agent, and for real-time conversations sensitive to latency, the cost of handoff becomes a burden instead. Scenarios with high loop risk should use Hierarchical Delegation, letting the supervisor be the anchor.</li>
+            <li><strong>Misuse on short tasks or without clear roles</strong>: Directly completable tasks, general-assistant scenarios, and latency-sensitive conversations may not justify the handoff overhead. Scenarios with high loop risk should use Hierarchical Delegation, letting the supervisor be the anchor.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Chain length in hops</strong> (healthy zone ≤ 4): the number of handoffs a single chain passes through. Beyond 4 hops it should forcibly escalate to a human; this is the key line of defense against an oscillation loop running out of control.</li>
-            <li><strong>Post-handoff repeat-question rate</strong> (healthy zone near 0): the proportion of customers asked questions they have already answered after a handoff. This is the most direct symptom of a cold transfer.</li>
-            <li><strong>Decision retention rate</strong> (healthy zone high): the proportion of the previous leg's decisions passed intact to the next leg. A low value indicates the HandoffPacket has degenerated into a raw history dump.</li>
+            <li><strong>Chain length in hops</strong>: Track handoff count and cap exhaustion. Configure the maximum from the role graph and business SLA, then escalate when reached.</li>
+            <li><strong>Post-handoff repeat-question rate</strong>: Measure how often the receiving agent asks for information already captured. This is the most direct symptom of a cold transfer.</li>
+            <li><strong>Decision retention rate</strong>: Check whether prior conclusions, reasons, and evidence arrive intact. A low value indicates that the HandoffPacket has degenerated into a raw history dump.</li>
             <li><strong>SLA attainment rate</strong> (accounted by tier): the proportion of agents at each tier completing within their SLA window, combined with sentiment carry over to monitor changes in customer mood along the escalation path.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>HandoffChain.execute(request, initial_agent, max_hops=4):
+            <pre><code>HandoffChain.execute(request, initial_agent, max_hops):
                 current, prev_packet = initial_agent, None
                 for sequence in 1..max_hops:
                     output = run_agent(current, prev_packet)   # input is a structured packet, not raw history
@@ -240,9 +240,9 @@
 
             HandoffPacket: five-layer schema (Goal / Artifacts / Decisions / Rejected Paths / Next Required)
             </code></pre>
-            <p>Four engineering points: each leg's system prompt and tool permissions are strictly tiered (the front line cannot be given refund authority); can_handoff_to explicitly lists the permitted next legs; max_hops is set to 3-4, beyond which it forcibly escalates to a human; and the audit log satisfies compliance recordkeeping for cross-leg data flow.</p>
-            <h2>Application example</h2>
-            <p>A mid-sized SaaS company used LangGraph to deploy a four-tier L1/L2/L3/Director customer support agent. It went live in June and was cut in October, triggered by a screenshot that had been forwarded 18,000 times: a customer said "the webhook isn't receiving events, 20,000 orders are stuck," the front line transferred to the second tier, and the second tier opened by asking again "what problem are you running into" and "what is your account email," to which the customer replied "I just said that" and "it's already above." The root-cause analysis concluded: in the four-tier architecture, every handoff point opens a fresh session, and the previous leg passes only the verbatim text of the customer's last sentence. This was not a technical bug; it was a design choice, made on the original belief that "the next one doesn't need to see what the previous one handled, it saves tokens." The fix was to package a five-layer HandoffPacket at each handoff: customer need, KBs already checked and scripts already run, decisions made including the why, directions already ruled out, and the next action—combined with model tiering (Haiku on the front line for volume, Opus in the engineering layer for complex cases), progressive tool permissions (read-only on the front line, only the Director able to approve refunds), and a chain-length cap of 4 legs, beyond which it escalates to a human. Another landing worth citing is handing control back from an execution-type agent: when a ReAct agent judges the current decision type to be plan (or when a Skill contract stipulates PlanExecute), it does not execute downward itself but uses a handoff to return control to the orchestrator, which decides the subsequent orchestration—applying the Handoff Chain to control-flow handover inside the agent, not only to user-facing tiered support.</p>
+            <p>Production implementation tiers system prompts and tool permissions by role; <code>can_handoff_to</code> lists permitted receivers; <code>max_hops</code> follows the role graph and SLA; and the audit log records data and responsibility moving across agents.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a SaaS support system that passes cases through triage, technical, engineering, and supervisory roles. A first version forwards only the customer's last message, forcing each receiver to ask again for the problem and account context. A stronger HandoffPacket carries the customer's goal, checked knowledge and scripts, decisions with their rationale, rejected paths, and the next required action. Models and tool permissions vary by role, and cap exhaustion sends the case to a human. The same mechanism can return control from an execution agent to an orchestrator when the current decision requires replanning.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Prompt Chaining (Action module)</strong>: a same-origin dual. Prompt Chaining is a single agent chaining multiple prompts (context carries forward naturally); the Handoff Chain is multiple agents passing explicit state across sessions (which must be made schema-driven). The key difference is whether context needs to be made explicitly schema-driven.</li>
@@ -251,7 +251,7 @@
             <li><strong>Sub-Agent Isolation (C5)</strong>: the Handoff Chain focuses on explicit state passing across legs, while Sub-Agent Isolation focuses on the context boundary of a sub-agent; their concerns differ, but both bear on the design of information flow between agents.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The engineering essence of the Handoff Chain is not data passing but <strong>turning a human organizational process that has existed in enterprises for 30 years into an engineering structure that agents can execute</strong>—it wins where all five schema layers are engineered, and it loses where one only dumps conversation history and pretends that counts as a handoff.</p>
+            <p>The Handoff Chain uses a structured contract to pass goals, state, evidence, decisions, and responsibility. A raw conversation dump does not guarantee that the receiver knows the next action or its acceptance condition.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C4 Handoff Chain</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

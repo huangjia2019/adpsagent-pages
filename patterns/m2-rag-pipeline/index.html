@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,8 +157,8 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>An enterprise knowledge base routinely holds hundreds of thousands of documents plus a history of tickets, and no LLM context window can fit all of it. But the agent cannot answer "I don't know" for that reason. On each question it needs to pick, out of a vast corpus, the few most relevant documents and temporarily place them into context. This is what RAG addresses: pulling in facts that live outside the input, on demand.</p>
-            <p>By 2026, the engineering difficulty of production-grade RAG is no longer "can it find anything" but "does it know how to search." Naive RAG is one query, one return, whereas RAG that actually ships to production lets the agent drive multi-step retrieval—if the first batch of results is unsatisfactory it rewrites the query and searches again, when it finds a candidate answer it actively looks for counterexamples to verify, and it cross-compares across multiple corpora.</p>
+            <p>An enterprise knowledge base can contain far more documents and tickets than an LLM context window can hold. For each task, the system must select relevant evidence from that corpus and place it temporarily in context. RAG provides this on-demand path to facts outside the input.</p>
+            <p>Production RAG also has to decide how to search. A one-shot query is often insufficient. The agent may need to rewrite the query, retrieve counterexamples, and compare evidence across corpora before composing an answer.</p>
             <h2>Classification: Memory × Chain</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: RAG is an attached knowledge base that pulls in facts outside the input. At its core it is about "which facts to record and how to recall them," which belongs to the part of the memory module that manages declarative knowledge.</li>
@@ -168,7 +168,7 @@
             <ol>
             <li><strong>Two pipelines meet at the vector store</strong>: RAG is not a single step. The offline side chunks documents, embeds them, and builds the index; the online side embeds the query, retrieves top-K, reranks, and injects into generation. The two independent pipelines share one vector store.</li>
             <li><strong>Hybrid retrieval</strong>: Embeddings are good at semantics ("ACME earnings report" ≈ "ACME performance"), but exact keywords (product names, error codes, specific IDs) are often missed. Combine semantic retrieval with BM25 keyword retrieval, then fuse with RRF (Reciprocal Rank Fusion).</li>
-            <li><strong>Context-enhanced chunking</strong>: Once a chunk is split off, the original context anchors are lost. Prepending a short context summary (generated with a cheap model) to each chunk before embedding can significantly reduce the retrieval failure rate.</li>
+            <li><strong>Context-enhanced chunking</strong>: Once a chunk is split off, its original context anchors may be lost. A short context summary can be prepended before embedding; whether this improves recall and reranking quality must be measured on the system's own retrieval evaluation set.</li>
             <li><strong>Agent-driven multi-step retrieval</strong>: Upgrade RAG from a one-shot pipeline to an agent-driven process—decompose sub-queries, iteratively rewrite, find counterexamples, triangulate across corpora, and synthesize weighted by evidence strength. This is the engineered version of a human researcher's methodology.</li>
             <li><strong>A hard iteration ceiling</strong>: Multi-step retrieval must have a hard ceiling, otherwise the agent will keep feeling "it isn't enough yet" and retrieve continuously.</li>
             </ol>
@@ -176,22 +176,22 @@
             <ul>
             <li><strong>Large-scale natural-language knowledge bases</strong>: academic literature reviews, legal case libraries, customer-service FAQs. Large volume, containing synonyms and implicit relationships, relatively stable, public or semi-public—these are the best scenarios for RAG.</li>
             <li><strong>Complex queries across many documents</strong>: scenarios that need answers synthesized from multiple sources and that need traceable citations.</li>
-            <li><strong>Organizing enterprise know-how</strong>: organizing the knowledge scattered across wikis, Confluence, Slack, email, and tickets into a form the agent can retrieve in five minutes. This is RAG's real proposition for enterprise deployment.</li>
+            <li><strong>Organizing enterprise know-how</strong>: Govern knowledge scattered across wikis, Confluence, Slack, email, and tickets so the agent can retrieve it with provenance and access controls.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Deploying RAG before governing the knowledge source</strong>: 90% of enterprise RAG failures are rooted not in technology but in the knowledge itself never having been organized—the wiki holds many documents that contradict each other, key decisions are not in any document, all the versions are outdated, and the same concept has several names. Embedding garbage into vectors and retrieving it back is still garbage, and worse than not doing RAG at all. Do ontology and knowledge governance before building enterprise RAG.</li>
+            <li><strong>Deploying RAG before governing the knowledge source</strong>: Contradictory documents, missing decisions, stale versions, and inconsistent terminology survive vectorization. Establish ownership, ontology, versioning, and source policy before relying on retrieval.</li>
             <li><strong>Forcing RAG where Agentic Search belongs</strong>: dev workflows, code search, and internal sensitive data—these three categories mostly should not use RAG. Code changes by the minute, and a just-written function cannot be found before it is indexed (data latency); the index itself is an attack surface, and a malicious insider may peek beyond their authorization (a security hazard). Such scenarios should use grep- and glob-based Agentic Search.</li>
             <li><strong>Stopping at one query, one answer</strong>: when the key information is not found on the first try, naive RAG either says it doesn't know or silently fabricates. Production-grade RAG must be able to rewrite the query and search again.</li>
-            <li><strong>Blindly chasing retrieval precision</strong>: choosing an embedding model that is a few points better is a marginal optimization; whether the agent's multi-step retrieval resembles a person who truly knows how to search is the qualitative change. Pushing chunk recall to 80% is not necessarily useful; the final synthesized quality resembling a senior researcher's is the real value.</li>
+            <li><strong>Blindly chasing retrieval precision</strong>: A higher offline embedding score does not replace query rewriting or evidence validation. Evaluate the final answer for correctness, completeness, and citation quality.</li>
             <li><strong>Untraceable citations</strong>: in academic, legal, and medical scenarios, every conclusion must trace back to the original chunk plus page number—this is a necessary condition for compliance.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Retrieval failure rate</strong> (lower is healthier): the fraction of cases where no relevant chunk appears in top-K. Stacking the three—context enhancement plus hybrid retrieval plus reranking—reduces the failure rate by about two-thirds in industrial data.</li>
-            <li><strong>Retrieval hit rate / citation rate</strong> (healthy zone ≥ 70%): the fraction of retrieved chunks actually cited by the agent. Too low indicates noisy recall or a query written too broadly.</li>
-            <li><strong>Number of multi-step retrieval rounds</strong> (healthy zone 3–5 rounds with a hard ceiling): the actual number of iterative retrieval rounds. Continuously hitting the ceiling indicates the task is genuinely hard or that single-pass recall is too poor.</li>
-            <li><strong>Final synthesized quality</strong> (business judgment): whether the agent's output resembles the work of a senior practitioner. This is the real criterion for judging a RAG system; reaching 70% can already change how a team works.</li>
+            <li><strong>Retrieval failure rate</strong>: The share of evaluation cases in which no relevant chunk appears among the candidates. Compare contextual chunking, hybrid retrieval, and reranking on the same evaluation set.</li>
+            <li><strong>Retrieval hit rate / citation rate</strong>: The share of retrieved chunks actually used and cited. A decline against the local baseline calls for inspection of retrieval noise, query granularity, and ranking.</li>
+            <li><strong>Number of multi-step retrieval rounds</strong>: Record actual iterations and enforce a hard ceiling. Repeatedly hitting it may indicate a task that needs decomposition, a missing source, or poor first-pass retrieval.</li>
+            <li><strong>Final synthesis quality</strong>: Domain reviewers evaluate correctness, completeness, and citation quality against an agreed rubric before the system enters production.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Offline indexing side:
@@ -200,7 +200,7 @@
             Online retrieval side (agent-driven, multi-step):
                 decompose sub-queries
                 iterative retrieval per sub-query:
-                    semantic top-150 + BM25 top-150 → RRF fusion → reranker top-20
+                    semantic candidates + BM25 candidates → RRF fusion → rerank to context_budget
                     agent assesses whether it is enough → if not, rewrite query and search again (up to N rounds)
                 form hypothesis → negate it as a new query to find counterexamples
                 triangulate across multiple corpora (weight chunks that appear in several groups)
@@ -208,8 +208,8 @@
             return answer + evidence + counter_evidence + full trace (with traceable citations)
             </code></pre>
             <p>Four points for engineering deployment: the retriever layer does context enhancement plus hybrid retrieval plus reranking; set a hard ceiling on max_iterations plus a hard ceiling on the token budget; the trace records every retrieval in full; citations must be traceable to the original document plus page number.</p>
-            <h2>Application example</h2>
-            <p>A research institution's academic literature-review agent had to answer arbitrary researcher questions over a million-paper library. The first version used keyword retrieval and returned five thousand papers already read; switching to embeddings returned only the 2018–2020 "classics." After a rewrite, all five canonical patterns were on: decompose sub-queries, iteratively refine, negate hypotheses to find counterexamples, triangulate across arXiv plus bioRxiv plus PubMed, and synthesize weighted by evidence strength. Six business decisions accompanied this—corpora kept in separate stores but not separate tables (peer-reviewed weight 1.5, preprint 1.0, unpublished 0.5), time-decay weighting (half-life 18 months), counterexample retrieval forced on, citations at the chunk level, and an author-relationship graph across corpora. After deployment the agent returned a precise twenty papers plus five counterexamples plus three implicitly related ones, each with a traceable citation; a researcher's review went from six hours down to an hour and a half, with higher quality.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider an academic literature-review agent. Keyword search produces a broad candidate set, while embedding-only retrieval overconcentrates on established topic clusters and misses newer cross-disciplinary work or counterexamples. A later design decomposes the question, rewrites queries, retrieves counterevidence, and validates across arXiv, bioRxiv, and PubMed. Peer-reviewed papers, preprints, and internal material remain in governed corpora with locally calibrated evidence weights. Every claim points to the source chunk, page, and version. The value lies in the evidence chain and index governance, not in an unsupported recall-improvement figure.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Layered Retention (M1)</strong>: M1 addresses "how long-term, already-known memory is loaded by scope," while RAG addresses "how to look up, on demand, the vast knowledge that the scope cannot hold." Layering manages the known; RAG manages the attached.</li>

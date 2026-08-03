@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -192,23 +192,23 @@
             <ul>
             <li><strong>层数与作用域不匹配</strong>：直接采用 CoALA 的 working / episodic / semantic 三层，而产品实际只有两个作用域，会增加无效存储和路由逻辑。层数应与产品中的作用域种类一致。</li>
             <li><strong>用户层缺少 schema</strong>：如果 Agent 用自由文本记录“小李会装饰器”，同一概念会逐渐产生多种写法，降低 retrieval 命中率。高频字段应使用 typed schema。</li>
-            <li><strong>全部按启动注入设计</strong>：用户层和项目层是启动注入，会话层是渐进读取，临时层是实时拼装。三种 access pattern 混成一种，会话层积累几十轮后 token 会爆炸。</li>
+            <li><strong>全部按启动注入设计</strong>：用户层和项目层适合启动注入，会话层适合渐进读取，临时层适合实时拼装。三种 access pattern 混成一种后，会话越长，历史内容越容易挤占当前任务的上下文预算。</li>
             <li><strong>完全无状态的场景强行分层</strong>：单次问答、一次性 ETL 转换不需要跨会话记忆。</li>
             <li><strong>eviction 不留 reason log</strong>：合规（GDPR right-to-be-forgotten）和 debug 都要求能证明"删了什么、为什么删、什么时候删"，没有日志就证明不了。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>Working set 命中率</strong>（健康区 ≥ 80%）：Agent 推理所需记忆进入 prompt 的比例。低于 30% 说明分层或加载策略未起作用。</li>
+            <li><strong>Working set 命中率</strong>：Agent 推理所需记忆进入 prompt 的比例。应按任务类型建立本地基线，并结合遗漏证据判断分层或加载策略是否有效。</li>
             <li><strong>每层 token 占比</strong>（按预算分配）：各层加载到 prompt 的 token 是否在预算内。某层持续超预算，说明该层需要截断或下沉到按需加载。</li>
-            <li><strong>跨层污染率</strong>（健康区接近 0）：是否出现用户层被单次会话信息污染或租户之间串数据。多租户系统应将其作为高优先级安全指标。</li>
-            <li><strong>启动 token 总量</strong>（对照基线衡量）：相比"全 history dump"省了多少。分层做对通常能省 70-80% 启动 token。</li>
+            <li><strong>跨层污染事件</strong>：是否出现用户层被单次会话信息污染或租户之间串数据。多租户系统应将任何此类事件按安全事故处理。</li>
+            <li><strong>启动 token 总量</strong>：与未分层的历史加载基线比较，同时检查关键信息是否仍然可见。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>定义层级（作用域从粗到细）：
     USER    → 永久 / 高频读 / 强 schema / 关系库
     PROJECT → 永久 / 团队共享 / 文件系统 + git
-    SESSION → TTL 24h / 高频读写 / Redis
-    TURN    → TTL 5min / 极高频 / 内存字典
+    SESSION → session_ttl / 高频读写 / Redis
+    TURN    → turn_ttl / 极高频 / 内存字典
 
 写入：按层选 backend，记 last_modified
 读取：从细到粗查，内层命中即返回（内层覆盖外层）
@@ -216,8 +216,8 @@
 淘汰：过期内容清除并记 reason log（合规 + debug）
 </code></pre>
             <p>生产实现应按访问特征选择各层后端；组装 context 时按 token budget 截断；写入时由规则或小模型确定目标层；eviction 记录 reason log。</p>
-            <h2>应用示例</h2>
-            <p>某薪酬 SaaS 的执行型 Agent 采用三层记忆。L1 保存当前步骤所需的最小信息集；L2 保存里程碑日志，包括任务进度和刚完成的动作；L3 保存跨任务可复用的判断和流程。三层分别覆盖当前步骤、当前任务和跨任务三个时间尺度。每层有独立的 token 预算，L1 在运行时组装，L3 写入前执行信任校验，避免单次偶然信息进入长期记忆。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个薪酬 SaaS 的执行型 Agent 采用三层记忆。L1 保存当前步骤所需的最小信息集；L2 保存里程碑日志，包括任务进度和刚完成的动作；L3 保存跨任务可复用的判断和流程。三层分别覆盖当前步骤、当前任务和跨任务三个时间尺度。每层有独立的 token 预算，L1 在运行时组装，L3 写入前执行信任校验，避免单次偶然信息进入长期记忆。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>进度追踪（M3）</strong>：Todo list 位于高频更新的会话层，每轮推理都需要读取。</li>

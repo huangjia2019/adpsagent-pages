@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,7 +157,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>A single prompt that tries to do everything at once usually does none of it well. The first version of one financial media outlet's content-editing agent put seven things—proofreading, rewriting, unifying style, fact-checking numbers, generating headlines, writing summaries, and image suggestions—into one prompt fed to the model. The result was that "GMV grew 35%" in an article got changed to 53%: at that moment the model was in "rewrite" mode rather than "fact-check" mode, and it misread the number along the way. The later tasks got increasingly careless, and the image suggestions were always the same three boilerplate lines.</p>
+            <p>A single prompt that handles proofreading, rewriting, style, number checking, headlines, summaries, and image suggestions makes several constraints compete for attention. A rewrite step may alter a figure from the source, and later steps then propagate the error.</p>
             <p>Prompt Chaining breaks a large task into several independent prompts processed in sequence. Each segment does only one thing, has its own role and the model best suited to it, and has its own success criterion. The difference from a single oversized prompt is that complexity can only be brought down by splitting; stuffing it into a bigger box does not bring it down.</p>
             <h2>Classification: Action × Chain</h2>
             <ul>
@@ -166,33 +166,33 @@
             </ul>
             <h2>Solution and mechanics</h2>
             <p>Its engineering prototype is the Unix pipe. <code>cat data.csv | grep ERROR | sort | uniq -c</code> strings together several single-responsibility small programs via stdin/stdout. Each program only reads input and writes output, with no need to know who comes before or after. A prompt chain reproduces the same thing at the LLM layer, where each prompt segment is a "small program."</p>
-            <p>The extra layer beyond the Unix pipe is the gate. A Unix program simply runs empty when it matches nothing, but an LLM will confidently make things up, so a cheap programmatic check goes between two segments—not a model, but a Python <code>if</code> test—and on failure it retries or escalates. If the researcher stage writes "find at least three references," the gate is <code>if len(refs) &lt; 3</code>, and only what passes flows on.</p>
+            <p>The extra layer beyond the Unix pipe is the gate. A programmatic check sits between stages and retries or escalates on failure. In a research chain, for example, the gate can validate topic coverage, source type, and traceability against project policy before allowing the next stage to run.</p>
             <p>A few points for implementation:</p>
             <ul>
-            <li><strong>Each prompt segment uses the five-piece structure</strong>: role, task, context, format, constraints, all wrapped in XML tags. The more explicit the contract for the next segment, the lower the parse failure rate, and reliability can be measured improving by roughly 8 to 15 points.</li>
-            <li><strong>Each segment selects its model independently</strong>: a cheap model handles details in proofreading, a strong model handles creative rewriting, and a medium model with thinking handles number checking. Handing language details to a cheap model keeps total cost only about 30% above the single-prompt version, rather than several times higher from using a strong model at every step.</li>
-            <li><strong>Gates need tolerance</strong>: writing "exactly 500 words" makes the chain stall forever; write it as a range plus necessary conditions, such as "450 to 550 words" plus "must contain three arguments."</li>
+            <li><strong>Each prompt segment uses an explicit contract</strong>: role, task, context, format, and constraints can be represented with structured tags so the next step can validate the output.</li>
+            <li><strong>Each segment selects its model independently</strong>: Proofreading, creative rewriting, and number checking may use different models and tools. Choose each model from step-level evaluation and calculate the whole-chain cost from replay.</li>
+            <li><strong>Gates need tolerance</strong>: do not require an exact word count when the business accepts a range. Express content requirements separately from length tolerance.</li>
             <li><strong>Retries should feed back the failure reason</strong>: tell the model "where it fell short last time" rather than rerunning blindly, and the hit rate goes up.</li>
             </ul>
             <p>Claude Code has produced three industrial forms of the chain: in the perceive-reason-act main loop, each tool result is a chain link (the implicit chain); a slash command is a prefabricated chain (<code>/commit</code> is a five-step template of status → diff → reasoning → drafting → commit); and SKILL.md is a composable chain segment (a declarative definition of a multi-step process embedded into a larger chain).</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>The workflow has clear stages, and "what counts as acceptable" between stages can be described in one or two lines of code</strong>: content editing, contract review, customer-ticket triage. In production, most teams end up with 3 to 5 steps.</li>
+            <li><strong>The workflow has clear stages, and acceptance between stages can be expressed with deterministic checks or a concise rubric</strong>: content editing, contract review, and customer-ticket triage.</li>
             <li><strong>Productizing the workflow into a reusable entry point</strong>: a slash command packages a domain-specific workflow into a prefabricated chain, where the user triggers the whole chain with one command instead of handwriting the steps each time.</li>
-            <li><strong>Output that needs to be traceable and trustworthy</strong>: archiving the full-chain trace lets the business side trace in reverse how the agent moved step by step from the original draft to the final draft. In the content-editing case, the trace raised editor trust from 42% to 91%, more effective than any prompt engineering.</li>
+            <li><strong>Output that needs to be traceable</strong>: A full-chain trace lets reviewers move backward from the final draft through each input, output, gate result, and human change.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Information starvation</strong>: each step only receives the previous step's output, so information that appeared in step 1 but was not retained in step 2 is lost when step 3 needs it. The chain passes only the previous step's output and does not automatically let early information flow downstream. The remedy is to carry a separate cumulative context object that every step can read (called the saga context in distributed systems).</li>
-            <li><strong>Gate tyranny</strong>: a gate set too strictly can never pass; "exactly 500 words" rejects 499 and 501 indefinitely, burning through tokens before anyone notices. The remedy is a range plus necessary conditions.</li>
-            <li><strong>The multiplicative effect is underestimated</strong>: a 95% single-step pass rate, strung across seven steps, leaves the full-chain pass rate at only about 70%. The longer the chain, the higher the requirement on each step's pass rate.</li>
+            <li><strong>Information starvation</strong>: information needed downstream can disappear during an intermediate handoff. Carry a separate cumulative context object that every step can read, similar to a saga context.</li>
+            <li><strong>Gate tyranny</strong>: brittle exact-value conditions can reject usable results indefinitely. Use business tolerances and explicit necessary conditions.</li>
+            <li><strong>The multiplicative effect is underestimated</strong>: When every step has a failure probability, adding steps lowers full-chain success. Use local step-level results to calculate chain risk and remove unnecessary links.</li>
             <li><strong>Assembly of the first prompt is overlooked</strong>: a production system prompt is usually assembled from several data sources—base instructions, user identity, history, current task, tool list, style, format constraints—and hardcoding it into one long string makes the most frequently updated part impossible to maintain independently.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Full-chain success rate</strong> (healthy zone &gt;85%): a failure to pass any step's gate counts as a chain failure. Below 70% usually means a step's gate is too strict or information broke between steps. Note that it is measured per chain, not per step.</li>
-            <li><strong>Per-step latency p99</strong> (healthy zone: each step's p99 &lt;3× the median): when the chain slows down, this distribution chart finds the lagging step fastest.</li>
-            <li><strong>Gate retry distribution</strong> (healthy zone: 90% pass on the first try, 9% on the second, 1% on the third): when a step's retry rate suddenly rises, it is almost always a mismatch between the gate and the model's current capability.</li>
+            <li><strong>Full-chain success rate</strong>: Failure at any gate counts as a chain failure. Inspect whether failures concentrate in model output, data transfer, or gate rules.</li>
+            <li><strong>Per-step latency distribution</strong>: Compare the median and tail for each step to locate a slow model, tool, or external dependency.</li>
+            <li><strong>Gate retry distribution</strong>: A sudden increase at one step calls for inspection of input drift, model changes, and gate criteria.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>chain = [step1, step2, step3]        # each step carries its own system_prompt + model + gate
@@ -210,8 +210,8 @@
             return success(current, total_tokens, trace)
             </code></pre>
             <p>Engineering points for implementation: gates carry tolerance; the trace's tokens and latency are written structured into the logging system; when needed mid-chain, actively retrieve the original input for reference (for example, number checking returns to the original draft so that versions produced by upstream rewriting do not contaminate the numbers).</p>
-            <h2>Application example</h2>
-            <p>The second version of the financial media content-editing agent was rebuilt into a seven-step chain: proofreading (cheap model, gate verifies that output length is no less than 95% of input), rewriting (strong model, preserves author style), style unification, number checking (medium model with thinking; the key design is returning to the original draft for reference, with the gate requiring numbers to match the original draft 100%), headline generation (outputs 3 candidates), summary writing, and image suggestions (all three categories required). Each step selects its model independently to control cost. The results: number-checking accuracy rose from 87% to 99.4%, editor trust rose from 42% to 91%, at the cost of per-article cost rising about 30% and latency rising from 12 seconds to 38 seconds. This template transfers directly to contract review, medical imaging assistance, and customer-service triage—each step with its own goal, its own model, its own gate.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a financial-media editing Agent that separates proofreading, rewriting, style normalization, number checking, headline generation, summarization, and image suggestions. Number checking returns to the original draft or an authoritative data source rather than trusting the rewritten text. Each step has its own schema, model choice, and gate, and the trace records where a figure was read, checked, or changed. The same structure can support contract review, medical assistance, or customer-service triage, but each domain needs its own gates.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Plan-Execute (A2)</strong>: a dual pair, one light and one heavy. A3 is a straight line, A2 is a graph. If the task can be drawn as a DAG (with parallelism and cross-step dependencies), use A2; if it is a straight line, use A3. A common hybrid form in production is A2 on the outside, A3 on the inside.</li>

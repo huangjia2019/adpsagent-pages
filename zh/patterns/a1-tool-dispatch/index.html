@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">低（与单次调用同量级，元数据开销可忽略）</td>
+            <td style="text-align: left;">低到中（取决于候选集、状态刷新和策略检查）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>工具数量增加后，选择空间和错误概率也会增加。LLM 可以填写参数和解释返回值，但工具选择还依赖状态新鲜度、并发安全性、配额和副作用。一个接入 17 个工具的物流派单 Agent 曾将 80 单分配给同一名堵在路上的司机，原因是调用前没有刷新司机状态和路况。</p>
+            <p>工具数量增加后，近义接口和重叠参数会扩大选择空间。LLM 可以填写参数和解释返回值，但一次有效 dispatch 还依赖状态新鲜度、并发安全性、配额和副作用。物流派单若在写入前没有刷新司机状态和路况，就可能反复把任务分给已经不适合接单的司机。</p>
             <p>Tool Dispatch 使用工程层契约控制工具选择。每个工具需要提供完整元数据，并配置配额、状态刷新和副作用追踪。</p>
             <h2>坐标说明：行动 × 路由</h2>
             <ul>
@@ -176,8 +176,8 @@
             <li><strong>横轴 · 路由</strong>：它的工作方式是基于当前 intent 和 context，把这一次调用导向最合适的那个工具，是典型的路由结构，而不是链式串联或层级包装。同模块的最简工具集（A5）也落在路由这一侧，但分工不同——A1 解决"怎么挑"，A5 解决"挑之前先砍"。</li>
             </ul>
             <h2>解决方案与机制</h2>
-            <p>Tool Dispatch 的选择质量受工具元数据完整度影响。早期 function calling 主要包含 name、description 和 parameters；Claude Code 的工具 schema 扩展到 14 个字段，可归入标识、动态描述、双 schema、执行特性、UI 行为、来源标记、渐进披露和生命周期八类。</p>
-            <p>其中最关键的是执行特性五字段：<code>isReadOnly</code>、<code>isConcurrencySafe</code>、<code>isDestructive</code>、<code>requiresFreshState</code>、<code>requiresApproval</code>。它们的工程哲学是默认全部为 false，也就是"不知道就当不安全"——工具实现者忘了声明，系统也会保守处理，只有显式声明只读才进并行通道、跳过确认弹窗。每一个字段都对应一条资深工程师的工具操作直觉，把人靠多年经验积累的判断编码成机器可读的契约。</p>
+            <p>Tool Dispatch 的选择质量受工具元数据完整度影响。除了 name、description 和 parameters，生产 schema 还应表达执行特性、来源、权限、渐进披露和生命周期信息。</p>
+            <p>关键执行特性可包括 <code>isReadOnly</code>、<code>isConcurrencySafe</code>、<code>isDestructive</code>、<code>requiresFreshState</code> 和 <code>requiresApproval</code>。未知值应进入保守路径：不并行、不跳过审批、不假设状态新鲜。布尔字段无法表达“未声明”时，可使用显式枚举或在注册阶段拒绝不完整 schema。</p>
             <p>围绕元数据，还要配三件工程纪律：</p>
             <table>
             <thead>
@@ -189,7 +189,7 @@
             <tbody>
             <tr>
             <td style="text-align: left;">Quota 配额</td>
-            <td style="text-align: left;">单 session 内同一工具（或同一参数）调用次数封顶，挡住"80 单派一个司机"这类副作用累积</td>
+            <td style="text-align: left;">对同一工具、主体或资源设置调用与副作用上限，防止重复动作累积</td>
             </tr>
             <tr>
             <td style="text-align: left;">State refresh 强制</td>
@@ -211,15 +211,15 @@
             <ul>
             <li><strong>元数据不足</strong>：只有 name 和 description 时，Agent 无法判断工具的副作用、状态要求和审批条件，容易发生错调。</li>
             <li><strong>副作用工具没配套</strong>：写数据库、发消息、扣款这类工具没有 quota、没有 state refresh、没有 saga，一次错调就是生产事故。</li>
-            <li><strong>工具堆砌（Tool Stuffing）</strong>：50 多个工具全发给模型，schema 吃掉大段 context，准确率不升反降。应对是渐进披露——核心工具常驻，其余按需检索加载。</li>
-            <li><strong>工具中毒（Tool Poisoning）</strong>：这是 OWASP Agentic 头号威胁，攻击者在 MCP 工具的 description 里嵌入隐藏指令，所有用这个工具的 session 都中招，持久且范围广。它不是普通 prompt injection，必须靠白名单、描述扫描、描述沙箱、行为监控、最小权限这五层防护，缺一层都是开放的攻击面。</li>
+            <li><strong>工具堆砌（Tool Stuffing）</strong>：把整个 registry 都发给模型会占用 context 并增加近义工具冲突。应使用渐进披露，让核心工具常驻，其余按需检索加载。</li>
+            <li><strong>工具中毒（Tool Poisoning）</strong>：攻击者可能在外部工具 description 中嵌入指令，使每次加载该工具的 session 都受影响。需要来源白名单、描述检查、最小权限、运行时行为监控和隔离，具体控制按 threat model 组合。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>工具选择准确率</strong>（健康区 &gt;90%）：回放历史 query，用 reviewer 模型判断每步选对没。低于 80% 多半是 description 不够好或工具太多。</li>
-            <li><strong>副作用可控率</strong>（健康区 100%）：定期做 chaos test，故意让模型错调某个 destructive 工具，看能否在一分钟内被 quota 拦下并被 saga 回滚干净。任何错调都该能 rollback。</li>
-            <li><strong>工具幻觉率</strong>（健康区 &lt;5%）：调用不存在的工具或填错参数的比例。靠 registry 严格校验加调用前 schema 检查压制。</li>
-            <li><strong>平均每任务工具数</strong>（健康区 3-7）：少了说明 agent 没干活，多了是 over-tooling。</li>
+            <li><strong>工具选择准确率</strong>：回放历史 query，由规则、人工或 reviewer 判断每一步是否选到合适工具，并按任务类型分析误选原因。</li>
+            <li><strong>副作用可控率</strong>：通过 chaos test 验证错调 destructive 工具时，quota、审批和 saga 能否阻断或回滚。不可逆动作必须有独立的控制指标。</li>
+            <li><strong>工具幻觉率</strong>：记录不存在的工具、错误参数和 schema 校验失败。指标变化时检查 registry、description 和候选集规模。</li>
+            <li><strong>每任务工具调用分布</strong>：结合任务复杂度观察调用数量和重复调用。数量异常只是一条诊断线索，不能单独判断是否 over-tooling。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>dispatch(tool_name, args, session):
@@ -233,8 +233,8 @@
     返回 DispatchTrace（工具/参数/触发方/状态/拒因/耗时）
 </code></pre>
             <p>生产实现对未声明的元数据采用不安全默认值；quota 按主参数计数，例如派单按司机 id；MCP 工具记录来源，并执行额外的描述校验和行为监控。</p>
-            <h2>应用示例</h2>
-            <p>梁博团队的执行型 Agent 将知识检索、技能加载和工具调用分为 <code>retrieve</code>、<code>use_skill</code> 和 <code>call_tool</code> 三类接口。城配派单 Agent 的 dispatch 层增加了工具元数据、selection guidance、写操作前状态刷新、单 session 司机派单配额和 saga 副作用追踪。准确率从 60% 提高到 96%，dispatch 层增加约 800 行契约与控制代码。</p>
+            <h2>场景化示例</h2>
+            <p>梁博团队的执行型 Agent 将知识检索、技能加载和工具调用分为 <code>retrieve</code>、<code>use_skill</code> 和 <code>call_tool</code> 三类接口。城配派单 Agent 的 dispatch 层增加工具元数据、selection guidance、写操作前状态刷新、单 session 派单配额和 saga 副作用追踪。这个具名实践说明，工具调度的主要工作量落在契约、状态和副作用控制上，效果应以团队授权的生产评测为准。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>最简工具集（A5）</strong>：A1 在给定工具集中选择，A5 控制单次暴露的工具规模。</li>

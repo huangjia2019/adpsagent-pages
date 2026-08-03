@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -180,24 +180,24 @@
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Copying tier count instead of matching need</strong>: Copying CoALA's three tiers (working / episodic / semantic) outright when the product only needs two, leaving a pile of empty scaffolding in the code with nothing to put in it. The tier count should match the number of scope kinds the product actually has.</li>
-            <li><strong>No schema on the user tier</strong>: Letting the agent write free text like "Xiao Li knows decorators" produces, half a year later, ten phrasings for the same concept and a cliff drop in retrieval hit rate. High-frequency fields must be put into a typed schema.</li>
-            <li><strong>Designing everything as startup injection</strong>: The user tier and project tier are startup injection, the session tier is progressive reading, and the ephemeral tier is real-time assembly. Mashing the three access patterns into one will make the session tier's tokens explode after it accumulates dozens of turns.</li>
+            <li><strong>No schema on the user tier</strong>: Letting the agent write free text such as “Xiao Li knows decorators” gradually produces multiple phrasings for the same concept and weakens retrieval. High-frequency fields should use a typed schema.</li>
+            <li><strong>Designing everything as startup injection</strong>: The user and project tiers suit startup injection, the session tier suits progressive reading, and the ephemeral tier suits real-time assembly. Mixing these access patterns causes old session material to crowd out the current task as the conversation grows.</li>
             <li><strong>Forcing tiering onto fully stateless scenarios</strong>: Single-shot Q&amp;A and one-off ETL transformations do not need cross-session memory.</li>
             <li><strong>Eviction without a reason log</strong>: Compliance (GDPR right-to-be-forgotten) and debugging both require proving "what was deleted, why, and when." Without a log, this cannot be proven.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Working set hit rate</strong> (healthy range ≥ 80%): whether all the memory the agent truly needs during reasoning is in the prompt. Below 30% means the tiering is not working, and no matter how elegant the schema is, it is wasted. This is the primary metric for judging whether the tiering is done right.</li>
+            <li><strong>Working set hit rate</strong>: The share of memory needed for reasoning that is available in the prompt. Establish a local baseline by task class and inspect missing evidence when the rate changes.</li>
             <li><strong>Per-tier token share</strong> (allocated by budget): whether the tokens each tier loads into the prompt stay within budget. A tier that consistently exceeds its budget needs truncation or to be pushed down to on-demand loading.</li>
-            <li><strong>Cross-tier pollution rate</strong> (healthy range near 0): whether the user tier gets polluted by incidental information from a single session, or whether data leaks between tenants. In multi-tenant scenarios this is a make-or-break metric.</li>
-            <li><strong>Total startup tokens</strong> (measured against a baseline): how much is saved compared with a "full history dump." Done right, tiering typically saves 70-80% of startup tokens.</li>
+            <li><strong>Cross-tier pollution events</strong>: Track whether incidental session data reaches the user tier or information crosses tenant boundaries. Treat any tenant-isolation violation as a security incident.</li>
+            <li><strong>Total startup tokens</strong>: Compare with an unlayered history-loading baseline while verifying that critical information remains visible.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Define tiers (scope from coarse to fine):
                 USER    → permanent / high-read / strong schema / relational store
                 PROJECT → permanent / team-shared / file system + git
-                SESSION → TTL 24h / high read-write / Redis
-                TURN    → TTL 5min / very high frequency / in-memory dict
+                SESSION → session_ttl / high read-write / Redis
+                TURN    → turn_ttl / very high frequency / in-memory dict
 
             Write:    select backend by tier, record last_modified
             Read:     query from fine to coarse, return on inner-tier hit (inner overrides outer)
@@ -205,8 +205,8 @@
             Evict:    clear expired content and record a reason log (compliance + debug)
             </code></pre>
             <p>Four engineering points for landing this: each tier's storage backend must genuinely use a different choice; assembly must truncate by token budget rather than stuffing in everything; writes must do "write routing" (a small model or a rule decides which tier to write to); and eviction must keep a reason log.</p>
-            <h2>Application example</h2>
-            <p>An execution-oriented agent at a payroll SaaS company builds its memory into three tiers. L1 is the current stream of consciousness—the minimal necessary set for this moment, holding only the information genuinely useful for advancing the immediate next step, kept extremely lean. L2 is the in-progress milestone log—recording where the task stands and what was just completed, maintaining task context across turns. L3 is cross-turn reusable experience—keeping the judgments and practices distilled from this kind of task as a long-term asset. The three tiers each manage one timescale: L1 manages "now," L2 manages "this task," and L3 manages "across tasks." This tiering lets the agent, over a long process, neither be drowned in irrelevant history (L1 stays lean) nor lose memory between turns (L2 is continuously maintained), and grow more proficient with use (L3 keeps accumulating). The accompanying engineering decisions include an independent token budget per tier, real-time assembly of L1 rather than preloading, and a trust check before writing to L3 to keep incidental single-run information from polluting long-term experience.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider an execution-oriented payroll SaaS agent with three memory tiers. L1 holds the minimum information needed for the current step. L2 holds milestone records such as task status and the action just completed. L3 holds judgments and procedures that may be reused across tasks. The tiers cover the current step, the current task, and cross-task memory. Each has an independent token budget; L1 is assembled at runtime, and writes to L3 pass a trust check so that incidental information from one run does not become long-term memory.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Progress Tracking (M3)</strong>: M3 is the hottest tier within the hierarchy. The todo list is the agent's register, frequently updated and loaded on every reasoning step; it is essentially the part of the session tier dedicated to managing "where we are."</li>

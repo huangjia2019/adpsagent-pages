@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P4 Multi Modal Fusion · Pattern White Paper · ADPS</title>
+    <title>P4 Multi-Modal Fusion · Pattern White Paper · ADPS</title>
     <meta name="description" content="The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning laye">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">High (multiple specialist processors + vision calls, significant overhead)</td>
+            <td style="text-align: left;">High (cost grows with specialist processing paths and vision calls)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -157,7 +157,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>What the agent perceives is usually a mix of PDFs, charts, tables, scanned documents, and logs—heterogeneous information jumbled together. Feeding an entire 80-page research report to a vision model gives you dense y-axis tick marks and blurry pixels: a market size of 580 billion gets read as 58 million, off by a factor of a thousand. OCR everything into plain text and you lose all the figures: the genuinely valuable market-size bar chart and competitive-landscape pie chart in the report collapse into a single sentence, "Figure 3 shows market share," and what the agent reads amounts to nothing.</p>
+            <p>Enterprise input often mixes PDFs, charts, tables, scanned pages, and logs. Sending an entire report to a vision model can produce a magnitude error in a chart. Converting everything to plain OCR text removes the spatial relationships in bars, axes, and legends, leaving only a low-information statement such as “the chart shows market share.”</p>
             <p>Multi-modal fusion engineers this problem, and the key is before the data enters the context: which segment should go through vision, which should be converted to text, which should be discarded. It handles the form of the input before the agent has "thought" about anything—if the form is wrong, then no matter how downstream selects, compacts, or explores, it is just continuing to burn resources on the wrong form.</p>
             <h2>Classification: Perception × Parallel</h2>
             <ul>
@@ -177,13 +177,13 @@
             <tbody>
             <tr>
             <td style="text-align: left;">Architecture diagrams, flowcharts</td>
-            <td style="text-align: left;">Convert to Mermaid</td>
-            <td style="text-align: left;">An 8-node diagram is ~50 tokens in Mermaid vs. ~1200 in draw.io XML, a 24× difference</td>
+            <td style="text-align: left;">Keep the source image when layout matters; optionally convert to Mermaid for search and editing</td>
+            <td style="text-align: left;">Structured forms are easier to query and revise; the image preserves visual layout</td>
             </tr>
             <tr>
             <td style="text-align: left;">Tables, structured data</td>
-            <td style="text-align: left;">Convert to GitHub Flavored Markdown</td>
-            <td style="text-align: left;">A 10×6 table is ~150 tokens in markdown vs. ~1398 as a screenshot through vision, a 9× difference</td>
+            <td style="text-align: left;">Convert to GitHub Flavored Markdown or typed records</td>
+            <td style="text-align: left;">Cell values can be read precisely without visual-parsing ambiguity</td>
             </tr>
             <tr>
             <td style="text-align: left;">Charts, heatmaps</td>
@@ -197,7 +197,7 @@
             </tr>
             </tbody>
             </table>
-            <p>Two mechanisms hold up industrial-grade fusion. First, the real arithmetic of vision tokens. The same 1024×1024 image differs 16× across three providers (GPT-4o detail=high 765, Gemini 1032, Claude Sonnet 1398, GPT-4o detail=low only 85); prompt cache saves the most, with cache reads at 0.1× the base rate, so re-reading the same PDF saves 90%. Second, the three-layer pipeline for long logs: bash pre-filtering (grep/awk/jq in the shell shrink 500MB to 5-10MB, burning CPU not tokens) → sub-agent processing (a cheap model reads it all and returns a 200-500 token structured summary) → structured artifact back to the main context (JSON rather than free text, with a pointer to the raw log kept in the summary to query again when needed). Pouring 500MB of logs straight into Sonnet costs about $150 and may overflow the window; the three-layer route costs about $0.16, a difference of about 940×.</p>
+            <p>Vision cost depends on model, resolution, and detail settings, so a fixed cross-provider table is misleading. Benchmark representative documents with the models and settings actually used, recording token use, latency, extraction quality, and cache behavior. Long logs can follow a three-stage pipeline: filter irrelevant content with grep, awk, or jq; have a sub-agent produce a structured summary; then place only the JSON artifact and a pointer to the raw log in the main context.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Financial research report analysis</strong>: PDF tables + analyst text + market-size charts. None of the channels is complete on its own; they must be assembled before a judgment can be made.</li>
@@ -207,15 +207,15 @@
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Misreading figures</strong>: Reading 580 billion in a research report as 58 million belongs to this category. Chart-direct accuracy is inherently low, and it is contagious across multi-turn—a misread in an early turn carries the error forward. The countermeasure is a cross-field consistency check (numbers extracted from a figure must match the same-named numbers in the text region; a mismatch triggers manual review), re-validating the figure source each turn and not still reasoning with the misread number from the first turn by the third turn.</li>
-            <li><strong>Image input blows up the end-of-month bill</strong>: $50 per month at the POC stage becomes $2.5M/month in production. The root cause is that every step of the agent loop repackages and resends the entire prompt (including that 800KB image), so the image is paid for N times, not once. Three-layer countermeasure: budget guard (four ceilings—USD/token/wall-clock/recursion-depth—with halt on any one triggering), thumbnail-first (low resolution by default, request high-res only when detail is needed), and prompt cache.</li>
-            <li><strong>Sub-agent infinite loop, lost findings</strong>: Four agents calling each other burned $47,000 / 264 hours over an unattended weekend. The root cause is that long-form context is truncated at handoff, so the downstream receives a truncated instruction and turns back to ask the upstream, and a loop forms. The countermeasure is the Memory Pointer Pattern (the complete finding is stored in a state store, and only the pointer ID is passed in the context) + pre-execution budget enforcement (each sub-agent must declare a budget before starting, and is killed if it exceeds it).</li>
-            <li><strong>One-size-fits-all truncation threshold</strong>: Thresholds should be set per tool semantics—for bash, keep half from the head and half from the tail (errors are often in the trailing stack trace); for read_file, head-only (information density is concentrated in the front). A one-size-fits-all cut, no matter how large, will distort on some tool.</li>
+            <li><strong>Misreading figures</strong>: A chart-reading error can propagate through later turns. Cross-check extracted values against text, tables, or source data; route mismatches to human review; and preserve the figure source and extraction method with downstream claims.</li>
+            <li><strong>Image input cost grows inside a loop</strong>: Re-sending the full image at every step multiplies cost. Set limits for spend, tokens, elapsed time, and recursion depth; use thumbnails or cropped regions by default; and cache stable input.</li>
+            <li><strong>Sub-agent loops and lost findings</strong>: A truncated handoff can leave a downstream agent with incomplete instructions, causing repeated requests back to the sender. Store the complete finding in a state store and pass a pointer ID; require every sub-agent to declare a budget and termination condition before it starts. This illustrates the failure mechanism and is not presented as a verified enterprise incident with a specific loss figure.</li>
+            <li><strong>One-size-fits-all truncation threshold</strong>: Retention should follow each tool's information distribution. Shell output often needs both the command context near the beginning and the error stack near the end; file reads may need the beginning, the end, or relevant excerpts depending on file type. A fixed ratio can discard decisive evidence.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Token share by form</strong> (alert if image &gt; 50% or log &gt; 40%): When some form's share quietly drifts—say image suddenly rises to 60%—it is almost certainly a figure that should have been converted to a table/markdown but was not. This diagnosis alerts earlier than "total tokens went up" and can catch the problem before the bill explodes.</li>
-            <li><strong>Budget triggers in the agent loop</strong> (a pre-execution cap is mandatory): The trigger and interception records of the four ceilings (USD/token/wall-clock/recursion-depth). A cap that never triggers, or triggers too late, is the $47K risk.</li>
+            <li><strong>Token share by modality</strong>: Track image, table, text, and log usage separately. A sudden change from the local baseline should trigger inspection of conversion paths, duplicate submission, and cache behavior.</li>
+            <li><strong>Budget enforcement in the agent loop</strong>: Record triggers and interceptions for spend, tokens, elapsed time, and recursion depth. A budget that is missing or enforced only after a call is a runtime defect.</li>
             <li><strong>Secondary extraction rate on the chart path</strong>: Of the charts that go through vision, how many do a chart→CSV extraction before computing. Taking a vision-output number directly for reasoning is a high-risk signal.</li>
             </ul>
             <h2>Reference implementation</h2>
@@ -223,7 +223,7 @@
                 for each channel, dispatch by form:
                     TEXT   → straight into content
                     IMAGE  → base64 through vision (take this path only when spatial info is the signal)
-                    TABLE  → convert to markdown (structure is the signal, saves 9×)
+                    TABLE  → convert to markdown (structure is the primary signal)
                     PDF    → extract TOC + locate key pages + key figures through vision + tables to md + drop decorative images
                     LOG    → bash pre-filter → sub-agent summary → structured JSON back to main context
                     AUDIO  → STT to text
@@ -231,8 +231,8 @@
             health_check: watch token share by form, alert early on anomalous forms
             </code></pre>
             <p>Specialist tools (ocr / stt / pdf_extract / log_subagent / bash_filter) should be injected rather than wrapped, so that migrating environments only swaps the injected implementation (e.g., OCR from Textract to a local engine) without touching the fuser's main flow. Multi-modal dependencies (cv2, pyaudio, pdfplumber) should be lazy-imported inside the function body with an ImportError fallback, to avoid crashing on startup in a headless environment.</p>
-            <h2>Application example</h2>
-            <p>A brokerage research-report analysis agent went through three versions. V1 fed the entire 80-page PDF to vision, about 90K tokens and $0.27 per run, and the bar-chart market size of 580 billion was read as 58 million. V2 OCR'd everything into plain text, dropping tokens to 35K and halving the cost, but while the summary sentences were fluent the sales takeaways were all empty—the valuable information lived precisely in the charts, and converting to text collapsed all spatial information. V3 did not touch the prompt again but redesigned the pipeline: the PDF first had its TOC extracted, key pages located, key figures kept as original images through vision, tables converted to markdown, decorative images dropped outright, and finally 18K tokens were handed to the model—80% less than V1, and the number checks passed too. An account manager queries a single PDF about 8 times a day on average, and with prompt cache turned on the daily cost per document dropped from $2.16 to $0.46. The engineer's retrospective was that three weeks of writing prompts achieved nothing, and what finally saved the day was rethinking what shape the data should be in.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a research-report agent evolving through three implementations. The first sends the whole PDF to vision and misreads the magnitude of a chart. The second converts everything to OCR text and loses spatial relationships. The third extracts the table of contents, locates relevant pages, keeps key figures as images, converts tables to markdown, drops decorative material, and cross-checks chart values against text and tables. The lesson is to choose a representation for each modality and retain the provenance needed to verify it.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Context triage (P1), semantic compaction (P2), progressive discovery (P3)</strong>: Fusion sits at the very front of the four perception blades. If the form is wrong, then no matter how downstream Triage selects, Compaction compacts, or Discovery explores, it is just continuing to burn resources on the wrong form.</li>
@@ -242,7 +242,7 @@
             <h2>Design conclusion</h2>
             <p>Multi-modal fusion is not prompt engineering, it is data-form engineering—good fusion lets the agent see the appropriate little rather than the complete much.</p>
 
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P4 Multi Modal Fusion</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P4 Multi-Modal Fusion</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

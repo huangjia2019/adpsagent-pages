@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -169,7 +169,7 @@
             <hr />
             <h2>问题</h2>
             <p>测试失败、lint 报错、build 挂掉、CI 红了——这些 deterministic 失败信号是 agent 最 valuable 的反馈，因为它们对错明确、不靠主观判断。但每次失败都让工程师手动排查、手动修，重复劳动量大，而且很多失败的修法是模式化的（依赖缺失、配置错位、明显的逻辑错），人来修是浪费。</p>
-            <p>Self-Heal Loop 让 agent 自动消化这些信号闭环修复：失败信号触发 → 诊断根因 → 生成修复 → 应用 → 重新验证，没修好就再来一轮。它是反思模式里最贴近"agent 自主"的形态，也是反思模块唯一一个 mandatory loop——失败一次没修好必须再来，不存在"single-pass self-heal"这种合法形态。Aider 把它做成命令行 flag，Spotify Honk 把它做到 production scale（每月 650+ merged AI PR），GitHub Copilot Rubber Duck 把它做成 cross-model dual-review。</p>
+            <p>Self-Heal Loop 让 Agent 消化这些信号并闭环修复：失败信号触发 → 诊断根因 → 生成修复 → 应用 → 重新验证。修复未通过时，系统必须在受控范围内继续尝试或转人工。Coding Agent 和内部修复系统提供了实现参考，其生产效果仍应从一手材料和本地评测中验证。</p>
             <h2>坐标说明：反思 × 循环</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：Agent 读取失败信号，诊断自身产出并尝试修复，适用于具有明确正确性判据的软件任务。</li>
@@ -179,9 +179,9 @@
             <p>一个 production-grade Self-Heal Loop 由六段流水线加三重停止机制构成。流水线：Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify，验证失败时 git revert 回到 Diagnose 重做。</p>
             <p>三重停止机制是把 Generator-Critic 升级成 Self-Heal 的关键，缺一就有"把 main branch 改坏"的风险：</p>
             <ol>
-            <li><strong>max_iterations 硬熔断</strong>：限制 loop 最大轮数，Aider 使用 3，防止连续修复产生新的失败。</li>
-            <li><strong>dual-model critic verifier</strong>：用一个不同 model family 的 reviewer 审修复方案。同 family 的 LLM 有共同盲区，cross-family review 引入独立训练历史的视角打破 self-bias。GitHub Copilot Rubber Duck 在 3 个风险节点（plan 后、实现后、写测试但运行前）强制 cross-model 验证。</li>
-            <li><strong>stability check via signature</strong>：用 failure signature 比对，分辨"修了同一个问题"（hash 重复）还是"换了新问题"，并做 regression detection（severity 升级或 affected files 翻倍即回归，全部 rollback）。</li>
+            <li><strong>max_iterations 硬熔断</strong>：按任务风险和本地评测限制修复次数，防止连续修复产生新的失败。</li>
+            <li><strong>独立 critic verifier</strong>：使用独立配置的 reviewer 检查修复。跨 model family 可以减少部分共同盲区，但独立性还取决于 prompt、证据和 trace 是否分开。</li>
+            <li><strong>stability check via signature</strong>：用 failure signature 区分修复进展和问题漂移，并按业务定义 severity、影响范围、性能、安全和覆盖率回归。</li>
             </ol>
             <p>Spotify Honk 按 format、lint、build、test 顺序执行四级 cascade，先运行低成本检查，再进入语义和测试级检查。</p>
             <h2>适用场景</h2>
@@ -196,17 +196,17 @@
             <li><strong>失败签名持续变化</strong>：没有 stability check 时，Agent 可能修复一个错误并引入另一个错误。应同时使用 failure signature 比对、regression detection 和 max_iterations。</li>
             <li><strong>回归级联</strong>：每轮 fix 不是 atomic commit，一连串 cascade 后 rollback 还原不到正确状态。防法是 per-iteration atomic commit 加 "modify only files in diagnosis" 严格约束。</li>
             <li><strong>虚假恢复</strong>：agent 改的是 test 而不是 code，把测试改弱让它过——指标全绿、问题全在。防法是 critic 显式审"改的是 production code 还是 test"加 test coverage 不许下降。</li>
-            <li><strong>触底不转人工</strong>："修不好就崩溃"是不可接受的工程做法。HITL handoff 必须是一等公民，触底转人审，且队列要有人每天清。</li>
+            <li><strong>触底不转人工</strong>："修不好就崩溃"是不可接受的工程做法。HITL handoff 必须是一等公民，触底转人审，并按任务风险和业务 SLA 明确队列责任人与处理时限。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>自愈成功率</strong>（健康区 60-80%）：自动修复成功的比例，剩余转人工。Spotify Honk 配三重停止后约 70%。低于 50% 说明 ground truth 信号不清或诊断能力不足。</li>
-            <li><strong>平均修复轮数</strong>（健康区 ≤3 轮）：超过 3 轮还不收敛，dev tool 场景应转人工，production scale 才支撑得起更多轮。</li>
-            <li><strong>regression 率</strong>（健康区 &lt;10%）：修复引入新失败的比例。高说明 stability check 或 atomic commit 缺失。</li>
-            <li><strong>HITL 队列清空时延</strong>（健康区 当天清零）：触底转人工后多久有人处理。队列堆积说明组织侧 ops 路径没打通。</li>
+            <li><strong>自愈成功率</strong>：自动修复通过全部验收的比例。应按 failure signature 和风险等级拆分，不能用总体均值掩盖高风险失败。</li>
+            <li><strong>平均修复轮数</strong>：观察收敛分布和触顶比例。长尾增长时检查 ground truth、诊断质量和停止条件。</li>
+            <li><strong>regression 率</strong>：修复引入新失败的比例。上升时检查 stability check、测试覆盖和 atomic commit。</li>
+            <li><strong>HITL 队列处理时延</strong>：触底转人工后多久被接手。SLA 由业务风险和人员安排确定，并与自动化熔断策略联动。</li>
             </ul>
             <h2>最小实现</h2>
-            <pre><code>for i in range(MAX_ITERATIONS):           # MAX=3, Aider 同源
+            <pre><code>for i in range(MAX_ITERATIONS):           # 按任务风险和评测配置
     diagnosis = diagnose(current_failure)
     fix = generate_fix(diagnosis)         # 只改 diagnosis 里的文件
     critique = cross_family_critic(fix)   # 不同 vendor, 打破 self-bias
@@ -216,15 +216,15 @@
     new_failure = verify()                # format/lint/build/test 四级 cascade
     if new_failure is None:
         return &quot;fixed&quot;
-    if is_regression(current_failure, new_failure):   # severity 升 / files 翻倍
+    if is_regression(current_failure, new_failure):   # 业务定义的回归规则
         rollback(all applied commits)
         return &quot;rolled_back_regression&quot;
     current_failure = new_failure
 return &quot;max_iterations_human_handoff&quot;     # 触底转人审
 </code></pre>
             <p>生产实现的 dual-model Critic 使用 cross-family 模型；regression detection 按业务加入性能、安全和覆盖率规则；每轮使用 atomic commit；达到上限后进入由人员实际处理的 HITL 队列。</p>
-            <h2>应用示例</h2>
-            <p>一家 DevTool 公司构建 CI/CD 自动修复 Agent。第一版对所有失败自动修复，最多执行 10 次 iteration，但没有 Critic、rollback 和 stability check。第二周发生 incident：Agent 连续修改 9 次并影响无关代码，且 9 次 commit 不是 atomic，无法精确 rollback。第三版加入 max_iterations 熔断、dual-model Critic（Sonnet 生成、GPT-5.4 审查）和 failure signature stability check。验证按 format、lint、build、test 四级执行，每轮使用 atomic commit，达到上限后生成 PR 并进入 HITL。改造后 main branch incident 清零，自愈成功率为 70%，其余 30% 转人工；单次修复延迟从约 30 秒增加到约 90 秒。</p>
+            <h2>场景化示例</h2>
+            <p>设想一家 DevTool 公司构建 CI/CD 自动修复 Agent。第一版对所有失败持续尝试修复，却没有 Critic、rollback 和 stability check。一次失败链中，Agent 反复改动并触及无关代码，提交又无法按轮精确回滚。后续版本加入 max_iterations 熔断、独立 Critic 和 failure-signature stability check；验证按 format、lint、build、test 分层执行；每轮使用 atomic commit；达到上限后生成 PR 并进入 HITL。自愈是否有效，要看通过完整验收的修复、regression 和人工接管质量，不能只统计“Agent 做过修改”。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Generator-Critic（F1）</strong>：Generator-Critic 从可用输出开始做可选质量改进；Self-Heal Loop 从确定性失败开始执行 mandatory loop。两者的 stop condition、rollback 和 blast radius 不同。</li>

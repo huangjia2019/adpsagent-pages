@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>逐步反应式（ReAct）Agent 在长任务中容易失去全局顺序。一个 HR 招聘 Agent 向模型开放 17 个工具后，曾向招聘经理发送未通过面试候选人的薪酬信息、跳过背景调查直接发 offer，并重复查询同一份薪酬数据 50 次。系统没有显式 plan，模型只能根据最近一步结果选择后续动作。</p>
+            <p>逐步反应式（ReAct）Agent 在长任务中容易失去全局顺序。招聘 Agent 如果只根据最近一步结果行动，可能跳过背景调查、重复查询薪酬数据，或在候选人状态不满足条件时继续推进。系统缺少一份显式 plan 来保存步骤依赖和审批节点。</p>
             <p>Plan-and-Execute 将行动分为 plan 和 execute 两个阶段。规划阶段生成步骤、依赖、资源和人工审批节点；执行阶段由调度器按 plan 推进。宏观顺序保存在可审计、可版本化的计划中。</p>
             <h2>坐标说明：行动 × 编排</h2>
             <ul>
@@ -179,11 +179,11 @@
             <p>实现至少需要职责分离、审批节点和 context reset。Aider architect mode 由 architect 生成 plan，editor 在清空上下文后执行 plan，中间默认由用户确认。</p>
             <p>落到工程上有几个关键设计：</p>
             <ul>
-            <li><strong>异构模型</strong>：plan 阶段需要深度推理，用强模型；execute 阶段是结构化、可验证的，用中等模型就够，便宜 5 到 15 倍。Aider 在 SWE-bench 实测，强模型规划加中等模型执行，比单用强模型准确率高 3 到 5 个点，成本降 40%。</li>
+            <li><strong>异构模型</strong>：plan 阶段通常需要更强的全局推理，execute 阶段更结构化且可验证，可以按步骤选择不同模型。具体组合要在同一任务集上比较质量、成本和返工率。</li>
             <li><strong>plan 是 user-owned artifact</strong>：Claude Code 把 plan 写文件而不是留在 prompt 里。文件天然是审计日志，可以多人 review、版本化、diff，用户从文件读、agent 也从文件读。</li>
-            <li><strong>局部 replan</strong>：plan 走到一半与现实冲突时，只改受影响的部分，已 commit 的步骤不动。Anthropic 的工程经验值是每 5 步检查一次 plan 是否还成立，每次 replan 预算不超过总预算的 10%。</li>
+            <li><strong>局部 replan</strong>：plan 与现实冲突时，只修改受影响的后续节点，已 commit 的步骤保持不动。检查频率和 replan 预算由任务长度、外部变化频率和回放结果确定。</li>
             </ul>
-            <p>研究数据印证了这套范式的经济性。ReWOO 把 plan-execute 的 LLM 调用压到 2 次（一次规划加一次综合），中间所有工具调用并行执行不走模型，相比 ReAct 范式 token 效率高 5 倍、准确率还高 4 个点。</p>
+            <p>ReWOO 等工作展示了减少执行阶段模型往返的一种实现：规划阶段生成带变量依赖的计划，工具执行后再统一综合。它是否比 ReAct 更省 token、更准确，取决于任务结构、工具延迟和评测口径，需要在目标工作流上复测。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>目标明确、步骤可枚举、副作用敏感三者叠加</strong>：HR 招聘、信贷审批、运维变更。</li>
@@ -195,14 +195,14 @@
             <li><strong>plan ossification（计划僵化）</strong>：plan 写好后执行器一路跑，中途某步返回意外结果（候选人撤回、schema 变更、外部 API 改协议），规划器没及时介入，后续步骤全是无效计算。应对是每 N 步把当前子任务和原始目标做一次对齐检查。</li>
             <li><strong>plan thrashing（计划震荡）</strong>：replan 触发太频繁，每次失败都重写，agent 永远在规划从不执行。应对是设 replan 硬上限加 replan 预算封顶。</li>
             <li><strong>stale context 悄悄累积</strong>：长任务的 state 用自由格式笔记容易"看起来还能解析但语义已坏"。应对是 state 用 JSON schema 严格化，让 partial corruption 早暴露。</li>
-            <li><strong>cache 友好性被忽略</strong>：plan-execute 每步若 invalidate 缓存，成本可飙升约 10 倍。Manus 重写 todo.md 时做结构性 update 而非 append-only，正是为了保 prefix 稳定、命中缓存。</li>
+            <li><strong>cache 友好性被忽略</strong>：每步重写稳定前缀会降低缓存命中并增加成本。结构化更新 plan 或 todo artifact 时，应测量 prefix 稳定性、缓存命中和状态新鲜度。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>长任务成功率 / 错误率</strong>（健康区错误率 &lt;1%）：HR 招聘案例从 8.3% 降到 0.4%。这是 plan 是否起作用的直接信号。</li>
-            <li><strong>每任务 LLM 调用次数</strong>（越低越好，且要稳定）：案例从平均 47 次/候选人降到 13 次。次数失控通常意味着 replan 在震荡。</li>
-            <li><strong>replan 频率</strong>（健康区每 5 步一次左右）：过高是 thrashing，长期为零是 ossification 的前兆。</li>
-            <li><strong>缓存命中率</strong>（健康区越高越好）：被 Manus 团队称为生产 agent 单一最重要的指标，直接决定单 token 成本。</li>
+            <li><strong>长任务成功率 / 错误率</strong>：与未拆分的执行基线比较，并按计划错误、执行错误和外部状态变化分类。</li>
+            <li><strong>每任务 LLM 调用次数</strong>：与 ReAct 基线比较，并把 planner、executor、replan 和结果综合分别计数。次数失控通常意味着 replan 震荡或步骤契约过碎。</li>
+            <li><strong>replan 频率</strong>：过高可能表示计划反复震荡，长期为零也可能意味着系统忽略了环境变化。应结合 replan 原因判断。</li>
+            <li><strong>缓存命中率</strong>：观察稳定 system prompt、工具定义和计划前缀能否复用，同时检查缓存是否掩盖过期状态。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>plan = planner(goal, context)        # 强模型，一次
@@ -216,8 +216,8 @@ while plan 未完成:
 返回 plan + 完整执行 trace
 </code></pre>
             <p>生产实现通过依赖注入提供 Planner、Executor 和 Approval；destructive 步骤登记 saga inverse；plan 写入文件并进行版本管理。</p>
-            <h2>应用示例</h2>
-            <p>梁博团队将计划与执行显式分离。规划层把计划写入 Workspace 的 DAG，调度器按依赖关系推进，LLM 只负责单步参数和结果解释。HR 招聘 Agent 改为 Planner、Executor 和 Approval Gate 三段后，月度账单从 18 万元降至 6 万元，招聘周期从 23 天缩短到 16 天。</p>
+            <h2>场景化示例</h2>
+            <p>梁博团队将计划与执行显式分离。规划层把计划写入 Workspace 的 DAG，调度器按依赖关系推进，LLM 只负责单步参数和结果解释。放到招聘流程中，Planner 先生成带依赖的步骤，Executor 只执行当前节点，涉及筛选标准或候选人状态变化的节点进入 Approval Gate。成本、周期和错误变化应由具名团队提供可核验口径后再公开。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>提示链（A3）</strong>：A2 使用完整 plan、DAG 和 replan；A3 采用无 replan 的线性链。生产系统可以由 A2 编排外层任务，在每个子任务内部运行 prompt chain。</li>

@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -224,19 +224,19 @@
             <ul>
             <li><strong>冷转接</strong>：只传"用户最后一句话"给下一棒，下一棒没拿到任何前面的上下文。识别信号是客户在交接后立刻被问已回答过的问题、情绪从 calm 转 frustrated 的转折点跟交接时点重合。修法是 HandoffPacket 必须含至少五层 schema。</li>
             <li><strong>决策溯源丢失</strong>：Artifacts 都传过去了，但决策的 why 没传——下一棒看着一堆产出却不知道前任凭什么走这条路，于是重走流程或推翻前任决策。"Artifacts survive handoff, decisions don't"，除非给 decisions 单独留一个 schema 字段。</li>
-            <li><strong>震荡循环</strong>：同一对 agent 反复来回交接，L2 觉得该 L1 处理踢回去，L1 又踢回来，跑了 8 跳还在原地。修法是设链长硬上限（3-4 棒，超过强制升人工）、显式约束 can_handoff_to（L2 不能交回 L1）、记录 visited set。</li>
+            <li><strong>震荡循环</strong>：同一对 Agent 反复来回交接，L2 退回 L1，L1 又交给 L2。修法是配置链长硬上限、显式约束 <code>can_handoff_to</code>、记录 visited set，并在触顶时转人工。</li>
             <li><strong>过度交接</strong>：LLM 默认有 over-handoff 倾向，碰到稍微难的事就想踢给下一个 agent。可以在交接前加一道 classifier 审视"这次交接合理吗，是不是该自己做完"。</li>
-            <li><strong>短任务或无清晰角色误用</strong>：30 秒内可完成的任务、单 Agent 通用助理和延迟敏感的实时对话通常不适合交接链。Loop 风险高时可改用层级委派，由 Supervisor 持有全局状态。</li>
+            <li><strong>短任务或无清晰角色误用</strong>：可以直接完成的短任务、单 Agent 通用助理和延迟敏感的实时对话通常不适合交接链。Loop 风险高时可改用层级委派，由 Supervisor 持有全局状态。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>链长跳数</strong>（健康区 ≤ 4）：单条 chain 经过的交接次数。超过 4 跳要强制升人工，这是防震荡循环失控的关键防线。</li>
-            <li><strong>交接后重复提问率</strong>（健康区接近 0）：客户在交接后被问已回答过问题的比例。这是冷转接最直接的症状。</li>
-            <li><strong>决策保留率</strong>（健康区高）：前一棒的决策被完整传给下一棒的比例。低说明 HandoffPacket 退化成了 raw history dump。</li>
+            <li><strong>链长跳数</strong>：观察交接次数和触顶情况。最大跳数由角色图和业务 SLA 配置，触顶后强制转人工。</li>
+            <li><strong>交接后重复提问率</strong>：客户在交接后被问已回答过问题的比例，是冷转接的直接症状。</li>
+            <li><strong>决策保留率</strong>：检查上一棒的结论、理由和证据是否完整进入下一棒。偏低说明 HandoffPacket 退化为 raw history dump。</li>
             <li><strong>SLA 达成率</strong>（按分级核算）：各级 agent 在自己 SLA 窗口内完成的比例，配合 sentiment carry over 监控升级链路里的客户情绪变化。</li>
             </ul>
             <h2>最小实现</h2>
-            <pre><code>HandoffChain.execute(request, initial_agent, max_hops=4):
+            <pre><code>HandoffChain.execute(request, initial_agent, max_hops):
     current, prev_packet = initial_agent, None
     for sequence in 1..max_hops:
         output = run_agent(current, prev_packet)   # 输入是结构化 packet 不是 raw history
@@ -249,11 +249,11 @@
         prev_packet, current = packet, next
     return escalate_to_human()                      # 超 max_hops 升人工
 
-HandoffPacket: 五层 schema(Goal / Artifacts / Decisions / Rejected Paths / Next Required)
+HandoffPacket: Goal / Artifacts / Decisions / Rejected Paths / Next Required
 </code></pre>
-            <p>生产实现按 Agent 角色分级 system prompt 和 tool 权限；can_handoff_to 列出允许的接收方；max_hops 设为 3-4，超过后强制转人工；audit log 记录跨 Agent 数据流转。</p>
-            <h2>应用示例</h2>
-            <p>某中型 SaaS 公司使用 LangGraph 部署 L1/L2/L3/Director 四级客户支持 Agent。每次交接都会新建 session，并且只传递客户最后一句话，导致二线重复询问问题和账户邮箱。改造后，每次交接打包五层 HandoffPacket：客户诉求、已查询的 KB 和脚本、带 why 的决策、已排除方向和下一步动作。模型按层级分配，一线使用 Haiku，工程层使用 Opus；工具权限逐级开放，一线只读，Director 才能批准退款；链长上限为 4，超过后转人工。执行型 Agent 还可使用 handoff 回交控制权：当 ReAct Agent 判断决策类型为 plan，或 Skill 契约约定为 PlanExecute 时，将控制权交回 Orchestrator 继续编排。</p>
+            <p>生产实现按 Agent 角色分级 system prompt 和 tool 权限；<code>can_handoff_to</code> 列出允许的接收方；<code>max_hops</code> 根据角色图设置，超过后强制转人工；audit log 记录跨 Agent 数据流转。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个 SaaS 客户支持系统按分诊、技术、工程和主管角色逐级处理。第一版每次交接只传客户最后一句话，下一棒只能重新询问问题和账户信息。改造后，HandoffPacket 包含客户诉求、已查询的 KB 和脚本、带 why 的决策、已排除方向和下一步动作；模型和工具权限随角色调整；链长触顶后转人工。执行型 Agent 也可通过 handoff 回交控制权：当 ReAct Agent 识别到需要整体计划，或 Skill 契约声明 <code>PlanExecute</code>，就把控制权交回 Orchestrator。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Prompt Chaining（行动模块）</strong>：Prompt Chaining 在单 Agent 内串联 prompt，context 自然延续；交接链跨 Agent 和 session，需要显式 state schema。</li>

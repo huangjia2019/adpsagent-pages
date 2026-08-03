@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>许多 Agent 系统保存任务进度，却不跨会话保留失败记录。会话结束后，错误现象、错误判断和补救过程随 context 一起消失，后续相似任务可能重复同一错误。例如，Agent 完成主任务后将测试环境配置写入生产配置，两周后又在另一个项目中执行了相同操作。</p>
+            <p>许多 Agent 系统保存任务进度，却不跨会话保留失败记录。会话结束后，错误现象、错误判断和补救过程随 context 一起消失，后续相似任务可能重复同一错误。例如，Agent 完成主任务后将测试环境配置写入生产配置，之后又在另一个项目中执行了相同操作。</p>
             <p>失败日记将这类事件保存为可检索记录。新任务开始前或高风险工具调用前，系统召回相关记录，把已知失败条件和处理方法注入当前 context。</p>
             <h2>坐标说明：记忆 × 循环</h2>
             <ul>
@@ -179,11 +179,11 @@
             <p>失败日记包含检测、分类、记录和召回四个环节：</p>
             <ol>
             <li><strong>检测 Detection</strong>：判断这次任务算不算"失败"。包括任务级失败，也包括信息检索本身的失败（如 RAG 索引滞后、漏检、误检——这些是 LLM 时代新增的失败类型）。</li>
-            <li><strong>分类 Classification</strong>：归到哪一类失败。工业级实现会区分十几种——临时性 vs 永久性、客户端 vs 服务端、payload 还是 context、通用 vs 厂商特定、可恢复 vs 不可恢复，每类配专属的 recovery strategy。</li>
+            <li><strong>分类 Classification</strong>：归到哪一类失败。生产实现可区分临时性与永久性、客户端与服务端、payload 与 context、通用与厂商特定、可恢复与不可恢复，并为每类配置 recovery strategy。</li>
             <li><strong>记录 Recording</strong>：结构化存档，schema 必须比自由文本强。一条失败记录至少含任务指纹、类别、一句话总结、根因、补救动作、可执行的 lessons。</li>
             <li><strong>召回 Recall</strong>：新任务开始时按相似度检索历史失败并注入 prompt。try-catch 处理当前调用中的异常，失败日记则跨任务保留和复用失败信息。该路径在 inference 阶段使用，无需重训模型。</li>
             </ol>
-            <p>失败 trajectory 可经反向标注后用于训练；相关研究显示约 85% 的失败 trajectory 未被利用。存储侧可采用分层留存：48 小时保存完整细节，30 天保存压缩摘要，更长期只保留聚合指标，以控制数据库增长。</p>
+            <p>失败 trajectory 可经人工确认和反向标注后用于评测或训练。存储侧应按风险、访问频率和合规要求分层留存：近期保留完整细节，随后转为压缩摘要，超过保留期后删除或只留聚合指标。具体期限由业务政策决定。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>生产级长期运行的 agent</strong>：跑数月、反复处理同类任务的 agent。哪些失败要记、哪些任务来时要翻出来，是它的核心价值所在。</li>
@@ -194,16 +194,16 @@
             <ul>
             <li><strong>任务一次性、没有重复执行场景却硬上</strong>：纯 demo、prototype、一次性脚本，失败被丢弃没问题。失败日记的价值在重复任务，没有重复就没有召回收益。</li>
             <li><strong>只使用 free-text</strong>：仅记录 task、error 和 timestamp，无法稳定分类和查询。应使用 enum 和受限字段，使失败记录可聚类、可统计。</li>
-            <li><strong>低价值记录持续累积</strong>：如果每次轻微异常都写入 failure journal，召回噪声会随时间上升。可将自由文本限制在 200 字符以内，并根据 access_count 将长期未召回记录归档到冷层。</li>
+            <li><strong>低价值记录持续累积</strong>：如果每次轻微异常都写入 failure journal，召回噪声会随时间上升。可限制自由文本长度，并根据风险、access_count 和 recency 将长期未召回记录归档到冷层。</li>
             <li><strong>记下来了但召回不匹配</strong>：用 Jaccard 这类粗糙相似度，漏检率太高，记了等于没召回。task signature 之间要用 embedding cosine similarity。</li>
             <li><strong>高风险失败与普通失败共用策略</strong>：跨租户数据泄露和 API timeout 的严重程度不同。高风险失败应独立告警、永久保留，并在相关任务中强制召回。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>重复失败率下降</strong>（健康区持续下降）：同类任务中重复出现相同失败的比例。数据清洁度不能代替运行结果；应直接观察重复失败率。</li>
-            <li><strong>召回率 / 召回命中率</strong>（健康区合理偏高）：被召回过的失败记录占比、召回的失败与当前任务相关的比例。procedural memory 召回命中率持续偏低，说明记忆架构有问题。</li>
-            <li><strong>首次尝试成功率</strong>（健康区随时间上升）：agent 一次做对的比例，失败 lessons 沉淀后应逐月上升。</li>
-            <li><strong>高风险失败计数</strong>（健康区接近 0 且强监控）：跨租户错位等生死线失败的发生次数，必须独立监控加告警。</li>
+            <li><strong>重复失败率</strong>：同类任务中重复出现相同失败的比例。应按 failure signature 比较版本前后变化，不能用数据库记录量代替运行结果。</li>
+            <li><strong>召回率 / 召回命中率</strong>：观察相关失败是否被召回，以及召回内容是否与当前任务相关。偏差需要结合漏召回和误召回样本分析。</li>
+            <li><strong>首次尝试成功率</strong>：跟踪 Agent 是否能利用历史 lessons 避开已知错误，并与未注入日记的回放基线比较。</li>
+            <li><strong>高风险失败计数</strong>：跨租户错位等安全边界事件必须独立监控和告警，不设“可接受的小比例”。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
@@ -211,18 +211,18 @@
 FailureJournal:
     record(entry)          → 重复 failure_id 累加 access_count；超额按 access+recency 淘汰
     by_category(cat)       → 分类查询
-    recall_for_task(sig)   → embedding 相似度 top-K 召回相关历史失败
+    recall_for_task(sig)   → embedding 相似度召回候选，再按风险和相关性重排
     render_for_prompt()    → 格式化注入 prompt（CER 范式：执行前读取相关失败记录）
-分层留存：48h 全细节 / 30d 压缩摘要 / 90d+ 聚合指标
+分层留存：近期全细节 / 中期压缩摘要 / 到期删除或仅留合规允许的聚合指标
 </code></pre>
             <p>生产实现应使用 embedding cosine 计算相似度；在任务启动和高风险工具调用前执行召回，可通过 PreToolUse hook 接入；不同留存层使用相应后端；写入同时执行 schema 校验和基于 access_count 的清理。</p>
-            <h2>应用示例</h2>
-            <p>某 B2B SaaS 为两百多家企业租户提供客服 Agent，每天处理约五万条工单。失败分布约为工具错误 30%、跨租户错位 25%、上下文溢出 20%、语义漂移 15%。系统将跨租户错位（boundary_leak）设为最高优先级，永久保留，每次任务启动时强制召回，连续三条触发 PagerDuty；task signature 使用“租户 + 意图”，避免跨租户召回；top-5 相关历史失败按 CER 范式注入 system prompt；失败记录强制分类；每周导出 markdown 并提交 git 供团队 review；UNKNOWN 类先进入 needs_review，经人工审核后写入正式档案。上线第二个月，boundary_leak 从每天 8 起降至 1 起，tool_error 重复率下降 40%，首次尝试准确率从 78% 升至 85%。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个多租户 SaaS 客服 Agent 反复遇到工具错误、跨租户错位、上下文溢出和语义漂移。系统把 boundary_leak 设为最高优先级，按合规要求保留并在相关任务启动时强制召回；task signature 使用“租户 + 意图”，避免把一个租户的失败经验注入另一个租户；候选记录按风险和相关性重排后写入 prompt；UNKNOWN 类先进入 needs_review，经人工审核后再进入正式档案。效果应通过重复失败率、漏召回样本和安全事件复盘验证，不能用预设的改善比例代替。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>程序性记忆（M5）</strong>：失败日记保存已知失败路径，程序性记忆保存经过验证的成功流程。</li>
             <li><strong>进度追踪（M3）</strong>：进度追踪维护当前任务步骤，失败日记跨任务保存失败记录。</li>
-            <li><strong>分层保留（M1）</strong>：失败日记是长期记忆层里的专门分区，分层留存（48h / 30d / 90d+）正是分层思想在失败档案上的应用。</li>
+            <li><strong>分层保留（M1）</strong>：失败日记是长期记忆层里的专门分区，其分层留存策略正是分层思想在失败档案上的应用。</li>
             <li><strong>Self-Heal Loop（行动模块）</strong>：自愈循环处理当前任务中的失败；失败日记将失败信号持久化并在后续任务中召回。</li>
             </ul>
             <h2>工程判断</h2>

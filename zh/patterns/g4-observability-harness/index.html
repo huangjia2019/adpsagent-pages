@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -219,21 +219,21 @@
             <li><strong>企业 production Agent</strong>：需要满足故障分析、客户审计和合规留痕要求。</li>
             <li><strong>多租户 SaaS</strong>：per-tenant cost attribution 是计费基础，也是跨租户隔离审计的入口。</li>
             <li><strong>多 model 系统</strong>：model swap 不可见就会变成长时间盲查，<code>request.model != response.model</code> 一查就暴露。</li>
-            <li><strong>多 sub-agent 或长 conversation 系统</strong>：跨 Agent 不串 trace 就是黑盒，200K context 的演化必须可回放。</li>
+            <li><strong>多 sub-agent 或长 conversation 系统</strong>：跨 Agent 不串 trace 时，sub-agent 活动和 context 演化无法还原为完整调用链。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>Volume Overwhelms Signal（信号被淹）</strong>：一个忙碌的 Agent 每小时产生上千 span，dashboard 上两千条绿色里藏着三条红色没人看到。修正方式是 structured alerting——只对少数几个 production metric 做斜率告警（success rate、cost per task、tool accuracy、human override rate、latency p99），dashboard 看趋势不看个体 event，其余走采样加 query-on-demand。</li>
-            <li><strong>Trace Sampling Bias（采样偏差）</strong>：quality 评估有成本，10% 随机采样常见，但某些租户 case 偏向简单端时采到的全是简单 case，dashboard 显示 0.95 完美而困难 case 早已跌到 0.6。修正方式是 stratified sampling 加 SLA-tier 全采，按难度分层强制采样，Enterprise tier 100% 全采。</li>
-            <li><strong>Schema Drift（schema 漂移）</strong>：OpenTelemetry GenAI conventions 仍在演进，今天写死的字段明年被改名，dashboard、alert、cost engine 全部 broken。修正方式是 schema versioning 加 dual-write 加 migration window，stable convention 出来之前不写死任何字段。</li>
-            <li><strong>自造 observability backend</strong>：trace store 加 query engine 加 dashboard 这套基础设施造一遍要数个工程师做一年。2026 年的工程纪律是直接接 Langfuse / Phoenix 这类成熟工具加一层薄业务扩展。</li>
+            <li><strong>Volume Overwhelms Signal（信号被淹）</strong>：高流量 trace 会把少量关键异常埋在大量正常 span 中。应对 selected production metric 做 structured alerting，dashboard 看趋势，其余保留采样和 query-on-demand。</li>
+            <li><strong>Trace Sampling Bias（采样偏差）</strong>：随机采样可能偏向简单 case，使 dashboard 系统性高估真实质量。应按任务难度、租户、风险和 SLA 分层采样，高风险链路按政策完整留痕。</li>
+            <li><strong>Schema Drift（schema 漂移）</strong>：OpenTelemetry GenAI conventions 仍在演进，字段在后续版本中可能改名，进而影响 dashboard、alert 和 cost engine。应使用 schema versioning、dual-write 和 migration window，并跟踪所采用规范的稳定性状态。</li>
+            <li><strong>自造 observability backend</strong>：trace store、query engine 和 dashboard 的建设与维护成本很高。通常可先接 Langfuse、Phoenix 等成熟工具，再补充业务字段和访问控制。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>五维采集完整度</strong>（健康区：cost 与 quality 两维不缺）：是否采了 AI-native 的成本与质量维度。少这两维，故障的斜率信号就消失，事后回放只剩"看起来一切正常"。</li>
-            <li><strong>trajectory slope 告警 vs threshold 告警的比例</strong>（健康区：以斜率告警为主）：是否在监控变化率。纯阈值告警在 Agent 时代基本失效，因为故障是漂移不是越线。</li>
-            <li><strong>跨进程 trace 串联率</strong>（健康区接近 100%）：sub-agent 的 span 能否挂回父 trace id。串不上就只剩一堆孤立 span，无法 reconstruct 完整调用链。</li>
-            <li><strong>采样的难度分布偏差</strong>（健康区：采样分布贴近实际分布）：采到的 case 难度是否代表整体。偏向简单端会让 quality dashboard 系统性高估真实质量。</li>
+            <li><strong>五维采集完整度</strong>：检查请求、模型、成本、质量和业务结果是否能在同一 trace 中关联。</li>
+            <li><strong>trajectory slope 与 threshold 告警</strong>：同时监控绝对阈值和变化率，避免缓慢漂移长期低于固定告警线。</li>
+            <li><strong>跨进程 trace 串联率</strong>：sub-agent span 能否挂回父 trace id。无法串联的调用链应作为采集缺陷修复。</li>
+            <li><strong>采样难度分布偏差</strong>：比较采样集与实际流量在难度、租户和风险上的分布，避免 quality dashboard 偏向简单 case。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>每个 LLM call / tool call / sub-agent step 产出一个 span：
@@ -249,8 +249,8 @@ trajectory_slope(tenant, metric, window)：返回变化率，不是阈值
 query_for_audit(trace_id)：一个 trace_id 串起所有 span 供监管回放
 </code></pre>
             <p>生产实现将 PRICING 配置为实际模型价格；llm_judge 接入真实的低成本 Judge；business 属性加入 tenant_id、user_id 和 workflow_id；emit 连接真实 collector 或 Langfuse endpoint。</p>
-            <h2>应用示例</h2>
-            <p>2026 年 2 月，一家月活 12 万中学生的 Edtech 公司出现作业反馈质量下降。application log、request count、latency、error rate 和 Datadog APM 均未显示异常。6 小时后，团队发现一次部署将 main Agent 从 Sonnet 4.6 切换到 Haiku 4.5，错误 routing 使所有请求进入 Haiku。cost per call 同时从 0.03 降到 0.001，quality score 从 0.92 降到 0.71。将 request model、response model、cost 和 quality 放在同一 trace 后，可以直接识别该 model swap。</p>
+            <h2>场景化示例</h2>
+            <p>设想一家 Edtech 公司发现作业反馈质量下降，但 application log、请求量、延迟、错误率和传统 APM 都没有异常。团队最终在模型调用记录中发现，一次部署把主 Agent 路由到了能力更低的模型。基础设施指标仍然正常，调用成本甚至下降，只有质量评测同步变差。把 requested model、actual model、cost、quality 和业务结果放在同一 trace 后，model swap 才能被直接定位。</p>
             <p>在执行型 Agent 的工程实现里，可观测性可以用统一的活动事件抽象落地：把智能体的每一个活动事件用 Activity 加 Frame 统一表达，开发者就能看到执行过程的完整时间线（如 SSE 实时推送）。需要注意区分一件事——这里的"可观测"是让执行过程对开发者可见，不等于"Agent 对世界的感知"。前者是治理端的 telemetry，后者是感知模块的事。</p>
             <h2>相邻模式</h2>
             <ul>

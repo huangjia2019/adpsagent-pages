@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,7 +157,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Once an agent reaches production, the most expensive failure is not that it runs slowly; it is that it commits, on its own, an irreversible high-risk action. A wire transfer, a production deployment, an outbound email to the public — the cost of getting one of these wrong far exceeds the labor saved by running it correctly ten thousand times. Handing every action to the agent for automatic execution is gambling; intercepting every action for human review pushes efficiency back to where it was before the agent existed.</p>
+            <p>In production, an agent may execute irreversible actions such as transfers, deployments, or outbound communication. The cost of a single error can exceed the model and labor savings from routine successful runs. Full automation amplifies risk, while universal human review creates an approval bottleneck.</p>
             <p>Approval Gate turns this into routing: each action arrives at a decision point, is first classified by risk, then dispatched to one of three destinations — low risk auto-approved, medium risk executed after logging, high risk forced into human review. It does not aim to intercept every action; it aims only to ensure that the small class of actions whose mistakes are irreversible and enormous always has a human who has pressed enter. This boundary also happens to answer a question enterprises care about most when deploying agents — who is responsible when something goes wrong: when a human has reviewed it, responsibility lies with the approver; when the decision was automatic, responsibility lies with the product owner.</p>
             <h2>Classification: Governance × Route</h2>
             <ul>
@@ -192,13 +192,13 @@
             </tr>
             </tbody>
             </table>
-            <p>Risk grading is best done on a reversibility × impact dual axis, rather than slicing linearly by amount alone. Reversible and low-impact actions are auto-approved; irreversible or high-impact actions are forced into human review; those above a certain threshold add a two-person rule requiring two independent reviewers. Claude Code's 5+1 PermissionMode (default / plan / acceptEdits / bypass / dontAsk / auto) is an industrial sample of this tiering design, upgrading the binary "all on / all off" choice into a state machine of multiple tiers plus dynamic judgment.</p>
+            <p>Risk grading is best done on a reversibility × impact dual axis rather than by amount alone. Reversible, low-impact actions may be auto-approved; irreversible or high-impact actions require human review; policy-defined combinations may require independent reviewers. Tiered permission modes in coding agents illustrate the same move from an all-on/all-off switch to a state machine with dynamic judgment.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Finance and payments</strong>: irreversible monetary actions such as transfers, refunds, and disbursements must go to human review above a threshold, with high amounts requiring two-person review.</li>
             <li><strong>Operating production environments</strong>: high-impact operations such as deployments, database migrations, and DNS switchovers should be inspected as a plan before execution.</li>
             <li><strong>Outbound publishing and legal documents</strong>: mass emails, contract generation, and regulatory reports carry irreversible reputational and compliance costs when wrong.</li>
-            <li><strong>Regulator-facing high-risk AI</strong>: systems deployed in the EU and falling into categories such as hiring, credit, or critical infrastructure fail compliance outright without a human-oversight approval path.</li>
+            <li><strong>Regulator-facing high-risk AI</strong>: systems in hiring, credit, critical infrastructure, or other regulated domains must implement the human-oversight and recordkeeping controls required by the applicable jurisdiction.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
@@ -209,10 +209,10 @@
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Approval-to-rejection ratio</strong> (healthy below 95%): the ratio of approvals to rejections. Above 95% means the gate adds friction yet intercepts almost nothing, most likely already rubber-stamping.</li>
-            <li><strong>Average approver decision time</strong> (healthy above 3 seconds): below 3 seconds is clearly a reflex rather than scrutiny, a direct signal of approval fatigue.</li>
-            <li><strong>Override path actual trigger rate</strong> (healthy near 0 and not rising): the trigger frequency of trust-based bypass paths. Stop immediately once an abnormal rise is detected; this is the early sign of a $2M incident.</li>
-            <li><strong>Audit log completeness</strong> (healthy 100%): the coverage of logging for high-risk actions. Below 100% means that when something goes wrong you cannot trace who approved it or on what basis, a direct violation of the recordkeeping requirement in EU AI Act Article 22.</li>
+            <li><strong>Approval outcome distribution</strong>: Observe approvals, rejections, requests for more evidence, and timeouts by action type. A gate that almost always approves may have become a rubber stamp.</li>
+            <li><strong>Approver decision time</strong>: Analyze it by risk and evidence complexity. Very short decisions may indicate approval fatigue, but confirm this through sampled review.</li>
+            <li><strong>Override-path trigger rate</strong>: Monitor trust-based, emergency, and administrator bypasses separately. Suspend and review paths whose usage changes unexpectedly.</li>
+            <li><strong>Audit-log completeness</strong>: High-risk actions should record the request, evidence, reviewer, decision, rationale, and final outcome. Fields and retention follow applicable law and organizational policy.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>for each action:
@@ -227,8 +227,8 @@
             write a WORM audit log throughout (to satisfy regulatory recordkeeping)
             </code></pre>
             <p>Three things must change in an engineering deployment: replace the risk classifier with the business's own (KYC + AML scoring for finance, blast-radius estimation for operations); connect the human-review interface to a real approval workflow (Feishu / Slack / ServiceNow) rather than console input; enforce reviewer1 ≠ reviewer2 in two-person review.</p>
-            <h2>Application example</h2>
-            <p>A US mid-market bank's vendor payment agent had a first version of the rule "pay automatically below $10,000, require approval above." It ran smoothly for the first two months. On the day it failed, an old vendor changed its receiving account through a forged change notice; the agent read the notice, went through reconciliation, and automatically paid $200,000 when the quarterly bill came due — the money went into the attacker's account. The root cause was not that the agent failed to flag the risk — it did flag high-amount — but that the engineering team, to reduce approver impatience, had added a trust-score override that "loosened the threshold to $50,000 for old vendors with over 50 accumulated successes," auto-approving a large payment that should have gone through review. After the incident the bank set a hard rule: no trust-score override on amount triggers — no matter how old the vendor, once the amount crosses the threshold the approver must press enter. The correction also included forced two-person review for the combination of an account change plus a large amount within 30 days, and seven-year retention of the audit log for inspection. The root cause of the problem was not that the approval gate was inadequate; it was that someone bypassed the approval gate for the sake of UX.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a vendor-payment agent that receives a notice changing a supplier's receiving account. The system correctly classifies the payment as high risk but allows a "trusted long-term vendor" score to override account-change and amount checks. A forged notice can then bypass the human review the risk rule was meant to require. A stronger policy makes account changes, beneficiary changes, irreversibility, and other hard triggers non-overridable; high-risk combinations receive independent review; and the audit record follows the bank's retention policy. This is an illustrative threat scenario, not a reported bank incident.</p>
             <p>In the engineering implementation of an execution-type agent, this gate can be made lighter. Once the agent has task nodes and a task state machine, sensitive tasks can be blocked at a node and wait for manual review to pass before continuing; critical operations requiring review can have human-in-the-loop attached based on declarative configuration, without changing code each time.</p>
             <h2>Related patterns</h2>
             <ul>
@@ -238,7 +238,7 @@
             <li><strong>Hook Pipeline (G5)</strong>: the approval gate is a special form of the PreToolUse hook — a deterministic interception inserted before an action executes.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of Approval Gate is not a UX workflow but accountability engineering — it converts the vague question of "who takes the blame when the agent fails" into a clear contract of responsibility: what a human has reviewed belongs to the approver, and what was decided automatically belongs to the owner.</p>
+            <p>Approval Gate writes high-risk actions, approval state, and responsible roles into the runtime contract. The approver, product owner, and system policy each need a defined scope before the action executes.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>G1 Approval Gate</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

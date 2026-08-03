@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">中（2-4× 单次调用）</td>
+            <td style="text-align: left;">中（包含生成、评审和可能的修订调用）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -168,8 +168,8 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>主观判断密集的任务没有标准答案，只有质量谱系——写作、设计、代码风格、产品文案、学术摘要都属于这一类。便宜模型第一次往往写不到位，但人类作家写完文章会回头读三遍，每读一遍改一遍，到边际收益降下来就停笔。这个"自己回看、自己改进"的能力是输出质量的关键，单次生成拿不到。</p>
-            <p>Generator-Critic 把这个流程编码进 agent：generator 写初稿，critic 回看挑问题，generator 拿着反馈再改，循环到 critic 满意或触及迭代上限。它是反思模块里最简的工程实现，2023 年 Reflexion 论文奠定，到 2026 年仍是反思模式的工业基线——Self-Refine 在 7 个任务上平均拿到约 20% 的绝对提升，且不需要训练数据。</p>
+            <p>主观判断密集的任务没有唯一标准答案，写作、设计、代码风格、产品文案和学术摘要都属于这一类。初稿中的问题常常要到复读时才会显现，人类作者也会在收益不再值得继续投入时停止修订。单次生成缺少这一步有意识的回看。</p>
+            <p>Generator-Critic 把这个流程编码进 Agent：generator 写初稿，critic 按明确标准评审，generator 根据反馈修订，直到通过验收或触及迭代上限。Reflexion、Self-Refine 等研究展示了这条路线的可行性，但实际增益取决于任务、模型、评审标准和停止条件，需要在目标场景上复测。</p>
             <h2>坐标说明：反思 × 链式</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：Critic 对当前输出进行评估，可以与 Generator 使用同一模型，也可以接入外部信号。</li>
@@ -214,21 +214,21 @@
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>有确定性判据时仍使用 LLM Critic</strong>：数学、SQL 和单元测试等任务应优先使用测试或 schema，减少主观评估。</li>
-            <li><strong>critic 比 generator 还弱</strong>：critic 模型能力不足时，它评不出真问题反而引入噪声，闭环越跑越差。critic 至少要和 generator 同档或更强。</li>
-            <li><strong>critic 强行找问题</strong>：critic prompt 没明示"no changes needed 是合法选项"，它会凑数虚构问题。Reflexion 在 MBPP 上测出 critic 给已经正确的代码挑错的概率达 16.3%，加一句"已合格就输出 no changes needed"能把这个比例显著压下来。</li>
+            <li><strong>critic 未经独立评测</strong>：critic 漏掉关键缺陷或引入噪声意见时，改写反而会退化。应独立评测 critic 的问题召回、误报和改写结果，不能只按模型档位判断它是否合格。</li>
+            <li><strong>critic 强行找问题</strong>：critic prompt 没说明 <code>no_changes_needed</code> 是合法结果时，它可能为了完成任务而虚构缺陷。应给出明确的通过条件，并用已经合格的样本测试 phantom issue。</li>
             <li><strong>同源偏差不设防</strong>：critic 和 generator 是同一个 LLM 时存在 self-enhancement bias，它倾向给自己的输出打高分。高 stake 任务要换 vendor 或加 external grounding。</li>
             <li><strong>迭代不熔断</strong>：不设 max_iterations 会触发 over-thinking——critic 把上一轮的虚构当依据继续虚构，几轮后 agent 说服自己输出严重有问题。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>critic 收敛率</strong>（健康区 2-3 轮内收敛）：超过 3 轮还不通过，说明 critic 标准失调或 generator 能力不够。</li>
-            <li><strong>phantom issue 率</strong>（健康区 &lt;10%）：critic 对已合格输出挑错的比例。高于 15% 说明 critic prompt 缺"no changes needed"出口。</li>
-            <li><strong>critic-vs-expert 一致率</strong>（健康区 &gt;70%）：每周抽 50-100 条 critic 输出对比专家判断。低于 70% 要重写 critic prompt 或换模型。</li>
-            <li><strong>质量增量</strong>（健康区比单次生成高 5-15%）：低于 3% 说明反思没起作用，高于 25% 说明 generator 单次配置本身有问题，先修 generator。</li>
+            <li><strong>critic 收敛情况</strong>：记录通过、触顶和人工接管的分布。反复触顶时检查评审标准是否冲突，或 generator 是否具备修正能力。</li>
+            <li><strong>phantom issue 率</strong>：在已由专家确认合格的样本上，统计 critic 虚构问题的情况。</li>
+            <li><strong>critic-vs-expert 一致率</strong>：持续抽样对比专家判断，并按错误类型修订 rubric、prompt 或模型。</li>
+            <li><strong>质量增量</strong>：在同一评测集上比较单次生成与评审循环，同时报告 token、延迟和人工返工。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>output = generator(task)
-for i in range(MAX_ITERATIONS):       # MAX=3, Aider 同源熔断
+for i in range(MAX_ITERATIONS):       # 按任务风险和评测证据配置
     if external_critic:               # 有 deterministic 信号优先
         critique = external_critic(task, output)
     elif multi_critic:                # 多角色并行 + 仲裁
@@ -240,13 +240,13 @@ for i in range(MAX_ITERATIONS):       # MAX=3, Aider 同源熔断
     output = generator(task, previous=output, feedback=critique)
 return output, &quot;max_iterations_reached&quot;   # 触底转 HITL
 </code></pre>
-            <p>生产实现应在 Critic prompt 中允许 <code>no_changes_needed</code>；存在 test、schema 或引用库等确定性信号时优先使用 external critic；max_iterations 通常设为 3；完整 history 留作 Critic 校准数据。</p>
-            <h2>应用示例</h2>
-            <p>一家学术出版社的论文摘要润色 Agent 第一版使用单 prompt，线下平均编辑评分为 8.2/10。第二版加入 Generator-Critic，并要求找出 3 个改进点，平均分降至 7.4；trace 显示 Critic 生成了不存在的问题并把摘要改得冗长。第三版允许输出 <code>no_changes_needed</code>，phantom issue 率从 16.3% 降至 7%；同时引入学术严谨性、简洁性和术语准确度三个 Critic 并行评估，其中术语 Critic 查询引用数据库；每周抽取 50 条输出与专家判断对比。平均分提高到 8.9，单次 token 成本增加 2.8 倍。</p>
+            <p>生产实现应在 Critic prompt 中允许 <code>no_changes_needed</code>；存在 test、schema 或引用库等确定性信号时优先使用 external critic；<code>max_iterations</code> 按任务风险和本地评测配置；完整 history 留作 Critic 校准数据。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个论文摘要润色 Agent。第一版让 critic 必须给出若干修改点，结果它会对已合格摘要虚构问题，并把文字改得冗长。后续版本允许输出 <code>no_changes_needed</code>，并把学术严谨性、简洁性和术语准确性拆成独立 rubric；术语评审可查询引用数据库；团队持续抽样与专家判断对照。是否值得增加评审循环，应由这组对照样本中的质量增量和额外成本共同决定。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Self-Heal Loop（F4）</strong>：Generator-Critic 从可用输出开始做质量改进，replay 可选；Self-Heal Loop 从确定性失败开始执行强制循环。</li>
-            <li><strong>Adversarial Review（协作模块）</strong>：升级形态。Generator-Critic 是"同一个模型换 prompt"，Adversarial Review 是"独立 agent 带对抗激励"。前者解决"agent 怎么改自己"，一个 LLM 进程加两段 prompt 即可；后者解决"决策怎么经过 audit-grade 独立审查"，需要 model routing、独立 trace、跨 agent 编排，token 成本约 9 倍。错代价低用前者，金融审批 / 医疗诊断这类需要监管独立性的场景升级到后者。</li>
+            <li><strong>Adversarial Review（协作模块）</strong>：升级形态。Generator-Critic 解决当前输出如何修订；Adversarial Review 解决高风险决策如何接受结构独立的审查，需要 model routing、独立 trace 和跨 Agent 编排。是否升级取决于错误代价、独立性要求和成本预算。</li>
             <li><strong>Skill Package（F2）</strong>：衔接关系。Generator-Critic 改的是当下这次输出，Skill Package 沉淀的是跨任务的成功流程。</li>
             </ul>
             <h2>工程判断</h2>

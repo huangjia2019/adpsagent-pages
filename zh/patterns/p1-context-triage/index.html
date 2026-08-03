@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>生产级 Agent 通常同时接入代码、会话历史、工具返回和企业知识库。一个中等规模的 codebase 加三周 git 历史即可达到 180K token，超出许多模型的有效窗口。按文件名排序后直接截断，可能保留过期材料并删除关键证据，使 Agent 基于不完整输入作出判断。</p>
+            <p>生产级 Agent 通常同时接入代码、会话历史、工具返回和企业知识库。这些候选信息很容易超过模型的有效窗口。按文件名或时间顺序直接截断，可能保留过期材料并删除关键证据，使 Agent 基于不完整输入作出判断。</p>
             <p>上下文分诊把候选信息划分为 P0/P1/P2/P3 四级，在单次请求的 token 预算内依次加载，并记录延迟获取和丢弃项。其目标是优先保留影响当前决策的证据。</p>
             <h2>坐标说明：感知 × 路由</h2>
             <ul>
@@ -189,46 +189,46 @@
             <tr>
             <td style="text-align: left;">P0 永远加载</td>
             <td style="text-align: left;">system prompt、安全规则、当前任务、业务身份（tenant_id）</td>
-            <td style="text-align: left;">占预算 5-10%，超预算也进</td>
+            <td style="text-align: left;">先预留预算，不能被普通材料挤出</td>
             </tr>
             <tr>
             <td style="text-align: left;">P1 有空间就加载</td>
             <td style="text-align: left;">当前文件、最近 tool 结果、错误堆栈</td>
-            <td style="text-align: left;">占预算 20-30%</td>
+            <td style="text-align: left;">按当前任务的重要性加载</td>
             </tr>
             <tr>
             <td style="text-align: left;">P2 压缩后加载</td>
             <td style="text-align: left;">历史对话、背景文档</td>
-            <td style="text-align: left;">压成摘要，占 10-20%</td>
+            <td style="text-align: left;">先摘要，再按剩余预算加载</td>
             </tr>
             <tr>
             <td style="text-align: left;">P3 只挂句柄</td>
             <td style="text-align: left;">可访问但不预加载的资源</td>
-            <td style="text-align: left;">0 预算，通过工具按需拉</td>
+            <td style="text-align: left;">不预占正文预算，通过工具按需拉取</td>
             </tr>
             </tbody>
             </table>
             <p>优先级可以来自人工规则，也可以由算法计算。Claude Code 的 CLAUDE.md hierarchy 属于人工分诊，开发者可将安全规则置于 P0、个人偏好置于 P2；Aider RepoMap 使用 tree-sitter 提取符号并按代码图打分，属于算法分诊。错误堆栈应跨级保护，因为后续修复和回归依赖其中的反馈。每次分诊还需要记录 trace，以区分“候选信息未被发现”和“已发现但被延迟或丢弃”。</p>
             <h2>适用场景</h2>
             <ul>
-            <li><strong>多租户 SaaS 客服 Agent</strong>：一个 Agent 服务上百家租户，每家知识库 30 万 token 量级，合计远超窗口。tenant_id 必须做成 P0 硬约束，其余知识按四级分诊。</li>
+            <li><strong>多租户 SaaS 客服 Agent</strong>：一个 Agent 服务多家租户，各自知识库合计远超窗口。tenant_id 必须做成 P0 硬约束，其余知识按四级分诊。</li>
             <li><strong>面对陌生 codebase 的代码 Agent</strong>：用户每次给一个不同仓库，无法要求每人都写 CLAUDE.md，必须走算法自动符号抽取这条路。</li>
-            <li><strong>长期服务同一团队的工程 Agent</strong>：投资人工写 200 行 CLAUDE.md 换分诊准确度，效率比算法路线更高。</li>
-            <li><strong>接入文件系统、知识库或会跑超过 5 轮的任何 Agent</strong>：一旦信息有可能超窗，分诊就不可避免。</li>
+            <li><strong>长期服务同一团队的工程 Agent</strong>：团队可以用 CLAUDE.md 明确安全规则、项目约束和加载优先级，再由算法补充动态分诊。</li>
+            <li><strong>接入文件系统或知识库的长任务 Agent</strong>：只要候选信息可能超窗，就需要显式分诊。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>优先级误判</strong>：把一个文件标成 P3，结果它正是 bug 的关键，Agent 推到一半得额外跑一次检索循环把它拉回来，多烧 5K-10K token 还增加级联错误风险。拿不准就升级，多带一份小文件比多跑一次循环便宜。</li>
+            <li><strong>优先级误判</strong>：把关键文件标成 P3 后，Agent 会在推理中途重新检索，既增加调用开销，也提高级联错误风险。拿不准时可暂时升级，并通过重读记录校准规则。</li>
             <li><strong>分诊过激</strong>：为省 token 把 budget 卡得太死，关键依赖链全被挂起，Agent 反复"我需要再读一下这个文件"，重读率（re-read ratio）飙升——省下的 token 又被重读耗回去。</li>
-            <li><strong>P3 句柄命名含混</strong>：<code>doc://manual-page-3</code> 这种名字让 Agent 不知道该不该取。句柄名要自带"是什么"信号，走"层级 + 主题 + 时间"三段式。</li>
+            <li><strong>P3 句柄命名含混</strong>：<code>doc://manual-page</code> 这种名字让 Agent 不知道该不该取。句柄名要自带“是什么”信号，可采用“层级 + 主题 + 时间”的结构。</li>
             <li><strong>跨租户串数据</strong>：P3 句柄取错租户的数据塞进 context 就是数据泄露事件。带租户前缀的资源在加载时必须强制校验与 P0 tenant_id 一致。</li>
-            <li><strong>trace 被采样掉</strong>：用 1% 采样控制存储看不出"某租户一直跨租户串数据"。分诊 trace 走全量结构化日志，用计数而非采样控制存储。</li>
+            <li><strong>trace 被采样掉</strong>：低比例随机采样可能漏掉持续发生在少数租户上的边界问题。涉及租户隔离和安全决策的分诊 trace 应完整保留，并用结构化字段控制存储量。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>重读率 re-read ratio</strong>（健康区 &lt; 5%）：Agent 推理中途要求重读已挂起文件的比例。超过 10% 是分诊过激的明确信号，每次重读都是一次完整推理循环。</li>
-            <li><strong>dropped_count 的 p99</strong>（关注长尾而非均值）：均值掩盖问题，p99 能暴露"1% 的请求触发分诊雪崩、Agent 几乎啥都看不见"的长尾故障。</li>
-            <li><strong>P3 命中率 p3_hit_rate</strong>（健康区 10-30%）：P3 句柄中实际被取的比例。低于 5% 说明句柄挂太宽浪费 token；高于 50% 说明该升 P2 的东西被错降到 P3。</li>
+            <li><strong>重读率 re-read ratio</strong>：Agent 推理中途重新读取已挂起材料的比例。相对自身基线持续上升，通常说明分诊过激或句柄描述不清。</li>
+            <li><strong>dropped_count 的长尾分布</strong>：均值会掩盖少量请求中大量材料被丢弃的问题，应结合任务类型和失败 trace 检查长尾。</li>
+            <li><strong>P3 命中率 p3_hit_rate</strong>：P3 句柄中实际被取用的比例。长期偏低时应缩小句柄池，长期偏高时应检查是否把常用材料错降到 P3。阈值需依据本地任务分布校准。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>对候选信息按优先级排序（P0 &gt; P1 &gt; P2 &gt; P3，错误堆栈额外加分）：
@@ -240,8 +240,8 @@
 TriageDecision 留下：时间戳 / 预算 / selected / deferred / dropped / tokens_used
 </code></pre>
             <p>生产实现应使用真实 tokenizer，避免 <code>len // 4</code> 对中文造成较大误差；错误识别规则需要按业务领域扩展；TriageDecision 应写入 ELK、Datadog 等可观测系统，并持续监测 dropped_count。</p>
-            <h2>应用示例</h2>
-            <p>一家区域银行的贷款评审 Agent 在标准消费贷场景中每次处理 8 份文档。一笔商业贷款申请包含 43 份文档，超出 context 容量后，系统按文件名排序截断了后半部分。被删除的材料中包含 2024 年抵押物估值报告，保留下来的材料中却有 2019 年的过期工商登记拍照件。Agent 随后给出“建议批准”，两周后该笔贷款进入坏账。系统改为四级分诊后，将抵押物估值和当前财报置于 P0/P1，历史登记件按时间衰减降级，并对所有“异常/缺失”标记实施强制保护。这个案例的问题发生在输入选择阶段。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个贷款评审 Agent 同时收到当前财报、抵押物估值、历史登记材料和往来说明。若系统按文件名截断，当前估值可能被删除，过期登记材料却留在 context 中。四级分诊会优先保护当前财报、抵押物估值和“异常/缺失”标记，历史材料按时效降级，并为未加载内容保留可追溯句柄。这里要检查的是输入选择是否完整，而不是先讨论模型的推理能力。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>语义压缩（P2）</strong>：互补且常配合。分诊管"哪些信息进 context"（未来 token），压缩管"已经进的怎么压不丢关键"（过去 token），P2 级"压缩后加载"正是两者的衔接点。</li>

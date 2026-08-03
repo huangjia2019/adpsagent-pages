@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>LLM 依赖 context window 保持当前任务信息，而长上下文中的中间内容容易获得较低注意力。任务运行两三个小时后，一段持续二十多轮的调试可能使原计划退出有效工作集。例如，Agent 完成前三个文件后处理局部缺陷，随后直接进入测试阶段，遗漏尚未创建的第四个文件。</p>
+            <p>LLM 依赖 context window 保持当前任务信息，而长上下文中的中间内容容易获得较低注意力。长时间调试会把原计划挤出有效工作集。例如，Agent 完成部分文件后陷入局部缺陷，随后直接进入测试阶段，遗漏计划中尚未创建的文件。</p>
             <p>进度追踪将 todos 和状态写入外部存储，并在每轮决策前重新加载。结构化状态同时服务于 Agent 的任务恢复、用户查看和审计。</p>
             <h2>坐标说明：记忆 × 编排</h2>
             <ul>
@@ -180,29 +180,29 @@
             <li><strong>精简的状态机</strong>：核心 schema 极简——任务描述、状态枚举（pending / in_progress / completed）、进行时形式。状态机的硬约束是任何时刻只有一个 in_progress，单线程 agent 一次只能聚焦一件事。</li>
             <li><strong>状态外部化到对话流</strong>：每轮写入进度，并在下一轮重新读取，将任务状态从 context 历史转移到外部存储。</li>
             <li><strong>全部完成时自动清空</strong>：所有 todos 完成后清空活动清单，避免旧任务状态影响新任务判断；完成记录可转存审计日志。</li>
-            <li><strong>框架层强制 nudge</strong>：单靠 prompt 教 agent 写 todos 不够，框架层必须有机制。两种工业实现:一是 verification nudge（三项以上的清单关闭时若没有验证步骤，自动追加提醒），二是 context-loss detection（做复杂任务却没写 todos 时自动注入提醒，反复不写则递进式升级压力）。</li>
+            <li><strong>框架层强制 nudge</strong>：单靠 prompt 教 Agent 写 todos 不够，框架层还要检测复杂任务未建清单、关闭任务前缺少验证等情况，并按本地策略注入提醒或暂停执行。</li>
             <li><strong>按 agent / session 隔离</strong>：每个 agent 或子 agent 维护独立的 todos 池，避免子 agent 的细节 todos 污染主 agent 的高层清单。</li>
             </ol>
             <h2>适用场景</h2>
             <ul>
-            <li><strong>多步长任务</strong>：三步以上、跨多轮且容易因局部调试遗漏原计划的任务，例如代码重构、多文件改造和复杂调试。</li>
+            <li><strong>多步长任务</strong>：跨多轮且容易因局部调试遗漏原计划的任务，例如代码重构、多文件改造和复杂调试。</li>
             <li><strong>可恢复的长流程</strong>：任务可能中途崩溃需要 resume 的场景。进度持久化后，第二次会话读 progress、跳过已完成、从中断步恢复，不重做。</li>
             <li><strong>多周持续推进的任务</strong>：跨数周对同一目标推进的场景（如投资研究对一只股票的判断），需要双层 todo——高层研究计划跨周保持，会话内具体动作做完合并回高层。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>单次简单任务强行用</strong>：三步以内的活、纯对话、单次 Q&amp;A 不需要 todo。</li>
+            <li><strong>单次简单任务强行用</strong>：纯对话、单次 Q&amp;A 和可以直接完成的小任务通常不需要 todo。</li>
             <li><strong>允许多个 in_progress</strong>：单线程 Agent 同时保留多个进行中步骤会使当前动作不确定。需要并行时，应拆给多个 Agent 或显式建立并行分支。</li>
             <li><strong>缺 active form 字段</strong>：UI 显示"正在做什么"时机械地给动词加 -ing，出现"Fix cache bug...ing"这种拼接。用进行时形式字段从写 todo 时就想清楚动词形态。</li>
-            <li><strong>main agent 与 sub-agent 共享一个池</strong>：main agent 看自己清单时被子 agent 的五到十条细节 todos 淹没，注意力被无关粒度争夺。子 agent 必须独立 todos。</li>
-            <li><strong>没有框架层 nudge</strong>：agent 做五步任务却完全没写 todos，框架不提醒，失忆照旧发生。nudge 的递进式压力（建议→要求→强制）三档边界要清楚。</li>
+            <li><strong>main agent 与 sub-agent 共享一个池</strong>：main agent 查看高层清单时被子 agent 的细节 todos 淹没，注意力被无关粒度争夺。子 agent 应使用独立清单，并向上返回结构化进度。</li>
+            <li><strong>没有框架层 nudge</strong>：Agent 执行复杂任务却没有建立或更新 todos，框架也不提醒，进度仍会从工作集消失。nudge 的升级条件要与任务风险和执行权限对应。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>失忆率</strong>（健康区越低越好）：长任务里 agent 遗漏原计划步骤的比例。这是判断进度追踪做对没的首要指标，再漂亮的 todos UI 也救不回高失忆率。</li>
-            <li><strong>验证步骤覆盖率</strong>（健康区接近 100%）：三项以上任务在关闭前包含验证步骤的比例。verification nudge 直接拉这个指标。</li>
-            <li><strong>resume 成功率</strong>（健康区 ≥ 95%）：崩溃后从进度恢复且不重做已完成步骤的比例。</li>
-            <li><strong>单 in_progress 合规率</strong>（健康区 100%）：任意时刻只有一个 in_progress 的占比，违反即状态机有 bug。</li>
+            <li><strong>计划遗漏率</strong>：长任务中原计划步骤被跳过的比例。它需要通过回放或任务审计计算，是判断进度追踪是否有效的首要指标。</li>
+            <li><strong>验证步骤覆盖率</strong>：适用任务在关闭前是否包含验证动作。应按任务风险设定要求，并记录 nudge 是否真正改变了行为。</li>
+            <li><strong>resume 成功率</strong>：中断后能否从持久化进度恢复，且不重复已完成的不可逆动作。</li>
+            <li><strong>单 in_progress 合规率</strong>：单线程执行器任意时刻只能有一个活动步骤。违反这一不变量说明状态机或并发边界存在缺陷。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>TodoItem: content（动词原形）/ active_form（进行时）/ status（pending|in_progress|completed）
@@ -213,15 +213,15 @@ TodoList（按 owner_id 隔离）：
 ProgressTracker（框架层强制）：
     context_loss_detected → 复杂任务但没写 todos → 注入 reminder
     nudge 递进：建议 → 要求 → 强制（halting）
-    verification_nudge   → 3+ 清单关闭且无验证步骤 → 追加提醒
+    verification_nudge   → 适用任务关闭且无验证步骤 → 追加提醒或暂停关闭
 持久化：增量 append-only + 周期 snapshot + session 兜底
 </code></pre>
             <p>生产实现应强制单一 in_progress；复杂度估算可使用成本较低的模型；明确 nudge 从建议、要求到中止的升级条件；TodoList 按 agent_id 隔离。</p>
-            <h2>应用示例</h2>
-            <p>某买方研究机构的投资研究 Agent 需要在 4-12 周内持续更新一只股票的判断。系统采用会话统一状态平面。SessionState 使用严格键值结构，记录研究计划、当前投资逻辑、关键风险、反向观点和财报数据日期；SessionNarrative 使用自然语言摘要，记录整体目标、本次推进内容和后续写回位置。研究计划采用跨周 todo，会话任务完成后合并回高层计划；状态保存为便于 git diff 的 markdown；关键风险和反向观点在每次会话中加载；状态机增加 needs_review，基金经理审核后才进入 completed；active form 带数据时间戳；周末自动合并周报。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个买方研究 Agent 持续更新某只股票的判断。SessionState 用严格键值结构记录研究计划、当前投资逻辑、关键风险、反向观点和数据日期；SessionNarrative 用自然语言说明整体目标、本次推进内容和后续写回位置。会话任务完成后合并回高层计划，状态保存为便于 git diff 的 markdown；关键风险和反向观点在每次会话中加载；需要投资经理确认的步骤先进入 needs_review，确认后才能 completed。</p>
             <h2>相邻模式</h2>
             <ul>
-            <li><strong>分层保留（M1）</strong>：Todo list 位于高频更新的会话层，通常包含 3-7 个 item，并在每轮推理时加载。</li>
+            <li><strong>分层保留（M1）</strong>：Todo list 位于高频更新的会话层，并在每轮决策前加载当前活动项和必要的上层目标。</li>
             <li><strong>失败日记（M4）</strong>：进度追踪保存任务步骤状态，失败日记保存失败现象、原因和处理结果。</li>
             <li><strong>Plan-and-Execute（推理模块）</strong>：Plan 描述预期步骤，进度追踪维护这些步骤的运行时状态。</li>
             <li><strong>Hooks Pipeline（治理模块）</strong>：框架层的 nudge 和持久化挂点天然契合 hook 机制，可用 PreToolUse / PostToolUse hook 实现。</li>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R5 Talker Reasoner · Pattern White Paper · ADPS</title>
+    <title>R5 Talker-Reasoner · Pattern White Paper · ADPS</title>
     <meta name="description" content="Split the agent into a fast, shallow Talker and a slow, deep Reasoner that coordinate through a shared belief state, so the agent can think deeply while still talking to the user i">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,8 +157,8 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Many reasoning patterns assume something they should not: that the user can wait. Giving an agent 24 seconds to think things through is fine in an asynchronous task, but it is a disaster in real-time interaction. In a conversation, a 200-millisecond pause and the user disconnects; in a voice agent, one second of silence is awkward; in real-time collaboration, three seconds of no response breaks the rhythm. The core issue is not that the agent thinks slowly, but that it says nothing while it thinks. Users do not mind an agent taking 24 seconds to think; they mind 24 seconds of silence.</p>
-            <p>Talker-Reasoner splits the two conflicting goals — real-time response and deep reasoning — across two agents. One Talker always responds within 200 milliseconds and keeps the conversation flowing; one Reasoner runs deep analysis slowly in the background; the two coordinate through a shared belief state. The goal is not higher quality but hiding latency from the user's perception. With the same amount of thinking time, the experience is worlds apart.</p>
+            <p>Many reasoning patterns assume the user can wait. That may be acceptable in an asynchronous task but not in a live conversation or voice interface. The engineering problem is the period of silence while deep analysis runs.</p>
+            <p>Talker-Reasoner assigns interaction and deep analysis to separate agents. The Talker meets the product's first-response budget and gathers clarification; the Reasoner runs in the background; both coordinate through a shared belief state.</p>
             <h2>Classification: Reasoning × Hierarchy</h2>
             <ul>
             <li><strong>Vertical axis · Reasoning</strong>: It separates two reasoning modalities, real-time response and deep reasoning, into a dual-process reasoning architecture — corresponding to Kahneman's System 1 (fast, automatic, low-cost) and System 2 (slow, deliberate, high-cost). This is an engineering mapping of cognitive science onto agents, not a single reasoning channel.</li>
@@ -167,47 +167,46 @@
             <h2>Solution and mechanics</h2>
             <p>A single dual-process round consists of three parts:</p>
             <ol>
-            <li><strong>Talker responds immediately</strong>: Using a cheap, fast model, it replies the moment it sees user input (200–800 ms), keeping the conversation flowing, responding to emotion, and asking clarifying questions. Its system prompt carries one hard constraint — do not give concrete advice, that is the Reasoner's job. The Talker handles the vast majority of conversation turns.</li>
-            <li><strong>Reasoner thinks deeply, asynchronously</strong>: Using an expensive, slow model, once triggered it runs deep analysis in the background (10–30 s), and when finished it writes structured conclusions to the shared belief state. It does not block the conversation.</li>
+            <li><strong>Talker responds within the interaction budget</strong>: A fast model keeps the conversation moving, acknowledges the request, and asks clarifying questions. Its output contract prevents unverified concrete advice before analysis completes.</li>
+            <li><strong>Reasoner thinks asynchronously</strong>: A more capable model performs deep analysis in the background and writes structured conclusions to the shared belief state without blocking the conversation.</li>
             <li><strong>Belief state coordination + natural bridging</strong>: The two agents communicate through one shared state; writes must take a lock to avoid race conditions. After the Reasoner finishes, the Talker weaves the analysis into its reply at a natural moment in the next turn, rather than abruptly producing a block of conclusions.</li>
             </ol>
             <p>There are three options for handling user input while the Reasoner is still running: QUEUE (wait in line for the Reasoner to finish, suited to task scenarios), INTERRUPT (immediately interrupt and rerun, suited to short exploratory tasks), and PARALLEL (the two agents truly run in parallel, the Talker replying immediately while the Reasoner runs in the background — conversation scenarios must use this). Make the three a config so the product can choose per scenario.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Real-time conversation</strong>: Tutoring, customer service, personal assistants — the front end needs response in the 200-millisecond range while the back end needs deep personalized analysis, and a single agent cannot satisfy both constraints.</li>
-            <li><strong>Voice agents</strong>: Phone and voice assistants, where one second of silence is awkward, so the agent must think while it speaks.</li>
+            <li><strong>Real-time conversation</strong>: Tutoring, customer service, and personal assistants where first response and deep analysis have different latency budgets.</li>
+            <li><strong>Voice agents</strong>: Phone and voice assistants where prolonged silence breaks the interaction.</li>
             <li><strong>Advisory scenarios that gather information while chatting</strong>: While the Talker chats with the user about preferences and asks follow-ups, the Reasoner runs matching analysis in the background on the information already collected, so the analysis is ready by the time the chat ends.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>The Talker gets clever and guesses the answer</strong>: If the Talker prompt does not firmly nail down "do not give concrete advice," it rushes to offer conclusions, which conflict with the Reasoner's deep analysis and waste the Reasoner's run. This is the most common failure mode of the dual-process design.</li>
-            <li><strong>The Reasoner has no timeout or cancel</strong>: A background task that runs away with no one watching, or a user who changes topic midway while the Reasoner is still working on the old question, wastes compute. Add a 30-second forced termination plus an active cancel when the user changes topic.</li>
+            <li><strong>The Reasoner has no timeout or cancel</strong>: A background task can continue after the user changes topic. Add a configured timeout and active cancellation tied to the conversation state.</li>
             <li><strong>The belief state is not persisted across sessions</strong>: When the user returns next time, the Talker starts from scratch and all of last session's Reasoner analysis is lost. Persist it to Redis / PostgreSQL.</li>
             <li><strong>Stiff bridging</strong>: The Reasoner finishes and "abruptly drops a block of analysis," which feels jarring to the user. Use the prompt to make the Talker find a natural moment in the conversation to insert it.</li>
             <li><strong>Forcing the dual-process design onto asynchronous tasks</strong>: In scenarios where the user submits a task and leaves (writing documents, batch processing), there is no need for a Talker; just let the Reasoner run slowly. Adding a Talker is over-engineering.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Talker response latency p99</strong> (healthy zone &lt;800 ms): The time from the Talker receiving input to replying. Exceeding it loses the point of the dual-process design, and the user still feels the lag.</li>
-            <li><strong>Talker overreach rate</strong> (healthy zone &lt;5%): The sampled proportion of Talker replies that are "giving concrete advice." A high value means the Talker prompt did not hold the constraint, and the Reasoner's deep analysis is wasted.</li>
-            <li><strong>Belief hit rate</strong> (healthy zone near 100%): The proportion of returning sessions where the Talker can give a personalized response based on the previous belief. Low means the belief state was not persisted or not read.</li>
+            <li><strong>Talker response latency p99</strong>: Compare with the single-agent first-response baseline and the product's interaction budget.</li>
+            <li><strong>Talker overreach rate</strong>: Sample whether the Talker gives concrete conclusions before the Reasoner finishes. Fix violations in the output schema, prompt, or permissions.</li>
+            <li><strong>Belief hit rate</strong>: Verify that later turns retrieve and correctly use confirmed belief state without stale or cross-user contamination.</li>
             <li><strong>Per-turn cost</strong> (note the structure): The dual-process design runs "two tiers at once," so per-turn cost is slightly higher than the single expensive tier alone (the Talker part is added), but in exchange latency drops sharply. This is another Pareto choice on the cost-latency-quality triangle, to be assessed against business tolerance.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>User speaks →
                 If first turn: create belief state, asynchronously trigger Reasoner (non-blocking)
-                Talker replies immediately (cheap model, 200-800ms, no concrete advice)
+                Talker replies within interaction_budget (fast model, no unverified advice)
                 If Reasoner has finished (belief status = updated) → Talker weaves the analysis naturally into the reply
-            Reasoner in background (expensive model, 10-30s):
+            Reasoner in background (more capable model):
                 Deep analysis → write belief state (structured conclusions + recommendations)
-                With timeout (30s forced termination) + cancel (cancel when user changes topic)
+                With configured timeout + cancel when the user changes topic
             belief state: persisted across sessions, writes take a lock
             Return Talker reply + the background-maintained belief
             </code></pre>
             <p>Four points for implementation: the Talker prompt firmly nails down "no concrete advice"; the Reasoner async task has a timeout and cancel; the belief state is persisted to Redis for reuse across sessions; writes to the shared state take a lock to prevent race conditions.</p>
-            <h2>Application example</h2>
-            <p>A study-abroad application advisory agent helps Chinese students choose schools and polish their essays. Two weeks after the first version launched, one class of feedback came in: "I asked which of two schools suited me better, and it paused for more than 30 seconds before replying. I thought the network had died, so I closed it and asked again." The team's review found the agent was not slow; its thinking path was too complete. After the user finished asking, the agent dutifully walked the full chain: fetch the user profile (800 ms), compare the two schools' characteristics (1.2 s), run deep analysis (18 s), and synthesize the answer (4 s), for a total of 24 seconds for one high-quality answer. But 24 seconds is infinitely long for a conversation, and the user experience collapsed. In the third week they added an "analyzing" loading indicator, and users still complained that "they watched the spinner and left."</p>
-            <p>In the fourth week they rewrote it entirely as Talker + Reasoner: after the user finished asking, the Talker replied within 200 milliseconds, first quickly pointing out the core difference between the two schools, telling the user "I'm running a detailed match analysis for you in the background," and asking back about the user's preference (work in the US or return home). During the dozen-odd seconds the user spent chatting with the Talker about preferences, the Reasoner finished a detailed analysis combining GPA, research experience, and interests in the background, and wrote the conclusion into the belief state. In the next turn the Talker bridged naturally: "Since you lean toward working in Silicon Valley, the analysis I just finished shows…" With the same 24 seconds of thinking time, the experience went from "frozen" to "receiving the analysis while chatting." A comparable online programming tutoring agent used this architecture (Talker on a cheap model for conversation, Reasoner on an expensive model for asynchronous analysis, PARALLEL mode, belief persisted across sessions, natural bridging, and a dual teacher-student view trace). In its second month after launch, student NPS rose from 6 to 8.5, and teachers' override rate on the agent's recommendations dropped from 35% to 12%.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a study-abroad advisory agent. When a user asks which school fits better, the Talker first acknowledges the comparison and asks what outcome matters most. The Reasoner evaluates grades, research experience, and interests in the background and writes its conclusion to the belief state. On the next turn, the Talker incorporates the result alongside the user's new preference. A tutoring system can use the same split with separate teacher and student trace views. First-response latency, final quality, and human override should be measured independently on real sessions.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Complexity Routing (R2)</strong>: The dual-process design is the architectural extreme of routing. Ordinary routing "picks one tier to run" (a single-point-in-time decision); the dual-process design "runs two tiers at once" (a two-time-dimension decision), pushing "tier selection" all the way to "splitting the agent."</li>
@@ -218,7 +217,7 @@
             <h2>Design conclusion</h2>
             <p>The essence of Talker-Reasoner is not performance optimization but splitting the agent's persona into two — one handling real time, one handling depth. What the Talker gives is not a preview of the Reasoner; it is content of an entirely different nature, two mental modes collaborating.</p>
 
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R5 Talker Reasoner</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R5 Talker-Reasoner</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

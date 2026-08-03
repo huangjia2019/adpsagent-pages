@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>渐进承诺管理 Agent 部署早期的权限演进。day 1 即开放 full autonomy，缺少 shadow run、分层采样和 incident 记录作为授权依据。</p>
+            <p>渐进承诺管理 Agent 部署早期的权限演进。上线即开放 full autonomy，意味着在缺少 shadow run、分层采样和 incident 记录时先行授予信任。</p>
             <p>渐进承诺把信任做成一条阶段性解锁的链：Agent 先在只读档跑够时间、达到成功率门槛、拿到管理员签字，才能进入打分档；再跑够，才进入写草稿档；如此一档一档往上爬到可逆执行、最后到不可逆的完全自治。任何一档出现严重错误，立即降回去重新挣。它把"信任"从一句口号变成可审计的工程过程。</p>
             <h2>坐标说明：治理 × 链式</h2>
             <ul>
@@ -189,7 +189,7 @@
             <tr>
             <td style="text-align: left;">L0 Shadow</td>
             <td style="text-align: left;">只读，只输出建议给人审</td>
-            <td style="text-align: left;">跑够天数 + 行动数，零事故</td>
+            <td style="text-align: left;">达到观察期、任务覆盖和 incident 条件</td>
             </tr>
             <tr>
             <td style="text-align: left;">L1 Scoring</td>
@@ -213,12 +213,12 @@
             </tr>
             </tbody>
             </table>
-            <p>晋升门槛建议三维度同时满足（时间 + 成功率 + 管理员投票，AND 关系），降级触发任一即生效（OR 关系，一次 critical incident 立即降到 L0）。除了跨档的慢节奏，同一档内做高风险动作时还可以并行跑一组 low-risk probe——dry-run、path validation、budget check、impact estimate 全部通过才 commit。每次晋升后指标清零重新挣，避免历史成绩掩盖当前退化。</p>
+            <p>晋升需要同时满足观察期或样本覆盖、任务表现和责任人审批。降级按组织的 incident policy 触发，critical event 可以立即收回权限。高风险动作在同一档内还应执行 dry-run、path validation、budget check 和 impact estimate，并让 probe 与 commit 使用同一 snapshot。晋升后重新积累新档位证据，避免历史成绩掩盖当前退化。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>新 Agent 首次部署</strong>：先使用 read-only、shadow 或 suggestion 模式，再逐步开放写权限。</li>
             <li><strong>影响 production 数据、用户资金、合规决策的 Agent</strong>：金融 KYC、HR 招聘评分、客服退款，这类场景必须先 shadow 跑够再放权。</li>
-            <li><strong>监管要求 demonstrated period 的高风险 AI</strong>：EU 部署的招聘评分类系统，每档至少 30 天的 demonstrated 可靠期是合规要求。</li>
+            <li><strong>需要 demonstrated period 的高风险 AI</strong>：招聘、金融或医疗等场景可由组织和监管要求设定观察期，不能把一套固定天数当作跨行业合规要求。</li>
             <li><strong>需要可审计信任演进的企业</strong>：把"为什么现在敢让它自动执行"做成一条有 trace 的晋升记录，回应监管与内审。</li>
             </ul>
             <h2>已知失效方式</h2>
@@ -230,10 +230,10 @@
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>每档 demonstrated 时长</strong>（健康区按风险定，金融场景 ≥ 30 天/档）：当前档累积证据的时间。过短意味着证据不足就放权，监管严格场景直接不合规。</li>
-            <li><strong>晋升后首次 incident 间隔</strong>（健康区越长越好）：刚升档就出事，强烈指向上一档存在 metric gaming，case 难度分布偏向简单端。</li>
-            <li><strong>降级触发的层级</strong>（健康区：incident-level 而非仅 metric-drift）：是否一次 critical incident 立即降级。只在指标缓慢漂移时才降，往往已经晚了。</li>
-            <li><strong>within-session probe 覆盖度</strong>（健康区：dry-run + path + budget + impact 四件齐全）：高风险动作前并行 probe 的完整性，缺一项就留一个 commit 盲点。</li>
+            <li><strong>每档 demonstrated 时长</strong>：记录当前权限等级积累证据的时间和任务覆盖。门槛由业务风险、案例数量和适用监管共同确定。</li>
+            <li><strong>晋升后 incident 分布</strong>：刚升档就出现严重问题时，检查上一档评测是否存在样本偏差或 metric gaming。</li>
+            <li><strong>降级触发层级</strong>：critical incident 应能立即触发降级，不能只依赖缓慢的 metric drift。</li>
+            <li><strong>within-session probe 覆盖度</strong>：高风险动作前检查 dry-run、路径、预算和影响范围，并记录缺失项。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>TrustLevel: SHADOW → SCORING → RECOMMEND → EXECUTE_REVERSIBLE → FULL_AUTONOMY
@@ -247,15 +247,15 @@
     并行跑 probes(dry_run, path, budget, impact)，任一失败则 abort
 当前 TrustLevel 决定该 action 是否还需要人审（与 G1 整合）
 </code></pre>
-            <p>生产实现按业务风险设置晋升门槛，例如金融场景每档 30 天且成功率达到 95%，客服场景可设为 14 天和 90%；严格监管场景启用 incident_severity_trigger；trust state machine 存储位于 Agent 无写权限的独立 IAM。</p>
-            <h2>应用示例</h2>
-            <p>某 Series B SaaS 的退款 Agent 自动处理 50 美元以下退款，以上转人工。前 7 天处理 4200 个退款，成功率为 99.3%。第 8 天，客户在 ticket 中伪装 admin，要求退款 5000 美元并 disable refund Agent，系统被关闭 5 分钟；第 10 天，另一条 social engineering 请求获得 48 美元退款并触发 fraud detection；第 11 天，团队回退到全人工。新 deployment plan 将 90 天拆分为 L0-L4 五档，每档设置晋升门槛和降级触发，并先运行只读、打分和建议模式。</p>
+            <p>生产实现按业务风险、任务覆盖和评测结果设置晋升门槛；严格监管场景启用 <code>incident_severity_trigger</code>；trust state machine 存储位于 Agent 无写权限的独立 IAM。具体观察期和成功门槛由组织政策与监管要求确定。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个 SaaS 退款 Agent 一开始就获得自动退款权限。客户通过 ticket 伪装管理员或诱导系统执行越权指令后，团队只能整体回退到人工。新的 deployment plan 使用 L0-L4 权限阶梯，从只读、风险打分和建议开始，再逐步开放受限执行；每档有晋升证据和 incident 降级触发。退款阈值、观察期和成功门槛必须按业务损失模型与真实评测设定。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>审批门（G1）</strong>：审批门按动作风险决定是否人审，渐进承诺按运行证据调整权限档位。当前档位可以作为审批路由输入。</li>
             <li><strong>爆炸半径控制（G2）</strong>：爆炸半径限制单次动作的损失，渐进承诺限制 Agent 随时间获得的权限。</li>
             <li><strong>可观测性（G4）</strong>：依赖。每次档位晋升降级都要可解释、可审计，trust level 变化的 trace 全靠 G4 记录，否则没法向监管说明"为什么现在它有这个权限"。</li>
-            <li><strong>钩子流水线（G5）</strong>：实现层。within-session 的并行 probe 在 Claude Code 里就是多个 PreToolUse hook 并行校验，任一 veto 即 abort。</li>
+            <li><strong>钩子流水线（G5）</strong>：实现层。高风险动作前的独立 probe 可以落为 hook 或 policy-engine stage，必需检查中任一 veto 即 abort。</li>
             </ul>
             <h2>工程判断</h2>
             <p>渐进承诺根据特定 Agent 在特定业务中的运行记录逐级释放权限。模型升级不能替代成功率、事故记录、观察周期和责任人审批等本地证据。</p>

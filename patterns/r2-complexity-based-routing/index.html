@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>R2 Complexity Based Routing · Pattern White Paper · ADPS</title>
+    <title>R2 Complexity-Based Routing · Pattern White Paper · ADPS</title>
     <meta name="description" content="Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive ">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Medium (the routing decision itself is cheap; the overall bill typically drops 50-70%)</td>
+            <td style="text-align: left;">Medium (one routing decision in exchange for task-specific model allocation)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -157,8 +157,8 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Using the most expensive, most capable model as the default is the most common form of waste in 2026 agent industry practice. The price gap between GPT-4o and GPT-4o-mini is 16x, and the gap between Opus and Haiku is close to the same order. If an agent routes every query to the most expensive model while more than half of those queries are in fact template-fill-in level simple tasks, that share of the bill is money spent for nothing.</p>
-            <p>Complexity-based routing replaces "use the expensive model for everything" with "split by need." Its premise is that real traffic has many easy cases and few hard ones—simple queries make up the bulk, complex queries are the minority. Route simple queries to a cheap model and reserve the expensive model for the complex queries that genuinely need it, and the bill is immediately cut in half with essentially no quality loss. Industry data shows that teams who route correctly commonly achieve a 47% to 80% cost reduction. It is complementary to parallel exploration (R3): routing handles everyday savings, while parallelism buys quality for critical decisions, and both can coexist in the same agent.</p>
+            <p>Using the most capable and expensive model for every request allocates the same resources to template filling and complex analysis. Prices and model capabilities change, so routing should compare current candidates on a local task set rather than rely on a fixed price-ratio table.</p>
+            <p>Complexity-based routing assigns model resources from task difficulty and risk. Simple requests use a lower-cost tier; difficult or high-risk requests use a more capable tier. Savings depend on the traffic distribution and model mix and should be calculated from replayed production traces. The pattern can coexist with parallel exploration: routing allocates routine requests, while parallel branches add verification for selected decisions.</p>
             <h2>Classification: Reasoning × Route</h2>
             <ul>
             <li><strong>Vertical axis · Reasoning</strong>: A routing decision is at heart "should this question use cheap fast thinking or expensive slow thinking." What it selects is a reasoning policy. It belongs to the reasoning-strategy layer, not to splitting a task across multiple agents.</li>
@@ -167,11 +167,11 @@
             <h2>Solution and mechanics</h2>
             <p>A single complexity-based routing pass consists of three stages:</p>
             <ol>
-            <li><strong>Extract signals + classify</strong>: Extract complexity signals from the query (length, keywords, domain, historical success rate) and hand them to a classifier that decides which tier to take. The classifier itself must use a cheap model or rules, keeping the decision cost within 5% of the total—you cannot call an expensive model upfront just to make the routing decision.</li>
-            <li><strong>Tiered execution</strong>: A common setup is three tiers (Cheap / Medium / Expensive), all sharing the same call interface and only switching the model name. Routing selects not only the model but also the model's effort tier, combining the two dimensions.</li>
-            <li><strong>Escalation fallback</strong>: After the cheap tier answers, check whether the result is trustworthy (confidence, schema, length); if it falls short, escalate and retry. The escalation chain must have a hard ceiling (usually 3 tiers); if it still fails at the top, raise an error or hand off to a human—every escalation chain needs a circuit breaker.</li>
+            <li><strong>Extract signals + classify</strong>: Derive complexity signals from the query, domain, and historical outcomes, then use rules or a lower-cost model to choose a tier. Include the classifier's own cost and latency in the evaluation.</li>
+            <li><strong>Tiered execution</strong>: Define capability and cost tiers from local evaluation results while keeping a shared call interface. Routing may select both a model and its effort setting.</li>
+            <li><strong>Escalation fallback</strong>: After a lower-cost tier answers, check its schema, evidence, and business constraints. If it falls short, escalate and retry. The chain needs a configured ceiling; failure at the top should raise an error or hand off to a human.</li>
             </ol>
-            <p>In 2026 the routing industry split into three lines, which determine how a team chooses:</p>
+            <p>Production systems commonly use three routing approaches:</p>
             <table>
             <thead>
             <tr>
@@ -207,18 +207,18 @@
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Classifier built on pure rules</strong>: keyword matching generalizes poorly to unseen query forms and misroutes complex queries into the cheap tier. In production you should use a cheap model for classification—it generalizes better and still costs within 5% of the total.</li>
+            <li><strong>Classifier built only on fixed rules</strong>: Keyword matching may misroute unseen query forms. Add uncertainty-based escalation or a lower-cost model, and compare the cost of false downgrades on a replay set.</li>
             <li><strong>Acceptability check looks only at length</strong>: checking only whether the output is long enough lets through results that violate the schema, exceed numeric bounds, or cite the wrong source data. Do schema-aware validation.</li>
             <li><strong>Fallback ends up more expensive than going straight to the expensive tier</strong>: running the cheap tier first, finding it inadequate, then escalating to the expensive tier costs more in total than going expensive from the start. As soon as the fallback rate rises, check whether the classifier is misfiring.</li>
-            <li><strong>High-risk queries also go to the cheap tier</strong>: queries involving finance, privacy, or compliance cannot be skimped on even when they look simple, because the cost of an error is 100x more than the tokens. Force them through the most reliable tier.</li>
+            <li><strong>High-risk queries also go to the low tier</strong>: Finance, privacy, or compliance queries may need a reliable tier even when syntactically simple. Encode risk overrides outside the model.</li>
             <li><strong>A single-model team forcing routing in</strong>: when only one model is used, or the task is always of the same kind, or the cheap model is already good enough, routing is pointless.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Per-query cost distribution</strong> (healthy zone is long-tailed): cheap tier 60-80%, medium tier 15-30%, expensive tier &lt;10%. If the expensive tier exceeds 30%, either the business really is complex or the classifier is misrouting too many simple queries to the expensive tier.</li>
-            <li><strong>Routing accuracy</strong> (healthy zone &gt;90%): the share handled by the cheap tier without escalation. If only 60% avoid escalation, the classifier is pushing too many complex queries into the cheap tier.</li>
-            <li><strong>Fallback rate</strong> (healthy zone &lt;10%): the share of cheap-tier results that trigger escalation. This is the leading signal for the other metrics—when it rises, the cost distribution shifts and accuracy drops immediately, so bring it down first.</li>
-            <li><strong>Average decision time</strong> (healthy zone &lt;100ms): how long the classifier takes to make its own decision. Exceeding this value means the routing judgment is too heavy and the agent waits before it does any work.</li>
+            <li><strong>Per-query cost distribution</strong>: Break cost down by routing tier and task class. When the high-capability tier changes materially, distinguish harder traffic from classifier error.</li>
+            <li><strong>Routing accuracy</strong>: Use labels, human review, or a stronger reviewer to judge whether the selected tier met the task requirement. Track unsafe downgrades separately.</li>
+            <li><strong>Fallback rate</strong>: The share of lower-tier results that escalate. Changes call for inspection of thresholds, model capability, and input distribution.</li>
+            <li><strong>Routing decision time</strong>: Measure the classifier's contribution to total latency. If it becomes material, use rule prefilters, caching, or asynchronous features.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Query comes in → extract complexity signals (length / keywords / domain / history)
@@ -227,13 +227,13 @@
             Execute:
                 cheap tier runs → result acceptable? → return
                           not acceptable → escalate (schema validation + cost estimate)
-                escalation chain has a hard ceiling (e.g. 3 tiers); still failing at the top → raise error / hand off to human
+                escalation chain reaches its configured ceiling; still failing at the top → raise error / hand off to human
             Emit a trace on every routing decision (query summary / tier / signals / confidence / actual cost / whether escalated)
             </code></pre>
             <p>Four points for getting it into production: use a cheap model instead of pure rules for the classifier; make the acceptability check schema-aware; add a cost ceiling to the fallback chain to keep extreme cases from blowing up; periodically promote query types that repeatedly escalate to default directly to the high tier, saving the repeated escalation overhead.</p>
-            <h2>Application example</h2>
-            <p>A mid-sized SaaS company's internal data-analysis agent let the product, growth, and finance teams query BI data in natural language. The first version defaulted to the most expensive model for everything ("the strongest, so nothing goes wrong"), and three months after launch finance received a monthly bill of 480,000. The team broke down the traffic: 41% of queries were SQL template fill-ins ("number of users who registered last week"), 22% added a grouping ("retention curve grouped by region"), genuinely complex queries needing multi-step attribution were only 19%, and those needing causal modeling were only 4%. Feeding template-fill-in queries to the most expensive model is paying 15x for nothing.</p>
-            <p>The rewrite made six key decisions: three tiers plus a fallback tier (cheap tier runs template fill-ins, medium tier runs groupings, expensive tier runs attribution, top tier runs causal modeling); a dual-track classifier of rules plus a cheap model (80% goes through rules, 20% through the cheap model, holding routing cost under 200 per month); estimate total cost before escalating to avoid escalation that ends up more expensive; force the three high-risk categories—finance, privacy, compliance—through the most expensive tier; full traces on every routing decision and a weekly health report; every 30 days, promote query types that repeatedly escalate to default directly to the high tier. Three weeks later the bill dropped from 480,000 to 120,000, the error rate held within 0.5%, and p99 latency also fell.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider an internal BI agent serving product, growth, and finance teams. Trace review shows that some requests fill SQL templates or add grouping, while others require multi-step attribution or causal analysis. The first version uses the strongest model for all of them and cannot explain whether resources are being spent on difficult work.</p>
+            <p>The revised system assigns tiers to template queries, aggregation, attribution, and high-complexity analysis; combines a rule prefilter with a lower-cost classifier; estimates total cost before escalation; forces finance, privacy, and compliance requests through risk-based overrides; and retains every routing trace for replay. Cost and quality changes are calculated from those traces rather than assumed from an industry percentage.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Parallel exploration (R3)</strong>: complementary. Routing picks one tier at a single point in time to save money; parallelism opens N lines at once to buy quality. Within the same agent, everyday work goes through routing and critical decisions start parallelism.</li>
@@ -244,7 +244,7 @@
             <h2>Design conclusion</h2>
             <p>The essence of complexity-based routing is not "pick a model by looking at the query," but turning the three variables of token, latency, and quality into a Pareto frontier and choosing a specific point on the curve according to the business SLA—this is the work of product economics, not of model parameter tuning.</p>
 
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R2 Complexity Based Routing</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R2 Complexity-Based Routing</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

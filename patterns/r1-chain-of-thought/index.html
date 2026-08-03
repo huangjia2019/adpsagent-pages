@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R1 Chain of Thought · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Make the model&#x27;s reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that &quot;why this conclusion was reached&quot; is ">
+    <meta name="description" content="Manage available reasoning artifacts, evidence, decisions, and model metadata as structured data for replay, audit, and fallback.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/r1-chain-of-thought/">
@@ -123,7 +123,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>R1 · Chain-of-Thought</h1>
-                <p class="publication-deck">Make the model&#x27;s reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that &quot;why this conclusion was reached&quot; is on record.</p>
+                <p class="publication-deck">Manage available reasoning artifacts, evidence, decisions, and model metadata as structured data for replay, audit, and fallback.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Low (roughly one ordinary call; one tier higher per token when thinking is enabled)</td>
+            <td style="text-align: left;">Variable (reasoning effort, model interface, and retention policy)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -151,62 +151,62 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern summary</strong></td>
-            <td style="text-align: left;">Make the model's reasoning process explicit as structured data that can be stored, audited, and migrated across models, so that "why this conclusion was reached" is on record.</td>
+            <td style="text-align: left;">Manage available reasoning artifacts, evidence, decisions, and model metadata as structured data for replay, audit, and fallback.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>The model returns a conclusion, but no one knows how it got there. When the conclusion is correct, no one asks; when it is wrong, there is no way to debug it; and when a regulator comes to inspect, there is no evidence to produce. One of the biggest differences between an agent and traditional software is this "gray-box" quality—it is neither a black box nor a true white box. If the reasoning layer in the middle is not captured, there is no way to root-cause an incident.</p>
-            <p>Chain-of-Thought pulls this reasoning process out of the model's interior and turns it into first-class data in the trajectory. In 2026 it is no longer the 2022 prompt trick of saying "Let's think step by step"—a reasoning model already emits its reasoning process, and what the engineering layer has to do is manage the lifecycle of that process: how to persist it, how to audit it, how to migrate it when falling back across models, and how to control its depth by task complexity. Writing an agent without writing a CoT trace is like writing a backend without logging.</p>
+            <p>Here, Chain-of-Thought means engineering the reasoning trajectory: storing permitted reasoning artifacts or summaries, preserving input evidence, handling cross-model fallback, and controlling reasoning effort by task complexity. The familiar “Let's think step by step” prompt is only one prompting technique; reasoning APIs expose different structured fields that the runtime must normalize.</p>
             <h2>Classification: Reasoning × Chain</h2>
             <ul>
-            <li><strong>Vertical axis · Reasoning</strong>: CoT makes the "why" explicit by having the model write out its thinking process. It is the origin pattern of the pure reasoning domain. The other four patterns in the reasoning module (Route, Parallel, iterative, dual-mode) all extend in different directions from this CoT baseline.</li>
+            <li><strong>Vertical axis · Reasoning</strong>: CoT concerns the trajectory from evidence to decision. Depending on the model interface, the system may receive a public rationale, a structured summary, or protected reasoning tokens. The other reasoning patterns build on this trajectory in different ways.</li>
             <li><strong>Horizontal axis · Chain</strong>: Reasoning itself is a linear trajectory, running from input to output, where each step depends on the one before it (thinking → intermediate conclusion → final answer). This is a naturally chained structure, not a parallel fan-out, and not a looping iteration.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>In 2026 CoT is a multi-form engineering category, and its core is to manage the reasoning trajectory as structured data rather than discarding it once read. In practice there are four hard responsibilities:</p>
+            <p>CoT is a multi-form engineering category. Its runtime responsibilities include:</p>
             <ol>
-            <li><strong>Persistence</strong>: thinking blocks go into the trajectory log, indexed by trace_id, stored in structured form, supporting replay, rollback, and migration across sessions.</li>
-            <li><strong>Cross-model normalization</strong>: different reasoning models use different tag formats (OpenAI uses <code>&lt;reasoning&gt;</code>, DeepSeek uses <code>&lt;think&gt;</code>, Anthropic uses structured fields). Normalize them into a unified schema before storage, so the agent always sees a trajectory in a consistent format and an audit only needs to read one structure.</li>
+            <li><strong>Persistence</strong>: Retain the reasoning summaries, evidence references, decisions, and model metadata that the provider and policy allow, indexed by <code>trace_id</code>.</li>
+            <li><strong>Cross-model normalization</strong>: Providers expose public summaries, structured fields, or protected reasoning tokens differently. Normalize available artifacts into one schema and retain provider, model, interface version, and visibility metadata.</li>
             <li><strong>Cross-model fallback strip</strong>: a thinking block's signature is bound to the model that generated it. When the primary model is rate-limited and traffic switches to a fallback model, the fallback model does not accept signatures from another model. All incompatible thinking blocks must be stripped before sending, otherwise the entire request is rejected and the agent call fails.</li>
             <li><strong>Effort control</strong>: thinking consumes paid tokens, but more thinking does not necessarily mean higher quality. Provide an effort control surface (off / low / medium / high / max), so simple tasks use low and complex tasks use high.</li>
             </ol>
-            <p>One boundary worth noting: a reasoning model has weak control over its own CoT, and the reasoning it writes may be a "script" composed after the fact rather than the actual reasoning path. So CoT is a useful observability signal, but it cannot be treated 100% as the model's actual thinking process; critical decisions need an additional layer of external verification.</p>
+            <p>One boundary matters: a model's written rationale may be a post-hoc account rather than a faithful record of its internal computation. Treat it as an observability signal, not proof of how the model reached the answer. Critical decisions still need external evidence and verification.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Multi-hop logic and judgments that need explanation</strong>: claims review, contract risk identification, credit decisions—each conclusion must be explainable to a regulator in terms of "what the basis is."</li>
-            <li><strong>Compliance audit-trail scenarios</strong>: finance, healthcare, and legal domains require the complete reasoning of a decision to be retained long-term, and the CoT trace is the carrier of this compliance baseline.</li>
-            <li><strong>Teaching and debugging scenarios</strong>: a counterexample—these scenarios should instead make thinking explicitly visible, where exposing the reasoning process is a plus.</li>
+            <li><strong>Compliance audit-trail scenarios</strong>: Finance, healthcare, and legal workflows may require decision evidence, model metadata, approvals, and retained rationale. The exact record follows applicable policy and provider constraints.</li>
+            <li><strong>Teaching and debugging scenarios</strong>: Show processed reasoning summaries and intermediate evidence when this helps locate an error, without assuming access to private model reasoning.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Forcing step instructions onto a reasoning model</strong>: the model is already thinking, and feeding it "please analyze step by step" disrupts the reasoning and burns more tokens. Wharton 2025 empirical work shows this addition is nearly ineffective or even worse on reasoning models.</li>
+            <li><strong>Forcing step instructions onto a reasoning model</strong>: Adding a generic “analyze step by step” instruction can increase token use without improving the target task. Test prompting choices on the actual evaluation set.</li>
             <li><strong>Not stripping thinking on fallback</strong>: failing to clean up cross-model signatures when the primary model goes down and traffic switches to fallback causes the entire request to be rejected and the agent call to fail. This kind of incident is not exposed in normal operation but breaks out all at once when the primary model is rate-limited.</li>
-            <li><strong>Writing traces only to log files</strong>: when a regulator wants to "pull the complete reasoning of a given case on a given day," a trace scattered across log files cannot be dug out. It should be structured into OpenTelemetry / Datadog, queryable by trace_id.</li>
+            <li><strong>Writing traces only to log files</strong>: When a reviewer needs the evidence, applicable rules, model version, and final decision for a case, scattered log records are difficult to reconstruct. Use structured traces that are queryable by <code>trace_id</code>.</li>
             <li><strong>Running every task at one effort level</strong>: using the same effort for a simple task ("what day is it today") and a complex task ("what risks does this contract have") both wastes tokens on the simple task and shortchanges the quality of the complex one.</li>
-            <li><strong>Enabling thinking in latency-sensitive scenarios</strong>: in scenarios where user input must get a response within 200 milliseconds, extended thinking introduces second-level latency and should be turned off or set to effort=low.</li>
+            <li><strong>Enabling deep reasoning in latency-sensitive scenarios</strong>: Extended reasoning can violate an interactive response budget. Use a lower effort level, asynchronous execution, or the Talker-Reasoner pattern.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Reasoning token share</strong> (healthy band 30–60%): the proportion of thinking tokens in total tokens. A p99 above 80% indicates over-thinking on simple cases and wasting cost; below 20% indicates under-thinking with an accuracy risk. Crossing the threshold in either direction should trigger an alert.</li>
-            <li><strong>Fallback strip success rate</strong> (healthy band near 100%): the proportion of correct cleanup of cross-model thinking when the primary model switches to fallback. Below 100% means there is a latent risk that can cause an agent call to fail outright.</li>
-            <li><strong>Trace queryability rate</strong> (healthy band 100%): the proportion of any historical decision whose complete reasoning can be pulled by trace_id. In compliance scenarios this is a hard requirement.</li>
+            <li><strong>Reasoning token share</strong>: Track the share of reasoning tokens by task class. A material rise from the local baseline may indicate over-thinking; a drop should be checked for under-reasoning on difficult tasks.</li>
+            <li><strong>Fallback strip success rate</strong>: Verify that model-specific reasoning fields are removed or transformed before a fallback call. Any incompatible payload is an operational defect.</li>
+            <li><strong>Trace queryability</strong>: Verify that a historical decision can be reconstructed from its trace ID using retained evidence, model metadata, outputs, and allowed reasoning summaries. Applicable policy defines what may be stored.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>task arrives → choose effort tier by complexity (off / low / medium / high / max)
-            model emits thinking blocks → normalize into a unified schema → into structured trace
+            model returns retainable summary / structured decision / model metadata → normalize into a unified schema → into structured trace
             if primary model is rate-limited and falls back:
                 strip all thinking blocks incompatible with the target model, then send the request
             dual views for audit retrieval:
-                regulator view → complete thinking + final decision + fallback chain
-                customer view  → redacted summary only, no exposure of reasoning details
-            return final_answer + complete trace (indexed by trace_id, retained long-term)
+                audit view    → permitted reasoning summary + evidence + final decision + fallback chain
+                customer view → redacted rationale, no protected reasoning details
+            return final_answer + audit trace (indexed by trace_id, retained according to policy)
             </code></pre>
             <p>Four points for implementation: do not add step instructions to a reasoning model; make effort control a per-request / per-task configuration; keep extending tag normalization as new models appear; and emit traces to a structured trace bus that supports long-cycle retrieval.</p>
-            <h2>Application example</h2>
-            <p>An enterprise execution-oriented agent team (Liang Bo's team) found a dividing line during implementation: chain-of-thought is not "writing an extra paragraph of thinking for the user to read," but producing a Decision control signal that a program can consume on every call. The concrete approach is to split the model output into two parts, thinking and answer—the thinking part is the reasoning process that goes into the trace for archiving, and the answer part is a structured JSON decision object that downstream programs parse and execute directly. Once the two are separated, CoT shifts from "content" to "control flow": fields in answer directly drive subsequent actions, while the process in thinking is available for audit retrieval.</p>
-            <p>The key engineering safeguard is a deterministic fallback when JSON parsing fails—the model occasionally writes a decision that does not conform to the schema, and in that case the agent does not crash or retry at random but falls back to a predefined safe default action. This design is the key to moving from a "content-oriented agent" (generating text for people to read) to an "execution-oriented agent" (producing signals for programs to use). The accompanying decisions also include archiving the full thinking for audit, strict validation of the answer schema, and wiring parse-failure counts into monitoring.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Liang Bo's execution-oriented agent separates explanatory reasoning from the structured <code>answer</code> that downstream programs consume. The runtime stores provider-permitted summaries and evidence in the trace, while the <code>answer</code> is a JSON decision object that drives subsequent actions. This keeps audit material separate from the executable control contract.</p>
+            <p>When JSON parsing fails, the runtime uses a predefined safe fallback instead of crashing or retrying at random. The answer schema is strictly validated, parse failures enter monitoring, and audit retention follows the visibility allowed by the model interface and organizational policy.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Complexity routing (R2)</strong>: CoT's effort control adjusts the reasoning tier by task depth, while routing selects the model tier by task complexity—the same line of thought, lifted from a single call to the task level.</li>
@@ -215,7 +215,7 @@
             <li><strong>Dual-mode architecture (R5)</strong>: the deep reasoning on the Reasoner side is essentially a complete chain of thought, while the Talker side deliberately does no deep reasoning.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of Chain-of-Thought in 2026 is not "teaching the model to think," but managing the process the model is already running through as first-class data—it is the foundation of observability in the agent era, not an option.</p>
+            <p>The engineering task is to manage available reasoning artifacts, evidence, decisions, and fallback metadata across their lifecycle. Private model reasoning is not required for an auditable action contract.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R1 Chain of Thought</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

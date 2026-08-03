@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Low (on the order of a single call; metadata overhead is negligible)</td>
+            <td style="text-align: left;">Low to medium (candidate selection, state refresh, and policy checks)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -157,7 +157,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>As the number of tools grows, the chance that an agent picks the wrong one rises. There is a counterintuitive fact here: an LLM is good at using tools (filling in parameters, interpreting return values) but poor at choosing tools. A logistics dispatch agent wired to 17 tools once assigned all 80 orders to a single driver stuck in traffic—at every step it "felt" it had chosen correctly, with the error hidden in details it did not notice, such as "did not refresh driver status" and "did not check road conditions."</p>
+            <p>As the tool registry grows, overlapping names and stale state make selection harder. A logistics dispatch agent can repeatedly choose the same driver if it does not refresh availability or check the session quota. The individual tool call may be valid while the sequence is operationally wrong.</p>
             <p>Tool Dispatch takes "which tool to choose" out of the model's hands and returns it to the engineering layer. Its core judgment is that tool selection is reliability engineering. It relies not on writing a smarter prompt, but on supplying complete metadata for each tool, plus a full set of engineering contracts: quotas, state refresh, and side-effect tracking.</p>
             <h2>Classification: Action × Route</h2>
             <ul>
@@ -165,8 +165,8 @@
             <li><strong>Horizontal axis · Route</strong>: it works by directing a given call to the most suitable tool based on current intent and context. This is a typical routing structure, not a chained sequence or a hierarchical wrapper. The minimal tool set (A5) in the same module also falls on the routing side, but with a different division of labor—A1 addresses "how to pick," while A5 addresses "trim before picking."</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>The quality of industrial-grade Tool Dispatch is determined mainly by the richness of tool metadata. OpenAI's early function calling had only three fields—name, description, parameters—which is enough for a demo. Claude Code's tool schema expands to 14 fields, grouped roughly into eight categories by purpose: identification, dynamic description, dual schema, execution characteristics, UI behavior, source marking, progressive disclosure, and lifecycle.</p>
-            <p>The most critical among them are the five execution-characteristic fields: <code>isReadOnly</code>, <code>isConcurrencySafe</code>, <code>isDestructive</code>, <code>requiresFreshState</code>, <code>requiresApproval</code>. Their engineering philosophy is that all default to false—that is, "if unknown, treat as unsafe." If a tool implementer forgets to declare, the system still handles it conservatively; only an explicit read-only declaration admits a tool to the parallel channel and skips the confirmation prompt. Each field corresponds to a senior engineer's intuition about tool operations, encoding judgment accumulated over years of experience into a machine-readable contract.</p>
+            <p>Production Tool Dispatch depends on tool metadata that covers identity, schemas, execution behavior, source, progressive disclosure, and lifecycle. A name, description, and parameters are enough to invoke a demo tool, but not enough to govern side effects and state.</p>
+            <p>Useful execution characteristics include <code>isReadOnly</code>, <code>isConcurrencySafe</code>, <code>isDestructive</code>, <code>requiresFreshState</code>, and <code>requiresApproval</code>. Unknown values should take the conservative path: no parallel execution, no approval bypass, and no assumption that state is fresh. If booleans cannot represent "undeclared," use explicit enums or reject incomplete schemas at registration.</p>
             <p>Around the metadata, three engineering disciplines must be in place:</p>
             <table>
             <thead>
@@ -178,7 +178,7 @@
             <tbody>
             <tr>
             <td style="text-align: left;">Quota</td>
-            <td style="text-align: left;">Caps the number of calls to the same tool (or same parameter) within a single session, blocking the accumulation of side effects such as "80 orders to one driver"</td>
+            <td style="text-align: left;">Caps repeated calls to the same tool or primary parameter within a task, limiting accumulated side effects</td>
             </tr>
             <tr>
             <td style="text-align: left;">Mandatory state refresh</td>
@@ -200,15 +200,15 @@
             <ul>
             <li><strong>Metadata too thin</strong>: with only name plus description, an agent picks a tool from a single sentence, which is like handing an intern a one-line job description and expecting them to start. This is the leading root cause of mis-dispatch.</li>
             <li><strong>Side-effect tools without supporting controls</strong>: tools that write to a database, send messages, or deduct payment, without quota, state refresh, or saga—one mis-dispatch is a production incident.</li>
-            <li><strong>Tool stuffing</strong>: sending more than 50 tools to the model, with the schema eating up a large stretch of context, drops accuracy rather than raising it. The response is progressive disclosure—core tools stay resident, the rest are retrieved and loaded on demand.</li>
-            <li><strong>Tool poisoning</strong>: this is OWASP Agentic's top threat. An attacker embeds hidden instructions in the description of an MCP tool, and every session that uses this tool is compromised, persistently and broadly. It is not ordinary prompt injection; it requires five layers of defense—allowlisting, description scanning, description sandboxing, behavior monitoring, and least privilege—and missing any one layer leaves an open attack surface.</li>
+            <li><strong>Tool stuffing</strong>: Sending a large registry to the model consumes context and increases ambiguity. Keep core tools resident and retrieve extended tools on demand.</li>
+            <li><strong>Tool poisoning</strong>: An attacker can place hidden instructions in an external tool description. Defenses include allowlisting, description scanning, sandboxing, behavior monitoring, and least privilege, selected from the system's threat model.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Tool selection accuracy</strong> (healthy zone &gt;90%): replay historical queries and use a reviewer model to judge whether each step chose correctly. Below 80% usually means the descriptions are not good enough or there are too many tools.</li>
-            <li><strong>Side-effect controllability rate</strong> (healthy zone 100%): run chaos tests periodically, deliberately making the model mis-dispatch some destructive tool, and check whether it can be stopped by quota within a minute and rolled back cleanly by saga. Any mis-dispatch should be rollable back.</li>
-            <li><strong>Tool hallucination rate</strong> (healthy zone &lt;5%): the proportion of calls to nonexistent tools or with wrong parameters. Suppress it with strict registry validation plus a pre-call schema check.</li>
-            <li><strong>Average tools per task</strong> (healthy zone 3-7): too few means the agent is not doing the work; too many is over-tooling.</li>
+            <li><strong>Tool selection accuracy</strong>: Replay historical queries and judge whether each step selected a suitable tool, grouping errors by task class.</li>
+            <li><strong>Side-effect controllability</strong>: Use chaos tests to verify that quotas, approvals, and saga compensation stop or reverse a destructive mis-dispatch.</li>
+            <li><strong>Tool hallucination rate</strong>: Track nonexistent tools, invalid parameters, and schema failures. Investigate changes in registry quality and candidate-set size.</li>
+            <li><strong>Tools per task</strong>: Analyze the call distribution together with task complexity and repeated calls; the count alone does not establish over-tooling.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>dispatch(tool_name, args, session):
@@ -222,8 +222,8 @@
                 return DispatchTrace (tool / parameters / trigger / status / rejection reason / latency)
             </code></pre>
             <p>Engineering implementation points: metadata defaults to being treated as unsafe; quota is counted by the primary parameter (e.g., dispatch counted by driver id); MCP tools carry a source marking and go through additional description validation and behavior monitoring.</p>
-            <h2>Application example</h2>
-            <p>Liang Bo's team's execution agent divides tools, skills, and knowledge bases into three roles: tools are the "hands," skills are the "playbooks," and the knowledge base is the "map plus manual." The agent uses <code>retrieve</code> to read the map, <code>use_skill</code> to read the playbook, and <code>call_tool</code> to act—reading the map and playbook before acting is exactly Tool Dispatch making the selection at the engineering layer. Applied to that intra-city dispatch agent, the team added five things when rewriting the dispatch layer: tool metadata expansion, selection guidance, mandatory state refresh before write operations, a quota on dispatching to the same driver within a single session, and saga side-effect tracking. Accuracy rose from 60% to 96%, at the cost of about 800 additional lines in the dispatch layer. Each extra line is, in essence, a pitfall an engineer once stepped into, hardened into a rule the machine executes.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Liang Bo's execution-oriented agent separates knowledge retrieval, skill loading, and tool calls into <code>retrieve</code>, <code>use_skill</code>, and <code>call_tool</code>. In an intra-city dispatch scenario, the dispatch layer adds richer metadata, selection guidance, mandatory state refresh before writes, a per-session driver quota, and saga side-effect tracking. The named practice shows that most Tool Dispatch work sits in contracts, state, and side-effect control. Any outcome figure should be published only with the team's approved evaluation method.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Minimal tool set (A5)</strong>: complementary within the same cell. A1 picks accurately within a given tool set; A5 first trims the tool set to a reasonable size so that A1 can pick at all.</li>
@@ -232,7 +232,7 @@
             <li><strong>Complexity routing (R2)</strong>: same line of thinking, both routing based on context. The difference is that R2 routes the reasoning tier, while A1 routes the tool.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of Tool Dispatch is not "writing a prompt that picks tools," but encoding the tool-operation discipline accumulated over years by the engineering community into metadata and engineering contracts for the agent to use—a demo-grade agent has 3-field tool metadata, while a production-grade one has 14 fields, and that field gap is the distance between a toy and a system.</p>
+            <p>Tool Dispatch encodes permission, idempotency, state freshness, approval, rollback, rate limits, and audit behavior as metadata and runtime contracts. Tool choice cannot rely on name, description, and parameter schema alone.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>A1 Tool Dispatch</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

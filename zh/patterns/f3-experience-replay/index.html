@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -169,7 +169,7 @@
             <hr />
             <h2>问题</h2>
             <p>企业运行多年后，历史工作记录分散在 Slack、Jira、内部 wiki 和邮件中。部分记录包含失败路径、关键变量的发现过程和可复用产物，难以压缩为单一 skill，但可以为后续相似任务提供参考。</p>
-            <p>Experience Replay 在 agent 系统里解的是同一个问题——让历史 trajectory 不要变成沉默资产。它在新任务来时主动检索相似的历史轨迹（成功的、失败的、零散的），把可复用部分注入当前 context。它和 Skill Package 的区别在颗粒度：Skill Package 装的是 verified 可调用单位，Experience Replay 装的是更宽泛的参考资产——经验有用但不一定 verified。CER（Contextual Experience Replay）在 WebArena 上把 GPT-4o baseline 的成功率提升了 51%，且完全 training-free。</p>
+            <p>Experience Replay 让历史 trajectory 不再只是沉默资产。新任务到来时，系统检索相似的成功、失败或未完成轨迹，把可能有用的部分注入当前 context。它与 Skill Package 的区别在颗粒度：Skill Package 保存经过验证的可调用单位，Experience Replay 保存更宽泛的参考材料。CER 等研究说明这条路线可以在不训练模型的情况下发挥作用，实际收益仍需在目标任务上复现。</p>
             <h2>坐标说明：反思 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：该模式回看历史任务并提取当前可用的信息，不直接修改本轮输出，也不要求先固化为 skill。</li>
@@ -211,23 +211,23 @@
             </ol>
             <h2>适用场景</h2>
             <ul>
-            <li><strong>长期运行且任务重复的 Agent</strong>：客服、运维和数据分析等场景会持续积累可复用 experience；文中案例通常在 3-6 个月后出现明显收益。</li>
-            <li><strong>组织知识沉淀</strong>：把公司散落在 wiki、Confluence、Notion 的经验接进来，agent 几秒检索整理出来用。enterprise 场景接现有知识库最经济。</li>
-            <li><strong>失败 trajectory 复用</strong>：约 80% 的 trajectory 以失败结束。AgentHER 使用 hindsight relabel 将目标 A 的失败轨迹重新标注为目标 B 的成功示例，在 WebArena 和 ToolBench 上比只使用成功轨迹高 7.1-11.7 个百分点。</li>
+            <li><strong>长期运行且任务重复的 Agent</strong>：客服、运维和数据分析等场景会持续积累可复用 experience，收益取决于经验库的覆盖度和质量。</li>
+            <li><strong>组织知识沉淀</strong>：把公司散落在 wiki、文档系统和历史报告中的经验接入当前工作流，通常可先复用现有知识基础设施。</li>
+            <li><strong>失败 trajectory 复用</strong>：失败轨迹也可能包含有效的工具路径、局部产物和边界信息。hindsight relabel 可以把“未完成原目标”重新解释为“完成了某个子目标”，但必须保留原始目标和重标注来源。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>冷启动缺少可检索经验</strong>：初期数据量不足时，可使用 synthetic experience seeding，将已有最佳实践整理为 30-50 条 bootstrap 数据。</li>
-            <li><strong>陈旧教训漂移</strong>：半年前对的经验，产品改版后已经不适用，agent 还在注入，反而让人走错方向。防法是 effectiveness_score 持续衰减加 heuristic 时间戳降权加季度 review 主动 deprecate。</li>
+            <li><strong>冷启动缺少可检索经验</strong>：新库证据不足时，可从经过评审的历史记录和最佳实践中建立 bootstrap 数据，并保留来源和适用版本。</li>
+            <li><strong>陈旧教训漂移</strong>：产品改版后，旧经验可能已经不适用。应绑定系统版本、降低陈旧条目权重，并按明确周期 review 或 deprecate。</li>
             <li><strong>检索偏差放大</strong>：embedding 相似不等于任务结构相似。"用户增长分析"检索出"用户流失分析"经验，把流失的 funnel 框架硬套到增长上——增长和流失是反向问题。防法是加 task type classifier 粗筛、block 跨类型检索、检索后 LLM 二次审查适用性。</li>
             <li><strong>无结构全量 dump</strong>：把所有 trajectory 全塞进 vector DB 让 agent 自己挑，没有 multi-level 分层。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>检索命中率</strong>（健康区 &gt;70%）：召回的历史经验中被当前任务采用的比例。偏低通常说明 task_signature 使用了 hash，或存在检索偏差。</li>
-            <li><strong>effectiveness 分</strong>（健康区 ≥0.5）：经验被检索后任务成功率。低于 0.5 且复用 5 次以上的 lesson 进 archive，这是抗 superstitious lesson（错误归因伪经验）的关键。</li>
-            <li><strong>experience store 增长加 retrieval count</strong>（冷启动期主看这两项）：前 3 个月不看成功率提升，看 store 是否在长、经验是否被检索，给反思工程争取时间。</li>
-            <li><strong>质量增量</strong>（健康区 3 个月后显著、6 个月后甩开 baseline）：成功率相对无经验复用的增益，这是 lagging indicator。</li>
+            <li><strong>检索命中率</strong>：召回经验被当前任务采用的比例。偏低时检查 task_signature、索引和经验粒度。</li>
+            <li><strong>effectiveness 分</strong>：比较经验被采用后的任务结果，并结合多次回放判断。持续无效或产生负迁移的 lesson 应进入 archive。</li>
+            <li><strong>experience store 覆盖和 retrieval count</strong>：冷启动期先看代表性任务是否被记录、检索是否覆盖正确任务族，再观察下游质量变化。</li>
+            <li><strong>质量增量</strong>：与不注入历史经验的回放基线比较，是判断 Experience Replay 是否产生净收益的 lagging indicator。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code># 检索 + 注入 (CER training-free)
@@ -245,12 +245,12 @@ record(task, traj, outcome, author_id)     # high + low 双层
 for e in past:
     update_effectiveness(e, current_task_succeeded=result.ok)
 
-# 周期性蒸馏 L2 (同 signature 经验 &gt;= 5 条才做, 防 overfit)
-monthly_distill_L2(signature)
+# 达到配置的证据门槛并通过评审后，周期性蒸馏 L2
+periodic_distill_L2(signature, policy=distillation_policy)
 </code></pre>
-            <p>生产实现可使用低成本模型生成 embedding 和 high-level 摘要；持续监测 effectiveness_score，健康线设为 ≥0.5；保留 author_id 以定位经验来源；task_signature 使用语义表示而非 hash。</p>
-            <h2>应用示例</h2>
-            <p>一家 SaaS 公司的 8 人数据团队分析“Q2 新功能上线后 D7 留存未明显提高”的原因。一个月后完成 5 份独立报告，另有 3 份未完成。3 份报告重复执行 cohort 分析，2 份采用不同归因方法，但都遗漏黑五时段自然流量基线变化这一 confounding variable；没有报告引用 6 个月前由离职员工 Sarah 完成的同类分析。引入 Experience Replay 后，系统召回该报告及“留存分析需检查时段效应”的 heuristic。实现采用 multi-level schema（high-level approach + low-level SQL）、CER top-5、author metadata、低成本 embedding、成功/失败/中性轨迹共同存储、30 天 cold tier 和每月自动蒸馏 L2。重复投入从约 8 人月降至 1 人月。</p>
+            <p>生产实现根据检索质量和成本选择 embedding 与摘要模型；保留结果证据而不是只存一个缺少口径的分数；保留 <code>author_id</code> 和来源元数据；<code>task_signature</code> 使用语义特征而非不透明 hash。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个数据团队分析“新功能上线后留存未明显提高”的原因。不同分析者重复执行 cohort 分析，却都忽略了同期自然流量变化这一 confounding variable；历史上有一份相似报告，但作者离开后没有进入当前工作流。引入 Experience Replay 后，系统召回该报告及“留存分析需检查时段效应”的 heuristic，同时保留 high-level approach、low-level SQL、作者、数据源和时间范围。成功、失败和中性轨迹分开标记，分析师仍需判断旧经验是否适用于当前产品。重复投入的变化应从项目记录中核验。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Skill Package（F2）</strong>：Skill Package 保存 verified 可调用单位，Experience Replay 保存范围更宽的参考资产。Agent 可优先匹配 skill，未命中时检索 experience；反复验证成功的 experience 可转为 skill。</li>

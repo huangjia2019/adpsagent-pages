@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,44 +168,44 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>生产级 Agent 需要在动作执行前控制准入，并在执行后验证结果。某银行的对公转账 Agent 上线第三周，将客户邮件中的账号 “...XX23” 解析为 “...XX32”，导致 320 万元转入错误账户；对账系统在 12 小时后才发现。该流程缺少调用前的账号、金额和客户意图校验，也缺少调用后的到账与合规复核。</p>
-            <p>Guardrail Sandwich 为 destructive 动作增加结构化的事前和事后审查。OWASP 2026 Agentic Top 10 中的 A1（Agent Goal Hijack）和 A2（Tool Misuse）覆盖相关风险；文中引用的调研显示，88% 的组织至少发生过一次 AI Agent 安全事故。</p>
+            <p>生产级 Agent 需要在动作执行前控制准入，并在执行后验证结果。设想一个对公转账 Agent 把邮件中的收款账号识别错误并直接提交。该流程缺少调用前的账号、金额和客户意图校验，也缺少调用后的到账与合规复核。</p>
+            <p>Guardrail Sandwich 为 destructive 动作增加结构化的事前和事后审查。风险包括目标劫持、工具误用、参数误识别和动作组合绕过；具体控制应映射到组织自己的威胁模型与合规要求。</p>
             <h2>坐标说明：行动 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 行动</strong>：它包装的是 agent 的动作执行——在工具调用的前、中、后插入守卫，属于行动端的执行控制。</li>
             <li><strong>横轴 · 层级</strong>：pre-guard → tool call → post-guard 是一个层级包装结构，与 Web 框架的 middleware 完全同源——一层夹一层，外层先于内层执行、后于内层收尾。它和规划-执行（A2）虽同涉分层，但方向不同：A2 是"战略-战术"分层（先想后干），A4 是"安全-执行"分层（先审后干）。</li>
             </ul>
             <h2>解决方案与机制</h2>
-            <p>hook 可以统一包装不同工具，避免在每个工具中重复实现检查。Claude Code hooks 提供 12 个生命周期事件，其中直接相关的是：</p>
+            <p>hook 可以统一包装不同工具，避免在每个工具中重复实现检查。Coding Agent 的生命周期 hook 中，与该模式直接相关的包括：</p>
             <ul>
-            <li><strong>PreToolUse</strong>：工具调用前触发，是整个系统里唯一能 block 的 hook（退出码 2 直接阻断）。能拦截、改参数、加 context。典型用例是路径白名单、命令黑名单、quota 检查、approval gate。</li>
+            <li><strong>PreToolUse</strong>：工具调用前触发，可以根据框架契约阻断、改参数或补充 context。典型用途包括路径 allowlist、命令 denylist、quota 检查和 approval gate。</li>
             <li><strong>PostToolUse</strong>：工具调用后触发，不能 undo 已发生的动作，只能验证 output、提示下一步、触发审计或 saga 回滚。典型用例是 output schema 校验、敏感数据扫描、副作用确认。</li>
             </ul>
             <p>落地有三条关键纪律：</p>
             <ul>
-            <li><strong>按 risk_level 分级</strong>：读操作可以裸跑，不该套夹层；普通写挂 2 到 3 层；destructive 全套；金融、医疗这类 CRITICAL 动作全套加 Approval Gate。hook 配置文件本身就是 agent 的风险地图。</li>
+            <li><strong>按 risk_level 分级</strong>：只读、普通写入、destructive 和 CRITICAL 动作使用不同检查组合；高风险动作再接 Approval Gate。hook 配置文件本身就是 Agent 的风险地图。</li>
             <li><strong>hook 顺序按"便宜先、贵的后"</strong>：RBAC 检查（一次 dict 查询）排前面快速失败，AML 扫描（要查反洗钱库）排后面，省算力。</li>
-            <li><strong>三阶段部署</strong>：第 1-2 周使用 monitor mode，只记录不阻断；第 3-4 周使用 soft enforcement，阻断明确违规并标记边缘 case；第 2 个月进入 full enforcement。部署阶段应收集误报样本并调整规则。</li>
+            <li><strong>分阶段部署</strong>：先用 monitor mode 只记录不阻断，再用 soft enforcement 阻断明确违规并标记边缘 case，经过评审后进入 full enforcement。每一阶段的持续时间由误报、漏报和业务风险决定。</li>
             </ul>
             <h2>适用场景</h2>
             <ul>
             <li><strong>有副作用且错调代价高的动作</strong>：转账、删数据、发消息、调外部 API。读操作（read file、search、fetch 只读）不必套——每加一层都是额外的延迟开销。</li>
-            <li><strong>强合规的垂直领域</strong>：金融、医疗、法律、政府。这类场景的硬约束（金额阈值、处方剂量、制裁名单）可以 1:1 编码进 pre-check。</li>
+            <li><strong>强合规的垂直领域</strong>：金融、医疗、法律和政府场景中的金额阈值、处方剂量或制裁名单等确定性约束，可以编码进 pre-check；复杂判断仍需专业审核。</li>
             <li><strong>与 Approval Gate 配合的混合把守</strong>：低风险动作走 sandwich 自动放行，高风险动作 sandwich 加人工审批双重把守。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>Composition Bypass（组合绕过）</strong>：单个动作每个都被允许（读文件、base64 编码、写 URL），串起来就是数据外泄。单点检查全过，因为它不分析序列。研究显示一个被攻陷的 agent 4 小时内能污染 87% 的下游决策，大半因此。应对是除了单点 hook，还要加 session 级的 scope analyzer，分析过去几分钟动作组合是否构成已知攻击模式——这是 LLM 时代的 SIEM。</li>
-            <li><strong>Sandwich Overhead Tax（夹层税）</strong>：所有工具一律套全套夹层，整体延迟涨 5 到 10 倍。读文件套 RBAC 加 AML 加审计是巨大浪费。应对是严格按 risk_level 分级，LOW 直接放行。</li>
+            <li><strong>Composition Bypass（组合绕过）</strong>：单个动作都被允许，例如读文件、编码内容和写入外部 URL，组合起来却可能造成数据外泄。除了单点 hook，还要增加 session 级 scope analyzer，检查动作序列是否构成已知攻击路径。</li>
+            <li><strong>Sandwich Overhead Tax（夹层税）</strong>：所有工具一律套完整检查会让低风险动作承担不必要的延迟。应按 risk_level 选择 guard 组合，并记录每层开销。</li>
             <li><strong>Schema Drift（schema 漂移）</strong>：pre-check 校验的 schema 和下游工具实际期望的不一致，导致 pre 通过、tool 跑挂。应对是用 OpenAPI / JSON Schema 做 single source of truth，两边从同一份 schema 生成校验逻辑。</li>
             </ul>
             <p>Guardrail Sandwich 需要持续维护 hook 顺序、风险分级和 schema 的 single source of truth。仅安装 hook 不能替代治理流程。</p>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>block 率</strong>（monitor 阶段观察，full enforcement 后健康区 &lt;5%）：直接上 full enforcement 时第一周 block 率常超 30%，那是阈值没调好的信号。</li>
-            <li><strong>误转账 / 错调率</strong>（健康区随业务定，金融场景 &lt;0.01%）：银行案例从 0.3% 降到 0.001%。</li>
-            <li><strong>夹层延迟开销</strong>（健康区与 risk_level 匹配）：金融全套 6 hook 约增加 800ms，是合理代价；读操作若也涨这么多就是夹层税。</li>
-            <li><strong>审计留档完整率</strong>（健康区 100%）：trace_id 串联全程，金融场景留档 7 年。审计是 sandwich 的副产品，不是额外功夫。</li>
+            <li><strong>block 率</strong>：monitor、soft enforcement 和 full enforcement 分阶段观察，并抽样分析被阻断请求中的真违规和误报。</li>
+            <li><strong>误执行率</strong>：按业务动作和风险等级统计错误调用、错误参数和越权执行。高风险动作不设可容忍的背景错误率。</li>
+            <li><strong>夹层延迟开销</strong>：按 risk_level 分解各个 hook 的延迟。低风险读操作与高风险写操作应采用不同的检查组合。</li>
+            <li><strong>审计留档完整率</strong>：trace_id 应串联 PRE、TOOL 和 POST。留存期限按所在行业、地区和组织政策配置。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>wrap(tool, ctx):
@@ -221,14 +221,14 @@
     返回 ok + result + 完整 trace（每个 hook 的 passed/reason/延迟）
 </code></pre>
             <p>生产实现应覆盖所有 destructive 工具；hook 保持 idempotent；trace_id 写入数据库，作为审计串联键。</p>
-            <h2>应用示例</h2>
-            <p>银行对公转账 agent 给所有 destructive 工具套上 sandwich，落地为六个决策点。pre 层：RBAC 权限校验、金额阈值三档分诊（10 万以下自动 / 10 到 100 万短信确认 / 100 万以上人审）、收款账号白名单匹配、制裁名单事前扫描。post 层：反洗钱事后扫描（高度可疑自动 saga 回滚、中度可疑 flag 给风控）、审计日志 7 年留档。hook 顺序极其关键——金额分诊在白名单之前，但都必须在制裁扫描之前，因为制裁是法律红线。装上之后误转账率从 0.3% 降到 0.001%，每笔交易延迟从 2 秒涨到 4 到 5 秒。回到开场，<code>account_whitelist</code> 这一层会先抓住"...XX32 不在客户白名单内"并要求短信二次确认——一个 hook 配置一次，挡掉一类事故。同一套结构换到医疗就是角色权限、处方剂量阈值、病史白名单、FDA 黑名单、药物相互作用扫描、HIPAA 审计——业务约束变了，模式不变。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个银行对公转账 Agent 给 destructive 工具套上 sandwich。PRE 层执行 RBAC、按银行政策配置的金额与风险分级、收款账号白名单和制裁名单扫描；TOOL 层使用幂等键并记录外部回执；POST 层执行反洗钱检查、结果核对、必要时 saga 补偿并写入审计账本。hook 顺序必须由法务、风控和业务共同确认。换到医疗场景，控制项会变成角色权限、处方剂量、病史约束、禁忌与药物相互作用，结构仍是执行前准入、执行中约束、执行后核验。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>工具调度（A1）</strong>：A1 的 quota 和 state refresh 位于 dispatch 内部，A4 在 dispatch 前后提供通用检查。</li>
             <li><strong>规划-执行（A2）</strong>：A2 plan 里的审批节点和合规校验，落地时常由 A4 的 pre-check 实现。</li>
             <li><strong>Approval Gate（治理模块）</strong>：同源但分工不同。Approval Gate 是 human-in-loop（等人按批准），A4 是 deterministic check（机器直接做规则匹配）。两者常配合——低风险走 sandwich，高风险 sandwich 加 Approval Gate。</li>
-            <li><strong>失败日记（感知模块）</strong>：组合绕过、记忆中毒这类失败 sandwich 单层挡不住，要配合记忆模块的 audit 一起防。</li>
+            <li><strong>失败日记（记忆模块）</strong>：组合绕过、记忆中毒这类失败不能只靠单次动作护栏处理，还要结合跨任务失败记录和审计。</li>
             </ul>
             <h2>工程判断</h2>
             <p>Guardrail Sandwich 在动作前、执行中和动作后分别设置检查与约束。三层需要独立记录结果，并为失败动作提供拒绝、回滚或人工接管路径。</p>

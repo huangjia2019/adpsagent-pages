@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">高（N× 单 agent 调用，换 1/N 时长）</td>
+            <td style="text-align: left;">高（并行 Worker 调用加聚合）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>有些任务单 agent 顺序做就是太慢。十万页财务文档让一个 agent 读完要 35 小时，可法务团队季报披露前只有 24 小时窗口。</p>
+            <p>有些任务由单 Agent 顺序执行无法满足业务窗口，例如季报披露前的大批量财务文档扫描。前提是各分片能够独立处理，并且最终结果可以可靠聚合。</p>
             <p>扇出聚合将大任务切分为可独立执行的子任务，并行分发给 N 个 sub-agent。token 成本通常随 Worker 数量增加，wall-clock 时间则可以缩短。多个 Worker 的输出可能重叠或冲突，Aggregator 需要执行去重、概念归一和冲突消解。</p>
             <h2>坐标说明：协作 × 并行</h2>
             <ul>
@@ -217,7 +217,7 @@
             <ul>
             <li><strong>wall-clock 时间紧迫的批量任务</strong>：季报合规扫描、大规模文档审查、批量投标书评审，总时长是硬瓶颈、子任务彼此独立。</li>
             <li><strong>可按语义独立切分的研究任务</strong>：跨多个语料源的并行查证，每个 sub-agent 各查一类内容，输出几乎不冲突。</li>
-            <li><strong>多 agent 并行写代码</strong>：UI、API、数据库、测试各一个 agent，配合物理隔离的 worktree 把 8 小时压到 2 小时。</li>
+            <li><strong>多 Agent 并行写代码</strong>：UI、API、数据库和测试由独立 Agent 处理，并用 worktree 隔离文件与提交，最后统一集成验证。</li>
             </ul>
             <p>适用条件包括：子任务可独立执行、wall-clock 时间是主要约束，并且业务能够承担 N 倍 token 成本。</p>
             <h2>已知失效方式</h2>
@@ -226,14 +226,14 @@
             <li><strong>聚合比执行还贵</strong>：aggregation 投入不够时，扇出只是把瓶颈从时长挪到质量。如果业务没有工程精力做去重、冲突消解、跨切整合，就不该开扇出。</li>
             <li><strong>聚合瓶颈</strong>：worker 数 N 增加时，aggregator 要读完所有 worker 输出，context 撑爆、质量直线下降。N 大时 aggregator 要分层做（先分组 sub-aggregation，再最终综合），把 context 压力压到对数级。</li>
             <li><strong>切片按职能切而非按冲突切</strong>：按"职能最齐全"切（前端/后端/算法/测试各一组）会导致集成阶段天天解冲突；按"输出冲突最小化"切才对。扇出拓扑应该 mirror 业务团队真实的协作拓扑。</li>
-            <li><strong>隐式 batch 削并发</strong>：以为开了 50 并发，实际 LLM provider 那边在做隐式 queue 加 batch 调度，真实并发被悄悄削到 10。扇出实现要跟 provider 的 batching 行为对齐。</li>
+            <li><strong>隐式 batch 削并发</strong>：应用侧发起多路调用时，provider 可能排队或 batch，实际并发低于配置值。扇出实现需要测量真实吞吐并与 provider 限制对齐。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>成功率</strong>（健康区 ≥ 95%）：返回有效结果的 worker 占比。合规审查场景这是硬底线，漏评几份在审计阶段会被卡。</li>
-            <li><strong>重复率</strong>（健康区 &lt; 30%）：聚合后相似条目占比。超过说明去重没做好，报告会膨胀到"读者看不动"。</li>
-            <li><strong>加速比</strong>（健康区接近 N）：N 个 worker 实际带来的时长压缩倍数。明显低于 N 说明并发被限流削掉、或任务其实有依赖。</li>
-            <li><strong>聚合成本占比</strong>（健康区 &lt; 15%）：聚合这一步消耗的算力占总成本的比例，过高就换更轻的聚合策略或分层聚合。</li>
+            <li><strong>Worker 完成率</strong>：返回有效 artifact 的 Worker 占比。合规审查还要列出未完成分片，不能用已完成结果掩盖漏评。</li>
+            <li><strong>重复率</strong>：聚合后语义重复条目的占比。持续升高时检查分片边界、归一化和去重策略。</li>
+            <li><strong>加速比</strong>：N 个 Worker 相对顺序基线带来的墙钟时间变化。偏离预期时检查限流、共享依赖和 gather 瓶颈。</li>
+            <li><strong>聚合成本占比</strong>：聚合步骤在总算力和延迟中的占比。过高时可改用更严格的 artifact、分层聚合或确定性去重。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>FanoutGather.execute(goal, perspectives, strategy):
@@ -249,12 +249,12 @@ aggregate(results, strategy):
     synthesize  → 强模型综合,显式消解矛盾 + 去重
     structured  → schema 化结构合并
 </code></pre>
-            <p>生产实现可为 Worker 使用低成本模型，为 Aggregator 使用高能力模型；初始并发与 provider 的 RPM tier 对齐，从 5-10 开始监测后调整；单个 Worker 失败不阻塞其他分支，并设置 partial failure 阈值；各分支保留完整 trace。</p>
-            <h2>应用示例</h2>
-            <p>某上市公司的季度合规扫描 Agent 第一版由单 Agent 顺序读取十万页财务文档，需要 35 小时，超过法务团队 24 小时的披露前窗口。第二版使用 12 个 Worker 并行扫描，总时长降至 4 小时，但产生 600 多项风险，其中至少 60% 重复。第三版加入基于 embedding 的语义去重、概念归一化和置信度加权，最终得到 80 项 high-confidence 和 120 项 needs-review。政府或国企招投标评审还需要隔离 Worker 以满足评委独立性要求，完整 trace 留档 7 年，partial failure 阈值不低于 95%。</p>
+            <p>生产实现根据本地质量和成本选择 Worker 与 Aggregator 模型；并发与 provider 限制对齐并在观测后调整；单个 Worker 失败不阻塞其他分支，最终 artifact 必须披露 partial failure；各分支保留完整 trace。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个季度合规扫描 Agent。单 Agent 顺序读取全部财务文档无法满足披露前窗口；并行 Worker 虽然缩短墙钟时间，却会产生重复、术语不一致和置信度不可比的问题。gather 阶段因此需要语义去重、概念归一化、证据合并和 needs-review 分类。政府或国企招投标等场景还可能要求 Worker 之间保持独立，trace 和留存期限按适用制度配置。任何 partial failure 都要在最终报告中显式列出。</p>
             <h2>相邻模式</h2>
             <ul>
-            <li><strong>并行探索（推理模块 R3）</strong>：结构同源、聚合机制相通，区别在并行的实体。扇出聚合是不同子任务分给不同 agent（协作拓扑），并行探索是同一道题的多条解法（推理策略）。两者都遵循"N 倍 token 换 1/N 时长"，但分发对象不同。</li>
+            <li><strong>并行探索（推理模块 R3）</strong>：结构同源、聚合机制相通，区别在并行的实体。扇出聚合是不同子任务分给不同 Agent（协作拓扑），并行探索是同一道题的多条解法（推理策略）。</li>
             <li><strong>层级委派（C1）</strong>：同为一对多，但扇出是一对多分量（多个 worker 同时干同一类活的不同部分）、浅协作（fire-and-collect），层级委派是一对多分专业、深协作（supervisor 持续监督）。Anthropic 多 agent research 同时是层级（lead 主管）加扇出（subagents 并行）。</li>
             <li><strong>对抗评审（C3）</strong>：扇出的 N 个 worker 是互补关系（各看一面拼出全景），对抗评审的 reviewer 是对抗关系（独立审查决策健壮性）。</li>
             <li><strong>子代理隔离（C5）</strong>：每个并行分支使用独立 context，gather 阶段只读取 reduced 结果。</li>

@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,7 +157,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>The information has already come in, the agent has run dozens of turns, and the context is full, so it has to be compacted before it can continue. Once a 487-token connection-pool-exhaustion stack trace gets compressed into "a database error occurred," the agent no longer knows that enlarging the pool or adding retries has already been ruled out, so it repeatedly retries options that were already rejected, wasting both time and tokens.</p>
+            <p>As a long task progresses, the context approaches capacity and some history must be compacted. If a stack trace containing connection-pool settings, queue depth, and call sites becomes only “a database error occurred,” the evidence and previously rejected remedies disappear. The agent may then repeat work that the earlier session already ruled out.</p>
             <p>Semantic compaction turns this into an engineering practice: a three-level cascade (clean up verbose tool results → summarize old conversation → compress further) is triggered progressively against context-occupancy thresholds, each level more aggressive than the last. It governs the capacity of the context window within a single session. It does not aim for unlimited compression but for every segment of history to be produced by high-quality reasoning, so that it does not poison the next segment.</p>
             <h2>Classification: Perception × Chain</h2>
             <ul>
@@ -177,56 +177,55 @@
             <tbody>
             <tr>
             <td style="text-align: left;">Level 1 Truncation</td>
-            <td style="text-align: left;">Clean up verbose tool output (keep a pointer, mark as re-fetchable)</td>
-            <td style="text-align: left;">~2×</td>
+            <td style="text-align: left;">Clean up verbose tool output; keep a pointer and mark it re-fetchable</td>
+            <td style="text-align: left;">light</td>
             </tr>
             <tr>
             <td style="text-align: left;">Level 2 Summarization</td>
-            <td style="text-align: left;">Merge old conversation into a persistent anchor, without regenerating a full summary</td>
-            <td style="text-align: left;">~14×</td>
+            <td style="text-align: left;">Merge old conversation into a persistent anchor without regenerating it from scratch</td>
+            <td style="text-align: left;">medium</td>
             </tr>
             <tr>
             <td style="text-align: left;">Level 3 Deep compression</td>
-            <td style="text-align: left;">Compress old errors into a list while keeping each one's core numbers; keep the most recent few in full</td>
-            <td style="text-align: left;">~30× and above</td>
+            <td style="text-align: left;">Reduce older errors to structured records while preserving key parameters and recent evidence</td>
+            <td style="text-align: left;">deep</td>
             </tr>
             </tbody>
             </table>
-            <p>Two mechanisms are key to industrial-grade compaction. First, the trigger threshold. Claude Code triggers at 95% by default, but quality degradation begins as early as 70%-80%. Waiting until 95% to compact means the last stretch of reasoning is itself low-quality reasoning, and once compressed into history it poisons the whole chain. The community consensus is to set it to 60%-70% and compact early, giving up some window space in exchange for stable reasoning quality. Second, the persistent anchor. Re-summarizing loses a little every time (like the grain that builds up when you repeatedly enlarge a photo); iterative merging does not lose what has already been remembered. The anchor maintains four fixed fields—intent, changes made, decisions made, next step—of which "ruled-out options" is the most critical. The root cause of an agent repeatedly trying rejected options is precisely that this field is missing.</p>
+            <p>The trigger and the persistent anchor determine compaction quality. Set the trigger from evaluations of the chosen model, tool-output mix, and local long-running tasks, leaving margin before quality begins to decline. Merge new information into a stable anchor instead of repeatedly summarizing the whole history. The anchor should record intent, changes, decisions, ruled-out options, and the next step. Ruled-out options keep the agent from retrying paths that have already failed.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Long-session customer-support agent</strong>: A user reports an intermittent fault that cannot be reproduced on demand, the agent both converses with the user and calls internal tools, and across several shifts accumulates 80-120 turns, which inevitably hits compaction. The anchor fields can also be exported directly as a handoff sheet for second-line engineers.</li>
-            <li><strong>Multi-step debugging and coding agents</strong>: Runs of more than 40 turns where tool output is often very long (logs, data queries, API responses), well suited to keeping "what was done" while masking the old "what was seen."</li>
-            <li><strong>Research assistants, data analysis, and consulting-style long-session agents</strong>: Any task that runs beyond 20-30 turns and exceeds 60% context occupancy should start compaction.</li>
+            <li><strong>Long-session customer-support agent</strong>: An intermittent fault may require conversations and internal tool calls across shifts. The anchor can also become a handoff packet for second-line engineers.</li>
+            <li><strong>Multi-step debugging and coding agents</strong>: Long logs, data queries, and API responses can be replaced with re-fetchable pointers after their evidence has been recorded.</li>
+            <li><strong>Research, analysis, and consulting agents</strong>: Trigger compaction when context growth begins to affect task quality in local evaluations.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Summary loses key information</strong>: Compressing "line 47, max_connections=20, queue_depth=347" into "a database error occurred" loses all three locating numbers, and a few loops later the agent has to re-read the log. The summary prompt must hard-code "all numbers, file paths, and function names must be preserved."</li>
+            <li><strong>Summary loses key information</strong>: Reducing an error with line numbers, pool settings, and queue depth to “a database error occurred” removes the basis for diagnosis. Require the summary to preserve business figures, file paths, function names, and error codes.</li>
             <li><strong>Compacting across an error boundary</strong>: Triggering compaction in the middle of the agent's active reasoning—say, just after it has narrowed the bug down to two candidate files and is about to decide—causes the reasoning context to be lost when compaction kicks in, forcing a restart. Compact only conversation segments that are complete and that the agent has already moved on from.</li>
-            <li><strong>Drift from repeated compaction</strong>: Compressing already-compressed content amplifies the information into distortion. The same segment of history may not be compressed more than twice; if that is still not enough, hand off to a human or open a new session rather than forcing Level 3.</li>
-            <li><strong>Compacting too late</strong>: Claude Code triggers at 95% by default, meaning compaction happens after "a stretch of low-quality reasoning has already occurred." Set it to 60%-70%.</li>
+            <li><strong>Drift from repeated compaction</strong>: Repeatedly summarizing the same material compounds omissions. Track summary lineage and limit re-compaction; if capacity is still insufficient, hand off or start a new session with a structured packet.</li>
+            <li><strong>Compacting too late</strong>: Waiting until the window is nearly exhausted may allow degraded reasoning before compaction begins. Determine the trigger through replay evaluation.</li>
             <li><strong>Never compact the error stack</strong>: The error stack is the agent's feedback loop; losing it is amnesia. It must be specially protected across the entire compaction flow.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Level 3 trigger rate</strong> (healthy zone &lt; 5%): The share taken by the most aggressive tier. Every L3 means a +30% probability of information drift; a class of sessions repeatedly entering L3 indicates its token budget is misconfigured or that it should exit early.</li>
-            <li><strong>Average compression ratio</strong> (healthy zone 0.30-0.50): after/before. Below 0.20 is over-compression with a high probability of losing key information; above 0.60 is under-compression that soon has to be compacted again.</li>
-            <li><strong>Error stacks preserved per compaction</strong> (any zero preservation triggers a P0 alert): The most critical metric. Zero preservation means the error-recognition patterns leaked through, and the next time the agent hits the same bug it has no memory of it.</li>
+            <li><strong>Level 3 trigger rate</strong>: Observe how often each task class reaches the deepest tier. Repeated Level 3 use points to a budget, handoff, or early-exit problem.</li>
+            <li><strong>Average compression ratio</strong>: Record after/before together with downstream task quality. A smaller context is not automatically better; replay must confirm that key facts and exclusions remain recoverable.</li>
+            <li><strong>Critical-evidence retention</strong>: Check that error stacks, test results, file paths, and business parameters survive. Missing safety evidence should trigger an alert.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>should_compact(total, budget): total / budget &gt;= 0.60   # 60% early compaction
+            <pre><code>should_compact(total, budget, threshold): total / budget &gt;= threshold
             compact(turns, target):
-                Split: old compressible | protected (most recent N turns + all error stacks, never compacted)
+                Split: old compressible | protected (recent evidence + all error stacks)
                 Level 1: clean up verbose tool output → return if enough
                 Level 2: summarize and merge old turns into anchor (intent/changes/decisions/excluded/next) → return if enough
-                Level 3: compress old errors into a list but keep core numbers, keep the most recent 3 in full
+                Level 3: reduce old errors to structured records while keeping key parameters and recent evidence
             Record one CompactionEvent per compaction (level / before-and-after tokens / error stacks preserved)
             </code></pre>
             <p>The anchor's "ruled-out options" field must be hard-coded in the summary prompt as "ruled-out options must be preserved; new decisions are appended, not overwritten." The summarization call can use a cheap model.</p>
-            <h2>Application example</h2>
-            <p>An enterprise customer reported that one API returned intermittent 502s during peak hours, at an error rate of roughly 0.3%, with retries succeeding, so the fault could never be reproduced on demand. The ticket was filed as P3. There was no minute-level MTTR pressure, and the investigation dragged accordingly: the support agent accumulated 80-120 turns across three working days and two shifts, repeatedly calling log search, metrics query, and configuration diff tools, with context occupancy climbing to 150K-200K.</p>
-            <p>At about 100K (55%) the first compaction runs Level 1, cleaning up only verbose tool output, and the anchor is written for the first time with the diagnoses made and the options ruled out. At about 120K (67%) the second compaction runs Level 2, merging the first two shifts into the anchor, which then becomes the only historical memory. On day three the investigation had still not converged, so Level 3 fired and the anchor plus the ruled-out options were exported in full as a handoff to second-line engineers. What second-line received was one page: the observed symptom, the three paths already excluded (client-side retry storm, certificate rotation, upstream rate limiting), and the single hypothesis still untested. Level 3 is the signal that the agent should exit, not an instruction to compact once more, and after it the agent no longer carries important decisions.</p>
-            <p>One point is easy to get backwards: compaction pressure does not track incident severity. A P1 fault typically carries an MTTR target under an hour, and the process itself demands fast escalation and human takeover, so the agent never gets the chance to run long enough inside a single session to need Level 3. What actually fills the context window is this kind of low-urgency problem that refuses to converge. Compaction thresholds should be set from the observed distribution of session lengths, since inferring them from ticket severity will misfire.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a customer reporting an API that fails intermittently during peak traffic and succeeds on retry. A support agent works across shifts, calling log search, metrics, and configuration tools while raw outputs accumulate. The system first removes verbose outputs whose evidence has already been captured and writes an anchor containing symptoms, actions, and ruled-out paths. If the session keeps growing, earlier dialogue is merged into the anchor. If the investigation still does not converge, the runtime exports the anchor and evidence pointers for a second-line engineer.</p>
+            <p>The handoff should be operational: current symptoms, evidence for and against each hypothesis, rejected paths, and the next untested step. Deep compaction is also an exit signal. Set thresholds from observed session distributions and replay quality rather than inferring them from ticket severity.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Context Triage (P1)</strong>: Complementary. Triage governs future tokens (which ones come in), compaction governs past tokens (how to compress what has already come in without losing the key parts). P1's "load after P2-level compaction" is precisely where the two connect.</li>

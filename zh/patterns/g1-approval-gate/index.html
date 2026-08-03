@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -203,7 +203,7 @@
             </tr>
             </tbody>
             </table>
-            <p>风险分级建议走 reversibility × impact 双轴，而不是单纯按金额线性切。可逆且影响小的自动放行，不可逆或影响大的强制人审，超过某个阈值的再加 two-person rule 要求两人独立复核。Claude Code 的 5+1 PermissionMode（default / plan / acceptEdits / bypass / dontAsk / auto）是这套档位设计的工业样本，把"全开/全关"二选一升级成了多档位加动态判定的状态机。</p>
+            <p>风险分级建议走 reversibility × impact 双轴，而不是单纯按金额线性切。可逆且影响小的动作可以自动放行，不可逆或影响大的动作进入人审，策略定义的高风险组合再要求独立复核。Coding Agent 的分档 PermissionMode 展示了同一思路：把“全开/全关”升级为多档状态机和动态判断。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>金融与支付</strong>：转账、退款、放款这类不可逆资金动作，超阈值必须人审且高额走双人复核。</li>
@@ -220,10 +220,10 @@
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>approval-to-rejection 比例</strong>（健康区低于 95%）：放行与拒绝的比值。超过 95% 说明 gate 加了摩擦却几乎不拦截，多半已经在橡皮图章式放行。</li>
-            <li><strong>审批人平均决策时长</strong>（健康区高于 3 秒）：低于 3 秒是明显的 reflex 而非审视，是审批疲劳的直接信号。</li>
-            <li><strong>override path 实际触发率</strong>（健康区接近 0 且不上升）：trust-based 绕过路径的触发频率。一旦发现异常上升立刻停，这是 200 万事故的早期征兆。</li>
-            <li><strong>audit log 完整率</strong>（健康区 100%）：高风险动作留痕的覆盖率。低于 100% 意味着出事时查不清谁批的、凭什么批，直接违反 EU AI Act Article 22 留档要求。</li>
+            <li><strong>approval-to-rejection 分布</strong>：按动作类型观察放行、拒绝、退回补充和超时。长期几乎全部放行时，应检查审批是否退化为橡皮图章。</li>
+            <li><strong>审批决策时长</strong>：结合风险等级和材料复杂度分析。大量极短决策可能反映审批疲劳，但需要通过抽样复核确认。</li>
+            <li><strong>override path 触发率</strong>：单独监控基于 trust、紧急流程或管理员权限的绕过路径。任何异常增长都应暂停该路径并复盘。</li>
+            <li><strong>audit log 完整率</strong>：高风险动作必须记录请求、证据、审批人、决定、理由和最终结果。留存字段与期限按适用法规和组织政策确定。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>对每个 action：
@@ -238,8 +238,8 @@
 全程写 WORM audit log（满足监管留档）
 </code></pre>
             <p>生产实现使用业务风险分类器，例如金融领域的 KYC + AML 评分或运维领域的 blast radius 估算；人工审批接入飞书、Slack、ServiceNow 等真实工作流；双人复核强制 <code>reviewer1 != reviewer2</code>。</p>
-            <h2>应用示例</h2>
-            <p>某美国 mid-market 银行的 vendor payment Agent 规定 1 万美元以下自动付款，以上进入审批。一个长期 vendor 通过伪造 change notice 修改收款账号，系统在季度账期支付了 20 万美元。Agent 已将该动作标记为 high-amount，但工程团队此前加入“累计成功超过 50 次的 vendor 放宽阈值”的 trust-score override，绕过了金额审批。事故后，银行禁止 amount trigger 被 trust score 覆盖；30 天内修改过账号且金额较高的付款强制双人复核；audit log 保留 7 年。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个 vendor payment Agent 收到供应商修改收款账号的通知。系统虽然把付款识别为高风险，却允许“长期合作供应商”的 trust-score override 覆盖金额与账号变更审批。攻击者一旦伪造 change notice，这条捷径就会绕过人工检查。修订后的策略规定，账号变化、收款主体变化和其他硬触发条件不能被 trust score 覆盖；高风险付款进入双人复核；audit log 按银行政策留存。</p>
             <p>在执行型 Agent 的工程实现里，这套门可以做得更轻。当 Agent 有了任务节点和任务状态机之后，敏感任务能在节点处被阻塞、等人工审核通过再继续执行，需要审核的关键操作基于配置声明即可挂上 human-in-the-loop，不必每次都改代码。</p>
             <h2>相邻模式</h2>
             <ul>

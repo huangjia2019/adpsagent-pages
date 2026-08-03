@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>企业知识库可能包含数十万份文档和历史工单，无法常驻 LLM 的 context window。RAG 在每次请求中检索相关片段，并将 input 之外的事实临时加入 context。</p>
+            <p>企业知识库包含大量文档和历史工单，无法常驻 LLM 的 context window。RAG 在每次请求中检索相关片段，并将 input 之外的事实临时加入 context。</p>
             <p>生产级 RAG 除了单次召回，还要处理查询改写、反例检索和跨语料验证。Agent 可以评估首轮结果，在证据不足时修改 query，并对候选结论执行反向查询。</p>
             <h2>坐标说明：记忆 × 链式</h2>
             <ul>
@@ -179,7 +179,7 @@
             <ol>
             <li><strong>两条 pipeline 在向量库汇合</strong>：RAG 不是单一步骤。离线侧把文档 chunk、embed、建索引；在线侧把 query embed、召回 top-K、重排、注入生成。两条独立 pipeline 共享同一个向量库。</li>
             <li><strong>混合检索</strong>：embedding 擅长语义（"ACME 财报"约等于"ACME 业绩"），但精确关键词（产品名、错误码、特定 ID）经常 miss。把语义检索和 BM25 关键词检索结合，再用 RRF（Reciprocal Rank Fusion）融合。</li>
-            <li><strong>上下文增强 chunking</strong>：chunk 一旦切开，原文上下文锚点就丢了。在每个 chunk 前 prepend 一段上下文摘要（用便宜模型生成）再 embed，能显著降低检索失败率。</li>
+            <li><strong>上下文增强 chunking</strong>：chunk 一旦切开，原文上下文锚点就可能丢失。可以在每个 chunk 前补充一段上下文摘要再 embed；是否改善召回与重排质量，要在自己的检索评测集上验证。</li>
             <li><strong>agent 主导的多步检索</strong>：拆分子 query、迭代改写、检索反例、跨语料验证，并按证据强度合成结果。</li>
             <li><strong>迭代硬上限</strong>：多步检索必须设硬上限，否则 agent 会一直觉得"还不够"连续检索。</li>
             </ol>
@@ -194,14 +194,14 @@
             <li><strong>知识源未经治理</strong>：wiki 文档互相矛盾、关键决策缺失、版本过期或同义词未统一时，向量化只会保留这些问题。建立 enterprise RAG 前应先明确 ontology、版本和来源治理。</li>
             <li><strong>RAG 与 Agentic Search 选型错误</strong>：dev workflow、代码搜索和内部敏感数据通常更新快、权限边界复杂。新函数可能尚未进入索引，索引本身也会扩大访问面。这类场景可优先使用 grep、glob 等 Agentic Search。</li>
             <li><strong>停留在一查一答</strong>：第一次没查到关键信息时，naive RAG 要么直接说不知道，要么 silently 编造。生产级 RAG 必须能改写 query 再查。</li>
-            <li><strong>只优化召回精度</strong>：embedding 模型之间的几个百分点无法代替查询改写和证据验证。chunk 召回率达到 80% 后，仍需评估最终综合质量。</li>
+            <li><strong>只优化召回精度</strong>：embedding 模型的离线分数无法代替查询改写和证据验证。召回指标改善后，仍需评估最终答案的正确性、完整性和引用质量。</li>
             <li><strong>引用不可追溯</strong>：学术、法律、医疗场景里，每个结论都要能追到原始 chunk 加页码，这是合规的必要条件。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>检索失败率</strong>（健康区越低越好）：top-K 里没有相关 chunk 的比例。上下文增强加混合检索加重排三件套叠加，工业数据显示可把失败率降低约三分之二。</li>
-            <li><strong>检索命中率 / 引用率</strong>（健康区 ≥ 70%）：召回的 chunk 里实际被 agent 引用的比例。过低说明召回噪声大或 query 写得太宽。</li>
-            <li><strong>多步检索轮数</strong>（健康区 3-5 轮且有硬上限）：迭代检索的实际轮数。持续顶到上限说明任务确实难或单次召回太差。</li>
+            <li><strong>检索失败率</strong>：候选中没有相关 chunk 的比例。应在同一评测集上比较上下文增强、混合检索和重排各自带来的变化。</li>
+            <li><strong>检索命中率 / 引用率</strong>：召回的 chunk 中实际被 Agent 使用并引用的比例。相对基线偏低时，检查召回噪声、query 粒度和重排策略。</li>
+            <li><strong>多步检索轮数</strong>：记录迭代检索的实际轮数并设置硬上限。经常顶到上限，可能是任务需要拆分、知识源缺失或首轮召回质量不足。</li>
             <li><strong>最终综合质量</strong>（业务判定）：由领域专家按照正确性、完整性和引用质量评估 Agent 输出；达到业务设定阈值后再进入生产流程。</li>
             </ul>
             <h2>最小实现</h2>
@@ -211,7 +211,7 @@
 在线检索侧（agent 主导多步）：
     拆子 query
     每个子 query 迭代检索：
-        语义 top-150 + BM25 top-150 → RRF 融合 → reranker 重排 top-20
+        语义候选 + BM25 候选 → RRF 融合 → reranker 重排到 context_budget
         agent 评估是否够 → 不够则改写 query 再查（最多 N 轮）
     形成假设 → 取反作为新 query 找反例
     跨多语料三角验证（多组都出现的 chunk 加权）
@@ -219,8 +219,8 @@
 返回 answer + evidence + counter_evidence + 完整 trace（含 citation 可追溯）
 </code></pre>
             <p>生产实现应在 retriever 层加入上下文增强、混合检索和重排；为 max_iterations 和 token 设置硬上限；完整记录每次检索 trace；引用需指向原始文档和页码。</p>
-            <h2>应用示例</h2>
-            <p>某科研机构的学术文献综述 Agent 面向百万级论文库。第一版关键词检索返回约五千篇既有论文；改用 embedding 后，结果又集中在 2018-2020 年。后续版本加入子 query 拆分、迭代改写、反例检索、arXiv/bioRxiv/PubMed 跨库验证和证据加权。多语料采用分库管理，peer-reviewed、预印本和未发表材料的权重分别为 1.5、1.0 和 0.5；时间衰减半衰期为 18 个月；引用定位到 chunk，并建立跨语料作者关系图。上线后每次返回 20 篇相关论文、5 篇反例和 3 篇隐含相关论文，均提供可追溯 citation；研究员完成一份综述的时间从 6 小时降至 1.5 小时。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个学术文献综述 Agent。只用关键词时，候选范围过宽；只用 embedding 时，结果又集中在已有主题簇，较新的交叉研究和反例容易被漏掉。后续版本先拆分研究问题，再执行迭代改写、反例检索和跨语料验证；peer-reviewed 论文、预印本和内部材料分库管理，证据权重由机构自己校准；每条结论都定位到原始 chunk、页码和版本。这个场景的重点是证据链与索引治理，不能用一个脱离评测集的“召回提升”数字代替。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>分层保留（M1）</strong>：M1 按作用域加载长期已知信息，RAG 按需检索无法常驻 context 的大规模知识。</li>

@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">High (3-15× a single agent call)</td>
+            <td style="text-align: left;">High (multiple worker calls plus coordination and synthesis)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -186,12 +186,12 @@
             <td style="text-align: left;">Lets the supervisor judge at a glance whether this output can be used directly</td>
             </tr>
             <tr>
-            <td style="text-align: left;">top findings (3-5 items)</td>
-            <td style="text-align: left;">A distillation of the worker's conclusions, covering most of the information</td>
+            <td style="text-align: left;">ranked findings</td>
+            <td style="text-align: left;">Conclusions ordered by importance, with evidence references</td>
             </tr>
             <tr>
-            <td style="text-align: left;">confidence (0-1)</td>
-            <td style="text-align: left;">An arbitration signal when several workers' outputs conflict</td>
+            <td style="text-align: left;">confidence / uncertainty</td>
+            <td style="text-align: left;">A calibrated expression of uncertainty, not a standalone arbitration rule</td>
             </tr>
             </tbody>
             </table>
@@ -199,27 +199,27 @@
             <ul>
             <li><strong>Long-workflow tasks with clear professional division of labor</strong>: industry research report generation, investment research analysis, new-drug R&amp;D processes, where each stage needs a different professional capability.</li>
             <li><strong>Isolated processing of batches of similar tasks</strong>: contract review, resume screening, document compliance scanning, where each item is handed independently to a worker to avoid mutual contamination and context explosion.</li>
-            <li><strong>Tasks valuable enough to cover the token multiple</strong>: at least 2-3× tokens is the norm for multi-agent, and Anthropic measured complex research tasks reaching 15× in exchange for a 90% win rate; only high-value tasks are worth it.</li>
+            <li><strong>Tasks valuable enough to cover the collaboration overhead</strong>: Compare a single-agent baseline with the delegated version on the same task set, including quality, latency, total tokens, and review effort.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>The form of delegation without the spirit of isolation</strong>: the supervisor sees the worker's full execution process rather than a schema artifact, and after a few tasks its context is filled with details from earlier tasks, causing reasoning quality to fall off a cliff. Workers must reduce to a structured artifact before returning.</li>
             <li><strong>Workers communicating directly</strong>: letting worker A call worker B to save effort turns the tree structure into a mesh structure and drives up the risk of cascade failure. The essence of hierarchical delegation is a tree, and breaking the tree structure breaks the isolation.</li>
             <li><strong>No boundary on worker failure</strong>: a worker throws an uncaught exception, the supervisor receives a raw exception rather than a failure artifact, and the whole task is interrupted. Each worker needs a timeout plus exception wrapping.</li>
-            <li><strong>Too many parallel workers</strong>: beyond 5 parallel workers, the supervisor has trouble making trade-offs during synthesis, and the marginal value of the 6th worker starts to decline. The complexity ceiling is not in compute but in the cognitive bandwidth of the model's synthesis.</li>
+            <li><strong>Too many parallel workers</strong>: As worker count grows, the supervisor may struggle to compare and synthesize the returned artifacts. Set the concurrency and fan-out limit from provider capacity, artifact size, and measured synthesis quality.</li>
             <li><strong>Misuse in Collaboration Light scenarios</strong>: if the system has no genuine multiple roles and is only an engineering-level abstract split (for example, the same agent swapping a few prompts), hierarchical delegation should not be applied. It requires that there really be multiple agents with professional differentiation.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Coordination overhead ratio</strong> (healthy zone &lt; 30%): the share of total tokens consumed by back-and-forth communication between the supervisor and workers. Above half means little budget is left for actual work, so make the artifacts more strictly schematized and route coordination messages through a lightweight channel.</li>
-            <li><strong>Worker failure cascade rate</strong> (healthy zone &lt; 5%): the probability that one worker's failure drags down other workers. This is the metric to suppress first; when it is high, it pulls the other three metrics down with it.</li>
-            <li><strong>Artifact compliance rate</strong> (healthy zone &gt; 95%): the share of worker returns that conform to the schema. Workers occasionally emitting free text that bypasses the schema trigger redispatch and latency.</li>
-            <li><strong>Token multiple</strong> (healthy zone &lt; 5×): the multiple of tokens multi-agent spends over single-agent. 15× is the acceptable ceiling for high-value tasks; for ordinary business 5× is already on the high side, and if it does not match, fall back to a single agent.</li>
+            <li><strong>Coordination overhead ratio</strong>: Measure the tokens and wall-clock time spent on supervisor-worker communication. If it dominates useful work, compress artifacts, reduce round trips, or use a lighter coordination channel.</li>
+            <li><strong>Worker failure cascade rate</strong>: Measure whether one worker failure interrupts unrelated branches or the supervisor. High-risk workflows should test isolation and partial-failure handling explicitly.</li>
+            <li><strong>Artifact compliance rate</strong>: Track whether worker returns conform to the schema. Free text that bypasses the contract creates redispatch, manual correction, and additional latency.</li>
+            <li><strong>Multi-agent cost ratio</strong>: Compare total tokens, model spend, and wall-clock time with the single-agent baseline. Fall back to a smaller delegation scope when the added value does not justify the overhead.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>SupervisorAgent.execute(task):
                 plan = decompose(task)              # dynamic split, tied to the input
-                artifacts = parallel gather(        # concurrency cap set to 5
+                artifacts = parallel gather(        # concurrency cap is configuration
                     IsolatedSubAgent(worker).execute(subtask)
                     for worker, subtask in plan
                 )
@@ -232,8 +232,8 @@
                 return reduce_to_artifact(raw)      # force reduce to verdict/findings/confidence
             </code></pre>
             <p>Four engineering points: each worker starts in an isolated context; workers are forced to reduce to a schema artifact; each worker uses a timeout plus exception wrapping to isolate failures; a semaphore controls the concurrency cap, and workers share no state with one another.</p>
-            <h2>Application example</h2>
-            <p>A law firm's contract review agent: in the first version the main agent dispatched sub-agents to scan 50 contracts for anomalous clauses, and when each sub-agent finished it returned its full 3,000-word detailed analysis. After receiving 150,000 words, the main agent's context completely exploded and its subsequent reasoning quality fell off a cliff. After the post-mortem the engineering team understood one thing: the main agent should not see the sub-agents' raw work process, only the conclusions—just as a law firm's PM does not ask each lawyer to report which line of each contract they read, only "3 of the 50 are anomalous, plus their list of key issues." The second version assigned an independent worker to each contract, with each worker running in an isolated context and required to reduce to a fixed-schema artifact before returning (contract_id, risk_level, top_3_concerns, recommendation, plus a contract_hash to prevent tampering). The artifacts for all 50 contracts added up to under 10,000 words, which the main agent could handle easily. The accompanying engineering discipline also included: contracts with HIGH or above risk are forced into a lawyer review queue and the agent is not allowed to clear them automatically; each worker's timeout is tightened to 180 seconds and returns a failure artifact on failure rather than blowing up the whole job; the portfolio report is written to a file as an audit trail. After the changes, all 50 contracts ran in 1 hour.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a law-firm contract review agent. A first version lets every sub-agent return its full analysis, quickly filling the supervisor's context with detail. A stronger version assigns each contract to an isolated worker and requires a fixed-schema artifact containing <code>contract_id</code>, <code>risk_level</code>, <code>top_concerns</code>, <code>recommendation</code>, and a tamper-evident <code>contract_hash</code>. High-risk contracts enter a lawyer-review queue, timed-out workers return a failure artifact, and the portfolio report is retained for audit. Actual throughput and review quality must be evaluated on an authorized contract set.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Sub-Agent Isolation (C5)</strong>: the implementation core. Hierarchical delegation is the move (the supervisor dispatches workers), and sub-agent isolation is the inner skill (the worker's isolated context plus schema artifact plus failure boundary). Hierarchical delegation without isolation will inevitably suffer context explosion plus cascade failure, so the two must go together.</li>
@@ -242,7 +242,7 @@
             <li><strong>Plan-and-Execute (Action module)</strong>: hierarchical delegation is its extension at the multi-agent layer, extending "plan-execute separation inside one agent" to "separation across multiple agents."</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of hierarchical delegation is not splitting a task and dispatching it, but <strong>encoding into an agent system the information-layering discipline that human pyramid organizations have accumulated over 50 years</strong>—the supervisor looking only at the refined conclusions of the layer below is the engineering vehicle for that discipline.</p>
+            <p>Hierarchical delegation divides both work and information scope. The supervisor receives structured conclusions from the layer below instead of inheriting every worker's raw trajectory, keeping synthesis and responsibility boundaries manageable.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C1 Hierarchical Delegation</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

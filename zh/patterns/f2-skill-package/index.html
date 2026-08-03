@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,8 +168,8 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>同一类任务 agent 干过 5 次、每次都干成，但每次都从零开始——读同样几份 reference、试错几轮、走完一遍跟上次一模一样的路径。第 6 次同类任务来，agent 又重走一遍。Token 浪费、耗时长，根因是 agent 干完之后没有任何东西被沉淀下来。</p>
-            <p>Skill Package 把"做对的事"凝固成一份结构化资产，通常是 YAML frontmatter（name + description + triggers）加 markdown body（steps + gotchas + examples）加 bundled scripts。下次同类任务来，agent 路由到对应 skill，几秒进入主路，不再重新摸索。它和 Generator-Critic 的区别在颗粒度——后者改的是单次输出，Skill Package 沉淀的是跨任务的能力。ACT-R 认知架构给这件事一个学术名字叫 proceduralization，即把陈述性知识编译成程序性技能；Anthropic 把它做成了 SKILL.md 标准。</p>
+            <p>Agent 可能反复完成同一类任务，却每次都从零开始：重读相同 reference，重复相同试错，再走一遍已经验证过的路径。根因是任务结束后没有留下可调用的能力资产。</p>
+            <p>Skill Package 把"做对的事"凝固成一份结构化资产，通常由 YAML frontmatter（name、description、triggers）、markdown body（steps、gotchas、examples）和 bundled scripts 组成。下次同类任务到来时，Agent 路由到对应 skill，直接加载主路径。它和 Generator-Critic 的区别在颗粒度：后者改的是单次输出，Skill Package 沉淀的是跨任务能力。ACT-R 认知架构把这件事称为 proceduralization，也就是将陈述性知识编译为程序性技能。</p>
             <h2>坐标说明：反思 × 路由</h2>
             <ul>
             <li><strong>纵轴 · 反思</strong>：Skill Package 将多次成功执行后提炼出的流程固化为资产，跨任务复用。</li>
@@ -178,10 +178,10 @@
             <h2>解决方案与机制</h2>
             <p>一个 Skill Package 系统由两条流水线构成：</p>
             <ol>
-            <li><strong>加载流水线</strong>：任务到来时，agent 从 skill library 路由到合适的 skill。Anthropic 的三阶段 loading 是 token 经济上做得最对的实现——启动时每个 skill 只加载 name 加一句 description（约 50 token），任务匹配上才深加载完整 SKILL.md（约 500-2000 token），执行时再按需加载 bundled scripts。50 个 skill 全量加载会吃光 context，三阶段把启动开销压到可控。</li>
-            <li><strong>沉淀流水线</strong>：成功流程怎么进库。两条路径——人精心写（Anthropic Skills 路线，经 review 加版本化加进 git）和 agent 自动蒸馏（Hermes 路线，任务调用 5 个以上工具且成功时自动提炼成 skill markdown）。自蒸馏 skill 信任级别低于人写的，要进试用期、放独立 namespace。</li>
+            <li><strong>加载流水线</strong>：启动时只暴露 skill 的 name 和简短 description；任务命中后加载完整 <code>SKILL.md</code>；执行时再按需加载 bundled scripts。具体 context 开销由目录规模和 tokenizer 决定，应在本地测量。</li>
+            <li><strong>沉淀流水线</strong>：一条路径由人编写并经过 review、版本管理和测试；另一条路径由 Agent 在出现足够的复用、复杂度和成功证据后辅助提炼。自动蒸馏的 skill 进入低信任 namespace，通过回放和人工评审后再转正。</li>
             </ol>
-            <p>Anthropic 用过几百个 skill 后总结的工程纪律值得照搬：gotchas 放 SKILL.md 顶部（LLM 优先记前面的）；能用 deterministic script 解决就不用 LLM instruction；给 examples 比给抽象规则有效；每个 skill 配 tests；每周 review usage stats 退役低使用率 skill。</p>
+            <p>可操作的工程纪律包括：把关键约束放在醒目位置；能写成 deterministic script 的步骤不交给模型临场判断；提供 worked example；为 skill 配测试；持续查看使用和结果证据，清理过期或低价值资产。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>反复出现且流程相对稳定的任务</strong>：运维 runbook（批量重启集群、配置变更）、客服分诊 SOP、销售标准流程——同类任务高频出现，流程不天天变。</li>
@@ -191,40 +191,40 @@
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>不稳定任务被固化为 skill</strong>：开放域研究、一次性任务、快速变化流程和判断密集任务通常不适合固化。Skill Package 适用于重复出现、流程稳定且错误代价较高的任务。</li>
-            <li><strong>skill library 污染</strong>：agent 自蒸馏的低质量 skill 不经 curation 直接进库，下次召回误导其他 agent。library 从 50 个膨胀到 500 个但平均成功率从 85% 跌到 55%。防法是多重蒸馏触发条件加试用期加 weekly curation。</li>
+            <li><strong>skill library 污染</strong>：Agent 自蒸馏的低质量 skill 不经 curation 直接进库，会在后续召回中误导其他 Agent。候选 skill 应进入低信任 namespace，经过回放、试用和人工评审后再发布。</li>
             <li><strong>skill 过期</strong>：基础设施变了但 skill 没跟着改，agent 按过期 skill 执行反而错，运维场景尤其常见。防法是成功率监控加自动告警加版本绑定（SKILL.md 里标 tested_with）。</li>
             <li><strong>description 失配</strong>：description 写得太泛或太窄，agent 召回时挑错 skill 或该用没用。description 必须含具体场景，triggers 列表要够细。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>skill 命中率</strong>（健康区 &gt;75%）：任务到来时召回到正确 skill 的比例。低于 50% 说明 description 或 triggers 设计失调，该 deprecate 或重写。</li>
-            <li><strong>skill 成功率</strong>（健康区 &gt;85%）：调用某 skill 后任务成功的比例。跌破 80% 触发 review，可能是 skill 过期。</li>
-            <li><strong>library 健康度</strong>（健康区 平均成功率不随规模下降）：library 膨胀时平均成功率应保持稳定，下降说明污染。</li>
-            <li><strong>加载 token 占比</strong>（健康区 三阶段下启动开销 &lt;5%）：全量加载会让这个数字爆掉，三阶段把它压到可控。</li>
+            <li><strong>skill 命中率</strong>：任务到来时能否召回合适 skill。误召回和漏召回应分别归因到 description、triggers、索引或任务分类。</li>
+            <li><strong>skill 成功率</strong>：调用 skill 后任务是否通过验收。相对自身基线持续下降时，检查底层服务和流程是否变化。</li>
+            <li><strong>library 健康度</strong>：随着库增长，观察平均成功率、重复 skill 和失效版本。规模增长伴随质量下降通常说明 curation 不足。</li>
+            <li><strong>加载 token 占比</strong>：观察 discovery、activation 和 execution 各阶段占用，避免未命中的 skill 全量进入 context。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code># Stage 1 Discovery: 启动只加载 name + description
 catalog = [{&quot;name&quot;: s.name, &quot;desc&quot;: s.description} for s in library]
 
 # Stage 2 Activation: 任务匹配后加载完整 SKILL.md
-matched = top_k(task, library, k=3)   # 按 triggers / embedding 召回
+matched = top_k(task, library, k=activation_k)   # 在标注任务集上调参
 
 # Stage 3 Execution: 按需加载 bundled scripts, 跟踪成功率
 result = run(matched_skill, task)
 mark_used(matched_skill, success=result.ok)
 
 # 沉淀: Hermes 风格自动蒸馏 (多重过滤)
-if outcome == &quot;success&quot; and len(tool_calls) &gt;= 5 and unique_tools &gt;= 3:
+if distillation_policy.accepts(task, trace, outcome):
     skill = distill(task, tool_calls)   # 进试用期, 非直接投产
 
-# Curation: weekly review
-EVICT(use_count == 0 and age &gt; 30d)
-REFINE(use_count &gt; 5 and success_rate &lt; 50%)
-PROMOTE(use_count &gt; 20 and success_rate &gt; 85%)
+# Curation: 基于证据评审
+EVICT(no_effective_use and review_approved)
+REFINE(usage_evidence sufficient and quality declining)
+PROMOTE(replay passed and human approval granted)
 </code></pre>
-            <p>生产实现采用三阶段 loading；自动蒸馏 skill 经过试用期后再转正；人工编写和自动蒸馏使用不同信任级别；weekly curation 将 skill 分为 EVICT、REFINE 和 PROMOTE。</p>
-            <h2>应用示例</h2>
-            <p>一家 B2B SaaS 公司的资深销售签单率为 38%，团队平均为 12%；客户复购率为 82%，团队平均为 51%。团队将其工作流程整理为 SKILL.md：首次接触前查询 LinkedIn 和公司新闻 5 分钟，首次电话使用固定开场，需求挖掘采用 5 问漏斗，异议处理引用话术库，签约前发送“决策清单”邮件。gotchas 置于文件顶部，确定性步骤使用 bundled scripts，每个环节提供 worked example。第二个月，新员工签单率从 12% 提高到 24%。核心 SOP 由人工编写，经 sales leader review 后进入 git；自动蒸馏 skill 使用独立 namespace 和低信任级别；customer-facing skill 必须人工审核；每周执行 EVICT、REFINE 或 PROMOTE。</p>
+            <p>生产实现采用分阶段 loading；自动蒸馏 skill 经过试用期和回放后再转正；人工编写和自动蒸馏使用不同信任级别；通过 EVICT、REFINE 和 PROMOTE 管理生命周期。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个 B2B SaaS 团队把资深销售的稳定做法整理为 SKILL.md：首次接触前查询公开公司信息，电话开场和需求发现使用可审查的流程，异议处理引用话术库，签约前发送决策清单。gotchas 放在文件顶部，确定性步骤使用 bundled scripts，每个环节提供 worked example。核心 SOP 由人工编写并经 sales leader review 后进入 git；自动蒸馏 skill 使用独立 namespace 和较低信任级别；customer-facing skill 必须人工审核；团队定期执行 EVICT、REFINE 或 PROMOTE。业务提升需要由真实销售数据另行验证。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Procedural Memory（记忆模块 M5）</strong>：落地几乎同构，都是技能库、都用 SKILL.md 形态存程序性知识，区别在设计意图。Skill Package 强调"反思后封装"——agent 反复成功后主动把成功路径提炼固化（post-reflection）；M5 强调"学过就存"——把程序性知识作为记忆写入。前者是反思视角，后者是记忆视角，工程载体重合度很高。</li>

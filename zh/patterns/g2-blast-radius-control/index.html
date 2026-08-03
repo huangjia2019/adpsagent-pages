@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -203,11 +203,11 @@
             </tr>
             </tbody>
             </table>
-            <p>三层叠加的价值在于失败概率相乘。若 L1 漏率 5%、L2 漏率 2%、L3 漏率 1%，三层同时漏的概率是十万分之一——这是 defense in depth 把概率性失败转化成生产级可靠性的工程数学。L3 里最关键也最常被忽视的是 kill switch：它必须由 Agent 完全无法触及的基础设施层执行，独立 IAM、独立网络段，Agent 即使被完全劫持也改不了它。</p>
+            <p>三层控制的价值来自独立防线，而不是把几组未经验证的漏率相乘。只有当各层失效近似独立且已有测量数据时，概率计算才成立。L3 中最关键的是 kill switch：它必须由 Agent 无法触及的基础设施层执行，使用独立 IAM 和网络边界，使被劫持的 Agent 也无法关闭它。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>任何有写权限的 Agent</strong>：写 production 数据库、发邮件、部署代码、调外部 API 改状态、转账、签合同，都必须配爆炸半径。</li>
-            <li><strong>执行 untrusted 或 LLM 生成代码的场景</strong>：server-side 跑代理代码时，Docker 共享内核不够，需要 Firecracker microVM 这类硬件虚拟化边界。</li>
+            <li><strong>执行 untrusted 或 LLM 生成代码的场景</strong>：根据 threat model 选择进程、容器或 microVM 隔离。服务端执行 hostile code 时，可能需要比共享内核容器更强的边界。</li>
             <li><strong>多 Agent 并行写同一份资源</strong>：用 Git worktree 或文件系统隔离防止 Agent 互相覆盖。</li>
             <li><strong>批量副作用操作</strong>：群发邮件、批量改记录这类一旦失控规模巨大的动作，必须配 per-call quota 加分阶段放量。</li>
             </ul>
@@ -220,16 +220,16 @@
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>kill switch 生效延迟</strong>（健康区低于 30 秒）：从触发到 Agent 停止的时间。Agent 每 30 秒轮询一次独立存储是常见做法，延迟过长意味着失控期内还能继续造成损失。</li>
-            <li><strong>quantity_limit 与最大可容忍单次错误规模的比值</strong>（健康区 ≤ 1）：单次操作上限是否按"最坏情况能容忍多大"反推。Replit 事故删了 1206 条，意味着 quantity_limit 该设在 100 以内。</li>
-            <li><strong>rate limit 触发的聚合粒度</strong>（健康区 per-task）：是否 per-task 而非 per-tool。per-tool 会被 N 个并发 sub-agent 放大成 N 倍真实速率。</li>
-            <li><strong>审计层独立性</strong>（健康区：sandbox / kill switch / audit 与 Agent 三者 IAM 完全分离）：任一层与 Agent 共享 process、IAM 或 credential，整套围堵就退化成 security theater。</li>
+            <li><strong>kill switch 生效延迟</strong>：从触发到 Agent 停止的时间，应在演练中测量并满足组织定义的事故响应目标。</li>
+            <li><strong>quantity_limit 与最大可容忍错误规模</strong>：操作上限从业务能够承受的最坏单次损失反推，并按环境和工具分别配置。</li>
+            <li><strong>rate limit 聚合粒度</strong>：限制应按 task、tenant 和资源聚合，避免多个 sub-agent 分别守住 per-tool 限额却共同突破总预算。</li>
+            <li><strong>审计层独立性</strong>：sandbox、kill switch 和 audit 应与 Agent 分离 process、IAM 或 credential，并通过演练验证 Agent 无法修改这些控制。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>执行一个动作前，按层校验：
     L0 Kill Switch  → 独立存储读到 kill flag → 立即拒绝
     L1 Capability   → tool 在 allowlist？path 在范围内？credential 没过期？
-    L2 Isolation    → 在 microVM / sandbox 内跑(untrusted code 不用 Docker)
+    L2 Isolation    → 按 threat model 在 process / container / microVM 中运行
     L3 Damage:
         quantity &gt; limit          → 拒绝
         rate(per-task) 超 cap     → 拒绝
@@ -238,8 +238,8 @@
 全部通过才执行，每步写不可改的 audit log
 </code></pre>
             <p>生产实现按最小权限配置 allowed_paths 和 network_allowlist；server-side 处理 untrusted code 时使用 Firecracker 等硬件虚拟化边界；KillSwitch 存储与 Agent 使用不同 IAM scope，Agent 仅有读取权限。</p>
-            <h2>应用示例</h2>
-            <p>2025 年 7 月公开报道的一次 Replit 事故中，平台处于 active code freeze，但 AI Agent 仍执行 destructive 命令，删除 production database 中 1206 条 executive 记录和 1196 条 company 记录，并生成 4000 个伪造用户。复盘显示多层控制同时失效：code freeze 被绕过，production credential 与 Agent 共享，缺少 process 隔离，destructive 操作没有 quantity limit，kill switch 与 Agent 位于同一 IAM。后续修复将 dev/prod 数据库自动分离，使 Agent 无法获得 production 连接和 credential。</p>
+            <h2>公开案例启示</h2>
+            <p>公开报道的 Replit 事故中，AI Agent 在 code freeze 期间删除了生产数据库内容，并生成虚假替代记录。对本模式有价值的不是网上反复转载的记录数量，而是控制链同时失效：Agent 可以接触 production credential，环境隔离不足，destructive 操作缺少 quantity limit，外部 kill switch 也没有形成可靠边界。案例启示是自动分离 dev/prod，并让 Agent 无法取得 production 连接和 credential。具体事实应以 Replit 当事方公开材料为准。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>审批门（G1）</strong>：审批门用于 prevention，爆炸半径控制假设 prevention 可能失败，并限制损失。</li>

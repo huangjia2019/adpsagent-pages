@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">高（约 9× 单次调用，3 agent × 3 round）</td>
+            <td style="text-align: left;">高（多个独立角色、评审轮次和审计 trace）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -183,36 +183,36 @@
             <li><strong>proponent 修正</strong>：根据 critic 提出的 issue 修订方案，进入下一轮。</li>
             <li><strong>judge 裁定</strong>：judge agent 综合双方论证，给出最终裁决（approve / conditional / reject）。</li>
             </ol>
-            <p>三个角色用不同 vendor 的模型，独立 trace 各自写进 audit log。轮数有上限——3 agent × 2 round 是学术实测的标准配置，2 轮已收敛大部分改进，超过 3 轮边际收益递减、还会引入震荡。critic 和 generator 的能力不能差太多，否则 critic 看不出 generator 的细微错误。跨 family 比跨 size 更重要：同一 vendor 的模型有相关的偏差分布和共同盲区，跨 family 才能引入独立训练历史的视角。</p>
+            <p>各角色分别写入独立 trace，评审轮次按任务风险与成本预算设置硬上限。Critic 需要具备识别 Generator 细微错误的能力，Judge 需要明确的证据与裁决契约。跨 family routing 可以减少部分共同盲区，但真正的独立性还取决于 context、数据源、运行时和人工责任是否分离。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>有 audit-grade 独立性要求的合规场景</strong>：金融授信、医疗诊断辅助、法律评估、监管合规，这些场景独立审查是上线门票。</li>
-            <li><strong>错误代价很高的关键决策</strong>：错代价超过一万美元的决策，9 倍成本换准确性提升的 ROI 为正。</li>
+            <li><strong>错误代价很高的关键决策</strong>：当错误损失、监管责任或安全风险足以覆盖独立评审成本时，可以采用对抗评审。</li>
             <li><strong>generator 输出与 critic 训练数据共享偏差的场景</strong>：单模型自评在这些场景几乎无效，必须引入跨 family 的独立视角。</li>
-            <li><strong>省钱换质量的工程取舍</strong>：中档模型加跨 family critic 配对，能闭合相当一部分跟顶档模型单跑的性能 gap，总成本反而更低。</li>
+            <li><strong>模型组合的工程取舍</strong>：中档模型配合独立 critic 有时优于单次高能力模型调用，但必须在目标任务集上验证。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>模型共谋</strong>：名义上跨 vendor，但 critic 和 generator 底层共享同一批 web 训练语料，"独立训练"是字面独立不是实质独立，两者在某些 corner case 上有共同盲区。vendor 独立不等于训练数据独立。关键场景要选不同 region、不同语言语料预训练的模型，或加第三家 critic，或接合规人审做最终防线。</li>
-            <li><strong>成本级联爆炸</strong>：每轮 context 越累积越长，名义上的 9× 成本实际可能涨到 30× 以上。每轮 critic 的 context 要截短为"任务加当前 draft"不带 history，judge 只在最后跑一次拿全 history。</li>
-            <li><strong>谄媚崩塌</strong>：critic 的 RLHF 训练让它默认倾向 helpful 而非 critical，跑一段时间后对七成 generator 输出都说"looks good"，名义上有对抗实际没分歧。critic prompt 要显式写"找不到问题视为 red flag"，监控 critic 的 issues_per_turn 分布，长期偏低的 prompt 要重写。</li>
+            <li><strong>成本级联</strong>：每轮 context 都累积完整历史时，成本和延迟会快速上升。critic 每轮只读取任务、当前 draft 和必要证据，judge 在最终裁决时读取结构化 debate log。</li>
+            <li><strong>谄媚崩塌</strong>：critic 可能倾向认同 generator，名义上有对抗却没有实质分歧。应监控 <code>issues_per_turn</code>、phantom issue 和专家一致性，不能用“总能找出问题”替代有效评审。</li>
             <li><strong>角色 prompt 不够多样</strong>：所有 agent 用同一个 role prompt 时，多 agent 反而比单 agent 更差。工程重点不是堆 agent 数量，是设计 role 多样性。</li>
-            <li><strong>简单任务误用</strong>：写作润色这种错代价低于一百美元的任务、有确定性验证可用的任务（测试当 critic 比 LLM 当 critic 便宜得多），用单 agent 自评就够，不该上对抗评审。</li>
+            <li><strong>简单任务误用</strong>：低风险写作润色或已有确定性验证的任务，通常不需要多 Agent 对抗；测试和规则往往是更直接的 critic。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>vendor 独立性</strong>（健康区 ≥ 2 个不同 vendor）：参与的模型来自几个不同 vendor。少于 2 个不满足合规级独立性，审计师会拿 vendor billing 记录核对。</li>
-            <li><strong>critic 发现率 issues_per_turn</strong>（健康区不长期为零）：critic 每轮提出 issue 的数量分布。长期接近零是谄媚崩塌的信号。</li>
-            <li><strong>辩论轮数</strong>（健康区 2-3 轮）：收敛所需的来回轮数。超过 3 轮说明任务可能不适合这个模式，或 judge 收敛逻辑有问题。</li>
+            <li><strong>独立性证据</strong>：记录模型、提示、数据源、运行时和组织角色的差异。不同 vendor 只是证据之一，不能自动证明认知独立。</li>
+            <li><strong>critic 发现率 issues_per_turn</strong>：结合 phantom issue 和专家抽查分析。长期没有有效 issue 可能是谄媚，持续制造 issue 也可能是标准失调。</li>
+            <li><strong>辩论轮数</strong>：观察收敛分布和触顶样本。反复无法收敛时，应调整 judge、证据契约或退出该模式。</li>
             <li><strong>单笔决策成本</strong>（按业务核算）：跨 family 三 agent 的真实 token 成本，要监控每轮 spend，超阈值降级到 single-critic mode。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>AdversarialReview.review(task):
-    校验 vendor 独立性(≥2 个不同 vendor)   # 不满足直接拒绝运行
+    校验 independence_policy               # 模型、数据源、角色或运行时独立性
     proposition = proponent(task)
-    for round in 1..MAX_ROUNDS:            # 上限 3
+    for round in 1..MAX_ROUNDS:
         verdict = critic(task, current)    # 用不同 vendor 的 model
-        if verdict.no_issues_found and round==1: continue  # 找不到问题=red flag
+        if requires_second_review(verdict): continue
         if not verdict.issues: break
         current = proponent(task, current, verdict.issues) # 修正
     return judge(task, debate_log)         # 综合双方,落 audit log
@@ -222,9 +222,9 @@ CritiqueVerdict:
     severity: minor/major/critical
     no_issues_found: bool  # 注意:这是 RED FLAG 不是 PASS
 </code></pre>
-            <p>生产实现应通过 billing 记录验证 agent_vendors；Critic 首轮找不到问题时触发复审；MAX_ROUNDS 设为 3；compliance attestation 写入 audit log 并保留 7 年。</p>
-            <h2>应用示例</h2>
-            <p>某区域银行的对公贷款决策辅助系统读取借款人的 43 份文档，并给出批准、拒绝或增信后批准建议。第一版由单模型承担信贷分析、风险评估和合规审查三个 prompt，无法证明独立审查。第七个月系统改为对抗评审：Generator 使用 Claude Sonnet，Critic 使用 GPT-5.4，Judge 使用 Claude Opus，各 Agent 保留独立 trace 并写入 audit log。第八个月通过 SOC 2 复审。单笔决策 token 成本从约 0.30 美元增至 2.10 美元。</p>
+            <p>生产实现应记录 agent vendor、模型版本、数据源和运行时；Critic 首轮找不到问题时可触发复审；MAX_ROUNDS 按任务风险与成本预算配置；compliance attestation 写入 audit log，留存期限按适用政策确定。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个银行贷款决策辅助系统。第一版由同一模型分别扮演信贷分析、风险评估和合规审查，角色 prompt 不足以证明独立性。后续版本让 Generator、Critic 和 Judge 使用不同模型或独立证据源，各自保留 trace，并把最终裁决与人工审批写入 audit log。它能否满足审计要求，取决于银行和审计方认可的独立性证据，不能由“用了多个模型”直接推出。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>Generator-Critic（反思模块）</strong>：同源不同 scale。前者是单 agent 自我审视（同一模型加不同 prompt），后者是多 agent 独立审查（独立 agent 加对抗激励加结构独立）。错代价、监管要求、成本预算这三件事是从前者升级到后者的判断点。</li>

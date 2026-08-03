@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -177,9 +177,9 @@
             </ul>
             <h2>解决方案与机制</h2>
             <ol>
-            <li><strong>三阶段加载</strong>：启动时只加载每个 skill 的 name 和 description（discovery，约 50 token/skill）；任务匹配后再读取完整 SKILL.md（activation，数百至两千 token）；执行阶段按需加载脚本和资源。该设计避免 50 个 skill 全量占用 context。</li>
+            <li><strong>三阶段加载</strong>：启动时只加载每个 skill 的 name 和 description（discovery）；任务匹配后再读取完整 SKILL.md（activation）；执行阶段按需加载脚本和资源。该设计避免技能库内容在启动时全部占用 context。</li>
             <li><strong>两种来源</strong>：人精心写（Anthropic Agent Skills 路线，审过、版本化、进 git）和 agent 自动蒸馏（Hermes 路线，干完任务自己写）。来源字段影响信任级别。</li>
-            <li><strong>自动蒸馏</strong>：足够复杂的任务（如五个以上工具调用）成功完成后，agent 分析 trajectory、识别可复用模式（输入、工具序列、输出格式）、写成结构化 skill。简单任务不触发，否则蒸馏出的低通用性 skill 会污染库。</li>
+            <li><strong>自动蒸馏</strong>：复杂任务成功完成后，Agent 分析 trajectory、识别可复用模式（输入、工具序列、输出格式），写成候选 skill。是否触发应依据任务复杂度、复用价值和人工纠错情况，而不是固定的工具调用次数。</li>
             <li><strong>人机同读格式</strong>：使用 markdown 和 YAML frontmatter，使人工审查、git diff 和 Agent 加载共用同一份源文件。</li>
             <li><strong>lifecycle 管理</strong>：跟踪每个 skill 的 use_count 和 success_rate；低成功率 skill 自动退出活动集，长期未召回项进入冷层。基础设施变化后，过期 skill 需要重新验证。</li>
             </ol>
@@ -200,9 +200,9 @@
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>复用率</strong>（健康区随时间上升）：同类任务命中已有 skill 而非从零 explore 的比例。这是程序性记忆是否起作用的首要信号。</li>
-            <li><strong>skill 成功率</strong>（健康区 ≥ 80%）：调用某 skill 后任务成功的比例。跌破 80% 触发告警，去 review 是不是底层服务变了导致 skill 过期。</li>
-            <li><strong>token / 时间节省</strong>（对照 explore 基线）：复用 skill 相比从零做省下的 token 和时间。做对时单个高频任务可省一个数量级（如三万 token 加十分钟压到五千 token 加九十秒）。</li>
+            <li><strong>复用率</strong>：同类任务命中已有 skill 而非从零 explore 的比例。应结合成功率和人工纠错率判断复用是否真正有效。</li>
+            <li><strong>skill 成功率</strong>：调用某 skill 后任务成功的比例。相对自身基线持续下降时，应检查底层服务、触发条件和验收规则是否变化。</li>
+            <li><strong>token / 时间开销</strong>：将复用 skill 与从零 explore 的同类任务对照，同时检查结果质量，避免用低成本掩盖错误执行。</li>
             <li><strong>自蒸馏转正率</strong>（业务判定）：自动蒸馏产物通过试用期并转为正式 skill 的比例。偏低说明蒸馏触发条件或质量校验需要调整。</li>
             </ul>
             <h2>最小实现</h2>
@@ -214,12 +214,12 @@ SkillLibrary：
     discover()                    → 启动只返回 name + description
     activate(task, top_k)         → 任务到来按相似度召回 top-K 完整 skill
     mark_used(name, success)      → 执行后记成功率
-    distill_from_trajectory(...)  → 5+ tool calls 且 success 时自动蒸馏
+    distill_from_trajectory(...)  → 满足复杂度、成功和复用价值条件时生成候选 skill
     evict_stale(...)              → 低成功率或长期不用的清除
 </code></pre>
-            <p>生产实现可使用成本较低的模型和结构化 prompt 完成蒸馏，并执行 schema 校验；触发条件除 5 次以上 tool call 外，还应包括任务成功、工具之间存在非平凡逻辑且没有多次用户纠错；lifecycle 持续跟踪 success_rate；自蒸馏和人工编写的 skill 使用不同信任级别。</p>
-            <h2>应用示例</h2>
-            <p>某运维团队由 5-8 名工程师管理 30 多个生产服务，DevOps Agent 处理 Redis 集群配置变更、Kubernetes 批量重启和 PostgreSQL 备份恢复等重复事件。人工编写的 runbook 经 SRE leader review 后进入 <code>runbooks/</code>，Agent 自动蒸馏的内容进入 <code>auto-skills/</code> 并在 7 天后进入 review 队列。frontmatter 的 triggers 使用关键词或正则，结合规则和 LLM 判断；preconditions 检查 SSH 权限和目标 namespace；每个 step 标记 idempotent 或提供 rollback；skill 成功率低于 80% 时告警；自动蒸馏 skill 经过至少 5 次双轨一致性验证后转正。上线第三个月，同类 maxmem-policy 变更从约 30K token、10 分钟降至 5K token、90 秒。</p>
+            <p>生产实现可使用成本较低的模型和结构化 prompt 完成蒸馏，并执行 schema 校验；触发条件应包括任务成功、工具之间存在非平凡逻辑、具备复用价值且没有频繁用户纠错；lifecycle 持续跟踪 success_rate；自蒸馏和人工编写的 skill 使用不同信任级别。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个运维团队让 DevOps Agent 处理 Redis 集群配置变更、Kubernetes 批量重启和 PostgreSQL 备份恢复等重复事件。人工编写的 runbook 经 SRE leader review 后进入 <code>runbooks/</code>，Agent 自动蒸馏的内容进入 <code>auto-skills/</code> 的评审队列。frontmatter 的 triggers 使用关键词或正则，结合规则和 LLM 判断；preconditions 检查访问权限和目标 namespace；每个 step 标记 idempotent 或提供 rollback；自动蒸馏 skill 先走 shadow 或双轨回放，结果稳定且经人工批准后再转为活动版本。是否节省时间和 token，要用同类任务的本地基线验证。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>反思模块 F2 Skill Package（技能包）</strong>：两者共用技能库、SKILL.md、三阶段加载和 lifecycle。M5 描述成功流程如何写入记忆，F2 描述反思验证后如何封装技能。</li>

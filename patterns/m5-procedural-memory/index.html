@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -157,8 +157,8 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>The agent has handled the same class of task five times and succeeded every time, but every time it started from scratch—reading five references, making three failed attempts, walking the exact same path as last time. When the sixth instance of the same task arrives, the agent walks it again. Tokens burn, time drags, and the user is annoyed. The root problem is that nothing is retained after the agent finishes. That clean "successful path" is lost.</p>
-            <p>This is exactly what procedural memory addresses: after the agent gets something done, it freezes "how it got done" into a reusable move, and the next time a similar task arrives it loads that move directly and reaches the main path in five seconds. The root problem it solves in one sentence—<strong>an agent does not get faster from having done something once</strong>. In an enterprise context, it is also the engineering vehicle that distills organizational process into a form the agent can digest—the "know-how" sitting in a veteran employee's head now has, for the first time, a container that can express it precisely.</p>
+            <p>An agent can complete the same class of task repeatedly and still start from scratch each time, rereading references and rediscovering the same sequence. The successful path disappears when execution ends because it was never converted into a reusable process asset.</p>
+            <p>Procedural memory extracts triggers, steps, tool dependencies, and acceptance checks from a verified run and stores them as a reusable skill. It also gives organizational know-how a machine-readable form that people can review and version.</p>
             <h2>Classification: Memory × Hierarchy</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: It encapsulates successful workflows as reusable "skills," corresponding to procedural memory in cognitive science ("how to do"), as distinct from declarative memory ("what is known," which is the object of RAG).</li>
@@ -166,16 +166,16 @@
             </ul>
             <h2>Solution and mechanics</h2>
             <ol>
-            <li><strong>Three-stage loading</strong>: At startup, load only each skill's name plus description (discovery, about 50 tokens/skill); read the full SKILL.md into context only when a task matches (activation, a few hundred to two thousand tokens); load scripts and resources on demand during execution (execution). This is the most correct implementation of procedural memory in terms of token economy—loading all fifty skills at full size would exhaust the context.</li>
+            <li><strong>Three-stage loading</strong>: At startup, load only each skill's name and description (discovery); read the full SKILL.md when a task matches (activation); load scripts and resources on demand during execution. This prevents the whole library from occupying startup context.</li>
             <li><strong>Two sources</strong>: handwritten with care (the Anthropic Agent Skills route—reviewed, versioned, committed to git) and auto-distilled by the agent (the Hermes route—written by the agent itself after finishing a task). The source field affects the trust level.</li>
-            <li><strong>Auto-distillation</strong>: After a sufficiently complex task completes successfully (for example, five or more tool calls), the agent analyzes the trajectory, identifies the reusable pattern (input, tool sequence, output format), and writes it up as a structured skill. Simple tasks do not trigger distillation; otherwise the resulting low-generality skills would pollute the library.</li>
+            <li><strong>Auto-distillation</strong>: After a complex task succeeds, the agent analyzes the trajectory and writes a candidate skill describing input, tool sequence, and output contract. Triggering should consider complexity, reuse value, and user corrections rather than a fixed tool-call count.</li>
             <li><strong>Human- and machine-readable format</strong>: Use markdown plus YAML frontmatter—humans can read it, git can diff it, and the agent can read it too. A format readable by both humans and machines beats any format designed purely for machines.</li>
             <li><strong>Lifecycle management</strong>: Track each skill's use_count and success_rate; automatically evict low-success-rate skills (the moves that keep misleading the agent), and move skills that are not recalled for a long time into a cold tier. Production infrastructure changes, and a stale skill turns from a "move" into a "trap."</li>
             </ol>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Periodic, templated tasks</strong>: The same class of task recurs, has a relatively stable successful path, and has clear entry and exit conditions. Standard DevOps operations incidents (cluster configuration changes, batch restarts, backup and restore) are the best scenario.</li>
-            <li><strong>Distilling enterprise process</strong>: A law firm's client-tiering logic, a hospital's five-step emergency triage, a company's standard refund flow—tacit assets that used to depend entirely on senior employees mentoring juniors, that walked out the door when someone changed jobs, and that the wiki captured at maybe ten percent completeness, can now be written into a SKILL.md and become a reusable organizational asset layer.</li>
+            <li><strong>Distilling enterprise process</strong>: A law firm's client-tiering logic, a hospital's emergency triage, or a company's refund flow can be written into SKILL.md as a reviewable organizational asset.</li>
             <li><strong>Scenarios that require judgment during execution</strong>: A skill provides the "usually do it this way" paradigm, and the agent retains its judgment after loading it—deciding which steps to follow verbatim, which to adjust to the current context, and when to abandon the skill and explore instead. This is the key thing that distinguishes it from rigid RPA.</li>
             </ul>
             <h2>Known failure modes</h2>
@@ -189,9 +189,9 @@
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Reuse rate</strong> (rises over time in the healthy zone): the proportion of similar tasks that hit an existing skill rather than exploring from scratch. This is the primary signal of whether procedural memory is working.</li>
-            <li><strong>Skill success rate</strong> (healthy zone ≥ 80%): the proportion of tasks that succeed after calling a given skill. Dropping below 80% triggers an alert to review whether an underlying service changed and rendered the skill stale.</li>
-            <li><strong>Token / time savings</strong> (against the exploration baseline): the tokens and time saved by reusing a skill versus doing it from scratch. Done right, a single high-frequency task can save an order of magnitude (for example, thirty thousand tokens plus ten minutes compressed to five thousand tokens plus ninety seconds).</li>
+            <li><strong>Reuse rate</strong>: The share of similar tasks that select an existing skill instead of exploring from scratch. Interpret it together with success and human-correction rates.</li>
+            <li><strong>Skill success rate</strong>: The share of tasks that succeed after calling a skill. A sustained decline from its own baseline may indicate stale infrastructure, triggers, or acceptance checks.</li>
+            <li><strong>Token / time cost</strong>: Compare skill reuse with exploration on comparable tasks while checking output quality and safety.</li>
             <li><strong>Auto-distillation promotion rate</strong> (a business judgment): the proportion of auto-distilled moves that pass probation and become formal skills; too low indicates a problem with the distillation trigger conditions or the quality checks.</li>
             </ul>
             <h2>Reference implementation</h2>
@@ -203,12 +203,12 @@
                 discover()                    → at startup, return only name + description
                 activate(task, top_k)         → when a task arrives, recall the top-K full skills by similarity
                 mark_used(name, success)      → record the success rate after execution
-                distill_from_trajectory(...)  → auto-distill on 5+ tool calls and success
+                distill_from_trajectory(...)  → create a candidate when complexity, success, and reuse criteria hold
                 evict_stale(...)              → remove low-success-rate or long-unused skills
             </code></pre>
-            <p>Four engineering points for landing this: use a cheap model plus a structured prompt for the distillation LLM call, with schema validation; the distillation trigger should be more than just "5+ tool calls" (also require success, non-trivial logic between tools, and no repeated user corrections); the lifecycle should track success_rate; and auto-distilled skills should carry tiered trust separate from handwritten skills.</p>
-            <h2>Application example</h2>
-            <p>An ops team at a mid-sized company—five to eight engineers managing thirty-odd production services—needs its DevOps agent to catch the standard operations incidents it keeps running into: Redis cluster configuration changes, Kubernetes batch restarts, PostgreSQL backup and restore. Six key decisions: skills split into two classes—runbooks the team writes with care follow the Anthropic Skills route (entering the library only after SRE-leader review, placed under runbooks/), while agent auto-distilled skills go in a separate namespace (auto-skills/, entering the review queue after seven days); trigger conditions are schematized (the frontmatter's triggers field lists keywords or regexes, making "should this skill be used" testable, with rule matching plus an LLM hybrid judgment); preconditions enforce pre-checks (before execution, verify "the current user has SSH access" and "the target namespace exists"—the biggest firewall against production incidents); steps are rollbackable (each step is marked idempotent or carries a rollback, similar to a Saga in distributed systems); success-rate monitoring with alerts (any skill dropping below 80% triggers an alert to check whether an underlying service changed); and auto-distilled moves run dual-track during probation (promoted only after the two results agree five or more times). By the third month of operation, when the opening scenario—"the third time this half year manually changing maxmem-policy"—comes around again, the agent goes through discovery plus activation plus automatic precondition checks plus automatic rollback protection, and a job that was thirty thousand tokens plus ten minutes is compressed to five thousand tokens plus ninety seconds, saving ops time equivalent to half a full-time SRE.</p>
+            <p>For deployment, use a structured prompt and schema validation for distillation; require task success, non-trivial logic, reuse value, and limited user correction; track lifecycle evidence; and assign auto-distilled skills a lower trust tier than reviewed human-authored skills.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider an operations team using a DevOps agent for recurring Redis configuration changes, Kubernetes restarts, and PostgreSQL backup and restore. Reviewed runbooks live under <code>runbooks/</code>; auto-distilled candidates live under <code>auto-skills/</code> and enter a review queue. Triggers use testable keywords or regular expressions, preconditions check access and namespace, and each step is idempotent or includes rollback. Candidate skills run in shadow or replay before human approval. Any time or token reduction must be measured against comparable local tasks.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Reflection module F2 Skill Package</strong>: The two are almost structurally identical in practice—both are skill libraries, both use SKILL.md, both do three-stage loading and lifecycle management. The difference is design intent: M5 emphasizes "store what you learned" (a memory write—after completing a task the agent automatically distills the successful flow into memory), while F2 emphasizes "encapsulate after reflection" (a post-reflection consolidation—the agent consolidates a verified flow into a skill only after reflective evaluation). The same skill library, viewed from the memory angle, is M5's write end; viewed from the reflection angle, it is F2's output end. The course folds it into the 06-03 Skill Package lecture, but in itself it is an independent pattern of the memory module.</li>

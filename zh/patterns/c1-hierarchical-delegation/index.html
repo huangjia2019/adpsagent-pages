@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">高（3-15× 单 agent 调用）</td>
+            <td style="text-align: left;">高（多 Worker 调用，加上协调与综合）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -197,12 +197,12 @@
             <td style="text-align: left;">让 supervisor 一眼判断这份产出能不能直接用</td>
             </tr>
             <tr>
-            <td style="text-align: left;">top findings（3-5 条）</td>
-            <td style="text-align: left;">worker 工作结论的精炼，覆盖大部分信息</td>
+            <td style="text-align: left;">ranked findings</td>
+            <td style="text-align: left;">按重要性排列的工作结论，并保留证据引用</td>
             </tr>
             <tr>
-            <td style="text-align: left;">confidence（0-1）</td>
-            <td style="text-align: left;">多个 worker 输出冲突时的仲裁信号</td>
+            <td style="text-align: left;">confidence / uncertainty</td>
+            <td style="text-align: left;">使用经过校准的尺度表达把握程度，不能单独作为仲裁依据</td>
             </tr>
             </tbody>
             </table>
@@ -210,27 +210,27 @@
             <ul>
             <li><strong>专业分工明确的长流程任务</strong>：行业研究报告生成、投研分析、新药研发流程，每个环节需要不同专业能力。</li>
             <li><strong>批量同类任务的隔离处理</strong>：合同审阅、简历筛查、文档合规扫描，每份独立交给一个 worker，避免相互污染和 context 爆炸。</li>
-            <li><strong>价值高到能覆盖 token 倍数的任务</strong>：多 agent 至少 2-3 倍 token 是常态，Anthropic 实测复杂研究任务可达 15 倍换 90% 胜率，只有高价值任务才划算。</li>
+            <li><strong>价值足以覆盖协作开销的任务</strong>：多 Agent 会增加分解、通信和聚合成本。是否值得采用，应在同一任务集上比较单 Agent 与多 Agent 的质量、时延和总 token。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>Worker 未隔离</strong>：Supervisor 接收完整执行过程而非 schema artifact，context 会被子任务细节占满。Worker 应返回压缩后的结构化结果。</li>
             <li><strong>Worker 之间直接通信</strong>：Worker A 直接调用 Worker B 会将树结构变为网状结构，增加 cascade failure 风险。信息交换应经过 Supervisor。</li>
             <li><strong>Worker 失败没有边界</strong>：Worker 异常未被捕获时，Supervisor 会收到 raw exception 并中断任务。每个 Worker 需要 timeout、异常包裹和 failure artifact。</li>
-            <li><strong>并行 worker 数量过多</strong>：超过 5 个并行 worker，supervisor 综合时会出现取舍困难，第 6 个 worker 的边际价值开始下降。复杂度上限不在算力，在模型综合的认知带宽。</li>
+            <li><strong>并行 worker 数量过多</strong>：Worker 增多后，Supervisor 需要比较和综合更多 artifact。并发和 fan-out 上限应由 provider 容量、artifact 体量和综合质量共同决定。</li>
             <li><strong>Collaboration Light 场景误用</strong>：同一个 Agent 仅切换多个 prompt 时，不需要层级委派。该模式要求多个具有专业分工的 Agent。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>协作开销占比</strong>（健康区 &lt; 30%）：Supervisor 与 Worker 通信消耗的 token 占总 token 的比例。超过 50% 时，应进一步压缩 artifact，并使用轻量 channel。</li>
-            <li><strong>worker 失败级联率</strong>（健康区 &lt; 5%）：一个 worker 失败拖垮其他 worker 的概率。这是最该优先压的指标，它高了会带动其他三个指标一起恶化。</li>
-            <li><strong>artifact 合规率</strong>（健康区 &gt; 95%）：worker 返回符合 schema 的比例。worker 偶尔输出自由文本绕过 schema 会触发重派和延迟。</li>
-            <li><strong>token 倍数</strong>（健康区 &lt; 5×）：多 agent 比单 agent 多花的 token 倍数。15× 是高价值任务的可接受上限，普通业务 5× 已经偏高，不匹配就退回单 agent。</li>
+            <li><strong>协作开销占比</strong>：Supervisor 与 Worker 通信消耗的 token 和时间占比。相对本地基线过高时，应压缩 artifact、减少往返或改用轻量 channel。</li>
+            <li><strong>worker 失败级联率</strong>：一个 Worker 失败是否拖垮其他分支或 Supervisor。高风险任务应优先验证隔离与部分失败处理。</li>
+            <li><strong>artifact 合规率</strong>：Worker 返回是否符合 schema。自由文本绕过 schema 会触发重派、人工修正和额外延迟。</li>
+            <li><strong>多 Agent 成本倍数</strong>：与单 Agent 基线比较总 token、模型费用和墙钟时间。成本超过任务价值时应退回单 Agent 或缩小委派范围。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>SupervisorAgent.execute(task):
     plan = decompose(task)              # 动态拆分,跟输入相关
-    artifacts = 并行 gather(            # 并发上限设 5
+    artifacts = 并行 gather(            # 并发上限作为配置
         IsolatedSubAgent(worker).execute(subtask)
         for worker, subtask in plan
     )
@@ -243,8 +243,8 @@ IsolatedSubAgent.execute(subtask):
     return reduce_to_artifact(raw)      # 强制压缩成 verdict/findings/confidence
 </code></pre>
             <p>生产实现为每个 Worker 创建独立 context；强制返回 schema artifact；使用 timeout 和异常包裹隔离失败；通过信号量控制并发，Worker 之间不共享 state。</p>
-            <h2>应用示例</h2>
-            <p>某律所的合同审阅 Agent 第一版由 sub-agent 扫描 50 份合同，并将每份约 3000 字的详细分析全部回传，主 Agent 收到约 15 万字后超出有效 context。第二版为每份合同分配独立 Worker，返回前压缩为固定 schema：contract_id、risk_level、top_3_concerns、recommendation 和用于防篡改的 contract_hash。50 份 artifact 合计不到 1 万字。HIGH 以上风险合同进入律师 review 队列；Worker timeout 为 180 秒；失败时返回 failure artifact；portfolio report 写入文件供审计。改造后 50 份合同在 1 小时内完成。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个律所的合同审阅 Agent。第一版让每个 sub-agent 返回完整分析，主 Agent 很快被长文本淹没。第二版为每份合同分配独立 Worker，并强制返回固定 schema：<code>contract_id</code>、<code>risk_level</code>、<code>top_concerns</code>、<code>recommendation</code> 和防篡改的 <code>contract_hash</code>。高风险合同进入律师评审队列；Worker 超时或失败时返回 failure artifact；portfolio report 写入文件供审计。实际吞吐与质量需要在律所授权的合同集上评测。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>子代理隔离（C5）</strong>：层级委派负责派工，子代理隔离负责 Worker context、schema artifact 和失败边界，两者通常配套使用。</li>

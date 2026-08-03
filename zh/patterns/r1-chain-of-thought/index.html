@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R1 思维链 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="管理模型产生的 reasoning 记录、决策依据和结构化输出，支持审计、回查与跨模型兼容。">
+    <meta name="description" content="管理接口允许保留的 reasoning 摘要、决策依据、结构化输出和模型元数据，支持审计、回查与跨模型兼容。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -134,7 +134,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>R1 · Chain-of-Thought · 思维链</h1>
-                <p class="publication-deck">管理模型产生的 reasoning 记录、决策依据和结构化输出，支持审计、回查与跨模型兼容。</p>
+                <p class="publication-deck">管理接口允许保留的 reasoning 摘要、决策依据、结构化输出和模型元数据，支持审计、回查与跨模型兼容。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">低（约等于一次普通调用，开 thinking 时按 token 多付一档）</td>
+            <td style="text-align: left;">可变（随 reasoning effort、模型接口和留痕策略变化）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -162,24 +162,24 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">管理模型产生的 reasoning 记录、决策依据和结构化输出，支持审计、回查与跨模型兼容。</td>
+            <td style="text-align: left;">管理接口允许保留的 reasoning 摘要、决策依据、结构化输出和模型元数据，支持审计、回查与跨模型兼容。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
             <p>模型输出结论时，如果系统没有保留决策依据、证据和执行 trace，错误发生后就难以 debug，也无法满足审计回查要求。Agent 的推理过程具有灰盒特征，需要由工程层补充可观测记录。</p>
-            <p>Chain-of-Thought 在这里指 reasoning trajectory 的工程管理，包括存储、审计、跨模型 fallback 和按任务复杂度控制 reasoning effort。2022 年常见的 “Let's think step by step” 只是提示方法；当前 reasoning model 还会返回结构化 reasoning 字段或摘要，系统需要统一处理这些产物。</p>
+            <p>Chain-of-Thought 在这里指 reasoning trajectory 的工程管理，包括可用摘要的存储、证据绑定、跨模型 fallback 和按任务复杂度控制 reasoning effort。“Let's think step by step”属于提示方法；当前 reasoning model 还可能返回结构化 reasoning 字段、摘要或受保护 token，系统需要按各接口能力统一处理。</p>
             <h2>坐标说明：推理 × 链式</h2>
             <ul>
-            <li><strong>纵轴 · 推理</strong>：CoT 记录模型的 reasoning 过程或摘要。路由、并行、迭代和双模模式都可以在各自的推理分支中产生这类记录。</li>
+            <li><strong>纵轴 · 推理</strong>：CoT 管理从输入证据到输出决策之间可获得的 reasoning 产物。不同接口可能只提供公开摘要、结构化字段或受保护 token，工程层不能假定自己能看到模型的完整内部推理。</li>
             <li><strong>横轴 · 链式</strong>：推理本身是一条线性 trajectory，从输入走到输出，中间每一步都依赖前一步（思考 → 中间结论 → 最终答案）。这是天然的链式结构，不是并行撒网，也不是循环迭代。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <p>推理 trajectory 应作为结构化数据管理。实现需要覆盖以下四项职责：</p>
             <ol>
-            <li><strong>持久化</strong>：thinking blocks 进 trajectory log，按 trace_id 索引，结构化存储，支持重放、回滚、跨 session 迁移。</li>
-            <li><strong>跨模型归一</strong>：不同 reasoning model 的标签格式各异（OpenAI 用 <code>&lt;reasoning&gt;</code>、DeepSeek 用 <code>&lt;think&gt;</code>、Anthropic 用结构化字段）。入库前 normalize 成统一 schema，Agent 看到的永远是格式一致的 trajectory，审计时也只需要看一种结构。</li>
+            <li><strong>持久化</strong>：保存接口与组织政策允许留存的 reasoning 摘要、证据引用、决策、模型元数据和执行 trace，并按 trace_id 索引。私有推理 token 不应被复制到审计库。</li>
+            <li><strong>跨模型归一</strong>：不同 reasoning model 返回公开摘要、结构化字段或受保护 reasoning token 的方式不同。入库前 normalize 成统一 schema，并保留 provider、model、接口版本和可见性元数据。</li>
             <li><strong>跨模型 fallback strip</strong>：thinking block 的签名跟生成它的模型绑定。主模型限流切到 fallback 模型时，fallback 模型不接受其他模型的签名，必须先 strip 掉所有不兼容的 thinking block 再发，否则整个请求被拒、Agent 调用失败。</li>
             <li><strong>effort 控制</strong>：thinking 是付费 token，但更多 thinking 不一定更高质量。给一个 effort 控制曲面（off / low / medium / high / max），让简单任务用 low、复杂任务用 high。</li>
             </ol>
@@ -187,37 +187,37 @@
             <h2>适用场景</h2>
             <ul>
             <li><strong>多跳逻辑、需要解释的判断</strong>：理赔审核、合同风险识别、信贷决策，每个结论都要能向监管解释"依据是什么"。</li>
-            <li><strong>合规留痕场景</strong>：金融、医疗、法律领域要求决策的完整 reasoning 长期留档，CoT trace 是这条合规底线的载体。</li>
+            <li><strong>合规留痕场景</strong>：金融、医疗、法律工作流可能要求保存输入证据、适用规则、审批记录、模型元数据和决策依据。具体留存范围由适用法规、组织政策与模型接口共同确定。</li>
             <li><strong>教学与调试场景</strong>：可以展示经过处理的 reasoning 摘要和中间结论，帮助定位错误步骤。</li>
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>给 reasoning model 硬加 step instruction</strong>：模型自己已经在 think，再喂"请逐步分析"反而打乱推理、多烧 token。Wharton 2025 的实证显示这种加法在 reasoning model 上几乎无效甚至变差。</li>
+            <li><strong>给 reasoning model 机械叠加 step instruction</strong>：模型已经具备内部推理机制时，额外要求逐步展开未必改善结果，还可能增加 token 或干扰原有策略。应通过任务集对照，而不是把固定话术视为通用增益。</li>
             <li><strong>fallback 时不 strip thinking</strong>：主模型挂掉切 fallback 时不清理跨模型签名，整个请求被拒、Agent 调用失败。这种 incident 平时不暴露，一旦主模型限流就集中爆发。</li>
-            <li><strong>trace 只写日志文件</strong>：监管要"调某月某日那件 case 的完整 reasoning"时，散在日志文件里的 trace 翻不出来。要结构化进 OpenTelemetry / Datadog，按 trace_id 可查。</li>
+            <li><strong>trace 只写日志文件</strong>：需要回查某个 case 的输入证据、适用规则、模型版本和最终决策时，散在日志文件里的记录很难拼接。应使用结构化 trace，并按 trace_id 查询。</li>
             <li><strong>所有任务一个 effort 跑</strong>：简单任务（"今天周几"）和复杂任务（"这份合同有什么风险"）用同一个 effort，既浪费了简单任务的 token，又委屈了复杂任务的质量。</li>
-            <li><strong>延迟敏感场景开 thinking</strong>：用户输入要在 200 毫秒出回应的场景，extended thinking 会引入秒级延迟，应该关掉或用 effort=low。</li>
+            <li><strong>延迟敏感场景开高 effort thinking</strong>：extended thinking 可能增加首响应时间。实时交互应按渠道延迟预算关闭或降低 effort，并将深度分析移到异步路径。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>Reasoning Token 占比</strong>（健康区 30-60%）：thinking token 占总 token 的比例。p99 高于 80% 说明在 over-thinking 简单 case 浪费成本，低于 20% 说明在 under-thinking 有准确率风险，任何方向超阈值都该告警。</li>
-            <li><strong>fallback strip 成功率</strong>（健康区接近 100%）：主模型切 fallback 时正确清理跨模型 thinking 的比例。低于 100% 意味着存在会让 Agent 调用直接失败的隐患。</li>
-            <li><strong>trace 可回查率</strong>（健康区 100%）：任意一条历史决策能按 trace_id 调出完整 reasoning 的比例。合规场景这是硬性要求。</li>
+            <li><strong>Reasoning token 占比</strong>：按任务类型观察 thinking token 在总调用中的占比。相对基线显著升高时检查 over-thinking，显著降低时用评测确认是否出现推理不足。</li>
+            <li><strong>fallback strip 成功率</strong>：主模型切换 fallback 时，跨模型不兼容的 thinking 字段应被完整清理。任何失败都可能导致调用错误，需要单独告警。</li>
+            <li><strong>trace 可回查率</strong>：检查历史决策能否按 trace_id 找回允许留存的 reasoning 摘要、输入证据和模型元数据。合规要求由具体业务政策确定。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>任务进来 → 按复杂度选 effort 档（off / low / medium / high / max）
-模型 emit thinking blocks → normalize 成统一 schema → 进结构化 trace
+模型返回可留存摘要 / 结构化决策 / 模型元数据 → normalize 成统一 schema → 进结构化 trace
 若主模型限流 fallback：
     strip 掉所有跟目标模型不兼容的 thinking block，再发请求
 审计取数双视图：
-    监管视图  → 完整 thinking + 最终决策 + fallback 链
-    客户视图  → 仅脱敏摘要，不暴露 reasoning 细节
-返回 final_answer + 完整 trace（按 trace_id 索引，长期留档）
+    审计视图  → 允许留存的 reasoning 摘要 + 证据 + 最终决策 + fallback 链
+    客户视图  → 脱敏依据摘要，不暴露受保护 reasoning 细节
+返回 final_answer + audit trace（按 trace_id 索引，按留存政策保存）
 </code></pre>
             <p>生产实现不应为 reasoning model 重复添加 step instruction；effort 作为 per-request 或 per-task 配置；标签归一规则随模型接口更新；trace 写入结构化 trace bus，支持长期回查。</p>
-            <h2>应用示例</h2>
-            <p>梁博团队的执行型 Agent 将模型输出拆为 thinking 和 answer。thinking 进入 trace 留档，answer 是由下游程序解析的 JSON 决策对象。answer 字段驱动后续动作，thinking 记录用于审计回查。</p>
-            <p>JSON 解析失败时，系统执行预定义的安全默认动作，避免随机重试。thinking 完整留档，answer 执行 schema 强校验，解析失败计数进入监控。</p>
+            <h2>场景化示例</h2>
+            <p>梁博团队的执行型 Agent 将解释性信息和可执行的 answer 分开。接口允许留存的摘要、证据和模型元数据进入 trace，answer 则是由下游程序解析的 JSON 决策对象。answer 字段驱动后续动作，trace 用于审计回查。</p>
+            <p>JSON 解析失败时，系统执行预定义的安全默认动作，避免随机重试。answer 执行 schema 强校验，解析失败进入监控，审计材料按接口可见性和组织留存政策保存。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>复杂度路由（R2）</strong>：CoT 的 effort 控制调整单次调用的推理深度，复杂度路由进一步选择模型和任务级档位。</li>

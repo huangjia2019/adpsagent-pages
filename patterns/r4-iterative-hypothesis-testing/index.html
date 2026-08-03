@@ -133,7 +133,7 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. The pattern definition and classification may be cited; numbers and application examples without linked sources are explanatory, not industry benchmarks.</p>
+            <p class="publication-note"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p>
 
                         <table>
             <tbody>
@@ -165,11 +165,11 @@
             <li><strong>Horizontal axis · Loop</strong>: Multiple iterations until the evidence converges or a limit is reached form a natural loop structure. The dual-mode architecture (R5) in the same column is also in the Loop column but has a different emphasis—iteration is a single agent looping with itself to validate hypotheses, while dual-mode is two agents collaborating to split the handling of "talking" and "thinking."</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>A mature iterative hypothesis-testing setup often uses a three-agent division of labor that maps to a strict loop:</p>
+            <p>A production implementation separates three responsibilities. They may be stages in one agent or roles assigned to different agents:</p>
             <ol>
-            <li><strong>Hypothesis generation (Planner)</strong>: List N candidate hypotheses based on the symptoms and historical cases, ranked by prior probability. This step uses the most expensive model, because generating the "right hypothesis list" determines the direction of the entire trajectory.</li>
-            <li><strong>Evidence collection (Generator)</strong>: Given a hypothesis, decide which tools to run to validate it—query a metric, retrieve a log, read a sensor. This is mostly tool calls, and a cheap model is enough. The evidence must come from deterministic, reproducible data sources; "the model looked at it itself and felt it was OK" does not count as evidence.</li>
-            <li><strong>Judgment (Evaluator)</strong>: Combine the evidence to decide whether the hypothesis is confirmed, falsified, or insufficiently supported. This step uses a mid-tier model, and the system prompt should emphasize falsification over confirmation—"your job is to find strong counter-evidence." This framing measurably improves accuracy.</li>
+            <li><strong>Hypothesis generation (Planner)</strong>: List candidate hypotheses from symptoms and historical cases, ranked by prior probability. Select the model and effort setting through local evaluation of hypothesis coverage, missed causes, and cost.</li>
+            <li><strong>Evidence collection (Generator)</strong>: Given a hypothesis, choose tools that can test it, such as metrics, logs, or sensors. Evidence must come from traceable, reproducible data sources; the model's own impression is not external evidence.</li>
+            <li><strong>Judgment (Evaluator)</strong>: Decide whether the evidence confirms, falsifies, or leaves the hypothesis unresolved. The Evaluator should search explicitly for counterevidence. Compare prompts and model configurations on replay data instead of assuming that one framing always improves accuracy.</li>
             </ol>
             <p>The loop rules are: falsified goes back to the generation stage, confirmed exits, and insufficient evidence goes back to gather more. Two engineering practices are easy to overlook but critical: first, when entirely new evidence appears, reset the whole hypothesis tree rather than fine-tuning the old one; second, when the limit is reached without convergence, trigger human-in-the-loop (HITL) rather than letting the agent force-pick the hypothesis with the highest prior and ram into it.</p>
             <h2>Applicability</h2>
@@ -180,18 +180,18 @@
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Forcing it through under too tight a time budget</strong>: When the time budget is under 30 seconds, or the cost of error is low, do not use iteration—adding iteration to a task that one pass of reasoning could handle is over-engineering.</li>
-            <li><strong>Forcing it past 3 rounds without convergence</strong>: If it has not converged after 3 iterations, the task itself is usually wrong (the symptom description is inaccurate, or it is simply not a problem in this system), and it should be reset or escalated to a human, not burn a 4th and 5th round.</li>
-            <li><strong>The Evaluator looks for supporting evidence</strong>: "Find supporting evidence" falls into confirmation bias and is more than 30% less accurate than "find falsifying evidence."</li>
+            <li><strong>Using it under a tight response budget</strong>: When latency matters more than iterative diagnosis or the cost of error is low, a single pass may be sufficient.</li>
+            <li><strong>Continuing after the configured limit</strong>: Reaching the cap without convergence calls for reset, task decomposition, better evidence, or human escalation, not an unbounded extra round.</li>
+            <li><strong>The Evaluator only looks for supporting evidence</strong>: This framing amplifies confirmation bias. Record supporting, falsifying, and missing evidence, and prefer tests that distinguish competing hypotheses.</li>
             <li><strong>Fine-tuning the old tree when new evidence arrives</strong>: When entirely new evidence appears, the hypothesis tree should be reset and regenerated; patching the old tree will be dragged off course by the wrong prior.</li>
             <li><strong>No circuit breaker</strong>: Every iteration must have a hard max_iterations cap plus a cost cap, or the cost explodes and the agent hangs.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
-            <li><strong>Convergence Rate</strong> (healthy range &gt;80%): The share of cases that converge automatically before reaching the limit. Below 60% means the agent often reaches the limit without a conclusion—either the task is too complex and should be decomposed, or evidence collection is inadequate. This is the most comprehensive metric.</li>
-            <li><strong>Average iterations to convergence</strong> (healthy range 2-4): How many rounds successful cases take on average to converge. Below 2 means the task is too simple to need iteration; above 5 means each round is inefficient and hypothesis quality is poor.</li>
-            <li><strong>Falsification Rate</strong> (healthy range 30-60%): The share of hypotheses falsified each round. Below 20% means the agent is in confirmation bias and not actively falsifying; above 80% means most generated hypotheses are wrong.</li>
-            <li><strong>HITL Trigger Rate</strong> (healthy range 5-15%): The share of cases that escalate to a human. Below 2% means the agent is overconfident and commits even when it should not; above 30% means the agent is too weak and needs a human to backstop everything.</li>
+            <li><strong>Convergence Rate</strong>: The share of cases that reach a verifiable conclusion within budget. Separate failures caused by task size, unavailable evidence, and weak hypotheses.</li>
+            <li><strong>Iterations to convergence</strong>: Track the distribution by task class. Sustained growth indicates low information gain per round or weaker hypothesis generation.</li>
+            <li><strong>Falsification Rate</strong>: Observe whether candidate hypotheses are actually eliminated by counterevidence. A long period with no falsification may indicate confirmation bias.</li>
+            <li><strong>HITL Trigger Rate</strong>: Interpret escalation by task risk, evidence gaps, and outcome. The key question is whether cases that required a human were escalated.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Task arrives → Planner generates a hypothesis list (ranked by prior probability)
@@ -206,10 +206,9 @@
             Loop ends still without convergence → trigger HITL, attach the full hypothesis tree + evidence + iterations run
             Keep a trace on file throughout (compliance scenarios require long-term retention)
             </code></pre>
-            <p>Four points for landing it: assign the three models by routing (the expensive model generates hypotheses, the cheap model collects evidence, the mid-tier model judges); make the evidence schema strict to prevent the model from inventing evidence; let HITL escalation carry the full hypothesis tree and evidence, not a simple notification; keep the trace on file for the long term for audit.</p>
-            <h2>Application example</h2>
-            <p>A mid-sized chemical plant's industrial fault-diagnosis agent assists front-line engineers in locating the root cause when an alarm fires. In the early hours of the pilot's third week, a polyethylene production line raised an alarm—the reactor temperature was rising abnormally. The agent pushed 5 candidate hypotheses ranked by likelihood, and the engineer validated them one by one: cooling pump failure (flow looked normal, eliminated), sensor drift (compared against the redundant sensor and they agreed, eliminated), process recipe anomaly (the feed log looked normal, eliminated). When the fourth hypothesis required waiting for lab analysis and the line had already been down for an hour, the engineer manually fed in a new fact—the PID control log showed a remote login that had modified settings in the early hours. The agent immediately rebuilt the hypothesis tree from scratch, drilled down to find that a temperature-control parameter had been changed, which would cause the temperature to oscillate upward and matched the current state, and finally located the cause: another shift had run a parameter-optimization test and forgotten to roll it back.</p>
-            <p>Two observations afterward were key. First, the true root cause had only a 2% prior in the first round—the model's prior was badly miscalibrated, and it was dug out only by repeated iteration plus a human supplying a fact. Second, after the new fact was fed in, the agent reset and rebuilt the entire tree rather than fine-tuning it. The team rewrote the system on this basis, adding a three-layer structure (generate hypotheses, collect evidence, judge) and making six key decisions: a three-layer hypothesis tree that supports drill-down; a low HITL threshold (escalate to a human when confidence is insufficient after 3 rounds, and require human confirmation whenever critical equipment is restarted); reset on new evidence rather than compaction; a strict evidence schema; an Evaluator that emphasizes falsification; and a long-term trace on file for every run. After the changes, the convergence rate rose from 50% to 82%, and the average fault-localization time was compressed from 3.2 hours to 1.1 hours.</p>
+            <p>For production, evaluate model assignments for each responsibility, enforce a strict evidence schema, attach the hypothesis tree and evidence to human escalation, and retain the trace according to the applicable audit policy.</p>
+            <h2>Illustrative scenario</h2>
+            <p>Consider a plant alarm whose initial hypotheses focus on common mechanical faults. A field engineer then supplies a new fact: a remote configuration change occurred before the alarm. The system resets the hypothesis tree instead of forcing the fact into the old ranking, and it traces the changed control parameter. Hypothesis generation, evidence collection, and judgment use separate schemas; the evaluator searches for counterevidence; insufficient evidence escalates to a human; and restarting critical equipment always requires approval. Convergence must be evaluated through incident replay and field review.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Parallel exploration (R3)</strong>: A dual relationship. Parallel opens N lines at once along the spatial dimension and selects the best in one shot; iteration runs one line many times along the time dimension and converges step by step.</li>

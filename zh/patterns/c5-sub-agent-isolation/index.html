@@ -144,7 +144,7 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；未附来源链接的数字与应用示例只用于说明机制，不作为行业基准。</p>
+            <p class="publication-note"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
 
             <table>
             <tbody>
@@ -168,7 +168,7 @@
             </table>
             <hr />
             <h2>问题</h2>
-            <p>如果 sub-agent 将完整工作过程返回主 Agent，批量任务会迅速占满主 context。50 份合同每份返回 3000 字，即产生约 15 万字。主 Agent 通常只需要 verdict、关键发现和引用。</p>
+            <p>如果 sub-agent 将完整工作过程返回主 Agent，批量任务会随条目数量迅速占满主 context。主 Agent 通常只需要 verdict、关键发现、证据和不确定性，而不是每条中间轨迹。</p>
             <p>子代理隔离用于控制 multi-agent 系统中的 context pollution。每个 sub-agent 在独立 context 中运行，返回前压缩为结构化 artifact，主 Agent 只消费该 artifact。层级委派和扇出聚合通常依赖这项边界控制。</p>
             <h2>坐标说明：协作 × 层级</h2>
             <ul>
@@ -179,8 +179,8 @@
             <p>子代理隔离包含四项工程要素：</p>
             <ol>
             <li><strong>Context 隔离</strong>：sub-agent 启动时不继承 parent 的 history，只收到自己的 system prompt、具体的 task instruction、自己的 tool set。它看不到主 agent 跑过什么、其他 sub-agent 在做什么。</li>
-            <li><strong>Artifact schema 化返回</strong>：sub-agent 返回的不是自由文本总结，是结构化 artifact（pydantic model 或 JSON schema）。推荐三层结构——verdict（success / partial / failure）、top findings（3-5 条）、citations（可选）。这让主 agent 能用确定性代码直接 parse，不用再花 token 解析。</li>
-            <li><strong>失败 boundary 隔离</strong>：一个 sub-agent timeout 或抛异常，主 agent 收到的是 verdict=failure 的 artifact，而不是被异常炸掉。N 个 sub-agent 中 1 个挂掉只损失 1/N。</li>
+            <li><strong>Artifact schema 化返回</strong>：sub-agent 返回结构化 artifact（Pydantic model 或 JSON Schema），字段可包括 verdict（success / partial / failure）、按重要性排列的 findings、citations 和 unresolved questions。主 Agent 可以用确定性代码校验，不必从自由文本中猜测状态。</li>
+            <li><strong>失败 boundary 隔离</strong>：sub-agent timeout 或抛异常时，主 Agent 收到 <code>verdict=failure</code> 的 artifact，而不是未捕获异常。局部失败仍绑定在自己的 branch。</li>
             <li><strong>并行互不干扰</strong>：N 个 sub-agent 各跑各的 context，互相看不到中间状态，也不直接通信——要交换信息必须经过主 agent。</li>
             </ol>
             <h2>适用场景</h2>
@@ -192,18 +192,18 @@
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>sub-agent 继承主 agent history</strong>：在 demo 阶段看着没事，等第三个任务跑完后主 agent history 累计几万 token，每个 sub-agent 都背这些 token 起跑——成本爆炸加质量下降。sub-agent 必须用本地 messages 完全独立起跑。</li>
-            <li><strong>返回自由文本而非 schema artifact</strong>：自由文本让主 agent 端可用性差 10 倍——不能用确定性代码 parse、不能做 confidence 排序、不能做 verdict 分流。必须强制 schema 化。</li>
+            <li><strong>sub-agent 继承主 Agent history</strong>：随着主 Agent 的历史增长，每个新 sub-agent 都会携带与当前任务无关的内容，增加成本和上下文干扰。sub-agent 应从本地 messages 起跑，只接收任务契约中约定的上下文。</li>
+            <li><strong>返回自由文本而非 schema artifact</strong>：自由文本难以用确定性代码 parse，也无法稳定执行 confidence 排序和 verdict 分流。应强制 schema 并拒绝不合规返回。</li>
             <li><strong>sub-agent 之间直接通信</strong>：为了省事让 sub-agent A 调 sub-agent B，会立刻把层级拓扑变成网状拓扑，cascade failure 风险飙升。要交换信息必须经过主 agent。</li>
             <li><strong>失败没有 boundary</strong>：sub-agent 抛异常没被捕获，主 agent 收到 raw exception 导致 reasoning loop 被中断、整个任务失败。失败时要返回 schema 化的 failure artifact。</li>
-            <li><strong>子任务输出本身就小还套隔离</strong>：子任务产出小于 500 token、或主 agent 确实需要看中间细节时，隔离是多余开销。它的价值在产出多、context 紧、能 schema 化输出三者同时成立时。</li>
+            <li><strong>简单子任务也套隔离</strong>：当输出很小或主 Agent 确实需要中间细节时，隔离可能增加不必要的开销。应在真实 context 预算下与直接执行比较。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>主 agent context 占用</strong>（健康区留足推理空间）：所有 sub-agent artifact 加起来占主 agent context 的比例。50 份合同 artifact 控制在 1 万字以内、给主 agent 留 4 万 token 自己推理是一个好的目标。</li>
-            <li><strong>artifact 合规率</strong>（健康区 &gt; 95%）：sub-agent 返回符合 schema 的比例。偶尔输出自由文本绕过 schema 会触发重派和延迟。</li>
-            <li><strong>失败级联率</strong>（健康区 &lt; 5%）：一个 sub-agent 失败拖垮其他 sub-agent 的概率。四件要素全做到位才能把这个指标压在健康线，缺一件就可能飙升。</li>
-            <li><strong>artifact 压缩比</strong>（健康区高）：raw trajectory 字数与 reduce 后 artifact 字数之比，反映隔离对 context 的节省效果。</li>
+            <li><strong>主 Agent context 占用</strong>：所有 sub-agent artifact 占主 context 的比例。应为主 Agent 的聚合、冲突判断和最终推理预留空间。</li>
+            <li><strong>artifact 合规率</strong>：sub-agent 返回是否符合 schema。自由文本绕过 schema 会触发重派、人工修正和延迟。</li>
+            <li><strong>失败级联率</strong>：一个 sub-agent 失败是否拖垮其他分支。通过进程、context、工具权限和错误边界分别验证隔离效果。</li>
+            <li><strong>artifact 压缩比</strong>：raw trajectory 与 reduce 后 artifact 的体量关系，还要配合关键信息保留率一起看。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code>IsolatedSubAgent.execute(task):
@@ -220,8 +220,8 @@ SupervisorWithSubAgents.execute(task):
     return synthesize_from_artifacts(artifacts) # 主 agent 只看 artifact 不看 raw trajectory
 </code></pre>
             <p>生产实现使用本地 messages 隔离 context；通过 reduce_to_artifact 返回 schema；使用 try/except 和 timeout 建立失败边界；并行 gather 中保持各分支 context 独立。</p>
-            <h2>应用示例</h2>
-            <p>某律所的合同审阅 Agent 第一版让 sub-agent 返回 50 份合同的完整分析，共约 15 万字。第二版为每份合同创建独立 sub-agent，强制返回 verdict、top_3_concerns 和 recommendation；各合同执行 fresh review；单个分支失败不影响其余 49 份；主 Agent context 控制在 5 万 token 内，其中所有 artifact 合计不到 1 万字；低 confidence 合同转人工。50 份合同在 1 小时内完成，律师 review 报告也控制在 1 小时内。Claude Code Task tool 采用独立 context、独立 LLM call 和独立 tool set，只向主 Agent 返回 final summary。</p>
+            <h2>场景化示例</h2>
+            <p>设想一个律所的合同审阅 Agent。第一版让 sub-agent 返回每份合同的完整分析，主 context 被 trajectory 淹没。第二版为每份合同创建独立 sub-agent，强制返回 <code>verdict</code>、<code>top_concerns</code>、<code>recommendation</code> 和证据指针；单个分支失败不影响其他合同；低 confidence artifact 转人工。Claude Code Task tool 可作为产品实现参考：每个任务使用独立 context、独立 LLM call 和独立 tool set，只向主 Agent 返回最终 artifact。实际吞吐、漏评率和压缩损失需要用授权合同集验证。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>层级委派（C1）</strong>：层级委派负责 Supervisor 与 Worker 的派工关系，子代理隔离负责 Worker context、schema artifact 和失败边界。</li>
