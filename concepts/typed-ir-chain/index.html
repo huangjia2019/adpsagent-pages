@@ -68,6 +68,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
@@ -101,21 +102,21 @@
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
-                <p class="publication-series">ADPS Enterprise Agent Systems Blue Book · Engineering Concept</p>
+                <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
                 <h1>Typed Intermediate Representation Chain: Narrow Language into Verifiable Structure</h1><p class="publication-deck">Narrow natural language through typed, verifiable structures before write-back.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.4</dd></div>
                     <div><dt>Definition status</dt><dd>ADPS restatement</dd></div>
                     <div><dt>Issued</dt><dd>2026-08-02</dd></div>
-                    <div><dt>Basis</dt><dd>Engineering-modeling workflow mechanics</dd></div>
-                    <div><dt>Prepared by</dt><dd>ADPS editorial synthesis</dd></div>
+                    <div><dt>Research source</dt><dd>AI4MBSE personal research project</dd></div>
+                    <div><dt>Author</dt><dd>Liangding Yuan</dd></div>
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
             <h2>Start with one use-case diagram</h2>
             <p>A user asks for a turnstile use-case diagram under an existing package. A one-shot response that creates elements, relations, and the view may point to names that do not exist or omit elements from the diagram. A failure forces the entire structure to be regenerated.</p>
             <h2>Definition</h2>
-            <p>A typed intermediate representation chain narrows natural-language intent through a series of verifiable data structures. The mechanism can be reconstructed as:</p>
+            <p>A typed intermediate representation chain narrows natural-language intent through a series of verifiable data structures. The AI4MBSE personal research project can be reconstructed as:</p>
             <pre><code class="language-text">ModelingJob -&gt; ElementPlan -&gt; RelationPlan -&gt; ViewPlan -&gt; WriteSet
 </code></pre>
             <p>Each stage reads an accepted upstream result and emits typed candidates with stable references and provenance. A validator checks well-formedness. The writer consumes a gated <code>WriteSet</code> and does not reinterpret the original language.</p>
@@ -123,12 +124,12 @@
             <p>JSON alone is not a typed IR. Schemas or validators must enforce field types, allowed values, references, and stage invariants. Stages may run as separate agents, repeated model calls, or ordinary functions.</p>
             <h2>Provenance</h2>
             <ul>
-            <li>Definition note: ADPS synthesized this concept from general engineering-modeling workflow mechanics.</li>
+            <li>Initial research source: the AI4MBSE personal research project by Liangding Yuan; contract names are an ADPS reconstruction of the published mechanism.</li>
             <li>Lineage: compiler IR, typed ASTs, semantic analysis, and database referential integrity.</li>
             <li>ADPS contribution: models draft candidate IRs, programs validate stage contracts, and the writer consumes only accepted structures.</li>
             <li>Definition status: ADPS restatement.</li>
             </ul>
-            <div class="document-citation"><p><strong>Definition note:</strong> ADPS synthesized this concept from general engineering-modeling workflow mechanics.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/ark-mbse-agent/">AI4MBSE personal research project</a>; authored by Liangding Yuan.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
