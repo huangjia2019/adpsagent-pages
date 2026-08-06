@@ -196,6 +196,7 @@
             <li><strong>只使用 free-text</strong>：仅记录 task、error 和 timestamp，无法稳定分类和查询。应使用 enum 和受限字段，使失败记录可聚类、可统计。</li>
             <li><strong>低价值记录持续累积</strong>：如果每次轻微异常都写入 failure journal，召回噪声会随时间上升。可限制自由文本长度，并根据风险、access_count 和 recency 将长期未召回记录归档到冷层。</li>
             <li><strong>记下来了但召回不匹配</strong>：用 Jaccard 这类粗糙相似度，漏检率太高，记了等于没召回。task signature 之间要用 embedding cosine similarity。</li>
+            <li><strong>失败记录未经审计直接生效</strong>：一条错误的失败记录会让 Agent 在本来正确的路径上反复回避，危害大于没有记录。自动写入的失败记录应先进入待确认状态，经离线审计或人工确认后再进入召回集。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
             <li><strong>高风险失败与普通失败共用策略</strong>：跨租户数据泄露和 API timeout 的严重程度不同。高风险失败应独立告警、永久保留，并在相关任务中强制召回。</li>
             </ul>
             <h2>验证指标</h2>

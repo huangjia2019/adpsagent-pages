@@ -181,6 +181,7 @@
             <li><strong>两种来源</strong>：人精心写（Anthropic Agent Skills 路线，审过、版本化、进 git）和 agent 自动蒸馏（Hermes 路线，干完任务自己写）。来源字段影响信任级别。</li>
             <li><strong>自动蒸馏</strong>：复杂任务成功完成后，Agent 分析 trajectory、识别可复用模式（输入、工具序列、输出格式），写成候选 skill。是否触发应依据任务复杂度、复用价值和人工纠错情况，而不是固定的工具调用次数。</li>
             <li><strong>人机同读格式</strong>：使用 markdown 和 YAML frontmatter，使人工审查、git diff 和 Agent 加载共用同一份源文件。</li>
+            <li><strong>固化为可执行代码（Code Act）</strong>：程序性记忆的固化程度存在梯度。最轻的形态是写成 SKILL.md 供 Agent 阅读后自行执行，最重的形态是把整段流程固化成代码，运行期只做意图匹配并<strong>直接执行代码而不再推理</strong>。在对准确性要求极端的场景（如 BI 指标计算，数值差一个单位都不可接受），后者是唯一能保证结果确定的做法。代价是首次固化的人力成本很高，需要人工确认与调试之后才能沉淀。京东零售在数据科学与 BI 场景按此实现。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
             <li><strong>lifecycle 管理</strong>：跟踪每个 skill 的 use_count 和 success_rate；低成功率 skill 自动退出活动集，长期未召回项进入冷层。基础设施变化后，过期 skill 需要重新验证。</li>
             </ol>
             <h2>适用场景</h2>
@@ -194,6 +195,7 @@
             <li><strong>任务每次都不一样却硬沉淀</strong>：开放域研究这类任务沉淀不出固定流程，强行做成 skill 是浪费。</li>
             <li><strong>任务只跑一次</strong>：沉淀成本高于复用收益，不该做。</li>
             <li><strong>流程尚未稳定就固化</strong>：底层流程持续变化时，skill 会快速过期并误导执行。</li>
+            <li><strong>场景无限时强行固化</strong>：Code Act 这类重固化形态只在场景可枚举时成立。如果任务空间是开放的、每次请求的结构都不同，固化的收益会被维护成本吃掉，此时应退回到轻固化形态或不使用本模式。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
             <li><strong>流程未经梳理</strong>：schema 字段、触发条件和 lifecycle 未定义时，procedural memory 无法稳定工作。应先完成流程梳理。</li>
             <li><strong>自蒸馏 skill 直接投产</strong>：Agent 自动蒸馏的 skill 应进入试用期，分别按 skill 和 explore 路径执行并比较结果，多次一致后再转为正式版本。自蒸馏项和人工编写项需要不同信任级别。</li>
             <li><strong>库只增不减</strong>：不做 lifecycle，过期低成功率的 skill 持续误导 agent。</li>
