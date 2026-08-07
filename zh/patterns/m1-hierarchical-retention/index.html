@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M1 分层保留 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="按作用域对 Agent 记忆分层，并为各层设置独立的存储、生命周期和加载策略。">
+    <meta name="description" content="按作用域、功能类型和访问成本组织 Agent 记忆，并用显式的准入、晋升、降级和退出规则维护当前工作集。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/" class="active">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -134,7 +135,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>M1 · Hierarchical Retention · 分层保留</h1>
-                <p class="publication-deck">按作用域对 Agent 记忆分层，并为各层设置独立的存储、生命周期和加载策略。</p>
+                <p class="publication-deck">按作用域、功能类型和访问成本组织 Agent 记忆，并用显式的准入、晋升、降级和退出规则维护当前工作集。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -162,14 +163,14 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">按作用域对 Agent 记忆分层，并为各层设置独立的存储、生命周期和加载策略。</td>
+            <td style="text-align: left;">按作用域、功能类型和访问成本组织 Agent 记忆，并用显式的准入、晋升、降级和退出规则维护当前工作集。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
             <p>Agent 启动时需要加载不同作用域的信息：公司安全政策长期适用于全员，用户偏好随用户保留，会话进度只在当前任务有效，工具结果通常一轮后过期。将这些信息全部写入同一个 prompt，容易超出 token 预算，也会降低关键信息的可见性。</p>
-            <p>分层保留按作用域组织信息，每层使用独立的存储位置、过期时间和加载策略。Agent 启动时按层组装上下文，需要时继续查询更细粒度的信息。分层依据决定了后续隔离、覆盖和淘汰行为。</p>
+            <p>分层保留把几种容易混在一起的关系拆开：作用域决定谁可以看到，功能类型决定内容怎样使用，访问层决定存取成本。Agent 只把当前任务需要的 working set 装入 context，其余内容保留引用并按需读取。</p>
             <h2>坐标说明：记忆 × 层级</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：该模式管理跨会话、跨用户和跨项目的信息，对应 working、session 和 long-term 等记忆层级。</li>
@@ -177,11 +178,12 @@
             </ul>
             <h2>解决方案与机制</h2>
             <ol>
-            <li><strong>按作用域分层</strong>：分层的首要依据是"谁该看到这条信息"，不是"内容类型"。典型四层是用户级（跨所有会话不变）、项目级（项目内共享）、会话级（当次有效）、临时级（一轮过期）。作用域决定一条信息该放哪层。</li>
-            <li><strong>每层独立选型</strong>：存储后端按访问模式选择。用户层高频读、低频写且长期保留，适合带索引的关系库；项目层适合文件系统和 git；会话层高频读写并带 TTL，适合 Redis；临时层可以使用内存字典。统一后端通常难以同时满足这些访问特征。</li>
-            <li><strong>从粗到细加载</strong>：会话启动时按作用域从粗到细组装 prompt，每层有独立的 token 预算。层级化的好处之一就是会话再长也不会把用户层挤掉。</li>
-            <li><strong>升降级与淘汰</strong>：成熟实现会按访问模式让记忆自动流动——被频繁引用的记忆升层，长期不访问的降层，过期的按 retention policy 清除。这把静态 schema 变成了动态 working set。具体机制可以对标 CPU 多级缓存：对每条记忆建立最近一周或一个月的<strong>命中 baseline</strong>，命中频次高的保留在高层级；命中逐渐变少的评分降低，随评分与命中次数从短期坍塌到中期，再过渡到长期。记忆块按天、周、月划分，查询时先查一级，未命中再查二级，二级命中后提升到一级。判断一条记忆是否可以归档，依据是它在过去若干个周期的命中率，而不是它的写入时间。腾讯在百万级代码仓的安全扫描场景中按此实现。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
-<li><strong>三个正交的分层维度</strong>：作用域只是其中之一。一条记忆同时具有三重身份——<strong>作用域</strong>（用户 / 项目 / 会话 / 临时）、<strong>存储形态</strong>（明文记忆 / 激活记忆即 KV Cache / 参数记忆即 SFT 与 RL 固化）、<strong>时间尺度</strong>（1 天 / 7 天 / 30 天，或短时 / 中时 / 长时）。三者不互斥，设计时应分别回答，不要用一个维度替代另外两个。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
+            <li><strong>先标作用域</strong>：使用 <code>user / project / team / tenant / organization / session / turn</code> 决定所有者、可见范围和写权限。作用域不能随着内容进入热缓存而扩大。</li>
+            <li><strong>再分功能类型</strong>：区分 working、episodic、semantic、procedural 和 meta-memory。它们分别服务当前任务、历史事件、稳定知识、已验证流程和系统自我记录，读取触发点并不相同。</li>
+            <li><strong>最后选择访问层</strong>：根据延迟、频率、容量和成本，把内容放入 hot、warm 或 cold 层。每层可以使用不同后端，也可以在同一后端中采用不同索引、TTL 和加载策略。</li>
+            <li><strong>按预算组装 working set</strong>：启动时加载稳定规则和必要目标，任务运行中再按需读取会话、项目和长期内容。每个来源有独立预算，低优先级历史不能挤掉目标、约束和当前证据。</li>
+            <li><strong>用多因素控制升降级</strong>：命中频次只能说明常用，不能说明正确。晋升和保留评分至少考虑 recency、usefulness、reliability、risk 和 review status。安全政策、撤销名单等低频高风险内容使用硬保留规则，不参与普通淘汰。</li>
+            <li><strong>分离读取与发布路径</strong>：在线 Agent 可以实时读取，也可以把新内容写入候选区。进入项目级、用户级或组织级活动记忆前，需要经过 schema、来源、作用域、冲突和风险检查，并以新版本发布，保留替代关系和回滚点。</li>
             </ol>
             <h2>适用场景</h2>
             <ul>
@@ -191,12 +193,14 @@
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>层数与作用域不匹配</strong>：直接采用 CoALA 的 working / episodic / semantic 三层，而产品实际只有两个作用域，会增加无效存储和路由逻辑。层数应与产品中的作用域种类一致。</li>
+            <li><strong>把不同分层维度画成一棵树</strong>：作用域、功能类型和访问层回答不同问题。把三者压成 user / project / session 一条层级后，权限、内容用途和冷热迁移会互相牵制。</li>
             <li><strong>用户层缺少 schema</strong>：如果 Agent 用自由文本记录“小李会装饰器”，同一概念会逐渐产生多种写法，降低 retrieval 命中率。高频字段应使用 typed schema。</li>
+            <li><strong>把命中率当正确率</strong>：错误记忆被反复使用后会得到更高评分，形成自我强化。晋升必须同时检查来源可靠性、任务结果和审核状态。</li>
+            <li><strong>淘汰低频高风险规则</strong>：安全政策、合规约束和撤销名单可能长期不命中，但一旦需要就不能缺席。这类内容应使用独立保留策略。</li>
             <li><strong>全部按启动注入设计</strong>：用户层和项目层适合启动注入，会话层适合渐进读取，临时层适合实时拼装。三种 access pattern 混成一种后，会话越长，历史内容越容易挤占当前任务的上下文预算。</li>
             <li><strong>完全无状态的场景强行分层</strong>：单次问答、一次性 ETL 转换不需要跨会话记忆。</li>
-            <li><strong>运行期直接改写高层记忆</strong>：让线上 Agent 在处理任务的同时修改中长期记忆，冲突会在运行时暴露且难以复现。读取路径可以在线实时，写入路径应当分离——离线审计或离线大模型校正确认之后，再以版本方式推送上线。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
-            <li><strong>遗忘策略硬编码</strong>：不同场景对遗忘的需求可能完全相反。AI 摄像头有 99% 的数据是噪音，不遗忘会让误报率极高；陪伴机器人则要求主人的对话全部保留。同一套记忆底座要同时服务这两类需求，遗忘必须做成可配置策略而不是写死的规则。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
+            <li><strong>运行期直接改写高层记忆</strong>：线上任务中的临时判断未经确认就覆盖长期内容，错误会跨会话传播且难以复现。自动写入应先进入候选区，再由独立发布过程生效。</li>
+            <li><strong>遗忘策略硬编码</strong>：设备信号、合规记录和长期偏好的保留目标不同。TTL、衰减、压缩、归档和删除应按记忆类型与业务政策配置。</li>
             <li><strong>eviction 不留 reason log</strong>：合规（GDPR right-to-be-forgotten）和 debug 都要求能证明"删了什么、为什么删、什么时候删"，没有日志就证明不了。</li>
             </ul>
             <h2>验证指标</h2>
@@ -204,22 +208,33 @@
             <li><strong>Working set 命中率</strong>：Agent 推理所需记忆进入 prompt 的比例。应按任务类型建立本地基线，并结合遗漏证据判断分层或加载策略是否有效。</li>
             <li><strong>每层 token 占比</strong>（按预算分配）：各层加载到 prompt 的 token 是否在预算内。某层持续超预算，说明该层需要截断或下沉到按需加载。</li>
             <li><strong>跨层污染事件</strong>：是否出现用户层被单次会话信息污染或租户之间串数据。多租户系统应将任何此类事件按安全事故处理。</li>
-            <li><strong>记忆命中率与层级分布</strong>：统计各层记忆在最近一个周期内被召回的次数，并观察分布是否随时间向低层迁移。某一层出现大量长期零命中的记忆，说明升降级策略未生效或该层的写入标准过松。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
+            <li><strong>错误晋升率与人工驳回率</strong>：抽查从候选区进入长期活动集的记录，统计错误作用域、错误事实和低质量概括。</li>
+            <li><strong>过期记忆使用率</strong>：已被新版本替代或超出有效时间的内容仍参与决策的比例。</li>
+            <li><strong>高风险规则保留完整率</strong>：对硬保留内容执行周期性清点，确认没有被普通衰减策略移出可用集。</li>
+            <li><strong>各访问层的命中与延迟</strong>：观察 hot、warm、cold 的召回分布和读取时延，用任务结果判断层级策略是否有效。</li>
             <li><strong>启动 token 总量</strong>：与未分层的历史加载基线比较，同时检查关键信息是否仍然可见。</li>
             </ul>
             <h2>最小实现</h2>
-            <pre><code>定义层级（作用域从粗到细）：
-    USER    → 永久 / 高频读 / 强 schema / 关系库
-    PROJECT → 永久 / 团队共享 / 文件系统 + git
-    SESSION → session_ttl / 高频读写 / Redis
-    TURN    → turn_ttl / 极高频 / 内存字典
+            <pre><code>MemoryRecord:
+    id / kind / scope / source / valid_from / valid_to
+    supersedes / trust_status / risk / retrieval_keys
 
-写入：按层选 backend，记 last_modified
-读取：从细到粗查，内层命中即返回（内层覆盖外层）
-组装：启动时从粗到细拼 prompt，每层按 token_budget 截断
-淘汰：过期内容清除并记 reason log（合规 + debug）
+write(candidate):
+    validate schema + provenance + scope + sensitive data
+    detect conflict and assign candidate|accepted|rejected
+    publish accepted record as a new version
+
+read(task):
+    enforce tenant and scope filters
+    exclude expired and superseded versions
+    rank by task relevance + usefulness + reliability + risk
+    assemble within per-source token budgets
+
+retire(record):
+    decay, archive, revoke, or delete by policy
+    append reason + actor + timestamp to audit log
 </code></pre>
-            <p>生产实现应按访问特征选择各层后端；组装 context 时按 token budget 截断；写入时由规则或小模型确定目标层；eviction 记录 reason log。</p>
+            <p>后端选择服务于访问特征，不定义记忆语义。即使所有记录暂时放在同一个数据库里，scope、kind、validity 和 trust 也要保持独立字段。</p>
             <h2>场景化示例</h2>
             <p>设想一个薪酬 SaaS 的执行型 Agent 采用三层记忆。L1 保存当前步骤所需的最小信息集；L2 保存里程碑日志，包括任务进度和刚完成的动作；L3 保存跨任务可复用的判断和流程。三层分别覆盖当前步骤、当前任务和跨任务三个时间尺度。每层有独立的 token 预算，L1 在运行时组装，L3 写入前执行信任校验，避免单次偶然信息进入长期记忆。</p>
             <h2>相邻模式</h2>
@@ -228,9 +243,10 @@
             <li><strong>RAG（M2）</strong>：分层保留按作用域加载长期已知信息，RAG 按需检索无法常驻 context 的大规模知识。</li>
             <li><strong>失败日记（M4）/ 程序性记忆（M5）</strong>：两者可以作为长期记忆中的专用分区，分别保存失败记录和已验证流程。</li>
             <li><strong>语义压缩（感知模块）</strong>：会话层接近 token 上限时，可通过语义压缩减少单层占用。</li>
+            <li><strong>记忆准入（候选）</strong>：M1 规定各层边界，记忆准入负责判断一条候选内容能否进入某个活动层。</li>
             </ul>
             <h2>工程判断</h2>
-            <p>分层保留管理 Agent 的 working set：高频信息常驻，低频信息按需加载，过期或低价值信息退出当前工作集。数据库 schema 只是这一策略的实现载体之一。</p>
+            <p>分层保留管理 Agent 的 working set。作用域保证隔离，功能类型决定用途，访问层控制成本，版本与准入防止一次临时判断直接变成长期事实。</p>
 
                         <h2>企业证据</h2>
             <p>以下现场记录说明该模式在具体业务约束下如何实现。案例结论只在文中声明的系统边界内成立。</p>

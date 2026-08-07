@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -282,11 +283,11 @@
             </tr>
             <tr>
             <td style="text-align: left;">记忆</td>
-            <td style="text-align: left;">M2 RAG（naive）</td>
+            <td style="text-align: left;">M2 RAG</td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;">M3 进度追踪</td>
-            <td style="text-align: left;">M2 Agentic RAG / M4 失败日记</td>
+            <td style="text-align: left;">M4 失败日记</td>
             <td style="text-align: left;">M1 分层保留</td>
             </tr>
             <tr>
@@ -337,6 +338,7 @@
             </tbody>
             </table>
             <p>矩阵只列 28 个核心模式，不追求填满每个格子。空格同样有信息价值：它表示该交点尚未形成足够稳定的一阶结构，或现有模式已经能够解释主要问题。</p>
+            <p>M2 RAG 在公开矩阵中只占链式单格。查询、评估、改写和再查询是它的迭代实现，不再占用循环格；一个模式在矩阵中只保留一个主坐标。</p>
             <h3>扩展与候选目录</h3>
             <table>
             <thead>
@@ -418,33 +420,33 @@
             <p><strong>工程要点：</strong> 表格要保留行列关系，图表要保留单位和坐标轴，PDF 要保留页码和章节，截图要保留可验证引用。多模态结果进入推理前，要先对齐 entity、time、scope 和 source。</p>
             <p><strong>常见失效：</strong> 把所有材料 OCR 成纯文本。图表、表格和版式里的关键证据会被压扁，后续推理看起来顺畅但依据已经变形。</p>
             <h2>记忆模块 Memory</h2>
-            <p>记忆模块让 Agent 不必每次从零开始。它保存聊天历史，也保存外部知识、任务进度、失败经验、可复用技能和证据链。</p>
-            <p>记忆不能作为 context 的无限扩展。每条记忆需要层级、版本、作用域、过期策略和取回规则。</p>
+            <p>记忆把感知、推理和行动放到时间维度上，使当前任务能继续使用过去留下的事实、进度和经验。它保存的对象包括外部知识、任务台账、失败经验、可复用技能和证据链。</p>
+            <p>每条记忆需要来源、作用域、有效时间、版本、发布状态和取回规则。审批状态、余额、批次和动作回执属于控制平面，记忆只保存引用和解释。完整边界、生命周期与候选方向见<a href="./memory/">记忆模块总纲</a>。</p>
             <h3><a href="/zh/patterns/m1-hierarchical-retention/">M1 · Hierarchical Retention · 分层保留</a></h3>
             <p><strong>坐标：记忆 × 层级。</strong><br>
             <strong>适用问题：</strong> 不同记忆生命周期混在一起的问题。组织规则、项目规范、用户偏好、任务目标、草稿纸和单轮工具结果，应该放在不同层。</p>
-            <p><strong>工程要点：</strong> 每条记忆要标注 owner、scope、ttl、confidence、source 和 promotion rule。scratchpad 里的临时判断不能直接升为长期记忆，必须经过验证或任务收束。</p>
+            <p><strong>工程要点：</strong> 作用域、功能类型和访问层分别建模。晋升同时检查 usefulness、reliability、risk 和 review status；scratchpad 里的临时判断先进入候选区。</p>
             <p><strong>常见失效：</strong> 信息没有丢，却放错层。一次任务中的临时假设如果升到项目层，下次任务会继承错误前提。</p>
             <h3><a href="/zh/patterns/m2-rag-pipeline/">M2 · RAG · 检索增强与证据链</a></h3>
-            <p><strong>坐标：记忆 × 链式，成熟后可演进到记忆 × 循环。</strong><br>
+            <p><strong>坐标：记忆 × 链式。</strong><br>
             <strong>适用问题：</strong> 大规模外部知识无法常驻 context。生产级 RAG 需要返回当前任务可用、可信、可追溯的证据，并对相似文本召回结果进行过滤和重排。</p>
-            <p><strong>工程要点：</strong> 索引侧要有 source registry、chunk schema、index manifest、候选索引、回归测试、别名切换、删除退休和回滚机制。查询侧要有 EvidenceRequest、metadata filter、rerank、citation 和 RetrievalTrace。</p>
+            <p><strong>工程要点：</strong> 写入侧保留 source、permission、valid time、version 和原文指针，并建立精确全文、向量和结构化入口。查询侧由 Retrieval Harness 选择 lookup、search、browse 或 navigate，返回 EvidenceBundle 与 RetrievalTrace。</p>
             <p><strong>常见失效：</strong> 让 RAG 生成机械状态。RAG 管业务证据，SessionState 管 employee_id、batch_id、amount、approval_id 这类机械真值。两者都带 provenance，最后在决策点合流。</p>
             <h3><a href="/zh/patterns/m3-progress-tracking/">M3 · Progress Tracking · 进度追踪</a></h3>
             <p><strong>坐标：记忆 × 编排。</strong><br>
             <strong>适用问题：</strong> 长程任务走着走着迷失的问题。进度追踪是给 Agent 自己用的任务台账，不能只做成给人看的 todo list。</p>
-            <p><strong>工程要点：</strong> 进度账要记录原始目标、当前里程碑、已完成动作、下一步、阻塞点、关键证据、机械状态坐标和被否决路径。每隔若干工具调用，系统要把目标和当前状态重新推回模型近期注意力。</p>
-            <p><strong>常见失效：</strong> 只记录“完成了某模块”。进度账还需要保存决策理由、证据、下一步所需状态和停止条件。</p>
+            <p><strong>工程要点：</strong> Goal Contract 保存目标、验收和禁止动作；ProgressState 保存里程碑、阻塞和下一步；state_refs 指向数据库、审批对象和业务账本。checkpoint 同时保存可验证 artifact、动作回执和 resume cursor。</p>
+            <p><strong>常见失效：</strong> Todo 显示完成，业务状态却没有提交；恢复时又用旧 checkpoint 重复不可逆动作。</p>
             <h3><a href="/zh/patterns/m4-failure-journals/">M4 · Failure Journals · 失败日记</a></h3>
             <p><strong>坐标：记忆 × 循环。</strong><br>
             <strong>适用问题：</strong>  Agent 在同一个坑里反复摔倒的问题。失败日记把错误、根因、修复、预防信号和召回条件沉淀成可检索经验。</p>
-            <p><strong>工程要点：</strong> 失败记录包含 failure_signature、trigger_context、root_cause、wrong_assumption、fix、prevention_rule、severity 和 recall_scope。记录在能力边界入口召回，不在每一步全量注入。</p>
-            <p><strong>常见失效：</strong> 只记录异常堆栈，不记录当时的错误判断。Agent 下次需要看到的是“我当时为什么判断错了”，单纯知道“这里报过错”用处有限。</p>
+            <p><strong>工程要点：</strong> FailureEvent 保存不可变事实，CandidateDiagnosis 保存待验证根因，VerifiedLesson 保存经过复现或审核的预防规则。只有适用且仍有效的 lesson 进入主动召回。</p>
+            <p><strong>常见失效：</strong> 同一个 Agent 在失败后立即解释根因，并把解释直接写入长期记忆。错误诊断会跨任务稳定传播。</p>
             <h3><a href="/zh/patterns/m5-procedural-memory/">M5 · Procedural Memory · 程序性记忆（扩展）</a></h3>
-            <p><strong>坐标：记忆 × 路由。</strong><br>
+            <p><strong>坐标：记忆 × 层级。</strong><br>
             <strong>适用问题：</strong> “系统记得发生过什么，却不会复用已经验证过的做法”的问题。程序性记忆保存的是可执行方法：触发条件、步骤、前置检查、工具依赖、验收规则与退出条件。</p>
-            <p><strong>工程要点：</strong> 经验只有经过重复验证，才从 trajectory 或 lesson 晋升为 procedure。每份程序性记忆都要有版本、适用范围、成功样本、失败样本、所有者和回退版本；运行时先匹配触发条件，再加载对应 Skill Package 或工作流。</p>
-            <p><strong>常见失效：</strong> 把一次成功的临场操作直接固化。未经验证的方法会把偶然性包装成组织能力，之后以更快速度重复错误。</p>
+            <p><strong>工程要点：</strong> 指令型资产保留 Agent 对例外的判断，可执行资产把稳定计算或操作编译成代码。两者都要有触发条件、权限、验收、依赖版本、回退和认证证据。</p>
+            <p><strong>常见失效：</strong> 把一次成功直接固化，或在工具和 schema 变化后继续调用旧资产。未经验证的方法会把偶然性包装成组织能力。</p>
             <h2>推理模块 Reasoning</h2>
             <p>推理模块把已经看见、已经取回、已经记住的东西，编译成可执行、可解释、可审计的判断。</p>
             <p>推理控制平面包括模式、预算、证据要求、机械状态要求、可行动作、人审边界和下一步。</p>

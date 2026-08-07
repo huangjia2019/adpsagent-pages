@@ -61,6 +61,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -152,6 +153,7 @@
             </header>
             <p class="publication-note"><strong>Scope:</strong> This release defines a shared architecture vocabulary and review framework. It does not certify products, implementations, or organizational readiness.</p>
             <p>The white paper defines pattern problems, classifications, mechanisms, applicability, failure modes, and verification criteria. The <a href="/cases/">blue-book case reports</a> record how combinations of patterns behave under named enterprise constraints.</p>
+            <p>The <a href="/patterns/memory/">Memory module overview</a> is the first subsystem-level guide. It explains when a dedicated memory service is unnecessary, how memory differs from a knowledge base and control plane, and how M1–M5 fit into one lifecycle.</p>
             <p>The catalog uses coordinates rather than a flat list. A coordinate identifies both the cognitive function under pressure and the topology that carries control. This makes architecture choices and failure reports comparable across systems.</p>
 
             <h2>Why agents need a new set of design patterns</h2>
@@ -187,7 +189,7 @@
                 <thead><tr><th>Cognitive function</th><th>Chain</th><th>Route</th><th>Parallel</th><th>Orchestrate</th><th>Loop</th><th>Hierarchy</th></tr></thead>
                 <tbody>
                     <tr><td class="fn">Perception</td><td class="filled">P2 Semantic Compaction</td><td class="filled">P1 Context Triage</td><td class="filled">P4 Multi-Modal Fusion</td><td class="empty">—</td><td class="filled">P3 Progressive Discovery</td><td class="empty">—</td></tr>
-                    <tr><td class="fn">Memory</td><td class="filled">M2 RAG (naive)</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 Progress Tracking</td><td class="filled">M2 Agentic RAG · M4 Failure Journals</td><td class="filled">M1 Hierarchical Retention</td></tr>
+                    <tr><td class="fn">Memory</td><td class="filled">M2 RAG</td><td class="empty">—</td><td class="empty">—</td><td class="filled">M3 Progress Tracking</td><td class="filled">M4 Failure Journals</td><td class="filled">M1 Hierarchical Retention</td></tr>
                     <tr><td class="fn">Reasoning</td><td class="filled">R1 Chain-of-Thought</td><td class="filled">R2 Complexity-Based Routing</td><td class="filled">R3 Parallel Exploration</td><td class="empty">—</td><td class="filled">R4 Iterative Hypothesis Testing</td><td class="empty">—</td></tr>
                     <tr><td class="fn">Action</td><td class="filled">A3 Prompt Chaining</td><td class="filled">A1 Tool Dispatch</td><td class="empty">—</td><td class="filled">A2 Plan-and-Execute</td><td class="empty">—</td><td class="filled">A4 Guardrail Sandwich</td></tr>
                     <tr><td class="fn">Reflection</td><td class="filled">F1 Generator-Critic</td><td class="filled">F2 Skill Package</td><td class="empty">—</td><td class="empty">—</td><td class="filled">F4 Self-Heal Loop</td><td class="filled">F3 Experience Replay</td></tr>
@@ -196,7 +198,7 @@
                 </tbody>
             </table>
             </div>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted);">The matrix is left intentionally unfilled. Empty cells are a reminder not to invent immature patterns for the sake of symmetry. <strong>M2 RAG spans two cells</strong> — naive RAG is a query-once linear pipeline (Chain), Agentic RAG is query-evaluate-rewrite-query iteration (Loop). One pattern growing from Chain into Loop with engineering maturity shows this matrix is descriptive, not either/or.</p>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted);">The matrix is intentionally incomplete. Empty cells are a reminder not to invent immature patterns for symmetry. M2 RAG occupies the single Memory × Chain cell; query-evaluate-rewrite iterations are an implementation of the same pattern, not a second coordinate.</p>
 
             <h2>Five engineering contracts</h2>
             <p>When the seven functions go to production, design five contracts explicitly for every agent. The stability of an agent system usually comes not from a bigger model but from whether these five contracts align model judgment with engineering state.</p>
@@ -223,11 +225,11 @@
             <h3>Memory · 4 core + 1 extension</h3>
             <p class="grp-intro">Keeps and retrieves knowledge beyond a single input. Memory is not an unbounded extension of context; it needs layers, versions, scope, expiry, and retrieval rules.</p>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m1-hierarchical-retention/" style="font-weight: 600;">M1 · Hierarchical Retention</a><span style="color: var(--color-text-muted);"> — Slice an agent&#x27;s memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m2-rag-pipeline/" style="font-weight: 600;">M2 · RAG Pipeline</a><span style="color: var(--color-text-muted);"> — Give the agent an attached library, so that whenever it needs knowledge beyond what the context can hold, it can search, filter, and iteratively pull that knowledge back to use.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m3-progress-tracking/" style="font-weight: 600;">M3 · Progress Tracking</a><span style="color: var(--color-text-muted);"> — Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work has progressed.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m4-failure-journals/" style="font-weight: 600;">M4 · Failure Journals</a><span style="color: var(--color-text-muted);"> — The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the next time a similar situation arises.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m5-procedural-memory/" style="font-weight: 600;">M5 · Procedural Memory</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Freeze the successful execution flow of a class of tasks into a named, loadable, reusable structured asset. The next time the same kind of task arrives, the agent calls it directly, skipping trial-and-error and going straight to the main path.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m1-hierarchical-retention/" style="font-weight: 600;">M1 · Hierarchical Retention</a><span style="color: var(--color-text-muted);"> — Organize agent memory by scope, functional type, and access cost, then maintain the active working set through explicit admission, promotion, demotion, and retirement rules.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m2-rag-pipeline/" style="font-weight: 600;">M2 · RAG Pipeline</a><span style="color: var(--color-text-muted);"> — Organize large knowledge sources into provenance-, version-, and permission-aware indexes, then use a retrieval harness to query, navigate, rerank, and assemble evidence for the current task.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m3-progress-tracking/" style="font-weight: 600;">M3 · Progress Tracking</a><span style="color: var(--color-text-muted);"> — Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m4-failure-journals/" style="font-weight: 600;">M4 · Failure Journals</a><span style="color: var(--color-text-muted);"> — Separate immutable failure facts, candidate diagnoses, and verified lessons, then recall only applicable and current experience in later tasks.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/m5-procedural-memory/" style="font-weight: 600;">M5 · Procedural Memory</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Publish a verified method as a named, triggerable, versioned instruction or executable asset, and recertify it when dependencies change.</span></li>
             </ul>
             <h3>Reasoning · 4 core + 1 extension</h3>
             <p class="grp-intro">Draws conclusions and makes decisions from what's known. The engineering key is to put a control plane on judgment: mode, budget, evidence requirements, allowed actions, human-review boundary, and the next step.</p>

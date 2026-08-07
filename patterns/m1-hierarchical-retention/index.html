@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M1 Hierarchical Retention · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Slice an agent&#x27;s memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.">
+    <meta name="description" content="Organize agent memory by scope, functional type, and access cost, then maintain the active working set through explicit admission, promotion, demotion, and retirement rules.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/m1-hierarchical-retention/">
@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/" class="active">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -123,7 +124,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>M1 · Hierarchical Retention</h1>
-                <p class="publication-deck">Slice an agent&#x27;s memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.</p>
+                <p class="publication-deck">Organize agent memory by scope, functional type, and access cost, then maintain the active working set through explicit admission, promotion, demotion, and retirement rules.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -151,14 +152,14 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Slice an agent's memory into tiers by scope, where each tier has its own storage, lifecycle, and loading strategy, and a new session loads from coarse to fine.</td>
+            <td style="text-align: left;">Organize agent memory by scope, functional type, and access cost, then maintain the active working set through explicit admission, promotion, demotion, and retirement rules.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>The information an agent has to "recall" at startup spans completely different scopes. A company's security policy is permanently valid for everyone; a user's preferences follow only that person; session progress matters only for this run; tool results expire after a single turn. Stuffing all of it into one prompt hits two walls at once: tokens blow up, or the critical information gets drowned in noise.</p>
-            <p>Hierarchical retention slices this information into tiers by scope, and each tier has its own storage location, expiration time, and loading strategy. The agent loads from coarse to fine at startup and drills down tier by tier when needed. The core problem it solves is not "what to store" but "how to tier"—a memory system without tiers degrades over time into a warehouse where nothing can be found.</p>
+            <p>Hierarchical retention separates three relationships that are often collapsed into one tree. Scope determines who may see a record, functional type determines how it is used, and access tier determines retrieval cost. The agent assembles only the working set required for the current task and keeps handles to the rest.</p>
             <h2>Classification: Memory × Hierarchy</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: It governs what the agent stores across sessions, across users, and across projects, corresponding to the classic working / session / long-term three-tier memory division. It is the foundational pattern of the memory module.</li>
@@ -166,10 +167,12 @@
             </ul>
             <h2>Solution and mechanics</h2>
             <ol>
-            <li><strong>Tier by scope</strong>: The primary basis for tiering is "who should see this piece of information," not "content type." The typical four tiers are user-level (unchanged across all sessions), project-level (shared within a project), session-level (valid for the current run), and ephemeral (expires after one turn). Scope determines which tier a piece of information belongs to.</li>
-            <li><strong>Independent backend per tier</strong>: Each tier's storage backend is chosen separately according to its access pattern. The user tier is high-read, low-write, and permanent, which suits an indexed relational store; the project tier suits a file system under git management; the session tier is high read-write with a TTL, which suits Redis; the ephemeral tier is just an in-memory dictionary. Using one backend for all four tiers is the mark of a beginner implementation.</li>
-            <li><strong>Load from coarse to fine</strong>: At session startup, the prompt is assembled from coarse to fine by scope, and each tier has its own token budget. One benefit of tiering is that no matter how long a session runs, it cannot squeeze out the user tier.</li>
-            <li><strong>Promotion, demotion, and eviction</strong>: A mature implementation lets memory flow automatically according to access pattern—frequently referenced memory is promoted to a higher tier, memory not accessed for a long time is demoted, and expired memory is cleared per a retention policy. This turns a static schema into a dynamic working set.</li>
+            <li><strong>Assign scope first</strong>: Use <code>user / project / team / tenant / organization / session / turn</code> to determine ownership, visibility, and write authority. Moving content into a hot cache must not widen its scope.</li>
+            <li><strong>Classify functional type</strong>: Distinguish working, episodic, semantic, procedural, and meta-memory. They serve current work, past events, stable knowledge, verified methods, and system self-records, with different retrieval triggers.</li>
+            <li><strong>Choose an access tier last</strong>: Place content in hot, warm, or cold storage according to latency, frequency, capacity, and cost. Tiers may use different backends or different indexes, TTLs, and loading policies within one backend.</li>
+            <li><strong>Assemble a budgeted working set</strong>: Load stable constraints and the active goal at startup, then retrieve session, project, and long-term material on demand. Per-source budgets keep low-priority history from displacing goals, constraints, and current evidence.</li>
+            <li><strong>Use multiple signals for promotion and demotion</strong>: Hit frequency measures use, not truth. Scoring should include recency, usefulness, reliability, risk, and review status. Security policy and revocation lists require hard-retention rules outside ordinary eviction.</li>
+            <li><strong>Separate online reads from publication</strong>: A running agent may read live memory and write new material to a candidate store. Promotion into active project, user, or organization memory requires schema, provenance, scope, conflict, and risk checks, followed by a versioned publication step with rollback.</li>
             </ol>
             <h2>Applicability</h2>
             <ul>
@@ -179,10 +182,14 @@
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Copying tier count instead of matching need</strong>: Copying CoALA's three tiers (working / episodic / semantic) outright when the product only needs two, leaving a pile of empty scaffolding in the code with nothing to put in it. The tier count should match the number of scope kinds the product actually has.</li>
+            <li><strong>Flattening separate dimensions into one tree</strong>: Scope, functional type, and access tier answer different questions. A single user/project/session hierarchy couples permission, semantics, and cache movement.</li>
             <li><strong>No schema on the user tier</strong>: Letting the agent write free text such as “Xiao Li knows decorators” gradually produces multiple phrasings for the same concept and weakens retrieval. High-frequency fields should use a typed schema.</li>
+            <li><strong>Treating hit rate as correctness</strong>: A false memory that is used repeatedly receives a higher score and reinforces itself. Promotion needs provenance, task outcome, and review status.</li>
+            <li><strong>Evicting rare high-risk rules</strong>: Safety policy, compliance constraints, and revocation lists may remain unused for long periods but must be present when needed. Give them a separate retention policy.</li>
             <li><strong>Designing everything as startup injection</strong>: The user and project tiers suit startup injection, the session tier suits progressive reading, and the ephemeral tier suits real-time assembly. Mixing these access patterns causes old session material to crowd out the current task as the conversation grows.</li>
             <li><strong>Forcing tiering onto fully stateless scenarios</strong>: Single-shot Q&amp;A and one-off ETL transformations do not need cross-session memory.</li>
+            <li><strong>Allowing runtime writes to overwrite high-level memory</strong>: An unreviewed judgment from one task can propagate across sessions. Automatic writes should enter a candidate store and become active only through an independent publication process.</li>
+            <li><strong>Hard-coding forgetting</strong>: Device signals, compliance records, and long-term preferences have different retention goals. Configure TTL, decay, compaction, archive, and deletion by memory type and policy.</li>
             <li><strong>Eviction without a reason log</strong>: Compliance (GDPR right-to-be-forgotten) and debugging both require proving "what was deleted, why, and when." Without a log, this cannot be proven.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -190,21 +197,33 @@
             <li><strong>Working set hit rate</strong>: The share of memory needed for reasoning that is available in the prompt. Establish a local baseline by task class and inspect missing evidence when the rate changes.</li>
             <li><strong>Per-tier token share</strong> (allocated by budget): whether the tokens each tier loads into the prompt stay within budget. A tier that consistently exceeds its budget needs truncation or to be pushed down to on-demand loading.</li>
             <li><strong>Cross-tier pollution events</strong>: Track whether incidental session data reaches the user tier or information crosses tenant boundaries. Treat any tenant-isolation violation as a security incident.</li>
+            <li><strong>False-promotion and reviewer-rejection rate</strong>: Sample records moving from candidate to active long-term memory and check for wrong scope, false facts, or low-quality summaries.</li>
+            <li><strong>Stale-memory use rate</strong>: Measure how often a superseded or expired version still affects a decision.</li>
+            <li><strong>High-risk retention completeness</strong>: Periodically inventory hard-retained material and verify that normal decay did not remove it from the usable set.</li>
+            <li><strong>Hit rate and latency by access tier</strong>: Observe retrieval distribution across hot, warm, and cold stores and interpret it with task outcomes.</li>
             <li><strong>Total startup tokens</strong>: Compare with an unlayered history-loading baseline while verifying that critical information remains visible.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>Define tiers (scope from coarse to fine):
-                USER    → permanent / high-read / strong schema / relational store
-                PROJECT → permanent / team-shared / file system + git
-                SESSION → session_ttl / high read-write / Redis
-                TURN    → turn_ttl / very high frequency / in-memory dict
+            <pre><code>MemoryRecord:
+                id / kind / scope / source / valid_from / valid_to
+                supersedes / trust_status / risk / retrieval_keys
 
-            Write:    select backend by tier, record last_modified
-            Read:     query from fine to coarse, return on inner-tier hit (inner overrides outer)
-            Assemble: at startup build prompt from coarse to fine, truncate each tier by token_budget
-            Evict:    clear expired content and record a reason log (compliance + debug)
+            write(candidate):
+                validate schema + provenance + scope + sensitive data
+                detect conflict and assign candidate|accepted|rejected
+                publish an accepted record as a new version
+
+            read(task):
+                enforce tenant and scope filters
+                exclude expired and superseded versions
+                rank by task relevance + usefulness + reliability + risk
+                assemble within per-source token budgets
+
+            retire(record):
+                decay, archive, revoke, or delete by policy
+                append reason + actor + timestamp to the audit log
             </code></pre>
-            <p>Four engineering points for landing this: each tier's storage backend must genuinely use a different choice; assembly must truncate by token budget rather than stuffing in everything; writes must do "write routing" (a small model or a rule decides which tier to write to); and eviction must keep a reason log.</p>
+            <p>Backend selection serves access behavior; it does not define memory semantics. Even when all records initially share one database, scope, kind, validity, and trust remain independent fields.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider an execution-oriented payroll SaaS agent with three memory tiers. L1 holds the minimum information needed for the current step. L2 holds milestone records such as task status and the action just completed. L3 holds judgments and procedures that may be reused across tasks. The tiers cover the current step, the current task, and cross-task memory. Each has an independent token budget; L1 is assembled at runtime, and writes to L3 pass a trust check so that incidental information from one run does not become long-term memory.</p>
             <h2>Related patterns</h2>
@@ -213,9 +232,10 @@
             <li><strong>RAG (M2)</strong>: Tiering solves "how long-term known memory is loaded by scope," while RAG solves "how the massive knowledge that no scope can hold is queried on demand." Tiering manages the known; RAG manages the external.</li>
             <li><strong>Failure Journal (M4) / Procedural Memory (M5)</strong>: These two are dedicated partitions within the long-term memory tier—M4 stores failure cases, M5 stores successful moves. Tiering is the container; they are the contents inside it.</li>
             <li><strong>Semantic Compression (perception module)</strong>: When the session tier fills up with tokens, semantic compression is triggered to slim it down, which is a supporting mechanism for tiering within a single tier.</li>
+            <li><strong>Memory Admission (candidate)</strong>: M1 defines tier boundaries; admission decides whether a candidate may enter an active tier.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of hierarchical retention is not database schema design but giving the agent a working set manager—it decides which memory stays resident in RAM, which is swapped in on demand, and which is swapped out for the long term.</p>
+            <p>Hierarchical retention manages the agent's working set. Scope preserves isolation, functional type determines use, access tier controls cost, and versioned admission keeps a temporary judgment from becoming a long-term fact.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M1 Hierarchical Retention</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

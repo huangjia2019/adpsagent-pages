@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Module Overview · Agent Design Pattern White Paper · ADPS</title>
+    <meta name="description" content="ADPS memory module overview: adoption criteria, knowledge and control boundaries, lifecycle, five specifications, and open research questions.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/memory/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/" class="active">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>Memory</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
+                <h1>Memory Module · Turning Past Work into a Governed Runtime Asset</h1>
+                <p class="publication-deck">When to use an agent memory system, how it borders knowledge and control, and how its five specifications divide the work.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Revised</dt><dd>2026-08-07</dd></div>
+                    <div><dt>Document type</dt><dd>Memory module overview</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS memory workshop, 5 August 2026</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the memory subsystem as a whole. The M1–M5 specifications remain authoritative for pattern-level mechanics and verification.</p>
+
+            <p>If perception is an agent's eyes and action is its hands, memory is its past. It places perception, reasoning, and action on a time axis so that the next run can continue from facts, progress, and experience left by the previous one.</p>
+            <p>Memory is not an isolated runtime step. A tool call may produce a memory candidate, a failure may update the counterexample store, and a resumed task may reload both progress and authoritative business state. ADPS treats memory as a cognitive function to make a specific set of engineering responsibilities reviewable: what is retained, who may write it, when it is retrieved, which version wins, and how a team can trace a decision back to the memory that influenced it.</p>
+            <h2>Decide whether a memory service is needed</h2>
+            <p>Not every agent needs a dedicated memory system.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Situation</th>
+            <th style="text-align: left;">Recommended treatment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">One-shot questions, transformations, or short tool flows</td>
+            <td style="text-align: left;">Keep the agent stateless and pass required data with the request</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Stable preferences maintained by technical users</td>
+            <td style="text-align: left;">Use versioned files, configuration, or project rules</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Large domain corpora queried on demand</td>
+            <td style="text-align: left;">Build a governed knowledge base and retrieval pipeline</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Changing user preferences and task experience that users will not maintain manually</td>
+            <td style="text-align: left;">Add a memory service with admission, retrieval, and governance</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Approval state, balances, batches, or payment receipts</td>
+            <td style="text-align: left;">Keep authoritative facts in databases, state machines, or ledgers; memory stores references and explanations</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Two questions provide a useful first filter: is the information stable enough to maintain by hand, and will the user actually maintain it? When both answers are yes, a clear file structure is often more reliable than automatic memory.</p>
+            <h2>Three engineering boundaries</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Adjacent system</th>
+            <th style="text-align: left;">Its responsibility</th>
+            <th style="text-align: left;">Memory's responsibility</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Knowledge base</strong></td>
+            <td style="text-align: left;">Reusable domain documents, facts, and evidence</td>
+            <td style="text-align: left;">How a user, task, or agent used those materials and what experience followed</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Data ontology</strong></td>
+            <td style="text-align: left;">The entities, attributes, and relations in the business world</td>
+            <td style="text-align: left;">What happened around those objects and which judgments the agent made</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Control plane</strong></td>
+            <td style="text-align: left;">Current authoritative state, transaction results, and execution constraints</td>
+            <td style="text-align: left;">Goals, progress narrative, historical explanation, and references to authoritative state</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Infrastructure may be shared, but ownership must remain explicit. A vector store may carry both document and memory indexes while the approval system still decides the current approval state. A natural-language summary cannot override a newer batch version in the database.</p>
+            <h2>The minimum memory envelope</h2>
+            <p>Content alone is not a usable memory record. A production envelope needs at least the following fields:</p>
+            <pre><code class="language-yaml">memory_id: mem_01J7...
+kind: episodic            # working | episodic | semantic | procedural | meta
+scope:
+  tenant_id: acme
+  project_id: payroll
+source:
+  type: tool_event
+  ref: trace://run-8842/tool-17
+validity:
+  valid_from: 2026-08-05T09:00:00Z
+  valid_to: null
+  supersedes: mem_01J6...
+trust:
+  status: accepted        # candidate | accepted | rejected | retired
+  reviewed_by: policy://memory-admission-v3
+retrieval:
+  keys: [approval-version, payroll-batch]
+  risk: medium
+</code></pre>
+            <p>Identity, type, scope, source, valid time, version relation, publication state, and retrieval conditions are all operational fields. Without them, conflict handling, access control, rollback, and deletion remain ad hoc.</p>
+            <h2>From candidate event to usable experience</h2>
+            <p><img alt="Memory-system lifecycle from capture and admission to retrieval, use, and governance" src="/images/patterns/memory-lifecycle-en.svg" /></p>
+            <p>Several stages are easy to omit:</p>
+            <ol>
+            <li><strong>A candidate pool precedes long-term memory.</strong> Session summaries, tool events, and model reflections enter a staging area before they can affect active memory.</li>
+            <li><strong>Admission determines reuse.</strong> The system checks provenance, scope, sensitive data, conflicts, and risk. High-risk material requires reproduction or human review.</li>
+            <li><strong>Compilation keeps the source pointer.</strong> Summaries, entities, events, and navigation structures improve access, while conclusions remain traceable to original material.</li>
+            <li><strong>Retrieval is assembled for the current task.</strong> Goal, token budget, permission, valid time, and risk determine what enters context.</li>
+            <li><strong>Use produces a trace.</strong> The system records which memory was retrieved, whether the model used it, and which decision it influenced.</li>
+            <li><strong>Versions resolve change.</strong> Supersession and valid-time fields preserve history instead of silently deleting an old fact.</li>
+            </ol>
+            <h2>How the five specifications divide the work</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Pattern</th>
+            <th style="text-align: left;">Responsibility</th>
+            <th style="text-align: left;">Boundary</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/m1-hierarchical-retention/"><strong>M1 Hierarchical Retention</strong></a></td>
+            <td style="text-align: left;">Place memory by scope, functional partition, and access tier</td>
+            <td style="text-align: left;">Frequent use is not proof of correctness; rare high-risk rules must not be evicted automatically</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/m2-rag-pipeline/"><strong>M2 RAG Pipeline</strong></a></td>
+            <td style="text-align: left;">Build multiple indexes over large sources and retrieve evidence for the current task</td>
+            <td style="text-align: left;">RAG supplies business evidence, not authoritative business state</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/m3-progress-tracking/"><strong>M3 Progress Tracking</strong></a></td>
+            <td style="text-align: left;">Preserve goals, milestones, and recovery position across a long task</td>
+            <td style="text-align: left;">Progress narrative references the control plane; it does not replace it</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/m4-failure-journals/"><strong>M4 Failure Journals</strong></a></td>
+            <td style="text-align: left;">Turn failure events into verified lessons that can be recalled</td>
+            <td style="text-align: left;">A model's immediate root-cause guess remains a candidate diagnosis</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/m5-procedural-memory/"><strong>M5 Procedural Memory</strong></a></td>
+            <td style="text-align: left;">Package verified methods as triggerable, versioned runtime assets</td>
+            <td style="text-align: left;">Open-ended work resists heavy compilation; dependency changes require recertification</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>M1 through M4 are core patterns. M5 remains an extension. M2 occupies the single <strong>Memory × Chain</strong> cell in the public matrix. Iterative retrieval is a mature implementation of the pattern, not a second coordinate.</p>
+            <h2>Three directions under review</h2>
+            <p><strong>Memory Admission</strong> studies how candidate content enters the correct scope and is currently being evaluated at Memory × Route. <strong>Knowledge Compilation</strong> studies how raw material becomes navigable, searchable, and directly readable at write time. <strong>Versioned Memory</strong> covers valid time, supersession, conflict, snapshots, and rollback; it is currently treated as an update-loop and governance concern.</p>
+            <p>Collective memory sharing is not yet a separate pattern. Its first-order problems are scope, permission, admission, and propagation control. Several agents reading the same store does not by itself create a parallel topology.</p>
+            <h2>Questions that need more field evidence</h2>
+            <ul>
+            <li>How can unattended systems detect and quarantine low-quality auto-archived memory?</li>
+            <li>Is there a reproducible migration path among explicit, activated, and parametric memory?</li>
+            <li>How can a resumed task prove that it did not repeat an irreversible side effect?</li>
+            <li>How should shared memory prevent a bad lesson from spreading across agents, projects, or tenants?</li>
+            <li>How should evaluation cover writing the right memory, retrieving the right item, using it correctly, and retiring it safely?</li>
+            </ul>
+            <p>This page incorporates material from the ADPS memory workshop held on 5 August 2026. The public specification retains testable engineering mechanisms. Named practice and quantitative claims enter the case library only after publication approval and measurement review.</p>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Memory Module: Turning Past Work into a Governed Runtime Asset</em>, Agent Design Pattern White Paper v0.3, 2026-08-07. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

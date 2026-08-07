@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M2 检索增强生成 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="从大规模知识源中检索、重排并引用当前任务所需的事实，支持多轮查询改写与证据校验。">
+    <meta name="description" content="将大规模知识源组织为带来源、版本和权限的多路索引，并由检索 Harness 按任务完成查询、导航、重排和证据装配。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/" class="active">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -134,7 +135,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>M2 · RAG Pipeline · 检索增强生成</h1>
-                <p class="publication-deck">从大规模知识源中检索、重排并引用当前任务所需的事实，支持多轮查询改写与证据校验。</p>
+                <p class="publication-deck">将大规模知识源组织为带来源、版本和权限的多路索引，并由检索 Harness 按任务完成查询、导航、重排和证据装配。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -162,26 +163,27 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">从大规模知识源中检索、重排并引用当前任务所需的事实，支持多轮查询改写与证据校验。</td>
+            <td style="text-align: left;">将大规模知识源组织为带来源、版本和权限的多路索引，并由检索 Harness 按任务完成查询、导航、重排和证据装配。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
-            <p>企业知识库包含大量文档和历史工单，无法常驻 LLM 的 context window。RAG 在每次请求中检索相关片段，并将 input 之外的事实临时加入 context。</p>
+            <p>企业知识库包含大量文档、工单、日志和业务对象，无法常驻 LLM 的 context window。RAG 在写入侧建立可追溯索引，在读取侧按当前任务检索证据，并将 input 之外的事实临时加入 context。</p>
             <p>生产级 RAG 除了单次召回，还要处理查询改写、反例检索和跨语料验证。Agent 可以评估首轮结果，在证据不足时修改 query，并对候选结论执行反向查询。</p>
             <h2>坐标说明：记忆 × 链式</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：RAG 管理 declarative knowledge，将 input 之外的事实按需加载到当前 context。</li>
-            <li><strong>横轴 · 链式</strong>：query 依次经过 embedding、top-K 召回、重排、prompt 注入和生成。混合检索属于链中的召回环节，不改变整体的顺序结构。</li>
+            <li><strong>横轴 · 链式</strong>：原始材料依次经过解析、标注、索引；在线请求依次经过查询规划、过滤、召回、融合、重排和证据装配。Agent 可以在证据不足时改写 query 再走一轮，公开矩阵仍以这条链式主干作为唯一坐标。</li>
             </ul>
             <h2>解决方案与机制</h2>
             <ol>
-            <li><strong>两条 pipeline 在向量库汇合</strong>：RAG 不是单一步骤。离线侧把文档 chunk、embed、建索引；在线侧把 query embed、召回 top-K、重排、注入生成。两条独立 pipeline 共享同一个向量库。</li>
-            <li><strong>混合检索</strong>：embedding 擅长语义（"ACME 财报"约等于"ACME 业绩"），但精确关键词（产品名、错误码、特定 ID）经常 miss。把语义检索和 BM25 关键词检索结合，再用 RRF（Reciprocal Rank Fusion）融合。</li>
-            <li><strong>上下文增强 chunking</strong>：chunk 一旦切开，原文上下文锚点就可能丢失。可以在每个 chunk 前补充一段上下文摘要再 embed；是否改善召回与重排质量，要在自己的检索评测集上验证。</li>
-            <li><strong>agent 主导的多步检索</strong>：拆分子 query、迭代改写、检索反例、跨语料验证，并按证据强度合成结果。</li>
-            <li><strong>迭代硬上限</strong>：多步检索必须设硬上限，否则 agent 会一直觉得"还不够"连续检索。</li>
+            <li><strong>写入侧先治理再建索引</strong>：解析文档、日志和结构化对象时，同时记录 source、owner、permission、valid time、version 和原文位置。chunk 与摘要是派生产物，不能丢掉原文指针。</li>
+            <li><strong>建立多路入口</strong>：正文、摘要、实体、时间事件、标识符和关系路径可以建立不同索引。错误码、ID 和专有名词优先精确匹配或结构化查询；开放语义问题使用 BM25、向量检索和重排；关系问题使用图或导航。</li>
+            <li><strong>由 Retrieval Harness 选择路径</strong>：<code>EvidenceRequest</code> 描述问题、时间范围、作用域和证据要求。Harness 决定执行 search、browse、navigate、lookup 或直接读取编译产物，并记录选择过程。</li>
+            <li><strong>权限、时间和版本过滤前置</strong>：先排除无权访问、已经失效或被新版本替代的内容，再执行融合和重排。相似度不能把过期制度重新抬回当前上下文。</li>
+            <li><strong>输出证据包而不是文本堆</strong>：返回 <code>EvidenceBundle</code>，其中包含支持证据、反例、来源位置、版本、置信信息和 <code>RetrievalTrace</code>。生成阶段可以判断证据是否充分，也可以明确拒答。</li>
+            <li><strong>允许有界的多步检索</strong>：复杂问题可以拆分子 query、改写查询、寻找反例和跨语料验证。轮数、token、工具调用和总时长都要设置上限。</li>
             </ol>
             <h2>适用场景</h2>
             <ul>
@@ -191,36 +193,43 @@
             </ul>
             <h2>已知失效方式</h2>
             <ul>
-            <li><strong>知识源未经治理</strong>：wiki 文档互相矛盾、关键决策缺失、版本过期或同义词未统一时，向量化只会保留这些问题。建立 enterprise RAG 前应先明确 ontology、版本和来源治理。</li>
-            <li><strong>RAG 与 Agentic Search 选型错误</strong>：dev workflow、代码搜索和内部敏感数据通常更新快、权限边界复杂。新函数可能尚未进入索引，索引本身也会扩大访问面。这类场景可优先使用 grep、glob 等 Agentic Search。</li>
+            <li><strong>知识源未经治理</strong>：wiki 文档互相矛盾、关键决策缺失、版本过期或同义词未统一时，建索引只会让这些问题更容易被召回。</li>
+            <li><strong>把所有数据强行向量化</strong>：精确标识符、结构化字段和版本条件在向量检索中容易失真。检索侧至少要保留精确全文、结构化查询和原文读取能力。</li>
+            <li><strong>编译产物脱离原文</strong>：摘要、Wiki 或实体关系更新后无法回到原始位置，系统就无法证明结论来源。</li>
+            <li><strong>静态文档与动态事件共用一种切分</strong>：制度文档、会话记录和工具事件的粒度、更新时间和有效期不同，统一 chunk 策略会造成延迟或语义断裂。</li>
+            <li><strong>检索工具增加但调度策略不收敛</strong>：search、browse、图查询和直接读取同时暴露，Harness 却不记录为什么选择某条路径，失败后无法判断问题出在查询规划、索引、重排还是阅读。</li>
+            <li><strong>索引时效跟不上任务</strong>：代码和高频业务状态可能在索引完成前已经变化。需要当前工作区真值时，应直接查询 live source，例如仓库搜索、数据库或业务 API。</li>
             <li><strong>停留在一查一答</strong>：第一次没查到关键信息时，naive RAG 要么直接说不知道，要么 silently 编造。生产级 RAG 必须能改写 query 再查。</li>
             <li><strong>只优化召回精度</strong>：embedding 模型的离线分数无法代替查询改写和证据验证。召回指标改善后，仍需评估最终答案的正确性、完整性和引用质量。</li>
             <li><strong>引用不可追溯</strong>：学术、法律、医疗场景里，每个结论都要能追到原始 chunk 加页码，这是合规的必要条件。</li>
             </ul>
-            <li><strong>只提供纯向量检索</strong>：Agent 的检索需求不同于人的模糊查询。对 harness 而言，精确全文匹配与多向量搜索是必需的，纯向量检索会让 Agent 无法执行确定性定位，是非常不友好的访问方式。检索侧至少要同时提供精确匹配能力。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
-            </ul>
             <h2>验证指标</h2>
             <ul>
-            <li><strong>检索失败率</strong>：候选中没有相关 chunk 的比例。应在同一评测集上比较上下文增强、混合检索和重排各自带来的变化。</li>
-            <li><strong>检索命中率 / 引用率</strong>：召回的 chunk 中实际被 Agent 使用并引用的比例。相对基线偏低时，检查召回噪声、query 粒度和重排策略。</li>
+            <li><strong>索引覆盖与时效</strong>：应进入当前版本的材料是否已被解析、标注和发布，更新延迟是否满足业务窗口。</li>
+            <li><strong>检索失败率</strong>：候选中没有相关证据的比例。应在同一评测集上分别定位 indexing、retrieval 和 filtering 问题。</li>
+            <li><strong>证据使用率 / 引用率</strong>：召回内容中实际被 Agent 使用并引用的比例。偏低时检查候选噪声、query 粒度、版本过滤和重排策略。</li>
+            <li><strong>阅读正确率</strong>：正确证据已经进入 context 后，模型是否仍然读错、忽略限制条件或引用了相邻段落。</li>
             <li><strong>多步检索轮数</strong>：记录迭代检索的实际轮数并设置硬上限。经常顶到上限，可能是任务需要拆分、知识源缺失或首轮召回质量不足。</li>
+            <li><strong>Trace 完整率</strong>：每条公开结论是否能回到查询、候选、过滤原因、原始文档位置和版本。</li>
             <li><strong>最终综合质量</strong>（业务判定）：由领域专家按照正确性、完整性和引用质量评估 Agent 输出；达到业务设定阈值后再进入生产流程。</li>
             </ul>
             <h2>最小实现</h2>
-            <pre><code>离线索引侧：
-    doc → chunk → 前置上下文摘要(便宜模型) → embed → 向量库 + BM25 索引
+            <pre><code>写入侧：
+    source → parse → chunk/event/entity
+           → annotate(source, owner, permission, valid_time, version)
+           → full-text + vector + structured/graph indexes + original pointer
 
-在线检索侧（agent 主导多步）：
-    拆子 query
-    每个子 query 迭代检索：
-        语义候选 + BM25 候选 → RRF 融合 → reranker 重排到 context_budget
-        agent 评估是否够 → 不够则改写 query 再查（最多 N 轮）
-    形成假设 → 取反作为新 query 找反例
-    跨多语料三角验证（多组都出现的 chunk 加权）
-    按证据强度加权合成
-返回 answer + evidence + counter_evidence + 完整 trace（含 citation 可追溯）
+读取侧：
+    EvidenceRequest(question, scope, time_range, evidence_policy)
+      → Retrieval Harness 选择 lookup/search/browse/navigate/read
+      → permission + valid-time + version filter
+      → exact/BM25/vector/graph candidates
+      → fuse + rerank + evidence-sufficiency check
+      → EvidenceBundle(support, counter_evidence, citations, trace)
+
+若证据不足：改写或拆分 query，受 max_rounds / token / time 约束
 </code></pre>
-            <p>生产实现应在 retriever 层加入上下文增强、混合检索和重排；为 max_iterations 和 token 设置硬上限；完整记录每次检索 trace；引用需指向原始文档和页码。</p>
+            <p>生产实现要把索引发布与在线查询分开观测。一次错误答案至少能被定位为知识源、编译、过滤、召回、重排、阅读或合成中的一个阶段。</p>
             <h2>场景化示例</h2>
             <p>设想一个学术文献综述 Agent。只用关键词时，候选范围过宽；只用 embedding 时，结果又集中在已有主题簇，较新的交叉研究和反例容易被漏掉。后续版本先拆分研究问题，再执行迭代改写、反例检索和跨语料验证；peer-reviewed 论文、预印本和内部材料分库管理，证据权重由机构自己校准；每条结论都定位到原始 chunk、页码和版本。这个场景的重点是证据链与索引治理，不能用一个脱离评测集的“召回提升”数字代替。</p>
             <h2>相邻模式</h2>
@@ -229,13 +238,12 @@
             <li><strong>程序性记忆（M5）</strong>：RAG 检索 declarative memory，M5 复用 procedural memory。</li>
             <li><strong>上下文分诊（感知模块）</strong>：RAG 产生候选片段，上下文分诊决定候选片段的加载优先级。</li>
             <li><strong>渐进发现（感知模块）</strong>：渐进发现用于探索陌生信息空间的结构，RAG 用于从已建立索引的知识库中召回片段。</li>
+            <li><strong>知识编译（候选）</strong>：M2 关注当前任务怎样取得证据，知识编译关注原始材料怎样在写入侧形成可导航、可检索的资产。</li>
             </ul>
             <h2>工程判断</h2>
-            <p>RAG 的效果同时受查询策略、索引结构和知识源质量影响。模型、embedding 或向量库无法补偿版本混乱、来源不清或粒度失控的知识源。</p>
+            <p>RAG 是一条证据供应链。知识源、索引、检索调度、版本过滤、阅读和引用中的任一环节失真，最后的生成都可能看起来流畅却无法成立。</p>
 
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
+            <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《M2 检索增强生成》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>

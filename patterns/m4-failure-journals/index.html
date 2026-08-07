@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M4 Failure Journals · Pattern White Paper · ADPS</title>
-    <meta name="description" content="The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the">
+    <meta name="description" content="Separate immutable failure facts, candidate diagnoses, and verified lessons, then recall only applicable and current experience in later tasks.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/m4-failure-journals/">
@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -123,7 +124,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>M4 · Failure Journals</h1>
-                <p class="publication-deck">The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the next time a similar situation arises.</p>
+                <p class="publication-deck">Separate immutable failure facts, candidate diagnoses, and verified lessons, then recall only applicable and current experience in later tasks.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -151,28 +152,29 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">The agent records every failure in structured form (which step failed, what went wrong, root cause, how it was remediated), persists it across tasks, and proactively recalls it the next time a similar situation arises.</td>
+            <td style="text-align: left;">Separate immutable failure facts, candidate diagnoses, and verified lessons, then recall only applicable and current experience in later tasks.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>Many agent systems preserve progress but discard the details of failure when a session ends. A later task can then repeat the same error. For example, an agent may write test-environment settings into production configuration and later make the same class of mistake in another project because the conditions and remediation were never retained.</p>
-            <p>A failure journal turns failures into an archive that can be reviewed repeatedly. Its purpose is not to show errors to operations; it is to let the agent accumulate professional experience of its own—so that next time a similar situation arises, the model proactively retrieves the reminder "I have taken this kind of fall." Erasing failures is the same as erasing evidence, and without evidence the model cannot adapt.</p>
+            <p>A failure journal makes these events retrievable across tasks. The difficult part is the write path: an error is an observed fact, while root cause and lesson are judgments. The model that just failed may also misdiagnose the failure, so diagnosis and long-term publication cannot be one automatic step.</p>
             <h2>Classification: Memory × Loop</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: It accumulates "failure" as persistent learning material across calls, a library of negative examples within long-term memory—one side records successes (procedural memory), the other records failures (failure journals).</li>
             <li><strong>Horizontal axis · Loop</strong>: Write a failure once, read it once on the next task, then write again. This is a cross-call outer loop. Failure signals circulate between tasks, making the agent more seasoned with each pass.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>A complete failure journal system does four things, forming a closed loop:</p>
+            <p>A failure journal has three record layers and one recall path:</p>
             <ol>
-            <li><strong>Detection</strong>: Decide whether this task counts as a "failure." This includes task-level failures, as well as failures of information retrieval itself (such as RAG index lag, missed retrieval, or false retrieval—new failure types introduced in the LLM era).</li>
-            <li><strong>Classification</strong>: Assign the failure to categories such as transient or permanent, client-side or server-side, payload or context, generic or vendor-specific, and recoverable or unrecoverable. Each category can select a recovery strategy.</li>
-            <li><strong>Recording</strong>: Archive in structured form; the schema must be stronger than free text. A failure record contains at minimum a task fingerprint, category, one-sentence summary, root cause, remediation action, and executable lessons.</li>
-            <li><strong>Recall</strong>: When a new task arrives, proactively retrieve relevant historical failures by similarity and inject them into the prompt. This is the fundamental difference between a failure journal and an ordinary try-catch—the latter only handles the failure on the spot, the former remembers across tasks. Recall works by injecting past experience into the context at inference time (the training-free path), without retraining the model.</li>
+            <li><strong>Failure Event preserves immutable facts</strong>: Store input references, tool calls, errors, system version, permission scope, and the original trace. Later diagnoses link to the event rather than rewriting it.</li>
+            <li><strong>Candidate Diagnosis preserves a testable explanation</strong>: Store the hypothesized cause, proposed fix, author, confidence information, and applicability. Automatically generated diagnoses default to <code>candidate</code> and stay out of active recall.</li>
+            <li><strong>Verified Lesson publishes reusable experience</strong>: After reproduction, tests, policy checks, or human review, publish a prevention rule, recall condition, valid versions, and invalidation criteria. A later lesson may supersede or revoke it.</li>
+            <li><strong>Recall at task boundaries</strong>: Before task start, capability entry, or a high-risk tool call, filter by tenant, scope, system version, and failure signature, then rerank by risk and relevance. Only <code>accepted</code> and currently applicable lessons are injected.</li>
+            <li><strong>Write back evidence of use</strong>: Record whether the lesson was retrieved, adopted, and associated with avoiding the repeated failure. A counterexample creates a new candidate diagnosis rather than mutating the old event.</li>
             </ol>
-            <p>After human confirmation and reverse annotation, failure trajectories may support evaluation or training. Retention should be tiered by risk, access frequency, and policy: keep recent details, then compact them, and delete or aggregate records when the approved retention period ends.</p>
+            <p>Events, diagnoses, and lessons have different retention policies. Events follow audit requirements, weak candidates may expire quickly, and verified lessons require version and applicability management.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Production-grade, long-running agents</strong>: Agents that run for months and repeatedly handle the same class of tasks. Which failures to record and which to pull up when a task arrives is where its core value lies.</li>
@@ -183,39 +185,52 @@
             <ul>
             <li><strong>Forcing it onto one-off tasks with no repeated execution</strong>: For pure demos, prototypes, and one-off scripts, discarding failures is fine. The value of a failure journal lies in repeated tasks; without repetition there is no recall payoff.</li>
             <li><strong>Free text only, no classification</strong>: The first version of a failure log is often free text with three fields, "task / error / timestamp," from which the agent can learn nothing. The schema must be enforced (enums plus constrained fields) so failures can be clustered, counted, and queried.</li>
-            <li><strong>Free-form writing produces a noise repository</strong>: If the agent records every minor fault, recall becomes noisy. Constrain free-text fields and archive low-risk records using access count, recency, and retention policy.</li>
-            <li><strong>Recorded but recall does not match</strong>: Coarse similarity measures such as Jaccard have too high a miss rate, so recording is as good as not recalling. Task signatures should be compared with embedding cosine similarity.</li>
+            <li><strong>Treating the model's explanation as fact</strong>: The same agent generates a root cause and prevention rule immediately after failing, then writes it to long-term memory. A false diagnosis becomes a stable reason to avoid the correct path.</li>
+            <li><strong>Promoting every minor error into a lesson</strong>: Recall noise grows with the archive. Only candidates with sufficient reuse value or risk enter verification.</li>
+            <li><strong>Using semantic similarity without condition filters</strong>: Similar text does not imply the same tenant, tool version, permission, environment, or failure stage. Filter structured conditions before semantic retrieval.</li>
+            <li><strong>Applying old lessons across versions</strong>: The API, schema, or process changes while the historical fix remains active. Lessons need applicable versions and invalidation criteria.</li>
             <li><strong>Lumping high-risk and ordinary failures together</strong>: A cross-tenant data leak and an API timeout require different treatment. High-risk failures need independent alerting, policy-controlled retention, and forced recall where applicable.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Repeat failure rate</strong>: The share of similar tasks that repeat the same failure signature. Compare versions and cohorts rather than database cleanliness alone.</li>
-            <li><strong>Recall rate / recall hit rate</strong>: Measure whether relevant failures were recalled and whether retrieved entries matched the current task. Analyze misses and false recalls separately.</li>
-            <li><strong>First-attempt success rate</strong>: Compare tasks with and without injected lessons in replay to determine whether the journal prevents known mistakes.</li>
+            <li><strong>Candidate promotion rate and rejection reasons</strong>: Measure which diagnoses become verified lessons and why others fail due to false causes, broad scope, or weak evidence.</li>
+            <li><strong>Recall precision and miss rate</strong>: Test whether a published lesson appears for applicable tasks and stays out of unrelated ones.</li>
+            <li><strong>Lesson adoption and avoided-failure rate</strong>: Record whether the agent used the lesson and whether the same failure signature disappeared, compared with replay without injection.</li>
+            <li><strong>Stale-lesson use rate</strong>: Measure lessons that still influence decisions after supersession, revocation, or version expiry.</li>
             <li><strong>High-risk failure count</strong>: Monitor tenant-boundary and other safety events independently. There is no acceptable background rate for a boundary violation.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
-                          / root_cause / remediation / lessons[] / access_count
-            FailureJournal:
-                record(entry)          → on duplicate failure_id, increment access_count; on overflow, evict by access + recency
-                by_category(cat)       → query by category
-                recall_for_task(sig)   → retrieve by embedding similarity, then rerank by risk and relevance
-                render_for_prompt()    → format and inject into prompt (CER paradigm: glance at past pitfalls before acting)
-            Tiered retention: recent full detail / later compact summary / expiry or policy-approved aggregate
+            <pre><code>FailureEvent:
+                event_id / task_signature / category / stage / error
+                input_refs[] / tool_calls[] / system_version / trace_ref / occurred_at
+
+            CandidateDiagnosis:
+                diagnosis_id / event_id / hypothesis / proposed_fix
+                proposed_by / confidence / applicability / status(candidate|rejected|verified)
+
+            VerifiedLesson:
+                lesson_id / diagnosis_id / prevention_rule / recall_conditions[]
+                valid_from / valid_to / applies_to_versions[] / supersedes / review_evidence[]
+
+            recall(task):
+                filter accepted lessons by tenant + scope + version + risk
+                retrieve by failure signature and semantic relevance
+                return lessons + source events + recall trace
             </code></pre>
-            <p>Four points for engineering deployment: use embedding cosine for the similarity function rather than Jaccard; hook recall at task startup and before high-risk tool calls (a PreToolUse hook works); actually implement tiered retention and place each tier on a different backend; and apply two-layer review on writes (schema enforcement plus access_count cleanup).</p>
+            <p>A production implementation keeps FailureEvent append-only and manages candidate diagnoses and published lessons in separate stores or lifecycle states. Review evidence, publisher, and supersession all enter the audit trail.</p>
             <h2>Illustrative scenario</h2>
-            <p>Consider a multi-tenant SaaS support agent that encounters tool errors, tenant-boundary mistakes, context overflow, and semantic drift. The system treats <code>boundary_leak</code> as the highest-risk category and force-recalls relevant records before related tasks. A task signature combines tenant and intent so one customer's history is never injected into another's session. Candidate failures are reranked by risk and relevance; unknown categories enter <code>needs_review</code> before joining the archive. Results must be assessed through repeat-failure analysis, missed recalls, and security reviews rather than a preset improvement percentage.</p>
+            <p>Consider a multi-tenant SaaS support agent that repeatedly encounters tool timeouts, permission failures, and tenant-boundary mistakes. The tool trace and business version first become a FailureEvent. The model's “expired token” explanation enters Candidate Diagnosis only. After reproduction, the system publishes “refresh credentials and revalidate tenant_id” as a Verified Lesson with an applicable version range. Retrieval filters by tenant, tool version, and intent before ranking. Unknown categories enter <code>needs_review</code>. Evaluation covers repeat failures, false recalls, and stale-lesson use.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Procedural memory (M5)</strong>: A twin relationship; together they form the agent's experience base. The failure journal records "I did this wrong before, don't do it this way again," while procedural memory records "I did this right before, follow this next time." One side records failures, the other records successes.</li>
             <li><strong>Progress tracking (M3)</strong>: Also in the Loop column. Progress tracking loops over "the steps done right," the failure journal loops over "the pits stepped in." The two look symmetric, but in industry their treatment is completely asymmetric—everyone does the former, few do the latter seriously.</li>
             <li><strong>Layered retention (M1)</strong>: The failure journal is a dedicated partition within long-term memory, with retention tiers chosen by risk, access, and policy.</li>
             <li><strong>Self-Heal Loop (Action module)</strong>: The self-heal loop only handles failures within the current task and does not persist across tasks. The failure journal goes one step further—it persists the current failure signal and recalls it on the next similar task.</li>
+            <li><strong>Versioned Memory (candidate)</strong>: Failure events remain immutable while diagnoses and lessons evolve through versions, supersession, and revocation.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>A failure journal is more than an error log: it records the conditions, diagnosis, remediation, and recall rule needed to avoid repeating a known mistake.</p>
+            <p>A failure journal derives its value from publication discipline. Failure events supply evidence, candidate diagnoses remain falsifiable, and only verified lessons travel across tasks. Without that separation, a false lesson propagates more reliably than forgetting.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M4 Failure Journals</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

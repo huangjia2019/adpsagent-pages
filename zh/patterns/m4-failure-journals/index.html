@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M4 失败日记 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="结构化记录失败步骤、错误、根因和补救措施，并在后续相似任务中主动召回。">
+    <meta name="description" content="分离原始失败事实、候选诊断和已验证 lesson，只在后续相似任务中召回适用且仍有效的经验。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -134,7 +135,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>M4 · Failure Journals · 失败日记</h1>
-                <p class="publication-deck">结构化记录失败步骤、错误、根因和补救措施，并在后续相似任务中主动召回。</p>
+                <p class="publication-deck">分离原始失败事实、候选诊断和已验证 lesson，只在后续相似任务中召回适用且仍有效的经验。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -162,28 +163,29 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">结构化记录失败步骤、错误、根因和补救措施，并在后续相似任务中主动召回。</td>
+            <td style="text-align: left;">分离原始失败事实、候选诊断和已验证 lesson，只在后续相似任务中召回适用且仍有效的经验。</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>问题</h2>
             <p>许多 Agent 系统保存任务进度，却不跨会话保留失败记录。会话结束后，错误现象、错误判断和补救过程随 context 一起消失，后续相似任务可能重复同一错误。例如，Agent 完成主任务后将测试环境配置写入生产配置，之后又在另一个项目中执行了相同操作。</p>
-            <p>失败日记将这类事件保存为可检索记录。新任务开始前或高风险工具调用前，系统召回相关记录，把已知失败条件和处理方法注入当前 context。</p>
+            <p>失败日记将这类事件保存为可检索记录。难点在写入侧：错误现象是事实，根因和 lesson 是判断。模型刚失败后给出的解释可能同样错误，不能在一次调用里同时完成诊断和长期发布。</p>
             <h2>坐标说明：记忆 × 循环</h2>
             <ul>
             <li><strong>纵轴 · 记忆</strong>：它把"失败"作为持久化学习材料跨调用累积，是长期记忆里的反例库——一面记成功（程序性记忆），一面记失败（失败日记）。</li>
             <li><strong>横轴 · 循环</strong>：失败记录在本次任务写入，在后续任务读取并更新，形成跨调用的 outer loop。</li>
             </ul>
             <h2>解决方案与机制</h2>
-            <p>失败日记包含检测、分类、记录和召回四个环节：</p>
+            <p>失败日记由三层记录和一条召回链组成：</p>
             <ol>
-            <li><strong>检测 Detection</strong>：判断这次任务算不算"失败"。包括任务级失败，也包括信息检索本身的失败（如 RAG 索引滞后、漏检、误检——这些是 LLM 时代新增的失败类型）。</li>
-            <li><strong>分类 Classification</strong>：归到哪一类失败。生产实现可区分临时性与永久性、客户端与服务端、payload 与 context、通用与厂商特定、可恢复与不可恢复，并为每类配置 recovery strategy。</li>
-            <li><strong>记录 Recording</strong>：结构化存档，schema 必须比自由文本强。一条失败记录至少含任务指纹、类别、一句话总结、根因、补救动作、可执行的 lessons。</li>
-            <li><strong>召回 Recall</strong>：新任务开始时按相似度检索历史失败并注入 prompt。try-catch 处理当前调用中的异常，失败日记则跨任务保留和复用失败信息。该路径在 inference 阶段使用，无需重训模型。</li>
+            <li><strong>Failure Event 保存不可变事实</strong>：记录输入引用、工具调用、错误、系统版本、权限范围和原始 trace。后续诊断通过新记录关联，不能回写篡改事件。</li>
+            <li><strong>Candidate Diagnosis 保存待验证解释</strong>：记录推测根因、可能修复、提出者、置信信息和适用范围。自动生成内容默认处于 <code>candidate</code>，不进入主动召回集。</li>
+            <li><strong>Verified Lesson 保存已发布经验</strong>：通过复现、测试、规则校验或人工审核后，发布 prevention rule、recall condition、valid version 和失效条件。lesson 可以被新版本替代或撤销。</li>
+            <li><strong>按任务边界召回</strong>：在任务启动、能力边界入口或高风险工具调用前，先按 tenant、scope、system version 和 failure signature 过滤，再按风险与相关性重排。系统只主动注入 <code>accepted</code> 且仍适用的 lesson。</li>
+            <li><strong>从使用结果回写证据</strong>：记录 lesson 是否被取回、是否被采用、是否避免了重复失败。新反例进入候选诊断，不直接覆盖原记录。</li>
             </ol>
-            <p>失败 trajectory 可经人工确认和反向标注后用于评测或训练。存储侧应按风险、访问频率和合规要求分层留存：近期保留完整细节，随后转为压缩摘要，超过保留期后删除或只留聚合指标。具体期限由业务政策决定。</p>
+            <p>原始事件、诊断和 lesson 使用不同保留策略。事件按审计要求保存，候选诊断可以较快清理，已验证 lesson 需要版本和适用范围管理。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>生产级长期运行的 agent</strong>：跑数月、反复处理同类任务的 agent。哪些失败要记、哪些任务来时要翻出来，是它的核心价值所在。</li>
@@ -193,41 +195,53 @@
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>任务一次性、没有重复执行场景却硬上</strong>：纯 demo、prototype、一次性脚本，失败被丢弃没问题。失败日记的价值在重复任务，没有重复就没有召回收益。</li>
-            <li><strong>只使用 free-text</strong>：仅记录 task、error 和 timestamp，无法稳定分类和查询。应使用 enum 和受限字段，使失败记录可聚类、可统计。</li>
-            <li><strong>低价值记录持续累积</strong>：如果每次轻微异常都写入 failure journal，召回噪声会随时间上升。可限制自由文本长度，并根据风险、access_count 和 recency 将长期未召回记录归档到冷层。</li>
-            <li><strong>记下来了但召回不匹配</strong>：用 Jaccard 这类粗糙相似度，漏检率太高，记了等于没召回。task signature 之间要用 embedding cosine similarity。</li>
-            <li><strong>失败记录未经审计直接生效</strong>：一条错误的失败记录会让 Agent 在本来正确的路径上反复回避，危害大于没有记录。自动写入的失败记录应先进入待确认状态，经离线审计或人工确认后再进入召回集。（来源：ADPS 记忆模块研讨会 2026-08-05）</li>
+            <li><strong>只使用 free-text</strong>：仅记录 task、error 和 timestamp，无法稳定分类和查询。原始事件和诊断都需要 schema，开放说明只能作为补充字段。</li>
+            <li><strong>把模型解释当成事实</strong>：同一个 Agent 在失败后立即生成 root cause 和 prevention rule，并直接写入长期记忆。错误诊断会让后续任务稳定避开正确路径。</li>
+            <li><strong>低价值记录持续累积</strong>：每次轻微异常都形成 lesson，召回噪声会随时间上升。只有达到复用价值和风险门槛的候选才进入验证队列。</li>
+            <li><strong>召回只看语义相似度</strong>：文本相似不代表条件相同。tenant、工具版本、权限、环境和失败阶段应先做结构化过滤，再执行语义召回。</li>
+            <li><strong>旧 lesson 跨版本继续生效</strong>：底层 API、数据 schema 或流程已经变化，历史修复仍被注入。lesson 必须声明适用版本和失效条件。</li>
             <li><strong>高风险失败与普通失败共用策略</strong>：跨租户数据泄露和 API timeout 的严重程度不同。高风险失败应独立告警、永久保留，并在相关任务中强制召回。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
             <li><strong>重复失败率</strong>：同类任务中重复出现相同失败的比例。应按 failure signature 比较版本前后变化，不能用数据库记录量代替运行结果。</li>
-            <li><strong>召回率 / 召回命中率</strong>：观察相关失败是否被召回，以及召回内容是否与当前任务相关。偏差需要结合漏召回和误召回样本分析。</li>
-            <li><strong>首次尝试成功率</strong>：跟踪 Agent 是否能利用历史 lessons 避开已知错误，并与未注入日记的回放基线比较。</li>
+            <li><strong>候选转正率与驳回原因</strong>：统计 Candidate Diagnosis 通过复现或审核成为 Verified Lesson 的比例，并分析错误根因、范围过宽和证据不足。</li>
+            <li><strong>召回准确率与漏召回率</strong>：观察已发布 lesson 是否在适用任务中出现，是否错误进入不适用的任务。</li>
+            <li><strong>Lesson 采纳与避免失败率</strong>：记录 Agent 是否采用被召回的 lesson，以及同一 failure signature 是否因此消失。与不注入日记的回放基线比较。</li>
+            <li><strong>过期 lesson 使用率</strong>：已被替代、撤销或超出适用版本的 lesson 仍参与决策的比例。</li>
             <li><strong>高风险失败计数</strong>：跨租户错位等安全边界事件必须独立监控和告警，不设“可接受的小比例”。</li>
             </ul>
             <h2>最小实现</h2>
-            <pre><code>FailureEntry: failure_id / task_signature / category(enum) / summary
-              / root_cause / remediation / lessons[] / access_count
-FailureJournal:
-    record(entry)          → 重复 failure_id 累加 access_count；超额按 access+recency 淘汰
-    by_category(cat)       → 分类查询
-    recall_for_task(sig)   → embedding 相似度召回候选，再按风险和相关性重排
-    render_for_prompt()    → 格式化注入 prompt（CER 范式：执行前读取相关失败记录）
-分层留存：近期全细节 / 中期压缩摘要 / 到期删除或仅留合规允许的聚合指标
+            <pre><code>FailureEvent:
+    event_id / task_signature / category / stage / error
+    input_refs[] / tool_calls[] / system_version / trace_ref / occurred_at
+
+CandidateDiagnosis:
+    diagnosis_id / event_id / hypothesis / proposed_fix
+    proposed_by / confidence / applicability / status(candidate|rejected|verified)
+
+VerifiedLesson:
+    lesson_id / diagnosis_id / prevention_rule / recall_conditions[]
+    valid_from / valid_to / applies_to_versions[] / supersedes / review_evidence[]
+
+recall(task):
+    filter accepted lessons by tenant + scope + version + risk
+    retrieve by failure signature and semantic relevance
+    return lessons + source events + recall trace
 </code></pre>
-            <p>生产实现应使用 embedding cosine 计算相似度；在任务启动和高风险工具调用前执行召回，可通过 PreToolUse hook 接入；不同留存层使用相应后端；写入同时执行 schema 校验和基于 access_count 的清理。</p>
+            <p>生产实现要保证 FailureEvent append-only，并把候选诊断和正式 lesson 分库或分状态管理。审核过程、发布人、验证证据和替代关系都进入审计链。</p>
             <h2>场景化示例</h2>
-            <p>设想一个多租户 SaaS 客服 Agent 反复遇到工具错误、跨租户错位、上下文溢出和语义漂移。系统把 boundary_leak 设为最高优先级，按合规要求保留并在相关任务启动时强制召回；task signature 使用“租户 + 意图”，避免把一个租户的失败经验注入另一个租户；候选记录按风险和相关性重排后写入 prompt；UNKNOWN 类先进入 needs_review，经人工审核后再进入正式档案。效果应通过重复失败率、漏召回样本和安全事件复盘验证，不能用预设的改善比例代替。</p>
+            <p>设想一个多租户 SaaS 客服 Agent 反复遇到工具超时、权限错误和跨租户错位。工具 trace 与业务版本先写成 FailureEvent；模型提出的“token 过期”只进入 Candidate Diagnosis。复现确认后，系统把“刷新凭证并重新校验 tenant_id”发布为带版本范围的 Verified Lesson。任务启动时先按租户、工具版本和意图过滤，再召回相关 lesson；无法确认的新类别进入 <code>needs_review</code>。效果通过重复失败、误召回和过期 lesson 使用情况评估。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>程序性记忆（M5）</strong>：失败日记保存已知失败路径，程序性记忆保存经过验证的成功流程。</li>
             <li><strong>进度追踪（M3）</strong>：进度追踪维护当前任务步骤，失败日记跨任务保存失败记录。</li>
             <li><strong>分层保留（M1）</strong>：失败日记是长期记忆层里的专门分区，其分层留存策略正是分层思想在失败档案上的应用。</li>
             <li><strong>Self-Heal Loop（行动模块）</strong>：自愈循环处理当前任务中的失败；失败日记将失败信号持久化并在后续任务中召回。</li>
+            <li><strong>版本化记忆（候选）</strong>：失败事件保持不可变，诊断和 lesson 通过版本、替代和撤销关系演进。</li>
             </ul>
             <h2>工程判断</h2>
-            <p>失败日记保留错误现象、错误判断、根因、修复和召回条件。它比单纯的异常日志多出可复用的判断依据，使后续任务能够识别并避开已知失败路径。</p>
+            <p>失败日记的价值来自发布过程。原始事件提供证据，候选诊断允许推翻，Verified Lesson 才能跨任务复用。缺少这三层，错误经验会比遗忘传播得更稳定。</p>
 
                         <h2>企业证据</h2>
             <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>

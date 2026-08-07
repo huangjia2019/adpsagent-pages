@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3 Progress Tracking · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work">
+    <meta name="description" content="Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/m3-progress-tracking/">
@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/" class="active">M3 Progress Tracking</a>
@@ -123,7 +124,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>M3 · Progress Tracking</h1>
-                <p class="publication-deck">Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work has progressed.</p>
+                <p class="publication-deck">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -151,14 +152,14 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Across a long task, the agent explicitly maintains a structured todo list, externalizing its state on every turn so that both the agent itself and the user can see how far the work has progressed.</td>
+            <td style="text-align: left;">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>An LLM relies on the context window to retain current task information, and intermediate material in a long context may receive less attention. During extended debugging, the original plan can leave the effective working set. An agent may complete some files, become absorbed in a local defect, and then move to testing while a planned file remains uncreated.</p>
-            <p>Progress tracking catches this with engineering means: it forces the todos to be written out explicitly and repeatedly prompts the agent to look at its own list. The key point is that the list is not for humans, it is for the agent itself—an agent reading its own structured todos is far more reliable than reading its own conversation history from thirty turns ago, riddled with noise.</p>
+            <p>Progress tracking externalizes the goal, milestones, blockers, and next step, then reloads them before consequential decisions. Databases, state machines, and ledgers remain authoritative for business state. The progress record carries references and task narrative; an old summary cannot decide which operational version is current.</p>
             <h2>Classification: Memory × Orchestrate</h2>
             <ul>
             <li><strong>Vertical axis · Memory</strong>: It gives the agent a "work log" that preserves task context across steps. This is the simplest form of memory (session memory)—remembering "what I just did, what I'm doing now, what comes next."</li>
@@ -166,11 +167,13 @@
             </ul>
             <h2>Solution and mechanics</h2>
             <ol>
-            <li><strong>A minimal state machine</strong>: The core schema is extremely lean—task description, a status enum (pending / in_progress / completed), and a progressive form. The hard constraint of the state machine is that only one item is in_progress at any moment; a single-threaded agent can focus on only one thing at a time.</li>
-            <li><strong>Externalizing state into the conversation flow</strong>: On every turn, progress is written out so that both the agent and the user can see it. This is the central move against the LLM's working-memory deficit—offloading the task from working memory to external storage.</li>
-            <li><strong>Automatic clearing when everything is done</strong>: Once all todos are completed, the list is cleared automatically, so the agent does not keep seeing a stale "all done" list that interferes with judgment on a new task. This is counterintuitive but necessary, because an LLM has a "seen is attended to" property.</li>
-            <li><strong>Framework-level forced nudge</strong>: Prompt instructions alone are insufficient. The runtime should detect a complex task with no list or a task closing without verification, then inject a reminder or pause execution according to local policy.</li>
-            <li><strong>Isolation by agent / session</strong>: Each agent or sub-agent maintains its own todo pool, so that a sub-agent's detail todos do not pollute the main agent's high-level list.</li>
+            <li><strong>Goal Contract</strong>: Keep the objective, acceptance conditions, forbidden actions, and exit conditions at the top of the task ledger. Later compaction may shorten narrative but must preserve acceptance and prohibitions.</li>
+            <li><strong>Separate plan from progress</strong>: A plan describes expected steps. Progress stores each step's <code>pending / in_progress / blocked / needs_review / completed / failed</code> state, owner, dependencies, and next action. A single-threaded branch has one active step; explicit parallel branches maintain separate state.</li>
+            <li><strong>Reference authoritative business state</strong>: <code>state_refs</code> point to database records, approvals, commits, or business ledgers. Resolve them again on resume rather than treating values copied into a checkpoint as current truth.</li>
+            <li><strong>Create artifact checkpoints</strong>: At each milestone, store verifiable artifacts, state references, action receipts, and a resume cursor. Irreversible actions use idempotency keys or business receipts to prove completion.</li>
+            <li><strong>Re-anchor at risk boundaries</strong>: Reload the Goal Contract, active milestone, and prohibitions after a tool-call threshold, on failure, at a subtask switch, on resume, and before a high-risk commit.</li>
+            <li><strong>Stop on conflict</strong>: When progress conflicts with current authoritative state, acceptance criteria, or an action receipt, move to <code>needs_review</code>. The agent does not silently choose the most recent-looking prose.</li>
+            <li><strong>Isolate levels and archive history</strong>: The main agent keeps milestones and acceptance criteria; sub-agents keep local steps and return structured summaries. Completion clears the active view while preserving the event history for audit and replay.</li>
             </ol>
             <h2>Applicability</h2>
             <ul>
@@ -181,42 +184,59 @@
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing it onto a simple task</strong>: Plain conversation, one-off Q&amp;A, and work that can be completed directly usually do not need todos.</li>
-            <li><strong>Allowing multiple in_progress</strong>: Violates the hard constraint of the state machine. When an engineer complains "I want to do them in parallel," it is usually a false need—either the task should be split across multiple agents, or it should be arranged into a chain and done in sequence.</li>
-            <li><strong>Missing the active-form field</strong>: When the UI shows "what is being done," mechanically appending -ing to a verb produces splices like "Fix cache bug...ing." Using a progressive-form field forces the verb form to be thought through at the moment the todo is written.</li>
+            <li><strong>Allowing multiple in_progress in one serial branch</strong>: The next action becomes ambiguous. Real parallel work needs explicit branches or separate agents with independent state.</li>
+            <li><strong>Marking a todo complete before business state commits</strong>: A UI status is narrative. Without a database version, action receipt, or acceptance artifact, the system cannot claim that a side effect occurred.</li>
+            <li><strong>Restoring stale checkpoint values over current state</strong>: Replaying copied parameters may repeat a payment or publication and overwrite later human changes. Resolve every <code>state_ref</code> on resume.</li>
+            <li><strong>Compressing the goal into “continue processing”</strong>: Once acceptance, prohibitions, and exit conditions disappear, a local detail can become the agent's new goal.</li>
+            <li><strong>Treating a historical decision as the current decision</strong>: Retrieved discussion and old versions can pull the agent back to a superseded baseline. Authoritative decisions need accepted, superseded, or revoked status.</li>
             <li><strong>Main agent and sub-agent sharing one pool</strong>: Detail todos from sub-agents can drown out the main agent's high-level plan. Sub-agents should maintain separate lists and return structured progress upward.</li>
-            <li><strong>No framework-level nudge</strong>: If an agent performs a complex task without creating or updating todos and the runtime stays silent, progress can still disappear. Escalation should reflect task risk and execution authority.</li>
+            <li><strong>No framework-level re-anchor or nudge</strong>: The agent stops updating progress or closes work without verification, and the runtime still allows it to continue. Escalation should reflect task risk and execution authority.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Plan-omission rate</strong>: The share of long tasks that skip an item from the original plan. Compute it from replay or task audits rather than UI state alone.</li>
+            <li><strong>Goal and acceptance coverage</strong>: Each active step should map to the Goal Contract, and task closure should supply evidence for every acceptance condition.</li>
+            <li><strong>Goal-drift events</strong>: Count active steps that no longer relate to the objective, prohibitions, or active milestone.</li>
             <li><strong>Verification-step coverage</strong>: Whether applicable tasks include verification before closing. Set the requirement by task risk and record whether the nudge changes behavior.</li>
             <li><strong>Resume success rate</strong>: Whether recovery continues from persisted progress without repeating completed irreversible actions.</li>
+            <li><strong>Duplicate side-effect events</strong>: Count business actions repeated during resume, retry, or concurrency because no idempotency proof was available.</li>
+            <li><strong>State-reference freshness</strong>: Verify that <code>state_refs</code> are resolved to current versions on resume and before high-risk actions.</li>
             <li><strong>Single-in_progress compliance</strong>: A single-threaded executor must have only one active item. A violation exposes a state-machine or concurrency-boundary defect.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>TodoItem: content (verb base form) / active_form (progressive) / status (pending|in_progress|completed)
-            TodoList (isolated by owner_id):
-                start(id)    → mark in_progress, automatically pause any other in_progress back to pending (only one at a time)
-                complete(id) → mark completed
-                all_done()   → if all completed, clear automatically
-            ProgressTracker (framework-level enforcement):
-                context_loss_detected → complex task but no todos written → inject reminder
-                nudge progression: suggest → require → enforce (halting)
-                verification_nudge   → applicable task closing without verification → remind or pause closure
-            Persistence: incremental append-only + periodic snapshot + session fallback
+            <pre><code>GoalContract:
+                goal_id / objective / acceptance[] / forbidden[] / exit_conditions[]
+
+            PlanStep:
+                step_id / title / owner_id / depends_on[]
+                status(pending|in_progress|blocked|needs_review|completed|failed)
+                acceptance[] / artifact_refs[] / action_receipts[]
+
+            ProgressState:
+                active_milestone / current_step / blocked_by / next_step
+                state_refs[] / decision_refs[] / checkpoint_ref / resume_cursor
+
+            before_decision():
+                reload GoalContract + active milestone + current state_refs
+                stop on version, receipt, or acceptance conflict
+
+            checkpoint():
+                append progress event + artifact hashes + action receipts
+                snapshot the active view without replacing authoritative business state
             </code></pre>
-            <p>Four points for engineering implementation: only one in_progress at a time must be enforced; estimate complexity with a cheap model rather than by counting verbs; the three tiers of the nudge's progressive pressure need clear boundaries; isolate the TodoList by agent_id rather than sharing it.</p>
+            <p>Store progress events append-only and rebuild the active view from them. High-risk actions share one trace before and after execution. A checkpoint stores references and receipts, not a second copy of mechanical state that can become stale.</p>
             <h2>Illustrative scenario</h2>
-            <p>Consider an investment-research agent that updates a view on one company over an extended period. <code>SessionState</code> uses typed fields for the research plan, current thesis, key risks, counterviews, and data dates. <code>SessionNarrative</code> explains the overall goal, what this session advanced, and where the result should be written back. Session tasks merge into the higher-level plan; state remains diffable in git; key risks and counterviews load on each session; decisions requiring a portfolio manager enter <code>needs_review</code> before <code>completed</code>.</p>
+            <p>Consider an investment-research agent that updates a view on one company over an extended period. Its Goal Contract stores the research subject, deliverables, evidence-date requirements, and the rule that portfolio-manager approval cannot be bypassed. Each session keeps only steps that can be completed in that run, then writes reports, data snapshots, and review decisions to artifact references. Position and approval state come from business systems, while the progress ledger stores pointers. Resume refreshes those references; a conflict between the research conclusion and current position or approval state enters <code>needs_review</code> instead of continuing from an old checkpoint.</p>
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Layered Retention (M1)</strong>: Progress tracking is the hottest layer within the hierarchy. The runtime loads the active item and enough of the higher-level goal for each decision.</li>
             <li><strong>Failure Diary (M4)</strong>: A twin relationship, both in the Loop column. Progress tracking manages "the path of what was done right," the failure diary manages "the pitfalls stepped into." One records successful steps, the other records failure cases.</li>
             <li><strong>Plan-and-Execute (Reasoning module)</strong>: Progress tracking is the runtime twin of Plan. Planning produces a one-shot static list of "what we want to do"; progress tracking maintains, in a loop, the dynamic state of "how far we've gotten." Two different things—do not conflate them.</li>
             <li><strong>Hooks Pipeline (Governance module)</strong>: The framework-level nudge and persistence hook points fit the hook mechanism naturally and can be implemented with PreToolUse / PostToolUse hooks.</li>
+            <li><strong>Observability (G4)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>Progress tracking is not progress visualization for the user; it is external working memory for the agent—an engineering patch for the working-memory deficit of the agent era. Without it, the smarter the agent, the more dangerous it becomes in long tasks.</p>
+            <p>Progress tracking externalizes the direction, execution state, and recovery position of long work. The Goal Contract limits drift, authoritative references prevent stale prose from becoming truth, and artifacts plus receipts prevent repeated side effects after resume.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M3 Progress Tracking</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

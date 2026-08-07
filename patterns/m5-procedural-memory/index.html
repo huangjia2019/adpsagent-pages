@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M5 Procedural Memory · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Freeze the successful execution flow of a class of tasks into a named, loadable, reusable structured asset. The next time the same kind of task arrives, the agent calls it directly">
+    <meta name="description" content="Publish a verified method as a named, triggerable, versioned instruction or executable asset, and recertify it when dependencies change.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/m5-procedural-memory/">
@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -123,7 +124,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>M5 · Procedural Memory</h1>
-                <p class="publication-deck">Freeze the successful execution flow of a class of tasks into a named, loadable, reusable structured asset. The next time the same kind of task arrives, the agent calls it directly, skipping trial-and-error and going straight to the main path.</p>
+                <p class="publication-deck">Publish a verified method as a named, triggerable, versioned instruction or executable asset, and recertify it when dependencies change.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -151,7 +152,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Freeze the successful execution flow of a class of tasks into a named, loadable, reusable structured asset. The next time the same kind of task arrives, the agent calls it directly, skipping trial-and-error and going straight to the main path.</td>
+            <td style="text-align: left;">Publish a verified method as a named, triggerable, versioned instruction or executable asset, and recertify it when dependencies change.</td>
             </tr>
             </tbody>
             </table>
@@ -169,12 +170,14 @@
             <li><strong>Three-stage loading</strong>: At startup, load only each skill's name and description (discovery); read the full SKILL.md when a task matches (activation); load scripts and resources on demand during execution. This prevents the whole library from occupying startup context.</li>
             <li><strong>Two sources</strong>: handwritten with care (the Anthropic Agent Skills route—reviewed, versioned, committed to git) and auto-distilled by the agent (the Hermes route—written by the agent itself after finishing a task). The source field affects the trust level.</li>
             <li><strong>Auto-distillation</strong>: After a complex task succeeds, the agent analyzes the trajectory and writes a candidate skill describing input, tool sequence, and output contract. Triggering should consider complexity, reuse value, and user corrections rather than a fixed tool-call count.</li>
-            <li><strong>Human- and machine-readable format</strong>: Use markdown plus YAML frontmatter—humans can read it, git can diff it, and the agent can read it too. A format readable by both humans and machines beats any format designed purely for machines.</li>
-            <li><strong>Lifecycle management</strong>: Track each skill's use_count and success_rate; automatically evict low-success-rate skills (the moves that keep misleading the agent), and move skills that are not recalled for a long time into a cold tier. Production infrastructure changes, and a stale skill turns from a "move" into a "trap."</li>
+            <li><strong>Human- and machine-readable format</strong>: Use markdown plus YAML frontmatter so people can review it, git can diff it, and an agent can load the same source.</li>
+            <li><strong>Two compilation levels</strong>: Instruction assets use a SKILL.md, runbook, or workflow while preserving agent judgment for exceptions. Executable assets compile stable calculations or operations into code; runtime work is reduced to intent matching, parameter validation, and invocation. This reduces generation variance when the intent space is bounded, while permissions, receipts, and failure handling remain mandatory.</li>
+            <li><strong>First-run certification</strong>: Exercise a candidate in replay, shadow, or a controlled environment with known success cases, failures, and boundary conditions. Promotion to <code>active</code> records reviewer, evidence, and dependency versions.</li>
+            <li><strong>Lifecycle management</strong>: Track use count, success, human correction, and dependency versions. A trigger, tool schema, or service change moves the asset to <code>needs_revalidation</code>. Retirement preserves the reason and a rollback version.</li>
             </ol>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Periodic, templated tasks</strong>: The same class of task recurs, has a relatively stable successful path, and has clear entry and exit conditions. Standard DevOps operations incidents (cluster configuration changes, batch restarts, backup and restore) are the best scenario.</li>
+            <li><strong>Periodic, templated tasks</strong>: The same class of task recurs, has a relatively stable successful path, and has clear entry and exit conditions. Cluster configuration changes, batch restarts, and backup and restore are common examples.</li>
             <li><strong>Distilling enterprise process</strong>: A law firm's client-tiering logic, a hospital's emergency triage, or a company's refund flow can be written into SKILL.md as a reviewable organizational asset.</li>
             <li><strong>Scenarios that require judgment during execution</strong>: A skill provides the "usually do it this way" paradigm, and the agent retains its judgment after loading it—deciding which steps to follow verbatim, which to adjust to the current context, and when to abandon the skill and explore instead. This is the key thing that distinguishes it from rigid RPA.</li>
             </ul>
@@ -183,8 +186,11 @@
             <li><strong>Forcing distillation when every task is different</strong>: Tasks like open-domain research cannot distill a fixed flow; forcing them into a skill is a waste.</li>
             <li><strong>Tasks that run only once</strong>: The cost of distillation exceeds the reuse benefit; it should not be done.</li>
             <li><strong>Freezing too early while the successful path is still changing</strong>: Freezing before the underlying flow has stabilized turns the skill into a shackle for the agent.</li>
+            <li><strong>Heavily compiling an open task space</strong>: Executable assets need enumerable intents and stable inputs. When request structure keeps changing, return to instruction assets or continued exploration.</li>
             <li><strong>Adopting procedural memory before the process is mapped out</strong>: The same trap as enterprise RAG—wrong schema fields, vague trigger conditions, no lifecycle design, and even the best system spins idle. Map out the process before building enterprise procedural memory.</li>
             <li><strong>Putting auto-distilled skills straight into production</strong>: Skills the agent distills itself should enter a "probation period" of dual-track execution (run one pass by the skill and one pass by exploration, and promote only after they agree multiple times), and the first recall should carry an annotation reminding "this was auto-distilled; verify before following it." Auto-distilled and handwritten skills need tiered trust—in enterprise agents this is a compliance requirement.</li>
+            <li><strong>Compiling code without its contract</strong>: The procedure runs, but preconditions, permission scope, acceptance, idempotency, and rollback are absent. It produces unexplained side effects faster.</li>
+            <li><strong>Calling an asset after dependencies change</strong>: Tool parameters, data schemas, or policy change while the skill remains active. Dependency versions must participate in certification and invalidation.</li>
             <li><strong>A library that only grows</strong>: Without a lifecycle, stale, low-success-rate skills keep misleading the agent.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -193,20 +199,27 @@
             <li><strong>Skill success rate</strong>: The share of tasks that succeed after calling a skill. A sustained decline from its own baseline may indicate stale infrastructure, triggers, or acceptance checks.</li>
             <li><strong>Token / time cost</strong>: Compare skill reuse with exploration on comparable tasks while checking output quality and safety.</li>
             <li><strong>Auto-distillation promotion rate</strong> (a business judgment): the proportion of auto-distilled moves that pass probation and become formal skills; too low indicates a problem with the distillation trigger conditions or the quality checks.</li>
+            <li><strong>Certification validity</strong>: Verify that active assets still match current tools, schemas, policies, and test evidence.</li>
+            <li><strong>Fallback and human-takeover rate</strong>: Check whether executable assets stop safely at boundary conditions instead of improvising.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Skill = the structured form of a SKILL.md:
                 name / description (used for discovery) / body (workflow + best practices)
                 triggers[] / preconditions[] / steps[] / failure_handling[]
-                source(human|agent|refined) / use_count / success_rate
+                mode(instruction|executable) / source(human|agent|refined)
+                acceptance[] / permissions[] / idempotency / rollback
+                dependency_versions{} / status(candidate|active|needs_revalidation|retired)
+                review_evidence[] / use_count / success_rate
             SkillLibrary:
                 discover()                    → at startup, return only name + description
-                activate(task, top_k)         → when a task arrives, recall the top-K full skills by similarity
+                activate(task, top_k)         → match trigger, scope, versions, and preconditions
+                certify(candidate, replay_set)→ publish after replay, boundary cases, and review
                 mark_used(name, success)      → record the success rate after execution
                 distill_from_trajectory(...)  → create a candidate when complexity, success, and reuse criteria hold
-                evict_stale(...)              → remove low-success-rate or long-unused skills
+                invalidate_on_dependency(...) → move to needs_revalidation after dependency change
+                retire(...)                   → leave the active set with reason and rollback version
             </code></pre>
-            <p>For deployment, use a structured prompt and schema validation for distillation; require task success, non-trivial logic, reuse value, and limited user correction; track lifecycle evidence; and assign auto-distilled skills a lower trust tier than reviewed human-authored skills.</p>
+            <p>Distillation creates a candidate, not a production capability. Publication validates triggers, input range, permission, acceptance, and fallback, then records dependency versions. Auto-distilled and human-authored skills retain different trust levels.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider an operations team using a DevOps agent for recurring Redis configuration changes, Kubernetes restarts, and PostgreSQL backup and restore. Reviewed runbooks live under <code>runbooks/</code>; auto-distilled candidates live under <code>auto-skills/</code> and enter a review queue. Triggers use testable keywords or regular expressions, preconditions check access and namespace, and each step is idempotent or includes rollback. Candidate skills run in shadow or replay before human approval. Any time or token reduction must be measured against comparable local tasks.</p>
             <h2>Related patterns</h2>
@@ -215,9 +228,10 @@
             <li><strong>Failure Journal (M4)</strong>: A twin relationship—together they form the agent's experience base. Procedural memory retains "the work done right," the failure journal retains "the traps stepped into." One records successes, the other records failures.</li>
             <li><strong>Layered Retention (M1)</strong>: In the same Hierarchy column. M1 is the shelf (the container), M5 is the dedicated moves section on that shelf. The skill library itself is also layered (atomic to composite to workflow).</li>
             <li><strong>RAG (M2)</strong>: Two complementary kinds of memory. RAG handles declarative ("what is known," fact retrieval), M5 handles procedural ("what can be done," flow reuse). In enterprise agent deployments the two play together.</li>
+            <li><strong>Approval Gate and Guardrail Sandwich</strong>: Executable procedural memory shortens the reasoning path but does not remove approval, parameter validation, or post-action acceptance for high-risk work.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>Procedural memory is not a workflow template; it is the agent's professional competence—it lets the agent acquire a veteran's craft while keeping its judgment, and the agent's value scales with the experience it accumulates rather than with how clever it is today.</p>
+            <p>Procedural memory turns one successful run into a reviewable capability asset. Its value comes from stable triggers, explicit contracts, and continued certification; storing the trajectory alone is insufficient.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M5 Procedural Memory</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
