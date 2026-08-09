@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS Design Pattern Workshop Series · First Memory Module Workshop · ADPS</title>
+    <meta name="description" content="Adoption criteria, engineering boundaries, lifecycle, storage forms, and governance of agent memory.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/memory-2026-08-05/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/memory-2026-08-05/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/memory-2026-08-05/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/memory-2026-08-05/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern White Paper</a><span style="margin: 0 0.45rem;">/</span>Workshops<span style="margin: 0 0.45rem;">/</span>Memory</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Workshop</p>
+                <h1>ADPS Design Pattern Workshop Series · First Memory Module Workshop</h1>
+                <p class="publication-deck">Adoption criteria, engineering boundaries, lifecycle, storage forms, and governance of agent memory.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Date</dt><dd>2026-08-05</dd></div>
+                    <div><dt>Module</dt><dd>Memory</dd></div>
+                    <div><dt>Document type</dt><dd>Workshop record</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hosts</strong></td>
+<td style="text-align: left;">Haofen Wang, Jia Huang</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Core experts</strong></td>
+<td style="text-align: left;">Yingfeng Zhang, Qiuai Fu, Dong Zhang, Mo Zhou, Yutao Chen, Qingfeng Li</td>
+</tr>
+</tbody>
+</table>
+<p>ADPS held its first workshop on the Memory module on 5 August 2026. The discussion began with a basic design question: what deserves to persist beyond one context window, and when does that requirement justify a dedicated memory system? From there, the group examined admission, retrieval tools, version conflicts, forgetting, procedural memory, and parametric memory.</p>
+<p>This page organizes the discussion by engineering question and records how it changed the Memory module overview and the M1–M5 specifications.</p>
+<h2>1. Decide whether the system needs a memory service</h2>
+<p>Qingfeng Li compared product choices for different user groups. When developers can maintain stable preferences and project rules in repository files, those files already perform the memory function. Non-technical users are less likely to keep such material current, which creates a stronger case for automatic extraction, recall, and revision.</p>
+<p>Qiuai Fu noted that coding agents can read language, framework, and project conventions directly from the local environment. Producing a second natural-language copy introduces another source of error. The remaining memory work covers extraction, retrieval, and periodic consolidation.</p>
+<p>The workshop therefore placed two questions before storage selection:</p>
+<ol>
+<li>Does the information require dynamic writing, reuse across sessions, and automatic recall?</li>
+<li>Are users willing and able to maintain explicit rules themselves?</li>
+</ol>
+<p>Once these answers are clear, a team can choose among repository files, a database, or a dedicated memory service.</p>
+<h2>2. Memory has a full lifecycle</h2>
+<p>Haofen Wang placed memory in the context of long-term adaptation and organizational experience. A production design has to answer seven questions together: what to retain, when to retain it, how to organize it, how to retrieve it, how to update it, when to forget it, and how to reuse it across sessions or groups. Vector insertion followed by similarity search covers only part of that lifecycle.</p>
+<p>The discussion also established three engineering boundaries:</p>
+<ul>
+<li>A <strong>knowledge base</strong> holds reusable domain material. Memory records how a particular user, task, or system used that material and what happened during the work.</li>
+<li>A <strong>data ontology</strong> defines the entities, properties, and relationships in a business domain. Memory records experience gained while an agent works with those objects.</li>
+<li>A <strong>control plane</strong> owns current authoritative state. Approval results, business status, and receipts for irreversible actions belong in databases, state machines, or ledgers. Memory may retain references, explanations, and history.</li>
+</ul>
+<p>These boundaries now appear in the Memory module overview.</p>
+<h2>3. Design writing and retrieval separately</h2>
+<p>Yingfeng Zhang described a write-time process that turns documents, logs, and sessions into summaries, entities, events, navigation structures, and pointers to source material. He calls this process knowledge compilation. The read side needs a retrieval harness: exact full-text matching, multi-vector search, navigation, relational queries, and source traversal all cover different access paths. Pure vector search does not provide that complete toolset.</p>
+<p>This discussion changed the emphasis of M2. The specification now covers both the write pipeline and the read pipeline, and it requires retrieval output to carry version, time, scope, source pointers, and trace context. Knowledge Compilation remains a candidate pattern while ADPS collects schemas and evaluation methods.</p>
+<h2>4. Writing requires admission, versioning, and retirement</h2>
+<p>Dong Zhang discussed hierarchical retention, hit scoring, offline review, and intrinsic memory. The group made an important distinction: hit count measures use, while correctness requires a separate signal. Reading published higher-level memory and releasing revisions should also follow different paths. A runtime agent should not directly overwrite published medium- or long-term memory.</p>
+<p>Mo Zhou covered forgetting, dynamic ontologies, collective memory, and snapshots. Retirement policy depends on the domain; time, access frequency, correctness, business risk, and scope may all affect it. Collective memory needs sharing boundaries, admission rules, and propagation controls so that one bad lesson does not spread across agents, projects, or tenants.</p>
+<p>Yutao Chen separated explicit, activated, and parametric memory, and discussed coexisting versions, timestamps, and decoupling the agent from the memory layer. This view expanded M1 beyond a single scope hierarchy. The specification now treats scope, functional type, and access tier as independent dimensions.</p>
+<h2>5. The boundary of procedural memory</h2>
+<p>Mo Zhou also described Code Act, in which a stable lesson is compiled into executable code. It fits bounded tasks with stable definitions and a need for exact reproduction. The first generated program still requires acceptance, and changes to schemas, rules, or dependencies trigger recertification. Open-ended domains create too many variants for this approach to remain economical.</p>
+<p>M5 now covers first-use acceptance, an applicability envelope, and recertification after invalidating changes. It remains an extension pattern.</p>
+<h2>6. Changes made to the white paper</h2>
+<p>The workshop led to the following revisions:</p>
+<ol>
+<li>The module overview now begins with adoption criteria and the boundaries with knowledge bases, ontologies, and control planes.</li>
+<li>M1 now covers a candidate pool, admission, hierarchy, versioning, retirement, and proof of deletion.</li>
+<li>M2 occupies the single Memory × Chain coordinate and specifies write pipelines, multiple indexes, and the retrieval harness.</li>
+<li>M3 adds a goal contract, references to authoritative state, artifact checkpoints, and side-effect deduplication after recovery.</li>
+<li>M4 separates raw failure facts, candidate diagnoses, and validated lessons; active recall reads only published lessons.</li>
+<li>M5 adds first-use acceptance, an applicability envelope, and recertification after invalidating changes.</li>
+</ol>
+<p>Memory Admission, Knowledge Compilation, and Versioned Memory remain candidate mechanisms. ADPS will evaluate each on its own evidence rather than add patterns to fill empty matrix cells.</p>
+<h2>7. Open questions</h2>
+<ul>
+<li>How can unattended candidate memory be kept from promoting temporary guesses into long-term recall?</li>
+<li>What reviewable migration and rollback path can connect explicit, activated, and parametric memory?</li>
+<li>How can a dynamic ontology accept new concepts while old tasks remain reproducible?</li>
+<li>How should collective memory evaluate sharing scope, write authority, and error propagation?</li>
+<li>How should memory evaluation cover writing, retrieval, use, and retirement in one test program?</li>
+</ul>
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/memory/">Memory module overview</a></li>
+<li><a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a></li>
+<li><a href="/patterns/m2-rag-pipeline/">M2 Retrieval-Augmented Generation</a></li>
+<li><a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a></li>
+<li><a href="/patterns/m4-failure-journals/">M4 Failure Journals</a></li>
+<li><a href="/patterns/m5-procedural-memory/">M5 Procedural Memory</a></li>
+<li><a href="/founders/#white-paper-contributors">White Paper contributors</a></li>
+</ul>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

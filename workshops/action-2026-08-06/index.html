@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS Design Pattern Workshop Series · First Action Module Workshop · ADPS</title>
+    <meta name="description" content="Plan and ReAct, structured plans, tool admission, GUI action, sandboxes, and event-driven execution.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/action-2026-08-06/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/action-2026-08-06/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/action-2026-08-06/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/action-2026-08-06/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern White Paper</a><span style="margin: 0 0.45rem;">/</span>Workshops<span style="margin: 0 0.45rem;">/</span>Action</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Workshop</p>
+                <h1>ADPS Design Pattern Workshop Series · First Action Module Workshop</h1>
+                <p class="publication-deck">Plan and ReAct, structured plans, tool admission, GUI action, sandboxes, and event-driven execution.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Date</dt><dd>2026-08-06</dd></div>
+                    <div><dt>Module</dt><dd>Action</dd></div>
+                    <div><dt>Document type</dt><dd>Workshop record</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Discussion host</strong></td>
+<td style="text-align: left;">Bingsheng Ru</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Core participants</strong></td>
+<td style="text-align: left;">Qingfeng Li, Dong Zhang, Jun Luo, Hongshan Tang, Wei Wang, Pylon Peng, Leida Ren</td>
+</tr>
+</tbody>
+</table>
+<p>ADPS held its first workshop on the Action module on 6 August 2026. The group examined how an agent turns a judgment into an operation that an external system can accept, inspect, and recover. The discussion drew on code development, security scanning, GUI automation, R&amp;D platforms, multimodal evaluation, and multi-agent collaboration.</p>
+<p>The session ended with two open questions: where Event-Driven belongs in the framework and how much of a Plan DSL can remain stable across domains. Both affect A1–A5 and the candidate status of C6 Choreography.</p>
+<h2>1. Route between Plan and ReAct by task risk</h2>
+<p>Qingfeng Li described a loop that connects code generation, review, testing, and repair. Such a loop depends on explicit acceptance conditions: whether tests pass, whether the repair addresses the original failure, and whether the change reaches human review. Model capability affects the speed of the loop; acceptance conditions determine where it stops.</p>
+<p>Bingsheng Ru and Wei Wang treated a plan for complex work as a recoverable navigation map. Each step needs state, an artifact, and a checkpoint so that an interrupted task can resume from confirmed progress. Small, low-risk work can run directly through ReAct. Long-running work, production environments, and irreversible operations require an explicit plan.</p>
+<p>Dong Zhang distinguished offline creative environments from online production. The former can allow experimentation and wider model freedom. The latter needs a fixed pipeline, structured inputs and outputs, and controlled release intervals. Production data can drive offline revisions, which return only after testing and review.</p>
+<p>Plan granularity is selected from task length, action consequence, recovery requirements, and the environment's tolerance for error.</p>
+<h2>2. A structured plan is a compilable execution contract</h2>
+<p>Bingsheng Ru proposed expressing plans as structured data or a domain DSL, then checking legality, dependencies, constraints, and cost before execution. An executable plan needs at least a step identifier, dependencies, expected artifacts, acceptance conditions, allowed tools, and a recovery position. Once these fields exist, the system can detect parallel work, repeated reads, and uneconomical ordering.</p>
+<p>Dong Zhang's domain DSL experience showed why one language rarely transfers unchanged across static analysis, supply-chain scanning, and other tool families. The white paper therefore puts the stable core in a PlanStep contract while domain verbs, parameters, and validators remain in adapters.</p>
+<h2>3. Action interfaces need an explicit order of preference</h2>
+<p>Jun Luo described a combination of fixed paths, dynamic GUI reasoning, and edge-cloud execution. Short tasks use verified static routes. Complex tasks retain dynamic recognition and orchestration. Edge processing performs coarse interpretation and compaction before cloud calls. When a structured interface exists, a Skill or API provides stable parameters and receipts; GUI execution covers capabilities that have not exposed such an interface.</p>
+<p>Wei Wang's evaluation platform organizes capability as a main agent, role-specific sub-agents, Skills, and CLIs. Skills load on demand, and a sub-agent sees only the tools required for its role. Coding and testing use separate execution and review roles so that one path does not both generate and approve its own work.</p>
+<p>These practices give A1 and A5 a common rule: prefer structured interfaces, disclose capability by responsibility, and admit GUI execution only with explicit authorization and acceptance evidence.</p>
+<h2>4. Tool execution needs sandboxes and release gates</h2>
+<p>Dong Zhang keeps online pipelines within tested formats, tools, and confidence bounds. A model may participate in classification and initial handling, while deterministic flow owns release. Offline revisions use production evidence without allowing a runtime agent to rewrite its production contract.</p>
+<p>Hongshan Tang's R&amp;D platform decides after intent recognition whether a task needs a sandbox. Commands and local tools run in a dynamically created sandbox with role, Skill, prompt, and agent configuration. Reasoning and scheduling remain in the main process. This boundary makes command side effects observable and disposable.</p>
+<p>The discussion directly supports A4 Guardrail Sandwich: validate permissions, parameters, and environment before execution; run the tool inside an isolation boundary; verify artifacts and side effects afterward.</p>
+<h2>5. Production workflows compose several topologies</h2>
+<p>Hongshan Tang described an R&amp;D support system that combines routing, multi-source retrieval, sub-agents, sandboxes, and iterative validation. Short tasks can run directly, while work that needs clarification or more context begins with a plan. Index and knowledge services provide candidates, a routing layer chooses an access path, and commands enter a sandbox.</p>
+<p>Pylon Peng presented a cross-project development flow. Sub-agents scan task sources in parallel; a main agent aggregates and orchestrates; routing sends work to the relevant repository; design and quality checks converge through loops. People intervene mainly at design confirmation and final acceptance.</p>
+<p>Both cases show that a topology describes a local control structure. One production workflow may use parallelism, routing, orchestration, loops, and hierarchy at different stages without assigning a single topology label to the whole system.</p>
+<h2>6. Event-driven defines triggering and delivery; choreography defines collaboration</h2>
+<p>Bingsheng Ru asked whether Event-Driven should become a seventh execution topology. Qingfeng Li made a useful distinction: a loop uses a termination condition to decide whether to continue, while an event uses a trigger condition to decide when to start. Wei Wang added the persistence value of a queue; an event can wait while a downstream agent is unavailable. Leida Ren supplied a multi-agent example in which one agent's action emits an event that other agents consume.</p>
+<p>Pylon Peng and Hongshan Tang challenged the seventh-topology classification. An event explains how work starts and travels. Once started, the work still takes the form of a chain, route, parallel branch, orchestration, loop, or hierarchy. Event listening may also be part of perception.</p>
+<p>ADPS currently separates the concepts as follows:</p>
+<ul>
+<li><strong>Event-driven execution</strong> defines triggers, delivery, waiting, and replay.</li>
+<li><strong>Execution topology</strong> defines how control unfolds after work begins.</li>
+<li><strong>Choreography</strong> defines collaboration among agents that react through local rules and events without a central orchestrator.</li>
+</ul>
+<p>The workshop recorded an existing multi-agent practice that uses events for collaboration. C6 Choreography remains a candidate, and Event-Driven does not become a seventh core topology column in this release.</p>
+<h2>7. Changes made to the white paper</h2>
+<ol>
+<li><strong>A1 Tool Dispatch</strong> now emphasizes capability registration, candidate reduction, interface preference, and admission criteria for GUI fallback.</li>
+<li><strong>A2 Plan-and-Execute</strong> treats a plan as a versioned structured contract whose steps carry dependencies, artifacts, acceptance conditions, and recovery positions.</li>
+<li><strong>A3 Prompt Chaining</strong> passes structured artifacts between steps and releases each artifact only after its stage check succeeds.</li>
+<li><strong>A4 Guardrail Sandwich</strong> defines pre-execution validation, isolated execution, and post-execution verification, with command tools directed to sandboxes.</li>
+<li><strong>A5 Minimal Tool Set</strong> uses responsibility boundaries and progressive disclosure to control the tool surface.</li>
+<li><strong>C6 Choreography</strong> remains a candidate extension pending independent evidence across more cognitive functions and documented failure cases.</li>
+</ol>
+<h2>8. Open questions</h2>
+<ul>
+<li>Which Plan DSL fields can remain stable across domains, and which belong in domain adapters?</li>
+<li>What measurable threshold should move a task from direct ReAct to an explicit plan?</li>
+<li>What authorization, UI evidence, and failure receipt should a GUI fallback produce?</li>
+<li>How should a sandbox connect commands, file changes, network access, and resource use to one Action trace?</li>
+<li>What interfaces should connect event-driven mechanisms to perception, governance, and choreography?</li>
+</ul>
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a></li>
+<li><a href="/patterns/a2-plan-and-execute/">A2 Plan-and-Execute</a></li>
+<li><a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a></li>
+<li><a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a></li>
+<li><a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set</a></li>
+<li><a href="/patterns/c6-choreography/">C6 Choreography</a></li>
+<li><a href="/founders/#white-paper-contributors">White Paper contributors</a></li>
+</ul>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
