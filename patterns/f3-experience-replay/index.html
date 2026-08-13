@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F3 Experience Replay · Pattern White Paper · ADPS</title>
-    <meta name="description" content="When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learn">
+    <meta name="description" content="Extract experience from trajectories, human hand-offs, and delayed outcomes. Retrieve applicable parts for a new task and retain evidence of adoption and result.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/f3-experience-replay/">
@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -60,6 +61,7 @@
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
               <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/" class="active">F3 Experience Replay</a>
@@ -123,7 +125,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>F3 · Experience Replay</h1>
-                <p class="publication-deck">When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</p>
+                <p class="publication-deck">Extract experience from trajectories, human hand-offs, and delayed outcomes. Retrieve applicable parts for a new task and retain evidence of adoption and result.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
@@ -151,7 +153,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</td>
+            <td style="text-align: left;">Extract experience from trajectories, human hand-offs, and delayed outcomes. Retrieve applicable parts for a new task and retain evidence of adoption and result.</td>
             </tr>
             </tbody>
             </table>
@@ -161,8 +163,8 @@
             <p>Experience Replay solves the same problem inside an agent system by keeping historical trajectories from becoming silent assets. When a new task arrives, it retrieves similar past trajectories (successful, failed, or fragmentary) and injects the reusable parts into the current context. Its difference from Skill Package is one of granularity: a Skill Package holds verified, callable units, while Experience Replay holds broader reference assets that may still require adaptation. Research on contextual experience replay suggests that this can work without model retraining; production value still has to be reproduced against a local baseline.</p>
             <h2>Classification: Reflection × Hierarchy</h2>
             <ul>
-            <li><strong>Vertical axis · Reflection</strong>: What was learned should not be learned in vain; it is fed back into later tasks. This is reflection grounded in looking back over history. It neither changes the present output (Generator-Critic) nor solidifies into a callable unit (Skill Package); instead it treats complete past experience as a reference asset for the agent to draw on.</li>
-            <li><strong>Horizontal axis · Hierarchy</strong>: Historical trajectories form an "upper experience layer" that wraps around the current decision—the upper layer of experience supplies reference and constraint for the present action below. Experience itself is also stored in layers: raw trajectories, extracted lessons, reusable artifacts, candidates for promotion to skills—from coarse to fine. A multi-level structure in which the upper layer parametrizes the lower one is exactly the essence of the Hierarchy topology, distinct from the single "route to which skill" choice in Skill Package.</li>
+            <li><strong>Vertical axis · Reflection</strong>: The system reviews previous tasks and feeds applicable evidence into later work. It uses complete experience as reference material without requiring that every entry become a callable skill.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: Historical evidence sits above the current task as a reference layer. The store is also layered into raw trajectories, extracted lessons, reusable artifacts, and candidates for promotion to skills. This differs from F2, where runtime routing selects a packaged capability.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>An Experience Replay loop has six segments: Task → Retrieve → Adapt → Execute → Distill → Store. Two core design judgments decide whether it can be industrialized:</p>
@@ -198,6 +200,14 @@
             <ol start="2">
             <li><strong>Training-free injection</strong>: Retraining the LLM is too expensive. CER's approach is to inject past trajectories (after trimming and summarization) as context into the current prompt, letting the LLM do in-context learning within the context window and skipping the training stage. During retrieval, experience with high effectiveness and successful outcomes is prioritized; after reuse, effectiveness is written back—useless lessons are automatically deprecated.</li>
             </ol>
+            <p>A production system also separates <strong>experience formation from experience use</strong>. Runtime retrieval reads only released experience. An offline process groups traces, human hand-offs, and business outcomes, consolidates duplicate local patches, adds applicability conditions, and publishes an experience only after replay and review.</p>
+            <p>Feedback latency matters. Code tasks may receive a test result within minutes; recommendations, service decisions, and operating changes may take days to show an outcome. Store <code>trajectory_id</code>, runtime version, contemporaneous evidence, and the later outcome label. Without that link, an entry can be marked as verified simply because it looked reasonable when the task ended.</p>
+            <h2>Online use and offline curation</h2>
+            <ul>
+            <li><strong>Online</strong>: Retrieve by task type, environment version, and risk label; run an applicability check; record which experience influenced which step.</li>
+            <li><strong>Offline</strong>: Compare batches of trajectories, hand-offs, and delayed outcomes; merge repeated patches; then replay, review, publish, down-rank, or archive the result.</li>
+            </ul>
+            <p>The online path optimizes latency and rollback. The offline path optimizes coverage and consistency. Writing every runtime patch straight into the shared store creates a growing set of exceptions, conflicts, and retrieval cost.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Agents with long cumulative runtime</strong>: Customer service, operations, and data analysis are suitable when tasks recur and experience can accumulate. The benefit grows with the quality and coverage of the experience store.</li>
@@ -210,6 +220,8 @@
             <li><strong>Stale-lesson drift</strong>: An experience that was once correct may no longer apply after a product revision, yet the agent keeps injecting it. Bind experience to system versions, downweight stale entries, and review or deprecate them on an explicit schedule.</li>
             <li><strong>Retrieval-bias amplification</strong>: Embedding similarity does not equal task-structure similarity. "User growth analysis" retrieves "user churn analysis" experience and forces the churn funnel framework onto growth—growth and churn are inverse problems. The defense is to add a task-type classifier for coarse filtering, block cross-type retrieval, and have the LLM perform a second applicability review after retrieval.</li>
             <li><strong>Unstructured bulk dump</strong>: Cramming every trajectory into a vector DB and letting the agent pick on its own, with no multi-level layering.</li>
+            <li><strong>Misattributing a delayed outcome</strong>: If a later business result cannot be linked to the original trajectory, version, and time window, the system may reward the wrong experience.</li>
+            <li><strong>Accumulating local patches</strong>: Each runtime failure appends a special rule. Short-term recovery turns into long-term retrieval noise and execution latency unless offline curation consolidates or removes the patches.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
@@ -217,6 +229,8 @@
             <li><strong>Effectiveness evidence</strong>: Compare outcomes when an experience is used with an appropriate baseline, and keep sample size and task type visible. Archive lessons that repeatedly fail review or provide no benefit.</li>
             <li><strong>Store coverage and retrieval count</strong>: During cold start, track whether representative tasks are being captured and whether retrieval reaches the right task families.</li>
             <li><strong>Quality gain</strong>: Compare replay-enabled runs with a no-replay baseline on a fixed set. Treat it as a lagging indicator and report retrieval cost alongside it.</li>
+            <li><strong>Trajectory-to-outcome linkage</strong>: Measure how many delayed outcomes can be connected to the exact task, version, and evidence available at execution time.</li>
+            <li><strong>Negative transfer and patch debt</strong>: Track tasks that regress after experience injection and local patches that remain unreviewed or unconsolidated.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code># Retrieve + inject (CER training-free)
@@ -226,18 +240,21 @@
             context += render(heuristics)
 
             result = agent.run(task, prior_context=context, trajectory_collector=traj)
+            record_adoption(task.id, past, result.trajectory)  # which experience changed which step
 
-            # Record new experience (auto-distill high-level, use a cheap model)
-            record(task, traj, outcome, author_id)     # high + low two layers
+            # Record facts first; do not publish a lesson directly
+            record_trace(task, traj, immediate_outcome, author_id, runtime_version)
+            attach_delayed_outcome(task.id, delayed_outcome)
 
             # Write back effectiveness (lesson accuracy feedback loop)
             for e in past:
                 update_effectiveness(e, current_task_succeeded=result.ok)
 
-            # Distill L2 only after the configured evidence threshold and review
-            periodic_distill_L2(signature, policy=distillation_policy)
+            # Consolidate local patches offline and publish only after replay and review
+            candidate = consolidate_patches(signature, traces, outcomes)
+            publish_L2(candidate, when=replay_passed and review_approved)
             </code></pre>
-            <p>Four engineering points: choose embedding and distillation models from measured retrieval quality and operating cost; keep outcome evidence instead of collapsing it into an unexplained score; do not skip <code>author_id</code> and source metadata, because users may need to inspect or consult the original owner; and use semantic task features rather than an opaque hash for <code>task_signature</code>.</p>
+            <p>Choose embedding and distillation models from measured retrieval quality and cost. Keep outcome evidence rather than an unexplained score. Store <code>author_id</code>, <code>trajectory_id</code>, runtime version, and provenance. Use semantic task features rather than an opaque hash for <code>task_signature</code>. Runtime retrieval reads released experience; candidate lessons remain in the offline curation area.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a data team investigating why retention did not improve after a product change. Different analysts may repeat the same cohort analysis and miss a shared confounder, while a useful historical report remains buried in a document system after its author leaves. Experience Replay can retrieve that report and its heuristic about checking time-window effects, then inject the high-level method together with the original SQL, author, sources, and time range. A reviewer still decides whether the old conditions apply. The reusable design lies in layered storage, provenance, applicability review, and feedback after reuse; any claim about saved effort would require project records from a named case.</p>
             <h2>Related patterns</h2>
@@ -246,8 +263,14 @@
             <li><strong>Failure Journals (memory module)</strong>: A shared-source input. Failure Journals supplies the library of failed trajectories, Experience Replay supplies the retrieval-plus-injection mechanism, and the two work together. After AgentHER, failed trajectories also became high-value training material.</li>
             <li><strong>Generator-Critic (F1)</strong>: A progression in level. Generator-Critic changes a single output, while Experience Replay lets accumulated experience be reused across tasks.</li>
             </ul>
-            <h2>Design conclusion</h2>
-            <p>Experience Replay belongs to the class of reflection-engineering patterns whose value accumulates with use. It turns scattered, fragmentary experience inside an organization into a retrievable asset. An agent's maturity can then be judged by whether later runs use earlier evidence more effectively, rather than by the apparent cleverness of one isolated run.</p>
+            <h2>Engineering judgment</h2>
+            <p>Experience Replay organizes historical trajectories, summaries, and reusable artifacts as evidence-bearing retrieval assets. Its value should be measured through later task outcomes, negative transfer, and human hand-off, with delayed outcomes linked back to the original run.</p>
+            <h2>Further reading</h2>
+            <ul>
+            <li><a href="https://adpsagent.com/patterns/reflection/">Reflection module: Make feedback change the system</a></li>
+            <li><a href="https://adpsagent.com/workshops/reflection-2026-08-12/">First Reflection workshop, 12 August 2026</a></li>
+            <li><a href="https://docs.langchain.com/langsmith/evaluation">LangSmith Evaluation</a></li>
+            </ul>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>F3 Experience Replay</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

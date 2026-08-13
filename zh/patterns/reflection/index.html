@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反思模块总纲 · Agent 设计模式白皮书 · ADPS</title>
+    <meta name="description" content="ADPS 反思模块总纲：反馈证据、在线与离线回路、反馈延迟、修改权限及四个模式的分工。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/reflection/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/reflection/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/reflection/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/" class="active">反思模块总纲</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>Reflection
+            </p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
+                <h1>反思模块 · 让反馈真正改变系统</h1>
+                <p class="publication-deck">反馈证据、在线与离线回路、修改权限、正式模式与待研究方向。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>修订日期</dt><dd>2026-08-13</dd></div>
+                    <div><dt>文档类型</dt><dd>反思模块总纲</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 反思模块研讨会 2026-08-12</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>范围：</strong>本页说明反思子系统的整体设计。F1 至 F4 的问题、机制和验证标准仍以各模式规范为准。</p>
+
+            <p>反思可以发生在一次输出之后，也可以发生在一批任务结束之后。它读取产物、执行轨迹和外部结果，对照可检查的标准，决定是否修改当前输出、运行路径或可复用资产，然后再用新的证据确认修改是否有效。</p>
+            <p>“让模型再想一遍”只是最轻量的实现。缺少证据、停止条件和修改权边界时，额外一轮推理很难证明系统真的变好了。</p>
+            <h2>先问四个问题</h2>
+            <p>一条反思回路在上线前应该回答：</p>
+            <ol>
+            <li><strong>什么信号触发检查？</strong> 测试失败、规则不符、用户差评、人工标注，还是模型评分？</li>
+            <li><strong>什么证据足以判定好坏？</strong> 编译结果、schema、业务规则、专家结论和用户行为的可靠性与到达时间都不同。</li>
+            <li><strong>这一轮允许改什么？</strong> 改当前答案、当前计划、Skill、记忆、业务规则，还是生产代码？</li>
+            <li><strong>怎样确认修改后更好？</strong> 原检查项重跑、回归集、对照实验、人工复核和真实业务反馈分别解决不同问题。</li>
+            </ol>
+            <p>四个问题中任何一个没有答案，回路都应先停在观测或建议阶段。</p>
+            <h2>观测、评测与反思的分工</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">环节</th>
+            <th style="text-align: left;">产出</th>
+            <th style="text-align: left;">对系统的影响</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>观测</strong></td>
+            <td style="text-align: left;">trace、日志、工具调用、状态变化和成本</td>
+            <td style="text-align: left;">记录发生了什么</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>评测</strong></td>
+            <td style="text-align: left;">通过/不通过、分数、问题类型和证据</td>
+            <td style="text-align: left;">判定结果或路径是否符合标准</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>反思</strong></td>
+            <td style="text-align: left;">带范围、依据和风险的修改提案</td>
+            <td style="text-align: left;">尝试改变当前产物、执行路径或可复用资产</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>发布与治理</strong></td>
+            <td style="text-align: left;">审批、版本、灰度、回滚和责任记录</td>
+            <td style="text-align: left;">决定修改能否获得持久权限</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>评测给出判断，反思消费这个判断并提出改变。当改变要进入共享 Skill、记忆库、规则库或生产环境时，反思模块需要把权限交给治理门禁。</p>
+            <h2>两只时钟：在线与离线</h2>
+            <p>2026-08-12 的 ADPS 反思模块研讨会中，王伟和李佳奇从不同业务场景提出了同一个分界：反思有两只时钟。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;"></th>
+            <th style="text-align: left;"><strong>在线反思</strong></th>
+            <th style="text-align: left;"><strong>离线反思</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">目标</td>
+            <td style="text-align: left;">让当前任务通过验收或安全停下</td>
+            <td style="text-align: left;">让后续任务少走弯路，修正系统性问题</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">信号</td>
+            <td style="text-align: left;">当场可得的测试、规则、工具回执或结构检查</td>
+            <td style="text-align: left;">多条 trace、Bad Case、专家标注、用户反馈和滞后业务结果</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">视野</td>
+            <td style="text-align: left;">当前输出和局部路径</td>
+            <td style="text-align: left;">跨任务、跨版本和跨团队的整体表现</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">修改权</td>
+            <td style="text-align: left;">小，通常限于本轮输出、参数或可回滚变更</td>
+            <td style="text-align: left;">可提议修改 Skill、Memory、Harness、评测集和流程，发布前需重新验证</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">时间预算</td>
+            <td style="text-align: left;">毫秒到分钟级，需明确轮次、延迟和 token 上限</td>
+            <td style="text-align: left;">小时、天或周级，适合批量对比和人工参与</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>这是运行方式，不是新的模式坐标。F1 和 F4 经常用于在线回路，但它们的 rubric、失败分类和停止阈值需要离线校准。F2 的加载发生在线，技能的生成、测试、并存评测和发布主要发生在离线。F3 也跨越两边：离线提炼经验，在新任务中按需回放。</p>
+            <h2>结果什么时候才到</h2>
+            <p>反思时钟由成功信号的延迟决定。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">成功信号</th>
+            <th style="text-align: left;">常见场景</th>
+            <th style="text-align: left;">建议回路</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">编译、测试、schema、确定性工具回执</td>
+            <td style="text-align: left;">代码、配置、结构化写回</td>
+            <td style="text-align: left;">低风险时可在线修正与复验</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">稳定规则、引用库、专业检查器</td>
+            <td style="text-align: left;">政策解读、合规文本、领域查询</td>
+            <td style="text-align: left;">在线评审可用，规则版本需固定</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">用户满意度、业务指标、后续人工改动</td>
+            <td style="text-align: left;">客服、运营、分析建议</td>
+            <td style="text-align: left;">收集结果后离线分析，不要当场伪造真值</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">跨部门、跨系统的长反馈链</td>
+            <td style="text-align: left;">需求到上线、建议到业务动作</td>
+            <td style="text-align: left;">建立延迟标注和人工归因，先保留不确定性</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>开放性问题并非一律不能在线检查。可以在线检查引用、格式、明显矛盾和已知风险，对最终业务价值的判定则留到反馈到达之后。</p>
+            <h2>反思合同</h2>
+            <p>生产系统需要把反思回路表达为可检查的合同：</p>
+            <pre><code class="language-yaml">reflection_id: ref_01K2...
+scope: artifact              # artifact | trajectory | asset | system
+trigger:
+  type: test_failure
+  ref: trace://run-8842/check-9
+evidence:
+  - type: deterministic_test
+    ref: test://payroll/net-pay-balance
+judge:
+  policy: reflection-rubric-v4
+proposal:
+  target: src/payroll/net_pay.py
+  allowed_change: diagnosed_files_only
+authority:
+  mode: auto_in_sandbox      # suggest | auto_in_sandbox | approval_required
+budget:
+  max_iterations: 3
+  max_latency_ms: 90000
+verification:
+  suite: payroll-regression-v12
+  rollback_on_regression: true
+retention:
+  disposition: candidate_lesson
+</code></pre>
+            <p>一条完整回路是：<strong>触发 → 证据装配 → 诊断 → 修改提案 → 权限门禁 → 执行 → 复验 → 记录</strong>。模型可以参与诊断和提案，测试、规则、人员和业务结果共同决定它有没有权力继续。</p>
+            <h2>四个正式模式怎样分工</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">模式</th>
+            <th style="text-align: left;">主要修改对象</th>
+            <th style="text-align: left;">反馈特征</th>
+            <th style="text-align: left;">主要边界</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/f1-generator-critic/"><strong>F1 生成评审</strong></a></td>
+            <td style="text-align: left;">当前产物</td>
+            <td style="text-align: left;">规则、引用、专家 rubric 或独立模型</td>
+            <td style="text-align: left;">评审者本身也要评测，不能用评分代替证据</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/f2-skill-package/"><strong>F2 技能包</strong></a></td>
+            <td style="text-align: left;">可复用流程与能力资产</td>
+            <td style="text-align: left;">跨任务成功、失败和并存评测</td>
+            <td style="text-align: left;">单个 Skill 通过不等于与其他 Skill 组合后仍然通过</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/f3-experience-replay/"><strong>F3 经验回放</strong></a></td>
+            <td style="text-align: left;">新任务的参考上下文</td>
+            <td style="text-align: left;">历史轨迹、结果和延迟反馈</td>
+            <td style="text-align: left;">要保留来源、适用版本和不确定性，防止旧经验产生负迁移</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/f4-self-heal-loop/"><strong>F4 自愈循环</strong></a></td>
+            <td style="text-align: left;">可回滚的运行状态、配置或代码</td>
+            <td style="text-align: left;">确定性失败与重跑结果</td>
+            <td style="text-align: left;">知识缺失、业务逻辑变化和不可逆操作需要转人或离线发布</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>在线/离线、硬证据/软判断、局部/全局与反馈延迟都是模式选型参数。它们不改变“认知功能 × 执行拓扑”的主框架。</p>
+            <h2>生产实现的四层结构</h2>
+            <p>研讨会中，周默提出了一个很实用的四层分工：</p>
+            <ol>
+            <li><strong>硬校验层</strong>：编译、测试、schema、业务不变量和系统回执优先。</li>
+            <li><strong>反思诊断层</strong>：模型阅读证据，识别当前输出、轨迹或资产的可能问题。</li>
+            <li><strong>记忆与资产层</strong>：候选 lesson、Skill、规则和失败记录经过准入后才跨任务生效。</li>
+            <li><strong>调度与控制层</strong>：决定是否启动反思、使用哪个评审者、能跑几轮、何时降级或转人。</li>
+            </ol>
+            <p>可自动触发、可终止、可观测、可控制成本，是所有生产回路的共同要求。“可复用”需要更细的处理：当反思结果仅修改本轮产物时，可以明确不保存；当它要跨任务生效时，就必须有准入、版本和退役机制。</p>
+            <h2>三个规模化难题</h2>
+            <p><strong>局部补丁会破坏整体效率。</strong> 王伟介绍的环境构建 Agent 在长期运行中不断增加局部修复，稳定性上升，整体路径却越来越重。离线反思要能发现重复、冲突和已失效的补丁，不能只把 Bad Case 继续叠加进 prompt。</p>
+            <p><strong>Skill 要在组合环境中评测。</strong> 单个 Skill 的触发率和任务成功率只能说明它独立可用。规模扩大后，还要检查误触发、漏触发、重叠、冲突、加载成本，以及新 Skill 是否让已有能力退化。</p>
+            <p><strong>归因先于自愈。</strong> 陆钱春将问题分为运行时、执行过程、业务结果和体验几类。参数失效、网络抖动和步骤遗漏可能有明确修复路径；专家知识缺失、业务规则变化和团队目标差异无法靠原 Agent 自行补全。</p>
+            <h2>2026 年的工程进展</h2>
+            <p>截至 2026 年 8 月，主流工具已经把反思依赖的评测部件做成了正式工程接口：</p>
+            <ul>
+            <li><a href="https://docs.langchain.com/langsmith/evaluation">LangSmith Evaluation</a> 区分发布前的离线评测和生产 trace 上的在线评测，并将失败 trace 回收到数据集。<a href="https://docs.langchain.com/oss/python/langchain/test/evals">AgentEvals</a> 已经直接评估 Agent 的工具调用轨迹。</li>
+            <li>Anthropic 在 2026-01 发布的 <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Agent 评测方法</a> 中建议组合代码、模型和人工 grader。其 <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise">企业 Skill 治理指南</a> 进一步要求触发、独立运行、并存、指令执行和输出质量评测。</li>
+            <li>OpenAI 的 <a href="https://openai.com/index/introducing-agentkit/">AgentKit</a> 将 trace grading、数据集和 grader 纳入 Agent 优化工作流。</li>
+            </ul>
+            <p>这些能力首先解决“怎样看见和判断”。把判断转成受控修改，并用回归证据确认它，才进入 ADPS 所说的反思回路。</p>
+            <h2>暂不增加新编号的方向</h2>
+            <p><strong>元反思</strong>检查 critic 本身是否漏判、误判或使用了有问题的 rubric。它可以先作为 F1 的高风险配置，不急于单独落牌。</p>
+            <p><strong>审议式反思</strong>让多个评审者从不同假设出发展开辩论。它与 F1 生成评审、C3 对抗评审都有重叠，当前还缺少稳定的终止条件和成本证据。</p>
+            <p><strong>前瞻性反思</strong>在行动前检查计划、风险和假设。这项职责已分布在 F1、A4 护栏三明治和 G1 审批门中，需要更多独立实践才能判断是否形成新模式。</p>
+            <h2>还需要行业回答的问题</h2>
+            <ul>
+            <li>大规模 Skill 库怎样分离 Agent 质量、Skill 质量与组合效应？</li>
+            <li>多维 rubric 一些指标上升、一些下降时，谁有权定义交换关系？</li>
+            <li>哪些反思结果可以自动修改 Harness，哪些只能生成变更建议？</li>
+            <li>当真实结果几天或几周后才到达，怎样保留当时的轨迹、版本和责任链？</li>
+            <li>如何发现在线回路积累的补丁冲突，并安全地合并、删除或回滚？</li>
+            </ul>
+            <h2>研讨会记录</h2>
+            <p>本总纲吸收了 2026-08-12 反思模块第一次研讨会的讨论。主持人为张海立、黄佳；核心研讨嘉宾为张栋、周默、王伟、陆钱春、赵翰、Pylon Peng、李佳奇。本页引用的观点来自逐字稿收录的六位发言嘉宾：张栋、周默、王伟、陆钱春、Pylon Peng、李佳奇。</p>
+            <p><a href="/zh/workshops/reflection-2026-08-12/">阅读完整研讨记录</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
+
+            <!-- ADPS-BLUEBOOK-SLOT -->
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《反思模块：让反馈真正改变系统》，Agent 设计模式白皮书 v0.3，2026-08-13。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

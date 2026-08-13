@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflection Module Overview · Agent Design Pattern White Paper · ADPS</title>
+    <meta name="description" content="ADPS reflection module overview: evidence, feedback latency, online and offline loops, change authority, and the roles of F1–F4.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/reflection/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/reflection/" class="active">Reflection module overview</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>Reflection</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
+                <h1>Reflection Module: Turning Feedback into Controlled Change</h1>
+                <p class="publication-deck">Evidence, online and offline feedback loops, change authority, four specifications, and open questions.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Revised</dt><dd>2026-08-13</dd></div>
+                    <div><dt>Document type</dt><dd>Reflection module overview</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS reflection workshop, 12 August 2026</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the reflection subsystem as a whole. The F1–F4 specifications remain authoritative for pattern-level mechanics and verification.</p>
+
+            <p>Reflection may happen after one output or after a batch of completed runs. It reads artifacts, trajectories, and external outcomes; compares them with inspectable criteria; decides whether to change the current output, execution path, or reusable assets; and then gathers new evidence to determine whether the change helped.</p>
+            <p>Asking a model to think again is the lightest implementation. Without evidence, a stopping rule, and a defined change boundary, another inference pass does not establish that the system improved.</p>
+            <h2>Four questions before adding a reflection loop</h2>
+            <ol>
+            <li><strong>What signal starts the review?</strong> A failed test, a rule violation, user dissatisfaction, an expert label, or a model score?</li>
+            <li><strong>What evidence can decide quality?</strong> Compilation, schemas, business rules, expert judgement, and user behaviour differ in reliability and arrival time.</li>
+            <li><strong>What may this loop change?</strong> The current answer, plan, Skill, memory, business rule, or production code?</li>
+            <li><strong>How will the change be verified?</strong> Re-running the original check, regression suites, controlled comparisons, human review, and business outcomes answer different questions.</li>
+            </ol>
+            <p>If any of these questions has no answer, keep the loop in observation or recommendation mode.</p>
+            <h2>Observability, evaluation, reflection, and release</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Stage</th>
+            <th style="text-align: left;">Output</th>
+            <th style="text-align: left;">Effect on the system</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Observability</strong></td>
+            <td style="text-align: left;">Traces, logs, tool calls, state changes, and cost</td>
+            <td style="text-align: left;">Records what happened</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Evaluation</strong></td>
+            <td style="text-align: left;">Pass/fail, scores, issue classes, and evidence</td>
+            <td style="text-align: left;">Judges an output or path against criteria</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Reflection</strong></td>
+            <td style="text-align: left;">A scoped, evidence-backed change proposal</td>
+            <td style="text-align: left;">Attempts to change an artifact, path, or reusable asset</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Release and governance</strong></td>
+            <td style="text-align: left;">Approval, version, canary, rollback, and accountability record</td>
+            <td style="text-align: left;">Decides whether the change receives durable authority</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Evaluation produces a judgement. Reflection consumes that judgement and proposes or applies a change. When a change enters a shared Skill library, memory store, policy repository, or production environment, a governance gate owns the release decision.</p>
+            <h2>Two clocks: online and offline reflection</h2>
+            <p>At the ADPS Reflection workshop on 12 August 2026, Wei Wang and Jiaqi Li described the same boundary from different production settings: reflection runs on two clocks.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;"></th>
+            <th style="text-align: left;"><strong>Online reflection</strong></th>
+            <th style="text-align: left;"><strong>Offline reflection</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Purpose</td>
+            <td style="text-align: left;">Complete the current task or stop it safely</td>
+            <td style="text-align: left;">Improve later runs and correct system-wide problems</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Signals</td>
+            <td style="text-align: left;">Tests, rules, tool receipts, and structural checks available now</td>
+            <td style="text-align: left;">Batches of traces, bad cases, expert labels, user feedback, and delayed business outcomes</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Scope</td>
+            <td style="text-align: left;">The current output and local path</td>
+            <td style="text-align: left;">Cross-run, cross-version, and cross-team behaviour</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Change authority</td>
+            <td style="text-align: left;">Usually limited to the current output, parameters, or rollback-safe changes</td>
+            <td style="text-align: left;">May propose changes to Skills, memory, harnesses, datasets, and workflows; release still requires validation</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Time budget</td>
+            <td style="text-align: left;">Milliseconds to minutes, with explicit iteration, latency, and token limits</td>
+            <td style="text-align: left;">Hours, days, or weeks, suitable for batch comparison and human participation</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>These are operating modes, not new pattern coordinates. F1 and F4 often run online, while their rubrics, failure classes, and stop thresholds need offline calibration. F2 loads Skills online but creates, tests, evaluates coexistence, and releases them mainly offline. F3 also spans both clocks: experience is distilled offline and replayed when a later task needs it.</p>
+            <h2>When the outcome arrives</h2>
+            <p>The arrival time of the success signal determines the reflection clock.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Success signal</th>
+            <th style="text-align: left;">Typical settings</th>
+            <th style="text-align: left;">Recommended loop</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Compilation, tests, schemas, deterministic tool receipts</td>
+            <td style="text-align: left;">Code, configuration, structured write-back</td>
+            <td style="text-align: left;">Online repair and re-verification can be appropriate for low-risk changes</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Stable rules, reference sets, domain checkers</td>
+            <td style="text-align: left;">Policy interpretation, regulated content, domain queries</td>
+            <td style="text-align: left;">Online review may work when the rule version is pinned</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">User satisfaction, business metrics, downstream human edits</td>
+            <td style="text-align: left;">Support, operations, analytical recommendations</td>
+            <td style="text-align: left;">Collect outcomes and analyse them offline; do not manufacture an immediate ground truth</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Long feedback chains across teams and systems</td>
+            <td style="text-align: left;">Requirements to release, recommendation to business action</td>
+            <td style="text-align: left;">Preserve delayed labels and use human attribution before changing the system</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Open-ended work can still receive online checks for citations, structure, contradictions, and known risks. The final business-value judgement waits for the relevant outcome.</p>
+            <h2>The reflection contract</h2>
+            <p>A production loop should express its control surface as data:</p>
+            <pre><code class="language-yaml">reflection_id: ref_01K2...
+scope: artifact              # artifact | trajectory | asset | system
+trigger:
+  type: test_failure
+  ref: trace://run-8842/check-9
+evidence:
+  - type: deterministic_test
+    ref: test://payroll/net-pay-balance
+judge:
+  policy: reflection-rubric-v4
+proposal:
+  target: src/payroll/net_pay.py
+  allowed_change: diagnosed_files_only
+authority:
+  mode: auto_in_sandbox      # suggest | auto_in_sandbox | approval_required
+budget:
+  max_iterations: 3
+  max_latency_ms: 90000
+verification:
+  suite: payroll-regression-v12
+  rollback_on_regression: true
+retention:
+  disposition: candidate_lesson
+</code></pre>
+            <p>The full loop is <strong>Trigger → Evidence pack → Diagnose → Change proposal → Policy gate → Apply → Verify → Record</strong>. A model may diagnose and propose. Tests, rules, people, and business outcomes decide whether it may continue.</p>
+            <h2>How the four specifications divide the work</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Pattern</th>
+            <th style="text-align: left;">Primary change target</th>
+            <th style="text-align: left;">Feedback</th>
+            <th style="text-align: left;">Main boundary</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/f1-generator-critic/"><strong>F1 Generator-Critic</strong></a></td>
+            <td style="text-align: left;">Current artifact</td>
+            <td style="text-align: left;">Rules, references, expert rubrics, or an independent model</td>
+            <td style="text-align: left;">The critic must be evaluated; a score cannot replace evidence</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/f2-skill-package/"><strong>F2 Skill Package</strong></a></td>
+            <td style="text-align: left;">Reusable workflow and capability asset</td>
+            <td style="text-align: left;">Cross-run outcomes, failures, and coexistence tests</td>
+            <td style="text-align: left;">A Skill that passes alone may still degrade a larger Skill set</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/f3-experience-replay/"><strong>F3 Experience Replay</strong></a></td>
+            <td style="text-align: left;">Context supplied to a later task</td>
+            <td style="text-align: left;">Historical trajectories, outcomes, and delayed feedback</td>
+            <td style="text-align: left;">Preserve source, version scope, and uncertainty to avoid negative transfer</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/f4-self-heal-loop/"><strong>F4 Self-Heal Loop</strong></a></td>
+            <td style="text-align: left;">Rollback-safe state, configuration, or code</td>
+            <td style="text-align: left;">Deterministic failure and re-run evidence</td>
+            <td style="text-align: left;">Missing knowledge, changed business logic, and irreversible actions require escalation or an offline release</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Online/offline, hard evidence/soft judgement, local/global scope, and feedback delay are selection parameters. They do not alter the cognitive-function × execution-topology framework.</p>
+            <h2>A four-layer production structure</h2>
+            <p>Mo Zhou proposed a useful four-layer implementation:</p>
+            <ol>
+            <li><strong>Hard validation:</strong> Compilation, tests, schemas, business invariants, and system receipts take priority.</li>
+            <li><strong>Reflection diagnosis:</strong> Models inspect evidence and identify possible defects in outputs, trajectories, or assets.</li>
+            <li><strong>Memory and assets:</strong> Candidate lessons, Skills, rules, and failure records cross task boundaries only after admission.</li>
+            <li><strong>Scheduling and control:</strong> The harness decides whether to reflect, which reviewer to use, how many rounds to allow, and when to degrade or hand off.</li>
+            </ol>
+            <p>Automatic triggering, termination, observability, and bounded cost apply to every production loop. Reuse needs a narrower rule: a one-run correction may be deliberately discarded; anything that will affect later runs requires admission, versioning, and retirement.</p>
+            <h2>Three problems that appear at scale</h2>
+            <p><strong>Local patches can damage global efficiency.</strong> Wei Wang described an environment-building agent that accumulated local fixes over time. Stability improved while the overall path became heavier. Offline reflection must detect duplicate, conflicting, and expired patches instead of appending every bad case to a prompt.</p>
+            <p><strong>Skills must be evaluated in combination.</strong> Trigger accuracy and task success show that one Skill works alone. A growing library also needs false-trigger, missed-trigger, overlap, conflict, loading-cost, and coexistence tests.</p>
+            <p><strong>Attribution comes before healing.</strong> Qianchun Lu separated runtime, execution-process, business-result, and experience failures. Invalid parameters, network instability, and missing steps may have direct remedies. Missing domain knowledge, changed business rules, and conflicting team goals cannot be filled in safely by the original agent.</p>
+            <h2>Engineering progress in 2026</h2>
+            <p>By August 2026, major platforms expose the evaluation components that reflection depends on:</p>
+            <ul>
+            <li><a href="https://docs.langchain.com/langsmith/evaluation">LangSmith Evaluation</a> separates pre-release offline evaluation from online evaluation over production traces and feeds failures back into datasets. <a href="https://docs.langchain.com/oss/python/langchain/test/evals">AgentEvals</a> evaluates tool-use trajectories directly.</li>
+            <li>Anthropic's January 2026 guide, <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a>, recommends combining code, model, and human graders. Its <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise">enterprise Skills guidance</a> adds triggering, isolation, coexistence, instruction-following, and output-quality checks.</li>
+            <li>OpenAI's <a href="https://openai.com/index/introducing-agentkit/">AgentKit</a> brings trace grading, datasets, and graders into the agent optimisation workflow.</li>
+            </ul>
+            <p>These systems first address seeing and judging. Reflection begins when a judgement becomes a controlled change and regression evidence confirms the result.</p>
+            <h2>Directions without new catalog numbers</h2>
+            <p><strong>Meta-reflection</strong> reviews the critic and its rubric. It currently fits as a high-risk F1 configuration rather than a separate pattern.</p>
+            <p><strong>Deliberative reflection</strong> uses reviewers with different assumptions in a structured debate. It overlaps F1 Generator-Critic and C3 Adversarial Review, and still lacks stable stopping and cost evidence.</p>
+            <p><strong>Prospective reflection</strong> checks plans, assumptions, and risk before action. Its responsibilities already appear across F1, A4 Guardrail Sandwich, and G1 Approval Gate. More independent practice is needed before cataloguing it separately.</p>
+            <h2>Questions for further industry evidence</h2>
+            <ul>
+            <li>How can a large Skill estate separate agent quality, Skill quality, and combination effects?</li>
+            <li>When dimensions in a rubric move in opposite directions, who owns the trade-off?</li>
+            <li>Which reflections may change a harness automatically, and which may only open a change proposal?</li>
+            <li>When outcomes arrive days or weeks later, how should the system preserve the original trajectory, version, and accountability chain?</li>
+            <li>How can teams detect, consolidate, remove, or roll back conflicting patches accumulated by online loops?</li>
+            </ul>
+            <h2>Workshop record</h2>
+            <p>This overview incorporates the first ADPS Reflection Module Workshop held on 12 August 2026. Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Han Zhao, Pylon Peng, and Jiaqi Li. The attributed points on this page come from the six speakers recorded in the transcript: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Pylon Peng, and Jiaqi Li.</p>
+            <p><a href="/workshops/reflection-2026-08-12/">Read the full workshop record</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Reflection Module: Make Feedback Change the System</em>, Agent Design Pattern White Paper v0.3, 2026-08-13. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

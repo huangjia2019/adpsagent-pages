@@ -80,6 +80,7 @@
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
               <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
@@ -250,11 +251,11 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/a5-minimal-tool-set/" style="font-weight: 600;">A5 · Minimal Tool Set</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Narrow the visible tool set for the current task by retiring, merging, pushing down, or loading tools on demand.</span></li>
             </ul>
             <h3>Reflection · 4 core</h3>
-            <p class="grp-intro">The agent checks itself, corrects itself, and accrues experience — the core of cumulative intelligence. It must bind to external feedback, failure signals, or past trajectories, not self-congratulatory summary.</p>
+            <p class="grp-intro">The agent reviews artifacts, trajectories, and external outcomes, then decides whether to change the current output, runtime path, or reusable assets. Every loop needs evidence, a stop condition, and explicit change authority.</p>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f1-generator-critic/" style="font-weight: 600;">F1 · Generator-Critic</a><span style="color: var(--color-text-muted);"> — One agent hosts two roles. The Generator writes, the Critic evaluates, and the loop improves the output until the critic passes it or the iteration cap is reached.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f2-skill-package/" style="font-weight: 600;">F2 · Skill Package</a><span style="color: var(--color-text-muted);"> — Package a repeatedly successful workflow into a named, loadable, reusable structured asset, so the next task of the same kind calls it directly instead of figuring things out from scratch.</span></li>
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f3-experience-replay/" style="font-weight: 600;">F3 · Experience Replay</a><span style="color: var(--color-text-muted);"> — When a new task arrives, the agent proactively retrieves the trajectories of similar past tasks and injects the reusable parts into the current context, so that what was once learned is not learned in vain.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f1-generator-critic/" style="font-weight: 600;">F1 · Generator-Critic</a><span style="color: var(--color-text-muted);"> — A Generator produces an output and a Critic reviews it against evidence and a rubric. Scope, rounds, and cost are bounded; the run exits when release criteria or the iteration cap is reached.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f2-skill-package/" style="font-weight: 600;">F2 · Skill Package</a><span style="color: var(--color-text-muted);"> — Package a repeatedly successful workflow as a named, loadable, versioned skill, then manage its evaluation, coexistence, release, rollback, and retirement.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f3-experience-replay/" style="font-weight: 600;">F3 · Experience Replay</a><span style="color: var(--color-text-muted);"> — Extract experience from trajectories, human hand-offs, and delayed outcomes. Retrieve applicable parts for a new task and retain evidence of adoption and result.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · Self-Heal Loop</a><span style="color: var(--color-text-muted);"> — When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.</span></li>
             </ul>
             <h3>Collaboration · 4 core + 2 extensions</h3>
@@ -303,6 +304,7 @@
             <h2>Workshop records</h2>
             <p><strong><a href="/workshops/memory-2026-08-05/">First Memory Module Workshop</a> · 5 August 2026.</strong> Hosts: Haofen Wang and Jia Huang. Core experts: Yingfeng Zhang, Qiuai Fu, Dong Zhang, Mo Zhou, Yutao Chen, and Qingfeng Li. The session covered adoption criteria, lifecycle, engineering boundaries, admission, versioning, and forgetting.</p>
             <p><strong><a href="/workshops/action-2026-08-06/">First Action Module Workshop</a> · 6 August 2026.</strong> Discussion host: Bingsheng Ru. Core participants: Qingfeng Li, Dong Zhang, Jun Luo, Hongshan Tang, Wei Wang, Pylon Peng, and Leida Ren. The session covered Plan and ReAct, structured plans, tool admission, GUI action, sandboxes, multi-agent orchestration, and event-driven execution.</p>
+            <p><strong><a href="/workshops/reflection-2026-08-12/">First Reflection Module Workshop</a> · 12 August 2026.</strong> Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Han Zhao, Pylon Peng, and Jiaqi Li. The session covered online and offline reflection, feedback latency, evaluation evidence, skill evolution, attribution, and self-repair boundaries.</p>
             <p><a href="/founders/#white-paper-contributors">View the White Paper contributors.</a></p>
 
             <h2>Related assets</h2>

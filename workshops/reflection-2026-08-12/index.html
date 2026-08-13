@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS Design Pattern Series: First Reflection Module Workshop · ADPS</title>
+    <meta name="description" content="Online and offline reflection, feedback latency, evaluation evidence, skill evolution, attribution, and self-repair boundaries.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/reflection-2026-08-12/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/reflection-2026-08-12/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/reflection-2026-08-12/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/concepts/">Concepts</a>
+                <a href="/research/">Research</a>
+                <a href="/positions/">Positions</a>
+                <a href="/founders/">Team</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/reflection-2026-08-12/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern White Paper</a><span style="margin: 0 0.45rem;">/</span>Workshops<span style="margin: 0 0.45rem;">/</span>Reflection</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Workshop</p>
+                <h1>ADPS Design Pattern Series: First Reflection Module Workshop</h1>
+                <p class="publication-deck">Online and offline reflection, feedback latency, evaluation evidence, skill evolution, attribution, and self-repair boundaries.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Date</dt><dd>2026-08-12</dd></div>
+                    <div><dt>Module</dt><dd>Reflection</dd></div>
+                    <div><dt>Document type</dt><dd>Workshop record</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Hosts</strong></td>
+<td style="text-align: left;">Haili Zhang (ADPS core expert and LangChain Ambassador) and Jia Huang (ADPS founding member and proposer of the cognitive-function × execution-topology framework)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Core workshop guests</strong></td>
+<td style="text-align: left;">Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Han Zhao, Pylon Peng, and Jiaqi Li</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Speakers in this record</strong></td>
+<td style="text-align: left;">Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Pylon Peng, and Jiaqi Li</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Coordination</strong></td>
+<td style="text-align: left;">Pingping Bai</td>
+</tr>
+</tbody>
+</table>
+<p>ADPS held its first Reflection Module workshop on 12 August 2026. Participants brought production experience from R&amp;D security, retail algorithms, quality evaluation, telecom knowledge engineering, software development, and travel services. The discussion began with in-application Generator-Critic loops and moved into offline evaluation, Skill evolution, attribution, self-heal authority, and delayed business feedback.</p>
+<p>The agenda listed Han Zhao, lead for model backend and inference for Tencent Cloud Code Assistant, as a core workshop guest. The transcript records the invitation but no formal remarks, so this page does not attribute a technical position to him.</p>
+<p>The workshop did not add a catalog number. It changed how the Reflection row should be read: F1–F4 describe different change targets and execution structures, while online/offline operation, feedback delay, evidence strength, and change authority determine how they enter production.</p>
+<h2>1. In-process reflection and out-of-process evaluation</h2>
+<p>Haili Zhang placed reflection in LangChain's wider Agent Development Lifecycle. In-process rubrics, graders, and revision loops help the current run converge. Outside the application, datasets, evaluators, and trace analysis compare versions, detect regressions, and calibrate reviewers.</p>
+<p>The two share evaluation components but perform different jobs. Evaluation records a judgement. Reflection uses that judgement to propose or apply a change. A change without a re-run and regression evidence has not closed the loop.</p>
+<p>The White Paper now records this boundary in the <a href="/patterns/reflection/">Reflection Module Overview</a>.</p>
+<h2>2. Online reflection fixes the current run; offline reflection fixes the system</h2>
+<p>Wei Wang proposed a clear distinction. Online reflection follows the current run and reacts to tool errors, invalid arguments, or incomplete artifacts. Offline reflection examines a period of trajectories and looks for repeated, conflicting, or systemic behaviour across runs.</p>
+<p>He described an environment-building agent that added a local remedy whenever it met a new failure. The environment became more stable, but the execution path grew substantially longer. An offline review revealed duplicate and conflicting patches.</p>
+<p>This example gives online reflection a production constraint: keep its change surface small and rollback-safe, and subject accumulated changes to periodic global review.</p>
+<h2>3. Feedback delay determines loop length</h2>
+<p>Jiaqi Li compared support, operations, code generation, and business analysis. Code has compilation, tests, and deployment logs, so correctness evidence may arrive during the current run. A business recommendation may pass through product, operations, engineering, and user behaviour before anyone can judge it.</p>
+<p>Real time is therefore constrained by the arrival of ground truth, not only by agent speed. While the final outcome is unavailable, an online reviewer may still check structure, references, and known contradictions. Business value must wait for delayed labels and human attribution.</p>
+<p>The workshop recorded immediate/delayed feedback and closed/open tasks as related but non-equivalent dimensions. Open-ended work may contain hard local checks, while the final user experience of a closed task may still arrive later.</p>
+<h2>4. Reflection needs hard evidence and a stopping rule</h2>
+<p>Mo Zhou described five production properties: automation, termination, observability, reuse, and bounded cost. He then separated implementation into four layers:</p>
+<ol>
+<li>Hard validation gives priority to machine-verifiable signals.</li>
+<li>Model diagnosis inspects artifacts and trajectories.</li>
+<li>Memory and asset admission determines what may affect later runs.</li>
+<li>Scheduling and control owns activation, rounds, cost, degradation, and human hand-off.</li>
+</ol>
+<p>The White Paper adopts this structure and narrows the reuse condition. A one-run correction may be deliberately discarded. Any result that will affect later runs needs admission, versioning, and retirement.</p>
+<p>Zhou also discussed experiments in meta-reflection, deliberative reflection, and knowledge-completeness checks. They may help high-risk tasks without deterministic truth, but they remain exploratory and have not been added as formal patterns.</p>
+<h2>5. Three environments move bad cases out of production</h2>
+<p>Dong Zhang described development, evaluation, and production environments. Development permits close human-agent interaction. Evaluation runs a candidate rule or version against benchmarks. Production uses validated flows and assets.</p>
+<p>When a bad case appears in production, the team keeps the production path stable, adds the failure to an evaluation set, produces candidate rule or knowledge changes, runs regressions, and promotes the new version through the environments. The practical implication is clear: a reflection that changes shared assets or production policy should usually enter an offline release process.</p>
+<h2>6. Attribution is a separate engineering step before healing</h2>
+<p>Qianchun Lu described reliability governance for organizational Agents and Skills: pre-release admission and inspection, runtime health checks and circuit breaking, and post-run trace review, remediation, and re-testing. His team is working on common primitives for instrumentation, failure classes, and evaluation.</p>
+<p>He separated two kinds of root cause. Invalid tool arguments, missing steps, and network instability may have direct remedies. Missing domain knowledge, changed business rules, and different team expectations exceed the original agent's authority. A diagnosis may also be a false positive or identify a problem that has no authorised automatic repair.</p>
+<p>This discussion tightened F4 Self-Heal Loop: it requires an identifiable failure, an executable repair, independent verification, and rollback. Knowledge, business decisions, and responsibility boundaries require human intervention.</p>
+<h2>7. Skill evolution must address creation, comparison, and coexistence</h2>
+<p>Wei Wang and Jiaqi Li both raised evaluation problems that appear as Skill estates grow. A Skill may work alone but mis-trigger, steal routing, or conflict with existing workflows in combination. Teams also need to separate the contribution of the agent, one Skill, and a bundle of Skills.</p>
+<p>Pylon Peng described a daily reflection process. A main agent evaluates sub-agent work. A post-run hook collects trajectories and analyses whether memory, Skills, rules, sub-agents, or harness components need to be created or updated. When a tool argument or business rule changes, the corresponding Skill documentation and validation cases change together.</p>
+<p>This daily batch process provides an implementation bridge between F2 Skill Package and F3 Experience Replay. Automatically generated assets still pass evaluation and a release gate before receiving durable authority.</p>
+<h2>8. Cross-model review can expose some shared blind spots</h2>
+<p>Jiaqi Li described a SQL generation and review system. When similar models generated and reviewed the SQL, some defects passed through review. Separating generation and review across models improved defect discovery in that setting.</p>
+<p>Cross-model review adds diversity but does not guarantee independence. Models may share data, assumptions, and rubrics. The White Paper treats model diversity as a supporting measure; tests, rules, source evidence, and expert review remain stronger grounds.</p>
+<h2>9. Changes entering the White Paper</h2>
+<ol>
+<li>Add a bilingual <a href="/patterns/reflection/">Reflection Module Overview</a> defining the boundary among observability, evaluation, reflection, and release governance.</li>
+<li>Record <strong>online reflection</strong> and <strong>offline reflection</strong> as operating modes, without adding pattern numbers.</li>
+<li>Extend <strong>F1 Generator-Critic</strong> with reflection contracts, trajectory review, critic calibration, and multi-dimensional rubric trade-offs.</li>
+<li>Extend <strong>F2 Skill Package</strong> with candidate, isolated evaluation, coexistence evaluation, canary, version, and retirement stages.</li>
+<li>Extend <strong>F3 Experience Replay</strong> with offline trace mining, delayed feedback, and consolidation of local patches.</li>
+<li>Tighten <strong>F4 Self-Heal Loop</strong> by separating repairable runtime failures from missing knowledge and changed business logic.</li>
+<li>Keep meta-reflection, deliberative reflection, and prospective reflection as research directions rather than formal patterns.</li>
+</ol>
+<h2>10. Open questions</h2>
+<ul>
+<li>How should online change authority be tiered by task risk?</li>
+<li>How can a delayed business outcome be attributed to the exact agent version and trajectory that produced it?</li>
+<li>Which metrics should be common to isolated and combined Skill evaluation?</li>
+<li>Who owns admission and rollback when reflection changes memory, a Skill, or the harness?</li>
+<li>What reproducible cost and quality evidence would justify cataloguing meta-reflection, deliberative reflection, or knowledge-completeness checks?</li>
+</ul>
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/reflection/">Reflection Module Overview</a></li>
+<li><a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a></li>
+<li><a href="/patterns/f2-skill-package/">F2 Skill Package</a></li>
+<li><a href="/patterns/f3-experience-replay/">F3 Experience Replay</a></li>
+<li><a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a></li>
+<li><a href="/founders/#white-paper-contributors">White Paper contributors</a></li>
+</ul>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

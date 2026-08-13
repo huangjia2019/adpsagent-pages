@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F3 经验回放 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="新任务开始时检索相似历史 trajectory，将适用的经验、证据和产物注入当前 context。">
+    <meta name="description" content="从历史 trajectory、人工接管和延迟业务结果中提取经验；新任务开始时检索适用部分，并保留采用与结果证据。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -68,6 +69,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/" class="active">F3 经验回放</a>
@@ -134,7 +136,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>F3 · Experience Replay · 经验回放</h1>
-                <p class="publication-deck">新任务开始时检索相似历史 trajectory，将适用的经验、证据和产物注入当前 context。</p>
+                <p class="publication-deck">从历史 trajectory、人工接管和延迟业务结果中提取经验；新任务开始时检索适用部分，并保留采用与结果证据。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -162,7 +164,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">新任务开始时检索相似历史 trajectory，将适用的经验、证据和产物注入当前 context。</td>
+            <td style="text-align: left;">从历史 trajectory、人工接管和延迟业务结果中提取经验；新任务开始时检索适用部分，并保留采用与结果证据。</td>
             </tr>
             </tbody>
             </table>
@@ -209,6 +211,14 @@
             <ol start="2">
             <li><strong>training-free 注入</strong>：重训 LLM 太贵，CER 的做法是把过去 trajectory（裁剪加摘要后）作为 context 注入当前 prompt，让 LLM 在 context window 里 in-context learning，跳过训练阶段。检索时优先 effectiveness 高加 outcome 成功的经验，复用后回写 effectiveness——没用的 lesson 自动 deprecate。</li>
             </ol>
+            <p>研讨会补出了第三项生产要求：<strong>经验的形成和经验的使用要分开</strong>。任务运行时只检索已经发布的经验，避免一条未经验证的局部补丁立刻影响后续任务；离线流程批量分析 trace、人工接管和业务结果，合并重复补丁，补上适用范围，再将通过回放的经验发布到可检索层。</p>
+            <p>这也解释了反馈延迟的影响。代码任务通常很快得到测试结果，客服建议、运营策略或风险判断可能几天后才知道效果。Experience Replay 要保留 <code>trajectory_id</code>、执行版本、当时证据和后到的 outcome label，等结果回来后再更新经验。没有这条关联，系统很容易把“当时看起来合理”误写成“已经验证成功”。</p>
+            <h2>在线使用与离线整理</h2>
+            <ul>
+            <li><strong>在线阶段</strong>：按任务类型、环境版本和风险标签检索经验，做适用性检查，记录哪些经验被采用以及它影响了哪一步。</li>
+            <li><strong>离线阶段</strong>：从一批 trajectory 中找重复失败、局部补丁和稳定做法，结合延迟结果做归因；经过回放和评审后，决定合并、降权、归档或提升为 Skill Package。</li>
+            </ul>
+            <p>在线阶段追求低延迟和可回退，离线阶段追求覆盖、比较和长期一致性。两者混在一起时，每次执行都可能给经验库追加一条临时规则，局部修补越积越多，检索和执行反而越来越慢。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>长期运行且任务重复的 Agent</strong>：客服、运维和数据分析等场景会持续积累可复用 experience，收益取决于经验库的覆盖度和质量。</li>
@@ -221,6 +231,8 @@
             <li><strong>陈旧教训漂移</strong>：产品改版后，旧经验可能已经不适用。应绑定系统版本、降低陈旧条目权重，并按明确周期 review 或 deprecate。</li>
             <li><strong>检索偏差放大</strong>：embedding 相似不等于任务结构相似。"用户增长分析"检索出"用户流失分析"经验，把流失的 funnel 框架硬套到增长上——增长和流失是反向问题。防法是加 task type classifier 粗筛、block 跨类型检索、检索后 LLM 二次审查适用性。</li>
             <li><strong>无结构全量 dump</strong>：把所有 trajectory 全塞进 vector DB 让 agent 自己挑，没有 multi-level 分层。</li>
+            <li><strong>延迟结果归错任务</strong>：业务结果晚于执行到达，若没有稳定的 <code>trajectory_id</code>、版本和时间窗，系统会把后续变化错误归因给某条经验。</li>
+            <li><strong>局部补丁持续堆积</strong>：每次线上失败都追加一条特殊规则，短期见效，长期会增加检索噪声、冲突和延迟。离线流程要定期合并、提升或删除这些补丁。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
@@ -228,6 +240,8 @@
             <li><strong>effectiveness 分</strong>：比较经验被采用后的任务结果，并结合多次回放判断。持续无效或产生负迁移的 lesson 应进入 archive。</li>
             <li><strong>experience store 覆盖和 retrieval count</strong>：冷启动期先看代表性任务是否被记录、检索是否覆盖正确任务族，再观察下游质量变化。</li>
             <li><strong>质量增量</strong>：与不注入历史经验的回放基线比较，是判断 Experience Replay 是否产生净收益的 lagging indicator。</li>
+            <li><strong>trajectory 与 outcome 对齐率</strong>：有多少延迟业务结果能够回连到当时的任务、版本和证据。</li>
+            <li><strong>负迁移与补丁债务</strong>：统计经验注入后表现下降的任务，以及长期未合并、未验证的局部补丁数量。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code># 检索 + 注入 (CER training-free)
@@ -237,18 +251,21 @@ heuristics = get_L2_by_signature(task)     # 跨任务规律
 context += render(heuristics)
 
 result = agent.run(task, prior_context=context, trajectory_collector=traj)
+record_adoption(task.id, past, result.trajectory)  # 哪条经验影响了哪一步
 
-# 记录新经验 (自动提炼 high-level, 用便宜模型)
-record(task, traj, outcome, author_id)     # high + low 双层
+# 记录事实，暂不直接发布成经验
+record_trace(task, traj, immediate_outcome, author_id, runtime_version)
+attach_delayed_outcome(task.id, delayed_outcome)  # 结果回来后补写
 
 # 回写 effectiveness (lesson accuracy 反馈环)
 for e in past:
     update_effectiveness(e, current_task_succeeded=result.ok)
 
-# 达到配置的证据门槛并通过评审后，周期性蒸馏 L2
-periodic_distill_L2(signature, policy=distillation_policy)
+# 离线合并局部补丁，达到证据门槛并通过回放后再发布 L2
+candidate = consolidate_patches(signature, traces, outcomes)
+publish_L2(candidate, when=replay_passed and review_approved)
 </code></pre>
-            <p>生产实现根据检索质量和成本选择 embedding 与摘要模型；保留结果证据而不是只存一个缺少口径的分数；保留 <code>author_id</code> 和来源元数据；<code>task_signature</code> 使用语义特征而非不透明 hash。</p>
+            <p>生产实现根据检索质量和成本选择 embedding 与摘要模型；保留结果证据而不是只存一个缺少口径的分数；保留 <code>author_id</code>、<code>trajectory_id</code>、运行版本和来源元数据；<code>task_signature</code> 使用语义特征而非不透明 hash。在线检索只读取已发布经验，候选 lesson 和局部补丁留在离线整理区。</p>
             <h2>场景化示例</h2>
             <p>设想一个数据团队分析“新功能上线后留存未明显提高”的原因。不同分析者重复执行 cohort 分析，却都忽略了同期自然流量变化这一 confounding variable；历史上有一份相似报告，但作者离开后没有进入当前工作流。引入 Experience Replay 后，系统召回该报告及“留存分析需检查时段效应”的 heuristic，同时保留 high-level approach、low-level SQL、作者、数据源和时间范围。成功、失败和中性轨迹分开标记，分析师仍需判断旧经验是否适用于当前产品。重复投入的变化应从项目记录中核验。</p>
             <h2>相邻模式</h2>
@@ -259,10 +276,14 @@ periodic_distill_L2(signature, policy=distillation_policy)
             </ul>
             <h2>工程判断</h2>
             <p>Experience Replay 把历史轨迹、经验摘要和可复用产物组织成可检索资产。其收益需要通过后续任务的命中率、成功率和人工接管变化来验证。</p>
+            <h2>延伸阅读</h2>
+            <ul>
+            <li><a href="https://adpsagent.com/zh/patterns/reflection/">反思模块总纲：让反馈真正改变系统</a></li>
+            <li><a href="https://adpsagent.com/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会（2026-08-12）</a></li>
+            <li><a href="https://docs.langchain.com/langsmith/evaluation">LangSmith Evaluation：把生产 trace 加入离线评测数据集</a></li>
+            </ul>
 
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
+            <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《F3 经验回放》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>

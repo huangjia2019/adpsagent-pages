@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F2 技能包 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill。">
+    <meta name="description" content="将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill，并用完整发布周期管理它的进入、共存、回滚和退役。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -50,6 +50,7 @@
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -68,6 +69,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/" class="active">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
@@ -134,7 +136,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>F2 · Skill Package · 技能包</h1>
-                <p class="publication-deck">将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill。</p>
+                <p class="publication-deck">将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill，并用完整发布周期管理它的进入、共存、回滚和退役。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
@@ -154,7 +156,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">中（封装一次性投入 + 复用时近乎零边际）</td>
+            <td style="text-align: left;">中高（封装、隔离评测、发布和持续维护）</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式组</strong></td>
@@ -162,7 +164,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill。</td>
+            <td style="text-align: left;">将反复验证成功的工作流封装为可命名、可加载、可版本化的 skill，并用完整发布周期管理它的进入、共存、回滚和退役。</td>
             </tr>
             </tbody>
             </table>
@@ -179,9 +181,10 @@
             <p>一个 Skill Package 系统由两条流水线构成：</p>
             <ol>
             <li><strong>加载流水线</strong>：启动时只暴露 skill 的 name 和简短 description；任务命中后加载完整 <code>SKILL.md</code>；执行时再按需加载 bundled scripts。具体 context 开销由目录规模和 tokenizer 决定，应在本地测量。</li>
-            <li><strong>沉淀流水线</strong>：一条路径由人编写并经过 review、版本管理和测试；另一条路径由 Agent 在出现足够的复用、复杂度和成功证据后辅助提炼。自动蒸馏的 skill 进入低信任 namespace，通过回放和人工评审后再转正。</li>
+            <li><strong>发布流水线</strong>：一条路径由人编写并经过 review、版本管理和测试；另一条路径由 Agent 在出现足够的复用、复杂度和成功证据后辅助提炼。两条路径最终都要经过 candidate → 安全审查 → 隔离评测 → 共存评测 → 小流量试用 → 发布 → 监控 → 修订、合并或退役。</li>
             </ol>
             <p>可操作的工程纪律包括：把关键约束放在醒目位置；能写成 deterministic script 的步骤不交给模型临场判断；提供 worked example；为 skill 配测试；持续查看使用和结果证据，清理过期或低价值资产。</p>
+            <p>隔离评测回答“这项 skill 单独能不能完成任务”，共存评测回答“它进入现有 skill 集合后会不会选错、抢占或互相干扰”。研讨会中提到的难点集中在第二问：一个 skill 单测通过，和其他 skill 同时加载后仍可能触发错误路由；最终结果变差时，还要判断问题来自主 Agent、skill 内容、触发描述，还是宿主 Harness。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>反复出现且流程相对稳定的任务</strong>：运维 runbook（批量重启集群、配置变更）、客服分诊 SOP、销售标准流程——同类任务高频出现，流程不天天变。</li>
@@ -194,6 +197,8 @@
             <li><strong>skill library 污染</strong>：Agent 自蒸馏的低质量 skill 不经 curation 直接进库，会在后续召回中误导其他 Agent。候选 skill 应进入低信任 namespace，经过回放、试用和人工评审后再发布。</li>
             <li><strong>skill 过期</strong>：基础设施变了但 skill 没跟着改，agent 按过期 skill 执行反而错，运维场景尤其常见。防法是成功率监控加自动告警加版本绑定（SKILL.md 里标 tested_with）。</li>
             <li><strong>description 失配</strong>：description 写得太泛或太窄，agent 召回时挑错 skill 或该用没用。description 必须含具体场景，triggers 列表要够细。</li>
+            <li><strong>隔离通过、共存退化</strong>：新 skill 单独测试表现正常，进入生产目录后与既有 skill 争抢触发条件。发布前要跑组合任务和冲突用例，并保留快速回滚版本。</li>
+            <li><strong>归因含混</strong>：任务失败后只记录“skill 失败”，却没有保存路由候选、实际加载内容、模型版本和 Harness 版本，后续无法判断该改哪一层。</li>
             </ul>
             <h2>验证指标</h2>
             <ul>
@@ -201,6 +206,8 @@
             <li><strong>skill 成功率</strong>：调用 skill 后任务是否通过验收。相对自身基线持续下降时，检查底层服务和流程是否变化。</li>
             <li><strong>library 健康度</strong>：随着库增长，观察平均成功率、重复 skill 和失效版本。规模增长伴随质量下降通常说明 curation 不足。</li>
             <li><strong>加载 token 占比</strong>：观察 discovery、activation 和 execution 各阶段占用，避免未命中的 skill 全量进入 context。</li>
+            <li><strong>共存回归率</strong>：比较新 skill 加入前后的误触发、漏触发、任务成功和 context 成本。</li>
+            <li><strong>发布与回滚证据</strong>：记录候选版本通过了哪些评测、何时进入试用、由谁批准，以及回滚是否恢复到已知状态。</li>
             </ul>
             <h2>最小实现</h2>
             <pre><code># Stage 1 Discovery: 启动只加载 name + description
@@ -217,12 +224,20 @@ mark_used(matched_skill, success=result.ok)
 if distillation_policy.accepts(task, trace, outcome):
     skill = distill(task, tool_calls)   # 进试用期, 非直接投产
 
-# Curation: 基于证据评审
+# 发布: 先单测，再验证与现有 skill 的共存
+ISOLATED_EVAL(skill, held_out_tasks)
+COEXISTENCE_EVAL(skill, active_library, conflict_cases)
+PROMOTE(replay_passed and coexistence_passed and approval_granted)
+
+# 运行期: 每次选择都保留归因证据
+record_route(candidates, selected_skill, skill_version, harness_version, outcome)
+
+# 生命周期管理
+REFINE(usage_evidence_sufficient and quality_declining)
+ROLLBACK(blocking_regression)
 EVICT(no_effective_use and review_approved)
-REFINE(usage_evidence sufficient and quality declining)
-PROMOTE(replay passed and human approval granted)
 </code></pre>
-            <p>生产实现采用分阶段 loading；自动蒸馏 skill 经过试用期和回放后再转正；人工编写和自动蒸馏使用不同信任级别；通过 EVICT、REFINE 和 PROMOTE 管理生命周期。</p>
+            <p>生产实现采用分阶段 loading；自动蒸馏 skill 经过试用期和回放后再转正；人工编写和自动蒸馏使用不同信任级别；隔离评测与共存评测都通过后才进入生产目录。每次调用保留路由和版本证据，出现阻断性回归时回滚到上一稳定版本。</p>
             <h2>场景化示例</h2>
             <p>设想一个 B2B SaaS 团队把资深销售的稳定做法整理为 SKILL.md：首次接触前查询公开公司信息，电话开场和需求发现使用可审查的流程，异议处理引用话术库，签约前发送决策清单。gotchas 放在文件顶部，确定性步骤使用 bundled scripts，每个环节提供 worked example。核心 SOP 由人工编写并经 sales leader review 后进入 git；自动蒸馏 skill 使用独立 namespace 和较低信任级别；customer-facing skill 必须人工审核；团队定期执行 EVICT、REFINE 或 PROMOTE。业务提升需要由真实销售数据另行验证。</p>
             <h2>相邻模式</h2>
@@ -234,10 +249,14 @@ PROMOTE(replay passed and human approval granted)
             </ul>
             <h2>工程判断</h2>
             <p>Skill Package 将经过验证的流程、工具和边界条件封装为可触发、可版本化的运行资产。组织可以复用稳定做法，同时保留输入判断、异常处理和退出条件。</p>
+            <h2>延伸阅读</h2>
+            <ul>
+            <li><a href="https://adpsagent.com/zh/patterns/reflection/">反思模块总纲：让反馈真正改变系统</a></li>
+            <li><a href="https://adpsagent.com/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会（2026-08-12）</a></li>
+            <li><a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise">Claude Enterprise Skills：测试、隔离、共存与生命周期</a></li>
+            </ul>
 
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
+            <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《F2 技能包》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>

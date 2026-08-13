@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS 设计模式系列研讨会 · 反思模块第一次研讨会 · ADPS</title>
+    <meta name="description" content="在线与离线反思、反馈延迟、评测证据、Skill 演化、归因与自愈边界。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/zh/workshops/reflection-2026-08-12/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/reflection-2026-08-12/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/reflection-2026-08-12/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav">
+                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
+                <a href="/zh/cases/">案例库</a>
+                <a href="/zh/concepts/">概念</a>
+                <a href="/zh/research/">论文</a>
+                <a href="/zh/positions/">立场</a>
+                <a href="/zh/founders/">团队</a>
+                <a href="/zh/news/">新闻</a>
+                <a href="/zh/join/">加入我们</a>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/workshops/reflection-2026-08-12/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式白皮书</a><span style="margin: 0 0.45rem;">/</span>研讨会<span style="margin: 0 0.45rem;">/</span>反思 Reflection</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书 · 研讨会</p>
+                <h1>ADPS 设计模式系列研讨会 · 反思模块第一次研讨会</h1>
+                <p class="publication-deck">在线与离线反思、反馈延迟、评测证据、Skill 演化、归因与自愈边界。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>日期</dt><dd>2026-08-12</dd></div>
+                    <div><dt>模块</dt><dd>反思 Reflection</dd></div>
+                    <div><dt>文档类型</dt><dd>研讨记录</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主持人</strong></td>
+<td style="text-align: left;">张海立（ADPS 核心专家、LangChain Ambassador）、黄佳（ADPS 创始成员、“认知功能 × 执行拓扑”双轴框架提出者）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>核心研讨嘉宾</strong></td>
+<td style="text-align: left;">张栋、周默、王伟、陆钱春、赵翰、Pylon Peng、李佳奇</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>本次发言嘉宾</strong></td>
+<td style="text-align: left;">张栋、周默、王伟、陆钱春、Pylon Peng、李佳奇</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>组织协调</strong></td>
+<td style="text-align: left;">白萍萍</td>
+</tr>
+</tbody>
+</table>
+<p>2026 年 8 月 12 日，ADPS 组织了反思模块第一次专题研讨。与会者来自研发安全、零售算法、质量评测、通信知识工程、软件研发和旅行服务等场景。讨论从应用内的生成评审展开，逐步进入离线评测、Skill 演化、归因、自愈权限和长反馈链。</p>
+<p>会议议程列出赵翰（腾讯云代码助手模型后台与推理负责人）为核心研讨嘉宾。逐字稿记录了现场邀请，未收录其正式发言，因此本页不向其归属具体观点。</p>
+<p>这次讨论没有增加新的模式编号。它改变了反思模块的阅读方式：F1–F4 描述不同的修改对象和执行结构，在线/离线、反馈延迟、证据强度和修改权限则决定这些模式怎样进入生产。</p>
+<h2>1. 应用内反思与应用外评测</h2>
+<p>张海立以 LangChain 的 Agent Development Lifecycle 为起点，将反思放回完整生命周期。应用内的 rubric、grader 和修订回路帮助当前任务收敛；应用外的数据集、评估器和 trace 分析用于比较版本、发现回归和校准评审者。</p>
+<p>两者共用评测部件，职责并不相同。评测记录好坏，反思根据判断提出或执行修改。没有重跑和回归证据的修改，还不能算完成回路。</p>
+<p>研讨会后，白皮书将这条分工写入了<a href="/zh/patterns/reflection/">反思模块总纲</a>。</p>
+<h2>2. 在线反思修当下，离线反思修系统</h2>
+<p>王伟提出了一个清晰的两分法。在线反思跟随当前任务运行，工具报错、参数不符或产物不完整时，系统当场修正。离线反思批量读取一段时间的交互轨迹，寻找多次任务中的重复、冲突和系统性问题。</p>
+<p>他介绍了一个环境构建 Agent。系统每遇到一类失败就增加一个局部修复。运行一段时间后，环境构建更稳定，执行路径却显著变长。团队通过离线复盘才发现，一些补丁彼此重复，一些存在冲突。</p>
+<p>这个实例给出了一条生产级约束：在线回路的修改范围应当小、可回滚，而且必须持续接受离线的全局检查。</p>
+<h2>3. 反馈延迟决定回路长度</h2>
+<p>李佳奇从客服、运营、代码生成和业务分析场景补充了另一条分界。代码有编译、测试和发布日志，正确性信号能在当前任务中到达。一条业务建议可能要经过产品、运营、研发和真实用户行为，几天或更久以后才能判断。</p>
+<p>因此，“实时”不能由 Agent 的计算速度单方面决定。真值未到达时，可以当场检查格式、引用和明显矛盾，最终价值需要留给离线标注和人工归因。</p>
+<p>研讨会将“即时/延迟反馈”与“封闭/开放性任务”记录为两个相关但不等价的判断。开放任务也可以包含强硬的局部验收，封闭任务的最终用户体验也可能滞后。</p>
+<h2>4. 反思先要有硬证据和停止条件</h2>
+<p>周默把生产反思的要求归纳为可自动化、可终止、可观测、可复用和可控制成本。他进一步将实现分为四层：</p>
+<ol>
+<li>硬校验层优先使用机器真值。</li>
+<li>模型诊断层分析产物和轨迹。</li>
+<li>记忆沉淀层决定什么内容能够跨任务复用。</li>
+<li>调度控制层管理启停、轮次、成本、降级和人工接管。</li>
+</ol>
+<p>白皮书接受了这个结构，同时对“可复用”作了边界补充：当反思只修改本轮输出时，可以选择不保存；任何跨任务的结论都要进入准入、版本和退役流程。</p>
+<p>周默还介绍了元反思、审议式反思和知识完备性检测的探索。这些方向对高风险、缺少确定性真值的任务有启发，当前仍处于探索阶段，研讨会没有将其列为新的正式模式。</p>
+<h2>5. 三层环境把 Bad Case 从线上收回线下</h2>
+<p>张栋介绍了开发、评测和生产三层环境。开发环境允许人和 Agent 充分交互，评测环境在 benchmark 上检查新规则和新版本，生产环境使用已验证的流程和资产。</p>
+<p>生产中出现 Bad Case 时，团队先保持线上路径稳定，再将失败收入评测集，生成候选规则或知识更新，通过回归后逐级发布。这个流程为在线反思设定了一个实用上限：当修改会影响共享资产或生产策略时，优先转入离线的发布流程。</p>
+<h2>6. 归因是自愈之前的独立工程</h2>
+<p>陆钱春从组织级 Agent 和 Skill 的可靠性治理出发，介绍了事前准入与巡检、运行时健康检查与熔断、事后轨迹审计与整改复测。他的团队正在将观测埋点、错误类型和评测方法表达为统一原语。</p>
+<p>他特别区分了两类根因。工具参数失效、步骤缺失或网络波动可能通过重试、修正或降级恢复。专业知识缺失、业务规则不同或各团队期望不一致，已经超出原 Agent 的自愈边界。一个诊断即使找到了现象，也可能是假阳性，或者根本没有可授权的修复方案。</p>
+<p>这部分讨论促使 F4 自愈循环收紧了适用条件：需要可识别的失败、可执行的修复、独立复验和可用回滚。根因指向知识、业务决策或责任边界时，循环应转人。</p>
+<h2>7. Skill 演化要同时解决生成、比较和并存</h2>
+<p>王伟和李佳奇都提到了 Skill 规模扩大后的评测问题。单个 Skill 加载到 Agent 中可能表现良好，与更多 Skill 组合时却可能误触发、抢占路由或与旧流程冲突。团队还需要分开 Agent 本身、某个 Skill 和 Skill 组合对结果的贡献。</p>
+<p>Pylon Peng 介绍了一条每日反思流程。主 Agent 评测子 Agent 的任务结果，任务结束后的 hook 收集 trajectory，再分析是否需要新建或修改 Memory、Skill、规则、子 Agent 和 Harness。当工具参数或业务规则发生变化时，对应的 Skill 文档与验证用例同步更新。</p>
+<p>这类日终批处理为 F2 技能包和 F3 经验回放提供了一个可实施的衔接点，但自动产生的资产仍然要经过评测和发布门禁。</p>
+<h2>8. 交叉评审能打破部分同源盲区</h2>
+<p>李佳奇回顾了一个 SQL 生成与审查的实践。团队最初使用同类模型同时生成和评审，一些问题会穿透审查。将生成与评审分配给不同模型后，问题暴露能力有所改善。</p>
+<p>交叉模型评审可以增加视角差异，它不自动产生独立性。两个模型可能共享训练数据、错误假设和 rubric。白皮书因此将模型差异视为一种辅助措施，优先级仍低于测试、规则、原始证据和专家复核。</p>
+<h2>9. 进入白皮书的结果</h2>
+<ol>
+<li>新增<a href="/zh/patterns/reflection/">反思模块总纲</a>，定义反思与观测、评测、发布治理的边界。</li>
+<li><strong>在线反思</strong>与<strong>离线反思</strong>作为运行方式进入总纲，不新增模式编号。</li>
+<li><strong>F1 生成评审</strong>增加评审合同、轨迹评审、评审者校准和多维 rubric 交换问题。</li>
+<li><strong>F2 技能包</strong>增加候选、独立评测、并存评测、灰度、版本与退役的生命周期。</li>
+<li><strong>F3 经验回放</strong>增加离线 trace 挖掘、延迟反馈和局部补丁合并。</li>
+<li><strong>F4 自愈循环</strong>区分可修复的运行故障与需要人工补知识、改业务规则的问题。</li>
+<li>元反思、审议式反思和前瞻性反思进入待研究方向，暂不落牌。</li>
+</ol>
+<h2>10. 还需要跟进的问题</h2>
+<ul>
+<li>在线回路的修改权限应如何按任务风险分级？</li>
+<li>如何将一条长反馈链中的业务结果归因到当时的 Agent 版本和轨迹？</li>
+<li>Skill 在独立测试和组合测试中需要哪些共同指标？</li>
+<li>反思结果修改 Memory、Skill 或 Harness 时，谁拥有准入和回滚权？</li>
+<li>知识完备性、元反思和审议式反思如何获得可复现的成本与质量证据？</li>
+</ul>
+<h2>相关页面</h2>
+<ul>
+<li><a href="/zh/patterns/reflection/">反思模块总纲</a></li>
+<li><a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a></li>
+<li><a href="/zh/patterns/f2-skill-package/">F2 技能包</a></li>
+<li><a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a></li>
+<li><a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a></li>
+<li><a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></li>
+</ul>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

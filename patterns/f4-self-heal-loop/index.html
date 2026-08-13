@@ -42,6 +42,7 @@
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -60,6 +61,7 @@
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
               <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
@@ -143,7 +145,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Medium (each repair adds a few extra calls, but saves the engineering time spent on manual triage)</td>
+            <td style="text-align: left;">Medium-high (diagnosis, isolated repair, full verification, rollback, and hand-off)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -157,7 +159,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Failing tests, lint errors, broken builds, a red CI run—these deterministic failure signals are the most valuable feedback an agent can receive, because they are unambiguously right or wrong and do not depend on subjective judgment. But having an engineer manually triage and manually fix every failure is heavy, repetitive work, and many failures have formulaic fixes (a missing dependency, a misplaced configuration, an obvious logic error). Having a human fix those is wasteful.</p>
+            <p>Failing tests, lint errors, broken builds, and red CI runs provide clear criteria for automated repair. Missing dependencies, misplaced configuration, and local logic errors often follow repeatable diagnostic paths. Engineers still define the allowed scope, release authority, and hand-off path; an agent can perform the repeated diagnosis and verification inside those limits.</p>
             <p>Self-Heal Loop lets the agent absorb these signals and close the repair loop automatically: a failure signal fires → diagnose the root cause → generate a fix → apply it → re-verify, and run another round if it is not fixed. It is the form of reflection closest to "agent autonomy," and it is the only mandatory loop in the reflection module. Once a fix fails, the system must either make another bounded attempt or hand the case off. Coding agents and internal repair systems provide practical examples of this structure, but their reported production results should be evaluated from primary sources and reproduced in the local environment.</p>
             <h2>Classification: Reflection × Loop</h2>
             <ul>
@@ -165,26 +167,64 @@
             <li><strong>Horizontal axis · Loop</strong>: the structure is a forced cycle of detect failure → diagnose → repair → re-test. This loop is structural and mandatory, unlike the optional replay of Generator-Critic—the starting point is "the output is already broken," the loop is the means of recovery, another iteration is required if it is not fixed, and the termination conditions are tests passing, max_iterations bottoming out, or a detected regression triggering a rollback.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>A production-grade Self-Heal Loop is built from a six-stage pipeline plus a triple stop mechanism. The pipeline: Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify, and when verification fails, <code>git revert</code> returns to Diagnose to redo the work.</p>
+            <p>A production Self-Heal Loop uses six stages plus three stop controls: Test Fail → Diagnose → Generate Fix → Critic → Atomic Apply → Verify. A failed verification rolls back the current attempt before retry or hand-off.</p>
+            <p>Before repair, classify the failure and check the permitted change scope:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Failure class</th>
+            <th style="text-align: left;">Typical signal</th>
+            <th style="text-align: left;">Default response</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Runtime</td>
+            <td style="text-align: left;">Timeout, dependency error, resource pressure</td>
+            <td style="text-align: left;">Retry, switch, or degrade within policy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Process</td>
+            <td style="text-align: left;">Wrong tool order, bad arguments, omitted step</td>
+            <td style="text-align: left;">Revise the current plan or call</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Business</td>
+            <td style="text-align: left;">Conflicting rules, missing domain knowledge, unmet approval condition</td>
+            <td style="text-align: left;">Request evidence or hand off; do not infer missing policy</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Experience</td>
+            <td style="text-align: left;">Correct result with excessive wait, weak explanation, broken interaction</td>
+            <td style="text-align: left;">Feed product and workflow improvement</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Each class maps to <code>change_scope</code> and <code>release_authority</code>. Editing a temporary artifact, rerunning a sandbox task, and changing a production rule are different permissions. If the required change exceeds authority, the loop stops and hands over the evidence.</p>
             <p>The triple stop mechanism is what upgrades Generator-Critic into Self-Heal; drop any one of them and you risk "breaking the main branch":</p>
             <ol>
-            <li><strong><code>max_iterations</code> hard circuit break</strong>: cap repair attempts according to task risk and local evaluation. This prevents the agent from playing whack-a-mole indefinitely.</li>
+            <li><strong><code>max_iterations</code> hard circuit break</strong>: cap repair attempts according to task risk and local evaluation. This limits repeated fixes that keep moving the failure.</li>
             <li><strong>independent critic verifier</strong>: use an independently configured reviewer to inspect the fix. A different model family may reduce shared blind spots, but independence also depends on prompts, evidence, and trace separation. Place verification at the risk points that matter to the workflow.</li>
             <li><strong>stability check via signature</strong>: compare failure signatures to distinguish progress from a switch to a new problem, and define regression rules for severity, affected scope, performance, security, and coverage.</li>
             </ol>
             <p>A layered cascade such as format → lint → build → test runs cheap signals first and reserves expensive checks for changes that pass the earlier gates. The exact layers should match the repository's toolchain.</p>
+            <h2>Online repair and offline release</h2>
+            <p>Online repair suits low-risk, reversible changes with immediate verification, such as correcting arguments in a sandbox, regenerating a temporary artifact, or opening a reviewable pull request. Changes to shared rules, skills, prompts, routing, and production configuration enter an offline process for grouped analysis, replay, impact review, approval, and versioned release. A local incident should not silently become a global policy.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Domains where right and wrong are clear, such as code / tests / CI</strong>: auto-fixing CI failures, auto-fixing lint, auto-diagnosing and repairing test failures. This is the main battleground for Self-Heal, because there is a deterministic ground truth.</li>
+            <li><strong>Domains with explicit acceptance signals, such as code, tests, and CI</strong>: Examples include lint fixes, CI repair, and diagnosis of failing tests.</li>
             <li><strong>A standard capability for coding agents</strong>: Aider, Spotify Honk, and GitHub Copilot all treat it as a default feature; it is infrastructure for coding agents.</li>
             <li><strong>Engineering pipelines with a clearly layered ground-truth signal</strong>: a CI with a clean format/lint/build/test layering is what suits self-heal. The more distinct the signals, the more reliable the repair.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing it where there is no deterministic failure signal</strong>: subjective judgments such as writing and design have no objective right-or-wrong signal, so use Generator-Critic (F1) rather than Self-Heal. Tasks where the cost of repair exceeds the cost of failure (changing the schema of a production database) belong in the governance module's Approval Gate with human review.</li>
-            <li><strong>Whack-a-mole</strong>: without a stability check, the agent fixes one error and introduces a new one, and after a few rounds the code is a mess. The defense is to run failure-signature comparison, regression detection, and max_iterations together as three layers.</li>
+            <li><strong>Failure drift</strong>: Without a stability check, the agent fixes one error and introduces another. Use failure-signature comparison, regression detection, and <code>max_iterations</code> together.</li>
             <li><strong>Regression cascade</strong>: when each round's fix is not an atomic commit, a string of cascading changes leaves the rollback unable to restore the correct state. The defense is per-iteration atomic commits plus the strict constraint "modify only files in the diagnosis."</li>
             <li><strong>False recovery</strong>: the agent changes the test instead of the code, weakening the test so it passes—every metric is green and every problem remains. The defense is for the critic to explicitly review whether "production code or the test was changed," plus a rule that test coverage may not drop.</li>
+            <li><strong>Repairing without the missing knowledge</strong>: A model cannot recover an absent business rule, domain fact, or goal definition from a failure signal. Request evidence or hand off to the responsible owner.</li>
+            <li><strong>Wrong diagnosis</strong>: Similar failure signatures may have different causes. Preserve original evidence, diagnosis confidence, and alternative hypotheses; high-risk cases need independent review.</li>
+            <li><strong>Writing durable assets without authority</strong>: A runtime fix directly changes a shared skill, prompt, or production configuration. Durable changes require offline evaluation, approval, versioning, and rollback.</li>
             <li><strong>Bottoming out without handing off to a human</strong>: "crash if it can't be fixed" is an unacceptable engineering practice. HITL handoff must be a first-class citizen, with an accountable queue owner and a response target set from task risk and the business SLA.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -193,10 +233,14 @@
             <li><strong>Repair attempts to convergence</strong>: record how many attempts successful and failed cases consume. Set the circuit breaker from observed risk, cost, and marginal gain.</li>
             <li><strong>Regression rate</strong>: the proportion of repairs that introduce a new failure or weaken an existing check. Define regression across correctness, security, performance, scope, and coverage.</li>
             <li><strong>HITL queue latency</strong>: measure how long a bottomed-out case waits for human handling. The target follows the operational severity and service commitment of the system.</li>
+            <li><strong>Misdiagnosis rate</strong>: Review sampled cases against the final resolution and separate failed repair from an incorrect initial diagnosis.</li>
+            <li><strong>Authority block and hand-off completeness</strong>: Track whether the loop stops when <code>change_scope</code> is exceeded and whether the hand-off includes evidence, attempted changes, diff, and rollback state.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>for i in range(MAX_ITERATIONS):           # configured from task risk and evaluation
                 diagnosis = diagnose(current_failure)
+                if diagnosis.required_scope &gt; change_authority:
+                    return handoff(&quot;insufficient_authority&quot;, evidence, diagnosis)
                 fix = generate_fix(diagnosis)         # modify only files in the diagnosis
                 critique = cross_family_critic(fix)   # different vendor, breaks self-bias
                 if critique.block:
@@ -211,18 +255,24 @@
                 current_failure = new_failure
             return &quot;max_iterations_human_handoff&quot;     # bottomed out, hand off to human review
             </code></pre>
-            <p>Four engineering points: the critic must be independent enough to challenge the repair, which may include cross-family routing; regression rules come from the repository and business domain; each attempt should be isolated so rollback restores a known state; and bottoming out must lead to an owned HITL queue rather than a dead-end status.</p>
+            <p>The Critic should be independent enough to challenge the repair. Regression rules come from the repository and business domain. Each attempt stays isolated so rollback restores a known state. Durable changes to shared assets and production configuration do not ship directly from the online loop.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a CI repair agent whose first version applies every proposed fix directly, with no independent critic, rollback boundary, or stability check. A failing test can turn into a different error, and later attempts may touch unrelated code while the system still reports that it is making progress. A stronger version places a hard cap on attempts, compares failure signatures, reviews each proposed change independently, runs layered validation, and isolates every attempt for rollback. Cases that do not converge enter an owned human-review queue with the trace and diff attached. Evaluate this design by full-suite acceptance, regression, rollback, and handoff evidence; production outcome claims require an attributed incident record.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Generator-Critic (F1)</strong>: a sibling pattern whose boundary must be nailed down. Generator-Critic is "improve after generation"—the chain is a linear pipeline, replay is optional, and the starting point is a usable output; Self-Heal Loop is "repair after failure"—the loop is a mandatory structure, and the starting point is a broken output. This distinction makes their stop conditions, rollback, and blast radius all different. The former is for subjective tasks, the latter for tasks with a deterministic failure signal.</li>
+            <li><strong>Generator-Critic (F1)</strong>: Generator-Critic improves a usable output through a linear review chain; replay is optional. Self-Heal starts from a verified failure and requires a bounded repair loop. Their stop conditions, rollback requirements, and change scope therefore differ.</li>
             <li><strong>Adversarial Review (collaboration module)</strong>: the cross-family critic connects here. Rubber Duck's dual-model review is a lightweight version of this idea, and Adversarial Review pushes it to the extreme (multi-agent debate).</li>
             <li><strong>Iterative Hypothesis (reasoning module)</strong>: the same Loop lineage; both are an iterative "try—verify—try again" structure.</li>
             <li><strong>Guardrail Sandwich (action module)</strong>: the same sandbox lineage. Honk runs the agent in an isolated container with restricted permissions, compressing the blast radius from "production wide open" to "wide open inside the sandbox."</li>
             </ul>
-            <h2>Design conclusion</h2>
-            <p>Self-Heal Loop is not simply auto-fixing code; it defines the boundary of agent autonomy—in domains where it can self-heal (a deterministic ground truth exists) the agent can work independently, and in domains where it cannot (an irreversible blast radius) a human must step in. This line is exactly the same lineage as DevOps's decades-long judgment of "what can be automated and what must be human-reviewed."</p>
+            <h2>Engineering judgment</h2>
+            <p>Self-Heal Loop applies when failure is explicit, repair is verifiable, rollback is available, and the change falls within delegated authority. Missing evidence, irreversible impact, or a wider change scope requires human handling.</p>
+            <h2>Further reading</h2>
+            <ul>
+            <li><a href="https://adpsagent.com/patterns/reflection/">Reflection module: Make feedback change the system</a></li>
+            <li><a href="https://adpsagent.com/workshops/reflection-2026-08-12/">First Reflection workshop, 12 August 2026</a></li>
+            <li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic: Demystifying evals for AI agents</a></li>
+            </ul>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>F4 Self-Heal Loop</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>

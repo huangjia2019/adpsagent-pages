@@ -69,6 +69,7 @@
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
@@ -504,27 +505,27 @@
             <p><strong>工程要点：</strong> pre-check 管意图、权限、输入污染和参数来源。执行层管 sandbox、timeout、quota 和 capability。post-check 管结果校验、输出安全、状态一致性和审计。</p>
             <p><strong>常见失效：</strong> 只在输出端加 guardrail。很多风险在工具执行前就已经发生，比如 prompt injection、MCP server impersonation、越权参数绑定。</p>
             <h2>反思模块 Reflection</h2>
-            <p>反思模块让 Agent 干完事后能回看、修正、沉淀和复用。它解决的是可累积智能的问题。</p>
-            <p>反思不等于让模型自夸式总结。反思必须绑定外部反馈、失败信号、历史轨迹或可复用技能。</p>
+            <p>反思模块读取产物、执行轨迹和外部结果，对照可检查的标准，决定是否修改当前输出、运行路径或可复用资产。每条回路都要写清触发信号、判断证据、修改权限和复验方法。</p>
+            <p>在线回路处理当前任务，离线回路分析一批 trace、人工改动和延迟业务结果。两者是运行方式，不增加新的模式坐标。完整边界见<a href="/zh/patterns/reflection/">反思模块总纲</a>。</p>
             <h3><a href="/zh/patterns/f1-generator-critic/">F1 · Generator-Critic · 生成评审</a></h3>
             <p><strong>坐标：反思 × 链式。</strong><br>
             <strong>适用问题：</strong> 单次输出缺少复核的问题。Generator 产出，Critic 评估，Generator 修订。</p>
-            <p><strong>工程要点：</strong> Critic 要有明确评价维度、失败类型和停止条件。高风险场景优先使用 external-grounded critic，比如测试、知识库、规则引擎或独立模型。</p>
+            <p><strong>工程要点：</strong> Critic 要有明确评价维度、证据引用和停止条件。结果与 trajectory 分开评审，多维 rubric 保留阻断项。高风险场景优先使用测试、规则、引用库和专家判断。</p>
             <p><strong>常见失效：</strong> 同一个模型自评自改，产生 phantom issue，把本来清楚的内容改得更花。</p>
             <h3><a href="/zh/patterns/f2-skill-package/">F2 · Skill Package · 技能包</a></h3>
             <p><strong>坐标：反思 × 路由。</strong><br>
             <strong>适用问题：</strong> 同类任务每次从零摸索的问题。系统把反复成功的工作流封装成可命名、可触发、可加载、可复用的技能包。</p>
-            <p><strong>工程要点：</strong> 一个 Skill Package 至少要有 name、description、triggers、steps、inputs、outputs、gotchas、examples 和 bundled scripts。触发条件要清楚，避免技能误召回。</p>
+            <p><strong>工程要点：</strong> 一个 Skill Package 至少要有 name、description、triggers、steps、inputs、outputs、gotchas、examples 和 bundled scripts。候选 skill 要经过隔离评测、与现有 skill 的共存评测、试用、版本发布和回滚。</p>
             <p><strong>常见失效：</strong> 将一次任务中的临时经验直接写成 skill。skill 需要经过重复验证。</p>
             <h3><a href="/zh/patterns/f3-experience-replay/">F3 · Experience Replay · 经验回放</a></h3>
             <p><strong>坐标：反思 × 层级。</strong><br>
             <strong>适用问题：</strong> 历史任务轨迹变成沉默资产的问题。系统在新任务来时检索相似成功、失败和中间轨迹，把可参考部分注入当前决策。</p>
-            <p><strong>工程要点：</strong> 经验要分层存放：原始 trajectory、抽取出的 lesson、可复用 artifact、可转技能候选。新任务优先用 verified skill，没有技能再回放经验。</p>
+            <p><strong>工程要点：</strong> 经验要分层存放：原始 trajectory、抽取出的 lesson、可复用 artifact、可转技能候选。离线流程合并局部补丁并关联延迟结果，通过回放后再发布到在线检索层。</p>
             <p><strong>常见失效：</strong> 把所有历史都当成权威。Experience Replay 提供参考，不提供自动执行许可。</p>
             <h3><a href="/zh/patterns/f4-self-heal-loop/">F4 · Self-Heal Loop · 自愈循环</a></h3>
             <p><strong>坐标：反思 × 循环。</strong><br>
             <strong>适用问题：</strong> 确定性失败信号出现后，Agent 能不能自动修复的问题。测试失败、lint 报错、build 挂掉、CI 红灯，都可以成为自愈信号。</p>
-            <p><strong>工程要点：</strong> 循环要有 failure_signature、diagnosis、patch、verification、rollback 和 escalation。max_iterations 必须硬限制，错修要能回滚。</p>
+            <p><strong>工程要点：</strong> 循环要有 failure_signature、diagnosis、change_scope、patch、verification、rollback 和 escalation。max_iterations 必须硬限制；知识缺失、业务规则变化或所需权限超界时转人工。</p>
             <p><strong>常见失效：</strong> 在没有确定性反馈的领域强行自愈。生产数据库迁移、财务结算、医疗诊断这类场景不能让 Agent 闭环自修，必须接治理模块。</p>
             <h2>协作模块 Collaboration</h2>
             <p>协作模块处理多个 Agent 如何分工、并行、对抗和交接。多 Agent 只在任务规模、角色边界或审查独立性真的需要时才值得引入。</p>
@@ -656,6 +657,8 @@
             <p>主持人：王昊奋、黄佳。核心专家：张颖峰、付求爱、张栋、周默、陈玉涛、李庆丰。讨论覆盖记忆系统的使用判断、生命周期、工程边界、写入准入、版本与遗忘。</p>
             <p><strong><a href="/zh/workshops/action-2026-08-06/">行动模块第一次研讨会</a> · 2026-08-06</strong></p>
             <p>讨论主持：茹炳晟。核心参与者：李庆丰、张栋、罗军、唐洪山、王伟、Pylon Peng、任磊达。讨论覆盖 Plan 与 ReAct、结构化计划、工具准入、GUI 行动、沙箱、多 Agent 编排与事件驱动。</p>
+            <p><strong><a href="/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会</a> · 2026-08-12</strong></p>
+            <p>主持人：张海立、黄佳。核心研讨嘉宾：张栋、周默、王伟、陆钱春、赵翰、Pylon Peng、李佳奇。讨论覆盖在线与离线反思、反馈延迟、评测证据、Skill 演化、归因与自愈边界。</p>
             <p><a href="/zh/founders/#white-paper-contributors">查看白皮书贡献者</a>。</p>
             <h2>版本记录</h2>
             <table>
