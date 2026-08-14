@@ -195,7 +195,7 @@
             <li><strong>proponent 修正</strong>：根据 critic 提出的 issue 修订方案，进入下一轮。</li>
             <li><strong>judge 裁定</strong>：judge agent 综合双方论证，给出最终裁决（approve / conditional / reject）。</li>
             </ol>
-            <p>各角色分别写入独立 trace，评审轮次按任务风险与成本预算设置硬上限。Critic 需要具备识别 Generator 细微错误的能力，Judge 需要明确的证据与裁决契约。跨 family routing 可以减少部分共同盲区，但真正的独立性还取决于 context、数据源、运行时和人工责任是否分离。</p>
+            <p>各角色分别写入独立 trace，评审轮次按任务风险与成本预算设置硬上限。Critic 需要具备识别 Generator 细微错误的能力，Judge 需要明确的证据与裁决契约。跨 family routing 可以减少部分共同盲区，独立性还取决于 context、数据源、运行时和人工责任是否分离。</p>
             <h2>适用场景</h2>
             <ul>
             <li><strong>有 audit-grade 独立性要求的合规场景</strong>：金融授信、医疗诊断辅助、法律评估、监管合规，这些场景独立审查是上线门票。</li>
@@ -247,9 +247,7 @@ CritiqueVerdict:
             <h2>工程判断</h2>
             <p>对抗评审通过独立角色、不同信息源和明确裁决规则组织分歧。独立性属于结构要求，需要在模型、上下文、激励或数据来源中实际体现。</p>
 
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
+            <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《C3 对抗评审》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>

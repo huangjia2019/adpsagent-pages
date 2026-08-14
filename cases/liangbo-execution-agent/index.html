@@ -96,7 +96,7 @@
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/" class="active">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing Agent</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
             </div></div>
           <div class="sb-section">
@@ -194,7 +194,7 @@
 <p>Consider an expense claim. The workflow creates the claim, uploads an invoice, submits the claim, and reads the result. The upload call must receive the <code>application_id</code> returned by that specific create call. Payroll setup has the same dependency: the <code>template_id</code> returned by template matching must reach the import call unchanged.</p>
 <p>The first prototype appended each tool result to the conversation and asked the model to construct the next call. Tests produced occasional ID changes and parameter misbindings. JSON Schema could check type and format. It could not prove which call produced a value. A single changed character in a 64-bit or 128-bit identifier may address the wrong entity.</p>
 <p>The team kept the model for intent, semantic interpretation, and route selection. Exact parameters moved out of conversational text and into program-managed state.</p>
-<h2>3. Make the run inspectable before expanding it</h2>
+<h2>3. Runtime observability</h2>
 <p>The backend is written in Go. The first stage connected multi-turn chat, attachments, and streamed responses without introducing an agent framework. This fixed the entry and exit contracts before more capabilities were added.</p>
 <p>The web interface arrived at the same time. Business users could inspect input, execution progress, and results in one place. Each conversation became an ordered set of <code>Activity</code> records. One Activity contains one or more <code>Frame</code> records with the input, model output, tool call, latency, and cost for that point in the run. Intent classification, routing, ReAct iterations, and state changes publish events to the same timeline.</p>
 <p>The timeline first served development: which tool was selected, where an ID came from, and why a task stopped at an approval step. The same events support business review, incident reproduction, and production monitoring, with debugging detail hidden by role.</p>
@@ -267,7 +267,7 @@
 <li><strong>Resume in a later turn:</strong> the current turn ends; the user later says "continue" or supplies missing information.</li>
 <li><strong>Wait inside the execution flow:</strong> a running task pauses at a node until an approval event arrives.</li>
 </ul>
-<p>The second form requires the DAG, node state, approval result, and parameter provenance to survive the wait. A confirmation dialog alone does not provide resumability. The durable breakpoint lives in the task state machine.</p>
+<p>The second form requires the DAG, node state, approval result, and parameter provenance to survive the wait. A confirmation dialog only pauses one action; the task state machine stores the checkpoint required for resumption.</p>
 <h2>8. Long-running state has three homes</h2>
 <table>
 <thead>

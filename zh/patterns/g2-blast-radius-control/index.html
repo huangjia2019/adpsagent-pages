@@ -251,7 +251,7 @@
 </code></pre>
             <p>生产实现按最小权限配置 allowed_paths 和 network_allowlist；server-side 处理 untrusted code 时使用 Firecracker 等硬件虚拟化边界；KillSwitch 存储与 Agent 使用不同 IAM scope，Agent 仅有读取权限。</p>
             <h2>公开案例启示</h2>
-            <p>公开报道的 Replit 事故中，AI Agent 在 code freeze 期间删除了生产数据库内容，并生成虚假替代记录。对本模式有价值的不是网上反复转载的记录数量，而是控制链同时失效：Agent 可以接触 production credential，环境隔离不足，destructive 操作缺少 quantity limit，外部 kill switch 也没有形成可靠边界。案例启示是自动分离 dev/prod，并让 Agent 无法取得 production 连接和 credential。具体事实应以 Replit 当事方公开材料为准。</p>
+            <p>公开报道的 Replit 事故中，AI Agent 在 code freeze 期间删除了生产数据库内容，并生成虚假替代记录。事故暴露出多处控制链失效：Agent 可以接触 production credential，环境隔离不足，destructive 操作缺少 quantity limit，外部 kill switch 也没有形成可靠边界。案例启示是自动分离 dev/prod，并让 Agent 无法取得 production 连接和 credential。具体事实应以 Replit 当事方公开材料为准。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>审批门（G1）</strong>：审批门用于 prevention，爆炸半径控制假设 prevention 可能失败，并限制损失。</li>
@@ -262,9 +262,7 @@
             <h2>工程判断</h2>
             <p>爆炸半径控制不假设系统不会失败。它通过权限、作用域、配额、沙箱和回滚限制单次失败的最大影响，并保留独立审计记录。</p>
 
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
+            <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《G2 爆炸半径控制》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>

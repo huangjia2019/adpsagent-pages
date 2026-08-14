@@ -120,7 +120,7 @@
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>The Orchestrator and the MessageHandler Facade: The Trunk of Control Flow and the Facade of Performance</h1><p class="publication-deck">Keep control flow in the orchestrator and input/output presentation in the facade.</p>
+                <h1>Responsibility Boundary Between the Orchestrator and MessageHandler</h1><p class="publication-deck">Keep control flow in the orchestrator and input/output presentation in the facade.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.4</dd></div>
                     <div><dt>Definition status</dt><dd>Case-derived definition</dd></div>
@@ -130,21 +130,44 @@
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
+            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case contributed by Bo Liang)</p>
 
-            <p><img src="/images/concepts/en/orchestrator.png" alt="The Orchestrator and the MessageHandler Facade: the trunk of control flow and the facade of performance" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: a browser reconnect should not change task semantics</h2>
-            <p>A user starts a payroll job from the web interface and receives progress over SSE. If the page refreshes, the backend job should continue from its durable state while the new connection resumes event delivery. When the message handler also owns the task graph, tool calls, and recovery logic, changing the input protocol can change execution behavior.</p>
-            <p>Control flow should remain independent of Web, CLI, or messaging transport. The outer component adapts protocols and presentation; the orchestrator owns the task lifecycle.</p>
+            <p><img src="/images/concepts/en/orchestrator.png" alt="Responsibility boundary between the Orchestrator and MessageHandler" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+            <h2>Application context: a browser reconnect must preserve task semantics</h2>
+            <p>A user starts payroll configuration from a web interface and receives progress over SSE. If the page refreshes or the network reconnects, the backend task should continue from its prior state while the new connection replays visible events. When an input handler also owns the task graph, tool calls, and recovery, changing the transport can change execution behavior.</p>
+            <p>Runtime control should remain independent of Web, CLI, and messaging transports. The outer component handles protocol and presentation. The Orchestrator handles the task lifecycle.</p>
             <h2>Definition</h2>
-            <p>Once an execution-type agent is running, every capability needs a home. That home is the Orchestrator — the orchestrator of the entire runtime execution flow, the core skeleton on which the agent runs. From the moment it receives user conversational input, it parses the control signals along the chain and orchestrates the actions at each stage according to those signals: invoking a capability, distilling memory at one stage, retrieving external knowledge, judging that the current turn is complete and synthesizing a reply. The agent's apparent understanding of intent, its memory, its ability to summarize experience, its ability to call skills and tools — all of these are, in essence, branches that grow on this trunk of control flow.</p>
-            <h2>How it works</h2>
-            <p>Its operating rhythm can be summed up as alternating divergence and convergence: diverge, converge, diverge again, converge again. The increment the LLM brings is the ability to converge and anchor natural-language information to control signals at every kind of boundary, thereby driving activity that looks intelligent and free. Each step looks like a free choice, yet where the next step goes has already been constrained by the control signals that came before. Natural language is responsible for divergence, control signals for convergence, and the Orchestrator for re-converging the diverged result back into deterministic control flow at every stage.</p>
-            <p>The Orchestrator need not be exposed at the outermost layer. The outermost layer wraps a thin MessageHandler facade, which receives user input and passes it to the Orchestrator, dedicated to the capabilities of the user-facing presentation layer. As the Orchestrator executes, it freely emits activity events that conform to a unified structural specification, and the MessageHandler listens for these events on a single channel and renders the output with SSE, so that the user sees a typewriter-effect execution flow and conversation flow. This performance logic is not coupled into the Orchestrator, which lets it focus on control. Dongfang Yiteng's backend chose Go, which is exactly suited to writing this kind of event publish-subscribe lightly using native goroutines and channels — other mainstream languages can do it too, only with more code.</p>
-            <p>This structure avoids a common kind of coupling: mixing presentation logic with control logic. Once rendering, pushing, and typewriter effects are written into the trunk of control flow, the control flow becomes hard to read clearly; adding a new output form means changing the core, and changing a push can break the orchestration. Peeling the presentation logic out into a facade leaves the trunk of control flow responsible only for orchestrating actions according to signals, with how the frontend presents being none of its concern.</p>
-            <p>After intent recognition produces control signals, the next step is to define the consumers of those signals, which maps to a kind of interception-and-routing pattern, where the consumer is the intent gateway component. With it, small talk can end directly with an orchestrated mechanical conversation, without even calling the LLM to synthesize a reply, while query, task, and fallback each orchestrate different downstream execution chains. The intent gateway's input is a control signal, and its output is a definite chain of downstream activity orchestration. The large boundaries of the entire chain are fixed: the main entry receives the raw conversation and first determines intent, which is the pre stage; the synthesis of the reply returned to the user at the end is the post stage; and only the middle stage in between is the part that can be flexibly orchestrated. In Dongfang Yiteng's salary-package setup scenario, it is exactly this pre-middle-post skeleton that lets a colloquial request be converged into an intent, routed to the corresponding execution chain, and then orchestrated step by step into the strictly dependent sequence of vector matching, building a snapshot, and importing a template. Once the Orchestrator is in place, each capability unit has a place to carry it, and can focus on stacking upward.</p>
-            <h2>When you need it</h2>
-            <p>When your agent must carry multiple capabilities, run different execution flows for different intents, and you also want the control logic to stay clean and the presentation form to evolve independently. Looking further back at how control signals are recognized in the first place leads to the <a href="../control-narrative-dualism/">dualism of the control plane and the narrative plane</a>; spelling out how intent is converged into executable signals leads to <a href="../intent-as-compilation/">intent as compilation</a>.</p>
+            <p>The Orchestrator manages runtime control flow for a session. It consumes control signals, invokes reasoning, memory, retrieval, and action modules, and transfers control between them.</p>
+            <p>The MessageHandler is an outer facade. It receives user messages, calls the Orchestrator, subscribes to activity events, and streams progress and results to the interface through protocols such as SSE.</p>
+            <h2>Engineering mechanism</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Component</th>
+            <th style="text-align: left;">Responsible for</th>
+            <th style="text-align: left;">Excludes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Orchestrator</td>
+            <td style="text-align: left;">Routing, capability orchestration, mode transitions, and completion decisions</td>
+            <td style="text-align: left;">UI rendering and typewriter effects</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">MessageHandler</td>
+            <td style="text-align: left;">Input adaptation, event subscription, and streaming output</td>
+            <td style="text-align: left;">Reasoning decisions and business scheduling</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>The Orchestrator publishes Activity events with a stable schema and no dependency on a particular frontend. The MessageHandler converts those events into SSE messages. Dongfang Yiteng implements the publish-subscribe path with Go goroutines and channels.</p>
+            <p>The intent gateway sits inside or below the Orchestrator. It consumes control signals such as <code>chat</code>, <code>analyze</code>, <code>resolve</code>, and <code>unknown</code>, then selects an execution path. Session entry is the <code>pre</code> stage, capability orchestration is <code>middle</code>, and response synthesis is <code>post</code>.</p>
+            <h2>Case usage</h2>
+            <p>A payroll-group request enters intent classification during <code>pre</code>. The <code>middle</code> stage performs template matching, snapshot creation, and import. The <code>post</code> stage synthesizes the result. Each step emits events; the MessageHandler only presents them on the Web timeline.</p>
+            <p>Adding an action capability requires registering the capability and its control signals. Changing the Web presentation does not change orchestration logic.</p>
+            <h2>Adoption conditions</h2>
+            <p>Separate the Orchestrator from the input/output facade when an agent contains several capabilities, selects execution paths from control signals, and exposes the same run through different interfaces or protocols. See <a href="../intent-as-compilation/">Intent as Compilation</a> and <a href="../control-narrative-dualism/">Control and Narrative Planes</a> for the source of those control signals.</p>
             <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

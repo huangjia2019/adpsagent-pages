@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 驱动的软件工程 · 规格、上下文、执行与反馈 · ADPS</title>
-    <meta name="description" content="将 AI Coding、SDD 与 Agentic Software Engineering 放回同一个工程系统，讨论规格、上下文、执行、验证与演进。">
+    <meta name="description" content="覆盖 AI Coding、SDD 与 Agentic Software Engineering 的规格、上下文、执行、验证与演进。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/topics/ai-driven-software-engineering/">
@@ -49,7 +49,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS 专题研究</p>
                 <h1>AI 驱动的软件工程 · 规格、上下文、执行与反馈</h1>
-                <p class="publication-deck">将 AI Coding、SDD 与 Agentic Software Engineering 放回同一个工程系统，讨论规格、上下文、执行、验证与演进。</p>
+                <p class="publication-deck">覆盖 AI Coding、SDD 与 Agentic Software Engineering 的规格、上下文、执行、验证与演进。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>发布日期</dt><dd>2026-08-14</dd></div>
                     <div><dt>文档类型</dt><dd>横切专题</dd></div>
@@ -58,16 +58,16 @@
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note">专题用来整理跨越多个模块的工程问题。其中引用的模式定义、具名案例和研讨会记录，仍以各自页面为准。</p>
+            <p class="publication-note">专题整理跨模块的工程问题。引用的模式定义、具名案例和研讨会记录以各自页面为准。</p>
 
-<p>AI Coding 已经不只是在编辑器里补全代码。Agent 可以读取仓库、拆解任务、修改多个文件、运行测试，也可以提交变更。代码生成只是其中一环。工程团队面对的问题随之变成：如何给出清晰的工作边界，如何控制进入本轮判断的上下文，如何验收产物，以及如何防止局部提速慢慢损害整体架构。</p>
+<p>AI Coding 已经进入仓库级任务。Agent 可以读取仓库、拆解任务、修改多个文件、运行测试，也可以提交变更。代码生成只是其中一环。工程团队还要给出清晰的工作边界，控制进入本轮判断的上下文，验收产物，并防止局部提速慢慢损害整体架构。</p>
 <p>这是一个横跨感知、记忆、推理、行动、反思与治理的问题。ADPS 将它放在“专题”层，用来组织跨模块的工程方法，不为它新增一个模式编号。</p>
-<h2>先把几个名称分开</h2>
+<h2>概念定义</h2>
 <table>
 <thead>
 <tr>
 <th>名称</th>
-<th>它主要描述什么</th>
+<th>描述范围</th>
 <th>在本专题中的用法</th>
 </tr>
 </thead>
@@ -95,7 +95,7 @@
 </tbody>
 </table>
 <p>这些名称有重叠，也还在演化。在 ADPS 文档中，可根据讨论层次选词，无需强行将它们合并为一个行业标签。</p>
-<h2>工程瓶颈正在移动</h2>
+<h2>工程瓶颈的移动</h2>
 <p>当 Agent 可以较快地写出代码，团队的稀缺能力会向上下游移动：</p>
 <ol>
 <li><strong>任务定义。</strong> 要解决的问题、不能违反的约束和可验收的结果，必须足够明确。</li>
@@ -105,7 +105,7 @@
 <li><strong>架构维护。</strong> 每个局部任务都可以“做完”，仓库仍可能出现重复逻辑、依赖漂移和不必要的代码增长。</li>
 </ol>
 <p>因此，评估 AI 软件工程不能只看代码量、PR 数或生成速度。还要看规格是否稳定、证据是否充足、变更是否可追溯，以及后续维护成本是否上升。</p>
-<h2>一个可操作的五层结构</h2>
+<h2>可操作的五层结构</h2>
 <table>
 <thead>
 <tr>
@@ -176,7 +176,7 @@
 </tbody>
 </table>
 <p>这些阶段是工程能力的递进，不是工具采购清单。旧系统、高流量服务和受监管业务通常需要在较低自主级别停留更长时间。</p>
-<h2>从感知模块研讨会得到的工程线索</h2>
+<h2>感知模块研讨会的工程线索</h2>
 <p>2026 年 8 月 13 日的 ADPS 感知模块研讨会给出了几组可以对照的实践：</p>
 <ul>
 <li>公开项目 OpenLogos 与 RunLogos 将 Why、What、How 和验收条件连成规格链，再将场景切成可独立验收的纵向工作单元。</li>

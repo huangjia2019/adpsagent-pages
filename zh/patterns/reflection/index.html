@@ -160,7 +160,7 @@
 
             <p>反思可以发生在一次输出之后，也可以发生在一批任务结束之后。它读取产物、执行轨迹和外部结果，对照可检查的标准，决定是否修改当前输出、运行路径或可复用资产，然后再用新的证据确认修改是否有效。</p>
             <p>“让模型再想一遍”只是最轻量的实现。缺少证据、停止条件和修改权边界时，额外一轮推理很难证明系统真的变好了。</p>
-            <h2>先问四个问题</h2>
+            <h2>反思合同的四个问题</h2>
             <p>一条反思回路在上线前应该回答：</p>
             <ol>
             <li><strong>什么信号触发检查？</strong> 测试失败、规则不符、用户差评、人工标注，还是模型评分？</li>
@@ -302,7 +302,7 @@ retention:
   disposition: candidate_lesson
 </code></pre>
             <p>一条完整回路是：<strong>触发 → 证据装配 → 诊断 → 修改提案 → 权限门禁 → 执行 → 复验 → 记录</strong>。模型可以参与诊断和提案，测试、规则、人员和业务结果共同决定它有没有权力继续。</p>
-            <h2>四个正式模式怎样分工</h2>
+            <h2>四个正式模式的职责</h2>
             <table>
             <thead>
             <tr>
@@ -360,7 +360,7 @@ retention:
             <li>Anthropic 在 2026-01 发布的 <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Agent 评测方法</a> 中建议组合代码、模型和人工 grader。其 <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/enterprise">企业 Skill 治理指南</a> 进一步要求触发、独立运行、并存、指令执行和输出质量评测。</li>
             <li>OpenAI 的 <a href="https://openai.com/index/introducing-agentkit/">AgentKit</a> 将 trace grading、数据集和 grader 纳入 Agent 优化工作流。</li>
             </ul>
-            <p>这些能力首先解决“怎样看见和判断”。把判断转成受控修改，并用回归证据确认它，才进入 ADPS 所说的反思回路。</p>
+            <p>这些能力负责看见和判断。判断转成受控修改，并由回归证据确认后，才进入 ADPS 所说的反思回路。</p>
             <h2>暂不增加新编号的方向</h2>
             <p><strong>元反思</strong>检查 critic 本身是否漏判、误判或使用了有问题的 rubric。它可以先作为 F1 的高风险配置，不急于单独落牌。</p>
             <p><strong>审议式反思</strong>让多个评审者从不同假设出发展开辩论。它与 F1 生成评审、C3 对抗评审都有重叠，当前还缺少稳定的终止条件和成本证据。</p>
