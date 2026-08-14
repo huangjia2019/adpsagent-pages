@@ -11,21 +11,31 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
+            <nav class="site-nav" aria-label="Main navigation">
                 <a href="/patterns/">Patterns</a>
-                <a href="/cases/" style="color: var(--color-link);">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
+                <a href="/cases/" aria-current="page">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
                 <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/zh/cases/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感知模块总纲 · Agent 设计模式白皮书 · ADPS</title>
+    <meta name="description" content="ADPS 感知模块总纲：输入边界、四层管线、Context Contract、安全与四个感知模式的分工。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/perception/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/perception/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/perception/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/perception/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/" class="active">感知模块总纲</a>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/">行动模块总纲</a>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>Perception
+            </p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
+                <h1>感知模块 · 控制什么进入这一轮判断</h1>
+                <p class="publication-deck">输入边界、四层感知管线、Context Contract、正式模式与待研究问题。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>修订日期</dt><dd>2026-08-14</dd></div>
+                    <div><dt>文档类型</dt><dd>感知模块总纲</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 感知模块研讨会 2026-08-13</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>范围：</strong>本页说明感知子系统的整体设计。P1 至 P4 的问题、机制和验证标准仍以各模式规范为准。</p>
+
+            <p>感知决定 Agent 在当前时刻能看到什么，以及哪些信号有资格影响后续判断。这里的输入不只包括用户消息和图片，还包括代码、日志、工具返回、事件、业务状态、项目规范与上一轮留下的工作产物。</p>
+            <p>模型窗口再大，也不能替团队完成输入治理。过多的材料会淹没当前目标，缺少来源和时间的信息会把旧事实带入新决策，未经隔离的外部内容还可能把攻击指令送进执行链。感知模块的工作，是在推理开始前把输入变成一份范围清楚、来源可查、预算可控的上下文。</p>
+            <h2>感知从目标开始</h2>
+            <p>2026-08-13 的 ADPS 感知模块研讨会上，多位专家从安全、研发效能、开源项目和游戏开发给出了相同的工程判断：先写清 Agent 要完成的决定，再反向确定它需要哪些输入。</p>
+            <p>一份 Context Contract 至少回答六个问题：</p>
+            <ol>
+            <li>当前目标是什么，完成条件由谁定义。</li>
+            <li>哪些材料必须进入 context，哪些只保留句柄。</li>
+            <li>哪些状态需要在使用前刷新，哪些历史材料仍然有效。</li>
+            <li>每条输入来自哪里，作用域和访问权限是什么。</li>
+            <li>输入之间冲突时采用哪条优先级规则。</li>
+            <li>本轮没有看到什么，是否会影响结论。</li>
+            </ol>
+            <p>感知 trace 需要同时记录 <code>selected</code>、<code>deferred</code>、<code>dropped</code> 和 <code>unavailable</code>。这样才能区分“系统没有发现材料”和“系统发现后决定不加载”。</p>
+            <h2>四层感知漏斗</h2>
+            <p><img alt="感知运行管线：信号接入、预处理、语义聚合与事件判定" src="/images/patterns/perception-pipeline-zh.svg" /></p>
+            <p>感知模块研讨会从多类生产场景中归纳出一条四层管线。它适合作为感知子系统的运行骨架：</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">层级</th>
+            <th style="text-align: left;">工程问题</th>
+            <th style="text-align: left;">典型处理</th>
+            <th style="text-align: left;">输出</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>信号接入</strong></td>
+            <td style="text-align: left;">数据能否取得</td>
+            <td style="text-align: left;">协议适配、权限检查、幂等、超时与重试</td>
+            <td style="text-align: left;">带来源的原始信号</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>预处理</strong></td>
+            <td style="text-align: left;">数据能否稳定使用</td>
+            <td style="text-align: left;">清洗、去重、归一化、格式校验、噪声过滤</td>
+            <td style="text-align: left;">规范化记录</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>语义聚合</strong></td>
+            <td style="text-align: left;">离散信号怎样形成业务含义</td>
+            <td style="text-align: left;">实体关联、上下文补全、跨源对齐与原文回指</td>
+            <td style="text-align: left;">结构化事实包</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>事件判定</strong></td>
+            <td style="text-align: left;">这组事实是否值得触发后续流程</td>
+            <td style="text-align: left;">分类、分级、置信度、规则校验</td>
+            <td style="text-align: left;">触发建议与理由</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>最后一层只给出事件类别、等级和触发建议。是否冻结账号、阻断发布或修改生产数据，由推理、行动与治理模块决定。感知层若直接写入业务动作，输入规则和业务决策就会绑在一起，后续很难独立评测与更新。</p>
+            <h2>触发方式与执行拓扑分开看</h2>
+            <p>信号可以通过回调事件、周期轮询、流式处理或人工请求到达。这些机制回答“什么时候有新信息进入系统”。任务启动后采用链式、路由、并行、编排、循环还是层级结构，仍由执行拓扑描述。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">接入方式</th>
+            <th style="text-align: left;">适合的信号</th>
+            <th style="text-align: left;">主要代价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">回调事件</td>
+            <td style="text-align: left;">代码提交、工单变化、告警</td>
+            <td style="text-align: left;">上游需要稳定事件契约和去重键</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">周期轮询</td>
+            <td style="text-align: left;">合规扫描、批量盘点、状态校准</td>
+            <td style="text-align: left;">延迟较高，大规模扫描消耗明显</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">流式处理</td>
+            <td style="text-align: left;">高频日志、遥测和消息流</td>
+            <td style="text-align: left;">架构、运维和重放机制更复杂</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">多源校验</td>
+            <td style="text-align: left;">高风险威胁、故障定位、全链路审计</td>
+            <td style="text-align: left;">语义对齐和证据冲突处理成本高</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>事件驱动因此不单独增加为感知模式，也不自动成为第七种执行拓扑。它是接入和触发机制，可以和 P1 至 P4 以及不同执行拓扑组合。</p>
+            <h2>来源与模态是两个维度</h2>
+            <p>研讨会对 P4 做了一次重要的边界修正。图片、文本、音频和表格属于不同<strong>模态</strong>；主机日志、网络流量、代码扫描和历史工单属于不同<strong>来源</strong>。多源输入可能全是文本，多模态输入也可能来自同一份 PDF。</p>
+            <p>生产实现应分别记录：</p>
+            <pre><code class="language-yaml">observation_id: obs_01K2...
+source:
+  system: ci
+  channel: webhook
+  scope: repo://payments
+modality: text
+captured_at: 2026-08-13T12:10:00Z
+valid_at: 2026-08-13T12:09:58Z
+content_ref: artifact://ci/run-8842/log
+transform:
+  method: error-normalizer-v3
+  parent: raw://ci/run-8842
+trust:
+  integrity: verified
+  confidence: 0.94
+</code></pre>
+            <p>来源字段用于权限、时效和交叉验证，模态字段用于选择解析器与表示。P4 当前保留“多模态融合”的目录名，同时把多源对齐列为正式机制；是否改名为更宽的“多源多模态融合”，等待更多独立案例再定。</p>
+            <h2>四个正式模式怎样分工</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">模式</th>
+            <th style="text-align: left;">负责的问题</th>
+            <th style="text-align: left;">关键边界</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/p1-context-triage/"><strong>P1 上下文分诊</strong></a></td>
+            <td style="text-align: left;">已知候选超出预算时，哪些加载、压缩、延迟或丢弃</td>
+            <td style="text-align: left;">目标、身份、安全约束和当前错误不能被普通材料挤出</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/p2-semantic-compaction/"><strong>P2 语义压缩</strong></a></td>
+            <td style="text-align: left;">已进入窗口的历史怎样缩小，同时保留决策依据</td>
+            <td style="text-align: left;">错误、被否决方案、业务数字和来源指针需要特别保护</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/p3-progressive-discovery/"><strong>P3 渐进发现</strong></a></td>
+            <td style="text-align: left;">不知道证据在哪里时，怎样从广扫走到精读和深追</td>
+            <td style="text-align: left;">每轮更新查询依据，并由证据、预算或无新增信号终止</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/p4-multi-modal-fusion/"><strong>P4 多模态融合</strong></a></td>
+            <td style="text-align: left;">不同模态和来源怎样解析、对齐与交叉核验</td>
+            <td style="text-align: left;">原始证据、转换方法和冲突必须保留，融合结果不能伪装成单一真值</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>四个模式可以接在同一条管线中。系统先接入并规范化信号，P4 处理不同表示和来源，P1 决定当前加载范围，P3 在信息不足时继续探索，P2 在长任务中回收已经消费过的上下文。</p>
+            <h2>三个常见失效方式</h2>
+            <p><strong>输入越多，判断反而越差。</strong> 把能取得的数据全部交给模型，会扩大噪声、冲突和攻击面。感知范围应由决策目标反向约束，并通过回放检查漏报与误报。</p>
+            <p><strong>感知与决策写在一起。</strong> 解析器一边清洗信号，一边直接决定业务动作，规则调整会牵动整条链。稳定接口应输出事实、分类、置信度和证据，业务动作另行准入。</p>
+            <p><strong>上线后不再校准。</strong> 业务、系统架构、模型和数据源都会变化。感知需要自己的评测集，持续观察选择遗漏、错误压缩、零信号、触发延迟和跨源冲突。</p>
+            <h2>安全边界</h2>
+            <p>每接入一种外部来源，系统就增加一条数据与指令入口。工具描述、网页、文档、图片和日志都可能携带不可信内容。感知侧至少要做来源白名单、作用域校验、内容与指令分离、敏感字段处理和完整 trace；行动权限仍由工具准入、沙箱和审批控制。</p>
+            <p>这条分工很重要：感知可以标记可疑输入并降低信任等级，它不能仅凭模型判断给自己扩大权限。</p>
+            <h2>AI 驱动软件工程为何从感知问题开始</h2>
+            <p>在 Coding Agent 中，仓库就是主要环境。需求、架构决策、代码、测试、构建脚本和运行日志如果散落在聊天与个人经验里，对 Agent 来说等于不可见。新项目可以从一开始建立完整的规范链；存量项目更适合围绕当前改动逆向发现依赖、补齐局部文档和测试，再按可验收的垂直切片推进。</p>
+            <p>这部分讨论同时跨越记忆、行动、反思和治理，已经独立整理为<a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程专题</a>。感知总纲只保留它对上下文的直接要求。</p>
+            <p>2025 年 9 月，Anthropic 在<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">面向 Agent 的 Context Engineering</a>中把上下文定义为每轮推理需要持续整理的有限资源，并列出 compaction、结构化笔记和多 Agent 隔离等方法。2026 年 2 月，OpenAI 的<a href="https://openai.com/index/harness-engineering/">Harness Engineering 实践</a>把版本化仓库资产、可执行约束和反馈回路放到 Agent 可读环境中。两份工程记录与本次研讨会的共同点是：模型能力只在它能够读取、理解和验证的环境里生效。</p>
+            <h2>仍需行业回答的问题</h2>
+            <ul>
+            <li>P4 的目录名是否应从“多模态融合”扩展为“多源多模态融合”。</li>
+            <li>感知层输出到推理层的最小事实合同应包含哪些稳定字段。</li>
+            <li>外部输入的 prompt injection、来源污染和跨租户串数据怎样统一评测。</li>
+            <li>周期轮询、流式接入和事件回调如何共享同一套去重、时效与重放语义。</li>
+            <li>存量代码库的架构约束怎样变成 Agent 可发现、可执行、可持续校准的环境资产。</li>
+            </ul>
+            <h2>研讨会记录</h2>
+            <p>本总纲吸收了 2026-08-13 感知模块第一次研讨会的讨论。主持人为黄佳；公开核心研讨嘉宾为张栋、黄湘龙、李庆丰和黄丞。</p>
+            <p><a href="/zh/workshops/perception-2026-08-13/">阅读完整研讨记录</a> · <a href="/zh/workshops/">查看全部研讨会</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
+
+            <!-- ADPS-BLUEBOOK-SLOT -->
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《感知模块：控制什么进入这一轮判断》，Agent 设计模式白皮书 v0.3，2026-08-14。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

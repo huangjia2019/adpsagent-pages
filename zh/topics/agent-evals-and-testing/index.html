@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Evals 与测试实践 · 从输出评分到系统验收 · ADPS</title>
+    <meta name="description" content="组合确定性测试、轨迹评估、外部验收与生产反馈，建立 Agent 发布证据。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/agent-evals-and-testing/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-evals-and-testing/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-evals-and-testing/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/" aria-current="page">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/topics/agent-evals-and-testing/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>Agent Evals 与测试实践 · 从输出评分到系统验收</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 专题研究</p>
+                <h1>Agent Evals 与测试实践 · 从输出评分到系统验收</h1>
+                <p class="publication-deck">组合确定性测试、轨迹评估、外部验收与生产反馈，建立 Agent 发布证据。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>发布日期</dt><dd>2026-08-14</dd></div>
+                    <div><dt>文档类型</dt><dd>横切专题</dd></div>
+                    <div><dt>状态</dt><dd>专题研究底稿</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 研讨会、企业案例与公开 Eval 方法</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note">专题用来整理跨越多个模块的工程问题。其中引用的模式定义、具名案例和研讨会记录，仍以各自页面为准。</p>
+
+<p>传统软件测试并没有在 Agent 时代失效。数据结构、权限、工具契约、幂等性和业务账本仍应用确定性测试锁住。新增的难题来自概率性输出、多条可行路径、外部工具和延迟结果。一次运行可能换一条轨迹仍能完成任务，也可能文字回答漂亮而外部状态已经写错。</p>
+<p>Agent Evals 处理的是这一段不确定性。它与单元测试、集成测试、沙箱验收、生产监控和人工复核共同构成验证体系。</p>
+<h2>四个词各管一件事</h2>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>主要任务</th>
+<th>典型产物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test</td>
+<td>对确定性契约作断言</td>
+<td>通过/失败、差异、错误位置</td>
+</tr>
+<tr>
+<td>Eval</td>
+<td>在不确定行为和多次运行上测量能力与回归</td>
+<td>样本级证据、分数、通过率与失败簇</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>观察真实生产流量中的行为</td>
+<td>运行事件、指标、告警与样本</td>
+</tr>
+<tr>
+<td>Acceptance</td>
+<td>由用户或业务规则判定交付是否成立</td>
+<td>外部回执、可见结果、审批或签收</td>
+</tr>
+</tbody>
+</table>
+<p>测试和 Eval 的边界可以重叠。一个确定性 grader 既能出现在测试套件中，也能作为 Eval 的评分器。工程上更重要的是说清证据来自哪里，由谁维护，它能支持哪一类发布决策。</p>
+<h2>先定义被测对象</h2>
+<p>“测一下 Agent”范围过大。被测对象可能是：</p>
+<ul>
+<li>单个模型或提示词；</li>
+<li>一个 Skill 或工具适配器；</li>
+<li>一段路由、规划或工作流；</li>
+<li>包含状态、权限和恢复机制的 Agent Harness；</li>
+<li>完整 Agent 产品；</li>
+<li>多 Agent 系统及其交接、聚合和终止条件。</li>
+</ul>
+<p>对象不同，评测数据、执行环境、评分器和发布门都会变。例如，工具适配器主要看 schema、权限和幂等；长程 Agent 还要看目标保持、checkpoint、预算与故障恢复。</p>
+<h2>六个评估切面</h2>
+<table>
+<thead>
+<tr>
+<th>切面</th>
+<th>要问的问题</th>
+<th>证据示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>最终结果</td>
+<td>外部世界是否达到目标状态</td>
+<td>数据库事实、业务回执、真实请求结果</td>
+</tr>
+<tr>
+<td>执行轨迹</td>
+<td>工具、顺序与参数是否合理</td>
+<td>trace、ActionEvent、任务图节点</td>
+</tr>
+<tr>
+<td>单步决策</td>
+<td>路由、召回、压缩或审批判断是否正确</td>
+<td>决策标签、候选集、理由与事实对照</td>
+</tr>
+<tr>
+<td>安全与权限</td>
+<td>Agent 是否越界，拒绝和升级是否有效</td>
+<td>负例、沙箱事件、审批与拒绝记录</td>
+</tr>
+<tr>
+<td>恢复与长程进度</td>
+<td>中断、重试和交接后能否回到正确任务</td>
+<td>checkpoint、幂等键、目标版本、进度账本</td>
+</tr>
+<tr>
+<td>资源与时效</td>
+<td>质量改善是否在可接受的延迟和成本内</td>
+<td>试次分布、token、延迟、工具调用数</td>
+</tr>
+</tbody>
+</table>
+<p>最终结果是主要裁决依据，轨迹评估用于发现潜在风险和定位失败。对存在多条正确路径的任务，严格匹配一条 golden trajectory 会把有效解法判错。只要结果、权限和必要约束正确，轨迹可以保留一定自由度。</p>
+<h2>Agent 测试金字塔</h2>
+<pre><code class="language-text">               生产影子流量 / 金丝雀 / 业务结果
+                    人工与校准后的模型评分
+                 轨迹回放、沙箱与故障注入
+              工作流、外部验收与系统集成
+           工具契约、权限、状态机与幂等性
+        schema、解析、函数、规则与确定性组件测试
+</code></pre>
+<p>下层快、稳定、定位清楚，适合每次提交。上层更接近真实价值，同时运行慢、成本高、方差大。一个可用的发布门会将多层证据组合起来，不会把一个综合分数当成全部真相。</p>
+<h2>评分器的优先级</h2>
+<ol>
+<li>外部事实和确定性断言。</li>
+<li>代码、规则、schema 和状态机检查。</li>
+<li>业务验收器或独立模拟环境。</li>
+<li>经过校准的模型评分器。</li>
+<li>专家或真实用户对含糊标准作最终判断。</li>
+</ol>
+<p>模型评分器适合语义相关性、风格、完整性和复杂轨迹等难以写成硬规则的项目。它需要与人工判断校准，并定期重新检查偏差。用同一套未校准的模型同时生成、评分和改写标准，会弱化裁决的独立性。</p>
+<h2>Eval Contract</h2>
+<pre><code class="language-yaml">eval_id: gis-publish-regression-v7
+system_under_test: gis-agent@v5
+task: publish_and_verify_layer
+input_fixture: fixtures/s57-small-03
+environment: geoserver-sandbox@2.25
+allowed_tools: [inspect, publish, verify_get_map]
+authority: no_production_write
+expected_outcomes:
+  - layer_is_queryable
+  - get_map_contains_visible_content
+forbidden_outcomes:
+  - modify_unrelated_workspace
+graders:
+  - schema_contract
+  - external_get_map_probe
+trials: 5
+release_gate:
+  capability: all_required_cases_pass
+  regression: no_blocking_case_regresses
+evidence: artifacts/evals/gis-v7/
+owner: geo-platform
+</code></pre>
+<p>这份合同把任务、环境、权限、正负结果、评分器、试次和发布门放在一起。随机性较强的任务需要多次 trial，同时保留每次轨迹，否则平均分会掩盖稀有却严重的失败。</p>
+<h2>评测集的生命周期</h2>
+<ol>
+<li>从规格和业务验收条件生成最初能力集。</li>
+<li>将真实失败、bad case 和事故压缩成可重放的回归样本。</li>
+<li>补入边界、权限、对抗、空输入和未知输入，同时保留正例与负例。</li>
+<li>给数据、环境、评分器和预期结果分别编版。</li>
+<li>定期阅读失败轨迹，删除失效样本，拆分过于宽泛的评分项。</li>
+</ol>
+<p>能力评测追问系统现在能否完成目标任务，回归评测防止旧能力被新变更损害。两组样本的选择逻辑不同，发布时需要同时运行。</p>
+<h2>三组工程案例</h2>
+<h3>外部验收取代内部“成功”</h3>
+<p>玄宿科技 GIS 数据发布 Agent 曾遇到一类典型假成功：发布接口返回成功，真实 GetMap 仍可能返回 <code>LayerNotDefined</code>，且某些错误响应的 HTTP 状态仍是 200。最终验收器从用户一侧发出真实 GetMap 或 GetTile 请求，检查协议结果、内容类型和可见图像。</p>
+<h3>任务图同时承载执行与验收</h3>
+<p>东方屹腾执行型 Agent 用任务 DAG 和节点状态机管理严格依赖。节点完成要通过验收器，业务 ID 的来源、工具回执和审批事件进入同一时间线。这样既能判断结果，也能定位跳步、漏步和重复执行。</p>
+<h3>同一能力在三种环境中验证</h3>
+<p>反思模块研讨提出一个实用划分：基准环境运行稳定样本，日常环境承接真实工作，测试环境允许新 Skill 和新提示词参与。候选能力先与现行版本并存，评测通过后再升级，避免一次经验直接改变全局行为。</p>
+<h2>发布证据流</h2>
+<pre><code class="language-text">生产失败或新规格
+        ↓
+复现并固化成样本
+        ↓
+补入回归集，定义评分器和环境
+        ↓
+修改候选组件
+        ↓
+运行能力集 + 回归集 + 负例
+        ↓
+阅读失败轨迹并复核 grader
+        ↓
+发布、影子流量或回滚
+</code></pre>
+<p>新失败应进入回归集，但不是每个线上样本都值得永久保留。团队需要去重、定期退役过期样本，并区分模型波动、环境故障、grader 错误与真实能力缺陷。</p>
+<h2>常见失效方式</h2>
+<ul>
+<li>只测最终文本，不检查外部状态和副作用。</li>
+<li>只运行一次，将随机成功当成稳定能力。</li>
+<li>数据集只有正例，没有拒绝、越权、未知输入和恢复场景。</li>
+<li>用一条 golden trajectory 限定所有正确执行路径。</li>
+<li>模型评分器没有与人工标注校准，分数变化无法解释。</li>
+<li>Agent 与 grader 在同一次修改中同时变化，旧结果无法比较。</li>
+<li>仅公布综合分数，不保留样本级失败、轨迹和业务验收证据。</li>
+</ul>
+<h2>后续讨论问题</h2>
+<p>专题研讨建议带上四件东西：一个真实 bad case，一份 Eval Contract，一条失败轨迹，以及这个样本如何影响发布的记录。这样才能比较不同团队的被测对象、评分口径和权限边界。</p>
+<h2>资料与来源</h2>
+<ul>
+<li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic: Demystifying evals for AI agents</a></li>
+<li><a href="https://docs.langchain.com/langsmith/trajectory-evals">LangSmith: Trajectory evaluations</a></li>
+<li><a href="https://docs.langchain.com/langsmith/evaluate-complex-agent">LangSmith: Evaluate a complex agent</a></li>
+<li><a href="https://platform.openai.com/docs/api-reference/evals/">OpenAI Evals API</a></li>
+<li><a href="/zh/cases/xuanxu-gis-agent/">玄宿科技·GIS 数据发布 Agent</a></li>
+<li><a href="/zh/cases/liangbo-execution-agent/">东方屹腾·执行型 Agent</a></li>
+<li><a href="/zh/workshops/action-2026-08-06/">ADPS 行动模块第一次研讨会</a></li>
+<li><a href="/zh/workshops/reflection-2026-08-12/">ADPS 反思模块第一次研讨会</a></li>
+</ul>
+
+            <div class="document-citation"><p><strong>引用建议：</strong>ADPS，《Agent Evals 与测试实践 · 从输出评分到系统验收》，ADPS 专题研究，2026-08-14。</p><p><a href="/zh/topics/">专题目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

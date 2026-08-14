@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADPS · Agent 设计模式研究小组</title>
-    <meta name="description" content="ADPS 是一个把中国工程师的一线 Agent 实践、软件工程方法、开源 Harness 经验和企业级落地反馈，沉淀为全球可讨论的 Agent 架构语言的小型研究共同体。">
+    <meta name="description" content="ADPS 是一个独立研究共同体，为生产级 Agent 系统提供模式白皮书、工程案例、研讨记录与横切专题。">
     <meta name="keywords" content="ADPS, Agent 设计模式, AI agent, 生产级 agent, 架构, 双轴框架, 设计语言">
 
     <meta property="og:title" content="ADPS · Agent 设计模式研究小组">
@@ -26,21 +26,29 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-home">
 
     <header class="site-header">
         <div class="container">
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
-                <a href="/zh/research/">论文</a>
-                <a href="/zh/positions/">立场</a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
                 <a href="/zh/founders/">团队</a>
-                <a href="/zh/news/">新闻</a>
-                <a href="/zh/join/">加入我们</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
                 <a href="/" class="lang-switch">EN</a>
             </nav>
@@ -74,16 +82,12 @@
 
         <section class="block">
             <h2>我们做什么</h2>
-            <p>
-                ADPS 发布三组彼此关联的公共技术资料：
-            </p>
+            <p>ADPS 维护四类相互关联的公共技术资料：</p>
             <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.5rem;"><strong>模式白皮书</strong>——28 个核心模式与 6 个扩展或候选规范，
-                分别说明问题、机制、适用条件、已知失效方式和验证标准。</li>
-                <li style="margin-bottom: 0.5rem;"><strong>工程蓝皮书</strong>——记录模式组合在具名企业约束下的实际演进，
-                同时交代材料来源、证据等级和可迁移边界。</li>
-                <li style="margin-bottom: 0.5rem;"><strong>开放参考资产</strong>——论文、选型方法、实现示例与工程概念，
-                供团队核验、讨论和按需采用。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>模式白皮书与模块总纲</strong>——定义问题、机制、适用条件、失效方式与验证标准。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>工程蓝皮书</strong>——记录具名系统的约束、失败、架构决策和可迁移边界。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>研讨会与专题</strong>——保留业界讨论，并整理跨模块的工程方法。</li>
+                <li style="margin-bottom: 0.5rem;"><strong>开放参考资产</strong>——论文、选型方法、实现示例与工程概念。</li>
             </ul>
         </section>
 
@@ -101,6 +105,22 @@
                 <a href="/zh/patterns/" class="cta">查看模式白皮书 →</a>
             </p>
         </section>
+
+        <!-- ADPS-KNOWLEDGE-PATHS:START -->
+        <section class="block home-knowledge">
+            <h2>研讨与专题</h2>
+            <p class="home-knowledge-intro">感知、记忆、行动和反思已完成首轮研讨。研讨记录保留现场问题与实践分歧；专题页负责整理跨越多个模块的工程问题。</p>
+            <div class="home-path-grid">
+                <a class="home-path" href="/zh/workshops/"><span>研讨会</span><strong>四个模块的讨论记录、参与者与待解问题</strong></a>
+                <a class="home-path" href="/zh/topics/"><span>专题</span><strong>从模式和案例中抽出的跨模块工程方法</strong></a>
+            </div>
+            <ul class="home-topic-list">
+                <li><a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程</a><span>规格、上下文、执行、验证与演进。</span></li>
+                <li><a href="/zh/topics/observability-driven-evolution/">可观测性驱动的 Agent 演进</a><span>运行轨迹、组件版本、变更证据与回滚。</span></li>
+                <li><a href="/zh/topics/agent-evals-and-testing/">Agent Evals 与测试实践</a><span>确定性测试、轨迹评估、外部验收与发布门。</span></li>
+            </ul>
+        </section>
+        <!-- ADPS-KNOWLEDGE-PATHS:END -->
 
         <section class="block">
             <h2>创始成员</h2>

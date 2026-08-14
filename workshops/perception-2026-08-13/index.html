@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADPS Design Pattern Workshop · First Perception Workshop · ADPS</title>
+    <meta name="description" content="Signal admission, event ingress, the boundary between multi-source and multi-modal input, and context in AI-driven software engineering.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/perception-2026-08-13/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/perception-2026-08-13/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/perception-2026-08-13/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/" aria-current="page">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/perception-2026-08-13/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/workshops/">Workshops</a><span style="margin: 0 0.45rem;">/</span>Perception</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern Workshop Series</p>
+                <h1>ADPS Design Pattern Workshop · First Perception Workshop</h1>
+                <p class="publication-deck">Signal admission, event ingress, the boundary between multi-source and multi-modal input, and context in AI-driven software engineering.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Date</dt><dd>2026-08-13</dd></div>
+                    <div><dt>Module</dt><dd>Perception</dd></div>
+                    <div><dt>Document type</dt><dd>Workshop record</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+
+<p class="publication-note">This page lists workshop participants and consolidates the discussion by theme. It does not map internal practice point by point to a person or organization. Conclusions adopted after comparison appear in the <a href="/patterns/perception/">Perception module overview</a> and individual pattern specifications.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Chair</strong></td>
+<td style="text-align: left;">Jia Huang</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Core workshop guests</strong></td>
+<td style="text-align: left;">Dong Zhang, Xianglong Huang, Qingfeng Li, Cheng Huang</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Coordination</strong></td>
+<td style="text-align: left;">Pingping Bai</td>
+</tr>
+</tbody>
+</table>
+<p>On 13 August 2026, ADPS held its first workshop on the perception module. The meeting followed two related tracks. The first tested whether P1–P4 explain signal ingress, context selection, compaction, discovery, and fusion in enterprise systems. The second used coding agents to examine how requirements, architecture, testing, review, and team responsibilities change when AI enters software engineering.</p>
+<p>The two tracks belong at different levels of the catalog. Perception findings enter the module overview and P1–P4. AI-driven software engineering crosses memory, action, reflection, and governance, so it has become a separate research topic. The record groups remarks by engineering theme, preserves the technical detail, and does not map individual points to a person or employer.</p>
+<h2>Workshop conclusions</h2>
+<ol>
+<li>Perception scope should be designed backward from the decision goal. Available data does not automatically belong in the current context.</li>
+<li>A practical perception subsystem has four stages: signal ingress, preprocessing, semantic aggregation, and event assessment. The last stage recommends a trigger; it does not perform the business action.</li>
+<li>Source and modality require separate fields. Host, network, code, and tickets are sources; text, image, table, and audio are modalities.</li>
+<li>Events, polling, and streams are ingress and triggering mechanisms. They do not assign a topology to the complete task.</li>
+<li>The main engineering problem in AI coding extends beyond code generation. Context legibility, acceptance, architecture constraints, review capacity, and continuous cleanup determine whether the system can evolve.</li>
+</ol>
+<h2>1. Which information may influence a decision</h2>
+<p>The workshop described perception as the entrance to the decision chain. An enterprise system must first obtain signals and then turn them into structures that models and downstream workflows can use. Tools originally designed to display information to people need agent-readable schemas, state, and receipts.</p>
+<p>A practical pipeline has four stages. Signal ingress handles protocols, authorization, and failure behavior. Preprocessing cleans, deduplicates, and normalizes. Semantic aggregation connects isolated observations to business entities and history. Event assessment emits classification, severity, confidence, and a trigger recommendation.</p>
+<p>This structure separates perception from decision policy. Perception returns facts and labels. Business action remains downstream. Embedding blocking rules, remediation, and business policy directly in the perception layer makes the layer difficult to reuse and calibrate.</p>
+<h2>2. Events, polling, streams, and multi-source corroboration</h2>
+<p>In secure development workflows, code commits and tickets may arrive through callbacks, broad compliance scans run on a schedule, and high-volume telemetry uses streaming infrastructure. High-risk threats and fault isolation often require code, host, network, and historical ticket evidence to be corroborated.</p>
+<p>The mechanisms can coexist. A code-audit path may begin with a commit event, use a daily scan to check coverage, and aggregate several sources into one risk record.</p>
+<p>The workshop did not add Event-Driven as a new topology. Events define when work starts and how a signal is delivered. The six execution topologies still describe control after the task begins.</p>
+<h2>3. Multi-source is not the same as multi-modal</h2>
+<p>Enterprise security systems often fuse several sources that are all text or structured records. Game development exposes a genuine modality choice: an Unreal Engine Blueprint can be inspected visually or transformed into a script-like representation. The appropriate representation depends on the task, available parser, and token cost.</p>
+<p>P4 now records source and modality separately. Source drives authorization, freshness, and corroboration. Modality drives parser and representation choice. The pattern keeps the name Multi-Modal Fusion for now; ADPS will revisit the name after more cases are available.</p>
+<h2>4. Goal and constraints form the context</h2>
+<p>A coding agent's context includes both goal and constraints. The goal defines the work. Tests, interface contracts, design rules, and business invariants define acceptance. Too little context prevents completion; too much unrelated material disperses attention.</p>
+<p>Algorithm development also exposes a layered acceptance problem. A passing algorithm test does not establish correct presentation, device behaviour, or final business operation. Different tasks require their own acceptance layers and cannot share one universal judge unchanged.</p>
+<p>These remarks now appear in the Context Contract in the perception overview and connect to the Action Contract and reflection evidence model.</p>
+<h2>5. From SDD to AI-driven software engineering</h2>
+<p>The public OpenLogos and RunLogos projects show one specification-oriented path. OpenLogos organizes software context through Why, What, How, and acceptance artifacts. RunLogos places proposal, documentation, planning, vertical slices, implementation, review, verification, deployment, and archival in a workflow engine. Each slice is independently acceptable. Review loops carry explicit iteration, issue-count, evidence, and stop limits.</p>
+<p>An anonymized large-backend practice keeps existing product, development, and testing responsibilities while introducing agents into technical design, implementation, and code review. It records adoption, token use, design iterations, and post-delivery code changes. The near-term goal is to reduce human intervention through measured improvement without claiming an unattended process before evidence supports it.</p>
+<p>Greenfield and brownfield work require different adoption paths. A new system can establish specifications, design, and tests from the start. A high-traffic legacy system requires more cautious movement from peripheral modules toward the core, with stronger human and test gates.</p>
+<p>Open-source collaboration exposes another constraint. When code generation exceeds maintainer review capacity, the problem moves to coherence. Contributors use different coding agents. <code>AGENTS.md</code> and Skills express some rules, but local changes can still accumulate into architecture debt. Periodic cleanup, refactoring, and architecture stewardship remain necessary.</p>
+<p>A game-development practice uses ADR, TDD, and Task artifacts to separate long-lived architecture choices, one change, and current execution. Daily notes and task records support recovery after interruption. Product decisions and implementation findings update each other through forward development and reverse troubleshooting paths.</p>
+<p>These materials are synthesized in the separate <a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering topic</a>.</p>
+<h2>6. Three anti-patterns</h2>
+<p>The workshop identified three observed failures:</p>
+<ul>
+<li><strong>Universal perception</strong> assumes that more sources always make the agent more capable; the main signal is buried while latency and cost rise.</li>
+<li><strong>Perception-decision coupling</strong> places cleaning and business action in one layer, so a policy change disturbs the whole path.</li>
+<li><strong>Static perception</strong> stops evaluating misses, false positives, and latency after launch, allowing business and architecture changes to expand blind spots.</li>
+</ul>
+<p>The workshop also added an input-security concern. External tools, documents, pages, images, and logs can carry hostile instructions or faulty context. Source, scope, and the boundary between data and instructions need an explicit perception record.</p>
+<h2>7. Concepts extracted from the workshop</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Concept</th>
+<th style="text-align: left;">Workshop definition</th>
+<th style="text-align: left;">Current status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Perception funnel</strong></td>
+<td style="text-align: left;">Signal ingress, preprocessing, semantic aggregation, and event assessment</td>
+<td style="text-align: left;">Module-level reference structure</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Context Contract</strong></td>
+<td style="text-align: left;">Goal, mandatory inputs, deferred handles, freshness, provenance, conflict rules, and missing material</td>
+<td style="text-align: left;">Added to the perception overview</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Source-modality pair</strong></td>
+<td style="text-align: left;">Record where information came from separately from its representation</td>
+<td style="text-align: left;">Added to the P4 revision</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Acceptable vertical slice</strong></td>
+<td style="text-align: left;">An end-to-end unit that can be implemented, run, and accepted independently</td>
+<td style="text-align: left;">AI-driven software engineering topic</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Architecture legibility</strong></td>
+<td style="text-align: left;">Architecture boundaries represented as repository assets an agent can discover, check, and follow</td>
+<td style="text-align: left;">Research direction</td>
+</tr>
+</tbody>
+</table>
+<p>These terms organize the workshop record. Apart from the existing Context Contract, they do not create new pattern numbers.</p>
+<h2>8. White Paper revisions</h2>
+<ol>
+<li>A new <a href="/patterns/perception/">Perception Module Overview</a> records the four-stage funnel, ingress mechanisms, source and modality, the decision boundary, and input security.</li>
+<li><strong>P1 Context Triage</strong> adds goal-bounded scope, missing-input records, and input scope.</li>
+<li><strong>P2 Semantic Compaction</strong> continues to protect errors, rejected approaches, and business values, and now treats architecture decisions as protected coding-agent context.</li>
+<li><strong>P3 Progressive Discovery</strong> adds local reverse discovery and architecture-constraint lookup in brownfield repositories.</li>
+<li><strong>P4 Multi-Modal Fusion</strong> separates sources and modalities and adds provenance, freshness, transformation lineage, and corroboration.</li>
+<li>AI coding, SDD, acceptance, architecture stewardship, and team evolution move into topic research rather than receiving a P-pattern number.</li>
+</ol>
+<h2>9. Open questions</h2>
+<ul>
+<li>What reusable schema should connect the four stages of the perception funnel?</li>
+<li>Should P4 be renamed, and how should multi-source conflict retain uncertainty?</li>
+<li>How can a brownfield system turn architecture boundaries into executable checks rather than prose alone?</li>
+<li>When AI output exceeds human review capacity, which review work can be automated and which remains judgment?</li>
+<li>What autonomy gates and quality evidence differ between greenfield and brownfield systems?</li>
+</ul>
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/perception/">Perception Module Overview</a></li>
+<li><a href="/patterns/p1-context-triage/">P1 Context Triage</a></li>
+<li><a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a></li>
+<li><a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a></li>
+<li><a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a></li>
+<li><a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering</a></li>
+<li><a href="/founders/#white-paper-contributors">White Paper contributors</a></li>
+</ul>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

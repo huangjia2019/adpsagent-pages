@@ -4,28 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Module Overview · Agent Design Pattern White Paper · ADPS</title>
-    <meta name="description" content="ADPS memory module overview: adoption criteria, knowledge and control boundaries, lifecycle, five specifications, and open research questions.">
+    <meta name="description" content="ADPS Memory module overview: adoption criteria, knowledge and control boundaries, lifecycle, five specifications, and open research questions.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/memory/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
                 <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
                 <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/zh/patterns/memory/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>
@@ -37,6 +47,7 @@
             <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
               <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
               <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
@@ -55,12 +66,14 @@
               <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
               <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
               <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
               <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
@@ -124,17 +137,17 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
                 <h1>Memory Module · Turning Past Work into a Governed Runtime Asset</h1>
-                <p class="publication-deck">When to use an agent memory system, how it borders knowledge and control, and how its five specifications divide the work.</p>
+                <p class="publication-deck">Adoption criteria, engineering boundaries, lifecycle, formal patterns, and open research questions.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
                     <div><dt>Revised</dt><dd>2026-08-07</dd></div>
                     <div><dt>Document type</dt><dd>Memory module overview</dd></div>
-                    <div><dt>Basis</dt><dd>ADPS memory workshop, 5 August 2026</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS Memory workshop, 5 August 2026</dd></div>
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Scope:</strong> This page describes the memory subsystem as a whole. The M1–M5 specifications remain authoritative for pattern-level mechanics and verification.</p>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the Memory subsystem as a whole. The M1–M5 specifications remain authoritative for pattern-level mechanics and verification.</p>
 
             <p>If perception is an agent's eyes and action is its hands, memory is its past. It places perception, reasoning, and action on a time axis so that the next run can continue from facts, progress, and experience left by the previous one.</p>
             <p>Memory is not an isolated runtime step. A tool call may produce a memory candidate, a failure may update the counterexample store, and a resumed task may reload both progress and authoritative business state. ADPS treats memory as a cognitive function to make a specific set of engineering responsibilities reviewable: what is retained, who may write it, when it is retrieved, which version wins, and how a team can trace a decision back to the memory that influenced it.</p>
@@ -282,7 +295,7 @@ retrieval:
             <li>How should evaluation cover writing the right memory, retrieving the right item, using it correctly, and retiring it safely?</li>
             </ul>
             <h2>Workshop record</h2>
-            <p>This overview incorporates the first Memory Module Workshop, held on 5 August 2026. Haofen Wang and Jia Huang hosted the session. Core experts were Yingfeng Zhang, Qiuai Fu, Dong Zhang, Mo Zhou, Yutao Chen, and Qingfeng Li.</p>
+            <p>This overview incorporates the first Memory Module Workshop, held on 5 August 2026. Haofen Wang and Jia Huang hosted the session. Core workshop guests were Yingfeng Zhang, Qiuai Fu, Dong Zhang, Yangyang Ma, Qianchun Lu, Yutao Chen, Qingfeng Li, Jun Luo (Wuguo), Xudong Yu, and Mo Zhou.</p>
             <p><a href="/workshops/memory-2026-08-05/">Read the full workshop record</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Memory Module: Turning Past Work into a Governed Runtime Asset</em>, Agent Design Pattern White Paper v0.3, 2026-08-07. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>

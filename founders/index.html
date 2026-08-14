@@ -17,21 +17,29 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
+            <nav class="site-nav" aria-label="Main navigation">
                 <a href="/patterns/">Patterns</a>
                 <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
-                <a href="/founders/" style="color: var(--color-link);">Team</a>
-                <a href="/news/">News</a>
-                <a href="/join/">Join</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/" aria-current="page">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
                 <a href="/zh/founders/" class="lang-switch">中文</a>
             </nav>
@@ -88,68 +96,208 @@
 <h3>Haofen Wang (王昊奋)</h3>
 <p><strong>KNOWLEDGE GRAPHS · KNOWLEDGE-ENHANCED MODELS · KNOWLEDGE ENGINEERING</strong></p>
 <p>Tenured Professor and doctoral supervisor at Tongji University. His research covers knowledge graphs and knowledge-enhanced large language models. Public projects include OpenSPG, KAG-Thinker, MemOS, and AI-Ceping, with applications in airport operations, financial risk control, and in-cabin interaction. Over the past five years, he has published three academic monographs and 45 papers as first or corresponding author; his Google Scholar citation count exceeds 12,700.</p>
-<p><strong>ADPS work:</strong> Knowledge engineering and the organization of the pattern catalog as a navigable, queryable knowledge system.</p>
 <h3>Haili Zhang (张海立)</h3>
 <p><strong>LANGCHAIN AMBASSADOR · OPEN SOURCE · REFERENCE IMPLEMENTATIONS</strong></p>
 <p>Author of <em>LangGraph in Action</em> and <em>LangChain in Action</em>, LangChain Ambassador, and LFAPAC open-source advocate. His work focuses on practical GenAI, cloud-native systems, and open-source education.</p>
-<p><strong>ADPS work:</strong> Runnable reference implementations that map the pattern language to LangChain and LangGraph.</p>
 <h3>Huisheng Yin (尹会生)</h3>
 <p><strong>ENGINEERING EDUCATION · CLOUD-ARCHITECT COMMUNITY</strong></p>
 <p>Vice President of GeekBang Technology and Hall of Fame Expert of the Tencent Cloud Architect Technology Alliance.</p>
-<p><strong>ADPS work:</strong> Pattern review, case communication, and practitioner feedback across engineering education and enterprise-architecture communities.</p>
-<h2 id="white-paper-contributors">White Paper contributors</h2>
-<p>This section records White Paper contributors and the topics they discussed. Full records: <a href="/workshops/memory-2026-08-05/">First Memory Module Workshop</a>, <a href="/workshops/action-2026-08-06/">First Action Module Workshop</a>, and <a href="/workshops/reflection-2026-08-12/">First Reflection Module Workshop</a>.</p>
-<h3>Haofen Wang (王昊奋)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP · HOST</strong></p>
-<p>Tenured Professor and doctoral supervisor at Tongji University; first rotating chair of OpenKG. Discussed the memory lifecycle, memory scaling, and reuse of organizational experience.</p>
-<h3>Jia Huang (黄佳)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP · FIRST REFLECTION MODULE WORKSHOP · HOST</strong></p>
-<p>ADPS founder. Hosted the Memory and Reflection workshops and organized practitioner input into module overviews, pattern boundaries, and follow-up questions.</p>
-<h3>Haili Zhang (张海立)</h3>
-<p><strong>FIRST REFLECTION MODULE WORKSHOP · HOST</strong></p>
-<p>ADPS core expert, author of books on LangGraph and LangChain, and a LangChain Ambassador. Discussed in-application reflection, external evaluation, rubrics, graders, trajectory evaluation, and the agent development lifecycle.</p>
-<h3>Yingfeng Zhang (张颖峰)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP</strong></p>
-<p>Co-founder and CEO of InfiniFlow. Discussed knowledge compilation, retrieval harnesses, and the division between write and retrieval pipelines.</p>
-<h3>Qiuai Fu (付求爱)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP</strong></p>
-<p>Huawei Cloud AIOps technical lead. Discussed extraction, retrieval, and periodic consolidation for coding-agent memory, including the division between project-local facts and personalized memory.</p>
 <h3>Dong Zhang (张栋)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP · FIRST ACTION MODULE WORKSHOP · FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Tencent expert engineer and head of Wukong R&amp;D security. Discussed hierarchical retention and intrinsic memory in the Memory workshop; fixed production pipelines and domain DSLs in the Action workshop; and development, evaluation, and production environments with bad-case promotion gates in the Reflection workshop.</p>
+<p><strong>R&amp;D SECURITY · AGENT ENGINEERING · PRODUCTION EVALUATION</strong></p>
+<p>Tencent expert engineer and head of Wukong R&amp;D security. Participant in the Perception, Memory, Action, and Reflection workshops.</p>
 <h3>Mo Zhou (周默)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP · FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Algorithm architect, User Operations Department, Platform Marketing Center, JD Retail. Discussed forgetting, dynamic ontologies, collective memory, snapshots, and Code Act in the Memory workshop. In the Reflection workshop, defined requirements for automation, termination, observability, reuse, and cost, and proposed four implementation layers: hard validation, model diagnosis, memory assets, and scheduling control.</p>
-<h3>Yutao Chen (陈玉涛)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP</strong></p>
-<p>Solution specialist at MemTensor. Discussed explicit, activated, and parametric memory, together with versioning, agent decoupling, and adaptation by scenario.</p>
-<h3>Qingfeng Li (李庆丰)</h3>
-<p><strong>FIRST MEMORY MODULE WORKSHOP · FIRST ACTION MODULE WORKSHOP</strong></p>
-<p>Senior director at Sina Weibo. In the Memory workshop, discussed the boundary with knowledge bases and the decision to create a dedicated memory service. In the Action workshop, discussed acceptance-driven repair loops and the distinction between event triggers and loop termination.</p>
-<h3>Bingsheng Ru (茹炳晟)</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP · DISCUSSION HOST</strong></p>
-<p>Industry Research Consultant at Tencent Research Institute and Vice Chair of the CCF TF Multi-Agent Systems Engineering SIG. Discussed Plan/ReAct routing, structured DSLs, plan compilation and cost, and raised the topology question for Event-Driven execution.</p>
-<h3>Jun Luo (罗军)</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP</strong></p>
-<p>Lead for AI multimodal evaluation at Alipay. Discussed fixed action paths, dynamic GUI reasoning, edge-cloud execution, and the trade-off among Skills, MCP, and GUI fallback.</p>
-<h3>Hongshan Tang (唐洪山)</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP</strong></p>
-<p>Head of the DevOps team at JD Technology. Discussed multi-source retrieval, routing, sub-agents, dynamic sandboxes, event triggers, and code-graph updates.</p>
-<h3>Wei Wang (王伟)</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP · FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Senior Test Engineer in Baidu's Mobile Ecosystem Quality Engineering Department. Discussed persisted state and recovery, event queues, and progressive disclosure in the Action workshop. In the Reflection workshop, distinguished online from offline reflection and discussed local-patch accumulation, skill coexistence testing, and agent/skill attribution.</p>
-<h3>Pylon Peng</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP · FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Team Architect at SAP Labs China. Discussed event mechanisms and execution topologies in the Action workshop. In the Reflection workshop, described a main agent evaluating sub-agents and a daily post-run hook that proposes updates to memory, skills, rules, sub-agents, and the harness.</p>
-<h3>Qianchun Lu (陆钱春)</h3>
-<p><strong>FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Chief Engineer for Wireline Large Models and Chief Knowledge Engineering Specialist at ZTE. Discussed admission checks, runtime health monitoring, post-run trace audit, failure classification, false diagnosis, and the limits of self-repair when knowledge or business rules are missing.</p>
-<h3>Jiaqi Li (李佳奇)</h3>
-<p><strong>FIRST REFLECTION MODULE WORKSHOP</strong></p>
-<p>Technical Director and Infrastructure Lead at Qunar. Discussed immediate and delayed feedback, closed and open tasks, cross-model review, and isolated, combined, and attribution evaluation for skills.</p>
-<h3>Leida Ren (任磊达)</h3>
-<p><strong>FIRST ACTION MODULE WORKSHOP</strong></p>
-<p>Game R&amp;D Transformation Lead at Tencent. Added an existing multi-agent practice in which agents react to one another through events.</p>
+<p><strong>ALGORITHM ARCHITECTURE · USER OPERATIONS · AGENT REFLECTION AND MEMORY</strong></p>
+<p>Algorithm architect in the User Operations Department, Platform Marketing Center, JD Retail. Participant in the Memory and Reflection workshops.</p>
+<h2 id="white-paper-contributors">White Paper contributors</h2>
+<p>The lists below are organized by workshop. Discussion is consolidated on each record page, with company-internal practice anonymized.</p>
+<h3><a href="/workshops/perception-2026-08-13/">First Perception Module Workshop</a> · 13 August 2026</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Public role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jia Huang (host)</td>
+<td>ADPS founding member; author of <em>Designing AI Agents</em></td>
+</tr>
+<tr>
+<td>Dong Zhang</td>
+<td>Tencent expert engineer; head of Wukong R&amp;D security</td>
+</tr>
+<tr>
+<td>Xianglong Huang</td>
+<td>Founder of Beijing Weinian Intelligence; author of OpenLogos and RunLogos</td>
+</tr>
+<tr>
+<td>Qingfeng Li</td>
+<td>Senior Director, Sina Weibo</td>
+</tr>
+<tr>
+<td>Cheng Huang</td>
+<td>Pailuote and Shanyu Studio; game lead programmer</td>
+</tr>
+<tr>
+<td>Pingping Bai (coordination)</td>
+<td>ADPS workshop coordination</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/workshops/memory-2026-08-05/">First Memory Module Workshop</a> · 5 August 2026</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Public role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Haofen Wang (host)</td>
+<td>Tenured Professor and doctoral supervisor, Tongji University; first rotating chair of OpenKG</td>
+</tr>
+<tr>
+<td>Jia Huang (host)</td>
+<td>ADPS founding member; author of <em>Designing AI Agents</em></td>
+</tr>
+<tr>
+<td>Yingfeng Zhang</td>
+<td>Co-founder and CEO, InfiniFlow</td>
+</tr>
+<tr>
+<td>Qiuai Fu</td>
+<td>Huawei Cloud AIOps technical lead</td>
+</tr>
+<tr>
+<td>Dong Zhang</td>
+<td>Tencent expert engineer; head of Wukong R&amp;D security</td>
+</tr>
+<tr>
+<td>Yangyang Ma</td>
+<td>Senior expert in R&amp;D productivity, Dewu</td>
+</tr>
+<tr>
+<td>Qianchun Lu</td>
+<td>Chief Engineer for Wireline Large Models and Chief Knowledge Engineering Specialist, ZTE</td>
+</tr>
+<tr>
+<td>Yutao Chen</td>
+<td>Solution specialist, MemTensor</td>
+</tr>
+<tr>
+<td>Qingfeng Li</td>
+<td>Senior Director, Sina Weibo</td>
+</tr>
+<tr>
+<td>Jun Luo (Wuguo)</td>
+<td>Lead for AI multimodal evaluation, Alipay</td>
+</tr>
+<tr>
+<td>Xudong Yu</td>
+<td>Senior expert in R&amp;D productivity, Kuaishou</td>
+</tr>
+<tr>
+<td>Mo Zhou</td>
+<td>Algorithm architect, User Operations Department, Platform Marketing Center, JD Retail</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/workshops/action-2026-08-06/">First Action Module Workshop</a> · 6 August 2026</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Public role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bingsheng Ru (discussion host)</td>
+<td>Industry Research Consultant, Tencent Research Institute; Vice Chair, CCF TF Multi-Agent Systems Engineering SIG</td>
+</tr>
+<tr>
+<td>Qingfeng Li</td>
+<td>Senior Director, Sina Weibo</td>
+</tr>
+<tr>
+<td>Dong Zhang</td>
+<td>Tencent expert engineer; head of Wukong R&amp;D security</td>
+</tr>
+<tr>
+<td>Jun Luo (Wuguo)</td>
+<td>Lead for AI multimodal evaluation, Alipay</td>
+</tr>
+<tr>
+<td>Hongshan Tang</td>
+<td>Head of the DevOps team, JD Technology</td>
+</tr>
+<tr>
+<td>Wei Wang</td>
+<td>Senior Test Engineer, Mobile Ecosystem Quality Engineering Department, Baidu</td>
+</tr>
+<tr>
+<td>Pylon Peng</td>
+<td>Team Architect, SAP Labs China</td>
+</tr>
+<tr>
+<td>Leida Ren</td>
+<td>Game R&amp;D Transformation Lead, Tencent</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/workshops/reflection-2026-08-12/">First Reflection Module Workshop</a> · 12 August 2026</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Public role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Haili Zhang (host)</td>
+<td>ADPS core expert; LangChain Ambassador</td>
+</tr>
+<tr>
+<td>Jia Huang (host)</td>
+<td>ADPS founding member; author of <em>Designing AI Agents</em></td>
+</tr>
+<tr>
+<td>Dong Zhang</td>
+<td>Tencent expert engineer; head of Wukong R&amp;D security</td>
+</tr>
+<tr>
+<td>Mo Zhou</td>
+<td>Algorithm architect, User Operations Department, Platform Marketing Center, JD Retail</td>
+</tr>
+<tr>
+<td>Wei Wang</td>
+<td>Senior Test Engineer, Mobile Ecosystem Quality Engineering Department, Baidu</td>
+</tr>
+<tr>
+<td>Qianchun Lu</td>
+<td>Chief Engineer for Wireline Large Models and Chief Knowledge Engineering Specialist, ZTE</td>
+</tr>
+<tr>
+<td>Han Zhao</td>
+<td>Head of model backend and inference for Tencent Cloud Code Assistant</td>
+</tr>
+<tr>
+<td>Pylon Peng</td>
+<td>Team Architect, SAP Labs China</td>
+</tr>
+<tr>
+<td>Jiaqi Li</td>
+<td>Technical Director and Infrastructure Lead, Qunar</td>
+</tr>
+<tr>
+<td>Pingping Bai (coordination)</td>
+<td>ADPS workshop coordination</td>
+</tr>
+</tbody>
+</table>
 <h2>Blue Book contributors</h2>
 <p>Blue Book reports record the constraints, failure history, architecture decisions, and transfer limits of a named system or research prototype. Reports identify the contributor and, where applicable, an organization so readers can assess provenance.</p>
 <h3>Bo Liang (梁博)</h3>
@@ -165,7 +313,7 @@
 <p>Chengdu-based architect documenting a personal technical research project. He has sixteen years of development and architecture experience across workflow, search, collaboration, authorization, and knowledge systems. He now records AI-assisted MBSE and SysML learning, technical reasoning, and local experiments on <a href="https://www.mbse.ltd/en/">mbse.ltd</a>. Ark and AI4MBSE are personal research codenames, not incorporated businesses or operating organizations.</p>
 <p><strong>Research report:</strong> <a href="/cases/ark-mbse-agent/">Natural Language to SysML: A One-Diagram Write-Back Study</a>. The report documents typed intermediate representations for elements, relationships, and views, together with scope resolution, write-back gates, resumable clarification, and transaction receipts.</p>
 <blockquote>
-<p><strong>Evidence statement:</strong> Identity, organization, and implementation details are supplied by contributors and have not been independently audited by ADPS. Inclusion records technical material; it is not product certification, commercial endorsement, or a claim of universal applicability.</p>
+<p><strong>Source note:</strong> Identity, organization, and implementation details in these reports are supplied by their contributors. ADPS publishes the material for technical discussion and has not independently evaluated the related products.</p>
 </blockquote>
         </article>
 

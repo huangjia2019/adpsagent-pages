@@ -17,23 +17,31 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
-                <a href="/zh/research/">论文</a>
-                <a href="/zh/positions/">立场</a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
                 <a href="/zh/founders/">团队</a>
-                <a href="/zh/news/">新闻</a>
-                <a href="/zh/join/">加入我们</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/patterns/g5-hooks-pipeline/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -45,11 +53,13 @@
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/">感知模块总纲</a>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
               <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
               <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
               <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
               <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
               <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
@@ -62,12 +72,14 @@
               <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
               <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
               <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/">行动模块总纲</a>
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
               <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
               <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
               <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
               <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
               <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>

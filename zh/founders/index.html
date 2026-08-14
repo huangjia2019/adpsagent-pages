@@ -17,21 +17,29 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay">
 
     <header class="site-header">
         <div class="container">
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/zh/patterns/">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
-                <a href="/zh/research/">论文</a>
-                <a href="/zh/positions/">立场</a>
-                <a href="/zh/founders/" style="color: var(--color-link);">团队</a>
-                <a href="/zh/news/">新闻</a>
-                <a href="/zh/join/">加入我们</a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/" aria-current="page">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
                 <a href="/founders/" class="lang-switch">EN</a>
             </nav>
@@ -88,68 +96,208 @@
 <h3>王昊奋</h3>
 <p><strong>知识图谱 · 知识增强大模型 · 知识工程</strong></p>
 <p>同济大学长聘教授、博士生导师，研究知识图谱与知识增强大模型。公开成果包括 OpenSPG、KAG-Thinker、MemOS 和 AI-Ceping，相关工作已用于机场调控、金融风控与座舱交互等场景。近五年出版学术专著 3 部，以第一或通讯作者身份发表论文 45 篇，谷歌学术引用超过 1.27 万次。</p>
-<p><strong>在 ADPS 的工作：</strong>知识工程，以及可导航、可查询的模式知识体系。</p>
 <h3>张海立</h3>
 <p><strong>LangChain Ambassador · 开源实践 · 参考实现</strong></p>
 <p>《LangGraph 实战》《LangChain 实战》作者，LangChain 官方大使，LFAPAC 开源布道师，长期从事 GenAI、云原生与开源技术的实践与传播。</p>
-<p><strong>在 ADPS 的工作：</strong>将模式语言映射到 LangChain 与 LangGraph 可运行参考实现。</p>
 <h3>尹会生</h3>
 <p><strong>工程教学 · 云架构师社区</strong></p>
 <p>极客邦科技副总裁，腾讯云架构师技术同盟名人堂专家。</p>
-<p><strong>在 ADPS 的工作：</strong>工程教学和企业架构师社区中的模式评审、案例传播与实践反馈。</p>
-<h2 id="white-paper-contributors">白皮书贡献者</h2>
-<p>本页按研讨会记录白皮书贡献者及其议题。完整讨论见<a href="/zh/workshops/memory-2026-08-05/">记忆模块第一次研讨会</a>、<a href="/zh/workshops/action-2026-08-06/">行动模块第一次研讨会</a>和<a href="/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会</a>。</p>
-<h3>王昊奋（Haofen Wang）</h3>
-<p><strong>记忆模块第一次研讨会 · 主持人</strong></p>
-<p>同济大学长聘教授、博导，OpenKG 首任轮值主席。讨论记忆生命周期、memory scaling 与组织经验复用。</p>
-<h3>黄佳（Jia Huang）</h3>
-<p><strong>记忆模块第一次研讨会 · 反思模块第一次研讨会 · 主持人</strong></p>
-<p>ADPS 发起人。主持记忆与反思模块研讨，将专家实践整理为模块总纲、模式边界和后续研究问题。</p>
-<h3>张海立（Haili Zhang）</h3>
-<p><strong>反思模块第一次研讨会 · 主持人</strong></p>
-<p>ADPS 核心专家，《LangGraph 实战》《LangChain 实战》作者，LangChain 官方大使。讨论应用内反思与应用外评测、rubric、grader、轨迹评测及 Agent 开发生命周期。</p>
-<h3>张颖峰（Yingfeng Zhang）</h3>
-<p><strong>记忆模块第一次研讨会</strong></p>
-<p>英飞流 InfiniFlow 联合创始人 / CEO。讨论知识编译、retrieval harness，以及写入管线与检索管线的分工。</p>
-<h3>付求爱（Qiuai Fu）</h3>
-<p><strong>记忆模块第一次研讨会</strong></p>
-<p>华为云 AIOps 技术负责人。讨论 Coding Agent 的记忆提取、检索和定期整理，以及项目本地信息与个性化记忆的分工。</p>
 <h3>张栋（Dong Zhang）</h3>
-<p><strong>记忆模块第一次研讨会 · 行动模块第一次研讨会 · 反思模块第一次研讨会</strong></p>
-<p>腾讯专家工程师，悟空研发安全负责人。在记忆模块讨论分层保留、命中评分、离线审计和内生记忆；在行动模块讨论线上固定流水线、领域 DSL、置信范围和离线修订；在反思模块介绍开发、评测、生产三层环境，以及 Bad Case 回收到评测集后的版本发布流程。</p>
+<p><strong>研发安全 · Agent 工程 · 生产评测</strong></p>
+<p>腾讯专家工程师，悟空研发安全负责人。参与感知、记忆、行动和反思模块研讨。</p>
 <h3>周默（Mo Zhou）</h3>
-<p><strong>记忆模块第一次研讨会 · 反思模块第一次研讨会</strong></p>
-<p>京东零售平台营销中心用户运营部算法架构师。在记忆模块讨论遗忘机制、动态本体、群体记忆、快照和 Code Act；在反思模块提出自动化、终止、观测、复用与成本要求，并给出硬校验、模型诊断、记忆资产、调度控制四层结构。</p>
-<h3>陈玉涛（Yutao Chen）</h3>
-<p><strong>记忆模块第一次研讨会</strong></p>
-<p>记忆张量 MemTensor 解决方案专家。讨论明文、激活状态和参数三种记忆形态，以及版本化、Agent 解耦和场景适配。</p>
-<h3>李庆丰（Qingfeng Li）</h3>
-<p><strong>记忆模块第一次研讨会 · 行动模块第一次研讨会</strong></p>
-<p>新浪微博高级总监。在记忆模块讨论记忆与知识库的边界、独立记忆系统的使用判断；在行动模块讨论验收条件驱动的修复循环，以及事件触发与循环终止的区别。</p>
-<h3>茹炳晟（Bingsheng Ru）</h3>
-<p><strong>行动模块第一次研讨会 · 讨论主持</strong></p>
-<p>腾讯研究院产业研究顾问，CCF TF 多智能体系统工程 SIG 副主席。讨论 Plan 与 ReAct 分流、结构化 DSL、Plan 编译和经济性，并提出 Event-Driven 的拓扑定位问题。</p>
-<h3>罗军（Jun Luo）</h3>
-<p><strong>行动模块第一次研讨会</strong></p>
-<p>支付宝 AI 多模态评测负责人。讨论固定动线与动态 GUI 推理、端云协同，以及 Skill / MCP 与 GUI 兼容路径的取舍。</p>
-<h3>唐洪山（Hongshan Tang）</h3>
-<p><strong>行动模块第一次研讨会</strong></p>
-<p>京东科技 DevOps 团队负责人。讨论多路检索、路由、子 Agent、动态沙箱、事件触发和代码图更新。</p>
-<h3>王伟（Wei Wang）</h3>
-<p><strong>行动模块第一次研讨会 · 反思模块第一次研讨会</strong></p>
-<p>百度移动生态质量效能部资深测试工程师。在行动模块讨论长程任务状态落盘与恢复、事件队列，以及主 Agent / 子 Agent / Skill / CLI 的渐进披露；在反思模块区分在线与离线反思，并讨论局部补丁累积、Skill 共存评测和 Agent / Skill 归因。</p>
-<h3>Pylon Peng</h3>
-<p><strong>行动模块第一次研讨会 · 反思模块第一次研讨会</strong></p>
-<p>SAP Labs China 团队架构师。在行动模块讨论事件机制与执行拓扑，并展示跨项目开发流程；在反思模块介绍主 Agent 评测子 Agent、日终 hook 分析 trajectory，以及 Memory、Skill、规则、子 Agent 和 Harness 的候选更新流程。</p>
-<h3>陆钱春（Qianchun Lu）</h3>
-<p><strong>反思模块第一次研讨会</strong></p>
-<p>中兴通讯有线大模型总工程师、知识工程首席专家。讨论事前准入、运行时健康检查和事后轨迹审计，区分运行时、过程、业务与体验问题，并指出知识缺失、业务规则差异和误诊对自愈范围的限制。</p>
-<h3>李佳奇（Jiaqi Li）</h3>
-<p><strong>反思模块第一次研讨会</strong></p>
-<p>去哪儿旅行技术总监、基础架构负责人。讨论即时与延迟反馈、封闭与开放任务、跨模型评审，以及 Skill 独立评测、组合评测和结果归因。</p>
-<h3>任磊达（Leida Ren）</h3>
-<p><strong>行动模块第一次研讨会</strong></p>
-<p>腾讯游戏研发转型组长。补充了多 Agent 通过事件响应彼此行动的现有实践。</p>
+<p><strong>算法架构 · 用户运营 · Agent 反思与记忆</strong></p>
+<p>京东零售平台营销中心用户运营部算法架构师。参与记忆和反思模块研讨。</p>
+<h2 id="white-paper-contributors">白皮书贡献者</h2>
+<p>以下名单按研讨会整理。讨论内容统一收录在记录页，涉及企业内部实践时使用脱敏表述。</p>
+<h3><a href="/zh/workshops/perception-2026-08-13/">感知模块第一次研讨会</a> · 2026-08-13</h3>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>公开身份</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>黄佳（主持人）</td>
+<td>ADPS 创始成员，Agent 设计模式作者</td>
+</tr>
+<tr>
+<td>张栋</td>
+<td>腾讯专家工程师，悟空研发安全负责人</td>
+</tr>
+<tr>
+<td>黄湘龙</td>
+<td>北京微念智能创始人，OpenLogos 方法论及 RunLogos 作者</td>
+</tr>
+<tr>
+<td>李庆丰</td>
+<td>新浪微博高级总监</td>
+</tr>
+<tr>
+<td>黄丞</td>
+<td>派洛特、山雨工作室，游戏主程序</td>
+</tr>
+<tr>
+<td>白萍萍（组织协调）</td>
+<td>ADPS 研讨会组织协调</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/zh/workshops/memory-2026-08-05/">记忆模块第一次研讨会</a> · 2026-08-05</h3>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>公开身份</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>王昊奋（主持人）</td>
+<td>同济大学长聘教授、博导，OpenKG 首任轮值主席</td>
+</tr>
+<tr>
+<td>黄佳（主持人）</td>
+<td>ADPS 创始成员，Agent 设计模式作者</td>
+</tr>
+<tr>
+<td>张颖峰</td>
+<td>英飞流 InfiniFlow 联合创始人 / CEO</td>
+</tr>
+<tr>
+<td>付求爱</td>
+<td>华为云 AIOps 技术负责人</td>
+</tr>
+<tr>
+<td>张栋</td>
+<td>腾讯专家工程师，悟空研发安全负责人</td>
+</tr>
+<tr>
+<td>马阳阳</td>
+<td>得物研发效能高级技术专家</td>
+</tr>
+<tr>
+<td>陆钱春</td>
+<td>中兴通讯有线大模型总工程师、知识工程首席专家</td>
+</tr>
+<tr>
+<td>陈玉涛</td>
+<td>记忆张量 MemTensor 解决方案专家</td>
+</tr>
+<tr>
+<td>李庆丰</td>
+<td>新浪微博高级总监</td>
+</tr>
+<tr>
+<td>罗军（无过）</td>
+<td>支付宝 AI 多模态评测负责人</td>
+</tr>
+<tr>
+<td>于旭东</td>
+<td>快手高级研发效能专家</td>
+</tr>
+<tr>
+<td>周默</td>
+<td>京东零售平台营销中心用户运营部算法架构师</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/zh/workshops/action-2026-08-06/">行动模块第一次研讨会</a> · 2026-08-06</h3>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>公开身份</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>茹炳晟（讨论主持）</td>
+<td>腾讯研究院产业研究顾问，CCF TF 多智能体系统工程 SIG 副主席</td>
+</tr>
+<tr>
+<td>李庆丰</td>
+<td>新浪微博高级总监</td>
+</tr>
+<tr>
+<td>张栋</td>
+<td>腾讯专家工程师，悟空研发安全负责人</td>
+</tr>
+<tr>
+<td>罗军（无过）</td>
+<td>支付宝 AI 多模态评测负责人</td>
+</tr>
+<tr>
+<td>唐洪山</td>
+<td>京东科技 DevOps 团队负责人</td>
+</tr>
+<tr>
+<td>王伟</td>
+<td>百度移动生态质量效能部资深测试工程师</td>
+</tr>
+<tr>
+<td>Pylon Peng</td>
+<td>SAP Labs China 团队架构师</td>
+</tr>
+<tr>
+<td>任磊达</td>
+<td>腾讯游戏研发转型组长</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会</a> · 2026-08-12</h3>
+<table>
+<thead>
+<tr>
+<th>姓名</th>
+<th>公开身份</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>张海立（主持人）</td>
+<td>ADPS 核心专家，LangChain Ambassador</td>
+</tr>
+<tr>
+<td>黄佳（主持人）</td>
+<td>ADPS 创始成员，Agent 设计模式作者</td>
+</tr>
+<tr>
+<td>张栋</td>
+<td>腾讯专家工程师，悟空研发安全负责人</td>
+</tr>
+<tr>
+<td>周默</td>
+<td>京东零售平台营销中心用户运营部算法架构师</td>
+</tr>
+<tr>
+<td>王伟</td>
+<td>百度移动生态质量效能部资深测试工程师</td>
+</tr>
+<tr>
+<td>陆钱春</td>
+<td>中兴通讯有线大模型总工程师、知识工程首席专家</td>
+</tr>
+<tr>
+<td>赵翰</td>
+<td>腾讯云代码助手模型后台与推理负责人</td>
+</tr>
+<tr>
+<td>Pylon Peng</td>
+<td>SAP Labs China 团队架构师</td>
+</tr>
+<tr>
+<td>李佳奇</td>
+<td>去哪儿旅行技术总监、基础架构负责人</td>
+</tr>
+<tr>
+<td>白萍萍（组织协调）</td>
+<td>ADPS 研讨会组织协调</td>
+</tr>
+</tbody>
+</table>
 <h2>蓝皮书贡献者</h2>
 <p>蓝皮书记录具体系统或研究原型的约束、失败历史、架构决策和迁移边界。报告署名具体贡献者，并在适用时列出所属机构，便于读者判断证据来源。</p>
 <h3>梁博（Bo Liang）</h3>
@@ -165,7 +313,7 @@
 <p>成都的架构师和个人研究者，拥有十六年研发与架构经历，做过流程、搜索、协作、授权和知识系统等平台工作。当前通过个人技术站点 <a href="https://www.mbse.ltd/zh/">mbse.ltd</a> 记录 AI 辅助 MBSE / SysML 的学习、推演和本地实验。Ark 与 AI4MBSE 均为个人研究项目代号，不对应实体企业或经营机构。</p>
 <p><strong>研究报告：</strong><a href="/zh/cases/ark-mbse-agent/">自然语言到 SysML：单图写回的建模 Agent 研究</a>。报告记录元素、关系和视图的类型化中间表示，以及范围解析、写回门禁、可恢复澄清和事务回执。</p>
 <blockquote>
-<p><strong>证据声明：</strong>身份、机构和实现信息由贡献者提供，尚未经过 ADPS 独立审计。收录表示技术资料归档，不构成产品认证、商业背书或普遍适用性结论。</p>
+<p><strong>资料说明：</strong>报告中的身份、机构与实现信息由各贡献者提供。ADPS 收录这些资料用于技术讨论，未对相关产品做独立评测。</p>
 </blockquote>
         </article>
 

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>研讨会 · ADPS</title>
+    <meta name="description" content="ADPS 研讨会记录生产环境中的一手问题、做法与分歧，并说明这些内容后来如何影响模块总纲和模式修订。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/workshops/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-workshop-hub">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/" aria-current="page">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/workshops/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content workshop-hub">
+        <header class="workshop-hub-head">
+            <p>ADPS 实践来源</p>
+            <h1>研讨会</h1>
+            <p>ADPS 研讨会记录生产环境中的一手问题、做法与分歧，并说明这些内容后来如何影响模块总纲和模式修订。</p>
+        </header>
+
+            <section class="knowledge-flow" aria-labelledby="knowledge-flow-title">
+                <h2 id="knowledge-flow-title">三类页面各做一件事</h2>
+                <div>
+                    <article><p>01</p><h3>研讨记录</h3><span>列出参与者，按主题保留现场经验和尚未解决的分歧。</span></article>
+                    <article><p>02</p><h3>模块总纲</h3><span>结合正式模式、研讨结论和公开工程实践，说明整个模块。</span></article>
+                    <article><p>03</p><h3>模式规范</h3><span>定义一个可重复识别的问题、机制、边界和验证方法。</span></article>
+                </div>
+            </section>
+
+        <section class="workshop-grid" aria-label="研讨记录">
+                <article class="workshop-card">
+                    <p class="workshop-date">2026-08-13</p>
+                    <h2><a href="/zh/workshops/perception-2026-08-13/">感知 Perception</a></h2>
+                    <p>信号准入、事件入口、多源与多模态的边界，以及 AI 驱动软件工程中的上下文问题。</p>
+                    <p class="workshop-links"><a href="/zh/workshops/perception-2026-08-13/">阅读研讨记录</a><span>·</span><a href="/zh/patterns/perception/">阅读模块总纲</a></p>
+                </article>
+                <article class="workshop-card">
+                    <p class="workshop-date">2026-08-05</p>
+                    <h2><a href="/zh/workshops/memory-2026-08-05/">记忆 Memory</a></h2>
+                    <p>记忆系统的使用判断、工程边界、生命周期、存储形态与治理机制。</p>
+                    <p class="workshop-links"><a href="/zh/workshops/memory-2026-08-05/">阅读研讨记录</a><span>·</span><a href="/zh/patterns/memory/">阅读模块总纲</a></p>
+                </article>
+                <article class="workshop-card">
+                    <p class="workshop-date">2026-08-06</p>
+                    <h2><a href="/zh/workshops/action-2026-08-06/">行动 Action</a></h2>
+                    <p>Plan 与 ReAct、结构化计划、工具准入、GUI 行动、沙箱与事件驱动。</p>
+                    <p class="workshop-links"><a href="/zh/workshops/action-2026-08-06/">阅读研讨记录</a><span>·</span><a href="/zh/patterns/action/">阅读模块总纲</a></p>
+                </article>
+                <article class="workshop-card">
+                    <p class="workshop-date">2026-08-12</p>
+                    <h2><a href="/zh/workshops/reflection-2026-08-12/">反思 Reflection</a></h2>
+                    <p>在线与离线反思、反馈延迟、评测证据、Skill 演化、归因与自愈边界。</p>
+                    <p class="workshop-links"><a href="/zh/workshops/reflection-2026-08-12/">阅读研讨记录</a><span>·</span><a href="/zh/patterns/reflection/">阅读模块总纲</a></p>
+                </article>
+        </section>
+
+        <p class="workshop-policy">研讨会中出现的新名称不会自动进入模式矩阵。ADPS 会检查它是否指向独立问题、是否有可说明的实现机制，以及是否已有足够的实践来源。跨越多个模块的问题进入<a href="/zh/topics/">专题</a>。</p>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Module Overview · Agent Design Pattern White Paper · ADPS</title>
+    <meta name="description" content="ADPS Action module overview: plan steps, tool admission, parameter provenance, sandbox execution, evidence chains, and external acceptance.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/action/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/action/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/action/" class="active">Action module overview</a>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>Action</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
+                <h1>Action Module · Turn a Decision into a Verifiable External Change</h1>
+                <p class="publication-deck">Action Contracts, tool admission, authority and sandboxes, external acceptance, formal patterns, and open questions.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Revised</dt><dd>2026-08-14</dd></div>
+                    <div><dt>Document type</dt><dd>Action module overview</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS Action workshop, 6 August 2026</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the Action subsystem as a whole. The A1–A5 specifications remain authoritative for pattern-level mechanics and verification.</p>
+
+            <p>Action begins when an agent is about to change its environment. Sending a message, editing a file, submitting a ticket, running a command, calling a payment API, and operating a GUI are all actions. Unlike drafting text, they leave external state behind, and some effects cannot be undone by producing a better answer on the next turn.</p>
+            <p>A production action subsystem translates model intent into a contract an external system can inspect: the current step, eligible tools, parameter provenance, approval, execution boundary, acceptance evidence, and recovery position.</p>
+            <h2>Runtime sequence</h2>
+            <p><img alt="Action runtime pipeline: plan, tool admission, pre-check, isolated execution, post-check, and evidence" src="/images/patterns/action-runtime-en.svg" /></p>
+            <p>The sequence can be stated in one line. A reasoning decision enters the Goal Contract and Plan. The Executor selects the current PlanStep. A Prompt Chain produces or validates the step's structured Artifact. The Tool Dispatcher narrows the candidates and decides admission. The Guardrail Sandwich runs PRE, TOOL, and POST. Finally, the business ledger, unified ActionEvent, and checkpoint establish what occurred.</p>
+            <p>Models may help construct plans, choose tools, and fill parameters. Authorization, idempotency, state freshness, transaction results, and external receipts belong to the runtime and business systems.</p>
+            <h2>Action Contract</h2>
+            <p>An executable action needs at least these fields:</p>
+            <pre><code class="language-yaml">action_id: act_01K2...
+goal_ref: goal://payroll/close-2026-08
+plan:
+  version: 7
+  step_id: verify-approvals
+  depends_on: [load-batch]
+intent:
+  operation: payroll.verify_approvals
+tool:
+  name: approval_service.read_batch
+  registry_version: 12
+inputs:
+  batch_id:
+    value: batch_8842
+    source: state://payroll/current_batch
+authority:
+  risk: read_only
+  approval: none
+execution:
+  sandbox: payroll-readonly-v3
+  idempotency_key: act_01K2
+verification:
+  expected: all_required_approvals_present
+  evidence: receipt://approval-service/check-901
+recovery:
+  checkpoint: checkpoint://run-8842/step-4
+</code></pre>
+            <p>The contract brings natural-language intent, plan position, tool version, parameter provenance, authority, execution environment, acceptance evidence, and recovery position into one record. Without these elements, a successful tool call can be mistaken for a successful business outcome.</p>
+            <h2>ReAct or an explicit plan</h2>
+            <p>The action module does not require a full plan for every task. The choice depends on task length, side effects, environmental change, and recovery requirements.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Condition</th>
+            <th style="text-align: left;">Direct ReAct</th>
+            <th style="text-align: left;">Explicit Plan</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Steps</td>
+            <td style="text-align: left;">Few; the next step follows from the current result</td>
+            <td style="text-align: left;">Many; dependencies, parallel work, or phase constraints exist</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Side effects</td>
+            <td style="text-align: left;">Read-only or easy to reverse</td>
+            <td style="text-align: left;">Writes, releases, payments, or other consequential actions</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Environment</td>
+            <td style="text-align: left;">Exploratory and tolerant of trial and error</td>
+            <td style="text-align: left;">Production with stable process and audit requirements</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Recovery</td>
+            <td style="text-align: left;">Restarting is acceptable</td>
+            <td style="text-align: left;">Work must resume from confirmed progress</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Acceptance</td>
+            <td style="text-align: left;">Visible after each step</td>
+            <td style="text-align: left;">Stage artifacts, approvals, and final regression are required</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>A long-task Plan should be a versioned artifact rather than hidden in conversation history. Its stable core includes a step identifier, dependencies, expected artifact, acceptance condition, eligible tools, and recovery position. Domain DSLs can add business verbs and constraints without attempting to cover every industry in one language.</p>
+            <h2>Interface priority</h2>
+            <p>Structured interfaces usually take precedence over GUI operation:</p>
+            <ol>
+            <li><strong>Domain APIs, Skills, and certified commands</strong> provide explicit parameters, permissions, and receipts for stable workflows.</li>
+            <li><strong>Controlled CLI execution</strong> fits development, operations, and batch work, but requires command, directory, resource, and network policies.</li>
+            <li><strong>GUI operation</strong> reaches capabilities without a published interface and therefore needs reproducible state, screenshots, or other inspectable evidence.</li>
+            </ol>
+            <p>GUI is not an inferior capability. Its state and outcome are simply harder to establish, and interface drift is more frequent. Use a stable structured interface where one exists. When GUI is the only path, make recognition, interaction, waiting, and acceptance explicit in the contract.</p>
+            <h2>How the five specifications divide the work</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Pattern</th>
+            <th style="text-align: left;">Responsibility</th>
+            <th style="text-align: left;">Boundary</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/a1-tool-dispatch/"><strong>A1 Tool Dispatch</strong></a></td>
+            <td style="text-align: left;">Determine eligible tools and select the current action</td>
+            <td style="text-align: left;">The registry must express authority, risk, freshness, concurrency, and provenance</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/a2-plan-and-execute/"><strong>A2 Plan-and-Execute</strong></a></td>
+            <td style="text-align: left;">Preserve dependencies, artifacts, approvals, and recovery positions in long tasks</td>
+            <td style="text-align: left;">A Plan may be revised locally; committed actions cannot be silently rewritten</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/a3-prompt-chaining/"><strong>A3 Prompt Chaining</strong></a></td>
+            <td style="text-align: left;">Connect linear stages through structured artifacts and programmatic gates</td>
+            <td style="text-align: left;">A downstream stage should not rely only on a free-form summary from the previous stage</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/a4-guardrail-sandwich/"><strong>A4 Guardrail Sandwich</strong></a></td>
+            <td style="text-align: left;">Admit before execution, isolate during execution, and verify afterward</td>
+            <td style="text-align: left;">POST cannot pretend to undo an effect; compensation and human takeover require explicit design</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/a5-minimal-tool-set/"><strong>A5 Minimal Tool Set</strong></a></td>
+            <td style="text-align: left;">Narrow the visible tool surface by responsibility, step, and risk</td>
+            <td style="text-align: left;">Rare capabilities need on-demand discovery; necessary tools cannot be removed to satisfy an arbitrary count</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>A1 through A4 are core patterns. A5 remains an extension. A2 uses orchestration and A3 uses a chain. They can be nested, but a multi-step plan does not make their topology identical.</p>
+            <h2>Events and execution topology</h2>
+            <p>The action workshop examined whether event-driven execution should become a seventh topology. The current catalog remains unchanged:</p>
+            <ul>
+            <li>Events define when an action is triggered and how it is delivered, delayed, and replayed.</li>
+            <li>Execution topology defines how control unfolds after the task starts.</li>
+            <li>Choreography describes local-rule and event-based coordination without a central orchestrator.</li>
+            </ul>
+            <p>A system may begin with an event, route to a tool, orchestrate a plan, and run a loop inside one step. The event bus does not assign one topology to the entire workflow.</p>
+            <h2>Sandboxes, gates, and evidence</h2>
+            <p>Commands, filesystem writes, network access, and external APIs need bounded execution. A sandbox answers where execution can technically reach. Approval answers whether this action is authorized. Tool policy defines the allowed class of action. ActionEvent records what actually happened.</p>
+            <p>Before execution, check identity, authorization, parameter provenance, target state, idempotency, and risk. Afterward, check the result schema, business invariants, observed side effects, and external receipt. An exit code of zero or HTTP 200 does not establish business completion.</p>
+            <p>In 2026, these controls are increasingly exposed as runtime contracts. OpenAI's account of <a href="https://openai.com/index/running-codex-safely/">running Codex safely</a> combines sandboxes, approval policy, network rules, and agent-native telemetry. The <a href="https://openai.github.io/openai-agents-python/">OpenAI Agents SDK</a> exposes tool schemas, tool guardrails, human intervention, and tracing. <a href="https://platform.claude.com/docs/en/managed-agents/tools">Claude Managed Agents tool configuration</a> can disable individual capabilities or require confirmation. These interfaces move action control out of prompt convention and into enforceable runtime policy.</p>
+            <h2>Three production failures</h2>
+            <p><strong>The tool is correct but the state is stale.</strong> Refresh critical state before a write and include the observed version in the write condition. Correct dispatch against an old state still produces the wrong change.</p>
+            <p><strong>The step completes but the goal does not.</strong> A tool receipt proves that a call ended. Stage artifacts, a business ledger, and external acceptance determine task completion.</p>
+            <p><strong>Recovery repeats a side effect.</strong> A checkpoint that records only the step number is insufficient. Every irreversible action needs an idempotency key, external receipt, and committed marker. Recovery checks the facts before deciding whether to replay.</p>
+            <h2>Open questions</h2>
+            <ul>
+            <li>Which PlanStep fields can remain stable across domains, and which belong in domain DSLs?</li>
+            <li>How can replay data establish a threshold for moving from ReAct to an explicit Plan?</li>
+            <li>What common form should GUI evidence, authorization, and failure receipts take?</li>
+            <li>How should one Action trace connect model intent, tool admission, sandbox events, and the business ledger?</li>
+            <li>What cross-industry failure evidence is needed to stabilize the boundary between event-driven mechanisms and C6 Choreography?</li>
+            </ul>
+            <h2>Workshop record</h2>
+            <p>This overview draws on the A1–A5 specifications and the first ADPS Action workshop, held on 6 August 2026. Bingsheng Ru chaired the discussion. Core participants included Qingfeng Li, Dong Zhang, Jun Luo, Hongshan Tang, Wei Wang, Pylon Peng, and Leida Ren.</p>
+            <p><a href="/workshops/action-2026-08-06/">Read the workshop record</a> · <a href="/workshops/">All workshops</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Action Module: Turn a Decision into a Verifiable External Change</em>, Agent Design Pattern White Paper v0.3, 2026-08-14. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

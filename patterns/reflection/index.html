@@ -4,28 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reflection Module Overview · Agent Design Pattern White Paper · ADPS</title>
-    <meta name="description" content="ADPS reflection module overview: evidence, feedback latency, online and offline loops, change authority, and the roles of F1–F4.">
+    <meta name="description" content="ADPS Reflection module overview: evidence, feedback latency, online and offline loops, change authority, and the roles of F1–F4.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/reflection/">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
                 <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
                 <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/zh/patterns/reflection/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>
@@ -37,6 +47,7 @@
             <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
               <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
               <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
@@ -55,6 +66,7 @@
               <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
               <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
               <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
@@ -125,17 +137,17 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
                 <h1>Reflection Module: Turning Feedback into Controlled Change</h1>
-                <p class="publication-deck">Evidence, online and offline feedback loops, change authority, four specifications, and open questions.</p>
+                <p class="publication-deck">Feedback evidence, online and offline loops, change authority, formal patterns, and open research questions.</p>
                 <dl class="publication-meta" aria-label="Document metadata">
                     <div><dt>Version</dt><dd>v0.3</dd></div>
                     <div><dt>Status</dt><dd>Public review draft</dd></div>
                     <div><dt>Revised</dt><dd>2026-08-13</dd></div>
                     <div><dt>Document type</dt><dd>Reflection module overview</dd></div>
-                    <div><dt>Basis</dt><dd>ADPS reflection workshop, 12 August 2026</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS Reflection workshop, 12 August 2026</dd></div>
                     <div><dt>License</dt><dd>CC BY 4.0</dd></div>
                 </dl>
             </header>
-            <p class="publication-note"><strong>Scope:</strong> This page describes the reflection subsystem as a whole. The F1–F4 specifications remain authoritative for pattern-level mechanics and verification.</p>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the Reflection subsystem as a whole. The F1–F4 specifications remain authoritative for pattern-level mechanics and verification.</p>
 
             <p>Reflection may happen after one output or after a batch of completed runs. It reads artifacts, trajectories, and external outcomes; compares them with inspectable criteria; decides whether to change the current output, execution path, or reusable assets; and then gathers new evidence to determine whether the change helped.</p>
             <p>Asking a model to think again is the lightest implementation. Without evidence, a stopping rule, and a defined change boundary, another inference pass does not establish that the system improved.</p>
@@ -181,7 +193,7 @@
             </table>
             <p>Evaluation produces a judgement. Reflection consumes that judgement and proposes or applies a change. When a change enters a shared Skill library, memory store, policy repository, or production environment, a governance gate owns the release decision.</p>
             <h2>Two clocks: online and offline reflection</h2>
-            <p>At the ADPS Reflection workshop on 12 August 2026, Wei Wang and Jiaqi Li described the same boundary from different production settings: reflection runs on two clocks.</p>
+            <p>The ADPS Reflection workshop on 12 August 2026 reached the same boundary across several production settings: reflection runs on two clocks.</p>
             <table>
             <thead>
             <tr>
@@ -319,7 +331,7 @@ retention:
             </table>
             <p>Online/offline, hard evidence/soft judgement, local/global scope, and feedback delay are selection parameters. They do not alter the cognitive-function × execution-topology framework.</p>
             <h2>A four-layer production structure</h2>
-            <p>Mo Zhou proposed a useful four-layer implementation:</p>
+            <p>The workshop distilled a four-layer implementation:</p>
             <ol>
             <li><strong>Hard validation:</strong> Compilation, tests, schemas, business invariants, and system receipts take priority.</li>
             <li><strong>Reflection diagnosis:</strong> Models inspect evidence and identify possible defects in outputs, trajectories, or assets.</li>
@@ -328,9 +340,9 @@ retention:
             </ol>
             <p>Automatic triggering, termination, observability, and bounded cost apply to every production loop. Reuse needs a narrower rule: a one-run correction may be deliberately discarded; anything that will affect later runs requires admission, versioning, and retirement.</p>
             <h2>Three problems that appear at scale</h2>
-            <p><strong>Local patches can damage global efficiency.</strong> Wei Wang described an environment-building agent that accumulated local fixes over time. Stability improved while the overall path became heavier. Offline reflection must detect duplicate, conflicting, and expired patches instead of appending every bad case to a prompt.</p>
+            <p><strong>Local patches can damage global efficiency.</strong> An anonymized environment-building agent accumulated local fixes over time. Stability improved while the overall path became heavier. Offline reflection must detect duplicate, conflicting, and expired patches instead of appending every bad case to a prompt.</p>
             <p><strong>Skills must be evaluated in combination.</strong> Trigger accuracy and task success show that one Skill works alone. A growing library also needs false-trigger, missed-trigger, overlap, conflict, loading-cost, and coexistence tests.</p>
-            <p><strong>Attribution comes before healing.</strong> Qianchun Lu separated runtime, execution-process, business-result, and experience failures. Invalid parameters, network instability, and missing steps may have direct remedies. Missing domain knowledge, changed business rules, and conflicting team goals cannot be filled in safely by the original agent.</p>
+            <p><strong>Attribution comes before healing.</strong> Failures can be separated into runtime, execution-process, business-result, and experience classes. Invalid parameters, network instability, and missing steps may have direct remedies. Missing domain knowledge, changed business rules, and conflicting team goals cannot be filled in safely by the original agent.</p>
             <h2>Engineering progress in 2026</h2>
             <p>By August 2026, major platforms expose the evaluation components that reflection depends on:</p>
             <ul>
@@ -352,7 +364,7 @@ retention:
             <li>How can teams detect, consolidate, remove, or roll back conflicting patches accumulated by online loops?</li>
             </ul>
             <h2>Workshop record</h2>
-            <p>This overview incorporates the first ADPS Reflection Module Workshop held on 12 August 2026. Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Han Zhao, Pylon Peng, and Jiaqi Li. The attributed points on this page come from the six speakers recorded in the transcript: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Pylon Peng, and Jiaqi Li.</p>
+            <p>This overview incorporates the first ADPS Reflection Module Workshop held on 12 August 2026. Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Han Zhao, Pylon Peng, and Jiaqi Li. Findings are grouped by theme; anonymized enterprise practice is not mapped point by point to an individual.</p>
             <p><a href="/workshops/reflection-2026-08-12/">Read the full workshop record</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Reflection Module: Make Feedback Change the System</em>, Agent Design Pattern White Paper v0.3, 2026-08-13. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>

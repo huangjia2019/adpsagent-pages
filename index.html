@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADPS — Agent Design Patterns Society</title>
-    <meta name="description" content="ADPS is a small research community sedimenting reusable, debatable, reviewable architecture patterns for production-grade AI agent systems.">
+    <meta name="description" content="ADPS is an independent research community publishing pattern white papers, engineering cases, workshop records, and cross-cutting topics for production AI agent systems.">
     <meta name="keywords" content="ADPS, Agent Design Patterns, AI agents, production agents, architecture patterns, two-axis framework, design language">
 
     <meta property="og:title" content="ADPS — Agent Design Patterns Society">
@@ -26,21 +26,29 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-home">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
+            <nav class="site-nav" aria-label="Main navigation">
                 <a href="/patterns/">Patterns</a>
                 <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
                 <a href="/founders/">Team</a>
-                <a href="/news/">News</a>
-                <a href="/join/">Join</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
                 <a href="/zh/" class="lang-switch">中文</a>
             </nav>
@@ -75,18 +83,12 @@
 
         <section class="block">
             <h2>What we do</h2>
-            <p>
-                ADPS publishes three connected sets of technical references:
-            </p>
+            <p>ADPS maintains four connected sets of public technical references:</p>
             <ul style="margin: 0.8rem 0 1rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.5rem;"><strong>Pattern white papers</strong> — 28 core patterns and
-                6 extension or candidate specifications, each stating its problem, mechanics, applicability,
-                known failure modes, and verification criteria.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Engineering blue books</strong> — attributed field cases
-                that record how pattern combinations behave under real organizational and system constraints,
-                with evidence and transfer boundaries stated explicitly.</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Open reference assets</strong> — papers, selection methods,
-                implementation examples, and engineering concepts that teams can inspect and adapt.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Pattern white papers and module overviews</strong> define problems, mechanics, applicability, failure modes, and verification criteria.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Engineering Blue Books</strong> record constraints, failures, architecture decisions, and transfer boundaries in attributed systems.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Workshops and topics</strong> preserve field discussion and synthesize methods that cross several modules.</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Open reference assets</strong> include papers, selection methods, implementations, and engineering concepts.</li>
             </ul>
         </section>
 
@@ -104,6 +106,22 @@
                 <a href="/patterns/" class="cta">Browse the pattern white papers →</a>
             </p>
         </section>
+
+        <!-- ADPS-KNOWLEDGE-PATHS:START -->
+        <section class="block home-knowledge">
+            <h2>Workshops and topics</h2>
+            <p class="home-knowledge-intro">Perception, Memory, Action, and Reflection have completed their first workshops. Workshop records preserve field questions and unresolved differences. Topic pages synthesize engineering issues that cross several modules.</p>
+            <div class="home-path-grid">
+                <a class="home-path" href="/workshops/"><span>WORKSHOPS</span><strong>Discussion records, participants, and open questions from four modules</strong></a>
+                <a class="home-path" href="/topics/"><span>TOPICS</span><strong>Cross-module engineering methods drawn from patterns and cases</strong></a>
+            </div>
+            <ul class="home-topic-list">
+                <li><a href="/topics/ai-driven-software-engineering/">AI-driven software engineering</a><span>Specifications, context, execution, verification, and evolution.</span></li>
+                <li><a href="/topics/observability-driven-evolution/">Observability-driven agent evolution</a><span>Runtime trajectories, component versions, change evidence, and rollback.</span></li>
+                <li><a href="/topics/agent-evals-and-testing/">Agent evals and testing</a><span>Deterministic tests, trajectory evaluation, external acceptance, and release gates.</span></li>
+            </ul>
+        </section>
+        <!-- ADPS-KNOWLEDGE-PATHS:END -->
 
         <section class="block">
             <h2>Founders</h2>

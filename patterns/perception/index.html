@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perception Module Overview · Agent Design Pattern White Paper · ADPS</title>
+    <meta name="description" content="ADPS Perception module overview: input boundaries, a four-stage pipeline, Context Contracts, safety, and the roles of P1–P4.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/perception/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/perception/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/perception/" class="active">Perception module overview</a>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>Perception</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
+                <h1>Perception Module · Control What Enters the Current Decision</h1>
+                <p class="publication-deck">Input boundaries, the four-stage perception pipeline, Context Contracts, formal patterns, and open questions.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Version</dt><dd>v0.3</dd></div>
+                    <div><dt>Status</dt><dd>Public review draft</dd></div>
+                    <div><dt>Revised</dt><dd>2026-08-14</dd></div>
+                    <div><dt>Document type</dt><dd>Perception module overview</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS Perception workshop, 13 August 2026</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>Scope:</strong> This page describes the Perception subsystem as a whole. The P1–P4 specifications remain authoritative for pattern-level mechanics and verification.</p>
+
+            <p>Perception determines what an agent can see now and which signals may influence the next decision. Its inputs include user messages and images, but also code, logs, tool results, events, business state, project rules, and artifacts left by earlier work.</p>
+            <p>A larger model window does not remove the need for input governance. Too much material can bury the current goal. Sources without time and scope can carry stale facts into a new decision. Untrusted documents and tool descriptions can also introduce hostile instructions into an execution path. The perception subsystem turns those inputs into context with an explicit scope, provenance, budget, and trust level before reasoning begins.</p>
+            <h2>Start from the decision</h2>
+            <p>At the ADPS perception workshop on 13 August 2026, practitioners from security, developer productivity, open-source maintenance, geospatial systems, and game development reached a common engineering judgment: define the decision first, then work backward to the inputs it needs.</p>
+            <p>A Context Contract should answer at least six questions:</p>
+            <ol>
+            <li>What is the current goal, and who defines completion?</li>
+            <li>Which materials must enter context, and which remain behind handles?</li>
+            <li>Which state must be refreshed before use, and which historical material is still valid?</li>
+            <li>Where did each input come from, and what are its scope and access rules?</li>
+            <li>Which precedence rule applies when inputs conflict?</li>
+            <li>What was unavailable to this run, and could that absence change the conclusion?</li>
+            </ol>
+            <p>The perception trace should record <code>selected</code>, <code>deferred</code>, <code>dropped</code>, and <code>unavailable</code> inputs. This separates material the system never discovered from material it discovered and deliberately withheld.</p>
+            <h2>A four-stage perception funnel</h2>
+            <p><img alt="Perception runtime pipeline: signal ingress, preprocessing, semantic aggregation, and event assessment" src="/images/patterns/perception-pipeline-en.svg" /></p>
+            <p>The Perception workshop distilled a four-stage pipeline from several production settings. It provides a useful runtime skeleton for the subsystem:</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Stage</th>
+            <th style="text-align: left;">Engineering question</th>
+            <th style="text-align: left;">Typical work</th>
+            <th style="text-align: left;">Output</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><strong>Signal ingress</strong></td>
+            <td style="text-align: left;">Can the system obtain the data?</td>
+            <td style="text-align: left;">Protocol adaptation, authorization, idempotency, timeout, retry</td>
+            <td style="text-align: left;">Provenanced raw signal</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Preprocessing</strong></td>
+            <td style="text-align: left;">Can downstream components use it consistently?</td>
+            <td style="text-align: left;">Cleaning, deduplication, normalization, validation, noise filtering</td>
+            <td style="text-align: left;">Normalized record</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Semantic aggregation</strong></td>
+            <td style="text-align: left;">How do isolated signals acquire business meaning?</td>
+            <td style="text-align: left;">Entity linking, context completion, cross-source alignment, source pointers</td>
+            <td style="text-align: left;">Structured fact packet</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><strong>Event assessment</strong></td>
+            <td style="text-align: left;">Should these facts trigger downstream work?</td>
+            <td style="text-align: left;">Classification, severity, confidence, rule checks</td>
+            <td style="text-align: left;">Trigger recommendation and rationale</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>The final stage emits a category, severity, and trigger recommendation. Reasoning, action, and governance decide whether to block a release, freeze an account, or change production state. When perception performs the business action itself, input rules and business policy become difficult to test and evolve independently.</p>
+            <h2>Keep triggering separate from execution topology</h2>
+            <p>Signals can arrive through callbacks, scheduled polling, streams, or direct requests. These mechanisms answer when new information enters the system. Chain, route, parallel, orchestrate, loop, and hierarchy still describe how control unfolds after the work starts.</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Ingress mechanism</th>
+            <th style="text-align: left;">Suitable signals</th>
+            <th style="text-align: left;">Main cost</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">Callback event</td>
+            <td style="text-align: left;">Code commits, ticket changes, alerts</td>
+            <td style="text-align: left;">Stable event contracts and deduplication keys</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Scheduled polling</td>
+            <td style="text-align: left;">Compliance scans, inventory, state reconciliation</td>
+            <td style="text-align: left;">Higher latency and potentially expensive scans</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Stream processing</td>
+            <td style="text-align: left;">High-volume logs, telemetry, message streams</td>
+            <td style="text-align: left;">More complex operations, replay, and debugging</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">Multi-source corroboration</td>
+            <td style="text-align: left;">High-risk threats, fault isolation, end-to-end audit</td>
+            <td style="text-align: left;">Semantic alignment and conflict handling</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>Event-driven processing therefore remains an ingress and triggering mechanism. It does not become a new perception pattern or automatically constitute a seventh execution topology.</p>
+            <h2>Source and modality are separate dimensions</h2>
+            <p>The workshop refined the boundary of P4. Image, text, audio, and table are different <strong>modalities</strong>. Host logs, network traffic, source-code scans, and historical tickets are different <strong>sources</strong>. Multiple sources may all be text, while several modalities may come from one PDF.</p>
+            <p>A production observation should record both:</p>
+            <pre><code class="language-yaml">observation_id: obs_01K2...
+source:
+  system: ci
+  channel: webhook
+  scope: repo://payments
+modality: text
+captured_at: 2026-08-13T12:10:00Z
+valid_at: 2026-08-13T12:09:58Z
+content_ref: artifact://ci/run-8842/log
+transform:
+  method: error-normalizer-v3
+  parent: raw://ci/run-8842
+trust:
+  integrity: verified
+  confidence: 0.94
+</code></pre>
+            <p>Source fields drive authorization, freshness, and corroboration. Modality fields select parsers and representations. P4 retains its catalog name, Multi-Modal Fusion, while the specification now includes multi-source alignment. ADPS will revisit a broader name after more independent cases are available.</p>
+            <h2>How the four specifications divide the work</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">Pattern</th>
+            <th style="text-align: left;">Responsibility</th>
+            <th style="text-align: left;">Boundary</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/p1-context-triage/"><strong>P1 Context Triage</strong></a></td>
+            <td style="text-align: left;">Load, compact, defer, or discard known candidates under a context budget</td>
+            <td style="text-align: left;">Goal, identity, safety constraints, and current errors cannot be displaced by ordinary material</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/p2-semantic-compaction/"><strong>P2 Semantic Compaction</strong></a></td>
+            <td style="text-align: left;">Reduce history already in the window while retaining decision evidence</td>
+            <td style="text-align: left;">Errors, rejected approaches, business values, and source pointers need explicit protection</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/p3-progressive-discovery/"><strong>P3 Progressive Discovery</strong></a></td>
+            <td style="text-align: left;">Move from broad search to focused reading when the location of evidence is unknown</td>
+            <td style="text-align: left;">Each cycle updates the query and stops on evidence, budget, or no new signal</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/patterns/p4-multi-modal-fusion/"><strong>P4 Multi-Modal Fusion</strong></a></td>
+            <td style="text-align: left;">Parse, align, and corroborate different modalities and sources</td>
+            <td style="text-align: left;">Preserve original evidence, transformations, and conflicts; the fused result is not a new source of truth</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>The four patterns can appear in one pipeline. P4 normalizes representations and sources. P1 chooses the current working set. P3 explores when evidence is missing. P2 reclaims context after earlier material has been consumed.</p>
+            <h2>Three recurring failure modes</h2>
+            <p><strong>More input produces worse decisions.</strong> Sending every available source to the model increases noise, conflict, and attack surface. The decision goal should constrain perception scope, and replay tests should measure both missed and false signals.</p>
+            <p><strong>Perception and policy are fused.</strong> A parser that cleans a signal and immediately takes a business action cannot be evaluated independently. The stable interface should return facts, labels, confidence, and evidence. Action requires a separate admission path.</p>
+            <p><strong>The perception layer is never recalibrated.</strong> Businesses, system architecture, models, and sources change. Perception needs its own evaluation set for selection omissions, lossy compaction, zero-signal runs, trigger latency, and cross-source conflicts.</p>
+            <h2>Security boundary</h2>
+            <p>Every external source adds a data and instruction entrance. Tool descriptions, web pages, documents, images, and logs can all carry untrusted content. The perception layer needs source allowlists, scope checks, a separation between data and instructions, sensitive-field handling, and a complete trace. Tool admission, sandboxing, and approval still control execution authority.</p>
+            <p>Perception may label an input as suspicious and reduce its trust level. A model assessment alone cannot expand the agent's permissions.</p>
+            <h2>Why AI-driven software engineering starts with perception</h2>
+            <p>For a coding agent, the repository is the primary environment. Requirements, architecture decisions, source code, tests, build scripts, and runtime logs that remain in chat or individual memory are effectively invisible. A greenfield project can establish a full specification chain from the beginning. A brownfield project usually needs local discovery, dependency reconstruction, targeted documentation and tests, followed by independently acceptable vertical slices.</p>
+            <p>This discussion crosses memory, action, reflection, and governance, so ADPS has published it separately as <a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering</a>. The perception overview retains only the direct context requirements.</p>
+            <p>Anthropic's September 2025 article on <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">context engineering for agents</a> treats context as a finite resource that must be curated on every inference turn. OpenAI's February 2026 account of <a href="https://openai.com/index/harness-engineering/">harness engineering</a> describes putting versioned repository artifacts, enforceable constraints, and feedback loops into an environment agents can inspect. Both accounts support the workshop's practical conclusion: model capability becomes useful only through an environment the agent can read and validate.</p>
+            <h2>Open questions</h2>
+            <ul>
+            <li>Should P4 eventually be renamed to cover both multi-source and multi-modal fusion?</li>
+            <li>What is the minimum stable fact contract between perception and reasoning?</li>
+            <li>How should prompt injection, source poisoning, and cross-tenant leakage be evaluated together?</li>
+            <li>How can polling, streaming, and callbacks share deduplication, freshness, and replay semantics?</li>
+            <li>How can architectural constraints in a brownfield repository become discoverable, enforceable, and continuously calibrated agent assets?</li>
+            </ul>
+            <h2>Workshop record</h2>
+            <p>This overview incorporates the first ADPS Perception workshop, held on 13 August 2026. Jia Huang chaired the discussion. The public core workshop guests were Dong Zhang, Xianglong Huang, Qingfeng Li, and Cheng Huang.</p>
+            <p><a href="/workshops/perception-2026-08-13/">Read the workshop record</a> · <a href="/workshops/">All workshops</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Perception Module: Control What Enters the Current Decision</em>, Agent Design Pattern White Paper v0.3, 2026-08-14. <a href="/patterns/">Catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

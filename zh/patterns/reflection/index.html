@@ -17,23 +17,31 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="apple-touch-icon" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/zh/patterns/" style="color: var(--color-link);">模式矩阵</a>
-                <a href="/zh/cases/">案例库</a>
-                <a href="/zh/concepts/">概念</a>
-                <a href="/zh/research/">论文</a>
-                <a href="/zh/positions/">立场</a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
                 <a href="/zh/founders/">团队</a>
-                <a href="/zh/news/">新闻</a>
-                <a href="/zh/join/">加入我们</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/patterns/" class="lang-switch">EN</a>
+                <a href="/patterns/reflection/" class="lang-switch">EN</a>
             </nav>
         </div>
     </header>
@@ -45,6 +53,7 @@
             <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/">感知模块总纲</a>
               <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
               <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
               <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
@@ -63,6 +72,7 @@
               <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
               <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
               <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/">行动模块总纲</a>
               <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
               <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
               <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
@@ -135,12 +145,12 @@
 
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
-                <h1>反思模块 · 让反馈真正改变系统</h1>
+                <h1>反思模块 · 从运行反馈到受控修改</h1>
                 <p class="publication-deck">反馈证据、在线与离线回路、修改权限、正式模式与待研究方向。</p>
                 <dl class="publication-meta" aria-label="文档元数据">
                     <div><dt>版本</dt><dd>v0.3</dd></div>
                     <div><dt>状态</dt><dd>公开评审稿</dd></div>
-                    <div><dt>修订日期</dt><dd>2026-08-13</dd></div>
+                    <div><dt>修订日期</dt><dd>2026-08-14</dd></div>
                     <div><dt>文档类型</dt><dd>反思模块总纲</dd></div>
                     <div><dt>依据</dt><dd>ADPS 反思模块研讨会 2026-08-12</dd></div>
                     <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
@@ -193,7 +203,7 @@
             </table>
             <p>评测给出判断，反思消费这个判断并提出改变。当改变要进入共享 Skill、记忆库、规则库或生产环境时，反思模块需要把权限交给治理门禁。</p>
             <h2>两只时钟：在线与离线</h2>
-            <p>2026-08-12 的 ADPS 反思模块研讨会中，王伟和李佳奇从不同业务场景提出了同一个分界：反思有两只时钟。</p>
+            <p>2026-08-12 的 ADPS 反思模块研讨会从多类业务场景中归纳出同一个分界：反思有两只时钟。</p>
             <table>
             <thead>
             <tr>
@@ -331,7 +341,7 @@ retention:
             </table>
             <p>在线/离线、硬证据/软判断、局部/全局与反馈延迟都是模式选型参数。它们不改变“认知功能 × 执行拓扑”的主框架。</p>
             <h2>生产实现的四层结构</h2>
-            <p>研讨会中，周默提出了一个很实用的四层分工：</p>
+            <p>研讨会归纳出一个四层分工：</p>
             <ol>
             <li><strong>硬校验层</strong>：编译、测试、schema、业务不变量和系统回执优先。</li>
             <li><strong>反思诊断层</strong>：模型阅读证据，识别当前输出、轨迹或资产的可能问题。</li>
@@ -340,9 +350,9 @@ retention:
             </ol>
             <p>可自动触发、可终止、可观测、可控制成本，是所有生产回路的共同要求。“可复用”需要更细的处理：当反思结果仅修改本轮产物时，可以明确不保存；当它要跨任务生效时，就必须有准入、版本和退役机制。</p>
             <h2>三个规模化难题</h2>
-            <p><strong>局部补丁会破坏整体效率。</strong> 王伟介绍的环境构建 Agent 在长期运行中不断增加局部修复，稳定性上升，整体路径却越来越重。离线反思要能发现重复、冲突和已失效的补丁，不能只把 Bad Case 继续叠加进 prompt。</p>
+            <p><strong>局部补丁会破坏整体效率。</strong> 一个脱敏后的环境构建 Agent 在长期运行中不断增加局部修复，稳定性上升，整体路径却越来越重。离线反思要能发现重复、冲突和已失效的补丁，不能只把 Bad Case 继续叠加进 prompt。</p>
             <p><strong>Skill 要在组合环境中评测。</strong> 单个 Skill 的触发率和任务成功率只能说明它独立可用。规模扩大后，还要检查误触发、漏触发、重叠、冲突、加载成本，以及新 Skill 是否让已有能力退化。</p>
-            <p><strong>归因先于自愈。</strong> 陆钱春将问题分为运行时、执行过程、业务结果和体验几类。参数失效、网络抖动和步骤遗漏可能有明确修复路径；专家知识缺失、业务规则变化和团队目标差异无法靠原 Agent 自行补全。</p>
+            <p><strong>归因先于自愈。</strong> 问题可以分为运行时、执行过程、业务结果和体验几类。参数失效、网络抖动和步骤遗漏可能有明确修复路径；专家知识缺失、业务规则变化和团队目标差异无法靠原 Agent 自行补全。</p>
             <h2>2026 年的工程进展</h2>
             <p>截至 2026 年 8 月，主流工具已经把反思依赖的评测部件做成了正式工程接口：</p>
             <ul>
@@ -364,13 +374,13 @@ retention:
             <li>如何发现在线回路积累的补丁冲突，并安全地合并、删除或回滚？</li>
             </ul>
             <h2>研讨会记录</h2>
-            <p>本总纲吸收了 2026-08-12 反思模块第一次研讨会的讨论。主持人为张海立、黄佳；核心研讨嘉宾为张栋、周默、王伟、陆钱春、赵翰、Pylon Peng、李佳奇。本页引用的观点来自逐字稿收录的六位发言嘉宾：张栋、周默、王伟、陆钱春、Pylon Peng、李佳奇。</p>
+            <p>本总纲吸收了 2026-08-12 反思模块第一次研讨会的讨论。主持人为张海立、黄佳；核心研讨嘉宾为张栋、周默、王伟、陆钱春、赵翰、Pylon Peng、李佳奇。本页按主题合并研讨结论，不将脱敏前的企业实践与个人逐条对应。</p>
             <p><a href="/zh/workshops/reflection-2026-08-12/">阅读完整研讨记录</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
 
             <!-- ADPS-BLUEBOOK-SLOT -->
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《反思模块：让反馈真正改变系统》，Agent 设计模式白皮书 v0.3，2026-08-13。</p>
+                <p><strong>引用建议：</strong>ADPS，《反思模块：从运行反馈到受控修改》，Agent 设计模式白皮书 v0.3，2026-08-14。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
             </div>
         </article>

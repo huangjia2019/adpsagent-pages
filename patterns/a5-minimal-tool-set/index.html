@@ -11,21 +11,31 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
 </head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav">
-                <a href="/patterns/" style="color: var(--color-link);">Patterns</a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
                 <a href="/cases/">Cases</a>
-                <a href="/concepts/">Concepts</a>
-                <a href="/research/">Research</a>
-                <a href="/positions/">Positions</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
                 <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/zh/patterns/" class="lang-switch">中文</a>
+                <a href="/zh/patterns/a5-minimal-tool-set/" class="lang-switch">中文</a>
             </nav>
         </div>
     </header>
@@ -37,11 +47,13 @@
             <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
               <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
               <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
               <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
               <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
               <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
               <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
               <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
               <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
@@ -54,12 +66,14 @@
               <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
               <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
               <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
               <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
               <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
               <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
               <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
               <a href="/patterns/a5-minimal-tool-set/" class="active">A5 Minimal Tool Set <span class="ext">ext</span></a>
               <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
               <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
               <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>

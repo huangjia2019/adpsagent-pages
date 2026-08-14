@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Agent Evolution and Operating Model: Research Agenda · ADPS</title>
+    <meta name="description" content="A research agenda for the concurrent evolution of agent authority, engineering platforms, and organizational responsibility.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/enterprise-agent-evolution/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/" aria-current="page">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/topics/enterprise-agent-evolution/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Enterprise Agent Evolution and Operating Model: Research Agenda</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Topic Research</p>
+                <h1>Enterprise Agent Evolution and Operating Model: Research Agenda</h1>
+                <p class="publication-deck">A research agenda for the concurrent evolution of agent authority, engineering platforms, and organizational responsibility.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Issued</dt><dd>2026-08-14</dd></div>
+                    <div><dt>Document type</dt><dd>Cross-cutting topic</dd></div>
+                    <div><dt>Status</dt><dd>Research agenda</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS patterns, workshops, and enterprise cases</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note">Topics synthesize engineering questions that cross several modules. Pattern definitions, attributed cases, and workshop records remain authoritative on their own pages.</p>
+
+<p>When an agent moves from a personal assistant into a shared workflow and gains authority to change business state, the architecture is only one part of the transition. Review accountability, incident handling, knowledge maintenance, cost management, and team responsibilities also change.</p>
+<p>ADPS patterns address local architecture problems, cases document concrete practice, and workshops preserve first-hand practitioner observations. How an enterprise combines these pieces and expands autonomy over time remains less settled. This page therefore starts as a research agenda: it defines the questions and the evidence still needed.</p>
+<h2>Three concurrent lines of evolution</h2>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Typical starting point</th>
+<th>Questions that follow</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System authority</td>
+<td>Read and draft</td>
+<td>When may the agent recommend, execute, run a batch, or coordinate other agents?</td>
+</tr>
+<tr>
+<td>Engineering platform</td>
+<td>Individual tool</td>
+<td>When are a shared harness, specification repository, test environment, event system, and common governance justified?</td>
+</tr>
+<tr>
+<td>Operating model</td>
+<td>Individual self-review</td>
+<td>Who defines acceptance, approves authority, stewards architecture, and owns failures and long-term cost?</td>
+</tr>
+</tbody>
+</table>
+<p>The three lines do not advance automatically in step. A system may support autonomous execution before the organization has defined acceptance ownership or incident response. A platform may also centralize too early, before stable use cases and reusable assets exist.</p>
+<h2>Questions before each increase in authority</h2>
+<ol>
+<li><strong>Business boundary.</strong> Which objects can the agent change, and what are the per-action, daily, and tenant-level impact limits?</li>
+<li><strong>Acceptance ownership.</strong> Which role defines success, and which evidence comes from an independent system?</li>
+<li><strong>Change authority.</strong> Which parts of code, prompts, skills, tests, specifications, and memory may the agent modify?</li>
+<li><strong>Architecture ownership.</strong> Who handles dependency drift, duplication, and stale rules across tasks?</li>
+<li><strong>Incident responsibility.</strong> Can execution evidence be replayed, and how do takeover and rollback begin?</li>
+<li><strong>Economic boundary.</strong> How are model, tool, review, test, and rework costs considered together?</li>
+</ol>
+<p>Technical capability alone does not justify a wider authority boundary. Each level also needs matching acceptance, observability, rollback, and organizational responsibility.</p>
+<h2>Intended outputs</h2>
+<ul>
+<li>An enterprise autonomy scale that identifies the actions and prerequisites at each level.</li>
+<li>A role and responsibility map across business, engineering platform, security, data, risk, and operations.</li>
+<li>Admission criteria from pilot to production, including evidence, budget, authority, and incident readiness.</li>
+<li>A taxonomy for incidents and slow degradation, separating individual failure, memory contamination, architecture drift, and organizational mismatch.</li>
+<li>Comparative cases showing how the same principles change across industries and risk levels.</li>
+</ul>
+<h2>How to use this page now</h2>
+<p>For enterprises, the six questions above provide a review frame for current pilots. For ADPS, future module workshops and Blue Book cases will supply evidence. Until the body of practice is broad enough, this page will not publish a universal maturity score.</p>
+<h2>Related material</h2>
+<ul>
+<li><a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering</a></li>
+<li><a href="/patterns/">ADPS Pattern Matrix</a></li>
+<li><a href="/cases/">ADPS Enterprise Cases</a></li>
+<li><a href="/workshops/">ADPS Workshops</a></li>
+</ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Enterprise Agent Evolution and Operating Model: Research Agenda</em>, ADPS Topic Research, 2026-08-14.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

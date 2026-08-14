@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可观测性驱动的 Agent 演进 · 从运行时间线到可验证变更 · ADPS</title>
+    <meta name="description" content="用运行轨迹、组件版本、外部结果和变更证据支撑 Agent 调试、发布与演进。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/observability-driven-evolution/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/observability-driven-evolution/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/observability-driven-evolution/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/" aria-current="page">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/topics/observability-driven-evolution/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>可观测性驱动的 Agent 演进 · 从运行时间线到可验证变更</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 专题研究</p>
+                <h1>可观测性驱动的 Agent 演进 · 从运行时间线到可验证变更</h1>
+                <p class="publication-deck">用运行轨迹、组件版本、外部结果和变更证据支撑 Agent 调试、发布与演进。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>发布日期</dt><dd>2026-08-14</dd></div>
+                    <div><dt>文档类型</dt><dd>横切专题</dd></div>
+                    <div><dt>状态</dt><dd>专题研究底稿</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 模式、研讨会、企业案例与公开研究</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note">专题用来整理跨越多个模块的工程问题。其中引用的模式定义、具名案例和研讨会记录，仍以各自页面为准。</p>
+
+<p>Agent 运行失败时，一个最终答案和几行应用日志很难说明问题。工程师需要知道它当时看到了什么，选了哪个工具，改变了哪些状态，又根据什么宣布完成。当团队开始调整提示词、工具、Skill、记忆或执行结构时，还要回答更难的问题：这次修改是否真的改善了后续任务，有没有引入新的回归。</p>
+<p>这些问题横跨感知、行动、反思、记忆与治理。G4 可观测性给出局部实现模式；本专题讨论可观测性如何成为 Agent 持续演进的工程基础。</p>
+<h2>先分清两种“看见”</h2>
+<p>感知处理 Agent 能从外部世界读到哪些信号。可观测性处理工程团队能否还原 Agent 的运行过程和变更效果。前者为推理提供输入，后者为调试、评审、发布和追责提供证据。</p>
+<p>可观测性至少要支持三类查询：</p>
+<ol>
+<li>一次运行中发生了什么？</li>
+<li>哪个组件、版本或决策导致了结果？</li>
+<li>修改之后，后续结果是否改善，回归是否可接受？</li>
+</ol>
+<h2>四个可观测面</h2>
+<table>
+<thead>
+<tr>
+<th>可观测面</th>
+<th>需要记录的东西</th>
+<th>它支持的决策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>运行与轨迹</td>
+<td>输入引用、路由、模型调用、工具参数、状态变化、延迟与成本</td>
+<td>问题发生在哪一步</td>
+</tr>
+<tr>
+<td>结果与业务事实</td>
+<td>业务账本、外部回执、验收探针、人工复核</td>
+<td>任务是否在消费端完成</td>
+</tr>
+<tr>
+<td>组件与配置</td>
+<td>提示词、工具、中间件、Skill、子 Agent、记忆、模型与数据版本</td>
+<td>问题来自哪个可编辑部分</td>
+</tr>
+<tr>
+<td>决策与变更</td>
+<td>修改动机、预期效果、差异、评测结果、审批和回滚点</td>
+<td>这次变更是否应当保留</td>
+</tr>
+</tbody>
+</table>
+<p>只有运行 trace，团队可以调试单次任务，却难以管理演进。加入组件版本、变更预测与后续评测后，每次修改才有可检查的前因后果。</p>
+<h2>证据如何进入变更流程</h2>
+<pre><code class="language-text">埋点与版本化
+      ↓
+采集运行事件与外部结果
+      ↓
+按任务、版本和因果链聚合
+      ↓
+定位候选组件并提出可验证的修改
+      ↓
+运行能力评测与回归评测
+      ↓
+审批发布或回滚
+</code></pre>
+<p>关键是把“我觉得这样会更好”改成一个可验证的变更合同。合同说明要改哪个组件、预期改善哪类任务、不能损害哪些回归项，并将结果指向一组确定性证据和评测结果。</p>
+<h2>两组可复用的工程实践</h2>
+<h3>Activity / Frame 运行时间线</h3>
+<p>东方屹腾执行型 Agent 在项目早期就建立了统一时间线。<code>Activity</code> 表示具有业务语义的步骤，<code>Frame</code> 保存其中的模型调用、工具事件和状态变化。意图识别、路由、ReAct 轮次、审批等待和业务回执可以按同一个 <code>run_id</code> 查询。</p>
+<p>这套设计同时服务三个角色：开发者查找错误发生的 Frame，业务人员查看进度和回执，运维人员查看延迟、费用和失败分布。生产界面按角色脱敏，不把调试提示词和业务数据直接暴露给终端用户。</p>
+<h3>组件、经验与决策可观测</h3>
+<p>复旦大学 2026 年的 Agentic Harness Engineering 研究将自动演进的关键拆成三部分：</p>
+<ul>
+<li>组件可观测：系统提示词、工具说明与实现、中间件、Skill、子 Agent 配置和长期记忆都是文件级、可比较、可回退的对象。</li>
+<li>经验可观测：运行轨迹、错误、评测和环境状态形成可下钻的证据库，不只保留一句总结。</li>
+<li>决策可观测：每次编辑携带一个预测，下一轮任务用结果检验预测。</li>
+</ul>
+<p>该研究还提醒了一个边界：Agent 能够根据轨迹提出修复，却不一定能预见变更对其他任务的损害。评测器、执行环境和回滚通道因此应由受保护的治理边界管理，不能跟着 Agent 一起自由改写。</p>
+<h2>一个最小事件合同</h2>
+<pre><code class="language-json">{
+  &quot;run_id&quot;: &quot;run-20260814-0042&quot;,
+  &quot;task_id&quot;: &quot;publish-map-17&quot;,
+  &quot;goal_version&quot;: &quot;goal-v3&quot;,
+  &quot;component_versions&quot;: {
+    &quot;prompt&quot;: &quot;sha256:...&quot;,
+    &quot;toolset&quot;: &quot;registry-v12&quot;,
+    &quot;skill&quot;: &quot;gis-publish-v5&quot;
+  },
+  &quot;event_type&quot;: &quot;tool_result&quot;,
+  &quot;input_ref&quot;: &quot;artifact://plan/step-4&quot;,
+  &quot;tool&quot;: &quot;verify_get_map&quot;,
+  &quot;state_delta&quot;: {&quot;verification&quot;: &quot;failed&quot;},
+  &quot;evidence_ref&quot;: &quot;artifact://receipts/getmap-17&quot;,
+  &quot;latency_ms&quot;: 842,
+  &quot;cost_usd&quot;: 0.01
+}
+</code></pre>
+<p>变更记录可在这组字段上再加 <code>decision_id</code>、<code>predicted_effect</code>、<code>observed_effect</code> 和 <code>rollback_ref</code>。每个字段都应服务一个实际查询；对调试和评审没有用的信息，不必为了“完整”全量采集。</p>
+<h2>与 ADPS 模块的关系</h2>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>在证据流程中的作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>感知</td>
+<td>保留输入来源、选择与压缩决策</td>
+</tr>
+<tr>
+<td>行动</td>
+<td>产生语义化 ActionEvent、业务账本、外部回执与 checkpoint</td>
+</tr>
+<tr>
+<td>反思</td>
+<td>使用轨迹、错误和延迟反馈提出修改候选</td>
+</tr>
+<tr>
+<td>记忆</td>
+<td>保存经过验证的经验、版本与来源</td>
+</tr>
+<tr>
+<td>治理</td>
+<td>管理发布门、可见性、预算、回滚和审计</td>
+</tr>
+</tbody>
+</table>
+<p>因此，可观测性既是 G4 的实现责任，也是长程任务、评测、反思和记忆的共享基础。</p>
+<h2>常见失效方式</h2>
+<ul>
+<li>日志只有文本，没有任务、步骤、状态和证据的语义关联。</li>
+<li>仅保留最终回答，无法还原工具参数、中间状态和外部结果。</li>
+<li>轨迹没有绑定提示词、模型、工具集和 Skill 版本，同一错误无法复现。</li>
+<li>仪表盘只显示 token、延迟和成本，没有外部验收与业务结果。</li>
+<li>自动演进可以修改 Agent，也可以修改用来判定它的评测器。</li>
+<li>事件采集很全，却没有固定的评审人、修复入口和回归流程。</li>
+</ul>
+<h2>后续讨论问题</h2>
+<p>后续研讨可以围绕三类实物展开：一条真实任务的事件时间线，一次从错误证据到组件修改的差异，一份包含能力与回归结果的发布记录。只讲平台产品和指标名称，很难触及具体的工程分歧。</p>
+<h2>资料与来源</h2>
+<ul>
+<li><a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a></li>
+<li><a href="/zh/cases/liangbo-execution-agent/">东方屹腾·执行型 Agent 案例</a></li>
+<li><a href="https://arxiv.org/html/2604.25850v4">复旦大学：Agentic Harness Engineering</a></li>
+<li><a href="/zh/workshops/action-2026-08-06/">ADPS 行动模块第一次研讨会</a></li>
+<li><a href="/zh/workshops/reflection-2026-08-12/">ADPS 反思模块第一次研讨会</a></li>
+</ul>
+
+            <div class="document-citation"><p><strong>引用建议：</strong>ADPS，《可观测性驱动的 Agent 演进 · 从运行时间线到可验证变更》，ADPS 专题研究，2026-08-14。</p><p><a href="/zh/topics/">专题目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Evals and Testing: From Output Scores to System Acceptance · ADPS</title>
+    <meta name="description" content="Deterministic tests, trajectory evaluation, external acceptance, and production feedback combined into agent release evidence.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/agent-evals-and-testing/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-evals-and-testing/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-evals-and-testing/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/" aria-current="page">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/topics/agent-evals-and-testing/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Agent Evals and Testing: From Output Scores to System Acceptance</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Topic Research</p>
+                <h1>Agent Evals and Testing: From Output Scores to System Acceptance</h1>
+                <p class="publication-deck">Deterministic tests, trajectory evaluation, external acceptance, and production feedback combined into agent release evidence.</p>
+                <dl class="publication-meta" aria-label="Document metadata">
+                    <div><dt>Issued</dt><dd>2026-08-14</dd></div>
+                    <div><dt>Document type</dt><dd>Cross-cutting topic</dd></div>
+                    <div><dt>Status</dt><dd>Topic research draft</dd></div>
+                    <div><dt>Basis</dt><dd>ADPS workshops, enterprise cases, and public evaluation methods</dd></div>
+                    <div><dt>License</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note">Topics synthesize engineering questions that cross several modules. Pattern definitions, attributed cases, and workshop records remain authoritative on their own pages.</p>
+
+<p>Traditional software tests remain essential for agents. Data structures, permissions, tool contracts, idempotency, and business ledgers still need deterministic assertions. The new difficulty comes from probabilistic outputs, multiple valid paths, external tools, and delayed outcomes. A run may follow a different trajectory and still succeed, or produce fluent text after writing the wrong external state.</p>
+<p>Agent evals address this uncertain layer. They work alongside unit tests, integration tests, sandbox acceptance, production monitoring, and human review.</p>
+<h2>Four terms with different jobs</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Primary job</th>
+<th>Typical artefact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Test</td>
+<td>Assert a deterministic contract</td>
+<td>Pass/fail, diff, and fault location</td>
+</tr>
+<tr>
+<td>Eval</td>
+<td>Measure capability and regression across uncertain behaviour and repeated trials</td>
+<td>Sample evidence, scores, pass rates, and failure clusters</td>
+</tr>
+<tr>
+<td>Monitoring</td>
+<td>Observe behaviour on real production traffic</td>
+<td>Runtime events, metrics, alerts, and sampled runs</td>
+</tr>
+<tr>
+<td>Acceptance</td>
+<td>Let users or business rules decide whether delivery is valid</td>
+<td>External receipt, visible result, approval, or sign-off</td>
+</tr>
+</tbody>
+</table>
+<p>The boundary between a test and an eval can overlap. A deterministic grader can appear in either suite. What matters is the evidence source, its owner, and the release decision it can support.</p>
+<h2>Define the system under test</h2>
+<p>“Test the agent” is too broad. The system under test may be:</p>
+<ul>
+<li>one model or prompt;</li>
+<li>a skill or tool adapter;</li>
+<li>a routing, planning, or workflow component;</li>
+<li>an agent harness with state, authority, and recovery;</li>
+<li>a complete agent product;</li>
+<li>a multi-agent system with hand-offs, aggregation, and termination conditions.</li>
+</ul>
+<p>The dataset, execution environment, graders, and release gate change with the system under test. A tool adapter focuses on schema, authority, and idempotency. A long-running agent also requires goal retention, checkpoints, budgets, and recovery tests.</p>
+<h2>Six evaluation surfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Question</th>
+<th>Example evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Final outcome</td>
+<td>Did the external world reach the target state?</td>
+<td>Database fact, business receipt, real request result</td>
+</tr>
+<tr>
+<td>Trajectory</td>
+<td>Were tools, order, and parameters acceptable?</td>
+<td>Trace, ActionEvent, task-graph node</td>
+</tr>
+<tr>
+<td>Single-step decision</td>
+<td>Was routing, retrieval, compaction, or approval correct?</td>
+<td>Decision label, candidate set, rationale checked against facts</td>
+</tr>
+<tr>
+<td>Safety and authority</td>
+<td>Did the agent cross a boundary, and did refusal or escalation work?</td>
+<td>Negative case, sandbox event, approval and rejection record</td>
+</tr>
+<tr>
+<td>Recovery and long-running progress</td>
+<td>Can interruption, retry, and hand-off return to the right task?</td>
+<td>Checkpoint, idempotency key, goal version, progress ledger</td>
+</tr>
+<tr>
+<td>Resource and latency</td>
+<td>Does quality fit the latency and cost envelope?</td>
+<td>Trial distribution, tokens, latency, tool-call count</td>
+</tr>
+</tbody>
+</table>
+<p>Final outcome is the primary verdict. Trajectory evaluation exposes latent risk and locates failures. Where multiple correct paths exist, strict matching to one golden trajectory rejects valid solutions. Preserve route freedom when outcomes, authority, and mandatory constraints are satisfied.</p>
+<h2>An agent test pyramid</h2>
+<pre><code class="language-text">               Production shadow / canary / business outcomes
+                     Human and calibrated model grading
+                  Trajectory replay, sandbox, fault injection
+               Workflow, external acceptance, system integration
+            Tool contracts, permissions, state machines, idempotency
+         Schema, parsing, functions, rules, deterministic component tests
+</code></pre>
+<p>Lower layers are fast, stable, and easy to diagnose. Upper layers approach real value but run more slowly, cost more, and carry more variance. A usable release gate combines evidence across layers instead of treating one aggregate score as complete truth.</p>
+<h2>Grader priority</h2>
+<ol>
+<li>External facts and deterministic assertions.</li>
+<li>Code, rules, schemas, and state-machine checks.</li>
+<li>Business acceptors or independent simulations.</li>
+<li>Calibrated model graders.</li>
+<li>Experts or real users for ambiguous criteria.</li>
+</ol>
+<p>Model graders are useful for semantic relevance, style, completeness, and complex trajectories that resist hard rules. They need calibration against human judgements and periodic bias review. Using one uncalibrated model to generate, grade, and rewrite the criteria weakens independence.</p>
+<h2>Eval Contract</h2>
+<pre><code class="language-yaml">eval_id: gis-publish-regression-v7
+system_under_test: gis-agent@v5
+task: publish_and_verify_layer
+input_fixture: fixtures/s57-small-03
+environment: geoserver-sandbox@2.25
+allowed_tools: [inspect, publish, verify_get_map]
+authority: no_production_write
+expected_outcomes:
+  - layer_is_queryable
+  - get_map_contains_visible_content
+forbidden_outcomes:
+  - modify_unrelated_workspace
+graders:
+  - schema_contract
+  - external_get_map_probe
+trials: 5
+release_gate:
+  capability: all_required_cases_pass
+  regression: no_blocking_case_regresses
+evidence: artifacts/evals/gis-v7/
+owner: geo-platform
+</code></pre>
+<p>This contract joins the task, environment, authority, positive and negative outcomes, graders, trials, and release gate. Stochastic tasks require repeated trials with each trajectory retained; an average alone can hide a rare but severe failure.</p>
+<h2>Dataset lifecycle</h2>
+<ol>
+<li>Derive an initial capability set from specifications and business acceptance criteria.</li>
+<li>Compress real failures, bad cases, and incidents into replayable regression samples.</li>
+<li>Add boundary, authority, adversarial, empty-input, and unknown-input cases; keep both positive and negative examples.</li>
+<li>Version data, environments, graders, and expected outcomes separately.</li>
+<li>Read failed trajectories, retire stale samples, and split graders whose criteria have become too broad.</li>
+</ol>
+<p>Capability evals ask whether the system can complete its target tasks now. Regression evals protect established behaviour from new changes. Their selection logic differs, and releases need both.</p>
+<h2>Three engineering cases</h2>
+<h3>External acceptance replaces internal “success”</h3>
+<p>The Xuanxu Technology GIS publishing agent encountered a typical false success. A publish API could return success while a real GetMap request still returned <code>LayerNotDefined</code>; some error responses also carried HTTP 200. The final acceptor issues real GetMap or GetTile requests from the consumer side and checks protocol results, content type, and visible map content.</p>
+<h3>The task graph carries execution and acceptance</h3>
+<p>The Dongfang Yiteng execution agent uses a task DAG and node state machines for strict dependencies. Node completion passes through a validator, while business-ID provenance, tool receipts, and approval events enter one timeline. The same evidence judges the outcome and locates skipped, missing, or duplicate steps.</p>
+<h3>One capability across three environments</h3>
+<p>The Reflection workshop proposed a practical split. A baseline environment runs stable samples, a daily environment carries real work, and a test environment admits candidate skills and prompts. Candidate and current capabilities coexist until evaluation supports promotion, so one local lesson does not immediately change global behaviour.</p>
+<h2>Release evidence flow</h2>
+<pre><code class="language-text">Production failure or new specification
+        ↓
+Reproduce and freeze it as a sample
+        ↓
+Add it to regression; define grader and environment
+        ↓
+Change a candidate component
+        ↓
+Run capability + regression + negative cases
+        ↓
+Read failed trajectories and review graders
+        ↓
+Release, shadow, canary, or roll back
+</code></pre>
+<p>New failures should enter regression, but not every production sample deserves permanent retention. Teams need deduplication, retirement, and a way to distinguish model variance, environment faults, grader defects, and actual capability gaps.</p>
+<h2>Common failure modes</h2>
+<ul>
+<li>Testing only the final text while ignoring external state and side effects.</li>
+<li>Running one trial and treating a lucky success as stable capability.</li>
+<li>Keeping positive cases only, with no refusal, authority, unknown-input, or recovery cases.</li>
+<li>Requiring one golden trajectory for every valid execution path.</li>
+<li>Using model graders without calibration against human labels.</li>
+<li>Changing the agent and grader together, which destroys the comparison baseline.</li>
+<li>Publishing only an aggregate score without sample-level failures, trajectories, or business acceptance evidence.</li>
+</ul>
+<h2>Questions for further discussion</h2>
+<p>A useful session should bring four artefacts: one real bad case, one Eval Contract, one failed trajectory, and the release record that the sample influenced. This makes systems under test, grading rules, and authority boundaries comparable across teams.</p>
+<h2>Sources</h2>
+<ul>
+<li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic: Demystifying evals for AI agents</a></li>
+<li><a href="https://docs.langchain.com/langsmith/trajectory-evals">LangSmith: Trajectory evaluations</a></li>
+<li><a href="https://docs.langchain.com/langsmith/evaluate-complex-agent">LangSmith: Evaluate a complex agent</a></li>
+<li><a href="https://platform.openai.com/docs/api-reference/evals/">OpenAI Evals API</a></li>
+<li><a href="/cases/xuanxu-gis-agent/">Xuanxu Technology GIS publishing agent</a></li>
+<li><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution agent</a></li>
+<li><a href="/workshops/action-2026-08-06/">First ADPS Action Module Workshop</a></li>
+<li><a href="/workshops/reflection-2026-08-12/">First ADPS Reflection Module Workshop</a></li>
+</ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Evals and Testing: From Output Scores to System Acceptance</em>, ADPS Topic Research, 2026-08-14.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

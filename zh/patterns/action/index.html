@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行动模块总纲 · Agent 设计模式白皮书 · ADPS</title>
+    <meta name="description" content="ADPS 行动模块总纲：从计划步骤、工具准入和参数来源，到沙箱执行、证据链和外部验收。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/action/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/action/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/action/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/action/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/">感知模块总纲</a>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/" class="active">行动模块总纲</a>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
+                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
+                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>Action
+            </p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
+                <h1>行动模块 · 把判断变成可验收的外部变化</h1>
+                <p class="publication-deck">Action Contract、工具准入、权限与沙箱、外部验收、正式模式与待研究问题。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>版本</dt><dd>v0.3</dd></div>
+                    <div><dt>状态</dt><dd>公开评审稿</dd></div>
+                    <div><dt>修订日期</dt><dd>2026-08-14</dd></div>
+                    <div><dt>文档类型</dt><dd>行动模块总纲</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 行动模块研讨会 2026-08-06</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note"><strong>范围：</strong>本页说明行动子系统的整体设计。A1 至 A5 的问题、机制和验证标准仍以各模式规范为准。</p>
+
+            <p>行动从 Agent 准备改变外部环境时开始。发送消息、修改文件、提交工单、执行命令、调用支付接口和操作 GUI 都属于行动。它们与生成一段文字的差别，在于外部系统会留下状态变化，有些变化无法靠下一轮回答撤回。</p>
+            <p>生产级行动模块需要把“模型想做什么”翻译成外部系统能够检查的合同：当前步骤是什么，允许使用哪些工具，参数从哪里来，执行前谁批准，动作在哪个边界内运行，完成后用什么证据验收，失败后从哪里恢复。</p>
+            <h2>一条动作的运行顺序</h2>
+            <p><img alt="行动运行管线：计划、工具准入、执行前检查、隔离执行、结果核验与事实落盘" src="/images/patterns/action-runtime-zh.svg" /></p>
+            <p>运行顺序可以压成一条线：推理决策（Reasoning Decision）先进入目标合同（Goal Contract）与计划（Plan），执行器（Executor）选出当前计划步骤（PlanStep），提示链（Prompt Chain）生成或校验该步骤的结构化产物（Artifact），工具调度（Tool Dispatcher）缩小候选并决定准入，护栏三明治（Guardrail Sandwich）再执行事前检查（PRE）、工具调用（TOOL）和事后检查（POST）。最后，业务账本、统一动作事件（ActionEvent）和检查点（Checkpoint）共同证明发生了什么。</p>
+            <p>模型可以参与计划、工具选择和参数填写。权限、幂等、状态新鲜度、事务结果和外部回执应由运行时与业务系统掌握。</p>
+            <h2>Action Contract</h2>
+            <p>一次可执行动作至少需要下面这些字段：</p>
+            <pre><code class="language-yaml">action_id: act_01K2...
+goal_ref: goal://payroll/close-2026-08
+plan:
+  version: 7
+  step_id: verify-approvals
+  depends_on: [load-batch]
+intent:
+  operation: payroll.verify_approvals
+tool:
+  name: approval_service.read_batch
+  registry_version: 12
+inputs:
+  batch_id:
+    value: batch_8842
+    source: state://payroll/current_batch
+authority:
+  risk: read_only
+  approval: none
+execution:
+  sandbox: payroll-readonly-v3
+  idempotency_key: act_01K2
+verification:
+  expected: all_required_approvals_present
+  evidence: receipt://approval-service/check-901
+recovery:
+  checkpoint: checkpoint://run-8842/step-4
+</code></pre>
+            <p>动作合同把自然语言意图、计划位置、工具版本、参数来源、授权、执行环境、验收证据和恢复位置放在同一条记录里。缺少其中任何一段，都可能出现“工具返回成功，但业务目标没有完成”的假成功。</p>
+            <h2>ReAct 还是显式 Plan</h2>
+            <p>行动模块不要求每个任务先写完整计划。选型取决于任务长度、动作后果、环境变化和恢复要求。</p>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">条件</th>
+            <th style="text-align: left;">直接 ReAct 更合适</th>
+            <th style="text-align: left;">显式 Plan 更合适</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">步骤数量</td>
+            <td style="text-align: left;">少，下一步容易从当前结果判断</td>
+            <td style="text-align: left;">多，存在依赖、并行或跨阶段约束</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">副作用</td>
+            <td style="text-align: left;">只读或容易撤销</td>
+            <td style="text-align: left;">写入、发布、支付等高风险动作</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">环境</td>
+            <td style="text-align: left;">探索性强，允许快速试错</td>
+            <td style="text-align: left;">生产环境，流程和审计要求稳定</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">中断恢复</td>
+            <td style="text-align: left;">失败后可以从头再来</td>
+            <td style="text-align: left;">必须从已确认的进度继续</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">验收</td>
+            <td style="text-align: left;">每一步即时可见</td>
+            <td style="text-align: left;">需要阶段产物、审批和最终回归</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>长任务的 Plan 应是版本化产物，不应只存在于对话历史。它至少带步骤标识、依赖、预期产物、验收条件、允许工具和恢复位置。领域 DSL 可以在这个稳定核心之上增加业务动词与约束，不必追求一套 DSL 覆盖所有行业。</p>
+            <h2>行动接口的优先级</h2>
+            <p>结构化接口通常优先于 GUI：</p>
+            <ol>
+            <li><strong>领域 API、Skill 或经过认证的命令</strong>提供明确参数、权限和回执，适合稳定流程。</li>
+            <li><strong>受控 CLI</strong>适合开发、运维和批处理，但需要命令策略、工作目录、资源和网络边界。</li>
+            <li><strong>GUI 操作</strong>覆盖没有开放接口的能力，必须保留界面状态、操作截图或可复核的操作证据。</li>
+            </ol>
+            <p>GUI 不是低等级工具。它的主要问题是状态识别与结果确认更难，页面漂移也更频繁。具备稳定结构化接口时，优先使用接口；只能操作界面时，就把识别、点击、等待和验收写成明确合同。</p>
+            <h2>五个正式模式怎样分工</h2>
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">模式</th>
+            <th style="text-align: left;">负责的问题</th>
+            <th style="text-align: left;">关键边界</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a1-tool-dispatch/"><strong>A1 工具调度</strong></a></td>
+            <td style="text-align: left;">当前步骤可以使用哪些工具，怎样选择和准入</td>
+            <td style="text-align: left;">工具 registry 需要表达权限、风险、状态新鲜度、并发和来源</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a2-plan-and-execute/"><strong>A2 规划-执行</strong></a></td>
+            <td style="text-align: left;">长任务怎样保存依赖、产物、审批和恢复位置</td>
+            <td style="text-align: left;">Plan 可局部更新，已提交动作不能被静默重写</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a3-prompt-chaining/"><strong>A3 提示链</strong></a></td>
+            <td style="text-align: left;">线性步骤怎样用结构化产物和程序化闸门连接</td>
+            <td style="text-align: left;">后续步骤不能只依赖前一步的自由文本摘要</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a4-guardrail-sandwich/"><strong>A4 护栏三明治</strong></a></td>
+            <td style="text-align: left;">高风险动作怎样在执行前准入、执行中隔离、执行后复核</td>
+            <td style="text-align: left;">POST 不能假装撤销已经发生的动作，补偿和人工接管需单独设计</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;"><a href="/zh/patterns/a5-minimal-tool-set/"><strong>A5 最简工具集</strong></a></td>
+            <td style="text-align: left;">每一步怎样按职责和风险缩小可见工具面</td>
+            <td style="text-align: left;">低频能力应按需发现，不能为追求数量少而删除必要能力</td>
+            </tr>
+            </tbody>
+            </table>
+            <p>A1 至 A4 是核心模式，A5 保持扩展模式。A2 属于编排，A3 属于链式；两者可以嵌套，但不应因为一条计划中有多个步骤就混为同一拓扑。</p>
+            <h2>事件驱动与执行拓扑</h2>
+            <p>行动研讨会专门讨论了 Event-Driven 是否应当成为第七种执行拓扑。本轮结论是先保持现有框架：</p>
+            <ul>
+            <li>事件定义动作何时被触发、怎样传递、等待和重放。</li>
+            <li>执行拓扑定义任务启动后控制怎样展开。</li>
+            <li>编舞描述没有中央编排者时，多个参与者怎样依靠本地规则和事件协作。</li>
+            </ul>
+            <p>一个系统可以由事件启动，内部使用路由选择工具，以编排推进计划，再在某个步骤中运行循环。事件总线不会替整个流程决定拓扑。</p>
+            <h2>沙箱、门禁与证据</h2>
+            <p>命令、文件写入、网络访问和外部 API 需要在受控边界中执行。沙箱回答“技术上能触及哪里”，审批回答“这次是否被授权”，工具策略回答“允许做哪类动作”，ActionEvent 则留下“实际发生了什么”。</p>
+            <p>执行前至少检查身份、权限、参数来源、目标状态、幂等键和风险等级；执行后检查返回 schema、业务不变量、实际副作用和外部回执。只看 <code>exit_code == 0</code> 或 HTTP 200，无法证明业务成功。</p>
+            <p>2026 年的主流 Agent 运行时已经把这些控制做成正式接口。OpenAI 的<a href="https://openai.com/index/running-codex-safely/">企业 Codex 安全实践</a>将沙箱、审批策略、网络规则和 Agent 原生遥测组合使用；<a href="https://openai.github.io/openai-agents-python/">OpenAI Agents SDK</a>提供工具 schema、tool guardrail、人工介入和 tracing；Claude Managed Agents 的<a href="https://platform.claude.com/docs/en/managed-agents/tools">工具配置</a>允许按工具关闭能力或设置确认策略。这些接口说明行动控制正在从提示词约定进入运行时合同。</p>
+            <h2>三类生产故障</h2>
+            <p><strong>选对工具，却使用了过期状态。</strong> 写操作前需要刷新关键状态，并把读取版本带入写入条件。否则 dispatch 正确也会写错对象。</p>
+            <p><strong>步骤完成，目标没有完成。</strong> 工具回执只证明调用结束。阶段产物、业务账本和外部验收需要共同裁决任务状态。</p>
+            <p><strong>恢复后重复副作用。</strong> checkpoint 只记录“做到第几步”还不够。每个不可逆动作需要幂等键、外部回执和已提交标记，恢复逻辑先核对事实再决定是否重放。</p>
+            <h2>仍需行业回答的问题</h2>
+            <ul>
+            <li>PlanStep 的哪些字段可以跨领域稳定，哪些应留给行业 DSL。</li>
+            <li>ReAct 升级为显式 Plan 的阈值怎样从任务回放中测量。</li>
+            <li>GUI 行动的界面证据、授权和失败回执应采用什么通用格式。</li>
+            <li>一条 Action trace 怎样串起模型意图、工具准入、沙箱事件和业务账本。</li>
+            <li>事件驱动与 C6 编舞需要哪些跨行业失效证据，才能进一步稳定边界。</li>
+            </ul>
+            <h2>研讨会记录</h2>
+            <p>本总纲同时依据 A1 至 A5 的公开规范和 2026-08-06 行动模块第一次研讨会。讨论主持人为茹炳晟；核心参与者包括李庆丰、张栋、罗军、唐洪山、王伟、Pylon Peng 和任磊达。</p>
+            <p><a href="/zh/workshops/action-2026-08-06/">阅读完整研讨记录</a> · <a href="/zh/workshops/">查看全部研讨会</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
+
+            <!-- ADPS-BLUEBOOK-SLOT -->
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《行动模块：把判断变成可验收的外部变化》，Agent 设计模式白皮书 v0.3，2026-08-14。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

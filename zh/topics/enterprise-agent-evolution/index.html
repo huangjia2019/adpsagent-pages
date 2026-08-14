@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业 Agent 演进与组织运行 · 研究议程 · ADPS</title>
+    <meta name="description" content="跟踪 Agent 权限、工程平台与组织责任的同步演进，为后续企业实践建立问题清单。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/" aria-current="page">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/topics/enterprise-agent-evolution/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>企业 Agent 演进与组织运行 · 研究议程</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 专题研究</p>
+                <h1>企业 Agent 演进与组织运行 · 研究议程</h1>
+                <p class="publication-deck">跟踪 Agent 权限、工程平台与组织责任的同步演进，为后续企业实践建立问题清单。</p>
+                <dl class="publication-meta" aria-label="文档元数据">
+                    <div><dt>发布日期</dt><dd>2026-08-14</dd></div>
+                    <div><dt>文档类型</dt><dd>横切专题</dd></div>
+                    <div><dt>状态</dt><dd>研究议程</dd></div>
+                    <div><dt>依据</dt><dd>ADPS 模式、研讨会与企业案例</dd></div>
+                    <div><dt>许可</dt><dd>CC BY 4.0</dd></div>
+                </dl>
+            </header>
+            <p class="publication-note">专题用来整理跨越多个模块的工程问题。其中引用的模式定义、具名案例和研讨会记录，仍以各自页面为准。</p>
+
+<p>当 Agent 从个人辅助工具进入共享工作流，再获得改写业务状态的权限，变化的不只是系统架构。审核责任、事故处理、知识维护、成本管理和团队分工都会随之调整。</p>
+<p>ADPS 现有的模式解决局部架构问题，企业案例记录具体实践，研讨会保留专家的一手观察。企业如何组合这些部分、按什么节奏放开自主权，目前还没有足够稳定的结论。因此，本页先作为研究议程，记录问题边界和后续需要的证据。</p>
+<h2>三条同时发生的演进线</h2>
+<table>
+<thead>
+<tr>
+<th>演进线</th>
+<th>典型起点</th>
+<th>后续会遇到的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>系统权限</td>
+<td>读取与草拟</td>
+<td>何时可以推荐、执行、批量处理或调度其他 Agent</td>
+</tr>
+<tr>
+<td>工程平台</td>
+<td>个人工具</td>
+<td>何时需要共享 Harness、规格库、测试环境、事件总线和统一治理</td>
+</tr>
+<tr>
+<td>组织运行</td>
+<td>个人自审</td>
+<td>谁定义验收，谁批准权限，谁维护架构，谁对失败和长期成本负责</td>
+</tr>
+</tbody>
+</table>
+<p>三条线不会自动同步。系统能力可能已经支持自动执行，而团队还没有定义验收责任和事故处置方式。工程平台也可能过早做成统一入口，却缺少稳定场景和可复用资产。</p>
+<h2>每次扩大权限前要回答的问题</h2>
+<ol>
+<li><strong>业务边界。</strong> Agent 能改变哪些对象，单次、单日和单租户的影响范围是多少？</li>
+<li><strong>验收所有权。</strong> 哪个角色定义成功，哪些证据由独立系统产生？</li>
+<li><strong>变更权。</strong> Agent 可以改代码、提示词、Skill、测试、规格或记忆中的哪些部分？</li>
+<li><strong>架构所有权。</strong> 谁处理跨任务的依赖漂移、重复实现和过期规则？</li>
+<li><strong>事故责任。</strong> 执行证据能否重放，人工接管和回退如何启动？</li>
+<li><strong>经济边界。</strong> 模型、工具、评审、测试与返工成本如何一起计算？</li>
+</ol>
+<p>只有系统能力，不足以支撑权限升级。每一级权限都需要对应的验收、可观测性、回退能力和组织责任。</p>
+<h2>后续准备形成的产物</h2>
+<ul>
+<li>一套企业 Agent 自主权分级，明确每一级可以执行的动作和前置条件。</li>
+<li>一张组织角色与责任表，覆盖业务、工程平台、安全、数据、风险和运维。</li>
+<li>一组从试点到生产的准入条件，包括证据、预算、权限和事故准备。</li>
+<li>一套事故与长期劣化的分类方法，区分单次失败、记忆污染、架构漂移和组织失配。</li>
+<li>来自不同行业的对照案例，说明同一套原则在不同风险等级下如何落地。</li>
+</ul>
+<h2>现阶段如何使用本页</h2>
+<p>这个专题先用来收集问题和证据。对企业来说，可以用上面六个问题检查当前试点；对 ADPS 来说，后续的模块研讨会和蓝皮书案例会持续为它补充证据。在行业材料足够丰富之前，本页不给出统一成熟度分数。</p>
+<h2>相关内容</h2>
+<ul>
+<li><a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程</a></li>
+<li><a href="/zh/patterns/">ADPS 模式矩阵</a></li>
+<li><a href="/zh/cases/">ADPS 企业案例</a></li>
+<li><a href="/zh/workshops/">ADPS 研讨会</a></li>
+</ul>
+
+            <div class="document-citation"><p><strong>引用建议：</strong>ADPS，《企业 Agent 演进与组织运行 · 研究议程》，ADPS 专题研究，2026-08-14。</p><p><a href="/zh/topics/">专题目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
