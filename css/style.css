@@ -2325,6 +2325,14 @@ article.essay footer a { color: var(--color-link); }
     font-size: 0.86rem;
     line-height: 1.55;
 }
+.publication-disclaimer {
+    margin: 1rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-rule);
+    color: var(--color-text-faint);
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
 @media (max-width: 900px) {
     .page-docs .container.content { max-width: var(--container); }
     .docs-layout { flex-direction: column; gap: 1rem; }
