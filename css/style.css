@@ -2264,6 +2264,14 @@ article.essay footer a { color: var(--color-link); }
     font-size: 1.02rem;
     line-height: 1.65;
 }
+.publication-date {
+    margin: 1rem 0 0;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--color-rule);
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+}
 .publication-meta {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2298,6 +2306,15 @@ article.essay footer a { color: var(--color-link); }
     color: var(--color-text-muted);
     font-size: 0.9rem;
     line-height: 1.65;
+}
+.publication-note-end {
+    margin: 3rem 0 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--color-rule);
+    border-left: 0;
+    background: transparent;
+    color: var(--color-text-faint);
+    font-size: 0.82rem;
 }
 .evidence-empty { margin: 0.75rem 0 1.5rem; }
 .document-citation {

@@ -105,7 +105,11 @@
     margin-bottom: 0.7rem;
 }
 
-.workshop-hub-head > p:last-child,
+.workshop-hub-head > p:last-child {
+    color: var(--color-text-muted);
+    max-width: none;
+}
+
 .topic-hub-head > p:not(:first-child) {
     color: var(--color-text-muted);
     max-width: 46rem;
