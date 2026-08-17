@@ -202,6 +202,11 @@
 </code></pre>
 <p><code>MessageHandler</code> owns the message boundary, SSE, and completion protocol. <code>Orchestrator</code> reads control signals and coordinates reasoning, memory, retrieval, and action. Capabilities register through explicit input and output contracts, so a new capability can join the middle of the flow without changing message handling.</p>
 <p>The runtime also separates control information from narrative context. Route choices, task states, and admission outcomes drive program branches. User goals, analyses, and execution summaries supply semantic context to the model. The two sets use different structures, validation, and persistence.</p>
+<figure>
+  <img src="/images/concepts/en/orchestrator.png" alt="The Orchestrator connects the control plane, narrative plane, MessageHandler, and Harness boundary">
+  <figcaption>Read the boundaries: <code>MessageHandler</code> owns ingress and presentation; <code>Orchestrator</code> turns control signals, semantic context, and tool execution into a traceable runtime path.</figcaption>
+</figure>
+
 <h2>5. Explore while the task is unclear; schedule when dependencies are known</h2>
 <p><code>resolve</code> says that the user wants an operation, but it does not yet provide a stable plan. The runtime uses stepwise reasoning or ReAct when the next action depends on newly gathered information. Each iteration appends a <code>Thought</code>, <code>Action</code>, and <code>Observation</code> block to a scratchpad.</p>
 <p>Once dependencies are known, execution moves to a DAG. The executor schedules a <code>ready</code> node only after all upstream nodes are <code>completed</code>; an acceptance component decides whether a node can enter <code>completed</code>.</p>
@@ -251,6 +256,11 @@
 </code></pre>
 <p>At registration time, a tool declares which state it produces and consumes. Before invocation, <code>RunPipeline</code> reads the coordinate, checks provenance, injects the value, and records the consumption link. The model never has to spell <code>template_id</code> again.</p>
 <p>This design assumes a managed tool environment. The organization must know the tools, state keys, scopes, and permissions before a run. Arbitrary tools from an open network do not automatically receive the same provenance guarantee.</p>
+<figure>
+  <img src="/images/concepts/en/mechanical-state-plane.png" alt="The mechanical state plane records provenance through producer, consumer, scope, and key">
+  <figcaption>A value can enter the next step only when producer, consumer, scope, and state key agree. Missing or ambiguous provenance fails fast.</figcaption>
+</figure>
+
 <h2>7. Approval must preserve a resume point</h2>
 <p>Before a sensitive operation, the executor moves the node into a waiting state. After approval, it reloads persistent state, checks task and tool preconditions again, and resumes at that node. Rejection or timeout follows an explicit termination or replanning path.</p>
 <p>The case uses two forms of human involvement.</p>
@@ -292,6 +302,11 @@
 </table>
 <p>The Anchor preserves the original goal, while the Ledger appends material progress. A Collection projects the small set of records needed for the current step. These structures support semantic reasoning and do not transport business IDs.</p>
 <p>Memory is also layered by use distance. L1 serves the current step, L2 preserves traceable facts, and L3 stores experience distilled across runs. An L3 item retains the ID of its L2 evidence so the original record can be loaded when needed. Retrieval is concentrated at reasoning, first ReAct, and planning boundaries instead of running after every step.</p>
+<figure>
+  <img src="/images/concepts/en/unified-session-state.png" alt="Unified session state separates Workspace, SessionNarrative, and SessionState">
+  <figcaption>The three planes serve scheduling, model understanding, and API delivery. They are archived together without pretending to share one source of truth.</figcaption>
+</figure>
+
 <h2>9. What the current evidence supports</h2>
 <table>
 <thead>

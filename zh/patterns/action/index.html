@@ -282,6 +282,12 @@ recovery:
             <p>命令、文件写入、网络访问和外部 API 需要在受控边界中执行。沙箱回答“技术上能触及哪里”，审批回答“这次是否被授权”，工具策略回答“允许做哪类动作”，ActionEvent 则留下“实际发生了什么”。</p>
             <p>执行前至少检查身份、权限、参数来源、目标状态、幂等键和风险等级；执行后检查返回 schema、业务不变量、实际副作用和外部回执。只看 <code>exit_code == 0</code> 或 HTTP 200，无法证明业务成功。</p>
             <p>2026 年的主流 Agent 运行时已经把这些控制做成正式接口。OpenAI 的<a href="https://openai.com/index/running-codex-safely/">企业 Codex 安全实践</a>将沙箱、审批策略、网络规则和 Agent 原生遥测组合使用；<a href="https://openai.github.io/openai-agents-python/">OpenAI Agents SDK</a>提供工具 schema、tool guardrail、人工介入和 tracing；Claude Managed Agents 的<a href="https://platform.claude.com/docs/en/managed-agents/tools">工具配置</a>允许按工具关闭能力或设置确认策略。这些接口说明行动控制正在从提示词约定进入运行时合同。</p>
+            <h2>研讨中的实现片段</h2>
+            <p><strong>李庆丰从代码修复循环说明触发与停止的差别。</strong> 报错、提交或测试失败可以启动循环，验收条件决定循环能否结束。测试通过、原问题消失、代码进入人工复核是不同层级的完成信号，不能用“模型已经改过”代替。</p>
+            <p><strong>张栋把探索环境和生产流水线分开。</strong> 离线环境允许模型尝试流程、生成领域 DSL 和比较不同策略；在线环境只运行已经验证的步骤、结构化输入输出和固定发布节奏。线上数据回流到离线修订，新版本经过测试与审查后再发布，不让生产 Agent 边执行边改写自己的流程。</p>
+            <p><strong>罗军区分了固定 GUI 动线和动态 GUI 推理。</strong> 已经验证的稳定动线可以封装为 Skill、命令或受控自动化；页面状态变化大、目标位置需要视觉判断时，才保留动态推理。后者需要记录页面状态、动作、等待条件和截图证据。API 与 GUI 也可以并用：结构化接口完成主要动作，界面负责只有宿主端才能观察的验收。</p>
+            <p><strong>王伟把长任务状态落到外部存储。</strong> 当前目标、计划步骤、已完成产物、事件队列和恢复位置不依赖对话历史。主 Agent 先看到任务与能力摘要，需要时再展开子 Agent、Skill 或 CLI 的详细接口。这个渐进披露同时控制上下文体积和工具误用面。</p>
+            <p><strong>Pylon Peng 对 Event-Driven 的质疑促成了边界澄清。</strong> 一个跨项目流程可以先并行扫描，再路由任务，以计划编排推进，在局部步骤中循环修复；事件只负责唤醒、排队和传递。任磊达补充了 Agent 通过事件响应彼此行动的现有做法。两项实践共同说明事件机制可以承载编舞，但不能替代对执行拓扑的描述。</p>
             <h2>三类生产故障</h2>
             <p><strong>选对工具，却使用了过期状态。</strong> 写操作前需要刷新关键状态，并把读取版本带入写入条件。否则 dispatch 正确也会写错对象。</p>
             <p><strong>步骤完成，目标没有完成。</strong> 工具回执只证明调用结束。阶段产物、业务账本和外部验收需要共同裁决任务状态。</p>
@@ -298,7 +304,9 @@ recovery:
             <p>本总纲同时依据 A1 至 A5 的公开规范和 2026-08-06 行动模块第一次研讨会。讨论主持人为茹炳晟；核心参与者包括李庆丰、张栋、罗军、唐洪山、王伟、Pylon Peng 和任磊达。</p>
             <p><a href="/zh/workshops/action-2026-08-06/">阅读完整研讨记录</a> · <a href="/zh/workshops/">查看全部研讨会</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
 
-            <!-- ADPS-BLUEBOOK-SLOT -->
+                        <h2>企业证据</h2>
+            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《行动模块：把判断变成可验收的外部变化》，Agent 设计模式白皮书 v0.3，2026-08-14。</p>

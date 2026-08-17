@@ -202,6 +202,11 @@
 </code></pre>
             <p><code>MessageHandler</code> 处理消息入口、SSE 和结束协议。<code>Orchestrator</code> 读取控制信号，调用推理、记忆、检索和行动模块。业务能力注册在明确的输入输出契约上，新增能力主要接入中段流程，不需要改动消息入口。</p>
             <p>系统也把两类信息分开保存。控制信号、任务状态和准入结果驱动程序分支；用户目标、分析结论和执行摘要进入模型上下文。前者要求枚举和校验，后者允许语言表达。案例方把它们分别称为控制平面和叙事平面。</p>
+            <figure>
+              <img src="/images/concepts/orchestrator.png" alt="Orchestrator 连接控制平面、叙事平面、MessageHandler 与 Harness 边界">
+              <figcaption>读图重点：<code>MessageHandler</code> 只负责入口与展示；<code>Orchestrator</code> 把控制信号、语义上下文和工具执行组成可跟踪的运行链。</figcaption>
+            </figure>
+
             <h2>5. 什么时候探索，什么时候按计划执行</h2>
             <p><code>resolve</code> 说明用户要完成一件事，还没有给出稳定步骤。任务边界模糊时，系统使用链式推理或 ReAct 边执行边判断。每轮把 <code>Thought</code>、<code>Action</code> 和 <code>Observation</code> 追加到 scratchpad，下一轮读取最新观察。</p>
             <p>严格依赖出现后，控制权交给规划执行。规划器把任务拆成 DAG，执行器只调度所有上游节点已经完成的 <code>ready</code> 节点，验收器决定节点能否进入 <code>completed</code>。</p>
@@ -251,6 +256,11 @@
 </code></pre>
             <p>工具注册时声明自己生产和消费哪些状态。<code>RunPipeline</code> 在调用前完成四件事：根据坐标取值，核对来源，注入参数，记录本次消费关系。模型不会再次拼写 <code>template_id</code>。</p>
             <p>这套机制成立于封闭工具体系。组织需要事先管理工具注册、状态键、作用域和权限。开放网络中的任意工具无法自动获得同样的来源保证。</p>
+            <figure>
+              <img src="/images/concepts/mechanical-state-plane.png" alt="机械状态平面以 Producer、Consumer、Scope 和 Key 记录参数来源">
+              <figcaption>一个值能否进入下一步，取决于生产者、消费者、作用域和状态键是否同时对得上；缺值或来源不明时直接失败。</figcaption>
+            </figure>
+
             <h2>7. 审批要能停住，也要能从原处继续</h2>
             <p>敏感节点开始前，执行器将节点置为等待审批。人工批准后，系统重新读取持久化状态，校验任务与工具条件，再从原节点继续。拒绝或超时则进入明确的终止或改计划路径。</p>
             <p>案例包含两种人机衔接。</p>
@@ -293,6 +303,11 @@
             </table>
             <p><code>Anchor</code> 保存原始目标，避免长任务反复摘要后偏离。<code>Ledger</code> 追加关键进展，<code>Collection</code> 在当前步骤选择必要记录。它们服务语义理解，不承担业务 ID 传递。</p>
             <p>记忆再按使用距离分层：L1 服务当前步骤，L2 保存可追溯事实，L3 保存从多次任务中提炼的经验。L3 召回结果仍保留指向 L2 的来源 ID，需要核对时再加载原始记录。召回集中在首次推理、ReAct 首轮和任务规划等边界，不在每一步重复检索。</p>
+            <figure>
+              <img src="/images/concepts/unified-session-state.png" alt="会话统一状态平面分为 Workspace、SessionNarrative 和 SessionState">
+              <figcaption>三个状态平面分别服务调度、模型理解和 API 交付。它们统一归档，不共用同一种真源。</figcaption>
+            </figure>
+
             <h2>9. 当前证据能说明什么</h2>
             <table>
             <thead>
