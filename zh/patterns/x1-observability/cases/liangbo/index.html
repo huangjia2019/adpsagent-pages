@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方屹腾 · 可观测性 · 蓝皮书 · ADPS</title>
+    <meta name="description" content="模型、路由、工具和状态变化统一为语义事件，并按执行时间线关联。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/x1-observability/cases/liangbo/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/">感知模块总纲</a>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/">行动模块总纲</a>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/" class="active">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/x1-observability/" style="color: var(--color-text-muted);">X1 可观测性</a><span style="margin:0 0.45rem;">/</span>蓝皮书</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS 企业 Agent 系统蓝皮书 · 模式实践切片</p>
+                <h1>X1 · 可观测性 Observability Harness · 东方屹腾执行型 Agent</h1>
+                <p class="publication-deck">模型、路由、工具和状态变化统一为语义事件，并按执行时间线关联。</p>
+            </header>
+
+            <table>
+            <thead>
+            <tr>
+            <th style="text-align: left;">字段</th>
+            <th style="text-align: left;">值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td style="text-align: left;">主模式</td>
+            <td style="text-align: left;">X1 可观测性 Observability（横切工程面 · 观测与证据）</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">结合模式</td>
+            <td style="text-align: left;">G5 钩子流水线 Hook Pipeline</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">案例</td>
+            <td style="text-align: left;">上海东方屹腾科技 · HR/薪酬 SaaS · 服务 2 万+ 企业 · 执行型 Agent</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">对应白皮书</td>
+            <td style="text-align: left;"><a href="https://adpsagent.com/zh/patterns/x1-observability/">/zh/patterns/x1-observability/</a></td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">源</td>
+            <td style="text-align: left;">梁博 AICon 逐字稿第二章、PPT 7–8 页；第三章 Orchestrator、PPT 12 页</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">工程结论</td>
+            <td style="text-align: left;">把一次会话中的模型调用、路由、工具执行和状态变化统一为语义事件，并按时间线展示；控制流与界面呈现分开。</td>
+            </tr>
+            </tbody>
+            </table>
+            <hr />
+            <h2>场景约束</h2>
+            <p>一次执行型 Agent 请求会经过意图识别、网关路由、链式推理、ReAct、工具调用、记忆写入和回复合成。若系统只记录用户输入和最终回复，开发者无法判断偏差产生于哪个步骤。</p>
+            <p>东方屹腾在接通基本对话和附件上传后，即建设运行时事件与时间线，再增加后续能力。这样，每个新增模块都必须同时定义业务接口和观测接口。</p>
+            <p>本切片讨论的是系统运行过程对开发者和运维人员可见，与 Agent 对外部世界的感知属于不同概念。</p>
+            <h2>事件模型</h2>
+            <p>系统使用 Activity 表示有业务语义的运行步骤，Frame 表示步骤中的具体调用和状态变化。</p>
+            <pre><code class="language-text">Activity
+  activity_id
+  session_id
+  type
+  status
+  started_at
+  ended_at
+  frames[]
+
+Frame
+  frame_id
+  model_or_tool
+  input_ref
+  output_ref
+  state_delta_ref
+  latency
+  token_or_cost
+</code></pre>
+            <p>Activity 类型包括意图识别、意图网关路由、链式推理、ReAct 轮次、工具调用、审批等待和回复合成。事件使用统一 ID 关联 SessionNarrative、SessionState 和 Workspace 的变化。</p>
+            <h2>时间线与权限</h2>
+            <p>Web 界面按时间顺序显示 Activity，并允许展开 Frame。开发环境可以查看模型实际输入、接口输出、耗时和成本；生产环境按角色进行脱敏，只显示必要进度。提示词、业务参数和个人数据不应无差别暴露给终端用户。</p>
+            <p>用户侧可以看到长任务的阶段进度，并在允许的节点暂停。开发者侧可以查看完整调用链和状态变化。两种视图复用同一事件源，但字段权限不同。</p>
+            <h2>控制与呈现分离</h2>
+            <p>Orchestrator 只发布结构化活动事件，不处理 SSE、界面组件或打字机效果。外层 <code>MessageHandler</code> 订阅事件，并转换为流式输出。东方屹腾使用 Go 协程和通道实现发布订阅。</p>
+            <p>这种边界允许控制逻辑和展示逻辑独立演进。新增界面或输出协议不改 Orchestrator，新增能力只需发布符合契约的事件。</p>
+            <h2>案例运行</h2>
+            <p>薪资组配置请求的时间线可以依次显示：</p>
+            <pre><code class="language-text">意图识别
+  -&gt; resolve 路由
+  -&gt; Skill 召回
+  -&gt; 模板匹配工具
+  -&gt; 快照任务
+  -&gt; 导入任务
+  -&gt; 验收与回复
+</code></pre>
+            <p>若结果异常，开发者可以检查意图信号、ReasonContext、工具参数来源、业务回执和节点验收结果。问题定位落到具体 Activity 和 Frame。</p>
+            <h2>失效信号</h2>
+            <ul>
+            <li>只有原始日志，没有稳定的事件类型和关联 ID；</li>
+            <li>模型调用可见，工具和状态变化不可见；</li>
+            <li>Orchestrator 同时处理编排和界面渲染；</li>
+            <li>开发视图与生产视图没有权限边界；</li>
+            <li>日志包含未脱敏的薪酬、身份或鉴权数据；</li>
+            <li>失败事件没有输入引用、输出引用或状态差异；</li>
+            <li>审批等待与恢复不在同一调用链中。</li>
+            </ul>
+            <h2>验证指标</h2>
+            <ul>
+            <li>运行步骤的语义事件覆盖率；</li>
+            <li>Activity 到 Frame、状态变化和业务回执的关联完整率；</li>
+            <li>异常任务的平均定位时间；</li>
+            <li>无关联原始日志占比；</li>
+            <li>开发与生产字段权限测试通过率；</li>
+            <li>单次任务的观测存储成本和保留周期；</li>
+            <li>展示协议变更对 Orchestrator 的代码影响。</li>
+            </ul>
+            <h2>与白皮书的对应</h2>
+            <p>X1 规范要求通过 Trace 还原完整执行链。东方屹腾以 Activity/Frame 作为事件抽象，以 MessageHandler 和 SSE 作为展示实现。G5 钩子流水线可在执行边界产生事件，X1 负责统一采集、关联和查询。</p>
+            <h2>迁移条件</h2>
+            <p>请求跨多个模型、工具和状态模块，且错误需要定位到具体步骤时，应在项目早期建立语义事件时间线。单步内容生成可以先使用平台 Trace，但仍应保留请求、模型版本、成本和错误信息。</p>
+
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS、梁博，《东方屹腾 · 可观测性》，企业 Agent 系统蓝皮书 v0.4，2026-08-02。</p>
+                <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>证据边界：</strong>本页是完整案例的模式切片，记录特定系统约束下的实现选择。案例方提供的实现与效果信息未经过独立审计，不构成通用性能承诺。</p>
+    </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

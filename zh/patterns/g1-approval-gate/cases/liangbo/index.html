@@ -90,8 +90,11 @@
               <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -156,7 +159,7 @@
             </tr>
             <tr>
             <td style="text-align: left;">结合模式</td>
-            <td style="text-align: left;">A2 规划执行 · G4 可观测性</td>
+            <td style="text-align: left;">A2 规划执行 · X1 可观测性</td>
             </tr>
             <tr>
             <td style="text-align: left;">案例</td>
@@ -251,7 +254,7 @@
             <li>审批记录到任务、参数和业务回执的关联完整率。</li>
             </ul>
             <h2>与白皮书的对应</h2>
-            <p>G1 白皮书要求在高风险动作前设置显式准入点，并保存审批证据。东方屹腾用规划执行状态机表达阻塞和恢复，用 G4 时间线展示等待、批准和继续执行的全过程。</p>
+            <p>G1 白皮书要求在高风险动作前设置显式准入点，并保存审批证据。东方屹腾用规划执行状态机表达阻塞和恢复，用 X1 时间线展示等待、批准和继续执行的全过程。</p>
             <h2>迁移条件</h2>
             <p>Agent 执行不可逆、敏感或受监管操作时，应采用执行流审批。系统需要先具备可持久化的任务节点、状态机和幂等机制。只涉及内容确认的场景可以使用较轻的叙事续作。</p>
 

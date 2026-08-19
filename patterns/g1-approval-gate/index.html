@@ -90,8 +90,11 @@
               <a href="/patterns/g1-approval-gate/" class="active">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -179,7 +182,7 @@ execution:
 <p>Common failures include approving only a tool name or prose summary, omitting expiry and single use, allowing model risk scores to issue authority, bypassing the gate on retry or resume, and hiding parameter or resource differences from reviewers.</p>
 <p>Test tampering, policy change, expiry, concurrent consumption, duplicate callbacks, precondition change, and review-service failure. Monitor approved-versus-executed digest equality, stale-approval rejection, high-risk bypass, and unnecessary low-risk review.</p>
 <h2>Related specifications</h2>
-<p><a href="/patterns/g2-blast-radius-control/">G2</a> bounds impact; <a href="/patterns/g3-progressive-commitment/">G3</a> supplies capability autonomy; <a href="/patterns/g4-observability-harness/">G4</a> links the three records; <a href="/patterns/g5-hooks-pipeline/">G5</a> enforces pre-call and resume checks.</p>
+<p><a href="/patterns/g2-blast-radius-control/">G2</a> bounds impact; <a href="/patterns/g3-progressive-commitment/">G3</a> supplies capability autonomy; <a href="/patterns/x1-observability/">X1</a> links the three records; <a href="/patterns/g5-hooks-pipeline/">G5</a> enforces pre-call and resume checks.</p>
             <div class="document-citation">
                 <p><strong>Suggested citation:</strong>ADPS, <em>G1 · Approval Gate</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
                 <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>

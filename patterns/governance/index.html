@@ -90,8 +90,11 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -142,27 +145,26 @@
             </header>
 <p>When an agent only recommends, governance often looks like content review. Once it invokes tools, changes business state, and delegates to other agents, governance becomes a runtime discipline: whom the agent represents, why an action is authorized, where failure stops, and whether responsibility and outcome can be reconstructed.</p>
 <p>Locally compliant steps can still drift away from a long-running goal. Governance therefore evaluates both the current action and its relation to the original goal and real outcome.</p>
-<p><img src="/images/patterns/adps-framework-v04-en.svg" alt="ADPS v0.4 dual-axis matrix, cross-cutting engineering planes, and agent lifecycle"></p>
+<p><img src="/images/patterns/adps-framework-v05-en.svg" alt="ADPS v0.5 dual-axis matrix, X1–X3 cross-cutting engineering planes, and agent lifecycle"></p>
 
-<h2>Three governance objectives</h2>
+<h2>Governance objectives</h2>
 <table><thead><tr><th>Objective</th><th>Question</th><th>Engineering objects</th></tr></thead><tbody>
 <tr><td><strong>Authorization</strong></td><td>Who represents whom, and which action may affect which resource?</td><td>Identity, delegation, policy, tool, arguments, resource</td></tr>
 <tr><td><strong>Accountability</strong></td><td>Who did what under which versions and policies, and what happened?</td><td>Run, trace, approval, versions, state delta, external receipt</td></tr>
 <tr><td><strong>Containment</strong></td><td>If a control fails, where does the maximum impact stop?</td><td>Sandbox, tenant boundary, quota, budget, breaker, compensation</td></tr>
 </tbody></table>
-<p>G1 admits one intent. G2 bounds the damage if an admitted action is wrong. G3 changes the authority of a capability over time. G4 supplies their evidence, and G5 provides deterministic enforcement points.</p>
+<p>G1 admits one intent. G2 bounds the damage if an admitted action is wrong. G3 changes the authority of a capability over time. X1 supplies their evidence, and G5 provides deterministic enforcement points.</p>
 
-<h2>The v0.4 structure</h2>
+<h2>The v0.5 structure</h2>
 <h3>Dual-axis matrix</h3>
 <p>Cognitive function × execution topology remains the primary ADPS structure. Seven functions and six topologies are unchanged. The matrix now contains 27 cell-bound core patterns; the Governance row retains G1 Approval Gate, G2 Blast-Radius Control, and G3 Progressive Commitment.</p>
 <h3>Cross-cutting engineering planes</h3>
 <table><thead><tr><th>Plane</th><th>Scope</th><th>Outputs</th></tr></thead><tbody>
-<tr><td><strong>Observation and evidence</strong></td><td>Every pattern and lifecycle stage</td><td>Events, causality, versions, state deltas, receipts</td></tr>
-<tr><td><strong>Evals and testing</strong></td><td>Artifacts, trajectories, business outcomes</td><td>Regression, graders, deterministic tests, acceptance</td></tr>
-<tr><td><strong>Identity, policy, and security</strong></td><td>Principal, delegation, authority, boundaries</td><td>Allow, deny, ask, limits, execution conditions</td></tr>
-<tr><td><strong>Human-agent interaction</strong></td><td>Clarification, approval, pause, takeover, resume</td><td>Typed events, review context, recovery coordinates</td></tr>
+<tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Every pattern and lifecycle stage</td><td>Events, causality, versions, state deltas, receipts</td></tr>
+<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Artifacts, trajectories, business outcomes</td><td>Regression, graders, deterministic tests, acceptance</td></tr>
+<tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, authority, and resource boundaries</td><td>Allow, deny, ask, limits, execution conditions</td></tr>
 </tbody></table>
-<p>G4 moves out of Governance × Orchestrate and becomes the twenty-eighth core specification: Cross-cutting core · Observation and evidence plane. The total remains 28: 27 matrix patterns plus one cross-cutting core.</p>
+<p>The planes do not belong to the Governance row and do not occupy matrix cells. X1 supplies runtime facts, X2 supplies validation judgements, and X3 supplies identity and authority. Governance patterns consume that evidence to approve, contain, expand, or withdraw authority.</p>
 
 <h3 id="payroll-lifecycle">Lifecycle</h3>
 <p><img src="/images/patterns/agent-governance-lifecycle-en.svg" alt="Agent governance lifecycle from registration and evaluation to demotion and retirement"></p>
@@ -176,7 +178,7 @@
 <tr><td>Offline eval</td><td>Cover routine batches, new hires, cross-region tax, duplicate requests, and hostile arguments</td><td>Regression results, failure classes, cost, boundary tests</td></tr>
 <tr><td>Shadow and canary</td><td>Compare with the manual process before enabling a small recommendation slice</td><td>Human differences, adoption, long-tail distribution</td></tr>
 <tr><td>Controlled operation</td><td>G1 freezes and routes intent; G2 limits tenant, amount, and batch; G5 revalidates before commit</td><td>Intent, Approval, quota, hook verdicts</td></tr>
-<tr><td>Observe and attribute</td><td>G4 links source ledger, arguments, payment receipt, state delta, and reconciliation</td><td>Cross-system trace, receipt, business outcome</td></tr>
+<tr><td>Observe and attribute</td><td>X1 links source ledger, arguments, payment receipt, state delta, and reconciliation</td><td>Cross-system trace, receipt, business outcome</td></tr>
 <tr><td>Change and revalidate</td><td>A payment-API upgrade freezes old grants and reruns affected evaluation and shadow work</td><td>Version diff, revalidation, change approval</td></tr>
 <tr><td>Authority disposition</td><td>Validation may reach bounded execution; submission remains reviewed; an ended pilot is retired</td><td>Capability grant, demotion, or retirement record</td></tr>
 </tbody></table>
@@ -209,18 +211,20 @@ execution:
 </code></pre>
 <p>A tool name is not enough for a governance decision. Immutable tool version, canonical arguments, resources, delegation, environment, aggregate budget, and business preconditions all affect risk.</p>
 
-<h2>Pattern responsibilities</h2>
+<h2>Governance patterns and cross-cutting dependencies</h2>
 <table><thead><tr><th>Specification</th><th>Control object</th><th>Boundary</th></tr></thead><tbody>
 <tr><td><a href="/patterns/g1-approval-gate/"><strong>G1 Approval Gate</strong></a></td><td>Current high-risk intent</td><td>Revalidate intent and preconditions on resume; consume approval once</td></tr>
 <tr><td><a href="/patterns/g2-blast-radius-control/"><strong>G2 Blast-Radius Control</strong></a></td><td>Maximum action, run, and fleet impact</td><td>Agent judgement and historical success cannot alter hard limits</td></tr>
 <tr><td><a href="/patterns/g3-progressive-commitment/"><strong>G3 Progressive Commitment</strong></a></td><td>Capability- and scenario-specific autonomy</td><td>Promote, hold, demote, freeze, and retire</td></tr>
-<tr><td><a href="/patterns/g4-observability-harness/"><strong>G4 Observability</strong></a></td><td>Cross-cutting evidence chain</td><td>Keep observed facts separate from evaluation judgements</td></tr>
+<tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Cross-cutting evidence chain</td><td>Keep observed facts separate from evaluation judgements</td></tr>
+<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Capability and regression evidence</td><td>Keep graders independent from the candidate system</td></tr>
+<tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, and credentials</td><td>Propagate identity and narrow authority by resource</td></tr>
 <tr><td><a href="/patterns/g5-hooks-pipeline/"><strong>G5 Hooks Pipeline</strong></a></td><td>Deterministic enforcement points</td><td>A hook is not the policy source or domain judge</td></tr>
 </tbody></table>
 
 <h2>Public engineering material</h2>
 <p><a href="/cases/deerflow-guardrail/"><strong>DeerFlow Guardrail and two-layer authorization</strong></a> follows five public pull requests through pre-call interception, principal propagation, RunJournal, an RBAC provider, and assembly-time plus runtime authorization.</p>
-<p><a href="/workshops/governance-2026-08-18/"><strong>First Governance Module Workshop</strong></a> preserves concrete questions about sandboxing, approval resume, agent registry, evidence attribution, capability-level authority, and offline evaluation, then records their effect on v0.4.</p>
+<p><a href="/workshops/governance-2026-08-18/"><strong>First Governance Module Workshop</strong></a> preserves concrete questions about sandboxing, approval resume, agent registry, evidence attribution, capability-level authority, and offline evaluation. That material led to the v0.5 engineering planes and lifecycle structure.</p>
 
 <h2>Mechanisms under further study</h2>
 <ul>
@@ -230,7 +234,7 @@ execution:
 <li><strong>Federated governance</strong> between central controls and domain accountability.</li>
 </ul>
             <div class="document-citation">
-                <p><strong>Suggested citation:</strong>ADPS, <em>Governance Module: Making Agent Autonomy Manageable</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
+                <p><strong>Suggested citation:</strong>ADPS, <em>Governance Module: Making Agent Autonomy Manageable</em>, Agent Design Pattern White Paper v0.5, 20 August 2026.</p>
                 <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
             </div>

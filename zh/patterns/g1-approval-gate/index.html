@@ -96,8 +96,11 @@
               <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -196,7 +199,7 @@ execution:
 <h2>验证</h2>
 <p>测试参数篡改、策略换版、审批过期、并发消费、重复回调、前置条件变化和审批服务故障。生产观测至少覆盖获批摘要与执行摘要的一致性、旧审批拦截、高风险旁路和低风险误入人审。</p>
 <h2>相邻规范</h2>
-<p><a href="/zh/patterns/g2-blast-radius-control/">G2</a>限制获准动作的最大影响；<a href="/zh/patterns/g3-progressive-commitment/">G3</a>提供能力级自治档位；<a href="/zh/patterns/g4-observability-harness/">G4</a>连接 Intent、Approval、Execution 与回执；<a href="/zh/patterns/g5-hooks-pipeline/">G5</a>提供调用前和恢复前的执行位置。</p>
+<p><a href="/zh/patterns/g2-blast-radius-control/">G2</a>限制获准动作的最大影响；<a href="/zh/patterns/g3-progressive-commitment/">G3</a>提供能力级自治档位；<a href="/zh/patterns/x1-observability/">X1</a>连接 Intent、Approval、Execution 与回执；<a href="/zh/patterns/g5-hooks-pipeline/">G5</a>提供调用前和恢复前的执行位置。</p>
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《G1 · Approval Gate · 审批门》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>

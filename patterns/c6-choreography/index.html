@@ -90,8 +90,11 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -191,7 +194,7 @@
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Deploying Choreography without observability</strong>: emergent behavior has no central trace, and when something goes wrong there is no place to start. Choreography depends heavily on Observability (G4)—every event must carry a correlation ID and be replayable along the causal chain. Build the Observability Harness first, then deploy Choreography; reversing the order guarantees trouble.</li>
+            <li><strong>Deploying Choreography without observability</strong>: emergent behavior has no central trace, and when something goes wrong there is no place to start. Choreography depends heavily on Observability (X1)—every event must carry a correlation ID and be replayable along the causal chain. Build the Observability Harness first, then deploy Choreography; reversing the order guarantees trouble.</li>
             <li><strong>Event storms / infinite loops</strong>: A emits an event that triggers B, B reacts and emits an event that triggers A, and the loop does not converge. You must enforce idempotency, add event TTLs, and detect loops.</li>
             <li><strong>No one declares completion</strong>: after decentralization, "is this task actually finished" becomes a question no one can answer directly. Define it with an explicit terminal event or saga compensation; do not leave it vague.</li>
             <li><strong>Treating Choreography as a cure-all</strong>: the default for most systems should be Orchestrate. Choreography earns its place only when scale, coupling, or availability hit a ceiling. Deploying it for the sake of being "advanced" means solving with the hardest-to-debug topology a problem that a single orchestrator would have handled.</li>
@@ -233,7 +236,7 @@
             <p>Every event carries a correlation ID and can be replayed by case. A thin orchestrated saga remains at the point that defines whether the case is complete, because pure choreography has no central owner of completion. This hybrid preserves decentralized reaction while centralizing the state that requires a single authoritative answer. Event-driven agent runtimes and interoperability protocols provide implementation references, but production claims should come from attributed deployments.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Observability (G4)</strong>: a hard prerequisite dependency. Choreography has no central trace and relies entirely on correlation-ID event logs to trace causality. Without G4, Choreography is undebuggable and cannot go to production.</li>
+            <li><strong>Observability (X1)</strong>: a hard prerequisite dependency. Choreography has no central trace and relies entirely on correlation-ID event logs to trace causality. Without X1, Choreography is undebuggable and cannot go to production.</li>
             <li><strong>Orchestrate (scattered across Hierarchy / Governance)</strong>: a pair of twins, each other's opposite. Orchestrate is coordinated by a conductor with centralized control; Choreography is coordinated by events with distributed control. Production systems are mostly a mix of the two rather than pure-bred.</li>
             <li><strong>Fan-out/gather (C2)</strong>: similar in form, different in spirit. Fan-out has a center responsible for fan-out and gather; workers run in parallel but must return to the center to converge. Choreography has no such center; reaction results enter the event stream directly. Fan-out is parallelism with a center; Choreography is collaboration without a center.</li>
             <li><strong>Failure journal (Memory module M4)</strong>: event sourcing records state changes as an immutable event stream and can provide historical state for a choreographed system.</li>

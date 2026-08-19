@@ -96,8 +96,11 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -248,7 +251,7 @@ checkpoint():
             <li><strong>失败日记（M4）</strong>：进度追踪保存任务步骤状态，失败日记保存失败现象、原因和处理结果。</li>
             <li><strong>Plan-and-Execute（推理模块）</strong>：Plan 描述预期步骤，进度追踪维护这些步骤的运行时状态。</li>
             <li><strong>Hooks Pipeline（治理模块）</strong>：框架层的 nudge 和持久化挂点天然契合 hook 机制，可用 PreToolUse / PostToolUse hook 实现。</li>
-            <li><strong>可观测性（G4）</strong>：ProgressState 解释 Agent 认为自己做到哪，统一 trace 和动作回执证明系统实际发生了什么。</li>
+            <li><strong>可观测性（X1）</strong>：ProgressState 解释 Agent 认为自己做到哪，统一 trace 和动作回执证明系统实际发生了什么。</li>
             </ul>
             <h2>工程判断</h2>
             <p>进度追踪把长任务的目标、过程和恢复位置外置。Goal Contract 防止方向漂移，权威状态引用防止旧摘要冒充真值，产物与回执防止恢复时重复副作用。</p>

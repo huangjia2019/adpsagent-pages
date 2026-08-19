@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Design Pattern White Papers · Pattern Matrix · ADPS</title>
-    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.4: 27 matrix patterns, the G4 cross-cutting core, five extensions, one candidate, lifecycle, and review method.">
+    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.5: 27 matrix patterns, three cross-cutting engineering planes, five extensions, one candidate, lifecycle, and review method.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/">
@@ -109,8 +109,11 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -156,9 +159,9 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>Pattern Catalog and Selection Framework</h1>
-                <p class="publication-deck">Cognitive function × execution topology · 27 matrix patterns + the G4 cross-cutting core · five extensions and one candidate.</p>
+                <p class="publication-deck">Cognitive function × execution topology · 27 matrix patterns · 3 cross-cutting engineering planes · five extensions and one candidate.</p>
             </header>
-            <p>v0.4 contains <strong>27 cell-bound patterns, one cross-cutting core specification, five extension patterns, and one candidate: 34 specifications in total</strong>. The dual axis remains the primary structure. Cross-cutting engineering planes and lifecycle make system responsibilities visible where one matrix cell is insufficient.</p>
+            <p>v0.5 contains <strong>27 cell-bound patterns, three cross-cutting engineering planes, five extension patterns, and one candidate</strong>. The dual axis remains the primary structure. The engineering planes add system-wide responsibilities; lifecycle records how a capability enters, changes, and leaves production.</p>
             <p>Pattern specifications define recurring problems, mechanisms, boundaries, and verification. <a href="/cases/">Blue Book cases</a> show how pattern combinations behave under named engineering constraints; <a href="/workshops/">workshop records</a> preserve field questions and unresolved disagreement.</p>
 
             <h2>Why agents need a new set of design patterns</h2>
@@ -167,7 +170,7 @@
 
             <h2>Start with one business change</h2>
             <p>Consider a payroll-agent request: “Change employee E-1842's monthly transport allowance from 800 to 1000, effective next month.” It should not compile directly into a tool call. The first design unit is a <strong>minimum controlled loop</strong>: one business change that can be decided, approved, executed, accepted, and compensated independently.</p>
-            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Stage</th><th>Engineering question</th><th>Minimum artifact</th><th>Patterns</th></tr></thead><tbody><tr><td>Goal</td><td>Who, what field, which effective date, and what is out of scope?</td><td>Goal Contract</td><td>P1 Context Triage</td></tr><tr><td>Evidence</td><td>Where do current state and policy basis come from?</td><td>Mechanical state + versioned evidence</td><td>M2 RAG / structured query</td></tr><tr><td>Plan</td><td>How do read, validate, prepare, approve, commit, and after-read connect?</td><td>PlanStep + completion condition</td><td>A2 Plan and Execute</td></tr><tr><td>Commitment</td><td>Who approves which tool, arguments, and resource?</td><td>Intent + Approval</td><td>G1 Approval Gate, G2 Blast-Radius Control</td></tr><tr><td>Acceptance</td><td>What proves completion and where does failure stop?</td><td>Receipt + state delta + trace</td><td>G4 Observability</td></tr></tbody></table></div>
+            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Stage</th><th>Engineering question</th><th>Minimum artifact</th><th>Patterns</th></tr></thead><tbody><tr><td>Goal</td><td>Who, what field, which effective date, and what is out of scope?</td><td>Goal Contract</td><td>P1 Context Triage</td></tr><tr><td>Evidence</td><td>Where do current state and policy basis come from?</td><td>Mechanical state + versioned evidence</td><td>M2 RAG / structured query</td></tr><tr><td>Plan</td><td>How do read, validate, prepare, approve, commit, and after-read connect?</td><td>PlanStep + completion condition</td><td>A2 Plan and Execute</td></tr><tr><td>Commitment</td><td>Who approves which tool, arguments, and resource?</td><td>Intent + Approval</td><td>G1 Approval Gate, G2 Blast-Radius Control</td></tr><tr><td>Acceptance</td><td>What proves completion and where does failure stop?</td><td>Receipt + state delta + trace</td><td>X1 Observability</td></tr></tbody></table></div>
             <p>Split the unit when decision, approval, execution, acceptance, or compensation requires a different owner or rule. It is small enough when all five close independently. Enterprise modelling defines business objects, rules, and responsibilities; agent design compiles one business change into a controlled runtime path.</p>
 
             <h2>Two axes</h2>
@@ -189,8 +192,8 @@
             <p>The two axes form a 7 × 6 matrix. Twenty-seven cells currently hold core patterns. Empty cells prevent the catalog from inventing symmetry where no stable, independent structure has been established.</p>
 
             <figure class="matrix-figure">
-                <img src="/images/matrix-v04-en-20260819.png" alt="ADPS v0.4 with 27 matrix patterns and G4 Observability as a cross-cutting core">
-                <figcaption>The dual-axis matrix retains 27 cell-bound patterns. G4 Observability spans every cognitive function, execution topology, and lifecycle stage.</figcaption>
+                <img src="/images/matrix-v05-en-20260820.png" alt="ADPS v0.5 with 27 matrix patterns, three cross-cutting engineering planes, and an agent lifecycle">
+                <figcaption>The dual-axis matrix retains 27 cell-bound patterns. X1–X3 span every cognitive function, execution topology, and lifecycle stage.</figcaption>
             </figure>
 
             <p>The same matrix in text, for search and citation.</p>
@@ -212,8 +215,8 @@
 
             <h2>Cross-cutting engineering planes</h2>
             <p>The dual axis locates patterns. Cross-cutting planes supply shared infrastructure without adding matrix columns or replacing the two-axis model.</p>
-            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Plane</th><th>Scope</th><th>Key artifacts</th></tr></thead><tbody><tr><td><a href="/patterns/g4-observability-harness/"><strong>Observation and evidence</strong></a></td><td>Every function, topology, and lifecycle stage</td><td>Events, causality, versions, state deltas, external receipts</td></tr><tr><td><a href="/topics/agent-evals-and-testing/"><strong>Evals and testing</strong></a></td><td>Specifications, models, tools, skills, policies, and composed systems</td><td>Cases, graders, regression, business acceptance, release gates</td></tr><tr><td><strong>Identity, policy, and security</strong></td><td>Users, agents, workloads, runs, delegation chains, resources</td><td>Identity, allow / deny / ask, limits, short-lived credentials</td></tr><tr><td><strong>Human-agent interaction</strong></td><td>Clarification, approval, pause, takeover, resume, explanation</td><td>Typed events, review context, recovery coordinates</td></tr></tbody></table></div>
-            <p>Loop remains an execution topology. ReAct-style runtime loops use that topology and depend on the cross-cutting planes for evidence, evaluation, authority, and human control.</p>
+            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Plane</th><th>Scope</th><th>Key artifacts</th></tr></thead><tbody><tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Every function, topology, and lifecycle stage</td><td>Events, causality, versions, state deltas, external receipts</td></tr><tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Specifications, models, tools, skills, policies, and composed systems</td><td>Cases, graders, regression, business acceptance, release gates</td></tr><tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Users, agents, workloads, runs, delegation chains, resources</td><td>Principals, delegation, allow / deny / ask, short-lived credentials</td></tr></tbody></table></div>
+            <p>Loop remains an execution topology. ReAct-style runtime loops use that topology and depend on the planes for runtime evidence, capability validation, and identity and authority.</p>
 
             <h2>Agent lifecycle</h2>
             <p><img src="/images/patterns/agent-governance-lifecycle-en.svg" alt="Agent lifecycle from registration, design, evaluation, and canary to operation, demotion, and retirement"></p>
@@ -228,11 +231,11 @@
                 <li><strong>Decision Contract</strong> — how model output becomes a structured RouteDecision / PlanDecision rather than a paragraph of natural language (Reasoning).</li>
                 <li><strong>Action Contract</strong> — tool version, argument provenance, idempotency, compensation, and external acceptance (Action).</li>
                 <li><strong>Authority Contract</strong> — principal, delegation, resource scope, policy version, approval, and expiry (Governance).</li>
-                <li><strong>Trace Contract</strong> — every LLM call, tool call, handoff, approval, and state update joined into one causal chain (G4 cross-cutting core).</li>
+                <li><strong>Trace Contract</strong> — every LLM call, tool call, handoff, approval, and state update joined into one causal chain (X1 Observability).</li>
             </ul>
 
-            <h2>White-paper catalog · 27 matrix + 1 cross-cutting core + 6 extensions and candidates = 34</h2>
-            <p>The core catalog contains 27 matrix patterns and G4 Observability as the cross-cutting core. Five extension specifications cover more specific runtime structures: M5 Procedural Memory, R5 Talker-Reasoner, A5 Minimal Tool Set, C5 Sub-Agent Isolation, and G5 Hooks Pipeline. C6 Choreography remains a candidate pending evidence across more than the collaboration function. Extensions are marked <span class="ext-badge">ext</span>.</p>
+            <h2>White-paper catalog</h2>
+            <p>The catalog contains 27 matrix patterns and three cross-cutting engineering planes. Five extension specifications cover more specific runtime structures: M5 Procedural Memory, R5 Talker-Reasoner, A5 Minimal Tool Set, C5 Sub-Agent Isolation, and G5 Hooks Pipeline. C6 Choreography remains a candidate pending evidence across more than the collaboration function. Extensions are marked <span class="ext-badge">ext</span>.</p>
             <p>Every specification follows the same review structure: problem, classification, solution and mechanics, applicability, known failure modes, verification metrics, reference implementation, application example, related patterns, and design conclusion.</p>
 
             <h3>Perception · 4 core</h3>
@@ -295,21 +298,23 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · Progressive Commitment</a><span style="color: var(--color-text-muted);"> — Hold, promote, narrow, demote, freeze, or retire authority by agent version, capability, scenario, resource, and environment.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g5-hooks-pipeline/" style="font-weight: 600;">G5 · Hooks Pipeline</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Enforce deterministic controls at unavoidable lifecycle points while separating policy source, decision, enforcement, and evidence. <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> provides a public code path.</span></li>
             </ul>
-            <h3>Cross-cutting core</h3>
+            <h3>Cross-cutting engineering planes</h3>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
-                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g4-observability-harness/" style="font-weight: 600;">G4 · Observability Harness</a><span style="color: var(--color-text-muted);"> — Join input provenance, causal identity, component and policy versions, decisions, state deltas, and external receipts into evidence for debugging, evals, reflection, and governance.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/x1-observability/" style="font-weight: 600;">X1 · Observability</a><span style="color: var(--color-text-muted);"> — Join input provenance, causal identity, component and policy versions, decisions, state deltas, and external receipts into runtime evidence.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/x2-evals-and-testing/" style="font-weight: 600;">X2 · Evals &amp; Testing</a><span style="color: var(--color-text-muted);"> — Use repeatable cases, graders, regression, and external acceptance to govern capability evidence.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/x3-security-and-identity/" style="font-weight: 600;">X3 · Security &amp; Identity</a><span style="color: var(--color-text-muted);"> — Propagate identity across delegation and constrain each run with least privilege and short-lived credentials.</span></li>
             </ul>
             <h2>Choreography: the decentralized twin of orchestration</h2>
             <p>All six core topologies share one implicit premise — a designable control point. A chain has order, routing has a router, parallel has fan-out and gather, a loop has an iterator, hierarchy has a manager, orchestration has a conductor. <strong>The defining trait of choreography is to remove that control point.</strong></p>
             <p>In choreography there is no central conductor. Each agent becomes an autonomous unit that subscribes only to events it cares about, reacts when one arrives, and publishes its result as a new event back to a shared stream — reporting to no center. The system's overall behavior is not written in any single flowchart; it emerges from every agent's local subscribe-react-publish rules. Add a new agent and you only wire its subscriptions; no other agent changes a line. It is orchestration's twin: orchestration is coordinated by a conductor, choreography by events.</p>
-            <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. A core column must cut across several cognitive functions; current public Agent-engineering evidence for choreography remains concentrated in collaboration. G4 Observability is essential because decentralized execution still needs causal trace, timeout, compensation, and a defined completion owner. Hybrid designs can keep event-driven collaboration while retaining explicit coordination at critical commits. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
+            <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. A core column must cut across several cognitive functions; current public Agent-engineering evidence for choreography remains concentrated in collaboration. X1 Observability is essential because decentralized execution still needs causal trace, timeout, compensation, and a defined completion owner. Hybrid designs can keep event-driven collaboration while retaining explicit coordination at critical commits. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
 
             <h2>Three starter combos</h2>
             <p>These three combinations provide compact starting points. Any agent with write permission needs an explicit authority boundary and an evidence chain.</p>
             <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + G4 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + G4 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + G4 Observability. Boundary: multi-agent gains come from task scale, role boundaries, and independent review — not from looking more advanced.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + X1 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + X1 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
+                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + X1 Observability. Boundary: multi-agent gains come from task scale, role boundaries, and independent review — not from looking more advanced.</li>
             </ul>
 
             <h2>Methodology</h2>
@@ -344,7 +349,8 @@
                     <tr><td>Action</td><td>A1–A3, A4 (+A5 ext)</td><td>Ch6 Action</td><td><code>action/</code></td></tr>
                     <tr><td>Reflection</td><td>F1–F4</td><td>Ch7 Reflection</td><td><code>reflection/</code></td></tr>
                     <tr><td>Collaboration</td><td>C1–C4 (+C5, C6 ext)</td><td>Ch8 Collaboration</td><td><code>collaboration/</code></td></tr>
-                    <tr><td>Governance</td><td>G1–G3 (+G5 ext); G4 cross-cutting</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                    <tr><td>Governance</td><td>G1–G3 (+G5 ext)</td><td>Ch9 Governance</td><td><code>governance/</code></td></tr>
+                    <tr><td>Cross-cutting planes</td><td>X1–X3</td><td>Across chapters</td><td><code>observability / evals / security</code></td></tr>
                 </tbody>
             </table>
             </div>
@@ -363,8 +369,8 @@
                 <li>Liu Chunlei, Yi Hong, and Wang Lin, <em>Technology Control: Seeking Efficiency from Methods</em> (Chinese), CITIC Press, 2024, ISBN 9787521764666.</li>
             </ul>
             <h2>Version history</h2>
-            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved G4 to the cross-cutting core; added engineering planes, lifecycle, a payroll running example, and revised Governance.</td></tr></tbody></table></div>
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.4: Pattern Catalog and Selection Framework</em>, 19 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
+            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved the then-G4 Observability specification outside the matrix; added lifecycle, a payroll running example, and revised Governance.</td></tr><tr><td>v0.5</td><td>20 August 2026</td><td>Established X1–X3 as cross-cutting engineering planes; retained the old G4 route as a legacy entry; added a thin lifecycle rail to the canonical figure.</td></tr></tbody></table></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.5: Pattern Catalog and Selection Framework</em>, 20 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
 
         </article>
 

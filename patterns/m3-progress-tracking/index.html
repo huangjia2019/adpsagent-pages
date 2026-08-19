@@ -90,8 +90,11 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
@@ -239,7 +242,7 @@
             <li><strong>Failure Diary (M4)</strong>: A twin relationship, both in the Loop column. Progress tracking manages "the path of what was done right," the failure diary manages "the pitfalls stepped into." One records successful steps, the other records failure cases.</li>
             <li><strong>Plan-and-Execute (Reasoning module)</strong>: Progress tracking is the runtime twin of Plan. Planning produces a one-shot static list of "what we want to do"; progress tracking maintains, in a loop, the dynamic state of "how far we've gotten." Two different things—do not conflate them.</li>
             <li><strong>Hooks Pipeline (Governance module)</strong>: The framework-level nudge and persistence hook points fit the hook mechanism naturally and can be implemented with PreToolUse / PostToolUse hooks.</li>
-            <li><strong>Observability (G4)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
+            <li><strong>Observability (X1)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Progress tracking externalizes the direction, execution state, and recovery position of long work. The Goal Contract limits drift, authoritative references prevent stale prose from becoming truth, and artifacts plus receipts prevent repeated side effects after resume.</p>

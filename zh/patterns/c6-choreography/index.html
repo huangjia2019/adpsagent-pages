@@ -96,8 +96,11 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -242,7 +245,7 @@ bus.publish(initial_event)                   # 点火，之后全靠涌现
             <p>系统先为每个事件加入 correlation ID，并支持按 case 全链路 replay。在“案件是否已处置完成”这一环节保留轻量编排式 saga，用于定义完成态。生产系统通常采用事件驱动协作与中央终止控制的混合结构。事件驱动 Agent runtime 与互操作协议可作为实现参考，生产效果仍需由具名案例补充。</p>
             <h2>相邻模式</h2>
             <ul>
-            <li><strong>可观测性（G4）</strong>：硬前置依赖。编舞没有中央 trace，全靠关联 ID 的事件日志回溯因果。没有 G4，编舞不可调试、不可上生产。</li>
+            <li><strong>可观测性（X1）</strong>：硬前置依赖。编舞没有中央 trace，全靠关联 ID 的事件日志回溯因果。没有 X1，编舞不可调试、不可上生产。</li>
             <li><strong>编排（散落在层级 / 治理）</strong>：编排集中控制，编舞通过事件分散控制，生产系统可以混合使用。</li>
             <li><strong>扇出聚合（C2）</strong>：扇出由中央节点执行 fan-out 和 gather；编舞将处理结果直接发布到事件流。</li>
             <li><strong>失败日记（记忆模块 M4）</strong>：event sourcing 将状态变化记录为不可变事件流，可作为编舞系统的历史状态来源。</li>
