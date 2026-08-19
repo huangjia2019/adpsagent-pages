@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeerFlow Guardrails: From Pre-Call Interception to Two-Layer Authorization · ADPS</title>
+    <meta name="description" content="How five public DeerFlow pull requests advanced tool control through assembly filtering, run-time authorization, and structured evidence.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/cases/deerflow-guardrail/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/deerflow-guardrail/">
+    <link rel="alternate" hreflang="zh-CN" href="https://adpsagent.com/zh/cases/deerflow-guardrail/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/deerflow-guardrail/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/" aria-current="page">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/cases/deerflow-guardrail/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/cases/xuanxu-gis-agent/" >Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/deerflow-guardrail/" class="active">DeerFlow · Guardrail Evolution</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/">Cases</a><span style="margin:0 0.45rem;">/</span>Open-source engineering case</p>
+
+            <header class="publication-head">
+                <p class="publication-series">ADPS Open-Source Engineering Case</p>
+                <h1>DeerFlow Guardrails: From Pre-Call Interception to Two-Layer Authorization</h1>
+                <p class="publication-deck">Five public pull requests moved tool control from run-time denial to assembly-time visibility filtering, while bringing identity, policy, and evidence into one execution path.</p>
+                <p class="publication-date"><time datetime="2026-08-19">19 August 2026</time></p>
+            </header>
+
+            <h2>Case scope</h2>
+            <table><tbody>
+              <tr><td><strong>System studied</strong></td><td>Guardrail and authorization changes in the public DeerFlow repository</td></tr>
+              <tr><td><strong>Core question</strong></td><td>Which tools should a task receive, and when should tools that the principal cannot use disappear from the candidate set?</td></tr>
+              <tr><td><strong>Evidence</strong></td><td>PRs #1240, #3665, #3837, #4260, and #4370, plus current source, tests, and public documentation</td></tr>
+              <tr><td><strong>ADPS patterns</strong></td><td>A1 Tool Dispatch, A4 Guardrail Sandwich, A5 Minimal Tool Set, G1 Approval Gate, G2 Blast-Radius Control, G4 Observability, and G5 Hooks Pipeline</td></tr>
+            </tbody></table>
+
+            <h2>1. Which tools should one task receive?</h2>
+            <p>DeerFlow does not delegate this question to one unconstrained generation. The model can choose only among tool schemas already present in its run context. Before a capability enters that list, agent declarations, the active Skill, and principal permissions narrow the candidates.</p>
+            <p><strong>Effective capability = global candidates ∩ agent declaration ∩ active Skill ∩ principal permission.</strong></p>
+            <figure class="matrix-figure">
+              <img src="/images/cases/deerflow-tool-assembly-en.svg" alt="DeerFlow tool assembly and two-layer authorization">
+              <figcaption>Figure 1 · Relevance narrows candidates; authorization decides what the current principal may see and call.</figcaption>
+            </figure>
+            <p>Two questions are easy to conflate. <strong>Is the tool relevant?</strong> is handled by <code>tool_groups</code>, subagent allow/deny lists, Skill activation, and deferred discovery. <strong>May this principal use it?</strong> is handled by the AuthorizationProvider. Relevance does not grant permission, and authorization does not guess the best tool for the task.</p>
+
+            <h2>2. Assembly filtering and run-time interception share one policy</h2>
+            <p><code>apply_tool_authorization</code> resolves the provider, constructs the principal, and filters candidates through one entry point. It returns both the filtered list and the provider instance, which the caller then wires into run-time middleware.</p>
+            <pre><code>def apply_tool_authorization(tools, *, context, app_config,
+                             authorization_provider=None):
+    if app_config.authorization.enabled is not True:
+        return tools, None
+
+    provider = authorization_provider or resolve_authorization_provider(
+        app_config.authorization
+    )
+    principal = build_principal_from_context(context)
+    filtered = filter_tools_by_authorization(
+        tools, provider=provider, principal=principal,
+        fail_closed=app_config.authorization.fail_closed,
+    )
+    return filtered, provider</code></pre>
+            <ol>
+              <li><strong>Layer 1, assembly time:</strong> remove tools that can never be used from schemas and the deferred catalog. The model never sees them, and <code>tool_search</code> cannot promote them later.</li>
+              <li><strong>Layer 2, call time:</strong> when the model proposes a concrete call, authorize again against current identity, arguments, and dynamic resources. Explicit guardrails run after that decision.</li>
+            </ol>
+            <p>Reusing one provider prevents a split in which a capability is hidden in one layer but callable in another, or the two layers evaluate different policy versions.</p>
+
+            <h2>3. Five pull requests changed five boundaries</h2>
+            <figure class="matrix-figure">
+              <img src="/images/cases/deerflow-guardrail-evolution-en.svg" alt="Five stages in the evolution of DeerFlow guardrails">
+              <figcaption>Figure 2 · The evolution moved from a call boundary to a visibility boundary. Dates follow Git merge history.</figcaption>
+            </figure>
+            <table>
+              <thead><tr><th>Merged</th><th>PR</th><th>Capability added</th><th>Still missing at that point</th></tr></thead>
+              <tbody>
+                <tr><td>2026-03-23</td><td><a href="https://github.com/bytedance/deer-flow/pull/1240" target="_blank" rel="noopener">#1240</a></td><td>Pre-call GuardrailMiddleware and pluggable providers</td><td>Trusted identity, durable audit, resource policy</td></tr>
+                <tr><td>2026-06-21</td><td><a href="https://github.com/bytedance/deer-flow/pull/3665" target="_blank" rel="noopener">#3665</a></td><td>User, role, run, and channel identity in each request</td><td>Independent RBAC and assembly filtering</td></tr>
+                <tr><td>2026-07-03</td><td><a href="https://github.com/bytedance/deer-flow/pull/3837" target="_blank" rel="noopener">#3837</a></td><td>Denials and provider failures in RunJournal</td><td>Consistent journal inheritance across all paths</td></tr>
+                <tr><td>2026-07-21</td><td><a href="https://github.com/bytedance/deer-flow/pull/4260" target="_blank" rel="noopener">#4260</a></td><td>AuthorizationProvider, built-in RBAC, provider factory</td><td>Model-visible tools could still exceed permission</td></tr>
+                <tr><td>2026-07-23</td><td><a href="https://github.com/bytedance/deer-flow/pull/4370" target="_blank" rel="noopener">#4370</a></td><td>Assembly filter and run-time check sharing one provider</td><td>Ask decisions, general post-checks, business compensation</td></tr>
+              </tbody>
+            </table>
+
+            <h2>4. PR #1240: establish a non-bypassable call point</h2>
+            <p>The first version placed authorization in <code>wrap_tool_call</code> and <code>awrap_tool_call</code>. Middleware constructs a GuardrailRequest before execution and delegates the decision to a structural provider. A denial becomes a ToolMessage with a reason code, allowing the agent to adapt. Deployments choose fail-closed or fail-open behavior for provider failures.</p>
+            <pre><code>decision = provider.evaluate(guardrail_request)
+if not decision.allow:
+    return ToolMessage(
+        content="Guardrail denied: ...",
+        status="error",
+        tool_call_id=tool_call_id,
+    )
+return handler(request)</code></pre>
+            <p>Control-flow exceptions such as <code>GraphBubbleUp</code> pass through unchanged. Middleware must not swallow pause and resume signals simply because it occupies the tool boundary.</p>
+
+            <h2>5. PR #3665: identity must come from a trusted injection point</h2>
+            <p>A tool name alone is insufficient for production authorization. The same <code>write_file</code> call may have different permissions for a regular user, an internal workload, and a delegated subagent. The request therefore gained user and role identity, OAuth provenance, run and tool-call IDs, channel identity, and an internal-workload flag.</p>
+            <p>These fields come from gateway and run-time context, not from prompts or model output. The system also keeps the requesting principal distinct from the executing agent, making it possible to answer who requested the action, which agent executed it, and in which run.</p>
+
+            <h2>6. PR #3837: a denial must remain discoverable</h2>
+            <p>Security-relevant decisions enter RunJournal with the tool name, call ID, role, policy ID, reason codes, fail-closed setting, and provider-error flag. Normal allows do not produce a security event for every call, which keeps the stream focused on interventions.</p>
+            <p>The event intentionally omits raw <code>tool_input</code> and user identifiers. Arguments may contain credentials or business data; an audit stream should not create a second exposure surface. Journal persistence is best-effort. A storage failure emits a warning but does not change the authorization result.</p>
+            <p>Current code also records an open boundary: native subagents do not automatically inherit <code>__run_journal</code>. Custom runtimes can supply it, but cross-agent evidence still needs further consolidation.</p>
+
+            <h2>7. PR #4260: separate the policy brain from the enforcement point</h2>
+            <p>GuardrailMiddleware owns the execution point. AuthorizationProvider owns resource decisions. A provider receives a Principal, resource, action, target, and context. Built-in RBAC validates and compiles role policy during construction, leaving deterministic lookups on the request path.</p>
+            <p>Deny wins over allow. Unknown roles, empty targets, and misspelled configuration keys fail. <code>allow: false</code> and an empty allow list both mean deny-all. Only an absent policy for a resource type means unrestricted. Tests, rather than operator intuition, fix these semantics.</p>
+
+            <h2>8. PR #4370: the model should not see tools it can never use</h2>
+            <p>With run-time denial alone, the model still sees unauthorized schemas. It can spend tokens planning a path that must fail, and deferred search may rediscover the tool. Assembly-time filtering makes visibility part of authorization.</p>
+            <p>The change had to cover lead-agent, subagent, and embedded-client construction. Missing one path would give the same role a different capability set depending on its entry point.</p>
+            <p><code>tool_search</code> is a special boundary. It may defer MCP schemas, but the deferred catalog must itself be filtered first. A generated tool_search result can reuse that filtered catalog. An ordinary tool with the same name receives no exemption from run-time authorization.</p>
+
+            <h2>9. “Dynamic configuration” has four meanings</h2>
+            <table>
+              <thead><tr><th>Level</th><th>When it takes effect</th><th>Typical changes</th></tr></thead>
+              <tbody>
+                <tr><td>Configuration</td><td>Process start or explicit reload</td><td>Provider type, role policy, fail-closed</td></tr>
+                <tr><td>Agent build</td><td>New lead agent, subagent, or embedded client</td><td>Tool groups, middleware, provider instance</td></tr>
+                <tr><td>Per request</td><td>Principal and GuardrailRequest construction</td><td>User, role, run, channel, attributes</td></tr>
+                <tr><td>Per call</td><td>Immediately before tool execution</td><td>Arguments, dynamic resources, external policy, risk</td></tr>
+              </tbody>
+            </table>
+            <p>The built-in RBAC provider compiles policy at construction time. Editing an external file does not mutate an existing instance. A hot-update design must explicitly choose reload, agent reconstruction, or a provider that reads dynamic policy, and preserve the policy version in evidence.</p>
+
+            <h2>10. Middleware order determines cost and semantics</h2>
+            <p>Assembly filtering runs before the model sees schemas. At call time, the AuthorizationAdapter is the outer authorization check and explicit guardrails provide inner business or external-policy checks. The tool and sandbox follow. Cheap, stable checks with a high rejection rate belong early; remote or argument-heavy checks belong later.</p>
+            <p>A sandbox isolates processes and resources. Authorization answers whether this principal may call a capability. A guardrail asks whether this invocation satisfies additional constraints. The three controls are complementary.</p>
+
+            <h2>11. Mapping the implementation to ADPS patterns</h2>
+            <table>
+              <thead><tr><th>Pattern</th><th>DeerFlow implementation</th><th>Boundary</th></tr></thead>
+              <tbody>
+                <tr><td><a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set</a></td><td>Assembly removes invisible tools; Skills and tool groups narrow candidates further</td><td>Task relevance remains a separate declaration and activation concern</td></tr>
+                <tr><td><a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a></td><td>The model selects only within the admitted set</td><td>Does not define routing quality or ranking</td></tr>
+                <tr><td><a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a></td><td>A strong PRE interception path</td><td>No general POST business verification or compensation</td></tr>
+                <tr><td><a href="/patterns/g1-approval-gate/">G1 Approval Gate</a></td><td>Allow/deny decisions with structured reasons</td><td>Ask, durable intent, and resume-time revalidation remain separate work</td></tr>
+                <tr><td><a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a></td><td>Least visibility, sandboxing, and fail-closed behavior</td><td>Business quotas, scope, rate limits, and circuit breakers are deployment policy</td></tr>
+                <tr><td><a href="/patterns/g4-observability-harness/">G4 Observability</a></td><td>Denials and provider failures enter RunJournal</td><td>Unified evidence across subagents remains incomplete</td></tr>
+                <tr><td><a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline</a></td><td>A shared middleware point with short-circuit semantics</td><td>The feature does not by itself provide a complete pre/post hook pipeline</td></tr>
+              </tbody>
+            </table>
+
+            <h2>12. Boundaries the test suite should hold</h2>
+            <ul>
+              <li>Authorization disabled preserves tool order and identity.</li>
+              <li>Deny overrides allow; an empty allow list cannot mean “unset.”</li>
+              <li>Unknown roles, empty targets, and invalid policy keys fail closed.</li>
+              <li>Lead agent, subagent, and embedded client receive consistent filtering.</li>
+              <li>Layer 1 and Layer 2 reuse one provider instance.</li>
+              <li>The deferred catalog is filtered before tool_search can promote schemas.</li>
+              <li>Provider failures cover both fail-open and fail-closed behavior.</li>
+              <li>Pause, resume, and GraphBubbleUp signals pass through middleware.</li>
+              <li>Denial events carry policy IDs and reason codes without raw sensitive arguments.</li>
+              <li>Journal persistence failure does not change the decision.</li>
+            </ul>
+
+            <h2>13. Work that remains outside this implementation</h2>
+            <p>The public implementation provides a substantial PRE authorization path, but it does not solve all production governance. High-risk actions still need POST business verification, idempotency keys, external receipts, and compensation. Human decisions require an ask state, approval expiry, resume-time state checks, and single consumption. Policy hot updates need versioning, atomic cutover, and rollback.</p>
+            <p>The case therefore shows more than a deny list. A production guardrail is an engineering path from capability assembly and trusted identity through policy decisions and execution interception to durable evidence.</p>
+
+            <h2>Public sources</h2>
+            <ul>
+              <li><a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener">DeerFlow public repository</a></li>
+              <li><a href="https://github.com/bytedance/deer-flow/blob/main/backend/docs/GUARDRAILS.md" target="_blank" rel="noopener">Guardrails: Pre-Tool-Call Authorization</a></li>
+              <li><a href="https://github.com/bytedance/deer-flow/issues/4063" target="_blank" rel="noopener">Issue #4063 · Pluggable Authorization</a></li>
+              <li><a href="https://github.com/bytedance/deer-flow/pull/1240" target="_blank" rel="noopener">PR #1240</a> · <a href="https://github.com/bytedance/deer-flow/pull/3665" target="_blank" rel="noopener">#3665</a> · <a href="https://github.com/bytedance/deer-flow/pull/3837" target="_blank" rel="noopener">#3837</a> · <a href="https://github.com/bytedance/deer-flow/pull/4260" target="_blank" rel="noopener">#4260</a> · <a href="https://github.com/bytedance/deer-flow/pull/4370" target="_blank" rel="noopener">#4370</a></li>
+            </ul>
+
+            <div class="document-citation">
+              <p><strong>Scope:</strong> ADPS independently prepared this case from DeerFlow's public code, pull requests, and documentation. It is not an official DeerFlow design document.</p>
+              <p>DeerFlow source code is available under the MIT License. This article and its diagrams are released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a>.</p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

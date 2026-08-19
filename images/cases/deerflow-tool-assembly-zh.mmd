@@ -1,0 +1,22 @@
+flowchart TB
+  C["全局候选工具<br/>内置 · 配置 · MCP · ACP"] --> A["Agent 能力边界<br/>tool_groups · channel · bootstrap<br/>subagent allow / deny"]
+  A --> S["当前任务语境<br/>已激活 Skill · allowed-tools"]
+  S --> Z{"装配时授权<br/>filter_resources"}
+  Z -- "无权可见" --> H["从 schema 与 deferred catalog 移除"]
+  Z -- "允许可见" --> V["模型可见工具集"]
+  V --> T["模型提出工具调用"]
+  T --> R{"运行时授权<br/>同一 AuthorizationProvider"}
+  R -- "拒绝" --> E["结构化拒绝与安全事件"]
+  R -- "允许" --> G{"显式 Guardrail<br/>参数 · 风险 · 外部策略"}
+  G -- "拒绝" --> E
+  G -- "允许" --> X["工具 / Sandbox 执行"]
+  X --> J["结果 · RunJournal · Trace"]
+
+  N["最终能力集 = 候选能力 ∩ Agent 声明 ∩ 当前 Skill ∩ 主体权限"] -.-> Z
+
+  classDef scope fill:#eef4f8,stroke:#315b73,color:#132433;
+  classDef decision fill:#fff7e8,stroke:#b7791f,color:#3b2a12;
+  classDef evidence fill:#f3f4f6,stroke:#4b5563,color:#111827;
+  class C,A,S,V,T,X scope;
+  class Z,R,G decision;
+  class H,E,J,N evidence;

@@ -1,0 +1,12 @@
+flowchart LR
+  P1["#1240 · 03-23<br/>调用前授权<br/>可插拔 Provider"] --> P2["#3665 · 06-21<br/>可信身份进入<br/>GuardrailRequest"] --> P3["#3837 · 07-03<br/>拒绝与异常进入<br/>RunJournal"] --> P4["#4260 · 07-21<br/>授权策略独立<br/>内置 RBAC"] --> P5["#4370 · 07-23<br/>装配过滤 + 运行授权<br/>共享同一策略实例"]
+  B1["工具调用边界"] -.-> P1
+  B2["主体边界"] -.-> P2
+  B3["证据边界"] -.-> P3
+  B4["策略边界"] -.-> P4
+  B5["可见性边界"] -.-> P5
+
+  classDef pr fill:#eef4f8,stroke:#315b73,color:#132433;
+  classDef boundary fill:#fff7e8,stroke:#b7791f,color:#3b2a12;
+  class P1,P2,P3,P4,P5 pr;
+  class B1,B2,B3,B4,B5 boundary;

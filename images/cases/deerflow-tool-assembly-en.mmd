@@ -1,0 +1,22 @@
+flowchart TB
+  C["Global candidates<br/>built-ins · config · MCP · ACP"] --> A["Agent capability boundary<br/>tool_groups · channel · bootstrap<br/>subagent allow / deny"]
+  A --> S["Current task context<br/>active Skill · allowed-tools"]
+  S --> Z{"Assembly-time authorization<br/>filter_resources"}
+  Z -- "not visible" --> H["Remove from schemas and deferred catalog"]
+  Z -- "visible" --> V["Tools visible to the model"]
+  V --> T["Model proposes a tool call"]
+  T --> R{"Run-time authorization<br/>same AuthorizationProvider"}
+  R -- "deny" --> E["Structured denial and security event"]
+  R -- "allow" --> G{"Explicit guardrail<br/>arguments · risk · external policy"}
+  G -- "deny" --> E
+  G -- "allow" --> X["Tool / sandbox execution"]
+  X --> J["Result · RunJournal · trace"]
+
+  N["Effective capability = candidates ∩ agent declaration ∩ active Skill ∩ principal permission"] -.-> Z
+
+  classDef scope fill:#eef4f8,stroke:#315b73,color:#132433;
+  classDef decision fill:#fff7e8,stroke:#b7791f,color:#3b2a12;
+  classDef evidence fill:#f3f4f6,stroke:#4b5563,color:#111827;
+  class C,A,S,V,T,X scope;
+  class Z,R,G decision;
+  class H,E,J,N evidence;

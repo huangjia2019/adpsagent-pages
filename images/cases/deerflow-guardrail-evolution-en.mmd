@@ -1,0 +1,12 @@
+flowchart LR
+  P1["#1240 · Mar 23<br/>Pre-call authorization<br/>pluggable provider"] --> P2["#3665 · Jun 21<br/>Trusted identity enters<br/>GuardrailRequest"] --> P3["#3837 · Jul 3<br/>Denials and failures enter<br/>RunJournal"] --> P4["#4260 · Jul 21<br/>Separate policy layer<br/>built-in RBAC"] --> P5["#4370 · Jul 23<br/>Assembly filter + run-time check<br/>one provider instance"]
+  B1["Call boundary"] -.-> P1
+  B2["Principal boundary"] -.-> P2
+  B3["Evidence boundary"] -.-> P3
+  B4["Policy boundary"] -.-> P4
+  B5["Visibility boundary"] -.-> P5
+
+  classDef pr fill:#eef4f8,stroke:#315b73,color:#132433;
+  classDef boundary fill:#fff7e8,stroke:#b7791f,color:#3b2a12;
+  class P1,P2,P3,P4,P5 pr;
+  class B1,B2,B3,B4,B5 boundary;
