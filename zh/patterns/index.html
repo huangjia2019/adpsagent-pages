@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent 设计模式白皮书 · 模式目录与选型框架 · ADPS</title>
-    <meta name="description" content="ADPS Agent 设计模式白皮书：28 个核心模式、5 个扩展模式和 1 个候选模式。">
+    <meta name="description" content="ADPS Agent 设计模式白皮书 v0.4：27 个矩阵模式、G4 横切核心、5 个扩展模式和 1 个候选模式。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -92,10 +92,11 @@
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
@@ -105,6 +106,7 @@
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
               <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -141,12 +143,12 @@
 <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>模式目录与选型框架</h1>
-                <p class="publication-deck">认知功能 × 执行拓扑 · 28 个核心模式、5 个扩展模式、1 个候选模式。</p>
+                <p class="publication-deck">认知功能 × 执行拓扑 · 27 个矩阵模式 + G4 横切核心 · 5 个扩展模式、1 个候选模式。</p>
             </header>
 
             <h2>摘要</h2>
             <p>Agent 正在从“会回答问题的模型”进入“能参与业务流程的系统”。这个变化把工程重点推向上下文、证据、状态、工具、权限、协作和审计，prompt 表达只是其中一环。</p>
-            <p>ADPS（Agent 设计模式共同体）把这些可复用经验组织成一套可讨论、可组合、可验证的设计模式语言。v0.3 收录 <strong>28 个核心模式、5 个扩展模式和 1 个候选模式，共 34 份模式规范</strong>，覆盖感知、记忆、推理、行动、反思、协作、治理七类认知功能，并以链式、路由、并行、编排、循环、层级六种执行拓扑解释控制与数据如何流动。</p>
+            <p>ADPS（Agent 设计模式共同体）把这些工程经验整理为一套可以组合和评审的模式语言。v0.4 收录 <strong>27 个矩阵模式、1 个横切核心规范、5 个扩展模式和 1 个候选模式，共 34 份模式规范</strong>。双轴框架仍是主结构；横切工程面与生命周期补充双轴难以单独表达的系统责任。</p>
             <p>本白皮书为 Agent 架构评审提供五项检查：</p>
             <ol>
             <li>这个 Agent 需要哪些认知功能？</li>
@@ -155,27 +157,30 @@
             <li>哪些信息属于证据，哪些属于机械状态，哪些属于控制信号？</li>
             <li>系统上线以后，怎么追踪、审计、回滚和持续改进？</li>
             </ol>
-            <h2>文档状态与证据边界</h2>
-            <p>本白皮书是一份公开评审稿，主要价值在于统一命名、分类依据、适用条件、已知失效方式与验证指标。它可以作为方案讨论和架构评审的共同语言，不构成产品认证、安全保证或特定行业的合规意见。</p>
-            <p>文中有三类材料，需要分开理解：</p>
-            <ol>
-            <li><strong>模式规范</strong>描述可复用的工程结构，提出可被实现和验证的约束。</li>
-            <li><strong>场景化示例</strong>用于解释机制，不代表已经核验的企业案例；ADPS 欢迎业界补充带来源、测量口径和发布授权的实践。</li>
-            <li><strong>企业蓝皮书</strong>记录具名团队的实践观察，同时声明案例边界，不把单一案例外推为普遍结论。</li>
-            </ol>
-            <p>核心模式进入稳定目录，意味着其问题、结构和适用边界已经能够独立表达；扩展模式提供更细的工程抓手；候选模式仍在收集跨项目证据。三者的地位不同，页面和引用时应保留该标签。</p>
             <h2>范围与使用方式</h2>
             <p>本白皮书面向 Agent 系统设计，范围包括上下文、证据、状态、工具、权限、协作、评估和审计机制。提示词是其中一个实现环节；底层模型、业务流程与组织责任由具体系统定义。</p>
             <ol>
             <li><strong>新项目选型</strong>：先界定业务目标和失败代价，再用六步选型法收束到 3 至 7 个模式。</li>
             <li><strong>架构评审</strong>：检查每个模式的输入输出契约、状态边界、治理边界和验证指标。</li>
-            <li><strong>生产复盘</strong>：沿 Context、Evidence、Decision、Action、Trace 五类契约定位失效发生在哪一层。</li>
+            <li><strong>生产复盘</strong>：沿 Context、Evidence、Decision、Action、Authority、Trace 六类契约定位失效发生在哪一层。</li>
             <li><strong>案例迁移</strong>：先核对适用条件和不可迁移部分，再借用蓝皮书中的实现结构，不按模式名称照抄。</li>
             </ol>
             <h2>为什么 Agent 需要新的设计模式</h2>
             <p>GoF 设计模式处理的是对象协作。分布式系统模式处理的是服务、网络、存储和故障。Agent 系统多了一类新主体：模型会在不完全信息下做判断，还会调用工具影响外部世界。</p>
             <p>传统软件的控制流主要由代码决定。Agent 系统里，部分控制流会经过模型判断。用户说一句话，模型要判断它是闲聊、查询、分析、执行，还是需要人审。工具返回一段结果，模型要判断证据够不够。长任务跑到中途，模型要判断继续、回滚、重取证，还是停下来请人。</p>
             <p>这些判断需要映射到可执行的工程结构，包括路由、状态、证据、权限、日志、回滚和评估。</p>
+            <h2>从一项业务变更开始</h2>
+            <p>考虑一个薪酬 Agent 请求：“把员工 E-1842 的月度交通津贴从 800 元调整为 1000 元，下月生效。”这句话不应直接变成一次工具调用。先把它切成一个<strong>最小可控闭环</strong>：一项能够独立判断、审批、执行、验收和补偿的业务变更。</p>
+            <table>
+            <thead><tr><th>阶段</th><th>工程问题</th><th>最小产物</th><th>参与模式</th></tr></thead>
+            <tbody>
+            <tr><td>目标</td><td>改谁、改什么、何时生效；哪些事情不在本次范围</td><td>Goal Contract</td><td>P1 上下文分诊</td></tr>
+            <tr><td>取证</td><td>当前值和政策依据分别来自哪里</td><td>机械状态 + 带版本证据</td><td>M2 RAG / 结构化查询</td></tr>
+            <tr><td>计划</td><td>读取、校验、准备、审批、提交、写后读取怎样衔接</td><td>PlanStep + 完成条件</td><td>A2 规划执行</td></tr>
+            <tr><td>承诺</td><td>谁批准哪一个工具、哪组参数和哪项资源</td><td>Intent + Approval</td><td>G1 审批门、G2 爆炸半径</td></tr>
+            <tr><td>验收</td><td>凭什么宣布完成，失败后停在哪里</td><td>回执 + 状态差异 + trace</td><td>G4 可观测性</td></tr>
+            </tbody></table>
+            <p>粒度的判断也落在这五项上。只要判断、审批、执行、验收或补偿需要不同主体或规则，就继续拆分；五项能够独立闭合时，任务单元已经足够小。企业建模界定业务对象、规则与责任，Agent 设计把一次业务变化编译成受控的运行路径。</p>
             <h2>双轴框架</h2>
             <p>ADPS 用两条轴组织 Agent 模式。</p>
             <p>纵轴是 <strong>认知功能</strong>，回答 Agent 在做什么。</p>
@@ -243,11 +248,6 @@
             <td style="text-align: left;">多路同时展开，用成本换质量或时长</td>
             </tr>
             <tr>
-            <td style="text-align: left;">Orchestrate 编排</td>
-            <td style="text-align: left;">协</td>
-            <td style="text-align: left;">中心协调者维护全局目标、任务账和汇总</td>
-            </tr>
-            <tr>
             <td style="text-align: left;">Loop 循环</td>
             <td style="text-align: left;">转</td>
             <td style="text-align: left;">生成、观察、修正、再生成，直到收敛或熔断</td>
@@ -257,10 +257,19 @@
             <td style="text-align: left;">分</td>
             <td style="text-align: left;">多层职责、权限、记忆或防护边界</td>
             </tr>
+            <tr>
+            <td style="text-align: left;">Orchestrate 编排</td>
+            <td style="text-align: left;">协</td>
+            <td style="text-align: left;">中心协调者维护全局目标、任务账和汇总</td>
+            </tr>
             </tbody>
             </table>
             <p>两条轴合起来，能把模糊的“我们做了一个 Agent 工作流”翻译成可评审的工程语言。比如“记忆 × 编排”的进度追踪，和“推理 × 路由”的复杂度路由，听起来都在做决策，但工程边界完全不同。</p>
-            <h2>ADPS 核心模式矩阵 v0.3</h2>
+            <h2>ADPS 核心模式矩阵 v0.4</h2>
+            <figure class="matrix-figure">
+                <img src="/images/matrix-v04-zh-20260819.png" alt="ADPS v0.4：27 个矩阵模式与 G4 可观测性横切核心">
+                <figcaption>双轴矩阵保留 27 个占格模式；G4 可观测性贯穿全部认知功能、执行拓扑与生命周期。</figcaption>
+            </figure>
             <table>
             <thead>
             <tr>
@@ -268,9 +277,9 @@
             <th style="text-align: left;">Chain 链式</th>
             <th style="text-align: left;">Route 路由</th>
             <th style="text-align: left;">Parallel 并行</th>
-            <th style="text-align: left;">Orchestrate 编排</th>
             <th style="text-align: left;">Loop 循环</th>
             <th style="text-align: left;">Hierarchy 层级</th>
+            <th style="text-align: left;">Orchestrate 编排</th>
             </tr>
             </thead>
             <tbody>
@@ -279,8 +288,8 @@
             <td style="text-align: left;">P2 语义压缩</td>
             <td style="text-align: left;">P1 上下文分诊</td>
             <td style="text-align: left;">P4 多模态融合</td>
-            <td style="text-align: left;"></td>
             <td style="text-align: left;">P3 渐进发现</td>
+            <td style="text-align: left;"></td>
             <td style="text-align: left;"></td>
             </tr>
             <tr>
@@ -288,17 +297,17 @@
             <td style="text-align: left;">M2 RAG</td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;"></td>
-            <td style="text-align: left;">M3 进度追踪</td>
             <td style="text-align: left;">M4 失败日记</td>
             <td style="text-align: left;">M1 分层保留</td>
+            <td style="text-align: left;">M3 进度追踪</td>
             </tr>
             <tr>
             <td style="text-align: left;">推理</td>
             <td style="text-align: left;">R1 思维链</td>
             <td style="text-align: left;">R2 复杂度路由</td>
             <td style="text-align: left;">R3 并行探索</td>
-            <td style="text-align: left;"></td>
             <td style="text-align: left;">R4 迭代假设验证</td>
+            <td style="text-align: left;"></td>
             <td style="text-align: left;"></td>
             </tr>
             <tr>
@@ -306,40 +315,40 @@
             <td style="text-align: left;">A3 提示链</td>
             <td style="text-align: left;">A1 工具调度</td>
             <td style="text-align: left;"></td>
-            <td style="text-align: left;">A2 规划执行</td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;">A4 护栏三明治</td>
+            <td style="text-align: left;">A2 规划执行</td>
             </tr>
             <tr>
             <td style="text-align: left;">反思</td>
             <td style="text-align: left;">F1 生成评审</td>
             <td style="text-align: left;">F2 技能包</td>
             <td style="text-align: left;"></td>
-            <td style="text-align: left;"></td>
             <td style="text-align: left;">F4 自愈循环</td>
             <td style="text-align: left;">F3 经验回放</td>
+            <td style="text-align: left;"></td>
             </tr>
             <tr>
             <td style="text-align: left;">协作</td>
             <td style="text-align: left;">C4 交接链</td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;">C2 扇出聚合</td>
-            <td style="text-align: left;"></td>
             <td style="text-align: left;">C3 对抗评审</td>
             <td style="text-align: left;">C1 层级委派</td>
+            <td style="text-align: left;"></td>
             </tr>
             <tr>
             <td style="text-align: left;">治理</td>
             <td style="text-align: left;">G3 渐进承诺</td>
             <td style="text-align: left;">G1 审批门</td>
             <td style="text-align: left;"></td>
-            <td style="text-align: left;">G4 可观测性</td>
             <td style="text-align: left;"></td>
             <td style="text-align: left;">G2 爆炸半径控制</td>
+            <td style="text-align: left;"></td>
             </tr>
             </tbody>
             </table>
-            <p>矩阵只列 28 个核心模式，不追求填满每个格子。空格同样有信息价值：它表示该交点尚未形成足够稳定的一阶结构，或现有模式已经能够解释主要问题。</p>
+            <p>矩阵只列 27 个占格模式，不追求填满每个格子。空格表示该交点尚未形成足够稳定的一阶结构，或现有模式已经能够解释主要问题。</p>
             <p>M2 RAG 在公开矩阵中只占链式单格。查询、评估、改写和再查询是它的迭代实现，不再占用循环格；一个模式在矩阵中只保留一个主坐标。</p>
             <h3>扩展与候选目录</h3>
             <table>
@@ -390,14 +399,32 @@
             </tr>
             </tbody>
             </table>
-            <h2>五个工程契约</h2>
-            <p>v0.3 建议所有生产级 Agent 都显式设计五个契约。</p>
+            <h2>横切工程面</h2>
+            <p>双轴给模式定位，横切工程面为所有模式提供共同基础。它们不增加矩阵列，也不削弱双轴。</p>
+            <table>
+            <thead><tr><th>工程面</th><th>覆盖范围</th><th>关键产物</th></tr></thead>
+            <tbody>
+            <tr><td><a href="/zh/patterns/g4-observability-harness/"><strong>观测与证据</strong></a></td><td>全部认知功能、执行拓扑与生命周期阶段</td><td>事件、因果关系、版本、状态差异、外部回执</td></tr>
+            <tr><td><a href="/zh/topics/agent-evals-and-testing/"><strong>Evals 与测试</strong></a></td><td>规格、模型、工具、Skill、策略与组合系统</td><td>样本、评分器、回归、业务验收、发布门</td></tr>
+            <tr><td><strong>身份、策略与安全</strong></td><td>用户、Agent、workload、run、委托链与资源</td><td>身份、allow / deny / ask、限额、短时凭证</td></tr>
+            <tr><td><strong>人机交互</strong></td><td>澄清、审批、暂停、接管、恢复与解释</td><td>结构化事件、审批上下文、恢复坐标</td></tr>
+            </tbody></table>
+            <p>Loop 仍是执行拓扑。ReAct 等循环运行方式通过 Loop 表达，并由上述工程面提供证据、评测、权限和人机控制。</p>
+
+            <h2>Agent 生命周期</h2>
+            <p><img src="/images/patterns/agent-governance-lifecycle-zh.svg" alt="Agent 从登记、设计、评测、灰度、运行到降级和退役的生命周期"></p>
+            <p>模式描述局部结构，生命周期处理这些结构何时进入生产、怎样改变、何时收回。登记保存所有者和版本；设计与装配确定工具和策略；离线评测建立发布证据；影子与灰度观察真实分布；受控运行连接审批、限界与执行；观测和归因连接外部结果；修改后重新评测；能力最终晋级、维持、降级、冻结或退役。</p>
+            <p>前文的津贴变更会沿这条路径重复出现：初版先影子对照，常规请求进入受限运行，异常进入回归集；政策或工具换版后重新验证，权限证据不足时自动收紧。<a href="/zh/patterns/governance/#payroll-lifecycle">治理模块总纲给出完整运行记录</a>。</p>
+
+            <h2>六个工程契约</h2>
+            <p>生产级 Agent 应显式设计六个契约。</p>
             <p><strong>Context Contract。</strong> 说明哪些信息进入当前上下文、哪些只挂句柄、哪些必须延迟检索、哪些必须丢弃。它对应感知模块。</p>
             <p><strong>Evidence Contract。</strong> 说明一条证据必须包含 source、version、scope、citation、provenance 和 trace。它对应记忆模块，尤其是 RAG。</p>
             <p><strong>Decision Contract。</strong> 说明模型输出怎样变成结构化 RouteDecision、ReasoningDecision 或 PlanDecision。它对应推理模块。</p>
-            <p><strong>Action Contract。</strong> 说明工具元数据、参数来源、权限、审批、人审和回滚规则。它对应行动与治理模块。</p>
-            <p><strong>Trace Contract。</strong> 说明每个 LLM call、tool call、handoff、guardrail、approval、state update 怎样被统一串到同一个 trace id 里。它对应治理模块。</p>
-            <p>这五个契约用于对齐模型判断与工程状态，也是生产稳定性的主要控制面。</p>
+            <p><strong>Action Contract。</strong> 说明工具版本、参数来源、幂等、补偿和外部验收。它对应行动模块。</p>
+            <p><strong>Authority Contract。</strong> 说明主体、委托、资源范围、策略版本、审批和有效期。它对应治理模块。</p>
+            <p><strong>Trace Contract。</strong> 说明每个 LLM call、tool call、handoff、guardrail、approval、state update 怎样进入同一条因果链。它对应 G4 横切核心。</p>
+            <p>六个契约共同连接模型判断、工程状态与组织责任。</p>
             <h2>感知模块 Perception</h2>
             <p>感知模块决定 Agent 看到什么。这里的“看见”覆盖所有进入模型上下文的材料：用户话术、代码片段、日志、PDF、表格、数据库结果、历史消息和工具返回。</p>
             <p>感知模块的目标，是把嘈杂、超长、异构的信息变成当前任务可用的表示。</p>
@@ -560,37 +587,38 @@
             <p><strong>坐标：协作 × 事件驱动拓扑。</strong><br>
             <strong>适用问题：</strong> 跨团队、跨系统的参与者无法由一个中心 Orchestrator 长期掌控的问题。每个参与者订阅事件、依据本地策略行动，再发布事实事件推动全局流程演进。</p>
             <p><strong>工程要点：</strong> 事件要有 schema、版本、幂等键、因果标识、超时补偿和责任主体；必须能回答谁发布了事实、谁拥有下一步、流程何时算结束。编舞适合自治边界明确的网络，不适合尚未稳定的单体工作流。</p>
-            <p><strong>常见失效：</strong> 把“没有中心”误解为“没有控制”。缺少事件契约、状态可见性和补偿语义时，编舞会把局部自治变成全局失序。由于公开案例仍有限，C6 在 v0.3 保持候选地位。</p>
+            <p><strong>常见失效：</strong> 把“没有中心”误解为“没有控制”。缺少事件契约、状态可见性和补偿语义时，编舞会把局部自治变成全局失序。由于公开案例仍有限，C6 在 v0.4 保持候选地位。</p>
             <h2>治理模块 Governance</h2>
-            <p>治理模块让 Agent 的能力进入企业边界。它处理审批、权限、爆炸半径、渐进承诺和可观测性。</p>
-            <p>治理控制贯穿感知、记忆、推理、行动、反思和协作，不在上线前临时追加。</p>
+            <p>治理模块判断当前意图是否获准，限制控制失效后的最大影响，并管理一项能力经过多次运行后可以获得的权限。<a href="/zh/patterns/governance/">治理模块总纲</a>说明它与横切工程面和 Agent 生命周期的关系。</p>
             <h3><a href="/zh/patterns/g1-approval-gate/">G1 · Approval Gate · 审批门</a></h3>
             <p><strong>坐标：治理 × 路由。</strong><br>
-            <strong>适用问题：</strong> 高风险动作该不该由人确认的问题。系统按 reversibility、impact、confidence、policy 和 user authority，把动作路由到 allow、allow_with_log、ask_human、mandatory_review 或 deny。</p>
-            <p><strong>工程要点：</strong> 审批在动作执行前完成，结果写入 audit log；未批准的动作不得执行。</p>
-            <p><strong>常见失效：</strong> 只按 tool name 判断风险。金额、生产环境、目标租户和数据范围等参数也需要进入风险分类。</p>
+            <strong>适用问题：</strong> 当前高风险意图应当拒绝、直接执行还是等待人审。审批对象是不可变工具版本、规范化参数、资源范围、委托身份和业务前置条件。</p>
+            <p><strong>工程要点：</strong> Intent、Approval 与 Execution 分开保存。恢复执行时复验摘要和前置条件；批准有有效期，只能消费一次。</p>
+            <p><strong>常见失效：</strong> 只审批工具名或自然语言摘要，等待期间参数和业务状态已经变化，恢复后仍沿用旧批准。</p>
             <h3><a href="/zh/patterns/g2-blast-radius-control/">G2 · Blast Radius Control · 爆炸半径控制</a></h3>
             <p><strong>坐标：治理 × 层级。</strong><br>
-            <strong>适用问题：</strong> 失败一定会发生时，损失能不能被锁在可恢复范围内的问题。</p>
-            <p><strong>工程要点：</strong> 用 sandbox、capability、quota、scope、rate limit、dry run、rollback 和 external audit store 形成嵌套围堵。越高风险，隔离层越要物理化。</p>
-            <p><strong>常见失效：</strong> 多层防护共享同一个进程、同一份凭证或同一块可写日志。看起来很多层，实际一层被攻破全线穿透。</p>
+            <strong>适用问题：</strong> 审批、模型或工具出错以后，一次动作、一个 run、一个租户和一组 Agent 最多能影响多少。</p>
+            <p><strong>工程要点：</strong> Hard Envelope 固定资源、金额、批量、速率、预算和租户边界；Autonomy Envelope 随能力证据调整自动执行范围。硬边界不接受 Agent 自评改写。</p>
+            <p><strong>常见失效：</strong> 只限制单次调用，忽略重试、并行 Worker 与编舞事件的累计影响。</p>
             <h3><a href="/zh/patterns/g3-progressive-commitment/">G3 · Progressive Commitment · 渐进承诺</a></h3>
             <p><strong>坐标：治理 × 链式。</strong><br>
-            <strong>适用问题：</strong>  Agent 权限如何随可靠性逐步释放的问题。系统在高风险动作前并行跑 dry-run、path validation、budget check、impact estimate 等低风险 probe，跨 session 再根据成功率和事故记录晋升档位。</p>
-            <p><strong>工程要点：</strong> 权限档位要清楚，从 observer、suggester、limited doer、trusted doer 到 autonomous，每档晋升要有时间、成功率和审批条件。严重事故要立即降级。</p>
-            <p><strong>常见失效：</strong> 把信任当成一次性开关。Agent 的自治权应该挣来，也应该能被拿回。</p>
+            <strong>适用问题：</strong> 一项能力如何随证据获得、维持或失去自治权。</p>
+            <p><strong>工程要点：</strong> 权限键为 Agent 版本 × 能力 × 场景 × 资源 × 环境。决策包括 promote、hold、narrow、demote、freeze 与 retire；查询、校验、写入和发布可以处于不同档位。</p>
+            <p><strong>常见失效：</strong> 给整个 Agent 一个永久等级，换模型、工具、策略或责任人后继续继承旧权限。</p>
             <h3><a href="/zh/patterns/g5-hooks-pipeline/">G5 · Hooks Pipeline · 钩子管线（扩展）</a></h3>
-            <p><strong>坐标：治理 × 链式。</strong><br>
-            <strong>适用问题：</strong> 关键控制只写在 prompt 或散落在业务代码里，导致策略无法稳定执行的问题。系统在模型调用、工具调用、状态更新和交接的生命周期节点上设置确定性 hook，依次完成校验、策略判定、审计记录和后处理。</p>
-            <p><strong>工程要点：</strong> hook 要声明阶段、顺序、输入输出、失败策略、超时和幂等性。安全校验默认 fail closed，观测型 hook 可以按风险选择降级；每次触发都进入统一 trace。</p>
-            <p><strong>常见失效：</strong> 把 hook 当成任意插件总线。未约束顺序和副作用的 hook 会形成隐蔽控制流，排障难度甚至高于原来的显式代码。</p>
+            <p><strong>地位：扩展模式 · 确定性执行机制。</strong><br>
+            <strong>适用问题：</strong> 权限、参数、配额、格式和审计规则需要在不可绕过的生命周期节点稳定执行。</p>
+            <p><strong>工程要点：</strong> 策略来源、裁决服务、hook 执行位置和证据记录分层。装配时过滤缩小模型可见工具；调用时再按身份、参数、资源、环境与配额复核。</p>
+            <p><strong>常见失效：</strong> 把策略、裁决、执行和日志写在一个 handler 中，或只做装配过滤而允许重试与恢复绕过运行时检查。</p>
+            <p><a href="/zh/cases/deerflow-guardrail/">DeerFlow Guardrail 代码与架构演进</a>展示了双层授权的公开实现路径。</p>
+            <h2>横切核心 Cross-cutting Core</h2>
             <h3><a href="/zh/patterns/g4-observability-harness/">G4 · Observability Harness · 可观测性</a></h3>
-            <p><strong>坐标：治理 × 编排。</strong><br>
-            <strong>适用问题：</strong> Agent 运行过程能否被查询、关联和回放。</p>
-            <p><strong>工程要点：</strong> 每个 LLM call、tool call、handoff、approval、guardrail、state update 都要进入同一条 trace。trace 要能支持调试、审计、回放、评估和回归。</p>
-            <p><strong>常见失效：</strong> 只记录最终答案。Agent 故障可能表现为持续漂移；缺少 trace 时，无法区分证据、路由、推理、行动或模型版本问题。</p>
+            <p><strong>地位：横切核心 · 观测与证据平面。</strong><br>
+            <strong>适用问题：</strong> 工程团队能否从输入来源、版本、决策、工具、状态差异和外部回执还原一次运行，并把运行事实交给 Evals、反思和治理。</p>
+            <p><strong>工程要点：</strong> 统一事件合同，保留 run、step、parent、principal、component version、policy version、state delta 和 receipt。观测事实与评测结论分开存储。</p>
+            <p><strong>常见失效：</strong> 只有日志文本和 token 指标，没有业务目标、因果关系、外部结果或版本，因此无法判断一次修改是否真的改善系统。</p>
             <h2>组合工具 Composition</h2>
-            <p>34 份模式规范解决局部结构，组合工具解决“选哪些、怎么组、怎么落地”。</p>
+            <p>34 份模式规范描述局部结构，组合工具帮助团队确定选型、组合与落地顺序。</p>
             <h3>X1 · Pattern Selection Card · 模式选型卡</h3>
             <p>这是一张 60 秒决策卡。它把业务画像翻译成模式候选集。</p>
             <p>核心流程：</p>
@@ -634,7 +662,7 @@
             建议组合：P3 渐进发现 + M2 RAG + R3 并行探索 + C1 层级委派 + C2 扇出聚合 + C3 对抗评审 + G4 可观测性。<br>
             边界提醒：多 Agent 的收益来自任务规模、角色边界和独立审查，不来自“看起来更先进”。</p>
             <h2>扩展模式的收录原则</h2>
-            <p>扩展模式用于描述更具体的运行时边界，也可能被上位模式组合。v0.3 将五个结构列为独立扩展，供团队分别评审工具暴露面、角色隔离、确定性 hook、程序性资产和快慢推理分工。</p>
+            <p>扩展模式描述更具体的运行时边界，也可能被上位模式组合。v0.4 保留五个独立扩展，供团队分别评审工具暴露面、角色隔离、确定性 hook、程序性资产和快慢推理分工。</p>
             <p>一个扩展模式要晋升为核心模式，至少需要满足五项条件：</p>
             <ol>
             <li>能独立描述一个反复出现、代价清楚的工程问题。</li>
@@ -643,7 +671,7 @@
             <li>与相邻模式存在清楚边界，不能只靠改名区分。</li>
             <li>有多个独立实现或公开案例支持其可迁移性。</li>
             </ol>
-            <p>C6 编舞已经满足前三项，但公开的 Agent 工程案例还不足以确认它应成为第七种基础拓扑，还是协作模块中的组合结构。因此 v0.3 给出规范草案，同时保留“候选”标签。</p>
+            <p>C6 编舞已经满足前三项，但公开的 Agent 工程案例还不足以确认它应成为第七种基础拓扑，还是协作模块中的组合结构。因此 v0.4 保留规范草案和“候选”标签。</p>
             <h2>验证与评审方法</h2>
             <p>模式是否有效，不以“用了某框架”或“模型成功跑过一次”为判断依据。建议围绕四层证据做评审：</p>
             <ol>
@@ -654,6 +682,8 @@
             </ol>
             <p>蓝皮书可以提供后三类证据的案例样本；单一企业案例仍不能替代目标系统自己的回归测试、风险评估和合规审查。</p>
             <h2>研讨会记录</h2>
+            <p><strong><a href="/zh/workshops/governance-2026-08-18/">治理模块第一次研讨会</a> · 2026-08-18</strong></p>
+            <p>议题包括危险工具调用、Agent 群体与生命周期，覆盖沙箱和业务授权、装配时过滤与运行时复核、持久化 Intent、能力级放权、Agent 注册表、证据归因，以及观测、Evals、反思和治理之间的变更闭环。</p>
             <p><strong><a href="/zh/workshops/perception-2026-08-13/">感知模块第一次研讨会</a> · 2026-08-13</strong></p>
             <p>主持人：黄佳。核心研讨嘉宾：张栋、黄湘龙、李庆丰、黄丞。讨论覆盖信号准入、事件入口、多源与多模态的边界，以及 AI 驱动软件工程中的上下文问题。</p>
             <p><strong><a href="/zh/workshops/reflection-2026-08-12/">反思模块第一次研讨会</a> · 2026-08-12</strong></p>
@@ -688,10 +718,15 @@
             <td style="text-align: left;">2026-07-13</td>
             <td style="text-align: left;">统一网页与本地目录；形成 28 个核心模式、5 个扩展模式、1 个候选模式；补齐证据与引用边界</td>
             </tr>
+            <tr>
+            <td style="text-align: left;">v0.4</td>
+            <td style="text-align: left;">2026-08-19</td>
+            <td style="text-align: left;">保留双轴主结构；G4 调整为横切核心；增加横切工程面、Agent 生命周期与薪酬变更贯穿示例；重写治理模块</td>
+            </tr>
             </tbody>
             </table>
             <h2>最小落地清单</h2>
-            <p>任何准备进入生产的 Agent，至少回答下面十个问题。</p>
+            <p>任何准备进入生产的 Agent，至少回答下面十一个问题。</p>
             <ol>
             <li>当前任务的原始目标、non-goals 和硬约束在哪里保存？</li>
             <li>哪些信息进入上下文，哪些信息只挂句柄？</li>
@@ -699,10 +734,11 @@
             <li>机械状态由谁托管，能不能追回来源？</li>
             <li>路由结果是结构化 Decision，还是自然语言判断？</li>
             <li>工具参数由 schema 校验，还是由模型自由生成？</li>
-            <li>高风险动作是否有人审、可拒绝、可追踪？</li>
+            <li>高风险动作审批的是否是工具版本、规范化参数、资源和前置条件组成的具体 Intent？</li>
             <li>错误动作的最大影响范围是否被硬限制？</li>
-            <li>每一步有没有 trace id 串起来？</li>
-            <li>失败以后，经验会被沉淀到哪里，下次怎么召回？</li>
+            <li>每一步是否通过因果标识、组件版本、状态差异和外部回执串成证据链？</li>
+            <li>模型、工具、策略或责任人变化后，旧权限是否会复验或失效？</li>
+            <li>失败以后，经验进入哪里，怎样评测、发布、降级或回滚？</li>
             </ol>
             <p>如果这些问题还没有明确答案，系统通常仍处于 demo 或受控试验阶段。先补齐边界与证据，再评估是否需要更大的模型、更深的推理或更多 Agent，会更接近真实的工程优先级。</p>
             <h2>参考资料</h2>
@@ -711,13 +747,15 @@
             <p>Anthropic. Building effective agents. 2024-12-19. https://www.anthropic.com/engineering/building-effective-agents</p>
             <p>LangChain. LangGraph overview. https://docs.langchain.com/oss/python/langgraph/overview</p>
             <p>Google Cloud. Agent Development Kit documentation. Last updated 2026-06-17. https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/adk</p>
+            <p>Atul Gawande. <em>The Checklist Manifesto</em>. Metropolitan Books, 2009.</p>
+            <p>刘春雷、易虹、王琳. 《技控：向方法要效率》. 中信出版社，2024，ISBN 9787521764666.</p>
             <p>黄佳. 《Agent 设计模式之美》v4 final 目录，2026.</p>
 
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.3》，2026-07-30。</p>
+                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.4：模式目录与选型框架》，2026-08-19。</p>
                 <p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>范围：</strong>本版提供架构词汇、适用边界与评审方法，不对具体产品、实现或组织成熟度作认证。</p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本版提供架构词汇、适用边界与评审方法，不对具体产品、实现或组织成熟度作认证。模式规范、场景化示例与具名蓝皮书案例采用不同证据口径；示例用于说明机制。</p>
             </div>
         </article>
 

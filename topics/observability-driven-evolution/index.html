@@ -53,7 +53,7 @@
             </header>
 
 <p>When an agent run fails, a final answer and a few application logs rarely explain the failure. Engineers need to know what the agent saw, which tool it selected, which state it changed, and what evidence supported its completion claim. Once a team starts editing prompts, tools, skills, memory, or execution structure, it faces a harder question: did the change improve later tasks without introducing unacceptable regressions?</p>
-<p>These questions cross Perception, Action, Reflection, Memory, and Governance. G4 Observability Harness gives a local implementation pattern. This topic examines observability as the engineering base for continuous agent evolution.</p>
+<p>These questions cross Perception, Memory, Reasoning, Action, Reflection, Collaboration, and Governance. v0.4 classifies G4 Observability as a cross-cutting core specification. This topic examines how evidence supports debugging, evaluation, release, and agent evolution.</p>
 <h2>Two meanings of visibility</h2>
 <p>Perception determines which external signals an agent can read. Observability determines whether an engineering team can reconstruct a run and measure the effect of a change. The former supplies inference inputs. The latter supplies evidence for debugging, review, release, and accountability.</p>
 <p>An observability system should support at least three queries:</p>
@@ -172,7 +172,7 @@ Approve release or roll back
 </tr>
 </tbody>
 </table>
-<p>Observability is therefore both the implementation responsibility of G4 and shared infrastructure for long-running work, evaluation, reflection, and memory.</p>
+<p>G4 defines the common observability contract. Its evidence supports long-running work, evaluation, reflection, memory, and the governance lifecycle.</p>
 <h2>Common failure modes</h2>
 <ul>
 <li>Logs contain text but no semantic link among tasks, steps, state, and evidence.</li>
@@ -187,6 +187,9 @@ Approve release or roll back
 <h2>Sources</h2>
 <ul>
 <li><a href="/patterns/g4-observability-harness/">G4 Observability Harness</a></li>
+<li><a href="/patterns/governance/">Governance overview and agent lifecycle</a></li>
+<li><a href="/workshops/governance-2026-08-18/">First ADPS Governance Module Workshop</a></li>
+<li><a href="/cases/deerflow-guardrail/">DeerFlow Guardrail engineering evolution</a></li>
 <li><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></li>
 <li><a href="https://arxiv.org/html/2604.25850v4">Fudan University: Agentic Harness Engineering</a></li>
 <li><a href="/workshops/action-2026-08-06/">First ADPS Action Module Workshop</a></li>

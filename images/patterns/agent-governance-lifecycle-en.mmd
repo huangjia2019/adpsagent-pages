@@ -1,0 +1,20 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Open Sans, Arial, sans-serif","lineColor":"#64748b"},"flowchart":{"curve":"basis","nodeSpacing":34,"rankSpacing":50}}}%%
+flowchart LR
+    A["01 Register & own<br/>agent ID · owner · purpose · retirement"] --> B["02 Design & version<br/>model · prompt · tools · skills · policy"]
+    B --> C["03 Offline eval<br/>capability · safety · regression · cost"]
+    C --> D["04 Shadow & canary<br/>real distribution · no effect · small scope"]
+    D --> E["05 Controlled operation<br/>identity · approval · containment · ReAct"]
+    E --> F["06 Observe & attribute<br/>task · process · foundation · outcome"]
+    F --> G["07 Change & revalidate<br/>knowledge · spec · tool · model · policy"]
+    G --> H["08 Authority disposition<br/>promote · hold · demote · retire"]
+    H -. new version .-> B
+    H -. retire .-> I["Revoke credentials · stop traffic<br/>close queues · retain evidence"]
+
+    classDef stage fill:#f8fafc,color:#0f172a,stroke:#64748b,stroke-width:1.5px;
+    classDef operate fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    classDef evidence fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef retire fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    class A,B,C,D,G,H stage;
+    class E operate;
+    class F evidence;
+    class I retire;

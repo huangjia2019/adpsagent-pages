@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G2 爆炸半径控制 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="对动作按 readonly、mutating、catastrophic 分级，并以权限、隔离、配额和 kill switch 限制单次失败的最大影响。">
+    <title>G2 · Blast Radius Control · 爆炸半径控制 · ADPS</title>
+    <meta name="description" content="用硬边界与动态自治范围限制一次动作、一段运行和一组 Agent 的最大影响。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -92,10 +92,11 @@
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/" class="active">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
@@ -105,6 +106,7 @@
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
               <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -138,127 +140,52 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
-                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
-                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G2
-            </p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G2</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>G2 · Blast Radius Control · 爆炸半径控制</h1>
-                <p class="publication-deck">对动作按 readonly、mutating、catastrophic 分级，并以权限、隔离、配额和 kill switch 限制单次失败的最大影响。</p>
+                <p class="publication-deck">用硬边界与动态自治范围限制一次动作、一段运行和一组 Agent 的最大影响。</p>
             </header>
-
-            <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>坐标</strong></td>
-            <td style="text-align: left;">治理 Governance × 层级 Hierarchy（分）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在所有有写权限的动作上）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式组</strong></td>
-            <td style="text-align: left;">治理模式</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">对动作按 readonly、mutating、catastrophic 分级，并以权限、隔离、配额和 kill switch 限制单次失败的最大影响。</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>问题</h2>
-            <p>审批门无法覆盖所有运行期异常。爆炸半径控制假设失败仍会发生，通过工程边界把损失限制在可恢复范围内。</p>
-            <p>系统按破坏力对 Agent 动作分级。只读动作可以使用较宽策略；写入 production 数据的动作需要 capability 限制、执行隔离、数量上限、预算上限和网络 allowlist。即使审批遗漏或 Agent 遭到 prompt injection，单次操作仍受这些上限约束。</p>
-            <h2>坐标说明：治理 × 层级</h2>
-            <ul>
-            <li><strong>纵轴 · 治理</strong>：爆炸半径控制按动作等级限制 Agent 的资源和权限范围，不参与推理过程。</li>
-            <li><strong>横轴 · 层级</strong>：它的结构是嵌套围堵（nested containment）——每一层是另一层的物理外壳，里层被突破必须先突破外层。权限是层级化的，高权限要逐层授权，单层失败时上层仍在 contain 损失。这区别于平行的多个独立检查。</li>
-            </ul>
-            <h2>解决方案与机制</h2>
-            <p>爆炸半径控制由三层隔离和四类硬上限组成：</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">层</th>
-            <th style="text-align: left;">管什么</th>
-            <th style="text-align: left;">典型手段</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">L1 Capability Restriction</td>
-            <td style="text-align: left;">Agent 被允许做什么</td>
-            <td style="text-align: left;">文件系统范围、网络白名单、工具 allowlist、time-limited credentials</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L2 Execution Isolation</td>
-            <td style="text-align: left;">Agent 代码在哪里跑</td>
-            <td style="text-align: left;">Firecracker microVM、bubblewrap / seatbelt、容器</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L3 Damage Limitation</td>
-            <td style="text-align: left;">成功执行的动作能造成多少伤害</td>
-            <td style="text-align: left;">rate limit、budget cap、time lock、saga rollback、kill switch</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>三层控制的价值来自独立防线，而不是把几组未经验证的漏率相乘。只有当各层失效近似独立且已有测量数据时，概率计算才成立。L3 中最关键的是 kill switch：它必须由 Agent 无法触及的基础设施层执行，使用独立 IAM 和网络边界，使被劫持的 Agent 也无法关闭它。</p>
-            <h2>适用场景</h2>
-            <ul>
-            <li><strong>任何有写权限的 Agent</strong>：写 production 数据库、发邮件、部署代码、调外部 API 改状态、转账、签合同，都必须配爆炸半径。</li>
-            <li><strong>执行 untrusted 或 LLM 生成代码的场景</strong>：根据 threat model 选择进程、容器或 microVM 隔离。服务端执行 hostile code 时，可能需要比共享内核容器更强的边界。</li>
-            <li><strong>多 Agent 并行写同一份资源</strong>：用 Git worktree 或文件系统隔离防止 Agent 互相覆盖。</li>
-            <li><strong>批量副作用操作</strong>：群发邮件、批量改记录这类一旦失控规模巨大的动作，必须配 per-call quota 加分阶段放量。</li>
-            </ul>
-            <h2>已知失效方式</h2>
-            <ul>
-            <li><strong>Independent Layer Illusion（层级独立性幻觉）</strong>：多层防护看起来独立，实际共享同一个 process、同一块内存、同一份 credential，一个 exploit 在一层就穿透全部。sandbox 必须 process 级隔离（Firecracker 而非 in-process Python sandbox），rate limiter 用外部 KV，audit log 用 append-only 不可改存储。</li>
-            <li><strong>Kill Switch Capture（停止开关劫持）</strong>：kill switch 跟 Agent 共享同一 IAM，Agent 通过配置修改或 tool misuse 把它关掉。它必须在 Agent 完全无法触及的层——独立 service account、独立网络段，用 monotonic counter 而非可重置的 boolean，并保留多个独立触发通道。</li>
-            <li><strong>Rate Limit Theater（速率限制装饰物）</strong>：rate limit 设了，但 Agent 并发拆分调用、跨 sub-agent 拆批次完全绕过。limit 必须 per-task 而非 per-tool，用集中式 limiter 覆盖所有 sub-agent，触发后整个 task 暂停。</li>
-            <li><strong>把"加了 sandbox"等同于"做了 blast radius"</strong>：sandbox 只是 L2 一层。quantity limit、budget cap、独立 kill switch 一样不能少。</li>
-            </ul>
-            <h2>验证指标</h2>
-            <ul>
-            <li><strong>kill switch 生效延迟</strong>：从触发到 Agent 停止的时间，应在演练中测量并满足组织定义的事故响应目标。</li>
-            <li><strong>quantity_limit 与最大可容忍错误规模</strong>：操作上限从业务能够承受的最坏单次损失反推，并按环境和工具分别配置。</li>
-            <li><strong>rate limit 聚合粒度</strong>：限制应按 task、tenant 和资源聚合，避免多个 sub-agent 分别守住 per-tool 限额却共同突破总预算。</li>
-            <li><strong>审计层独立性</strong>：sandbox、kill switch 和 audit 应与 Agent 分离 process、IAM 或 credential，并通过演练验证 Agent 无法修改这些控制。</li>
-            </ul>
-            <h2>最小实现</h2>
-            <pre><code>执行一个动作前，按层校验：
-    L0 Kill Switch  → 独立存储读到 kill flag → 立即拒绝
-    L1 Capability   → tool 在 allowlist？path 在范围内？credential 没过期？
-    L2 Isolation    → 按 threat model 在 process / container / microVM 中运行
-    L3 Damage:
-        quantity &gt; limit          → 拒绝
-        rate(per-task) 超 cap     → 拒绝
-        cumulative_cost + 本次 &gt; budget → 拒绝
-        需要 rollback 但没提供     → 拒绝
-全部通过才执行，每步写不可改的 audit log
-</code></pre>
-            <p>生产实现按最小权限配置 allowed_paths 和 network_allowlist；server-side 处理 untrusted code 时使用 Firecracker 等硬件虚拟化边界；KillSwitch 存储与 Agent 使用不同 IAM scope，Agent 仅有读取权限。</p>
-            <h2>公开案例启示</h2>
-            <p>公开报道的 Replit 事故中，AI Agent 在 code freeze 期间删除了生产数据库内容，并生成虚假替代记录。事故暴露出多处控制链失效：Agent 可以接触 production credential，环境隔离不足，destructive 操作缺少 quantity limit，外部 kill switch 也没有形成可靠边界。案例启示是自动分离 dev/prod，并让 Agent 无法取得 production 连接和 credential。具体事实应以 Replit 当事方公开材料为准。</p>
-            <h2>相邻模式</h2>
-            <ul>
-            <li><strong>审批门（G1）</strong>：审批门用于 prevention，爆炸半径控制假设 prevention 可能失败，并限制损失。</li>
-            <li><strong>渐进承诺（G3）</strong>：互补。爆炸半径限制单次动作的损失上限，渐进承诺限制 Agent 随时间获得的权限档位。一个管单次损失的深度，一个管权限给不给。</li>
-            <li><strong>可观测性（G4）</strong>：依赖。爆炸半径触发后的事后复盘需要 G4 的完整 trace，否则出了事也查不清哪一层兜住了、哪一层漏了。</li>
-            <li><strong>钩子流水线（G5）</strong>：实现层。L1 的 capability 校验大量通过 PreToolUse hook 落地，hook 是爆炸半径的 sidecar 拦截点。</li>
-            </ul>
-            <h2>工程判断</h2>
-            <p>爆炸半径控制不假设系统不会失败。它通过权限、作用域、配额、沙箱和回滚限制单次失败的最大影响，并保留独立审计记录。</p>
-
-            <!-- ADPS-BLUEBOOK-SLOT -->
-
+<p>爆炸半径控制假设审批、模型和工具都会出错，提前规定一次错误最多能改变多少资源、消耗多少预算、传播到多少下游。</p>
+<h2>坐标与边界</h2>
+<p><strong>治理 × 层级。</strong>身份包住能力，能力包住资源，资源再受数量、速率、时间、成本、并发和网络上限约束。多层防线只有在凭证、进程和配置入口真正分离时才具有独立价值。</p>
+<h2>Hard Envelope 与 Autonomy Envelope</h2>
+<table><thead><tr><th>边界</th><th>内容</th><th>变更权</th></tr></thead><tbody>
+<tr><td><strong>Hard Envelope</strong></td><td>租户隔离、生产凭证、绝对金额、禁止工具与数据类别</td><td>独立管理面或明确人工流程</td></tr>
+<tr><td><strong>Autonomy Envelope</strong></td><td>批量、频率、对象集合、工具、并发和自动化档位</td><td>在硬边界内随证据和场景收放</td></tr>
+</tbody></table>
+<pre><code>effective_scope = intersect(
+    hard_envelope,
+    principal_scope,
+    task_scope,
+    capability_scope,
+    current_context_scope,
+    evidence_based_scope
+)</code></pre>
+<p>每次委派只能保持或缩小范围。子 Agent 不得取得父 Agent 没有的工具、资源、预算或时长。</p>
+<h2>需要聚合的维度</h2>
+<p>数量、速率、成本和并发不能只按单个工具计算。十个子 Agent 各自低于 100 条，整个 run 仍可能写入 1000 条。限额至少要在 action、run、principal、tenant 和 fleet 中选择合适层级聚合。</p>
+<table><thead><tr><th>维度</th><th>控制例子</th></tr></thead><tbody>
+<tr><td>资源与数据</td><td>租户、账户、环境、对象集合、字段和用途</td></tr>
+<tr><td>数量与速率</td><td>每次、每批、每个 run、每个租户和时间窗口</td></tr>
+<tr><td>成本与时间</td><td>token、云资源、外部采购、凭证有效期和任务时长</td></tr>
+<tr><td>并发与传播</td><td>子 Agent 数、调用深度、并发写入和下游接收者</td></tr>
+<tr><td>恢复</td><td>dry-run、延迟提交、checkpoint、幂等、补偿和熔断</td></tr>
+</tbody></table>
+<h2>运行实例</h2>
+<p>一批 18 人的薪酬付款已经通过 G1。G2 仍限定单租户、单次 20 条、run 累计 40 条、一个并发写入、Intent 金额上限和更高一级的基础设施绝对上限。重试创建第二批时，幂等键与 run 级限额同时阻断；目标账户换成其他租户时，资源边界先行拒绝。</p>
+<h2>多 Agent 与编舞</h2>
+<p>中心编排可直接累计预算；编舞需要共享的 run、principal、委托链和剩余额度。局部 Agent 限额会在扇出、重试和循环中被放大，因此还要限制子 Agent 数量、委派深度和跨域传播。</p>
+<h2>常见失效</h2>
+<ul><li>把沙箱当成完整业务边界；</li><li>用 per-tool 限额替代 run 或 tenant 总额；</li><li>Agent 可以改写自己的硬上限；</li><li>停止开关与 Agent 共用凭证；</li><li>只在正常路径限界，重试与恢复绕过；</li><li>POST 才发现不可逆越界。</li></ul>
+<h2>验证</h2>
+<p>通过故障注入测量最坏对象数、金额、成本和传播范围；演练熔断时延；验证并发、重试和子 Agent 下的累计口径；确认 Agent 无权修改 limiter、kill switch 和证据。</p>
+<h2>相邻规范</h2>
+<p><a href="/zh/patterns/a5-minimal-tool-set/">A5</a>缩小能力面，<a href="/zh/patterns/c5-sub-agent-isolation/">C5</a>隔离子 Agent，<a href="/zh/patterns/g3-progressive-commitment/">G3</a>只在硬边界内调整自治范围。</p>
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《G2 爆炸半径控制》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
-                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
+                <p><strong>引用建议：</strong>ADPS，《G2 · Blast Radius Control · 爆炸半径控制》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
             </div>
         </article>
 

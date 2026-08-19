@@ -69,14 +69,62 @@
             </div>
         </section>
 
-        <section class="block" style="text-align: center; margin: 2rem 0 3rem;">
+        <section class="home-min-loop" aria-labelledby="minimum-loop-title">
+            <header class="min-loop-head">
+                <p class="section-kicker">从一项业务变更开始</p>
+                <h2 id="minimum-loop-title">一个 Agent，怎样把一句话变成可验收的结果</h2>
+                <p>示例请求：“把员工 E-1842 的月度交通津贴从 800 元调整为 1000 元，下月生效。”模型能够理解这句话，生产系统还要明确目标、事实、权限、动作与结果。</p>
+            </header>
+            <div class="min-loop-request">
+                <span>最小建模单位</span>
+                <strong>一项可以独立判断、审批、执行、验收和补偿的业务变更。</strong>
+            </div>
+            <div class="min-loop-steps" aria-label="薪酬变更的五步受控闭环">
+                <article>
+                    <span class="min-loop-num">01</span>
+                    <h3>界定目标</h3>
+                    <p>限定一名员工、一个字段和一个生效日；本次不追溯历史薪资。</p>
+                    <p class="min-loop-patterns"><a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">02</span>
+                    <h3>取得事实</h3>
+                    <p>当前值来自 HR API，政策依据来自带版本的知识源，两者分开记录。</p>
+                    <p class="min-loop-patterns"><a href="/zh/patterns/m2-rag-pipeline/">M2 RAG</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">03</span>
+                    <h3>形成计划</h3>
+                    <p>读取、校验、准备、审批、提交、写后读取，每一步都有完成条件。</p>
+                    <p class="min-loop-patterns"><a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">04</span>
+                    <h3>作出承诺</h3>
+                    <p>工具、参数和资源固化成 Intent；审批针对这份内容，影响范围锁在单一员工。</p>
+                    <p class="min-loop-patterns"><a href="/zh/patterns/g1-approval-gate/">G1 审批门</a> · <a href="/zh/patterns/g2-blast-radius-control/">G2 限界</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">05</span>
+                    <h3>验收结果</h3>
+                    <p>事务回执与写后读取一致，整条证据链才能支持“已经完成”。</p>
+                    <p class="min-loop-patterns"><a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a></p>
+                </article>
+            </div>
+            <div class="min-loop-rule">
+                <strong>粒度判断</strong>
+                <p>判断、审批、执行、验收或补偿需要不同主体或规则时，继续拆分。五项都能独立闭合时，这个变更单元已经足够小。</p>
+            </div>
+            <p class="min-loop-link"><a href="/zh/patterns/governance/#payroll-lifecycle">查看它如何贯穿 Agent 生命周期 →</a></p>
+        </section>
+
+        <section class="block home-matrix">
             <a href="/zh/patterns/" style="display: inline-block; text-decoration: none;">
-                <img src="/images/matrix-28-zh-20260616.png"
-                     alt="28 模式矩阵——7 个认知功能 × 6 种执行拓扑"
-                     style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
+                <img src="/images/matrix-v04-zh-20260819.png"
+                     alt="ADPS v0.4：7 个认知功能 × 6 种执行拓扑，G4 可观测性作为横切核心">
             </a>
-            <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
-                28 个核心模式矩阵 &middot; 7 个认知功能 &times; 6 种执行拓扑
+            <p>
+                27 个矩阵模式 + 1 个横切核心规范 &middot; 7 个认知功能 &times; 6 种执行拓扑
             </p>
         </section>
 
@@ -109,9 +157,9 @@
         <!-- ADPS-KNOWLEDGE-PATHS:START -->
         <section class="block home-knowledge">
             <h2>研讨与专题</h2>
-            <p class="home-knowledge-intro">感知、记忆、行动和反思已完成首轮研讨。研讨记录保留现场问题与实践分歧；专题页负责整理跨越多个模块的工程问题。</p>
+            <p class="home-knowledge-intro">感知、记忆、行动、反思和治理已完成首轮研讨。研讨记录保留现场问题与实践分歧；专题页整理跨越多个模块的工程问题。</p>
             <div class="home-path-grid">
-                <a class="home-path" href="/zh/workshops/"><span>研讨会</span><strong>四个模块的讨论记录、参与者与待解问题</strong></a>
+                <a class="home-path" href="/zh/workshops/"><span>研讨会</span><strong>五个模块的讨论记录、参与者与待解问题</strong></a>
                 <a class="home-path" href="/zh/topics/"><span>专题</span><strong>从模式和案例中抽出的跨模块工程方法</strong></a>
             </div>
             <ul class="home-topic-list">

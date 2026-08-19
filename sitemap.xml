@@ -4,7 +4,7 @@
 
   <url>
     <loc>https://adpsagent.com/</loc>
-    <lastmod>2026-08-09</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/"/>
@@ -13,7 +13,7 @@
 
   <url>
     <loc>https://adpsagent.com/patterns/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/"/>
@@ -101,8 +101,8 @@
     <xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/join/"/>
   </url>
 
-  <url><loc>https://adpsagent.com/zh/</loc><lastmod>2026-08-09</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://adpsagent.com/zh/patterns/</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://adpsagent.com/zh/</loc><lastmod>2026-08-19</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://adpsagent.com/zh/patterns/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://adpsagent.com/zh/patterns/memory/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://adpsagent.com/zh/patterns/reflection/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/reflection/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/reflection/"/></url>
   <url><loc>https://adpsagent.com/zh/workshops/memory-2026-08-05/</loc><lastmod>2026-08-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/memory-2026-08-05/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/memory-2026-08-05/"/></url>
@@ -114,7 +114,7 @@
   <url><loc>https://adpsagent.com/zh/join/</loc><lastmod>2026-05-28</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
 
-  <!-- 33 模式白皮书 / pattern white papers -->
+  <!-- 模式白皮书 / pattern white papers -->
   <url><loc>https://adpsagent.com/zh/patterns/p1-context-triage/</loc><lastmod>2026-06-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://adpsagent.com/zh/patterns/p2-semantic-compaction/</loc><lastmod>2026-06-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://adpsagent.com/zh/patterns/p3-progressive-discovery/</loc><lastmod>2026-06-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -176,8 +176,8 @@
   <url><loc>https://adpsagent.com/zh/patterns/perception/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/perception/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/perception/"/></url>
   <url><loc>https://adpsagent.com/patterns/action/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/action/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/action/"/></url>
   <url><loc>https://adpsagent.com/zh/patterns/action/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/action/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/action/"/></url>
-  <url><loc>https://adpsagent.com/workshops/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/"/></url>
-  <url><loc>https://adpsagent.com/zh/workshops/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/"/></url>
+  <url><loc>https://adpsagent.com/workshops/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/"/></url>
+  <url><loc>https://adpsagent.com/zh/workshops/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/"/></url>
   <url><loc>https://adpsagent.com/workshops/perception-2026-08-13/</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/perception-2026-08-13/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/perception-2026-08-13/"/></url>
   <url><loc>https://adpsagent.com/zh/workshops/perception-2026-08-13/</loc><lastmod>2026-08-13</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/perception-2026-08-13/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/perception-2026-08-13/"/></url>
   <url><loc>https://adpsagent.com/topics/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/"/></url>
@@ -188,9 +188,13 @@
   <url><loc>https://adpsagent.com/zh/topics/observability-driven-evolution/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/observability-driven-evolution/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/observability-driven-evolution/"/></url>
   <url><loc>https://adpsagent.com/topics/agent-evals-and-testing/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-evals-and-testing/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-evals-and-testing/"/></url>
   <url><loc>https://adpsagent.com/zh/topics/agent-evals-and-testing/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-evals-and-testing/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-evals-and-testing/"/></url>
-  <url><loc>https://adpsagent.com/topics/enterprise-agent-evolution/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/"/></url>
-  <url><loc>https://adpsagent.com/zh/topics/enterprise-agent-evolution/</loc><lastmod>2026-08-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/"/></url>
+  <url><loc>https://adpsagent.com/topics/enterprise-agent-evolution/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/"/></url>
+  <url><loc>https://adpsagent.com/zh/topics/enterprise-agent-evolution/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/enterprise-agent-evolution/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/enterprise-agent-evolution/"/></url>
   <!-- ADPS-KNOWLEDGE-PAGES-END -->
   <url><loc>https://adpsagent.com/cases/deerflow-guardrail/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/deerflow-guardrail/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/cases/deerflow-guardrail/"/></url>
   <url><loc>https://adpsagent.com/zh/cases/deerflow-guardrail/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/deerflow-guardrail/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/cases/deerflow-guardrail/"/></url>
+  <url><loc>https://adpsagent.com/patterns/governance/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/governance/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/governance/"/></url>
+  <url><loc>https://adpsagent.com/zh/patterns/governance/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/governance/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/governance/"/></url>
+  <url><loc>https://adpsagent.com/workshops/governance-2026-08-18/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/governance-2026-08-18/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/governance-2026-08-18/"/></url>
+  <url><loc>https://adpsagent.com/zh/workshops/governance-2026-08-18/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/governance-2026-08-18/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/governance-2026-08-18/"/></url>
 </urlset>

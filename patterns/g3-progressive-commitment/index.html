@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G3 Progressive Commitment · Pattern White Paper · ADPS</title>
-    <meta name="description" content="The agent&#x27;s permissions start read-only and unlock in stages toward writable, then toward irreversible. Each step up must be earned with evidence, while incident policy define">
+    <title>G3 · Progressive Commitment · ADPS</title>
+    <meta name="description" content="Manage promotion, hold, demotion, and retirement by capability, scenario, resource, and version.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/g3-progressive-commitment/">
@@ -86,10 +86,11 @@
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
               <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
               <h4>Governance</h4>
+              <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/" class="active">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
@@ -99,6 +100,7 @@
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
@@ -132,129 +134,43 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>G3</p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>G3</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>G3 · Progressive Commitment</h1>
-                <p class="publication-deck">The agent&#x27;s permissions start read-only and unlock in stages toward writable, then toward irreversible. Each step up must be earned with evidence, while incident policy defines when to pause, restrict, or downgrade authority.</p>
+                <p class="publication-deck">Manage promotion, hold, demotion, and retirement by capability, scenario, resource, and version.</p>
             </header>
-
-                        <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>Coordinate</strong></td>
-            <td style="text-align: left;">Governance × Chain (transmit)</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Cross-cutting (a cross-cutting concern, not billed on the main reasoning path; it spans the agent's entire deployment lifecycle)</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Pattern group</strong></td>
-            <td style="text-align: left;">Governance patterns</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">The agent's permissions start read-only and unlock in stages toward writable, then toward irreversible. Each step up must be earned with evidence, while incident policy defines when to pause, restrict, or downgrade authority.</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>Problem</h2>
-            <p>Progressive commitment governs how permissions evolve during an agent's deployment. Granting full autonomy at launch assumes trust before shadow runs, stratified evaluation, and incident evidence exist.</p>
-            <p>Progressive commitment turns trust into a chain that unlocks stage by stage. The agent first runs long enough at the read-only level, meets a success-rate threshold, and obtains an administrator's sign-off before it can advance to the scoring level. It runs long enough again before advancing to the draft-writing level, and climbs one level at a time up to reversible execution and finally to irreversible full autonomy. Any serious error at any level triggers an immediate drop back down to be re-earned. This turns "trust" from a slogan into an auditable engineering process.</p>
-            <h2>Classification: Governance × Chain</h2>
-            <ul>
-            <li><strong>Vertical axis · Governance</strong>: Progressive commitment governs the agent's permission advancement from read-only to writable, a governance discipline for building trust. It does not change the agent's capabilities; it only stipulates the evidence under which those capabilities are gradually released.</li>
-            <li><strong>Horizontal axis · Chain</strong>: Permissions unlock in sequential stages—read-only → mutating → catastrophic—where each level is the prerequisite for the next, and the agent must demonstrate sufficient reliability at the current level before it can pass to the next. This is the progressive structure of a chain, not one-shot routing and not parallel scoping.</li>
-            </ul>
-            <h2>Solution and mechanics</h2>
-            <p>Progressive commitment consists of a multi-level trust ladder plus bidirectional escalation and demotion rules:</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">Level</th>
-            <th style="text-align: left;">Permission</th>
-            <th style="text-align: left;">Typical escalation threshold</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">L0 Shadow</td>
-            <td style="text-align: left;">Read-only, outputs suggestions for human review</td>
-            <td style="text-align: left;">Required coverage, observation period, and incident criterion</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L1 Scoring</td>
-            <td style="text-align: left;">Scores / labels objects, does not write or send</td>
-            <td style="text-align: left;">Correlation between scores and human decisions meets target</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L2 Recommend</td>
-            <td style="text-align: left;">Writes drafts, sent by a human</td>
-            <td style="text-align: left;">Complaint count below threshold + administrator vote</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L3 Execute Reversible</td>
-            <td style="text-align: left;">Automatically executes reversible actions (time-limited, revocable)</td>
-            <td style="text-align: left;">Revocation rate below threshold</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L4 Full Autonomy</td>
-            <td style="text-align: left;">Automatically executes irreversible actions</td>
-            <td style="text-align: left;">Sustained compliance, serving as the ceiling</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>Escalation should require time or sample coverage, measured task performance, and accountable approval together. Demotion follows the organization's incident policy, with critical events able to trigger immediate loss of privilege. Before a high-risk action, low-risk probes such as dry-run, path validation, budget check, and impact estimate must pass against the same snapshot used for commit. After escalation, evidence is collected again at the new level so earlier performance cannot mask current degradation.</p>
-            <h2>Applicability</h2>
-            <ul>
-            <li><strong>First deployment of a new agent</strong>: Start in read-only, shadow, or suggestion mode before releasing write authority.</li>
-            <li><strong>Agents that affect production data, user funds, or compliance decisions</strong>: Financial KYC, HR hiring scores, customer-service refunds—these scenarios must run in shadow long enough before permissions are released.</li>
-            <li><strong>High-risk AI subject to a demonstrated period</strong>: Organizations and regulators may require an observation period for hiring, financial, or medical systems. Do not treat one fixed duration as a cross-industry compliance rule.</li>
-            <li><strong>Enterprises that need auditable trust evolution</strong>: Turning "why we dare to let it execute automatically now" into an escalation record with a trace, answering both regulators and internal audit.</li>
-            </ul>
-            <h2>Known failure modes</h2>
-            <ul>
-            <li><strong>Probe Mismatch</strong>: All within-session probes pass, but the environment state drifts between probe and the actual commit—the dry-run ran in staging while the production state had already changed at commit time; the budget probe found a sufficient balance at check time, but it was consumed by another concurrent task before commit. The fix is atomic commit: have probe and commit use the same snapshot, ideally within the same transaction.</li>
-            <li><strong>Metric Gaming</strong>: The agent finds that certain tasks are easy to do well and runs only those; the success rate looks perfect, but after escalation it fails on the first difficult case. The fix is stratified sampling: stratify by difficulty and force every level to handle cases at all difficulties, adding an escalation requirement that "each difficulty tier must meet target."</li>
-            <li><strong>Trust Capture</strong>: The agent makes itself look ready for escalation by modifying the metrics database or configuration. Keep the trust state machine in an IAM scope the agent cannot write, authenticate accountable approvers, and review every level change.</li>
-            <li><strong>Skipping the observation period</strong>: Releasing authority without representative evidence can force the whole system back to manual operation after an incident. Set the period from business risk and task coverage.</li>
-            </ul>
-            <h2>Verification and metrics</h2>
-            <ul>
-            <li><strong>Evidence accumulated per level</strong>: Record observation time, task coverage, and representative cases. Thresholds follow business risk and applicable regulation.</li>
-            <li><strong>Incident distribution after escalation</strong>: An incident immediately after a level change can reveal sampling bias or metric gaming in the previous level.</li>
-            <li><strong>Demotion triggers</strong>: Critical incidents must be able to trigger rapid downgrade instead of waiting only for slow metric drift.</li>
-            <li><strong>Within-session probe coverage</strong>: Record which dry-run, path, budget, and impact checks ran before a high-risk commit and which evidence snapshot they used.</li>
-            </ul>
-            <h2>Reference implementation</h2>
-            <pre><code>TrustLevel: SHADOW → SCORING → RECOMMEND → EXECUTE_REVERSIBLE → FULL_AUTONOMY
-
-            After each action, record(success, complaint, incident):
-                if demotion triggers (any OR: critical incident / complaints over window / success rate drops sharply) → drop one level, reset metrics
-                else check escalation (all AND: days ≥ min_days and action count meets target
-                                      and success rate meets target and administrator vote count meets target) → raise one level, reset metrics
-
-            Before committing a high-risk action:
-                run probes(dry_run, path, budget, impact) in parallel; abort if any fails
-            The current TrustLevel determines whether the action still needs human review (integrate with G1)
-            </code></pre>
-            <p>Production implementation sets escalation thresholds from business risk, representative coverage, and local evaluation; enables severity-based demotion where required; and stores the trust state machine in separate IAM where the agent has no write access. Observation periods and performance criteria come from organizational policy and applicable regulation.</p>
-            <h2>Illustrative scenario</h2>
-            <p>Consider a SaaS refund agent that receives automatic refund authority at launch. A customer can place social-engineering instructions in a ticket, and the team may have no prior shadow-run evidence showing how the agent handles such cases. A stronger deployment uses the L0-L4 ladder: read-only observation, risk scoring, recommendations, reversible execution, and only then policy-limited autonomy. Each level has evidence requirements and incident-driven demotion. Refund limits, observation periods, and performance thresholds come from the business loss model and real evaluation data.</p>
-            <h2>Related patterns</h2>
-            <ul>
-            <li><strong>Approval Gate (G1)</strong>: Static gate vs. dynamic level. The approval gate is a fixed gate; progressive commitment is a power path that evolves. Once integrated, the current trust level directly determines which actions still need human review.</li>
-            <li><strong>Blast Radius Control (G2)</strong>: Twin pillars. Blast radius limits the maximum loss of a single action; progressive commitment limits the permission level the agent accumulates over time. One governs depth, the other governs breadth.</li>
-            <li><strong>Observability (G4)</strong>: Dependency. Every level escalation and demotion must be explainable and auditable, and the trace of trust-level changes relies entirely on G4 to record; otherwise there is no way to explain to regulators "why it has this permission now."</li>
-            <li><strong>Hook Pipeline (G5)</strong>: Implementation layer. Independent pre-action checks can be implemented as hooks or policy-engine stages, with any required veto aborting the action.</li>
-            </ul>
-            <h2>Design conclusion</h2>
-            <p>Progressive commitment releases authority according to the record of a specific agent in a specific business. A model upgrade does not replace local success, incident, coverage, observation, and accountable approval evidence.</p>
-
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>G3 Progressive Commitment</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
+<p>Progressive Commitment governs local, version-bound authority. It records an agent version's authority for a capability, scenario, resource, and environment instead of assigning one global trust score.</p>
+<h2>Coordinate and authority unit</h2>
+<p><strong>Governance × Chain.</strong> Shadow, recommendation, bounded execution, and expanded scope have evidence prerequisites. Incidents, dependencies, and version changes can move the chain backward.</p>
+<pre><code>authority_key = (
+    agent_version,
+    capability,
+    scenario,
+    resource_scope,
+    environment
+)</code></pre>
+<p>Validation and submission by the same payroll agent should have separate grants.</p>
+<h2>Autonomy tiers</h2>
+<table><thead><tr><th>Tier</th><th>Behavior</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Shadow</td><td>Read real input with no business effect</td><td>Baseline, coverage, failure classes</td></tr>
+<tr><td>Recommend</td><td>Produce a recommendation or draft</td><td>Adoption, edits, long-tail errors</td></tr>
+<tr><td>Bounded Execute</td><td>Automate reversible or low-impact work inside hard limits</td><td>External acceptance, reversal, boundary events, incidents</td></tr>
+<tr><td>Expanded Execute</td><td>Expand objects, frequency, or scenarios while retaining hard limits</td><td>Stable window, stratified samples, business outcome</td></tr>
+<tr><td>Frozen / Retired</td><td>Stop new effects and preserve audit or rollback</td><td>Incident, expired version, missing owner, ended pilot</td></tr>
+</tbody></table>
+<h2>Evidence</h2>
+<p>Task and outcome evidence shows goal completion and downstream use. Process evidence covers planning, tools, memory, and recovery. Foundation evidence covers model, tool, storage, and policy health. An average success rate cannot replace these levels or expose high-risk tails.</p>
+<h2>Running example</h2>
+<p>Payroll agent v7 validates in Shadow and then Recommend. Routine batches are stable while new-hire and cross-region cases remain weak, so only the routine slice receives Bounded Execute. Submission remains reviewed under G1. A payment-tool upgrade freezes the affected validation grant and returns it to Shadow while unrelated capabilities retain their state.</p>
+<h2>Disposition, failure, and verification</h2>
+<p>A review can promote, hold, narrow, demote, or retire. Missing eval coverage, a changed dependency, rising error rates, owner departure, or long inactivity can invalidate authority without an incident.</p>
+<p>Reject global agent levels, one-way ladders, easy-sample selection, authority inheritance after material changes, agent-writable grants, and immediate full traffic after promotion. Verify grant granularity, evidence coverage, post-promotion rollback, demotion latency, version inheritance, retirement, and real reduction in human load.</p>
+            <div class="document-citation">
+                <p><strong>Suggested citation:</strong>ADPS, <em>G3 · Progressive Commitment</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
+                <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

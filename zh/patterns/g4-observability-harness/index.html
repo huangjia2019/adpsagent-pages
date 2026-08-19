@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G4 可观测性 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="在 Agent 全生命周期采集 log、metric、trace、cost 和 quality，并跨 Agent 串联 trace。">
+    <title>G4 · Observability Harness · 可观测性 · ADPS</title>
+    <meta name="description" content="以事件、因果、版本、状态差异和外部回执建立 Agent 证据链。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -92,10 +92,11 @@
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/" class="active">G4 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/" class="active">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
@@ -139,145 +140,42 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
-                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
-                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G4
-            </p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G4</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>G4 · Observability Harness · 可观测性</h1>
-                <p class="publication-deck">在 Agent 全生命周期采集 log、metric、trace、cost 和 quality，并跨 Agent 串联 trace。</p>
+                <p class="publication-deck">以事件、因果、版本、状态差异和外部回执建立 Agent 证据链。</p>
             </header>
-
-            <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>坐标</strong></td>
-            <td style="text-align: left;">治理 Governance × 编排 Orchestrate（协）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在所有 agent / tool / step 上）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式组</strong></td>
-            <td style="text-align: left;">治理模式</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">在 Agent 全生命周期采集 log、metric、trace、cost 和 quality，并跨 Agent 串联 trace。</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>问题</h2>
-            <p>LLM Agent 的模型权重和内部计算无法像应用源码一样直接检查。系统需要通过 trace 还原模型调用、工具调用、状态变更和 sub-agent 活动。部分 Agent 故障表现为质量和成本持续漂移，而不是在单一时间点抛出异常。</p>
-            <p>可观测性在每个 LLM call、tool call 和 sub-agent step 采集遥测，并使用同一 trace id 串联 span。完整 trace 用于 root-cause、审计回放、成本归因和产品分析。</p>
-            <h2>坐标说明：治理 × 编排</h2>
-            <ul>
-            <li><strong>纵轴 · 治理</strong>：可观测性管的是所有 Agent 操作可观测、可重放，是治理的可追溯基础。审批门、爆炸半径、渐进承诺这三件事的记录都要靠它兑现，否则审批 log 没人看、爆炸半径出事没法复盘、信任档位变化没法解释。</li>
-            <li><strong>横轴 · 编排</strong>：单个组件无法看到完整 trajectory。Orchestrator 或 telemetry pipeline 需要跨 Agent、tool 和 step 关联 span，因此属于横切编排。</li>
-            </ul>
-            <h2>解决方案与机制</h2>
-            <p>Agent 遥测包含五个维度：</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">维度</th>
-            <th style="text-align: left;">传统软件</th>
-            <th style="text-align: left;">LLM Agent 加在哪</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">Log</td>
-            <td style="text-align: left;">应用 log</td>
-            <td style="text-align: left;">加 prompt / response / system_prompt 全文</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Metric</td>
-            <td style="text-align: left;">request count / latency / error rate</td>
-            <td style="text-align: left;">加 tokens_in / tokens_out / model_swap event / refusal rate</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Trace</td>
-            <td style="text-align: left;">request → service → DB</td>
-            <td style="text-align: left;">加 user → agent → sub-agent → tool → LLM call 跨层</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Cost</td>
-            <td style="text-align: left;">不存在</td>
-            <td style="text-align: left;">AI-native：per-call / per-session / per-tenant / per-tool</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Quality</td>
-            <td style="text-align: left;">response status code</td>
-            <td style="text-align: left;">AI-native：hallucination / scope creep / refusal / correctness</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>log、metric 和 trace 记录运行事实，cost 和 quality 用于分析趋势。除 threshold crossing 外，还应监测 trajectory slope，例如质量连续下降或每个结果的 token 在多个 cycle 中增长。跨进程使用 W3C Trace Context 的 traceparent 将 span 关联到同一 trace id，并采用 OpenTelemetry GenAI Semantic Conventions。<code>gen_ai.request.model</code> 与 <code>gen_ai.response.model</code> 分开记录，以识别 model fallback。</p>
-            <h2>适用场景</h2>
-            <ul>
-            <li><strong>企业 production Agent</strong>：需要满足故障分析、客户审计和合规留痕要求。</li>
-            <li><strong>多租户 SaaS</strong>：per-tenant cost attribution 是计费基础，也是跨租户隔离审计的入口。</li>
-            <li><strong>多 model 系统</strong>：model swap 不可见就会变成长时间盲查，<code>request.model != response.model</code> 一查就暴露。</li>
-            <li><strong>多 sub-agent 或长 conversation 系统</strong>：跨 Agent 不串 trace 时，sub-agent 活动和 context 演化无法还原为完整调用链。</li>
-            </ul>
-            <h2>已知失效方式</h2>
-            <ul>
-            <li><strong>Volume Overwhelms Signal（信号被淹）</strong>：高流量 trace 会把少量关键异常埋在大量正常 span 中。应对 selected production metric 做 structured alerting，dashboard 看趋势，其余保留采样和 query-on-demand。</li>
-            <li><strong>Trace Sampling Bias（采样偏差）</strong>：随机采样可能偏向简单 case，使 dashboard 系统性高估真实质量。应按任务难度、租户、风险和 SLA 分层采样，高风险链路按政策完整留痕。</li>
-            <li><strong>Schema Drift（schema 漂移）</strong>：OpenTelemetry GenAI conventions 仍在演进，字段在后续版本中可能改名，进而影响 dashboard、alert 和 cost engine。应使用 schema versioning、dual-write 和 migration window，并跟踪所采用规范的稳定性状态。</li>
-            <li><strong>自造 observability backend</strong>：trace store、query engine 和 dashboard 的建设与维护成本很高。通常可先接 Langfuse、Phoenix 等成熟工具，再补充业务字段和访问控制。</li>
-            </ul>
-            <h2>验证指标</h2>
-            <ul>
-            <li><strong>五维采集完整度</strong>：检查请求、模型、成本、质量和业务结果是否能在同一 trace 中关联。</li>
-            <li><strong>trajectory slope 与 threshold 告警</strong>：同时监控绝对阈值和变化率，避免缓慢漂移长期低于固定告警线。</li>
-            <li><strong>跨进程 trace 串联率</strong>：sub-agent span 能否挂回父 trace id。无法串联的调用链应作为采集缺陷修复。</li>
-            <li><strong>采样难度分布偏差</strong>：比较采样集与实际流量在难度、租户和风险上的分布，避免 quality dashboard 偏向简单 case。</li>
-            </ul>
-            <h2>最小实现</h2>
-            <pre><code>每个 LLM call / tool call / sub-agent step 产出一个 span：
-    填 OTel GenAI attribute（含 request.model 与 response.model 分开）
-    cost = compute_cost(span)                 # 按 token 与实际 model 算
-    若命中采样 → quality = llm_judge(span)     # hallucination / refusal / scope_creep
-    emit 到 OTel pipeline（五维同时打）
-
-跨 sub-agent：主 Agent inject W3C traceparent 到 carrier，
-             sub-agent extract 后继续同一个 trace_id
-
-trajectory_slope(tenant, metric, window)：返回变化率，不是阈值
-query_for_audit(trace_id)：一个 trace_id 串起所有 span 供监管回放
-</code></pre>
-            <p>生产实现将 PRICING 配置为实际模型价格；llm_judge 接入真实的低成本 Judge；business 属性加入 tenant_id、user_id 和 workflow_id；emit 连接真实 collector 或 Langfuse endpoint。</p>
-            <h2>场景化示例</h2>
-            <p>设想一家 Edtech 公司发现作业反馈质量下降，但 application log、请求量、延迟、错误率和传统 APM 都没有异常。团队最终在模型调用记录中发现，一次部署把主 Agent 路由到了能力更低的模型。基础设施指标仍然正常，调用成本甚至下降，只有质量评测同步变差。把 requested model、actual model、cost、quality 和业务结果放在同一 trace 后，model swap 才能被直接定位。</p>
-            <p>在执行型 Agent 的工程实现里，可观测性可以用统一的活动事件抽象落地：把智能体的每一个活动事件用 Activity 加 Frame 统一表达，开发者就能看到执行过程的完整时间线（如 SSE 实时推送）。需要注意区分一件事——这里的"可观测"是让执行过程对开发者可见，不等于"Agent 对世界的感知"。前者是治理端的 telemetry，后者是感知模块的事。</p>
-            <h2>相邻模式</h2>
-            <ul>
-            <li><strong>审批门（G1）/ 爆炸半径（G2）/ 渐进承诺（G3）</strong>：审批 log、爆炸半径触发和信任档位变化通过 trace_id 关联到 G4。</li>
-            <li><strong>钩子流水线（G5）</strong>：互补。hook 本身要留痕，Stop hook 常用来挂审计 commit，是 G4 数据采集的入口之一。</li>
-            <li><strong>推理 / 反思模块的 trace</strong>：CoT trace 是 reasoning 维度的可观测性，reflection 讲过的 silent correctness 正是 G4 用 trajectory slope 应对的对象。</li>
-            </ul>
-            <h2>工程判断</h2>
-            <p>可观测性主要服务于开发、运营、审计和产品决策。完整 trace 可以缩短影响分析与故障归因时间，并为扩大 Agent 权限提供运行证据。</p>
-
-                        <h2>企业证据</h2>
-            <p>以下现场记录说明该模式在具体业务约束下如何实现。案例结论只在文中声明的系统边界内成立。</p>
-            <ul style="list-style: none; margin: 0.5rem 0 1rem 0; padding: 0;">
-                <li style="margin-bottom: 0.6rem; line-height: 1.55;"><a href="cases/liangbo/" style="font-weight: 600;">东方屹腾 · 可观测性</a><span style="color: var(--color-text-muted);"> — 模型、路由、工具和状态变化统一为语义事件，并按执行时间线关联。</span></li>
-            </ul>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
-
-            <h2>开源实现</h2>
-            <p><a href="/zh/cases/deerflow-guardrail/"><strong>DeerFlow Guardrail 与双层授权</strong></a>按五个公开 PR 展开装配时过滤、运行时授权、可信身份、RBAC 与 RunJournal 的演进，并标出该实现对本模式的覆盖范围。</p>
+<p>G4 用统一事件、因果标识、版本引用、状态差异和外部回执，把一次运行组织成可以查询、评测和归因的证据链。</p>
+<h2>v0.4 分类</h2>
+<p><strong>横切核心 · 观测与证据平面。</strong>G4 不再占“治理 × 编排”单格。它贯穿全部认知功能、执行拓扑和生命周期；核心总数仍为 28。</p>
+<h2>从日志到证据</h2>
+<table><thead><tr><th>层</th><th>需要保留的事实</th><th>用途</th></tr></thead><tbody>
+<tr><td>输入与上下文</td><td>来源、版本、准入和丢弃原因</td><td>还原 Agent 当时能看到什么</td></tr>
+<tr><td>决策与计划</td><td>目标、步骤、路由、候选和裁决摘要</td><td>分析漂移、路由和计划错误</td></tr>
+<tr><td>动作与控制</td><td>工具、参数来源、身份、策略、审批和配额</td><td>审计与调用级归因</td></tr>
+<tr><td>状态与结果</td><td>状态差异、外部回执、业务验收与人工修订</td><td>识别假成功和真实影响</td></tr>
+<tr><td>运行基础</td><td>模型、提示词、Skill、知识、工具和策略版本</td><td>版本比较与回归定位</td></tr>
+</tbody></table>
+<p>默认保存完整隐式推理既不稳定，也会扩大敏感信息风险。结构化决策摘要、候选、引用、工具调用和状态变化通常更适合作为运行证据。</p>
+<h2>因果与身份链</h2>
+<pre><code>principal → agent → workload → session → run → intent
+          → approval → model/tool/sub-agent span → resource → outcome</code></pre>
+<p>Trace Context 可以传播跨进程 trace，业务对象仍需要稳定 ID。重试会产生新 span，不应因此生成新的业务意图或重复副作用。</p>
+<h2>三层观察</h2>
+<p>任务与业务结果回答目标是否完成；Agent 过程回答上下文、规划、工具和恢复是否按合同运行；基础组件回答模型、RPC、存储和策略是否健康。三层使用同一 run、版本和结果引用关联。</p>
+<h2>运行实例</h2>
+<p>薪酬付款的证据链包括来源账本、目标合同、Intent、策略裁决、审批视图、等待期间的失效、新批准、工具请求、付款回执、账本状态差异和后续对账。团队因此能区分计划错误、过期审批、重复提交和“接口成功但业务未完成”。</p>
+<h2>常见失效</h2>
+<ul><li>记录大量文本，却没有对象 ID、版本和状态差异；</li><li>把 HTTP 200 或 exit code 0 当成业务成功；</li><li>跨 Agent、队列和回调断链；</li><li>采样集中在简单任务；</li><li>敏感 prompt 和凭证无限留存；</li><li>把 Judge 分数与观测事实混在一起。</li></ul>
+<h2>验证</h2>
+<p>检查 trace 连续性、身份与版本完整度、有副作用动作的外部结果确认、孤儿写操作、证据时延、采样偏差和敏感证据访问。测试跨进程、重试、恢复、模型 fallback、schema 升级和 collector 故障。</p>
+<h2>公开实现</h2>
+<p><a href="/zh/cases/deerflow-guardrail/">DeerFlow Guardrail</a>展示身份、授权裁决、RunJournal 与工具执行之间的公开代码路径。业务状态差异和外部结果仍由接入方补充。</p>
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《G4 可观测性》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
-                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
+                <p><strong>引用建议：</strong>ADPS，《G4 · Observability Harness · 可观测性》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
             </div>
         </article>
 

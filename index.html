@@ -70,14 +70,62 @@
             </div>
         </section>
 
-        <section class="block" style="text-align: center; margin: 2rem 0 3rem;">
+        <section class="home-min-loop" aria-labelledby="minimum-loop-title">
+            <header class="min-loop-head">
+                <p class="section-kicker">Start with one business change</p>
+                <h2 id="minimum-loop-title">How an agent turns one sentence into an accepted result</h2>
+                <p>Example request: “Change employee E-1842's monthly transport allowance from 800 to 1000, effective next month.” A model can understand the sentence. A production system must also establish the goal, facts, authority, action, and result.</p>
+            </header>
+            <div class="min-loop-request">
+                <span>Minimum modelling unit</span>
+                <strong>One business change that can be decided, approved, executed, accepted, and compensated independently.</strong>
+            </div>
+            <div class="min-loop-steps" aria-label="Five-step controlled loop for a payroll change">
+                <article>
+                    <span class="min-loop-num">01</span>
+                    <h3>Bound the goal</h3>
+                    <p>One employee, one field, one effective date; no retroactive payroll change.</p>
+                    <p class="min-loop-patterns"><a href="/patterns/p1-context-triage/">P1 Context Triage</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">02</span>
+                    <h3>Obtain facts</h3>
+                    <p>Current value comes from the HR API; policy comes from a versioned knowledge source.</p>
+                    <p class="min-loop-patterns"><a href="/patterns/m2-rag-pipeline/">M2 RAG</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">03</span>
+                    <h3>Form the plan</h3>
+                    <p>Read, validate, prepare, approve, commit, and read back, each with a completion condition.</p>
+                    <p class="min-loop-patterns"><a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">04</span>
+                    <h3>Commit intent</h3>
+                    <p>Tool, arguments, and resource become an Intent; review covers that exact content and one employee.</p>
+                    <p class="min-loop-patterns"><a href="/patterns/g1-approval-gate/">G1 Approval Gate</a> · <a href="/patterns/g2-blast-radius-control/">G2 Containment</a></p>
+                </article>
+                <article>
+                    <span class="min-loop-num">05</span>
+                    <h3>Accept the result</h3>
+                    <p>The transaction receipt and after-read must agree before the run can claim completion.</p>
+                    <p class="min-loop-patterns"><a href="/patterns/g4-observability-harness/">G4 Observability</a></p>
+                </article>
+            </div>
+            <div class="min-loop-rule">
+                <strong>Granularity rule</strong>
+                <p>Split again when decision, approval, execution, acceptance, or compensation requires a different owner or rule. The unit is small enough when all five can close independently.</p>
+            </div>
+            <p class="min-loop-link"><a href="/patterns/governance/#payroll-lifecycle">Follow the change through the agent lifecycle →</a></p>
+        </section>
+
+        <section class="block home-matrix">
             <a href="/patterns/" style="display: inline-block; text-decoration: none;">
-                <img src="/images/matrix-28-en-20260616.png"
-                     alt="The 28-pattern matrix — 7 cognitive functions × 6 execution topologies"
-                     style="max-width: 100%; width: 720px; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(15, 58, 95, 0.15);">
+                <img src="/images/matrix-v04-en-20260819.png"
+                     alt="ADPS v0.4: seven cognitive functions by six execution topologies, with G4 Observability as a cross-cutting core">
             </a>
-            <p style="margin-top: 1rem; font-size: 0.92rem; color: var(--color-text-muted); font-style: italic;">
-                The 28-core-pattern matrix &middot; 7 cognitive functions &times; 6 execution topologies
+            <p>
+                27 matrix patterns + 1 cross-cutting core specification &middot; 7 cognitive functions &times; 6 execution topologies
             </p>
         </section>
 
@@ -110,9 +158,9 @@
         <!-- ADPS-KNOWLEDGE-PATHS:START -->
         <section class="block home-knowledge">
             <h2>Workshops and topics</h2>
-            <p class="home-knowledge-intro">Perception, Memory, Action, and Reflection have completed their first workshops. Workshop records preserve field questions and unresolved differences. Topic pages synthesize engineering issues that cross several modules.</p>
+            <p class="home-knowledge-intro">Perception, Memory, Action, Reflection, and Governance have completed their first workshops. Workshop records preserve field questions and unresolved differences. Topic pages synthesize engineering issues that cross several modules.</p>
             <div class="home-path-grid">
-                <a class="home-path" href="/workshops/"><span>WORKSHOPS</span><strong>Discussion records, participants, and open questions from four modules</strong></a>
+                <a class="home-path" href="/workshops/"><span>WORKSHOPS</span><strong>Discussion records, participants, and open questions from five modules</strong></a>
                 <a class="home-path" href="/topics/"><span>TOPICS</span><strong>Cross-module engineering methods drawn from patterns and cases</strong></a>
             </div>
             <ul class="home-topic-list">

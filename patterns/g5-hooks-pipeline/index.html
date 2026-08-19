@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G5 Hooks Pipeline · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that ">
+    <title>G5 · Hooks Pipeline · ADPS</title>
+    <meta name="description" content="Run ordered, testable deterministic controls at unavoidable lifecycle points.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/g5-hooks-pipeline/">
@@ -86,10 +86,11 @@
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
               <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
               <h4>Governance</h4>
+              <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability Harness</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability Harness <span class="ext">cross-cut</span></a>
               <a href="/patterns/g5-hooks-pipeline/" class="active">G5 Hooks Pipeline <span class="ext">ext</span></a>
             </div></div>
           <div class="sb-section">
@@ -133,138 +134,54 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>G5</p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>G5</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>G5 · Hooks Pipeline</h1>
-                <p class="publication-deck">Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that guarantee them.</p>
+                <p class="publication-deck">Run ordered, testable deterministic controls at unavoidable lifecycle points.</p>
             </header>
+<p>Hooks Pipeline places deterministic authorization, argument, quota, format, and audit rules at a small set of unavoidable execution points. It avoids executable boundaries in prompts and inconsistent if statements across handlers.</p>
+<h2>v0.4 classification</h2>
+<p><strong>Extension pattern · Deterministic enforcement mechanism.</strong> The pipeline is ordered internally but spans the agent lifecycle and does not occupy a core matrix cell.</p>
+<h2>Four layers</h2>
+<table><thead><tr><th>Layer</th><th>Responsibility</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Policy Source</td><td>Store domain rules and configuration</td><td>RBAC provider, policy store, tenant config</td></tr>
+<tr><td>Decision</td><td>Evaluate identity, arguments, resources, environment</td><td>allow, deny, ask, reason, obligation</td></tr>
+<tr><td>Enforcement</td><td>Apply the verdict at an unavoidable point</td><td>middleware, hook, gateway, sandbox</td></tr>
+<tr><td>Evidence</td><td>Record input, versions, rules, result</td><td>audit event, trace, RunJournal</td></tr>
+</tbody></table>
+<p>A hook is an enforcement point. Hard-coding all policy there blocks domain evolution; using a model inside the hook to issue authority removes determinism.</p>
+<h2>Lifecycle points</h2>
+<table><thead><tr><th>Point</th><th>Controls</th></tr></thead><tbody>
+<tr><td>Assembly</td><td>Tool filtering, skill admission, credentials, version pinning</td></tr>
+<tr><td>Input</td><td>Schema, source, tenant, sensitivity, injection marker</td></tr>
+<tr><td>Pre-tool</td><td>Identity, arguments, resource, quota, approval, preconditions</td></tr>
+<tr><td>Pre-commit</td><td>Fresh state, idempotency, single use, transaction condition</td></tr>
+<tr><td>Post-tool</td><td>Schema, state delta, sensitive output, external receipt</td></tr>
+<tr><td>End, resume, retire</td><td>Acceptance, checkpoint, intent revalidation, resource recovery</td></tr>
+</tbody></table>
+<h2>Assembly and runtime</h2>
+<pre><code>task needs
+  ∩ tool groups
+  ∩ agent/subagent allow-deny
+  ∩ active skill policy
+  ∩ principal authorization
+  = model-visible tools
 
-                        <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>Coordinate</strong></td>
-            <td style="text-align: left;">Governance × Chain (propagation)</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Cross-cutting (a cross-cutting concern, not billed on the main reasoning path; it cuts across the key points of the agent lifecycle)</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Pattern group</strong></td>
-            <td style="text-align: left;">Governance patterns</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Attach a deterministic interception layer before and after tool calls and agent steps, stripping the things the model should not reason about out of the prompt and into hooks that guarantee them.</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>Problem</h2>
-            <p>An LLM should handle task understanding, reasoning, and generation. Path checks, permission rules, format validation, and command policies are better expressed as deterministic code when the condition can be specified. Leaving those controls only in the prompt adds token cost and lets untrusted input compete with the policy instruction.</p>
-            <p>The hooks pipeline runs these rules before and after an action. A path outside an allowlist, a denied command, or output that violates a schema can be blocked without asking the model to interpret the policy. The reliability then depends on the rule, implementation, and failure mode of the hook, all of which can be tested directly.</p>
-            <h2>Classification: Governance × Chain</h2>
-            <ul>
-            <li><strong>Vertical axis · Governance</strong>: The hooks pipeline inserts deterministic interception before and after tool calls and agent steps, deliberately "not letting the model reason about these things." It does not optimize the agent's reasoning quality; it only adds deterministic guardrails at lifecycle points. This is a design on the governance side.</li>
-            <li><strong>Horizontal axis · Chain</strong>: Hooks are linked into a pipeline in the order pre-hooks → action → post-hooks, and multiple hooks at the same point also fire in sequence; a veto at any stage interrupts the rest. This is a chained interception structure, not action-feature-based routing, and not hierarchical scoping of authority.</li>
-            </ul>
-            <h2>Solution and mechanics</h2>
-            <p>The hooks pipeline attaches an interception layer at key points of the agent lifecycle. Coding-agent hook systems provide examples such as:</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">Hook type</th>
-            <th style="text-align: left;">Trigger timing</th>
-            <th style="text-align: left;">Typical use</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">PreToolUse</td>
-            <td style="text-align: left;">Before a tool call</td>
-            <td style="text-align: left;">Path whitelist, permission check, quota</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">PostToolUse</td>
-            <td style="text-align: left;">After a tool call</td>
-            <td style="text-align: left;">Output validation, PII and sensitive-information scanning</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">UserPromptSubmit</td>
-            <td style="text-align: left;">When user input is submitted</td>
-            <td style="text-align: left;">Injecting context, prompt injection scanning</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Stop / SubagentStop</td>
-            <td style="text-align: left;">When a task or sub-agent completes</td>
-            <td style="text-align: left;">Cleanup, audit commit, artifact validation</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">PreCompact</td>
-            <td style="text-align: left;">Before context compaction</td>
-            <td style="text-align: left;">Deciding which messages to retain</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">SessionStart</td>
-            <td style="text-align: left;">When a session starts</td>
-            <td style="text-align: left;">Loading user context, quota reset</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>Each hook is a piece of deterministic code—for example, a shell script attached to PreToolUse that checks whether the command the agent wants to run hits the blacklist; if it does, it returns a non-zero exit code, and the pipeline blocks that call. At the framework level, this mechanism is equivalent to a web framework's middleware chain: DeerFlow and DeepAgents build it as LangChain / LangGraph middleware, where every tool call passes through an authentication / quota / sandbox / audit chain.</p>
-            <h2>Applicability</h2>
-            <ul>
-            <li><strong>Any production agent that connects to tools</strong>: A path whitelist plus quota on PreToolUse is the baseline, moving the boundaries of high-risk tools out of the prompt and into hooks.</li>
-            <li><strong>Agents facing user input</strong>: UserPromptSubmit hooks can classify or flag injection patterns before the request enters the main run. They complement, rather than replace, permission boundaries at tool execution.</li>
-            <li><strong>Scenarios with output compliance requirements</strong>: Schema validation plus PII scanning on PostToolUse guarantees that returned content does not leak sensitive data.</li>
-            <li><strong>Multi-agent systems needing a unified audit entry point</strong>: Attach the audit commit to Stop / SubagentStop so that every task completion automatically leaves a trace.</li>
-            </ul>
-            <h2>Known failure modes</h2>
-            <ul>
-            <li><strong>Fail-open when a hook fails</strong>: If the hook itself crashes and defaults to allowing the action through, the interception layer is effectively nonexistent. In production, a hook exception must fail-safe block—blocking is safer than letting through.</li>
-            <li><strong>Things that should use a hook are written into the prompt</strong>: Writing command blacklists and path validation as "please do not…" in the system prompt is bypassed by a single prompt injection. Deterministic judgments must land in hooks; they cannot rely on the model's self-discipline.</li>
-            <li><strong>The hook itself leaves no trace</strong>: When regulators investigate "which hook blocked what," no record can be found. Every interception decision must write an audit log, and the hook layer itself must be observable.</li>
-            <li><strong>Attaching only at the tool layer, missing other lifecycle points</strong>: Doing only PreToolUse while ignoring input and output controls leaves gaps. Coverage should follow the threat model across the lifecycle.</li>
-            </ul>
-            <h2>Verification and metrics</h2>
-            <ul>
-            <li><strong>Hook interception hit rate</strong> (watch the trend rather than the absolute value): the proportion of actions blocked by hooks. A sudden rise is often a signal of more prompt injection attempts or an upstream configuration error.</li>
-            <li><strong>Behavior when a hook fails</strong>: High-risk admission checks should fail-safe. Any lower-risk degradation path must be explicit policy, not an accidental exception branch.</li>
-            <li><strong>Hook execution latency</strong>: Measure the time added by each layer. Admission decisions must finish before action execution; non-blocking analysis may run asynchronously.</li>
-            <li><strong>Lifecycle coverage</strong>: Verify that input, tool, output, compaction, and completion controls match the system's threat model rather than aiming for a particular hook count.</li>
-            </ul>
-            <h2>Reference implementation</h2>
-            <pre><code>HooksPipeline registers multiple hooks, grouped by HookType
-
-            trigger(hook_type, payload):
-                for hook in hooks[hook_type]:        # hooks at the same point fire in sequence (chain)
-                    verdict = hook(ctx)
-                    if verdict.block:                # a veto by any hook interrupts
-                        return blocked(by=hook, reason=...)
-                    if verdict.modified_payload:     # a hook can also rewrite the payload before passing it down
-                        ctx.payload = verdict.modified_payload
-                return approved(ctx.payload)
-
-            hook itself throws an exception → default block (fail-safe), and write an audit log
-            </code></pre>
-            <p>Three things must be changed in an engineering rollout: PreToolUse must add a path whitelist plus quota, UserPromptSubmit must add injection scanning, and PostToolUse must add output schema validation plus PII scanning; a hook failure uniformly goes to fail-safe block; every interception decision lands in an audit log for regulators to query.</p>
-            <h2>Illustrative scenario</h2>
-            <p>Consider an operations agent whose command restrictions exist only in the system prompt: do not remove files, escalate privilege, or contact unapproved hosts. An untrusted knowledge-base document tells the agent to ignore those instructions and clean a temporary directory. A stronger design moves command and path policy into a PreToolUse hook that returns a blocking verdict, while an input hook flags likely injection content for handling. The example illustrates the separation of model judgment from enforceable policy; the hooks still require tests for bypasses, parsing errors, and fail-open behavior.</p>
-            <h2>Related patterns</h2>
-            <ul>
-            <li><strong>Approval Gate (G1)</strong>: An approval gate is a special form of PreToolUse hook—a human-in-the-loop interception inserted before an action executes. The hooks pipeline is the wider container; approval is just one kind of hook within it.</li>
-            <li><strong>Blast Radius Control (G2)</strong>: An implementation-layer relationship. G2's L1 capability validation is largely implemented through PreToolUse hooks; the hook is the sidecar interception point of blast radius at each action.</li>
-            <li><strong>Progressive Commitment (G3)</strong>: Independent pre-action probes can be implemented as hooks or policy-engine stages, with any required veto aborting the action.</li>
-            <li><strong>Observability (G4)</strong>: Hooks themselves must leave a trace, and the Stop hook is often used to attach an audit commit—an entry point for G4's data collection.</li>
-            </ul>
-            <h2>Design conclusion</h2>
-            <p>The hooks pipeline runs validation, policy, audit, and state updates at defined lifecycle points. Deterministic permission, command, and data-boundary rules belong in hooks or a policy engine rather than in the model's moment-to-moment judgment.</p>
-
-            <h2>Open-source implementation</h2>
-            <p><a href="/cases/deerflow-guardrail/"><strong>DeerFlow Guardrails and Two-Layer Authorization</strong></a> traces five public pull requests across assembly filtering, run-time authorization, trusted identity, RBAC, and RunJournal, with explicit boundaries for this pattern.</p>
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>G5 Hooks Pipeline</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
+visible tool + arguments + resource + environment + quota + approval
+  → runtime verdict</code></pre>
+<p>Assembly narrows model choice; invocation handles arguments, resources, and changing state. Neither substitutes for the other.</p>
+<h2>Public DeerFlow evolution</h2>
+<p><a href="/cases/deerflow-guardrail/">Five public DeerFlow pull requests</a> add pre-tool middleware, a trusted Principal, RunJournal, an independent RBAC provider, and two-layer authorization. Tests cover sync and async paths plus lead agents, subagents, and embedded clients.</p>
+<p>The public implementation covers allow/deny PRE guards. Human ask, durable intent, and general POST business verification remain integration work.</p>
+<h2>Failure semantics and verification</h2>
+<p>Define order, verdict conflicts, timeout and exception defaults, sync/async equivalence, audit failure, and retry semantics. High-risk authorization usually fails closed; low-risk telemetry may buffer and continue.</p>
+<p>Look for prompt-only rules, bypass entries, protected-field mutation, POST replacing PRE, policy and enforcement in one function, fail-open dependencies, and retried non-idempotent hooks. Verify all agent and client paths, zero handler calls after deny, stable order, and contract tests for every reason and fault branch.</p>
+            <div class="document-citation">
+                <p><strong>Suggested citation:</strong>ADPS, <em>G5 · Hooks Pipeline</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
+                <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
+            </div>
         </article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

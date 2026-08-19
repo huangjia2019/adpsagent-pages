@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>治理模块 · 把 Agent 的自主权变成可管理的工程对象 · ADPS</title>
+    <meta name="description" content="授权、问责、限界；双轴矩阵、横切工程面、治理生命周期与控制平面。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+
+    <link rel="canonical" href="https://adpsagent.com/zh/patterns/governance/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/governance/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/governance/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/" aria-current="page">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/patterns/governance/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/perception/">感知模块总纲</a>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/memory/">记忆模块总纲</a>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/action/">行动模块总纲</a>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/reflection/">反思模块总纲</a>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/" class="active">治理模块总纲</a>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/concepts/">概念定义首页</a>
+              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
+              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
+              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
+              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
+              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
+              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
+              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
+              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
+              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>Governance</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
+                <h1>治理模块 · 把 Agent 的自主权变成可管理的工程对象</h1>
+                <p class="publication-deck">授权、问责、限界；双轴矩阵、横切工程面、治理生命周期与控制平面。</p>
+            </header>
+<p>当 Agent 只能给建议时，治理主要表现为内容审核。它开始调用工具、修改业务状态、委派子 Agent 以后，治理转为运行时工程：谁代表谁，凭什么执行当前动作，防线失效后最大影响停在哪里，事后能否还原责任与结果。</p>
+<p>单步合规也不能证明长程任务没有漂移。治理既检查当前动作，又持续比较原始目标、当前状态和真实结果。</p>
+<p><img src="/images/patterns/adps-framework-v04-zh.svg" alt="ADPS v0.4：双轴矩阵、横切工程面与 Agent 生命周期"></p>
+
+<h2>三个治理目标</h2>
+<table><thead><tr><th>目标</th><th>需要回答的问题</th><th>工程对象</th></tr></thead><tbody>
+<tr><td><strong>授权 Authorization</strong></td><td>谁代表谁，可以对什么资源执行什么动作</td><td>身份、委托链、策略、工具、参数与资源</td></tr>
+<tr><td><strong>问责 Accountability</strong></td><td>谁在什么版本和策略下做了什么，结果如何</td><td>run、trace、审批、版本、状态差异与外部回执</td></tr>
+<tr><td><strong>限界 Containment</strong></td><td>控制失效时，最大损失停在哪里</td><td>沙箱、租户边界、配额、预算、熔断与补偿</td></tr>
+</tbody></table>
+<p>G1 决定一次意图是否获准，G2 限制获准动作出错后的最大影响，G3 管理某项能力长期可以放到什么程度。G4 保存三者需要的事实；G5 把确定性裁决落到运行节点。</p>
+
+<h2>v0.4 的三层结构</h2>
+<h3>双轴矩阵</h3>
+<p>“认知功能 × 执行拓扑”仍是 ADPS 的主结构。七类认知功能与六种执行拓扑保持不变，矩阵包含 27 个占格核心模式。治理行保留 G1 审批门、G2 爆炸半径控制和 G3 渐进承诺。</p>
+<h3>横切工程面</h3>
+<table><thead><tr><th>工程面</th><th>范围</th><th>主要产物</th></tr></thead><tbody>
+<tr><td><strong>观测与证据</strong></td><td>全部模式和生命周期阶段</td><td>事件、因果、版本、状态差异与回执</td></tr>
+<tr><td><strong>Evals 与测试</strong></td><td>产物、轨迹和业务结果</td><td>回归、grader、确定性测试与业务验收</td></tr>
+<tr><td><strong>身份、策略与安全</strong></td><td>主体、委托、权限和边界</td><td>allow、deny、ask、限额与执行条件</td></tr>
+<tr><td><strong>人机交互</strong></td><td>澄清、审批、暂停、接管和恢复</td><td>结构化事件、审批上下文与恢复坐标</td></tr>
+</tbody></table>
+<p>G4 从“治理 × 编排”移出，成为第 28 个核心规范，分类为“横切核心 · 观测与证据平面”。核心总数仍为 28：27 个矩阵模式，加 1 个横切核心规范。</p>
+
+<h3 id="payroll-lifecycle">生命周期</h3>
+<p><img src="/images/patterns/agent-governance-lifecycle-zh.svg" alt="Agent 从登记、设计、评测、灰度、运行到降级和退役的治理生命周期"></p>
+<p>ReAct 位于受控运行内部，是一次任务的感知、推理、行动微循环。Evals 在离线评测、灰度、运行监控和修改复验中反复出现。它们都不需要新的矩阵坐标。</p>
+
+<h2>贯穿实例：一批薪酬付款怎样走完生命周期</h2>
+<p>下面的实例用于解释模式组合，不代表具名企业案例。</p>
+<table><thead><tr><th>阶段</th><th>薪酬 Agent 的工程动作</th><th>留下的证据</th></tr></thead><tbody>
+<tr><td>登记与归属</td><td>登记 Agent、所有者、用途、生产环境、两项能力和退役条件</td><td>Agent ID、owner、能力清单、凭证引用</td></tr>
+<tr><td>设计与版本</td><td>固定模型、提示词、工资规则、付款工具、审批策略与数据依赖</td><td>workload digest 与依赖清单</td></tr>
+<tr><td>离线评测</td><td>覆盖常规批次、新入职、跨地区税务、重复请求与恶意参数</td><td>回归结果、失败类型、成本与边界测试</td></tr>
+<tr><td>影子与灰度</td><td>先与人工结果对照，再让少量常规批次进入建议模式</td><td>人工差异、采纳率、长尾分布</td></tr>
+<tr><td>受控运行</td><td>G1 固定付款意图并审批；G2 限定租户、金额和批量；G5 在提交前复验</td><td>Intent、Approval、配额、hook 裁决</td></tr>
+<tr><td>观测与归因</td><td>G4 连接来源账本、参数、付款回执、状态差异和后续对账</td><td>跨系统 trace、外部回执、业务结果</td></tr>
+<tr><td>修改与复验</td><td>付款 API 升级后冻结旧权限，对受影响能力重新跑回归和影子验证</td><td>版本差异、复验结果、变更审批</td></tr>
+<tr><td>权限处置</td><td>校验能力可进入受限自动执行；提交付款继续保留人审；试点结束则回收入口</td><td>能力级授权证书、降级或退役记录</td></tr>
+</tbody></table>
+
+<h2>治理控制平面</h2>
+<p><img src="/images/patterns/agent-governance-control-plane-zh.svg" alt="Agent 治理控制平面：注册、策略、执行和观测"></p>
+<p>一个 Agent 可以在本地拦截工具调用。多个 Agent、多个业务域和跨 Agent 委派出现后，组织需要共同的注册、策略、执行和证据服务。中央平台维护身份、策略格式、遥测与跨域审计；业务域继续定义风险、验收、审批人与事故响应。</p>
+
+<h2>治理合同</h2>
+<pre><code class="language-yaml">intent_id: int_01K3...
+principal: user://finance/108
+agent: agent://payroll/prod-v7
+run_id: run_8842
+tool:
+  name: create_payment_batch
+  digest: sha256:4ef...
+resource_scope:
+  tenant: tenant_42
+  max_records: 20
+policy:
+  version: payroll-policy-v12
+  decision: ask
+preconditions:
+  source_ledger_version: 417
+approval:
+  expires_at: 2026-08-19T09:30:00Z
+  max_uses: 1
+execution:
+  idempotency_key: payrun-2026-08-batch-17
+</code></pre>
+<p>工具名不足以支持治理裁决。工具版本、规范化参数、资源范围、委托身份、环境、累计预算和业务前置条件都会改变风险。</p>
+
+<h2>治理模式的职责</h2>
+<table><thead><tr><th>规范</th><th>控制对象</th><th>关键边界</th></tr></thead><tbody>
+<tr><td><a href="/zh/patterns/g1-approval-gate/"><strong>G1 审批门</strong></a></td><td>当前高风险意图</td><td>恢复前验证意图与前置条件；批准只消费一次</td></tr>
+<tr><td><a href="/zh/patterns/g2-blast-radius-control/"><strong>G2 爆炸半径控制</strong></a></td><td>动作、run 与 Agent 群体的最大影响</td><td>硬边界不能由 Agent 自评或历史成功率改写</td></tr>
+<tr><td><a href="/zh/patterns/g3-progressive-commitment/"><strong>G3 渐进承诺</strong></a></td><td>能力与场景的自治档位</td><td>权限可以晋级、维持、降级、冻结和退役</td></tr>
+<tr><td><a href="/zh/patterns/g4-observability-harness/"><strong>G4 可观测性</strong></a></td><td>横切证据链</td><td>观测事实与评测判断分开保存</td></tr>
+<tr><td><a href="/zh/patterns/g5-hooks-pipeline/"><strong>G5 钩子流水线</strong></a></td><td>确定性执行节点</td><td>hook 是执行位置，不是策略来源或业务裁判</td></tr>
+</tbody></table>
+
+<h2>公开工程实践与研讨记录</h2>
+<p><a href="/zh/cases/deerflow-guardrail/"><strong>DeerFlow Guardrail 与双层授权</strong></a>按五个公开 PR 展示工具调用前拦截、身份传播、RunJournal、RBAC Provider，以及装配时过滤与运行时复核的演进。</p>
+<p><a href="/zh/workshops/governance-2026-08-18/"><strong>治理模块第一次研讨会</strong></a>保留了沙箱与业务授权、审批恢复、Agent 注册、证据归因、能力级放权和离线评测等具体讨论，并说明这些讨论如何进入 v0.4。</p>
+
+<h2>仍在验证的机制</h2>
+<ul>
+<li><strong>委托身份链</strong>：用户、Agent、workload、run 与下游工具之间怎样保持身份和权限收敛。</li>
+<li><strong>持久化意图</strong>：审批等待后，哪些前置条件变化必须让旧批准失效。</li>
+<li><strong>Agent 注册与退役</strong>：试点、凭证、版本、队列和责任人怎样进入统一生命周期。</li>
+<li><strong>联邦治理</strong>：中央规则与业务域责任怎样组合，例外和事故由谁裁决。</li>
+</ul>
+            <div class="document-citation">
+                <p><strong>引用建议：</strong>ADPS，《治理模块 · 把 Agent 的自主权变成可管理的工程对象》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
+            </div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

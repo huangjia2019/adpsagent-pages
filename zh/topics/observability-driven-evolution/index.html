@@ -53,7 +53,7 @@
             </header>
 
 <p>Agent 运行失败时，一个最终答案和几行应用日志很难说明问题。工程师需要知道它当时看到了什么，选了哪个工具，改变了哪些状态，又根据什么宣布完成。当团队开始调整提示词、工具、Skill、记忆或执行结构时，还要回答更难的问题：这次修改是否真的改善了后续任务，有没有引入新的回归。</p>
-<p>这些问题横跨感知、行动、反思、记忆与治理。G4 可观测性给出局部实现模式；本专题讨论可观测性如何成为 Agent 持续演进的工程基础。</p>
+<p>这些问题横跨感知、记忆、推理、行动、反思、协作与治理。v0.4 将 G4 可观测性列为横切核心规范；本专题继续讨论证据如何支撑 Agent 调试、评测、发布与演进。</p>
 <h2>感知与可观测性的边界</h2>
 <p>感知处理 Agent 能从外部世界读到哪些信号。可观测性处理工程团队能否还原 Agent 的运行过程和变更效果。前者为推理提供输入，后者为调试、评审、发布和追责提供证据。</p>
 <p>可观测性至少要支持三类查询：</p>
@@ -172,7 +172,7 @@
 </tr>
 </tbody>
 </table>
-<p>因此，可观测性既是 G4 的实现责任，也是长程任务、评测、反思和记忆的共享基础。</p>
+<p>G4 给出统一的可观测合同，其证据同时服务长程任务、评测、反思、记忆与治理生命周期。</p>
 <h2>常见失效方式</h2>
 <ul>
 <li>日志只有文本，没有任务、步骤、状态和证据的语义关联。</li>
@@ -187,6 +187,9 @@
 <h2>资料与来源</h2>
 <ul>
 <li><a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a></li>
+<li><a href="/zh/patterns/governance/">治理模块总纲与 Agent 生命周期</a></li>
+<li><a href="/zh/workshops/governance-2026-08-18/">ADPS 治理模块第一次研讨会</a></li>
+<li><a href="/zh/cases/deerflow-guardrail/">DeerFlow Guardrail 代码与架构演进</a></li>
 <li><a href="/zh/cases/liangbo-execution-agent/">东方屹腾·执行型 Agent 案例</a></li>
 <li><a href="https://arxiv.org/html/2604.25850v4">复旦大学：Agentic Harness Engineering</a></li>
 <li><a href="/zh/workshops/action-2026-08-06/">ADPS 行动模块第一次研讨会</a></li>

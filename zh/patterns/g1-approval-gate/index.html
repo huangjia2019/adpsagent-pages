@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G1 审批门 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="高 blast radius 或不可逆动作执行前，按风险路由到自动放行、留痕执行或人工审批。">
+    <title>G1 · Approval Gate · 审批门 · ADPS</title>
+    <meta name="description" content="固定审批对象，并在暂停恢复后证明执行的仍是获批意图。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -92,10 +92,11 @@
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
               <a href="/zh/patterns/g1-approval-gate/" class="active">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
@@ -139,135 +140,67 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
-                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
-                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G1
-            </p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G1</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>G1 · Approval Gate · 审批门</h1>
-                <p class="publication-deck">高 blast radius 或不可逆动作执行前，按风险路由到自动放行、留痕执行或人工审批。</p>
+                <p class="publication-deck">固定审批对象，并在暂停恢复后证明执行的仍是获批意图。</p>
             </header>
-
-            <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>坐标</strong></td>
-            <td style="text-align: left;">治理 Governance × 路由 Route（选）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在所有高风险动作上）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式组</strong></td>
-            <td style="text-align: left;">治理模式</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">高 blast radius 或不可逆动作执行前，按风险路由到自动放行、留痕执行或人工审批。</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>问题</h2>
-            <p>Agent 在生产环境中可能执行转账、production 部署和对外邮件等不可逆动作。这类动作的单次错误成本远高于模型调用成本。全部自动执行会放大风险，全部人工审批又会造成审批瓶颈。</p>
-            <p>Approval Gate 在动作执行前完成风险分类：低风险自动放行，中风险留痕后执行，高风险强制人工审批。审批记录同时明确 decision owner 和责任归属。</p>
-            <h2>坐标说明：治理 × 路由</h2>
-            <ul>
-            <li><strong>纵轴 · 治理</strong>：审批门决定高 blast radius 动作是否可以执行，不改变 Agent 的推理过程。</li>
-            <li><strong>横轴 · 路由</strong>：每个 action 按 reversibility × impact 分类，进入 auto-approve、auto-with-log 或 human-in-loop 路径。</li>
-            </ul>
-            <h2>解决方案与机制</h2>
-            <p>一次审批评估由风险分级加三阶段路由组成：</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">阶段</th>
-            <th style="text-align: left;">做什么</th>
-            <th style="text-align: left;">关键纪律</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">Stage 1 Deny</td>
-            <td style="text-align: left;">命中黑名单规则直接拒绝</td>
-            <td style="text-align: left;">必须 inspect arguments 不只看 tool name</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Stage 2 Allow</td>
-            <td style="text-align: left;">命中白名单的低风险动作自动放行</td>
-            <td style="text-align: left;">CRITICAL 风险不允许走 allow rule 通过</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">Stage 3 Ask</td>
-            <td style="text-align: left;">剩余的中高风险动作路由到人审</td>
-            <td style="text-align: left;">无人可审时默认拒绝，不默认放行</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>风险分级建议走 reversibility × impact 双轴，而不是单纯按金额线性切。可逆且影响小的动作可以自动放行，不可逆或影响大的动作进入人审，策略定义的高风险组合再要求独立复核。Coding Agent 的分档 PermissionMode 展示了同一思路：把“全开/全关”升级为多档状态机和动态判断。</p>
-            <h2>适用场景</h2>
-            <ul>
-            <li><strong>金融与支付</strong>：转账、退款、放款这类不可逆资金动作，超阈值必须人审且高额走双人复核。</li>
-            <li><strong>运维生产环境</strong>：部署、数据库 migration、DNS 切换这类影响面大的操作，先看 plan 再执行。</li>
-            <li><strong>对外发布与法律文书</strong>：邮件群发、合同生成、监管报告，错一次的声誉与合规代价不可逆。</li>
-            <li><strong>regulator-facing 的高风险 AI</strong>：部署在 EU 且属于招聘、信贷、关键基础设施等类别的系统，没有 human oversight 的审批路径直接合规失败。</li>
-            </ul>
-            <h2>已知失效方式</h2>
-            <ul>
-            <li><strong>Approval Fatigue（审批疲劳）</strong>：allow list 过窄会导致高频弹窗和机械放行。经过验证的低风险动作应进入自动路径，人工审批保留给高风险动作。</li>
-            <li><strong>False Safety（虚假安全）</strong>：deny 规则只看 tool name 不看参数，一个看似无害的 <code>run_command</code> 调 <code>rm -rf</code> 就绕过了。deny 必须检查 arguments，高风险判定建议用 LLM 评估参数是否 destructive。</li>
-            <li><strong>Trust Score Override Drift（信任分数绕过漂移）</strong>：为了减少审批人不耐烦，加一条"老 vendor 累计成功 N 次就放宽阈值"。每一次绕过都假设那条被绕过的路径不会出事，直到那笔被绕过的大额付款进了攻击者账户。金额、不可逆性、监管关键性这三类硬触发永远不允许被 trust 优化绕过。</li>
-            <li><strong>审批规则散落在 agent 代码里</strong>：每个 Agent 各写一套，跨 Agent 系统找不到统一合规边界。正确方向是把 policy 抽到独立的 centralized layer，用声明式语言让合规团队和工程团队在同一份文件里协作。</li>
-            </ul>
-            <h2>验证指标</h2>
-            <ul>
-            <li><strong>approval-to-rejection 分布</strong>：按动作类型观察放行、拒绝、退回补充和超时。长期几乎全部放行时，应检查审批是否退化为橡皮图章。</li>
-            <li><strong>审批决策时长</strong>：结合风险等级和材料复杂度分析。大量极短决策可能反映审批疲劳，但需要通过抽样复核确认。</li>
-            <li><strong>override path 触发率</strong>：单独监控基于 trust、紧急流程或管理员权限的绕过路径。任何异常增长都应暂停该路径并复盘。</li>
-            <li><strong>audit log 完整率</strong>：高风险动作必须记录请求、证据、审批人、决定、理由和最终结果。留存字段与期限按适用法规和组织政策确定。</li>
-            </ul>
-            <h2>最小实现</h2>
-            <pre><code>对每个 action：
-    risk = classify(action)          # reversibility × impact 双轴
-    Stage 1 Deny  → 命中黑名单(查 args 不只查 name) → 拒绝
-    Stage 2 Allow → 命中白名单 且 risk != CRITICAL → 放行
-    Stage 3 Ask:
-        risk == LOW            → 自动放行
-        risk &gt;= MEDIUM         → 路由到人审(无人可审则默认拒绝)
-        risk 超阈值 / 不可逆    → two-person rule 双人独立复核
-返回 ApprovalRecord(action / risk / decision / reviewer / rationale)
-全程写 WORM audit log（满足监管留档）
+<p>审批门接收准备生效的具体意图：工具不可变版本、规范化参数、资源范围、委托身份和业务前置条件。</p>
+<h2>坐标与边界</h2>
+<p><strong>治理 × 路由。</strong>同一个工具会因主体、参数、环境、影响和可逆性不同，进入 deny、allow 或 ask。动作怎样生成属于行动模块；获准后最多能影响多少由 G2 负责。</p>
+<h2>三份记录</h2>
+<table><thead><tr><th>记录</th><th>内容</th><th>约束</th></tr></thead><tbody>
+<tr><td><strong>Intent</strong></td><td>Agent、run、工具摘要、参数、资源、策略版本与前置条件</td><td>实质变化后生成新意图</td></tr>
+<tr><td><strong>Approval</strong></td><td>审批人、决定、依据、有效期、可用次数与 Intent 摘要</td><td>只批准一个明确对象</td></tr>
+<tr><td><strong>Execution</strong></td><td>执行前复验、幂等键、实际调用、状态差异与外部回执</td><td>证明执行对象与获批对象一致</td></tr>
+</tbody></table>
+<pre><code class="language-yaml">intent:
+  tool_digest: sha256:4ef...
+  parameters_ref: artifact://intent/int_01/params
+  resource_scope: {tenant: tenant_42, max_records: 20}
+  policy_version: payroll-v12
+  preconditions: {ledger_version: 417}
+approval:
+  intent_digest: sha256:93a...
+  expires_at: 2026-08-19T09:30:00Z
+  max_uses: 1
+execution:
+  idempotency_key: payrun-2026-08-batch-17
 </code></pre>
-            <p>生产实现使用业务风险分类器，例如金融领域的 KYC + AML 评分或运维领域的 blast radius 估算；人工审批接入飞书、Slack、ServiceNow 等真实工作流；双人复核强制 <code>reviewer1 != reviewer2</code>。</p>
-            <h2>场景化示例</h2>
-            <p>设想一个 vendor payment Agent 收到供应商修改收款账号的通知。系统虽然把付款识别为高风险，却允许“长期合作供应商”的 trust-score override 覆盖金额与账号变更审批。攻击者一旦伪造 change notice，这条捷径就会绕过人工检查。修订后的策略规定，账号变化、收款主体变化和其他硬触发条件不能被 trust score 覆盖；高风险付款进入双人复核；audit log 按银行政策留存。</p>
-            <p>在执行型 Agent 的工程实现里，这套门可以做得更轻。当 Agent 有了任务节点和任务状态机之后，敏感任务能在节点处被阻塞、等人工审核通过再继续执行，需要审核的关键操作基于配置声明即可挂上 human-in-the-loop，不必每次都改代码。</p>
-            <h2>相邻模式</h2>
-            <ul>
-            <li><strong>爆炸半径控制（G2）</strong>：审批门决定动作是否准入，爆炸半径控制限制动作失败后的最大影响。</li>
-            <li><strong>渐进承诺（G3）</strong>：互补。审批门是一道静态的门，渐进承诺是一条动态的权力进阶路径。同一个动作两个模式一起决定 routing——当前信任档位越高，需要人审的动作越少。</li>
-            <li><strong>可观测性（G4）</strong>：依赖。审批门必须留 audit log，G4 让这些 log 可被查询、可被回放、可被监管审计。没有 G4，审批记录就是没人看的死数据。</li>
-            <li><strong>钩子流水线（G5）</strong>：审批门是 PreToolUse hook 的一种特殊形态——在动作执行前插入的一道 deterministic 拦截。</li>
-            </ul>
-            <h2>工程判断</h2>
-            <p>Approval Gate 将高风险动作、审批状态和责任主体写入运行时契约。审批人、产品 owner 与系统策略各自承担的范围需要在动作执行前明确。</p>
-
-                        <h2>企业证据</h2>
-            <p>以下现场记录说明该模式在具体业务约束下如何实现。案例结论只在文中声明的系统边界内成立。</p>
-            <ul style="list-style: none; margin: 0.5rem 0 1rem 0; padding: 0;">
-                <li style="margin-bottom: 0.6rem; line-height: 1.55;"><a href="cases/liangbo/" style="font-weight: 600;">东方屹腾 · 审批门</a><span style="color: var(--color-text-muted);"> — 敏感节点执行前等待审批，通过后重新校验并从原任务节点恢复。</span></li>
-            </ul>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
-
-            <h2>开源实现</h2>
-            <p><a href="/zh/cases/deerflow-guardrail/"><strong>DeerFlow Guardrail 与双层授权</strong></a>按五个公开 PR 展开装配时过滤、运行时授权、可信身份、RBAC 与 RunJournal 的演进，并标出该实现对本模式的覆盖范围。</p>
+<p>参数先规范化再计算摘要。字段顺序、默认值、时区和金额精度没有统一时，摘要无法可靠表达“同一个意图”。</p>
+<h2>有序裁决</h2>
+<ol>
+<li>确定性规则处理硬拒绝、明确放行和必须人审的条件。</li>
+<li>模型分类器补充难以穷举的上下文，输出风险与理由，不签发权限。</li>
+<li>策略引擎结合身份、参数、资源和环境形成结构化裁决。</li>
+</ol>
+<p>冲突顺序必须写进策略。高风险链路在策略服务不可用、无人审批或超时后通常应停止，不能依赖异常分支偶然放行。</p>
+<h2>暂停后怎样恢复</h2>
+<pre><code>DRAFT → EVALUATING → DENIED
+                  ↘ ALLOWED → EXECUTING → CONSUMED
+                  ↘ PENDING → APPROVED → REVALIDATING → EXECUTING
+                                      ↘ EXPIRED / INVALIDATED
+</code></pre>
+<p>恢复时检查 Intent 摘要、工具与策略版本、审批有效期、单次消费状态和业务前置条件。日志时间变化通常无关；金额、收款账户、目标资源版本或风险等级变化通常需要重新裁决。具体字段由业务域定义。</p>
+<h2>运行实例</h2>
+<p>薪酬 Agent 准备提交 18 人付款批次。策略检测到一个刚变更的收款账户，审批界面展示账户差异、总金额、来源账本和风险原因。等待期间又有一笔金额被修正，账本版本变化。恢复时旧批准失效，系统生成新 Intent。新批准被原子消费一次，付款 API 的批次号和状态差异进入 Execution。</p>
+<h2>常见失效</h2>
+<ul>
+<li>只审批工具名或自由文本摘要；</li>
+<li>批准没有过期、撤销和单次消费；</li>
+<li>模型风险分直接变成 allow；</li>
+<li>重试、异步回调或恢复路径绕开审批；</li>
+<li>审批界面看不到参数来源、资源差异和实际影响。</li>
+</ul>
+<h2>验证</h2>
+<p>测试参数篡改、策略换版、审批过期、并发消费、重复回调、前置条件变化和审批服务故障。生产观测至少覆盖获批摘要与执行摘要的一致性、旧审批拦截、高风险旁路和低风险误入人审。</p>
+<h2>相邻规范</h2>
+<p><a href="/zh/patterns/g2-blast-radius-control/">G2</a>限制获准动作的最大影响；<a href="/zh/patterns/g3-progressive-commitment/">G3</a>提供能力级自治档位；<a href="/zh/patterns/g4-observability-harness/">G4</a>连接 Intent、Approval、Execution 与回执；<a href="/zh/patterns/g5-hooks-pipeline/">G5</a>提供调用前和恢复前的执行位置。</p>
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《G1 审批门》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
-                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
+                <p><strong>引用建议：</strong>ADPS，《G1 · Approval Gate · 审批门》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
             </div>
         </article>
 

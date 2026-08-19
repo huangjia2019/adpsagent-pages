@@ -1,0 +1,20 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Noto Sans CJK SC, Microsoft YaHei, sans-serif","lineColor":"#64748b"},"flowchart":{"curve":"basis","nodeSpacing":34,"rankSpacing":50}}}%%
+flowchart LR
+    A["01 登记与归属<br/>Agent ID · 所有者 · 用途 · 退役条件"] --> B["02 设计与版本<br/>模型 · 提示词 · 工具 · Skill · 策略"]
+    B --> C["03 离线评测<br/>能力 · 安全 · 回归 · 成本"]
+    C --> D["04 影子与灰度<br/>真实分布 · 无副作用 · 小范围"]
+    D --> E["05 受控运行<br/>身份 · 审批 · 限界 · ReAct"]
+    E --> F["06 观测与归因<br/>任务 · 过程 · 组件 · 业务结果"]
+    F --> G["07 修改与复验<br/>知识 · 规格 · 工具 · 模型 · 策略"]
+    G --> H["08 权限处置<br/>晋级 · 维持 · 降级 · 退役"]
+    H -. 新版本 .-> B
+    H -. 停用 .-> I["回收凭证 · 停止流量<br/>关闭队列 · 保留审计"]
+
+    classDef stage fill:#f8fafc,color:#0f172a,stroke:#64748b,stroke-width:1.5px;
+    classDef operate fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    classDef evidence fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef retire fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    class A,B,C,D,G,H stage;
+    class E operate;
+    class F evidence;
+    class I retire;

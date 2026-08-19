@@ -1,0 +1,36 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Noto Sans CJK SC, Microsoft YaHei, sans-serif","primaryTextColor":"#0f172a","lineColor":"#64748b","clusterBkg":"#f8fafc","clusterBorder":"#cbd5e1"},"flowchart":{"curve":"basis","nodeSpacing":30,"rankSpacing":34}}}%%
+flowchart TB
+    subgraph L[Agent 生命周期]
+      direction LR
+      L1[登记与归属] --> L2[设计与版本] --> L3[离线评测] --> L4[影子与灰度] --> L5[受控运行] --> L6[观测与归因] --> L7[修改与复验] --> L8[晋级 · 降级 · 退役]
+      L8 -. 下一版本 .-> L2
+    end
+
+    M["双轴矩阵<br/><b>7 类认知功能 × 6 种执行拓扑</b><br/>27 个占格核心模式"]
+
+    subgraph X[横切工程面]
+      direction LR
+      X1["<b>G4 观测与证据</b><br/>事件 · 因果 · 版本 · 回执"]
+      X2["<b>Evals 与测试</b><br/>产物 · 轨迹 · 业务结果"]
+      X3["<b>身份 · 策略 · 安全</b><br/>委托 · 权限 · 限界"]
+      X4["<b>人机交互</b><br/>澄清 · 审批 · 接管 · 恢复"]
+    end
+
+    L5 --> M
+    M -. 接入 .-> X1
+    M -. 接入 .-> X2
+    M -. 接入 .-> X3
+    M -. 接入 .-> X4
+    X1 --> L6
+    X2 --> L7
+    X3 --> L8
+    X4 --> L5
+
+    classDef matrix fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    classDef evidence fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef plane fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    classDef life fill:#f8fafc,color:#0f172a,stroke:#94a3b8,stroke-width:1.5px;
+    class M matrix;
+    class X1 evidence;
+    class X2,X3,X4 plane;
+    class L1,L2,L3,L4,L5,L6,L7,L8 life;

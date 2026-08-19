@@ -1,0 +1,36 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Open Sans, Arial, sans-serif","primaryTextColor":"#0f172a","lineColor":"#64748b","clusterBkg":"#f8fafc","clusterBorder":"#cbd5e1"},"flowchart":{"curve":"basis","nodeSpacing":30,"rankSpacing":34}}}%%
+flowchart TB
+    subgraph L[Agent lifecycle]
+      direction LR
+      L1[Register & own] --> L2[Design & version] --> L3[Offline eval] --> L4[Shadow & canary] --> L5[Controlled operation] --> L6[Observe & attribute] --> L7[Change & revalidate] --> L8[Promote · demote · retire]
+      L8 -. next version .-> L2
+    end
+
+    M["Dual-axis matrix<br/><b>7 cognitive functions × 6 execution topologies</b><br/>27 cell-bound core patterns"]
+
+    subgraph X[Cross-cutting engineering planes]
+      direction LR
+      X1["<b>G4 Observation & evidence</b><br/>events · causality · versions · receipts"]
+      X2["<b>Evals & testing</b><br/>artifacts · trajectories · outcomes"]
+      X3["<b>Identity · policy · security</b><br/>delegation · authority · containment"]
+      X4["<b>Human-agent interaction</b><br/>clarify · approve · take over · resume"]
+    end
+
+    L5 --> M
+    M -. connects .-> X1
+    M -. connects .-> X2
+    M -. connects .-> X3
+    M -. connects .-> X4
+    X1 --> L6
+    X2 --> L7
+    X3 --> L8
+    X4 --> L5
+
+    classDef matrix fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    classDef evidence fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef plane fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    classDef life fill:#f8fafc,color:#0f172a,stroke:#94a3b8,stroke-width:1.5px;
+    class M matrix;
+    class X1 evidence;
+    class X2,X3,X4 plane;
+    class L1,L2,L3,L4,L5,L6,L7,L8 life;

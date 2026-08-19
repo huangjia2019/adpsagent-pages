@@ -1,0 +1,30 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Open Sans, Arial, sans-serif","lineColor":"#64748b"},"flowchart":{"curve":"basis","nodeSpacing":38,"rankSpacing":42}}}%%
+flowchart LR
+    U["Delegation chain<br/>user → agent → workload → run"] --> R
+
+    subgraph CP[Governance control plane]
+      direction TB
+      R["Registry<br/>identity · owner · version · tools · retirement"]
+      P["Policy<br/>authority · risk · budget · approval · exceptions"]
+      O["Observation<br/>events · causality · state deltas · receipts"]
+      E["Enforcement<br/>tool filtering · tokens · sandbox · quota · breaker"]
+      R --> P --> E
+      E --> O
+      O -. operating evidence .-> P
+    end
+
+    E --> T["Agent runtime<br/>model · tools · subagents"]
+    T --> S["Domain systems<br/>resources · state · external outcomes"]
+    S --> O
+    D["Domain ownership<br/>risk · acceptance · approvers · incident response"] --> P
+    D --> O
+
+    classDef identity fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    classDef control fill:#f8fafc,color:#0f172a,stroke:#64748b,stroke-width:1.5px;
+    classDef policy fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef runtime fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    class U,D identity;
+    class R,O control;
+    class P policy;
+    class E,T runtime;
+    class S control;

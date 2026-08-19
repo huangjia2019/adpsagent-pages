@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G3 渐进承诺 · 模式白皮书 · ADPS</title>
-    <meta name="description" content="Agent 权限从只读开始，按运行证据逐级解锁到可写和不可逆动作，并在 incident 后自动降级。">
+    <title>G3 · Progressive Commitment · 渐进承诺 · ADPS</title>
+    <meta name="description" content="按能力、场景、资源和版本管理权限的晋级、维持、降级与退役。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -92,10 +92,11 @@
               <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
               <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
               <h4>治理 Governance</h4>
+              <a href="/zh/patterns/governance/">治理模块总纲</a>
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/" class="active">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">横切</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
             </div></div>
           <div class="sb-section">
@@ -105,6 +106,7 @@
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
               <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -138,139 +140,45 @@
         <div class="docs-main">
 
         <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;">
-                <a href="/zh/patterns/" style="color: var(--color-text-muted);">模式矩阵</a>
-                <span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G3
-            </p>
-
+            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin: 0 0.45rem;">/</span>模式白皮书<span style="margin: 0 0.45rem;">/</span>G3</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent 设计模式白皮书</p>
                 <h1>G3 · Progressive Commitment · 渐进承诺</h1>
-                <p class="publication-deck">Agent 权限从只读开始，按运行证据逐级解锁到可写和不可逆动作，并在 incident 后自动降级。</p>
+                <p class="publication-deck">按能力、场景、资源和版本管理权限的晋级、维持、降级与退役。</p>
             </header>
-
-            <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>坐标</strong></td>
-            <td style="text-align: left;">治理 Governance × 链式 Chain（传）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>成本</strong></td>
-            <td style="text-align: left;">横切（跨切关注点，不在主推理路径上计费，横切在 Agent 整个部署周期上）</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式组</strong></td>
-            <td style="text-align: left;">治理模式</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>模式简介</strong></td>
-            <td style="text-align: left;">Agent 权限从只读开始，按运行证据逐级解锁到可写和不可逆动作，并在 incident 后自动降级。</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>问题</h2>
-            <p>渐进承诺管理 Agent 部署早期的权限演进。上线即开放 full autonomy，意味着在缺少 shadow run、分层采样和 incident 记录时先行授予信任。</p>
-            <p>渐进承诺把信任做成一条阶段性解锁的链：Agent 先在只读档跑够时间、达到成功率门槛、拿到管理员签字，才能进入打分档；再跑够，才进入写草稿档；如此一档一档往上爬到可逆执行、最后到不可逆的完全自治。任何一档出现严重错误，立即降回去重新挣。它把"信任"从一句口号变成可审计的工程过程。</p>
-            <h2>坐标说明：治理 × 链式</h2>
-            <ul>
-            <li><strong>纵轴 · 治理</strong>：渐进承诺规定 Agent 在哪些运行证据下可以从只读进入可写和不可逆权限。</li>
-            <li><strong>横轴 · 链式</strong>：权限按阶段顺序解锁——read-only → mutating → catastrophic，每一档是下一档的前置，必须在当前档展示足够可靠性才能传递到下一档。这是链式的递进结构，不是一次性路由，也不是平行限权。</li>
-            </ul>
-            <h2>解决方案与机制</h2>
-            <p>渐进承诺由一条多档信任阶梯加双向的晋升降级规则组成：</p>
-            <table>
-            <thead>
-            <tr>
-            <th style="text-align: left;">档位</th>
-            <th style="text-align: left;">权限</th>
-            <th style="text-align: left;">典型晋升门槛</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-            <td style="text-align: left;">L0 Shadow</td>
-            <td style="text-align: left;">只读，只输出建议给人审</td>
-            <td style="text-align: left;">达到观察期、任务覆盖和 incident 条件</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L1 Scoring</td>
-            <td style="text-align: left;">给对象打分 / 标签，不写不发</td>
-            <td style="text-align: left;">评分与人工决策的 correlation 达标</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L2 Recommend</td>
-            <td style="text-align: left;">写草稿，由人发出</td>
-            <td style="text-align: left;">投诉数低于阈值 + 管理员投票</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L3 Execute Reversible</td>
-            <td style="text-align: left;">自动执行可逆动作（限时可撤销）</td>
-            <td style="text-align: left;">撤销率低于阈值</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">L4 Full Autonomy</td>
-            <td style="text-align: left;">自动执行不可逆动作</td>
-            <td style="text-align: left;">持续合规，作为天花板</td>
-            </tr>
-            </tbody>
-            </table>
-            <p>晋升需要同时满足观察期或样本覆盖、任务表现和责任人审批。降级按组织的 incident policy 触发，critical event 可以立即收回权限。高风险动作在同一档内还应执行 dry-run、path validation、budget check 和 impact estimate，并让 probe 与 commit 使用同一 snapshot。晋升后重新积累新档位证据，避免历史成绩掩盖当前退化。</p>
-            <h2>适用场景</h2>
-            <ul>
-            <li><strong>新 Agent 首次部署</strong>：先使用 read-only、shadow 或 suggestion 模式，再逐步开放写权限。</li>
-            <li><strong>影响 production 数据、用户资金、合规决策的 Agent</strong>：金融 KYC、HR 招聘评分、客服退款，这类场景必须先 shadow 跑够再放权。</li>
-            <li><strong>需要 demonstrated period 的高风险 AI</strong>：招聘、金融或医疗等场景可由组织和监管要求设定观察期，不能把一套固定天数当作跨行业合规要求。</li>
-            <li><strong>需要可审计信任演进的企业</strong>：把"为什么现在敢让它自动执行"做成一条有 trace 的晋升记录，回应监管与内审。</li>
-            </ul>
-            <h2>已知失效方式</h2>
-            <ul>
-            <li><strong>Probe Mismatch（探测不代表）</strong>：within-session probe 通过后，环境可能在 commit 前发生变化。例如 dry-run 使用 staging 状态，commit 时 production 状态已经更新；budget probe 通过后，余额可能被并发 task 使用。probe 与 commit 应使用同一 snapshot，并尽量处于同一 transaction。</li>
-            <li><strong>Metric Gaming（指标博弈）</strong>：Agent 发现某些 task 容易做好就只挑那些跑，成功率看起来完美，晋升后碰到第一个困难 case 就出事。修正方式是 stratified sampling，按难度分层强制每个档位的 case 都处理，晋升门槛加一条"每个难度档都要达标"。</li>
-            <li><strong>Trust Capture（信任劫持）</strong>：Agent 通过修改 metrics 数据库或配置让自己看起来该晋升。trust state machine 的存储与写权限必须完全在 Agent 不可触及的 IAM scope，管理员投票要有硬件 token 物理验证，任何档位变化必须人工 review 后生效。</li>
-            <li><strong>跳过观察期</strong>：直接开放权限可能在 incident 后导致整个系统回退到人工流程。观察期应按业务风险设定。</li>
-            </ul>
-            <h2>验证指标</h2>
-            <ul>
-            <li><strong>每档 demonstrated 时长</strong>：记录当前权限等级积累证据的时间和任务覆盖。门槛由业务风险、案例数量和适用监管共同确定。</li>
-            <li><strong>晋升后 incident 分布</strong>：刚升档就出现严重问题时，检查上一档评测是否存在样本偏差或 metric gaming。</li>
-            <li><strong>降级触发层级</strong>：critical incident 应能立即触发降级，不能只依赖缓慢的 metric drift。</li>
-            <li><strong>within-session probe 覆盖度</strong>：高风险动作前检查 dry-run、路径、预算和影响范围，并记录缺失项。</li>
-            </ul>
-            <h2>最小实现</h2>
-            <pre><code>TrustLevel: SHADOW → SCORING → RECOMMEND → EXECUTE_REVERSIBLE → FULL_AUTONOMY
-
-每个 action 后 record(success, complaint, incident)：
-    若触发 demotion(任一 OR：critical incident / 投诉超窗 / 成功率骤降) → 降一档，指标清零
-    否则 check escalation(全部 AND：天数 ≥ min_days 且 行动数达标
-                          且 成功率达标 且 管理员投票数达标) → 升一档，指标清零
-
-高风险 action commit 前：
-    并行跑 probes(dry_run, path, budget, impact)，任一失败则 abort
-当前 TrustLevel 决定该 action 是否还需要人审（与 G1 整合）
-</code></pre>
-            <p>生产实现按业务风险、任务覆盖和评测结果设置晋升门槛；严格监管场景启用 <code>incident_severity_trigger</code>；trust state machine 存储位于 Agent 无写权限的独立 IAM。具体观察期和成功门槛由组织政策与监管要求确定。</p>
-            <h2>场景化示例</h2>
-            <p>设想一个 SaaS 退款 Agent 一开始就获得自动退款权限。客户通过 ticket 伪装管理员或诱导系统执行越权指令后，团队只能整体回退到人工。新的 deployment plan 使用 L0-L4 权限阶梯，从只读、风险打分和建议开始，再逐步开放受限执行；每档有晋升证据和 incident 降级触发。退款阈值、观察期和成功门槛必须按业务损失模型与真实评测设定。</p>
-            <h2>相邻模式</h2>
-            <ul>
-            <li><strong>审批门（G1）</strong>：审批门按动作风险决定是否人审，渐进承诺按运行证据调整权限档位。当前档位可以作为审批路由输入。</li>
-            <li><strong>爆炸半径控制（G2）</strong>：爆炸半径限制单次动作的损失，渐进承诺限制 Agent 随时间获得的权限。</li>
-            <li><strong>可观测性（G4）</strong>：依赖。每次档位晋升降级都要可解释、可审计，trust level 变化的 trace 全靠 G4 记录，否则没法向监管说明"为什么现在它有这个权限"。</li>
-            <li><strong>钩子流水线（G5）</strong>：实现层。高风险动作前的独立 probe 可以落为 hook 或 policy-engine stage，必需检查中任一 veto 即 abort。</li>
-            </ul>
-            <h2>工程判断</h2>
-            <p>渐进承诺根据特定 Agent 在特定业务中的运行记录逐级释放权限。模型升级不能替代成功率、事故记录、观察周期和责任人审批等本地证据。</p>
-
-                        <h2>企业证据</h2>
-            <p class="evidence-empty">当前没有与本模式绑定的公开评审案例。模式定义不因此视为已经获得企业验证。</p>
-            <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
-
+<p>渐进承诺管理带版本的局部自治权。它不把整个 Agent 标成“可信”或“不可信”，而是分别记录某个版本在某项能力、场景、资源和环境中的权限。</p>
+<h2>坐标与授权单元</h2>
+<p><strong>治理 × 链式。</strong>影子运行、建议、受限执行和扩大范围存在证据前置关系；事故、依赖变化或版本切换又会让链条后退。</p>
+<pre><code>authority_key = (
+    agent_version,
+    capability,
+    scenario,
+    resource_scope,
+    environment
+)</code></pre>
+<p>同一薪酬 Agent 的“校验批次”和“提交批次”应是两条授权记录。前者可以自动化，后者仍可保留审批。</p>
+<h2>自治档位</h2>
+<table><thead><tr><th>档位</th><th>允许行为</th><th>主要证据</th></tr></thead><tbody>
+<tr><td>Shadow</td><td>读取真实输入，输出不影响业务</td><td>与现有流程对照、覆盖与失败分类</td></tr>
+<tr><td>Recommend</td><td>生成建议或草稿，由人采用</td><td>采纳、修订差异与长尾错误</td></tr>
+<tr><td>Bounded Execute</td><td>在硬边界内自动执行低影响或可逆动作</td><td>外部验收、撤回、边界触发与事故</td></tr>
+<tr><td>Expanded Execute</td><td>扩大对象、频率或场景，仍保留硬上限</td><td>稳定窗口、分层样本与业务结果</td></tr>
+<tr><td>Frozen / Retired</td><td>停止新增副作用，保留审计和回滚</td><td>事故、版本过期、责任人缺失或试点结束</td></tr>
+</tbody></table>
+<h2>三层证据</h2>
+<p>任务与结果说明目标和下游采用；Agent 过程说明规划、工具、记忆和恢复是否按合同工作；基础组件说明模型、工具、存储和策略是否健康。平均成功率无法替代这三层证据，也容易掩盖高风险长尾。</p>
+<h2>运行实例</h2>
+<p>薪酬 Agent v7 的校验能力先在 Shadow 与人工对照，再进入 Recommend。常规批次表现稳定，但新入职和跨地区税务仍有差异，因此只给常规批次 Bounded Execute。提交能力继续停在 Recommend，由 G1 审批。付款工具换版后，校验能力的授权证书冻结并回到 Shadow，其他未受影响能力维持原档位。</p>
+<h2>权限处置</h2>
+<p>每次评审可以 promote、hold、narrow、demote 或 retire。降级不只由事故触发；评测覆盖中断、依赖变化、错误率上升、责任人离岗和长期无调用，都可能让原权限失去依据。</p>
+<h2>常见失效</h2>
+<ul><li>给整个 Agent 一个全局等级；</li><li>只设计升级，不设计冻结与退役；</li><li>挑选容易样本或只看平均成功率；</li><li>模型、工具或策略换版后继承旧授权；</li><li>Agent 可以写自己的证据和权限证书；</li><li>晋级后立即放满流量。</li></ul>
+<h2>验证</h2>
+<p>检查授权是否绑定版本、能力、场景和资源；观察晋级后短期回退、降级时延、版本继承与退役完整性；确认扩大自治后人工负担确实下降。</p>
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《G3 渐进承诺》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
-                <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>
+                <p><strong>引用建议：</strong>ADPS，《G3 · Progressive Commitment · 渐进承诺》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
+                <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
             </div>
         </article>
 

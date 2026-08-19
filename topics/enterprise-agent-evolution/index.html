@@ -82,6 +82,20 @@
 </tbody>
 </table>
 <p>The three lines do not advance automatically in step. A system may support autonomous execution before the organization has defined acceptance ownership or incident response. A platform may also centralize too early, before stable use cases and reusable assets exist.</p>
+<h2>From one change to an agent fleet</h2>
+<p>The payroll example on the home page defines the minimum modelling unit as one business change that can be decided, approved, executed, accepted, and compensated independently. That unit closes one piece of work. The governance lifecycle manages how a capability moves through registration, evaluation, shadow operation, production, revalidation, demotion, and retirement.</p>
+<p><img src="/images/patterns/agent-governance-lifecycle-en.svg" alt="Agent governance lifecycle from registration and evaluation through operation, demotion, and retirement"></p>
+<table>
+<thead><tr><th>Management scale</th><th>Payroll example</th><th>Engineering objects</th></tr></thead>
+<tbody>
+<tr><td>Business change</td><td>Change one employee's transport allowance from 800 to 1000 next month</td><td>Goal, facts, approval, execution, acceptance, compensation</td></tr>
+<tr><td>Run</td><td>One request from intake through after-read</td><td>run, Intent, Approval, Execution, evidence chain</td></tr>
+<tr><td>Capability version</td><td>Allowance-change capability in payroll agent v7</td><td>Scenario, resource scope, evaluation, autonomy tier</td></tr>
+<tr><td>Agent product</td><td>Production payroll-agent instance</td><td>Owner, dependencies, credentials, budget, incident response, retirement</td></tr>
+<tr><td>Agent fleet</td><td>Payroll, HR, finance, and compliance agents</td><td>Shared identity, policy format, aggregate limit, causal trace, cross-domain responsibility</td></tr>
+</tbody>
+</table>
+<p>Observability joins facts across the five scales. Evals and tests support release decisions; governance controls changes in authority. Without a clear minimum loop, a platform can accumulate entry points, tools, and logs without establishing who accepts a completed business change.</p>
 <h2>Questions before each increase in authority</h2>
 <ol>
 <li><strong>Business boundary.</strong> Which objects can the agent change, and what are the per-action, daily, and tenant-level impact limits?</li>
@@ -106,11 +120,13 @@
 <ul>
 <li><a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering</a></li>
 <li><a href="/patterns/">ADPS Pattern Matrix</a></li>
+<li><a href="/patterns/governance/#payroll-lifecycle">Governance module and agent lifecycle</a></li>
+<li><a href="/workshops/governance-2026-08-18/">First Governance Module Workshop</a></li>
 <li><a href="/cases/">ADPS Enterprise Cases</a></li>
 <li><a href="/workshops/">ADPS Workshops</a></li>
 </ul>
 
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Enterprise Agent Evolution and Operating Model: Research Agenda</em>, ADPS Topic Research, 2026-08-14.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">Topics synthesize engineering questions that cross several modules. Pattern definitions, attributed cases, and workshop records remain authoritative on their own pages.</p></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Enterprise Agent Evolution and Operating Model: Research Agenda</em>, ADPS Topic Research, 2026-08-19.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">Topics synthesize engineering questions that cross several modules. Pattern definitions, attributed cases, and workshop records remain authoritative on their own pages.</p></div>
         </article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>

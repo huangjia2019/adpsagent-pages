@@ -1,0 +1,30 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Noto Sans CJK SC, Microsoft YaHei, sans-serif","lineColor":"#64748b"},"flowchart":{"curve":"basis","nodeSpacing":38,"rankSpacing":42}}}%%
+flowchart LR
+    U["委托链<br/>用户 → Agent → Workload → Run"] --> R
+
+    subgraph CP[治理控制平面]
+      direction TB
+      R["注册层<br/>身份 · 所有者 · 版本 · 工具 · 退役"]
+      P["策略层<br/>权限 · 风险 · 预算 · 审批 · 例外"]
+      O["观测层<br/>事件 · 因果 · 状态差异 · 回执"]
+      E["执行层<br/>工具过滤 · 令牌 · 沙箱 · 配额 · 熔断"]
+      R --> P --> E
+      E --> O
+      O -. 运行证据 .-> P
+    end
+
+    E --> T["Agent 运行时<br/>模型 · 工具 · 子 Agent"]
+    T --> S["业务系统<br/>资源 · 状态 · 外部结果"]
+    S --> O
+    D["业务域责任<br/>风险定义 · 验收标准 · 审批人 · 事故响应"] --> P
+    D --> O
+
+    classDef identity fill:#eef5f7,color:#173a46,stroke:#5b8792,stroke-width:1.5px;
+    classDef control fill:#f8fafc,color:#0f172a,stroke:#64748b,stroke-width:1.5px;
+    classDef policy fill:#fff7df,color:#5f4515,stroke:#b8842b,stroke-width:2px;
+    classDef runtime fill:#0f3a5f,color:#ffffff,stroke:#0f3a5f,stroke-width:2px;
+    class U,D identity;
+    class R,O control;
+    class P policy;
+    class E,T runtime;
+    class S control;
