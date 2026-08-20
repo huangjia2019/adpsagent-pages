@@ -411,8 +411,27 @@
 }
 
 .home-matrix {
-    margin: 2.25rem auto 3rem;
+    margin: 0 auto 3.25rem;
     text-align: center;
+}
+
+.home-matrix-head {
+    margin: 0 auto 1.4rem;
+    max-width: 48rem;
+}
+
+.home-matrix-head h2 {
+    border-bottom: 0;
+    font-size: 1.55rem;
+    line-height: 1.35;
+    margin: 0 0 0.55rem;
+    padding-bottom: 0;
+}
+
+.home-matrix-head > p:last-child {
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
 }
 
 .home-matrix a {
