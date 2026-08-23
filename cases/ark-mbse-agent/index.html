@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Natural Language to SysML: A One-Diagram Write-Back Study · ADPS</title>
-    <meta name="description" content="A personal research report on typed planning artifacts, resumable scope clarification, structural checks, and receipt-backed SysML write-back.">
+    <title>AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back · ADPS</title>
+    <meta name="description" content="An AI4MBSE project report on typed planning artifacts, resumable scope clarification, structural checks, and receipt-backed SysML write-back.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/cases/ark-mbse-agent/">
@@ -15,6 +15,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -100,7 +101,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing Agent</a>
-              <a href="/cases/ark-mbse-agent/" class="active">AI4MBSE · Personal Research</a>
+              <a href="/cases/ark-mbse-agent/" class="active">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
@@ -137,24 +138,37 @@
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Blue Book</p>
 
             <header class="publication-head">
-                <p class="publication-series">ADPS Agent Systems Blue Book · Research Report 03</p>
-                <h1>Natural Language to SysML: A One-Diagram Write-Back Study</h1>
+                <p class="publication-series">ADPS Agent Systems Blue Book · Project Report 03</p>
+                <h1>AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back</h1>
                 <p class="publication-deck">Element, relationship, and view plans are checked before one bounded write enters the engineering repository.</p>
             </header>
+<!-- CASE-V06-ROUTE-ark-mbse-agent-False:START -->
+<section class="case-route" aria-labelledby="case-route-mbse">
+  <p class="case-route-kicker">Through-line task</p>
+  <h2 id="case-route-mbse">How a modeling instruction earns permission to change an engineering model</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>Task</strong><p>Create one use-case diagram in a named package, reuse existing actors, and add cases, relations, and layout.</p></li>
+    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>A business name does not resolve to one package. Continuing may write a valid structure into the wrong scope.</p></li>
+    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Scope resolution, three typed plans, seven write-back invariants, and one adapter govern the side effect.</p></li>
+    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Actual deltas, result enums, a receipt, and an undo handle explain what the write-back changed.</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-ark-mbse-agent-False:END -->
+
 
             <hr />
 
-<h2>Research at a glance</h2>
+<h2>Project at a glance</h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Item</th>
-<th style="text-align: left;">Research note</th>
+<th style="text-align: left;">Project information</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Research task</td>
+<td style="text-align: left;">Project task</td>
 <td style="text-align: left;">Accept a natural-language modeling request and create or modify one SysML diagram in a tool such as MagicDraw or Cameo</td>
 </tr>
 <tr>
@@ -182,7 +196,7 @@
 <h2>1. Models and diagrams in MBSE</h2>
 <p>SysML represents the composition, behavior, requirements, and relationships of a complex system. Tools such as MagicDraw and Cameo maintain an engineering repository and display diagrams over that repository. A diagram is one view of the model.</p>
 <p>A block-definition diagram may show a turnstile controller and a card reader. The repository also stores stable identifiers, ownership, type, and relationship endpoints. Correct box placement on a canvas does not prove that the relationship endpoints resolve or that the elements were written to the intended package.</p>
-<p>AI4MBSE is an experimental prototype documented by Liangding Yuan on his personal technical site, mbse.ltd. It studies writes to authoritative engineering models. Later design, simulation, review, and documentation can consume that state, so acceptance has to inspect both the repository and the canvas.</p>
+<p>AI4MBSE is a modeling-agent project initiated by Liangding Yuan and documented at mbse.ltd. It studies writes to authoritative engineering models. Later design, simulation, review, and documentation can consume that state, so acceptance has to inspect both the repository and the canvas.</p>
 <p>The report uses one compact request throughout:</p>
 <blockquote>
 <p>In the "Turnstile Control" package, create a use-case diagram containing Card Entry, QR Entry, and Administrator Override.</p>
@@ -439,6 +453,40 @@
   <figcaption>The record uses stable element and relationship identifiers. One log cannot represent aggregate performance across diagram types.</figcaption>
 </figure>
 
+
+<!-- CASE-V06-REPLAY-ark-mbse-agent-False:START -->
+<section class="case-replay" aria-labelledby="replay-mbse">
+  <h2 id="replay-mbse">Replay the same gate-control use-case task</h2>
+  <p>Natural language narrows into checkable structures before it reaches the host model repository.</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>Create ModelingJob</strong><p>Store create, use_case, explicit objects, and the host revision.</p></li>
+    <li><span class="case-step-no">02</span><strong>Resolve scope</strong><p>Duplicate names freeze the job; selection resumes against a stable ID and current revision.</p></li>
+    <li><span class="case-step-no">03</span><strong>Build three plans</strong><p>ElementPlan, RelationPlan, and ViewPlan constrain objects, relations, and the current view.</p></li>
+    <li><span class="case-step-no">04</span><strong>Run seven invariants</strong><p>Check scope, type, stable references, explicit items, closure, write set, and host revision.</p></li>
+    <li><span class="case-step-no">05</span><strong>Use one write path</strong><p>One adapter commits repository and canvas so two paths cannot disagree.</p></li>
+    <li><span class="case-step-no">06</span><strong>Return a receipt</strong><p>Actual deltas select APPLIED, WARNING, BLOCKED, or NOOP and preserve an undo handle.</p></li>
+  </ol>
+  <p class="case-outcome"><strong>Commit condition</strong>The plan passes its gates, the host reports a real delta, and repository and canvas agree.</p>
+</section>
+<!-- CASE-V06-REPLAY-ark-mbse-agent-False:END -->
+
+<!-- CASE-V06-EVIDENCE-ark-mbse-agent-False:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-mbse">
+  <p class="case-evidence-label">Project flow and host views</p>
+  <h2 id="evidence-mbse">Connect progress, clarification, write-back, and degraded outcome</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-01-progress-line.jpg" alt="AI4MBSE modeling job progress"><figcaption><strong>Stage progress</strong>Elements, relations, views, and write-back retain separate states.<span class="case-evidence-proof">Teaching reconstruction; it explains boundaries, not identical host components.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-02-canvas-writeback.jpg" alt="AI4MBSE repository and canvas write-back"><figcaption><strong>Repository and canvas write-back</strong>One change set reaches structure and presentation together.<span class="case-evidence-proof">Teaching reconstruction; host read-back and logs remain required evidence.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-05-resume-timeline.jpg" alt="AI4MBSE clarification and resume timeline"><figcaption><strong>Clarify and resume</strong>New scope information resumes the original ModelingJob against the host revision.<span class="case-evidence-proof">The diagram supports interaction and state design, not concurrent editing.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-06-degraded-success.jpg" alt="AI4MBSE applied with warnings result"><figcaption><strong>Applied with warnings</strong>The structural write succeeds while non-destructive issues enter warnings.<span class="case-evidence-proof">A result enum is not a quality guarantee; semantic quality still needs review.</span></figcaption></figure>
+  </div>
+  <div class="case-source-links">
+    <a href="https://www.mbse.ltd/en/ai4mbse.html" target="_blank" rel="noopener"><strong>AI4MBSE project page</strong><span>Project framing, method packs, and local interaction sketch</span></a>
+    <a href="https://www.mbse.ltd/en/faq.html" target="_blank" rel="noopener"><strong>Project FAQ</strong><span>Current status, experiment boundary, and source notes</span></a>
+    <a href="/concepts/typed-ir-chain/"><strong>Typed IR chain</strong><span>An engineering concept extracted from the project mechanism</span></a>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-ark-mbse-agent-False:END -->
 <h2>11. The next report should add these measurements</h2>
 <table>
 <thead>
@@ -519,14 +567,14 @@
 <td style="text-align: left;">Rule fallback and cross-run failure capture</td>
 </tr>
 <tr>
-<td style="text-align: left;">AI4MBSE personal research project</td>
+<td style="text-align: left;">AI4MBSE modeling agent project</td>
 <td style="text-align: left;">Project location, stable IDs, endpoints, and type translation</td>
 <td style="text-align: left;">Before repository write-back</td>
 <td style="text-align: left;">Bounded repair, clarification, blocking, or rollback</td>
 </tr>
 </tbody>
 </table>
-<p>The two field cases and this personal research report support one engineering observation: exact structural coordinates should travel through traceable program state, while a model proposes intent and plans. The location of validation depends on side effects, external observability, and the available repair window. More independent evidence is needed before treating this observation as a general result.</p>
+<p>The three case reports support one engineering observation: exact structural coordinates should travel through traceable program state, while a model proposes intent and plans. The location of validation depends on side effects, external observability, and the available repair window. More independent evidence is needed before treating this observation as a general result.</p>
 <h2>14. Limits and ADPS mapping</h2>
 <p>This design fits bounded writes to authoritative model repositories. Reports, slide decks, and open-ended retrieval usually permit regeneration and do not require the full structural-checking path. The published case does not cover concurrent team writes, model-branch merging, permission partitions, long-transaction compensation, or safety-critical certification.</p>
 <p>SysML v2 offers stronger semantics and standardized model access, which can reduce proprietary adapter work. Scope resolution, reference integrity, and transaction receipts remain application-runtime concerns.</p>
@@ -570,12 +618,12 @@
 </table>
 <h2>Author and citation</h2>
 <p><strong>Liangding Yuan</strong> is a Chengdu-based architect documenting a personal technical research project. He has sixteen years of development and architecture experience across workflow, search, collaboration, authorization, and knowledge systems. He now records AI-assisted MBSE and SysML learning, technical reasoning, and local experiments on <a href="https://www.mbse.ltd/en/">mbse.ltd</a>. AI4MBSE is his personal experimental prototype.</p>
-<p><strong>Personal technical site:</strong> <a href="https://www.mbse.ltd/en/">mbse.ltd</a> is a personal experiment site for technical learning and academic exchange.</p>
-<p><strong>Suggested citation:</strong> ADPS and Liangding Yuan, "Natural Language to SysML: A One-Diagram Write-Back Study," ADPS Agent Systems Blue Book, Research Report 03, v0.6, 2026.</p>
+<p><strong>Project site:</strong> <a href="https://www.mbse.ltd/en/">mbse.ltd</a> supports technical learning and academic exchange.</p>
+<p><strong>Suggested citation:</strong> ADPS and Liangding Yuan, "AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back," ADPS Agent Systems Blue Book, Project Report 03, v0.6, 2026.</p>
 
             <div class="document-citation">
                 <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Evidence boundary:</strong> This report documents the technical reasoning and local closed-loop tests behind Liangding Yuan&#x27;s personal research project, AI4MBSE. Screenshots and sample data come from local personal experiments and have not undergone an independent engineering audit.</p>
+                <p class="publication-disclaimer"><strong>Evidence boundary:</strong> This report documents the technical reasoning and local closed-loop tests of the AI4MBSE modeling-agent project initiated by Liangding Yuan. Screenshots and sample data come from local personal experiments and have not undergone an independent engineering audit.</p>
                 <p class="publication-disclaimer"><strong>Use boundary:</strong> This report is published for technical learning and academic exchange. It does not describe a software product, commercial solution, or project-delivery capability.</p>
             </div>
         </article>

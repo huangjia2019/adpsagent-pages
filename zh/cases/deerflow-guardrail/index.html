@@ -12,6 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -97,7 +98,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/" >玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
               <a href="/zh/cases/deerflow-guardrail/" class="active">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
@@ -140,6 +141,19 @@
                 <p class="publication-deck">五次公开 PR 把工具控制从运行时拒绝推进到装配时可见性过滤，并让身份、策略与证据进入同一条执行链。</p>
                 <p class="publication-date"><time datetime="2026-08-19">2026-08-19</time></p>
             </header>
+<!-- CASE-V06-ROUTE-deerflow-guardrail-True:START -->
+<section class="case-route" aria-labelledby="case-route-deerflow">
+  <p class="case-route-kicker">贯穿任务</p>
+  <h2 id="case-route-deerflow">一个只读研究任务，怎样得到最小工具集合</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>任务</strong><p>已认证只读用户搜索资料、读取允许目录并生成摘要，不得写文件或执行 shell。</p></li>
+    <li><span class="case-step-no">02</span><strong>第一处分叉</strong><p>初版拦截器看到了工具名和参数，却没有拿到可信 Principal。</p></li>
+    <li><span class="case-step-no">03</span><strong>架构修改</strong><p>五个 PR 依次补上执行支点、身份传播、运行日志、独立 AuthZ 和装配过滤。</p></li>
+    <li><span class="case-step-no">04</span><strong>重新验收</strong><p>模型看不到无权工具；伪造调用仍在真实 handler 前被拒绝并留下事件。</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-deerflow-guardrail-True:END -->
+
 
             <h2>案例范围</h2>
             <table>
@@ -245,7 +259,23 @@ return handler(request)</code></pre>
             <p>装配过滤发生在模型看到工具之前。运行时 AuthorizationAdapter 是外层授权，显式 Guardrail 是内层业务或外部策略检查，之后才进入工具与 sandbox。便宜、稳定、拒绝率高的检查应靠前。需要远程访问或复杂参数分析的检查靠后。</p>
             <p>Sandbox 解决进程与资源隔离，授权回答“这个主体能否调用”，Guardrail 回答“这次调用是否满足额外约束”。三者互补，不能互相代替。</p>
 
-            <h2>11. 映射回 ADPS 模式</h2>
+
+<!-- CASE-V06-REPLAY-deerflow-guardrail-True:START -->
+<section class="case-replay" aria-labelledby="replay-deerflow">
+  <h2 id="replay-deerflow">同一个只读研究任务重新装配并执行</h2>
+  <p>这次回放把工具可见性和真实执行拆开检查。</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>汇总候选</strong><p>加载 search、read、write、bash 和 MCP 工具，并保留 provider 坐标。</p></li>
+    <li><span class="case-step-no">02</span><strong>应用 Agent 与 Skill</strong><p>去掉无关业务工具，保留研究任务从功能上可能需要的能力。</p></li>
+    <li><span class="case-step-no">03</span><strong>读取 Principal</strong><p>Gateway 注入可信只读主体，Lead 与 Subagent 继承同一委托信息。</p></li>
+    <li><span class="case-step-no">04</span><strong>装配时过滤</strong><p>write_file 与 bash 被删除；deferred catalog 只从已授权 MCP 建立。</p></li>
+    <li><span class="case-step-no">05</span><strong>运行时复核</strong><p>read_file 按实际路径授权；伪造 write_file 调用得到 deny。</p></li>
+    <li><span class="case-step-no">06</span><strong>记录介入</strong><p>ToolMessage 返回克制原因，RunJournal 关联主体、run、tool_call 和策略。</p></li>
+  </ol>
+  <p class="case-outcome"><strong>提交条件</strong>无权 schema 不进入模型，任何真实调用仍经过同一授权支点。</p>
+</section>
+<!-- CASE-V06-REPLAY-deerflow-guardrail-True:END -->
+<h2>11. 映射回 ADPS 模式</h2>
             <table>
               <thead><tr><th>模式</th><th>DeerFlow 中的实现切面</th><th>尚未覆盖的部分</th></tr></thead>
               <tbody>
@@ -277,7 +307,20 @@ return handler(request)</code></pre>
             <p>DeerFlow 的公开实现已经把 PRE 授权做得很完整，但它没有替生产系统解决所有治理问题。高风险动作还需要 POST 业务核验、幂等键、外部回执与补偿。需要人工判断的调用还要增加 ask 决策、审批有效期、状态变化后的复验和单次消费。策略热更新则需要明确版本、切换原子性和回滚路径。</p>
             <p>这也是该案例的主要价值：Guardrail 不是一条正则表达式，也不是一个“安全开关”。它是一条从能力装配、可信身份、策略裁决、执行拦截到证据留存的工程链。</p>
 
-            <h2>公开来源</h2>
+
+<!-- CASE-V06-EVIDENCE-deerflow-guardrail-True:START -->
+<section class="case-source-section" aria-labelledby="source-deerflow">
+  <p class="case-evidence-label">公开代码证据</p>
+  <h2 id="source-deerflow">从第一处拦截点追到双层授权</h2>
+  <div class="case-source-links">
+    <a href="https://github.com/bytedance/deer-flow/pull/1240" target="_blank" rel="noopener"><strong>PR #1240</strong><span>GuardrailMiddleware 与调用前短路</span></a>
+    <a href="https://github.com/bytedance/deer-flow/pull/4370" target="_blank" rel="noopener"><strong>PR #4370</strong><span>装配时过滤、deferred catalog 与运行时复核</span></a>
+    <a href="https://github.com/bytedance/deer-flow/blob/main/backend/docs/GUARDRAILS.md" target="_blank" rel="noopener"><strong>Guardrails 文档</strong><span>配置、Provider、失败模式与使用边界</span></a>
+  </div>
+  <p class="case-source-note">页面中的演进图与装配图依据公开 PR 和代码整理。提交记录可以复核机制存在，无法代替具体部署中的策略、身份系统、sandbox 和业务验收。</p>
+</section>
+<!-- CASE-V06-EVIDENCE-deerflow-guardrail-True:END -->
+<h2>公开来源</h2>
             <ul>
               <li><a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener">DeerFlow 公开仓库</a></li>
               <li><a href="https://github.com/bytedance/deer-flow/blob/main/backend/docs/GUARDRAILS.md" target="_blank" rel="noopener">Guardrails: Pre-Tool-Call Authorization</a></li>

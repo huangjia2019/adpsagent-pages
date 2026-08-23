@@ -12,6 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -97,7 +98,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/" class="active">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
               <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
@@ -139,6 +140,19 @@
                 <h1>东方屹腾执行型 Agent：让业务状态沿流程准确传递</h1>
                 <p class="publication-deck">模型理解意图，程序保存业务参数来源，任务图与状态机维护严格执行顺序。</p>
             </header>
+<!-- CASE-V06-ROUTE-liangbo-execution-agent-True:START -->
+<section class="case-route" aria-labelledby="case-route-liangbo">
+  <p class="case-route-kicker">贯穿任务</p>
+  <h2 id="case-route-liangbo">一条薪资组配置链，怎样从原型走到可恢复执行</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>任务</strong><p>新客户选择薪资模板、保存现状、导入配置，并在敏感步骤等待确认。</p></li>
+    <li><span class="case-step-no">02</span><strong>第一处分叉</strong><p>模型从对话历史重写 <code>template_id</code>，字段合法，来源却不再可信。</p></li>
+    <li><span class="case-step-no">03</span><strong>架构修改</strong><p>严格值进入 SessionState，步骤依赖进入 Workspace，模型只处理意图与叙事。</p></li>
+    <li><span class="case-step-no">04</span><strong>重新验收</strong><p>批准后从原节点恢复；业务回读通过，任务才从 running 进入 completed。</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-liangbo-execution-agent-True:END -->
+
 
             <h2>案例速览</h2>
             <table>
@@ -176,7 +190,7 @@
             </tbody>
             </table>
             <h2>1. 先找客户真正卡住的那一步</h2>
-            <p>东方屹腾的 SaaS 产品覆盖人事、组织、考勤、审批和薪酬，并连接银行与税务系统。产品矩阵已服务两万多家企业。团队最初评估过用工分析、薪酬结构优化和报表分析，这些场景容易演示，却没有击中客户启用系统时最费力的环节。</p>
+            <p>东方屹腾的 SaaS 产品覆盖人事、组织、考勤、审批和薪酬，并连接银行与税务系统。这个案例聚焦其中一条容易在首次配置阶段卡住的业务链。团队最初评估过用工分析、薪酬结构优化和报表分析，这些场景容易演示，却没有击中客户启用系统时最费力的环节。</p>
             <p>客户访谈指向了首次配置。新企业需要建立薪资组和薪资项，导入员工与组织，完成定薪，再配置考勤和审批规则。由运营团队代为配置的客户通常能顺利启用，自行配置的客户更容易中途放弃。</p>
             <p>团队把“薪资组快速搭建”定为首个场景。它的范围不大，却包含模板匹配、数据快照、连续 API 调用、失败回滚和人工确认。一个 Agent 若能稳定完成这条链，才有资格继续进入算薪、代发和报税。</p>
             <h2>2. 第一个原型：工具选对了，状态仍会传错</h2>
@@ -312,7 +326,36 @@
               <figcaption>三个状态平面分别服务调度、模型理解和 API 交付。它们统一归档，不共用同一种真源。</figcaption>
             </figure>
 
-            <h2>9. 当前证据能说明什么</h2>
+
+<!-- CASE-V06-REPLAY-liangbo-execution-agent-True:START -->
+<section class="case-replay" aria-labelledby="replay-liangbo">
+  <h2 id="replay-liangbo">同一条薪资组配置任务重新跑一遍</h2>
+  <p>下面只追踪一条任务。每一步都写明状态归属和提交条件。</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>建立作业</strong><p>Workspace 保存目标、租户、DAG 版本和当前节点。</p></li>
+    <li><span class="case-step-no">02</span><strong>匹配模板</strong><p>工具返回 <code>template_id</code>；SessionState 连同 producer、call_id 和 receipt_ref 一起保存。</p></li>
+    <li><span class="case-step-no">03</span><strong>保存快照</strong><p>现有薪资组配置形成可回查 snapshot，导入节点才进入 ready。</p></li>
+    <li><span class="case-step-no">04</span><strong>等待批准</strong><p>节点保持 blocked，审批事件与原作业关联，不新建第二条任务。</p></li>
+    <li><span class="case-step-no">05</span><strong>恢复导入</strong><p>执行器重新校验版本与参数来源，再把严格值注入工具。</p></li>
+    <li><span class="case-step-no">06</span><strong>业务回读</strong><p>读取实际薪资组配置并核对后置条件；不一致时进入恢复或人工接管。</p></li>
+  </ol>
+  <p class="case-outcome"><strong>提交条件</strong>接口回执、状态来源和业务回读同时成立，任务才写成 completed。</p>
+</section>
+<!-- CASE-V06-REPLAY-liangbo-execution-agent-True:END -->
+
+<!-- CASE-V06-EVIDENCE-liangbo-execution-agent-True:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-liangbo">
+  <p class="case-evidence-label">机制图</p>
+  <h2 id="evidence-liangbo">执行型 Agent 的四个运行结构</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/task-dag-state-machine.png" alt="任务 DAG 与节点状态机"><figcaption><strong>任务 DAG 与状态机</strong>步骤依赖确定以后，执行器只调度 ready 节点。<span class="case-evidence-proof">ADPS 依据案例讲解重绘；说明调度机制，不代表生产类名。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/hitl-block-resume.png" alt="审批阻塞与原节点恢复"><figcaption><strong>审批阻塞与恢复</strong>审批事件回到原作业和原节点，避免“批准后重新开始”。<span class="case-evidence-proof">图支持状态语义；审批有效期和权限仍由部署方定义。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/anchor-ledger-collection.png" alt="Anchor Ledger Collection 长程叙事结构"><figcaption><strong>Anchor、Ledger、Collection</strong>目标、进展和当前投影分开保存，降低长程摘要漂移。<span class="case-evidence-proof">它服务模型上下文，不承担业务 ID 传递。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/observability-glass-dome.png" alt="统一活动事件与运行时间线"><figcaption><strong>Activity 与运行时间线</strong>模型、工具、状态变化和审批都进入同一条可追查时间线。<span class="case-evidence-proof">图说明事件组织方式；公开材料未给出总体运行指标。</span></figcaption></figure>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-liangbo-execution-agent-True:END -->
+<h2>9. 当前证据能说明什么</h2>
             <table>
             <thead>
             <tr>
@@ -341,11 +384,6 @@
             <td style="text-align: left;">SessionState 保留参数来源并由程序注入</td>
             <td style="text-align: left;">状态坐标和调用链设计</td>
             <td style="text-align: left;">架构机制说明</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;">系统已经在两万多家企业场景中产生量化收益</td>
-            <td style="text-align: left;">尚无公开对照数据</td>
-            <td style="text-align: left;">本版不作此结论</td>
             </tr>
             </tbody>
             </table>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自然语言到 SysML：单图写回的建模 Agent 研究 · ADPS</title>
+    <title>AI4MBSE 建模 Agent：让自然语言取得工程模型写入资格 · ADPS</title>
     <meta name="description" content="元素、关系和视图分段规划，程序解析工程范围并在写回前检查结构事实。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -12,6 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -97,7 +98,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/" class="active">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/ark-mbse-agent/" class="active">AI4MBSE · 建模 Agent 项目</a>
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -134,22 +135,35 @@
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/cases/" style="color: var(--color-text-muted);">案例库</a><span style="margin:0 0.45rem;">/</span>完整蓝皮书</p>
 
             <header class="publication-head">
-                <p class="publication-series">ADPS Agent 系统蓝皮书 · 研究报告 03</p>
-                <h1>自然语言到 SysML：单图写回的建模 Agent 研究</h1>
+                <p class="publication-series">ADPS Agent 系统蓝皮书 · 项目报告 03</p>
+                <h1>AI4MBSE 建模 Agent：让自然语言取得工程模型写入资格</h1>
                 <p class="publication-deck">元素、关系和视图分段规划，程序解析工程范围并在写回前检查结构事实。</p>
             </header>
+<!-- CASE-V06-ROUTE-ark-mbse-agent-True:START -->
+<section class="case-route" aria-labelledby="case-route-mbse">
+  <p class="case-route-kicker">贯穿任务</p>
+  <h2 id="case-route-mbse">一句建模指令，怎样取得工程模型写入资格</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>任务</strong><p>在指定包中创建一张用例图，复用已有参与者，补齐用例、关系和画布呈现。</p></li>
+    <li><span class="case-step-no">02</span><strong>第一处分叉</strong><p>业务名称无法唯一落到工程包；继续生成会把正确结构写进错误范围。</p></li>
+    <li><span class="case-step-no">03</span><strong>架构修改</strong><p>范围解析、三段类型化计划、七项写回门禁和唯一适配器共同控制副作用。</p></li>
+    <li><span class="case-step-no">04</span><strong>重新验收</strong><p>实际增量、结果枚举、回执和撤销句柄共同说明这次写回发生了什么。</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-ark-mbse-agent-True:END -->
 
-            <h2>研究概览</h2>
+
+            <h2>项目概览</h2>
             <table>
             <thead>
             <tr>
             <th style="text-align: left;">项目</th>
-            <th style="text-align: left;">研究信息</th>
+            <th style="text-align: left;">项目信息</th>
             </tr>
             </thead>
             <tbody>
             <tr>
-            <td style="text-align: left;">研究目标</td>
+            <td style="text-align: left;">项目目标</td>
             <td style="text-align: left;">用户用自然语言提出建模要求，系统在 MagicDraw、Cameo 等工具中创建或修改一张 SysML 图</td>
             </tr>
             <tr>
@@ -177,14 +191,14 @@
             <h2>1. MBSE 中的模型与图</h2>
             <p>SysML 用于描述复杂系统的组成、行为、需求和关系。MagicDraw、Cameo 一类工具既保存工程模型库，也显示各种图。图是模型的一种视图，只呈现模型的一部分。</p>
             <p>例如，一张块定义图可以显示“闸机控制器”和“读卡器”。模型库还要保存这两个元素的稳定标识、所属包、类型和关系端点。画布上的方框位置正常，并不能证明关系端点有效，也不能证明元素写进了正确的包。</p>
-            <p>AI4MBSE 是袁良锭在个人技术站点 mbse.ltd 记录的实验原型，研究正式工程模型中的写入问题。一次错误写回可能被后续设计、仿真、评审和文档继续引用，因此验收要同时检查模型库和画布。</p>
+            <p>AI4MBSE 是袁良锭发起并在 mbse.ltd 持续记录的建模 Agent 项目，研究正式工程模型中的写入问题。一次错误写回可能被后续设计、仿真、评审和文档继续引用，因此验收要同时检查模型库和画布。</p>
             <p>本文用一句简化指令贯穿后续设计：</p>
             <blockquote>
             <p>在“闸机控制”包中创建一张用例图，包含“刷卡进入”“扫码进入”和“管理员放行”。</p>
             </blockquote>
             <p>系统需要先回答三个问题：用户要创建什么图，写到哪个已有位置，明确点名的三个用例是否都进入最终计划。</p>
             <h2>2. 一次生成为什么容易留下结构错误</h2>
-            <p>研究早期的验证方案让模型一次输出元素、关系和视图。这个路径调用少，失败却难定位。</p>
+            <p>项目早期的验证方案让模型一次输出元素、关系和视图。这个路径调用少，失败却难定位。</p>
             <ul>
             <li>元素名称合理，所属包可能不存在。</li>
             <li>关系读起来通顺，端点 ID 可能指向未创建元素。</li>
@@ -434,7 +448,41 @@
               <figcaption>写回记录使用稳定元素和关系标识。单张日志不能说明所有图类型的总体成功率。</figcaption>
             </figure>
 
-            <h2>11. 下一版最值得补的数据</h2>
+
+<!-- CASE-V06-REPLAY-ark-mbse-agent-True:START -->
+<section class="case-replay" aria-labelledby="replay-mbse">
+  <h2 id="replay-mbse">同一条闸机用例图任务重新跑一遍</h2>
+  <p>自然语言在进入宿主模型库之前，逐段收敛为可检查结构。</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>建立 ModelingJob</strong><p>保存 create、use_case、明示对象和宿主 revision。</p></li>
+    <li><span class="case-step-no">02</span><strong>解析范围</strong><p>同名包出现时冻结作业；用户选择后按稳定 ID 与最新 revision 复核。</p></li>
+    <li><span class="case-step-no">03</span><strong>形成三段计划</strong><p>ElementPlan、RelationPlan、ViewPlan 分别约束对象、关系和当前视图。</p></li>
+    <li><span class="case-step-no">04</span><strong>执行七项门禁</strong><p>检查范围、类型、稳定引用、明示项、关系闭包、写集和宿主版本。</p></li>
+    <li><span class="case-step-no">05</span><strong>唯一写回</strong><p>同一个适配器提交模型库与画布，避免两条写入路径产生不同结果。</p></li>
+    <li><span class="case-step-no">06</span><strong>结果回执</strong><p>实际增量决定 APPLIED、WARNING、BLOCKED 或 NOOP，并保存撤销句柄。</p></li>
+  </ol>
+  <p class="case-outcome"><strong>提交条件</strong>计划通过门禁、宿主返回真实增量、模型库与画布一致，三项同时成立。</p>
+</section>
+<!-- CASE-V06-REPLAY-ark-mbse-agent-True:END -->
+
+<!-- CASE-V06-EVIDENCE-ark-mbse-agent-True:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-mbse">
+  <p class="case-evidence-label">项目过程图与宿主截图</p>
+  <h2 id="evidence-mbse">从进度、澄清、写回到降级结果，证据要连成一段</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="assets/fig-01-progress-line.jpg" alt="AI4MBSE 建模作业进度线"><figcaption><strong>阶段进度线</strong>元素、关系、视图和写回各自保留状态。<span class="case-evidence-proof">教学复原图；解释阶段边界，不证明宿主已经实现同名组件。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="assets/fig-02-canvas-writeback.jpg" alt="AI4MBSE 模型库与画布写回"><figcaption><strong>模型库与画布写回</strong>同一变更集同时落到结构和呈现。<span class="case-evidence-proof">教学复原图；实际结果需结合宿主回读与日志。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="assets/fig-05-resume-timeline.jpg" alt="AI4MBSE 澄清后续跑时间线"><figcaption><strong>澄清后续跑</strong>补充范围后继续原 ModelingJob，并复核宿主 revision。<span class="case-evidence-proof">图支持交互与状态设计；未覆盖多人并发修改。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="assets/fig-06-degraded-success.jpg" alt="AI4MBSE 带警告写回结果"><figcaption><strong>带警告结果</strong>结构写回成立，非破坏性问题进入 warnings。<span class="case-evidence-proof">状态枚举不等于质量保证；语义品质仍需评审。</span></figcaption></figure>
+  </div>
+  <div class="case-source-links">
+    <a href="https://www.mbse.ltd/zh/ai4mbse.html" target="_blank" rel="noopener"><strong>AI4MBSE 项目页</strong><span>项目说明、方法论包与本地交互示意</span></a>
+    <a href="https://www.mbse.ltd/zh/faq.html" target="_blank" rel="noopener"><strong>项目 FAQ</strong><span>当前状态、实验边界与材料说明</span></a>
+    <a href="/zh/concepts/typed-ir-chain/"><strong>类型化 IR 链</strong><span>从项目机制提炼出的工程概念</span></a>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-ark-mbse-agent-True:END -->
+<h2>11. 下一版最值得补的数据</h2>
             <table>
             <thead>
             <tr>
@@ -514,7 +562,7 @@
             <td style="text-align: left;">规则回退与跨运行失败沉淀</td>
             </tr>
             <tr>
-            <td style="text-align: left;">AI4MBSE 个人研究项目</td>
+            <td style="text-align: left;">AI4MBSE 建模 Agent 项目</td>
             <td style="text-align: left;">挂载位置、稳定标识、关系端点和类型翻译</td>
             <td style="text-align: left;">写入模型库之前</td>
             <td style="text-align: left;">有界修复、澄清、阻断或撤销</td>
@@ -523,13 +571,13 @@
             </table>
             <p>三个方案共同支持一条技术观察：精确结构坐标应由可追溯的程序状态传递，模型负责产生候选意图和计划。验证位置则由副作用、外部可观测性和修复窗口决定。这仍是跨方案观察，需要更多项目继续检验。</p>
             <h2>14. 适用边界与 ADPS 对照</h2>
-            <p>本研究方案适合正式模型库中的有界写入场景验证。报告、课件和开放检索结果通常允许重写，不需要复制整套结构校验。当前材料也没有覆盖大团队并发写入、模型分支合并、权限分区、长事务补偿和安全关键项目认证。</p>
+            <p>本项目适合正式模型库中的有界写入场景验证。报告、课件和开放检索结果通常允许重写，不需要复制整套结构校验。当前材料也没有覆盖大团队并发写入、模型分支合并、权限分区、长事务补偿和安全关键项目认证。</p>
             <p>SysML v2 提供更精确的语义和标准化模型访问接口，可以减少专有适配工作。范围解析、引用完整性和事务回执仍然需要由应用运行时负责。</p>
             <table>
             <thead>
             <tr>
             <th style="text-align: left;">模式</th>
-            <th style="text-align: left;">本研究中的实现</th>
+            <th style="text-align: left;">本项目中的实现</th>
             </tr>
             </thead>
             <tbody>
@@ -565,15 +613,15 @@
             </table>
             <hr />
             <h3>作者与引用说明</h3>
-            <p><strong>作者</strong>：袁良锭（Liangding Yuan），成都的架构师和个人研究者，拥有十六年研发与架构经历，做过流程、搜索、协作、授权和知识系统等平台工作。当前通过个人技术站点记录 AI 辅助 MBSE / SysML 的学习、推演和本地实验。AI4MBSE 是他的个人实验原型。</p>
-            <p><strong>个人技术站点</strong>：<a href="https://www.mbse.ltd/zh/">mbse.ltd</a>（个人技术实验站点，仅供技术学习与学术交流）</p>
-            <p><strong>建议引用格式</strong>：ADPS、袁良锭，《自然语言到 SysML：单图写回的建模 Agent 研究》，ADPS Agent 系统蓝皮书研究报告 03，v0.6，2026。</p>
+            <p><strong>项目发起人</strong>：袁良锭（Liangding Yuan），成都的架构师，拥有十六年研发与架构经历，做过流程、搜索、协作、授权和知识系统等平台工作。AI4MBSE 是他发起并持续验证的建模 Agent 项目。</p>
+            <p><strong>项目站点</strong>：<a href="https://www.mbse.ltd/zh/">mbse.ltd</a>（用于技术学习与学术交流）</p>
+            <p><strong>建议引用格式</strong>：ADPS、袁良锭，《AI4MBSE 建模 Agent：让自然语言取得工程模型写入资格》，ADPS Agent 系统蓝皮书项目报告 03，v0.6，2026。</p>
             <blockquote>
             <p>版权说明：本文原创内容版权归属袁良锭，采用 CC BY 4.0 协议开放共享。</p></blockquote>
 
             <div class="document-citation">
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>证据边界：</strong>本文记录袁良锭个人研究项目 AI4MBSE 的技术推演与本地闭环验证。截图和示例数据来自个人本地模拟实验，尚未经过第三方独立工程审计。</p>
+                <p class="publication-disclaimer"><strong>证据边界：</strong>本文记录袁良锭发起的 AI4MBSE 建模 Agent 项目在本地环境中的技术推演与闭环验证。截图和示例数据来自本地实验，尚未经过第三方独立工程审计。</p>
                 <p class="publication-disclaimer"><strong>使用边界：</strong>本文用于技术学习与学术交流，不构成软件产品、商业解决方案或项目交付能力说明。</p>
             </div>
         </article>

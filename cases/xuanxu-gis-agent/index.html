@@ -15,6 +15,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -100,7 +101,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/cases/xuanxu-gis-agent/" class="active">Xuanxu · GIS Publishing Agent</a>
-              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
@@ -142,6 +143,19 @@
                 <h1>Xuanxu Technology&#x27;s GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines</h1>
                 <p class="publication-deck">Certified pipelines run through deterministic rules, and real map requests provide the final acceptance evidence.</p>
             </header>
+<!-- CASE-V06-ROUTE-xuanxu-gis-agent-False:START -->
+<section class="case-route" aria-labelledby="case-route-gis">
+  <p class="case-route-kicker">Through-line task</p>
+  <h2 id="case-route-gis">How an S-57 chart earns automatic publication</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>Task</strong><p>Recognize the chart, process coordinates, generate style, publish service, build a viewer, and verify the result.</p></li>
+    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>GeoServer accepts the configuration and the run commits too early, while the consumer may still receive exception XML or a blank map.</p></li>
+    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Six stages commit fact files; the runtime executes only capabilities that have reached active status.</p></li>
+    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>An external probe issues a real map request and checks body, pixels, and report before the run commits.</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-xuanxu-gis-agent-False:END -->
+
 
             <hr />
 
@@ -378,6 +392,22 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
 </table>
 <p>When the current pipeline version differs from the certified version, the system returns it to candidate. A code change cannot keep an earlier certification silently.</p>
 <p>During capability growth, the model creates scaffolding and a person grants certification; runtime accepts only active pipelines. This adds evidence and accountability without requiring approval for every routine run.</p>
+
+<!-- CASE-V06-REPLAY-xuanxu-gis-agent-False:START -->
+<section class="case-replay" aria-labelledby="replay-gis">
+  <h2 id="replay-gis">Republish the same S-57 dataset</h2>
+  <p>The runner does not improvise. Each stage reads facts committed by its predecessor.</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>validate</strong><p>The signature uniquely matches an active pipeline and records the input manifest.</p></li>
+    <li><span class="case-step-no">02</span><strong>process</strong><p>GDAL and PostGIS commit the processed path, SRS, and bbox for downstream consumers.</p></li>
+    <li><span class="case-step-no">03</span><strong>generate_sld</strong><p>A versioned style is produced; an incomplete contract stops instead of trusting platform defaults.</p></li>
+    <li><span class="case-step-no">04</span><strong>publish</strong><p>Workspace, store, layer, and service receipt are stored while the run remains running.</p></li>
+    <li><span class="case-step-no">05</span><strong>viewer</strong><p>A real access point lets the probe and an engineer use the consumer path.</p></li>
+    <li><span class="case-step-no">06</span><strong>verify</strong><p>The probe checks content type, exception body, visible pixels, screenshot, and report.</p></li>
+  </ol>
+  <p class="case-outcome"><strong>Commit condition</strong>Only verify can commit success. HTTP 2xx or a publish receipt is insufficient on its own.</p>
+</section>
+<!-- CASE-V06-REPLAY-xuanxu-gis-agent-False:END -->
 <h2>9. Why this still belongs in an agent case catalog</h2>
 <p>The classification does not depend on an LLM call in every run. This system senses input signatures, selects a capability, changes an external system, verifies the result, applies bounded recovery, and expands its capability set through failure cards and pipeline lifecycle.</p>
 <p>Its autonomy is deliberately narrow: unknown signatures are rejected, and accepted work must leave a verifiable result and queryable state. If the implementation were only one fixed script without sensing, selection, external acceptance, or capability lifecycle, the agent label would add little explanatory value.</p>
@@ -392,6 +422,17 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
 <li>Measure sequential operation before adding concurrency, dynamic planning, or a runtime model.</li>
 </ol>
 <p>The structure can support media transcoding, model deployment, report publication, static-site release, and other repetitive delivery workflows.</p>
+
+<!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-False:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-gis">
+  <p class="case-evidence-label">Original runtime views</p>
+  <h2 id="evidence-gis">How the console carries dataset facts and failure knowledge forward</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/console-datasets.jpg" alt="Xuanxu GIS Agent dataset view"><figcaption><strong>Dataset and processing facts</strong>Input files, recognition results, and outputs remain inspectable in one view.<span class="case-evidence-proof">The screenshot supports one runtime view, not coverage of every format.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card.jpg" alt="Xuanxu GIS Agent failure knowledge card"><figcaption><strong>Failure knowledge card</strong>A field error becomes symptom, cause, fix, and prevention rule.<span class="case-evidence-proof">The screenshot supports the card mechanism; regression tests must still validate the rule.</span></figcaption></figure>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-False:END -->
 <h2>11. Failure signals and evidence gaps</h2>
 <table>
 <thead>

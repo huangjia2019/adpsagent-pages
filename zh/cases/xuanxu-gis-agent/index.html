@@ -12,6 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -97,7 +98,7 @@
               <a href="/zh/cases/">案例库首页</a>
               <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/" class="active">玄宿科技 · GIS 发布 Agent</a>
-              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 个人研究</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
               <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
             </div></div>
           <div class="sb-section">
@@ -139,6 +140,19 @@
                 <h1>玄宿科技 GIS 数据发布 Agent：把运行经验固化成可验收管线</h1>
                 <p class="publication-deck">模型参与新管线设计，已认证管线按规则运行，真实地图请求负责最终验收。</p>
             </header>
+<!-- CASE-V06-ROUTE-xuanxu-gis-agent-True:START -->
+<section class="case-route" aria-labelledby="case-route-gis">
+  <p class="case-route-kicker">贯穿任务</p>
+  <h2 id="case-route-gis">一份 S-57 海图，怎样取得自动发布资格</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>任务</strong><p>识别海图、处理坐标、生成样式、发布服务、生成浏览页并完成验收。</p></li>
+    <li><span class="case-step-no">02</span><strong>第一处分叉</strong><p>GeoServer 接受发布配置后，任务过早写成 completed，用户端仍可能看到异常 XML 或空图。</p></li>
+    <li><span class="case-step-no">03</span><strong>架构修改</strong><p>六阶段管线逐项提交事实文件；运行主链只执行已经认证的 active 能力。</p></li>
+    <li><span class="case-step-no">04</span><strong>重新验收</strong><p>外部探针发出真实地图请求，检查正文、画面和报告，再提交本次运行。</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-xuanxu-gis-agent-True:END -->
+
 
             <h2>案例速览</h2>
             <table>
@@ -374,7 +388,23 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
             </table>
             <p>活跃管线的当前版本与认证版本不一致时，系统自动退回 candidate。一次代码修改不会沿用旧认证继续自动运行。</p>
             <p>模型在生长期生成脚手架，人员决定是否认证，运行时只接受 active 管线。这个生命周期比“生成后直接上线”多了首跑证据和明确责任人，也比每次运行都请人批准更适合重复任务。</p>
-            <h2>9. 没有运行期模型，为什么仍把它作为 Agent 案例</h2>
+
+<!-- CASE-V06-REPLAY-xuanxu-gis-agent-True:START -->
+<section class="case-replay" aria-labelledby="replay-gis">
+  <h2 id="replay-gis">同一份 S-57 数据重新发布一遍</h2>
+  <p>运行器不临场猜测。它逐阶段读取上一阶段已经提交的事实。</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>validate</strong><p>文件签名唯一命中一条 active 管线，并保存输入清单。</p></li>
+    <li><span class="case-step-no">02</span><strong>process</strong><p>GDAL 与 PostGIS 产出处理路径、SRS 和 bbox；下游不重复计算。</p></li>
+    <li><span class="case-step-no">03</span><strong>generate_sld</strong><p>按版本生成样式；合同不完整就停止，不依赖平台默认值。</p></li>
+    <li><span class="case-step-no">04</span><strong>publish</strong><p>保存 workspace、store、layer 与服务回执，任务仍保持 running。</p></li>
+    <li><span class="case-step-no">05</span><strong>viewer</strong><p>生成真实访问入口，供探针和人员从消费侧打开。</p></li>
+    <li><span class="case-step-no">06</span><strong>verify</strong><p>检查响应类型、异常正文、像素内容和截图，生成 acceptance 报告。</p></li>
+  </ol>
+  <p class="case-outcome"><strong>提交条件</strong><code>verify</code> 通过后才提交成功；HTTP 2xx 或 publish 回执单独都不够。</p>
+</section>
+<!-- CASE-V06-REPLAY-xuanxu-gis-agent-True:END -->
+<h2>9. 没有运行期模型，为什么仍把它作为 Agent 案例</h2>
             <p>名称并不由是否每次调用 LLM 决定。这个系统会感知输入签名，选择能力，修改外部环境，主动验收，按错误签名回退，并通过失败卡和管线生命周期扩展能力。</p>
             <p>它的自主范围很窄。签名空间封闭，未知输入拒绝；已接受任务必须留下可验收结果和可查询状态。若只剩一条固定脚本，没有输入识别、能力选择、外部验收和生命周期管理，把它称为 Agent 就没有额外解释价值。</p>
             <h2>10. 复制这套做法时从哪里开始</h2>
@@ -426,7 +456,18 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
             </tbody>
             </table>
             <p>错误规则和失败卡来自 GeoServer 与 GIS 领域，不能原样迁移。可复用的是阶段契约、单一事实生产者、外部验收、失败到规则的路径和能力认证过程。</p>
-            <h2>12. 当前证据与下一步数据</h2>
+
+<!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-True:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-gis">
+  <p class="case-evidence-label">原始运行画面</p>
+  <h2 id="evidence-gis">控制台怎样把数据识别和失败知识交给下一次运行</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="assets/console-datasets.jpg" alt="玄宿 GIS Agent 数据集识别页面"><figcaption><strong>数据集与处理事实</strong>输入文件、识别结果和处理产物在同一视图中可查。<span class="case-evidence-proof">截图支持一次运行界面；不推出所有格式均已覆盖。</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="assets/knowledge-card.jpg" alt="玄宿 GIS Agent 失败知识卡"><figcaption><strong>失败知识卡</strong>现场错误被整理为现象、根因、修复和防复发规则。<span class="case-evidence-proof">截图支持知识卡机制；规则有效性仍需回归测试。</span></figcaption></figure>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-True:END -->
+<h2>12. 当前证据与下一步数据</h2>
             <table>
             <thead>
             <tr>

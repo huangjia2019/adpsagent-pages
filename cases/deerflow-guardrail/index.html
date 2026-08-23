@@ -15,6 +15,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -100,7 +101,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/cases/xuanxu-gis-agent/" >Xuanxu · GIS Publishing Agent</a>
-              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/" class="active">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
@@ -143,6 +144,19 @@
                 <p class="publication-deck">Five public pull requests moved tool control from run-time denial to assembly-time visibility filtering, while bringing identity, policy, and evidence into one execution path.</p>
                 <p class="publication-date"><time datetime="2026-08-19">19 August 2026</time></p>
             </header>
+<!-- CASE-V06-ROUTE-deerflow-guardrail-False:START -->
+<section class="case-route" aria-labelledby="case-route-deerflow">
+  <p class="case-route-kicker">Through-line task</p>
+  <h2 id="case-route-deerflow">How a read-only research task receives its minimum tool set</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>Task</strong><p>An authenticated read-only user searches, reads an allowed directory, and writes a summary without file or shell access.</p></li>
+    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>The first interceptor sees tool name and arguments but does not receive a trusted Principal.</p></li>
+    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Five PRs add an enforcement point, identity propagation, journal events, independent AuthZ, and assembly filtering.</p></li>
+    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>The model cannot see unauthorized tools; a forged call still stops before the real handler and leaves an event.</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-deerflow-guardrail-False:END -->
+
 
             <h2>Case scope</h2>
             <table><tbody>
@@ -245,7 +259,23 @@ return handler(request)</code></pre>
             <p>Assembly filtering runs before the model sees schemas. At call time, the AuthorizationAdapter is the outer authorization check and explicit guardrails provide inner business or external-policy checks. The tool and sandbox follow. Cheap, stable checks with a high rejection rate belong early; remote or argument-heavy checks belong later.</p>
             <p>A sandbox isolates processes and resources. Authorization answers whether this principal may call a capability. A guardrail asks whether this invocation satisfies additional constraints. The three controls are complementary.</p>
 
-            <h2>11. Mapping the implementation to ADPS patterns</h2>
+
+<!-- CASE-V06-REPLAY-deerflow-guardrail-False:START -->
+<section class="case-replay" aria-labelledby="replay-deerflow">
+  <h2 id="replay-deerflow">Reassemble and execute the same read-only research task</h2>
+  <p>This replay checks model visibility and real execution as separate boundaries.</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>Collect candidates</strong><p>Load search, read, write, bash, and MCP tools while preserving provider coordinates.</p></li>
+    <li><span class="case-step-no">02</span><strong>Apply Agent and Skill</strong><p>Remove unrelated product tools while retaining capabilities the research task may need.</p></li>
+    <li><span class="case-step-no">03</span><strong>Resolve Principal</strong><p>The gateway injects the trusted read-only subject; lead and subagent inherit the delegation.</p></li>
+    <li><span class="case-step-no">04</span><strong>Filter at assembly</strong><p>write_file and bash disappear; the deferred catalog is built only from authorized MCP tools.</p></li>
+    <li><span class="case-step-no">05</span><strong>Recheck at runtime</strong><p>read_file is authorized for its actual path; a forged write_file call receives deny.</p></li>
+    <li><span class="case-step-no">06</span><strong>Record intervention</strong><p>A restrained ToolMessage returns while RunJournal links subject, run, tool_call, and policy.</p></li>
+  </ol>
+  <p class="case-outcome"><strong>Commit condition</strong>Unauthorized schemas stay out of the model, and every real invocation still crosses the same enforcement point.</p>
+</section>
+<!-- CASE-V06-REPLAY-deerflow-guardrail-False:END -->
+<h2>11. Mapping the implementation to ADPS patterns</h2>
             <table>
               <thead><tr><th>Pattern</th><th>DeerFlow implementation</th><th>Boundary</th></tr></thead>
               <tbody>
@@ -277,7 +307,20 @@ return handler(request)</code></pre>
             <p>The public implementation provides a substantial PRE authorization path, but it does not solve all production governance. High-risk actions still need POST business verification, idempotency keys, external receipts, and compensation. Human decisions require an ask state, approval expiry, resume-time state checks, and single consumption. Policy hot updates need versioning, atomic cutover, and rollback.</p>
             <p>The case therefore shows more than a deny list. A production guardrail is an engineering path from capability assembly and trusted identity through policy decisions and execution interception to durable evidence.</p>
 
-            <h2>Public sources</h2>
+
+<!-- CASE-V06-EVIDENCE-deerflow-guardrail-False:START -->
+<section class="case-source-section" aria-labelledby="source-deerflow">
+  <p class="case-evidence-label">Public code evidence</p>
+  <h2 id="source-deerflow">Trace the first enforcement point through two-layer authorization</h2>
+  <div class="case-source-links">
+    <a href="https://github.com/bytedance/deer-flow/pull/1240" target="_blank" rel="noopener"><strong>PR #1240</strong><span>GuardrailMiddleware and pre-call short circuit</span></a>
+    <a href="https://github.com/bytedance/deer-flow/pull/4370" target="_blank" rel="noopener"><strong>PR #4370</strong><span>Assembly filtering, deferred catalog, and runtime recheck</span></a>
+    <a href="https://github.com/bytedance/deer-flow/blob/main/backend/docs/GUARDRAILS.md" target="_blank" rel="noopener"><strong>Guardrails documentation</strong><span>Configuration, providers, failure modes, and boundaries</span></a>
+  </div>
+  <p class="case-source-note">The evolution and assembly diagrams are derived from public PRs and code. Commits establish that the mechanism exists; they do not substitute for a deployment's policy, identity system, sandbox, or business acceptance.</p>
+</section>
+<!-- CASE-V06-EVIDENCE-deerflow-guardrail-False:END -->
+<h2>Public sources</h2>
             <ul>
               <li><a href="https://github.com/bytedance/deer-flow" target="_blank" rel="noopener">DeerFlow public repository</a></li>
               <li><a href="https://github.com/bytedance/deer-flow/blob/main/backend/docs/GUARDRAILS.md" target="_blank" rel="noopener">Guardrails: Pre-Tool-Call Authorization</a></li>

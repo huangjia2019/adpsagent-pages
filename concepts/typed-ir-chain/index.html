@@ -88,7 +88,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
               <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
-              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
             <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
@@ -128,7 +128,7 @@
             <h2>Start with one use-case diagram</h2>
             <p>A user asks for a turnstile use-case diagram under an existing package. A one-shot response that creates elements, relations, and the view may point to names that do not exist or omit elements from the diagram. A failure forces the entire structure to be regenerated.</p>
             <h2>Definition</h2>
-            <p>A typed intermediate representation chain narrows natural-language intent through a series of verifiable data structures. The AI4MBSE personal research project can be reconstructed as:</p>
+            <p>A typed intermediate representation chain narrows natural-language intent through a series of verifiable data structures. The AI4MBSE modeling agent project can be reconstructed as:</p>
             <pre><code class="language-text">ModelingJob -&gt; ElementPlan -&gt; RelationPlan -&gt; ViewPlan -&gt; WriteSet
 </code></pre>
             <p>Each stage reads an accepted upstream result and emits typed candidates with stable references and provenance. A validator checks well-formedness. The writer consumes a gated <code>WriteSet</code> and does not reinterpret the original language.</p>
@@ -136,12 +136,12 @@
             <p>JSON alone is not a typed IR. Schemas or validators must enforce field types, allowed values, references, and stage invariants. Stages may run as separate agents, repeated model calls, or ordinary functions.</p>
             <h2>Provenance</h2>
             <ul>
-            <li>Initial research source: the AI4MBSE personal research project by Liangding Yuan; contract names are an ADPS reconstruction of the published mechanism.</li>
+            <li>Initial research source: the AI4MBSE modeling agent project by Liangding Yuan; contract names are an ADPS reconstruction of the published mechanism.</li>
             <li>Lineage: compiler IR, typed ASTs, semantic analysis, and database referential integrity.</li>
             <li>ADPS contribution: models draft candidate IRs, programs validate stage contracts, and the writer consumes only accepted structures.</li>
             <li>Definition status: ADPS restatement.</li>
             </ul>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/ark-mbse-agent/">AI4MBSE personal research project</a>; authored by Liangding Yuan.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/ark-mbse-agent/">AI4MBSE modeling agent project</a>; authored by Liangding Yuan.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

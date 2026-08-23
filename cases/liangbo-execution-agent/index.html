@@ -15,6 +15,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
 </head>
 <body class="page-essay page-docs">
 
@@ -100,7 +101,7 @@
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/" class="active">Dongfang Yiteng · Execution Agent</a>
               <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing Agent</a>
-              <a href="/cases/ark-mbse-agent/">AI4MBSE · Personal Research</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
@@ -142,6 +143,19 @@
                 <h1>Dongfang Yiteng&#x27;s Execution Agent: Preserve Business State Across a Workflow</h1>
                 <p class="publication-deck">The model interprets intent, program state preserves parameter provenance, and a task graph enforces business dependencies.</p>
             </header>
+<!-- CASE-V06-ROUTE-liangbo-execution-agent-False:START -->
+<section class="case-route" aria-labelledby="case-route-liangbo">
+  <p class="case-route-kicker">Through-line task</p>
+  <h2 id="case-route-liangbo">How one payroll-configuration chain became resumable execution</h2>
+  <ol class="case-route-list">
+    <li><span class="case-step-no">01</span><strong>Task</strong><p>A new tenant selects a payroll template, snapshots current state, imports configuration, and pauses before a sensitive step.</p></li>
+    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>The model rewrites <code>template_id</code> from chat history. The field is valid; its provenance is not.</p></li>
+    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Strict values move to SessionState, dependencies to Workspace, and the model retains intent and narrative work.</p></li>
+    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Approval resumes the original node. Only a successful business read-back commits the task as completed.</p></li>
+  </ol>
+</section>
+<!-- CASE-V06-ROUTE-liangbo-execution-agent-False:END -->
+
 
             <hr />
 
@@ -181,7 +195,7 @@
 </tbody>
 </table>
 <h2>1. Start with the step that blocks the customer</h2>
-<p>Dongfang Yiteng provides SaaS products for HR, organization management, attendance, approvals, and payroll. The platform also connects to banking and tax systems and serves more than 20,000 companies.</p>
+<p>Dongfang Yiteng provides SaaS products for HR, organization management, attendance, approvals, and payroll, with connections to banking and tax systems. This case follows one workflow that tends to stall during initial configuration.</p>
 <p>The team first considered workforce analysis, compensation optimization, and reporting. These features demonstrated AI well, but customer interviews pointed to a more immediate problem: initial configuration. A new customer has to create payroll groups and items, import employees and organizations, set salaries, and configure attendance and approval rules.</p>
 <p>Customers supported by an implementation team generally completed their first month. Self-service customers were more likely to stop during setup. The team therefore selected rapid payroll-group setup as the first agent workflow. It is narrow enough to test, yet includes template matching, snapshots, sequential API calls, rollback, and human approval.</p>
 <h2>2. The first prototype selected tools but lost state</h2>
@@ -311,6 +325,35 @@
   <figcaption>The three planes serve scheduling, model understanding, and API delivery. They are archived together without pretending to share one source of truth.</figcaption>
 </figure>
 
+
+<!-- CASE-V06-REPLAY-liangbo-execution-agent-False:START -->
+<section class="case-replay" aria-labelledby="replay-liangbo">
+  <h2 id="replay-liangbo">Replay the same payroll-configuration task</h2>
+  <p>This replay follows one job and names the state owner and commit condition at each step.</p>
+  <ol class="case-replay-list">
+    <li><span class="case-step-no">01</span><strong>Create the job</strong><p>Workspace stores goal, tenant, DAG version, and current node.</p></li>
+    <li><span class="case-step-no">02</span><strong>Match a template</strong><p>The tool returns <code>template_id</code>; SessionState stores it with producer, call_id, and receipt_ref.</p></li>
+    <li><span class="case-step-no">03</span><strong>Take a snapshot</strong><p>The current payroll setup becomes a recoverable snapshot before import is ready.</p></li>
+    <li><span class="case-step-no">04</span><strong>Wait for approval</strong><p>The node remains blocked and the approval event targets the original job.</p></li>
+    <li><span class="case-step-no">05</span><strong>Resume import</strong><p>The executor rechecks versions and provenance before injecting strict values.</p></li>
+    <li><span class="case-step-no">06</span><strong>Read back business state</strong><p>The runtime verifies the actual payroll group; mismatches enter recovery or human takeover.</p></li>
+  </ol>
+  <p class="case-outcome"><strong>Commit condition</strong>The API receipt, state provenance, and business read-back must agree before the job becomes completed.</p>
+</section>
+<!-- CASE-V06-REPLAY-liangbo-execution-agent-False:END -->
+
+<!-- CASE-V06-EVIDENCE-liangbo-execution-agent-False:START -->
+<section class="case-evidence-section" aria-labelledby="evidence-liangbo">
+  <p class="case-evidence-label">Mechanism diagrams</p>
+  <h2 id="evidence-liangbo">Four runtime structures in the execution agent</h2>
+  <div class="case-evidence-grid">
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/task-dag-state-machine.png" alt="Task DAG and node state machine"><figcaption><strong>Task DAG and state machine</strong>Once dependencies are known, the executor schedules only ready nodes.<span class="case-evidence-proof">ADPS redrawing from the case talk; it explains mechanics, not production class names.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/hitl-block-resume.png" alt="Approval block and resume"><figcaption><strong>Approval block and resume</strong>The approval event returns to the original job and node instead of restarting the task.<span class="case-evidence-proof">The diagram supports state semantics; deployments still define authority and expiry.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/anchor-ledger-collection.png" alt="Anchor Ledger Collection structure"><figcaption><strong>Anchor, Ledger, Collection</strong>Goal, progress, and current projection remain separate to reduce long-run drift.<span class="case-evidence-proof">This structure serves model context, not strict identifier transfer.</span></figcaption></figure>
+    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/observability-glass-dome.png" alt="Unified activity events and runtime timeline"><figcaption><strong>Activity and runtime timeline</strong>Model, tool, state change, and approval enter one traceable sequence.<span class="case-evidence-proof">It explains event organization; public material does not provide aggregate performance metrics.</span></figcaption></figure>
+  </div>
+</section>
+<!-- CASE-V06-EVIDENCE-liangbo-execution-agent-False:END -->
 <h2>9. What the current evidence supports</h2>
 <table>
 <thead>
@@ -340,11 +383,6 @@
 <td style="text-align: left;">SessionState preserves provenance and injects parameters</td>
 <td style="text-align: left;">State-coordinate and invocation design</td>
 <td style="text-align: left;">Architecture mechanism</td>
-</tr>
-<tr>
-<td style="text-align: left;">The design has produced measured gains across all 20,000 customer environments</td>
-<td style="text-align: left;">No public comparison data</td>
-<td style="text-align: left;">Not claimed in this report</td>
 </tr>
 </tbody>
 </table>
