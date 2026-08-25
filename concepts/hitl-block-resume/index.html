@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HITL Block and Resume · Concept · ADPS</title><meta name="description" content="Pause a sensitive node, preserve its state, revalidate, and resume after approval.">
+    <title>HITL Block and Resume · Engineering Concept · ADPS</title><meta name="description" content="Persist a protected execution point, revalidate it, and resume the same action after review.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/hitl-block-resume/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,70 +92,88 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/" class="active">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/" class="active">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>HITL Block and Resume: Narrative-Plane Continuation and Control-Plane Blocking</h1><p class="publication-deck">Pause a sensitive node, preserve its state, revalidate, and resume after approval.</p>
+                <h1>HITL Block and Resume</h1><p class="publication-deck">Persist a protected execution point, revalidate it, and resume the same action after review.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/hitl-block-resume.png" alt="HITL Block and Resume: Narrative-Plane Continuation and Control-Plane Blocking" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: waiting for approval is still part of the job</h2>
-            <p>After payroll calculation, the agent pauses before submission and presents the batch, employee count, total, and exceptions. Approval may arrive hours later. The browser may disconnect, and business data may change in the meantime.</p>
-            <p>This requires more than a confirmation dialog. The runtime persists a waiting state, the proposed action, and parameter provenance, then revalidates execution conditions after authorization.</p>
-            <h2>Definition</h2>
-            <p>When an execution-type agent runs a business process on its own, there are a few positions where it should not be allowed to execute all the way through. Deleting a batch of data, issuing a payroll disbursement, filing a tax return — once one of these actions goes wrong, it cannot be rolled back. Human-in-the-loop (HITL) means stopping the execution flow at these critical positions, waiting for a person to review and confirm, and only then letting the agent continue all the way down. The hard part is not the stop, but how to fully restore the execution state once you have stopped.</p>
-            <h2>How it works</h2>
-            <p>This stop-and-resume mechanism comes in two forms, an order of magnitude apart in engineering complexity.</p>
-            <p>The first is narrative-plane continuation. At its core it still generates content from narrative context. The typical scenario is an AI coding IDE, where the agent has worked out a way to make changes but worries about breaking the existing logic, so it ends the current turn and asks you to confirm. In the next turn you type "continue" or "confirm," and it reads the full narrative context in the session and finishes the code change. This form is easy to implement, because all you need is to end the current turn and let the user start a fresh natural-language turn next time; everything needed to resume sits in the narrative state.</p>
-            <p>The second is control-plane blocking, which is far more complex to engineer. The agent is about to run a script or command in the local terminal; instead of ending the current turn, it blocks the current execution flow and pops up a panel asking whether to Accept. You click Accept, and the execution flow resumes from exactly the point where it was blocked. This form cannot be substituted with "start a fresh turn": it has to preserve the execution state at the interruption point in memory, and it also has to manage what state the task graph as a whole and each of its downstream nodes are in when one planning pass produces multiple tasks and one of them gets blocked. Implementing this mechanism from scratch requires a whole task-state model designed for the purpose.</p>
-            <p>In Dongfang Yiteng's architecture, control-plane blocking is cheap to implement. The reason is that, at an earlier stage, to solve ReAct's cross-step and skipped-step problem, the team had already landed the plan-and-execute pattern — to make a multi-step task run in the right order under strict dependencies, the team built a task DAG, a task state machine, a scheduler, and an executor. A task node can be scheduled to start only when all of its upstream dependencies are completed and the node itself is ready, and the whole scheduling process is driven by this state machine. With this state machine already in place, blocking and human-reviewed continuation at critical tasks or critical tool calls take almost no extra construction: blocking is making a node halt in a waiting-for-approval state, and resuming is letting it re-enter ready once approval goes through. Which critical tasks and which tool calls need to be hung for human review can also be maintained with declarative configuration, without writing separate code for each sensitive operation.</p>
-            <p>What it guards against is the kind of accident an execution-type agent can least afford: leaving irreversible business operations to run automatically. In Dongfang Yiteng's setting, once actions like initiating a payroll disbursement or filing and paying a return go wrong, they either corrupt business data or produce a false success — the agent's execution "succeeds" while the actual business state is not achieved or is left damaged. Setting these actions as critical nodes and forcing human review keeps a point of human intervention between automation and irreversible risk.</p>
-            <h2>When you need it</h2>
-            <p>When your agent will automatically execute irreversible, sensitive, or high-risk business operations, and those operations must go through human confirmation. For control-plane blocking to land cheaply, the precondition is that you already have a <a href="../task-dag-state-machine/">task DAG and state machine</a>; the execution state that must be preserved during the block belongs to the <a href="../unified-session-state/">separation of powers in the unified session state plane</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/hitl-block-resume.png" alt="Human approval that blocks and resumes one execution" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A payroll agent prepares a payment batch and reaches a protected commit node. Approval may arrive hours later. Ending the conversation and starting a new request would lose the exact plan node, action digest, parameter versions, and already completed side effects.</p>
+<h2>Definition</h2>
+<p>HITL Block and Resume represents human review as a durable runtime state. The task moves to <code>waiting_for_approval</code>, persists its checkpoint and Intent, then resumes the same node after a decision and precondition check.</p>
+<h2>Engineering mechanism</h2>
+<p>The approval request carries action summary, affected resources, risk, evidence, intent hash, expiry, and allowed decisions. Approval is append-only and single-use unless policy says otherwise. Resume reacquires leases, refreshes mutable state, confirms tool and policy versions, and checks idempotency before commit. Rejection, expiry, or changed preconditions follows an explicit transition.</p>
+<h2>Boundary</h2>
+<p>Narrative confirmation can continue a low-risk conversation. Runtime blocking is needed when the system must preserve execution identity across a wait point. Approval does not replace post-action verification or compensation.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS treated approval as durable runtime state and added revalidation before resume.</dd></div>
+<div><dt>Current standing</dt><dd>ADPS restatement</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

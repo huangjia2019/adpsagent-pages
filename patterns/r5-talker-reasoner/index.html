@@ -84,7 +84,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
@@ -107,46 +107,62 @@
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main">
 
@@ -235,11 +251,11 @@
             <ul>
             <li><strong>Complexity Routing (R2)</strong>: The dual-process design is the architectural extreme of routing. Ordinary routing "picks one tier to run" (a single-point-in-time decision); the dual-process design "runs two tiers at once" (a two-time-dimension decision), pushing "tier selection" all the way to "splitting the agent."</li>
             <li><strong>Iterative Hypothesis Validation (R4)</strong>: Both sit in the Loop column. Iteration is a single agent looping with itself to validate hypotheses; the dual-process design is two agents collaborating, separately handling "speaking" and "thinking."</li>
-            <li><strong>Chain of Thought (R1)</strong>: The deep reasoning on the Reasoner side is essentially a complete chain of thought; the Talker side deliberately does not do deep reasoning.</li>
+            <li><strong>Chain of Thought (R1)</strong>: The Reasoner performs the full reasoning sequence; the Talker deliberately avoids deep analysis.</li>
             <li><strong>Hierarchical Memory pattern</strong>: The belief state persists across sessions, which shares its lineage with the memory module's "User-layer belief persistence."</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The essence of Talker-Reasoner is not performance optimization but splitting the agent's persona into two — one handling real time, one handling depth. What the Talker gives is not a preview of the Reasoner; it is content of an entirely different nature, two mental modes collaborating.</p>
+            <p>Talker-Reasoner separates two response obligations. The Talker maintains the real-time interaction with short, bounded replies. The Reasoner works on the slower analysis and returns a considered result when ready. The Talker's message is a valid interaction in its own right, not an unfinished draft of the Reasoner's answer.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R5 Talker-Reasoner</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
         </article>

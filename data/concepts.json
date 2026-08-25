@@ -1,0 +1,343 @@
+{
+  "version": "1.0",
+  "updated": "2026-08-26",
+  "groups": [
+    {"id": "system-boundaries", "zh": "系统边界与状态", "en": "System boundaries and state"},
+    {"id": "context-memory", "zh": "上下文与记忆", "en": "Context and memory"},
+    {"id": "planning-execution", "zh": "规划、执行与写回", "en": "Planning, execution, and write-back"},
+    {"id": "collaboration-runtime", "zh": "协作与运行时控制", "en": "Collaboration and runtime control"},
+    {"id": "verification-governance", "zh": "评测、反思与治理", "en": "Evaluation, reflection, and governance"},
+    {"id": "pattern-method", "zh": "模式方法与演进", "en": "Pattern method and evolution"}
+  ],
+  "sources": {
+    "liangbo-case": {
+      "zh": "东方屹腾执行型 Agent 案例",
+      "en": "Dongfang Yiteng execution-agent case",
+      "zh_url": "/zh/cases/liangbo-execution-agent/",
+      "en_url": "/cases/liangbo-execution-agent/"
+    },
+    "gis-case": {
+      "zh": "玄宿科技 GIS 数据发布 Agent 案例",
+      "en": "Xuanxu GIS publishing-agent case",
+      "zh_url": "/zh/cases/xuanxu-gis-agent/",
+      "en_url": "/cases/xuanxu-gis-agent/"
+    },
+    "mbse-case": {
+      "zh": "AI4MBSE 建模 Agent 项目",
+      "en": "AI4MBSE modeling-agent project",
+      "zh_url": "/zh/cases/ark-mbse-agent/",
+      "en_url": "/cases/ark-mbse-agent/"
+    },
+    "memory-workshop": {
+      "zh": "记忆模块第一次研讨会，2026-08-05",
+      "en": "First Memory workshop, 5 August 2026",
+      "zh_url": "/zh/workshops/memory-2026-08-05/",
+      "en_url": "/workshops/memory-2026-08-05/"
+    },
+    "action-workshop": {
+      "zh": "行动模块第一次研讨会，2026-08-06",
+      "en": "First Action workshop, 6 August 2026",
+      "zh_url": "/zh/workshops/action-2026-08-06/",
+      "en_url": "/workshops/action-2026-08-06/"
+    },
+    "reflection-workshop": {
+      "zh": "反思模块第一次研讨会，2026-08-12",
+      "en": "First Reflection workshop, 12 August 2026",
+      "zh_url": "/zh/workshops/reflection-2026-08-12/",
+      "en_url": "/workshops/reflection-2026-08-12/"
+    },
+    "perception-workshop": {
+      "zh": "感知模块第一次研讨会，2026-08-13",
+      "en": "First Perception workshop, 13 August 2026",
+      "zh_url": "/zh/workshops/perception-2026-08-13/",
+      "en_url": "/workshops/perception-2026-08-13/"
+    },
+    "governance-workshop": {
+      "zh": "治理模块第一次研讨会，2026-08-18",
+      "en": "First Governance workshop, 18 August 2026",
+      "zh_url": "/zh/workshops/governance-2026-08-18/",
+      "en_url": "/workshops/governance-2026-08-18/"
+    },
+    "collaboration-workshop": {
+      "zh": "协作模块第一次研讨会，2026-08-25",
+      "en": "First Collaboration workshop, 25 August 2026",
+      "zh_url": "/zh/workshops/collaboration-2026-08-25/",
+      "en_url": "/workshops/collaboration-2026-08-25/"
+    }
+  },
+  "concepts": [
+    {
+      "slug": "control-narrative-dualism", "group": "system-boundaries", "key": true,
+      "zh_label": "控制平面与叙事平面", "en_label": "Control and Narrative Planes",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将程序控制信号与模型可读叙事分开命名并补充边界。", "adps_en": "ADPS named the separation between program control signals and model-readable narrative, then stated its boundary.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "execution-vs-content", "group": "system-boundaries", "key": true,
+      "zh_label": "执行型与内容生成型 Agent", "en_label": "Execution vs Content Agents",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 按交付对象、状态依赖和错误后果整理为架构选型判据。", "adps_en": "ADPS turned delivery object, state dependency, and failure consequence into an architecture-selection test.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "unified-session-state", "group": "system-boundaries", "key": false,
+      "zh_label": "会话统一状态三平面", "en_label": "Three Session-State Planes",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将叙事、机械参数和任务调度的写入权整理为三个状态平面。", "adps_en": "ADPS organized narrative, mechanical parameters, and task scheduling into three state planes with distinct write ownership.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "mechanical-state-plane", "group": "system-boundaries", "key": true,
+      "zh_label": "机械状态平面", "en_label": "Mechanical State Plane",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 补入 Provenance 来源坐标和调用前 fail-fast 约束。", "adps_en": "ADPS added provenance coordinates and fail-fast checks before a tool call.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "anchor-ledger-collection", "group": "context-memory", "key": false,
+      "zh_label": "锚、账、集", "en_label": "Anchor, Ledger, Collection",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 按目标、追加事实和当前读取视图的不同寿命整理三种结构。", "adps_en": "ADPS separated the original goal, append-only facts, and current read view by lifetime.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "scratchpad", "group": "context-memory", "key": false,
+      "zh_label": "草稿纸看板", "en_label": "Scratchpad Board",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将短期推理轨迹整理为模型、运行时和人工审核共享的工作面。", "adps_en": "ADPS restated the short-lived reasoning trace as a shared work surface for the model, runtime, and reviewer.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "memory-envelope", "group": "context-memory", "key": false,
+      "zh_label": "记忆信封", "en_label": "Memory Envelope",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "落地结构名为 ReasonContext；“记忆信封”由 ADPS 命名。", "adps_en": "The implementation structure is ReasonContext; ADPS supplied the name Memory Envelope.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "layered-memory", "group": "context-memory", "key": false,
+      "zh_label": "L1/L2/L3 分层记忆", "en_label": "Layered Memory L1/L2/L3",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 按当前输入、任务事实和跨任务经验补充加载与引用规则。", "adps_en": "ADPS added loading and reference rules for current input, task facts, and cross-task experience.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "orchestrator", "group": "system-boundaries", "key": false,
+      "zh_label": "Orchestrator 与门面", "en_label": "Orchestrator and Facade",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 用 Facade、Mediator 与工作流引擎的历史近邻说明输入输出适配和控制权的边界。", "adps_en": "ADPS used the Facade, Mediator, and workflow-engine lineage to state the boundary between I/O adaptation and control.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "intent-as-compilation", "group": "planning-execution", "key": false,
+      "zh_label": "意图即编译", "en_label": "Intent as Compilation",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将自然语言入口类比为编译器前端，并明确有限枚举和 unknown 兜底。", "adps_en": "ADPS restated the language entry point as a compiler front end with bounded enums and an unknown fallback.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "task-dag-state-machine", "group": "planning-execution", "key": false,
+      "zh_label": "任务 DAG 与状态机", "en_label": "Task DAG and State Machine",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将依赖、验收和恢复统一进 Agent 任务合同。", "adps_en": "ADPS placed dependency, acceptance, and recovery in one agent task contract.",
+      "status_zh": "继承术语的 Agent 化", "status_en": "Agent adaptation of established terms"
+    },
+    {
+      "slug": "observability-glass-dome", "group": "verification-governance", "key": false,
+      "zh_label": "活动事件与执行时间线", "en_label": "Activity Events and Timeline",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将模型、工具、状态变化、耗时和成本整理到同一事件轴。", "adps_en": "ADPS organized model, tool, state, latency, and cost events on one timeline.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "hitl-block-resume", "group": "verification-governance", "key": false,
+      "zh_label": "HITL 阻塞与恢复", "en_label": "HITL Block and Resume",
+      "source": "liangbo-case", "origin_zh": "初始实践：梁博", "origin_en": "Initial practice: Bo Liang",
+      "adps_zh": "ADPS 将人工审批整理为可持久化运行状态，并补充恢复前复验。", "adps_en": "ADPS treated approval as durable runtime state and added revalidation before resume.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "reasoning-assetization", "group": "planning-execution", "key": false,
+      "zh_label": "推理资产化", "en_label": "Reasoning Assetization",
+      "source": "gis-case", "origin_zh": "初始实践：熊钰柯", "origin_en": "Initial practice: Yuke Xiong",
+      "adps_zh": "ADPS 补入模型生成、人工审阅、认证版本和运行权。", "adps_en": "ADPS added model generation, human review, certified versions, and execution rights.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "disk-fact-plane", "group": "system-boundaries", "key": false,
+      "zh_label": "磁盘事实平面", "en_label": "Disk Fact Plane",
+      "source": "gis-case", "origin_zh": "初始实践：熊钰柯", "origin_en": "Initial practice: Yuke Xiong",
+      "adps_zh": "ADPS 区分阶段事实、运行状态和验收证据，并补入单写者约束。", "adps_en": "ADPS separated stage facts, runtime state, and acceptance evidence, then added a single-writer constraint.",
+      "status_zh": "案例命名", "status_en": "Case-derived name"
+    },
+    {
+      "slug": "external-acceptance-probe", "group": "verification-governance", "key": false,
+      "zh_label": "外部验收探针", "en_label": "External Acceptance Probe",
+      "source": "gis-case", "origin_zh": "初始实践：熊钰柯", "origin_en": "Initial practice: Yuke Xiong",
+      "adps_zh": "ADPS 将用户侧探针回执接入任务状态机，用真实结果裁决成功。", "adps_en": "ADPS connected a user-side probe receipt to the task state machine so observable results decide success.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "failure-to-rule-loop", "group": "verification-governance", "key": false,
+      "zh_label": "失败到规则闭环", "en_label": "Failure-to-Rule Loop",
+      "source": "gis-case", "origin_zh": "初始实践：熊钰柯", "origin_en": "Initial practice: Yuke Xiong",
+      "adps_zh": "ADPS 要求失败记录回链规则、测试、默认值或能力资产，并验证防复发。", "adps_en": "ADPS requires a failure record to change a rule, test, default, or capability asset and then verify non-recurrence.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "capability-certification-lifecycle", "group": "verification-governance", "key": false,
+      "zh_label": "能力认证生命周期", "en_label": "Capability Certification Lifecycle",
+      "source": "gis-case", "origin_zh": "初始实践：熊钰柯", "origin_en": "Initial practice: Yuke Xiong",
+      "adps_zh": "ADPS 将认证对象扩展到管线、Skill、工具封装与子流程，并明确自动运行权。", "adps_en": "ADPS extended certification to pipelines, skills, tool wrappers, and subflows, with explicit automatic execution rights.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "typed-ir-chain", "group": "planning-execution", "key": false,
+      "zh_label": "类型化中间表示链", "en_label": "Typed IR Chain",
+      "source": "mbse-case", "origin_zh": "初始研究实践：袁良锭", "origin_en": "Initial research practice: Liangding Yuan",
+      "adps_zh": "ADPS 依据公开机制还原阶段合同，并明确候选 IR、验证器和写入器的职责。", "adps_en": "ADPS reconstructed the stage contracts and separated candidate IR, validation, and write-back responsibilities.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "one-diagram-unit-of-work", "group": "planning-execution", "key": false,
+      "zh_label": "单图事务", "en_label": "One-Diagram Unit of Work",
+      "source": "mbse-case", "origin_zh": "初始研究实践：袁良锭", "origin_en": "Initial research practice: Liangding Yuan",
+      "adps_zh": "ADPS 将图类型、工程范围、候选结构、回执和撤销合成一次写回边界。", "adps_en": "ADPS combined diagram type, model scope, candidate structure, receipt, and undo into one write-back boundary.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "structural-writeback-gate", "group": "planning-execution", "key": false,
+      "zh_label": "结构写回门禁", "en_label": "Structural Write-Back Gate",
+      "source": "mbse-case", "origin_zh": "初始研究实践：袁良锭", "origin_en": "Initial research practice: Liangding Yuan",
+      "adps_zh": "ADPS 将工程不变量检查连到真实写回回执和结果状态。", "adps_en": "ADPS connected engineering-invariant checks to the actual write-back receipt and result state.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "resumable-clarification-job", "group": "planning-execution", "key": false,
+      "zh_label": "可续跑澄清作业", "en_label": "Resumable Clarification Job",
+      "source": "mbse-case", "origin_zh": "初始研究实践：袁良锭", "origin_en": "Initial research practice: Liangding Yuan",
+      "adps_zh": "ADPS 将澄清字段、候选对象、恢复游标和宿主版本放进同一作业合同。", "adps_en": "ADPS placed clarification fields, candidate objects, a resume cursor, and host revision in one job contract.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "vocabulary-equivalence-layer", "group": "planning-execution", "key": false,
+      "zh_label": "词表等价层", "en_label": "Vocabulary Equivalence Layer",
+      "source": "mbse-case", "origin_zh": "初始研究实践：袁良锭", "origin_en": "Initial research practice: Liangding Yuan",
+      "adps_zh": "ADPS 将词表映射整理为按图类型和宿主版本选择的可测试运行资产。", "adps_en": "ADPS restated vocabulary mapping as a testable runtime asset selected by diagram type and host version.",
+      "status_zh": "ADPS 重述", "status_en": "ADPS restatement"
+    },
+    {
+      "slug": "abstraction-reconstruction-loop", "group": "pattern-method", "key": true,
+      "zh_label": "抽象—还原往返", "en_label": "Abstraction-Reconstruction Loop",
+      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：黄佳", "origin_en": "First proposed within ADPS by Jia Huang",
+      "adps_zh": "ADPS 将现场到模式、再回到现场的往返整理为模式审校方法。", "adps_en": "ADPS formalized the round trip from field evidence to pattern and back as a review method.",
+      "status_zh": "跨模块方法概念", "status_en": "Cross-module method concept"
+    },
+    {
+      "slug": "topology-lowering", "group": "collaboration-runtime", "key": false,
+      "zh_label": "拓扑降阶", "en_label": "Topology Lowering",
+      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；整理命名：ADPS", "origin_en": "Engineering observation: Zhang Dong; name formalized by ADPS",
+      "adps_zh": "张栋提出串行、并行、路由是常见运行原语；ADPS 补入高层责任语义的保留规则。", "adps_en": "Zhang Dong identified serial, parallel, and routing as common runtime primitives; ADPS added rules for preserving higher-level responsibility semantics.",
+      "status_zh": "模块级方法概念", "status_en": "Module-level method concept"
+    },
+    {
+      "slug": "topology-governance-matrix", "group": "collaboration-runtime", "key": false,
+      "zh_label": "拓扑治理矩阵", "en_label": "Topology Governance Matrix",
+      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：张栋", "origin_en": "First proposed within ADPS by Zhang Dong",
+      "adps_zh": "ADPS 按公开口径整理身份、权限、防护和溯源四层检查表。", "adps_en": "ADPS edited the four-layer identity, authority, safeguard, and provenance checklist for public use.",
+      "status_zh": "研讨会概念", "status_en": "Workshop concept"
+    },
+    {
+      "slug": "handoff-contract", "group": "collaboration-runtime", "key": false,
+      "zh_label": "交接合同", "en_label": "Handoff Contract",
+      "source": "collaboration-workshop", "origin_zh": "初始问题与建议：王伟；字段结构：ADPS", "origin_en": "Initial problem and proposal: Wang Wei; field structure: ADPS",
+      "adps_zh": "ADPS 将不同团队的 Handoff 协议差异整理为目标、产物、决定、权限和验收字段。", "adps_en": "ADPS organized differing handoff protocols around goal, artifacts, decisions, authority, and acceptance.",
+      "status_zh": "研讨会概念", "status_en": "Workshop concept"
+    },
+    {
+      "slug": "three-collaboration-planes", "group": "collaboration-runtime", "key": false,
+      "zh_label": "三类协作关系", "en_label": "Three Collaboration Planes",
+      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：王伟", "origin_en": "First proposed within ADPS by Wang Wei",
+      "adps_zh": "ADPS 将 Agent-Agent、Human-Agent 和 Agent 环境中的 Human-Human 关系整理为统一设计视角。", "adps_en": "ADPS organized Agent-Agent, Human-Agent, and Human-Human relations around the agent environment into one design view.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "hook-composition", "group": "collaboration-runtime", "key": false,
+      "zh_label": "Hook 组合", "en_label": "Hook Composition",
+      "source": "collaboration-workshop", "origin_zh": "初始问题与实践：王伟；分类整理：ADPS", "origin_en": "Initial problem and practice: Wang Wei; classification formalized by ADPS",
+      "adps_zh": "ADPS 区分编排、治理、观测和恢复四类职责，并补充顺序、幂等和失败语义。", "adps_en": "ADPS separated orchestration, governance, observation, and recovery duties and added ordering, idempotency, and failure semantics.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "probabilistic-core-deterministic-shell", "group": "system-boundaries", "key": true,
+      "zh_label": "概率内核与确定性外壳", "en_label": "Probabilistic Core, Deterministic Shell",
+      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；外壳表述：黄佳", "origin_en": "Engineering observation: Zhang Dong; shell formulation: Jia Huang",
+      "adps_zh": "ADPS 将模型的开放判断与身份、状态、权限、测试和外部回执的确定性控制连接起来。", "adps_en": "ADPS connected open model judgement to deterministic controls over identity, state, authority, tests, and external receipts.",
+      "status_zh": "跨模块架构概念", "status_en": "Cross-module architecture concept"
+    },
+    {
+      "slug": "knowledge-compilation", "group": "context-memory", "key": false,
+      "zh_label": "知识编译", "en_label": "Knowledge Compilation",
+      "source": "memory-workshop", "origin_zh": "ADPS 研讨会初始引入：张颖峰", "origin_en": "Introduced into ADPS workshops by Zhang Yingfeng",
+      "adps_zh": "ADPS 将其整理为 M2 写入侧机制，并保留这一术语已有公开技术前史的说明。", "adps_en": "ADPS placed it on the write side of M2 while recognizing that the term has a broader public technical lineage.",
+      "status_zh": "研讨会概念", "status_en": "Workshop concept"
+    },
+    {
+      "slug": "context-contract", "group": "context-memory", "key": true,
+      "zh_label": "上下文合同", "en_label": "Context Contract",
+      "source": "perception-workshop", "origin_zh": "初始议题：黄佳；工程实践：黄湘龙；整理命名：ADPS", "origin_en": "Initial question: Jia Huang; engineering practice: Huang Xianglong; name formalized by ADPS",
+      "adps_zh": "ADPS 将 Why、What、How、验收材料与 P1/P2 的信息边界整理为可测试合同。", "adps_en": "ADPS organized Why, What, How, acceptance material, and P1/P2 information boundaries into a testable contract.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "plan-compilation", "group": "planning-execution", "key": true,
+      "zh_label": "Plan 编译", "en_label": "Plan Compilation",
+      "source": "action-workshop", "origin_zh": "ADPS 内初始提出：茹炳晟；实践补充：王伟、Pylon PENG", "origin_en": "First proposed within ADPS by Bingsheng Ru; practice discussed by Wang Wei and Pylon Peng",
+      "adps_zh": "ADPS 将合法性、依赖、权限、冲突和经济性检查整理为计划进入执行前的编译步骤。", "adps_en": "ADPS organized legality, dependency, authority, conflict, and economy checks into a compilation step before execution.",
+      "status_zh": "研讨会概念", "status_en": "Workshop concept"
+    },
+    {
+      "slug": "dual-feedback-clock", "group": "verification-governance", "key": false,
+      "zh_label": "双反馈时钟", "en_label": "Dual Feedback Clock",
+      "source": "reflection-workshop", "origin_zh": "ADPS 内初始提出：李佳奇；整理命名：ADPS", "origin_en": "First proposed within ADPS by Li Jiaqi; name formalized by ADPS",
+      "adps_zh": "ADPS 将即时结果与跨部门、跨任务的延迟业务结果整理为两个反馈时钟。", "adps_en": "ADPS named the separation between immediate results and delayed business outcomes across teams and runs as two feedback clocks.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "durable-intent", "group": "verification-governance", "key": false,
+      "zh_label": "持久化意图", "en_label": "Durable Intent",
+      "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：徐一博", "origin_en": "First proposed within ADPS by Xu Yibo",
+      "adps_zh": "ADPS 将研讨中的 Durable Intent 连接到 G1 审批门，并补充 Intent、Approval、Execution 三段记录。", "adps_en": "ADPS connected Durable Intent to G1 Approval Gate and organized Intent, Approval, and Execution as three records.",
+      "status_zh": "研讨会概念", "status_en": "Workshop concept"
+    },
+    {
+      "slug": "write-conflict-domain", "group": "collaboration-runtime", "key": false,
+      "zh_label": "写入冲突域", "en_label": "Write-Conflict Domain",
+      "source": "action-workshop", "origin_zh": "初始问题：唐洪山；实践补充：Pylon PENG、王伟；整理命名：ADPS", "origin_en": "Initial problem: Tang Hongshan; practice discussed by Pylon Peng and Wang Wei; name formalized by ADPS",
+      "adps_zh": "ADPS 将文件冲突扩展到编号、配置、数据库记录、测试环境和外部资源。", "adps_en": "ADPS extended file conflicts to identifiers, configuration, database records, test environments, and external resources.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "three-powers-of-agency", "group": "verification-governance", "key": true,
+      "zh_label": "Agent 的三种权力", "en_label": "Three Powers of Agency",
+      "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：黄佳", "origin_en": "First proposed within ADPS by Jia Huang",
+      "adps_zh": "ADPS 将信息影响决策、标准裁决结果和权限改变现实世界区分为三种权力。", "adps_en": "ADPS separates the power to influence decisions, judge results, and change the external world.",
+      "status_zh": "跨模块架构概念", "status_en": "Cross-module architecture concept"
+    },
+    {
+      "slug": "judge-migration", "group": "verification-governance", "key": false,
+      "zh_label": "裁判迁移", "en_label": "Judge Migration",
+      "source": "perception-workshop", "origin_zh": "ADPS 内初始提出：黄佳", "origin_en": "First proposed within ADPS by Jia Huang",
+      "adps_zh": "ADPS 将需求、测试、评审、部署和业务结果中的裁判类型及其交接整理为生命周期问题。", "adps_en": "ADPS treats the changing judge across requirements, tests, review, deployment, and business outcome as a lifecycle concern.",
+      "status_zh": "候选概念", "status_en": "Candidate concept"
+    },
+    {
+      "slug": "dual-scale-governance", "group": "verification-governance", "key": false,
+      "zh_label": "双尺度治理", "en_label": "Dual-Scale Governance",
+      "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：黄佳", "origin_en": "First proposed within ADPS by Jia Huang",
+      "adps_zh": "ADPS 将单步动作合规与长程目标漂移分为两个同时运行的治理尺度。", "adps_en": "ADPS separates per-action compliance from long-horizon goal drift as two concurrent governance scales.",
+      "status_zh": "跨模块治理概念", "status_en": "Cross-module governance concept"
+    }
+  ]
+}

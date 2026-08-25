@@ -90,14 +90,18 @@
 <p>在研发安全场景中，代码提交和工单可以通过事件回调进入系统，批量合规检查适合周期轮询，高吞吐日志适合流式处理。高风险威胁与故障定位常常需要把代码、主机、网络和历史工单放在一起交叉验证。</p>
 <p>这些方式可以组合。一条代码审计链可以由提交事件触发，同时使用每日全量扫描校准覆盖，再把多个来源的证据聚合为同一条风险记录。</p>
 <p>本场没有把 Event-Driven 增加为新拓扑。事件回答何时启动和怎样传递，任务启动后的控制关系仍由六种执行拓扑描述。</p>
+<figure class="workshop-diagram"><img src="/images/workshops/perception-funnel-zh.svg" alt="感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。"><figcaption>感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。</figcaption></figure>
 <h2>3. 多源不等于多模态</h2>
+<p class="workshop-field-note"><strong>熊钰柯用算法上线后的验收说明了差别。</strong>算法本身通过边界检查，只能证明计算部分没有越界；地图上的呈现、设备在高级模式下的行为和最终业务效果还要分层验证。同一套验收设计也不能原样复制到图像识别等另一类任务。</p>
 <p>企业安全系统更常见的是多源融合：主机、网络、代码和工单可能都是文本或结构化记录。游戏开发中则有模态选择问题：虚幻引擎蓝图既可以按图读取，也可以转成脚本式结构；表示方式取决于任务、解析工具和 token 成本。</p>
 <p>研讨会后，P4 增加来源与模态两个字段。来源决定权限、时效和交叉核验，模态决定解析器和表示方式。P4 暂时保留“多模态融合”的名称，后续再根据案例决定是否扩大命名。</p>
 <h2>4. 目标与约束共同构成上下文</h2>
+<p class="workshop-field-note"><strong>黄湘龙把软件上下文拆成 Why、What、How 与验收。</strong>Why 说明服务谁、解决什么问题；What 固定场景和产品行为；How 承载架构、时序、API 与数据库；验收用例在编码前形成。Agent 因而拿到的是一组可核对的工程图纸，而不是不断变长的口头补充。</p>
 <p>Coding Agent 的输入需要同时包含目标与约束。目标说明要完成什么，测试、接口、设计规范和业务规则说明怎样判断做得好不好。上下文过少，Agent 无法完成任务；上下文过多，注意力会被无关材料分散。</p>
 <p>算法研发中还出现了分层验收问题。算法本身通过测试，还不能证明地图呈现、设备行为或最终业务结果正确。不同任务需要自己的分层验收，无法把一套检查器原样搬到所有算法和产品中。</p>
 <p>这部分讨论进入了感知总纲中的 Context Contract，也连接到行动模块的 Action Contract 与反思模块的评测证据。</p>
 <h2>5. 从 SDD 到 AI 驱动的软件工程</h2>
+<p class="workshop-field-note"><strong>现场的争论落在存量系统上。</strong>姜宁提醒，大型旧仓库即使通过 PR 持续演进，也会累积架构侵蚀，Agent 还可能加快这种侵蚀；黄丞补充了 ADR、测试、任务记录和反向写回，让已经发生的实现决定重新进入可读上下文。新项目可以从规格建链，旧项目还要先恢复架构边界。</p>
 <p>公开项目 OpenLogos 与 RunLogos 展示了一条规格化路径。OpenLogos 使用 Why、What、How 和验收材料组织软件上下文，RunLogos 将提案、文档、计划、垂直切片、编码、评审、验证、部署和归档放进流程引擎。每个切片都需要独立验收，评审循环设置轮次、问题数量、证据和停止条件。</p>
 <p>一组脱敏后的大型后端研发实践保留了产品、研发和测试的现有职责，在技术方案、代码实现和 Code Review 中逐步引入 Agent，并统计使用情况、token、方案往返轮次和落地后的代码修改量。近期目标是减少人工介入轮次，不预设全流程已经无人化。</p>
 <p>新项目和存量项目需要不同的引入方式。新项目可以从规范、设计和测试开始建立完整链路；面对高流量存量系统，团队更适合从边缘模块逐步进入核心，并保留更严格的人工与测试门禁。</p>
@@ -177,7 +181,7 @@
 <li><a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程专题</a></li>
 <li><a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></li>
 </ul>
-<p class="publication-note publication-note-end">本页列出研讨参与者，正文按主题合并讨论，不将内部实践与个人或机构逐条对应。经后续比较后采纳的结论，见<a href="/zh/patterns/perception/">感知 Perception模块总纲</a>与各模式规范。</p>
+<p class="publication-note publication-note-end">公开稿保留研讨问题与工程细节；涉及内部系统的信息采用脱敏表述。会后采纳的结论见<a href="/zh/patterns/perception/">感知 Perception模块总纲</a>与各模式规范。</p>
         </article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

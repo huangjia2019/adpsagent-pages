@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,54 +92,83 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/" class="active">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/" class="active">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
 <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/concepts/">Concepts</a><span style="margin:0 0.45rem;">/</span>Definition</p>
 <header class="publication-head"><p class="publication-series">ADPS Agent Systems · Engineering Concept</p><h1>Knowledge Compilation</h1><p class="publication-deck">Transform knowledge sources into traceable, incrementally updated runtime assets.</p></header>
-<h2>Scope</h2><p>Memory</p>
-<h2>Definition</h2><p>Compilation parses structure, creates semantic units and references, produces summaries, indexes, or rules, and preserves provenance and version. An agent may retrieve the artifact or read it directly.</p>
-<h2>Use boundary</h2><p>This concept identifies an observable engineering structure. A project still needs concrete data structures, control points, versions, owners, and verification. A label or analogy alone does not establish the design.</p>
-<h2>Source</h2><p>First Memory Module Workshop.</p>
+<h2>Application context: documents are stored, yet the agent cannot retrieve an operational answer</h2>
+<p>A team chunks policies, meeting notes, and incident reports into a vector store. A query about when an allowance becomes effective returns many similar passages, but none carries region, effective time, superseded version, and original location together. The material is stored; it has not been prepared for reliable runtime use.</p>
+<h2>Definition</h2>
+<p>Knowledge Compilation is the write-side transformation that turns source material into summaries, entities, events, relations, navigation structures, and source pointers, then builds full-text, vector, field, and graph indexes. Like a compiler front end, it preserves source locations while producing structures for different retrieval paths.</p>
+<h2>Engineering mechanism</h2>
+<p>A compilation run records source hashes, parser version, segmentation policy, extraction model, time, and scope. Every derived claim points back to source text. Updates recompile affected units and record supersession. Retrieval chooses exact text, vector search, entity lookup, or navigation according to the question instead of assigning every access path to similarity search.</p>
+<h2>Boundary</h2>
+<p>Knowledge Compilation fits versionable material with a manageable update rate. Live balances, approval status, and order outcomes still come from authoritative systems and cannot be replaced by compiled summaries. Automatically extracted claims need admission and sampled audit before entering long-term recall.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Introduced into ADPS workshops by Zhang Yingfeng</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/workshops/memory-2026-08-05/">First Memory workshop, 5 August 2026</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS placed it on the write side of M2 while recognizing that the term has a broader public technical lineage.</dd></div>
+<div><dt>Current standing</dt><dd>Workshop concept</dd></div>
+</dl>
+</section>
 <div class="document-citation"><p><strong>Definition source:</strong> ADPS White Paper workshops and pattern development.</p><p><a href="/concepts/">Concept index</a> · <a href="/workshops/">Workshops</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">

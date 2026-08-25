@@ -101,56 +101,85 @@
               <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/zh/concepts/">概念定义首页</a>
-              <a href="/zh/concepts/control-narrative-dualism/">控制与叙事平面</a>
-              <a href="/zh/concepts/execution-vs-content/">执行型 vs 内容型</a>
-              <a href="/zh/concepts/unified-session-state/">三个状态平面</a>
-              <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
-              <a href="/zh/concepts/anchor-ledger-collection/">锚 · 账 · 集</a>
-              <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
-              <a href="/zh/concepts/memory-envelope/">记忆信封</a>
-              <a href="/zh/concepts/layered-memory/">分层记忆 L1/L2/L3</a>
-              <a href="/zh/concepts/orchestrator/">Orchestrator / 门面</a>
-              <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
-              <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
-              <a href="/zh/concepts/observability-glass-dome/">活动事件与时间线</a>
-              <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
-              <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
-              <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
-              <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
-              <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
-              <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
-              <a href="/zh/concepts/typed-ir-chain/">类型化 IR 链</a>
-              <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
-              <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
-              <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
-              <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
-              <a href="/zh/concepts/abstraction-reconstruction-loop/" class="active">抽象—还原往返</a>
-              <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
-              <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
-              <a href="/zh/concepts/handoff-contract/">交接合同</a>
-              <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
-              <a href="/zh/concepts/hook-composition/">Hook 组合</a>
-              <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
-              <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
-              <a href="/zh/concepts/context-contract/">上下文合同</a>
-              <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
-              <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
-              <a href="/zh/concepts/durable-intent/">持久化意图</a>
-              <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
-            </div></div>
+  <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/zh/concepts/">概念目录</a>
+    <details class="sb-concept-group" open><summary>关键概念</summary>
+      <a href="/zh/concepts/control-narrative-dualism/">控制平面与叙事平面</a>
+      <a href="/zh/concepts/execution-vs-content/">执行型与内容生成型 Agent</a>
+      <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+      <a href="/zh/concepts/abstraction-reconstruction-loop/" class="active">抽象—还原往返</a>
+      <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
+      <a href="/zh/concepts/context-contract/">上下文合同</a>
+      <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
+      <a href="/zh/concepts/three-powers-of-agency/">Agent 的三种权力</a>
+    </details>
+    <details class="sb-concept-group"><summary>系统边界与状态</summary>
+      <a href="/zh/concepts/unified-session-state/">会话统一状态三平面</a>
+      <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+      <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+    </details>
+    <details class="sb-concept-group"><summary>上下文与记忆</summary>
+      <a href="/zh/concepts/anchor-ledger-collection/">锚、账、集</a>
+      <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+      <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+      <a href="/zh/concepts/layered-memory/">L1/L2/L3 分层记忆</a>
+      <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
+    </details>
+    <details class="sb-concept-group"><summary>规划、执行与写回</summary>
+      <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+      <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+      <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+      <a href="/zh/concepts/typed-ir-chain/">类型化中间表示链</a>
+      <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+      <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+      <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+      <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+    </details>
+    <details class="sb-concept-group"><summary>协作与运行时控制</summary>
+      <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
+      <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
+      <a href="/zh/concepts/handoff-contract/">交接合同</a>
+      <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
+      <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+      <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
+    </details>
+    <details class="sb-concept-group"><summary>评测、反思与治理</summary>
+      <a href="/zh/concepts/observability-glass-dome/">活动事件与执行时间线</a>
+      <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+      <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+      <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+      <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+      <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
+      <a href="/zh/concepts/durable-intent/">持久化意图</a>
+      <a href="/zh/concepts/judge-migration/">裁判迁移</a>
+      <a href="/zh/concepts/dual-scale-governance/">双尺度治理</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main">
 
         <article class="essay">
 <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/concepts/">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
 <header class="publication-head"><p class="publication-series">ADPS Agent 系统 · 工程概念</p><h1>抽象—还原往返</h1><p class="publication-deck">从现场提炼共同结构，再恢复关键差异检验能否施工。</p></header>
-<h2>描述范围</h2><p>模式方法</p>
-<h2>定义</h2><p>抽象压缩角色与机制，还原恢复对象、状态、权限、证据、异常和验收。会改变业务判断、状态迁移、权力边界、证据效力、后续动作、责任或验收的差异必须保留。</p>
-<h2>使用边界</h2><p>这个概念用于定位可观察的工程结构。落到项目时仍要写出数据结构、控制位置、版本、责任者和验证方法；仅有名称或类比不足以证明设计已经成立。</p>
-<h2>来源</h2><p>协作模块第一次研讨会；ADPS 模式审校方法。</p>
+<h2>应用背景：抽象能帮助迁移，也可能把关键差异抹掉</h2>
+<p>批量筛选简历和批量检查代码都可以抽象成“扇出—处理—聚合”。回到现场以后，简历任务可能需要隐藏敏感字段并由招聘负责人裁决，代码任务则需要隔离 worktree、运行测试并由仓库所有者合并。如果只保留箭头相同，就无法指导权限、状态和验收设计。</p>
+<h2>概念定义</h2>
+<p>抽象—还原往返包含两个方向。抽象从多个案例提取可复用的问题、约束和结构；还原把结构放回具体角色、对象、状态、权限、证据、失败后果和验收条件，检查它是否仍能工作。还原失败说明抽象过度，或模式尚未写清适用边界。</p>
+<h2>工程机制</h2>
+<p>每个候选模式至少经过两次还原：一次回到最初案例，确认没有删除决定成败的差异；一次进入独立领域，确认它不依赖原案例的专有名词。凡会改变业务判断、状态迁移、权力边界、证据效力、后续动作、责任归属或验收结果的差异，都需要保留或写入适用条件。</p>
+<h2>使用边界</h2>
+<p>这个往返用于提炼和审核模式，不要求案例共享相同实现。若一种结构只能在原项目中解释，先保留为案例概念；若在不同领域还原后仍能给出可检查的设计动作，才适合升级为模式。</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">提出与来源</h2>
+<dl>
+<div><dt>ADPS 内初始来源</dt><dd>ADPS 内初始提出：黄佳</dd></div>
+<div><dt>首次记录</dt><dd><a href="/zh/workshops/collaboration-2026-08-25/">协作模块第一次研讨会，2026-08-25</a></dd></div>
+<div><dt>ADPS 整理</dt><dd>ADPS 将现场到模式、再回到现场的往返整理为模式审校方法。</dd></div>
+<div><dt>当前地位</dt><dd>跨模块方法概念</dd></div>
+</dl>
+</section>
 <div class="document-citation"><p><strong>定义来源：</strong>ADPS 白皮书研讨与模式整理。</p><p><a href="/zh/concepts/">概念目录</a> · <a href="/zh/workshops/">研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
 

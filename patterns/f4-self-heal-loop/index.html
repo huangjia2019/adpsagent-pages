@@ -84,7 +84,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
@@ -107,46 +107,62 @@
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main">
 
@@ -182,7 +198,7 @@
             <hr />
             <h2>Problem</h2>
             <p>Failing tests, lint errors, broken builds, and red CI runs provide clear criteria for automated repair. Missing dependencies, misplaced configuration, and local logic errors often follow repeatable diagnostic paths. Engineers still define the allowed scope, release authority, and hand-off path; an agent can perform the repeated diagnosis and verification inside those limits.</p>
-            <p>Self-Heal Loop lets the agent absorb these signals and close the repair loop automatically: a failure signal fires → diagnose the root cause → generate a fix → apply it → re-verify, and run another round if it is not fixed. It is the form of reflection closest to "agent autonomy," and it is the only mandatory loop in the reflection module. Once a fix fails, the system must either make another bounded attempt or hand the case off. Coding agents and internal repair systems provide practical examples of this structure, but their reported production results should be evaluated from primary sources and reproduced in the local environment.</p>
+            <p>Self-Heal Loop turns failure signals into a bounded repair sequence: diagnose the cause → generate a fix → apply it → verify the result. A failed fix starts another bounded attempt or hands the case to a person. Coding agents and internal repair systems provide practical examples, but reported production results still need primary-source review and local reproduction.</p>
             <h2>Classification: Reflection × Loop</h2>
             <ul>
             <li><strong>Vertical axis · Reflection</strong>: the agent detects its own errors and repairs them. Self-repair is the most practical application of the reflection mechanism, and it is especially common in software. It does not improve an output that already works; it recovers from a state that is already broken—the agent reads the failure signal, understands it, diagnoses it, and corrects it, and the whole process is a review and correction of its own output.</li>

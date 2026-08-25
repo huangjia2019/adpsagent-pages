@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Layered Memory L1/L2/L3 · Concept · ADPS</title><meta name="description" content="Separate current input, task facts, and cross-task experience, with references back to source records.">
+    <title>Layered Memory L1/L2/L3 · Engineering Concept · ADPS</title><meta name="description" content="Separate current input, task facts, and reviewed cross-task experience.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/layered-memory/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,68 +92,88 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/" class="active">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/" class="active">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>L1/L2/L3 Layered Memory and Experience Recall</h1><p class="publication-deck">Separate current input, task facts, and cross-task experience, with references back to source records.</p>
+                <h1>Layered Memory L1/L2/L3</h1><p class="publication-deck">Separate current input, task facts, and reviewed cross-task experience.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/layered-memory.png" alt="L1/L2/L3 Layered Memory and Experience Recall" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: three memory horizons behind one approval</h2>
-            <p>The user's current message may be only "submit it." The agent still needs this job's pay-group ID, approval node, and tool receipts. It may also recall that a similar job once failed because of a time-zone setting.</p>
-            <p>These records have different lifetimes, precision requirements, and retention policies. Layering keeps the current step small, the current job auditable, and cross-job recall linked to source evidence.</p>
-            <h2>Definition</h2>
-            <p>For an execution-type agent to keep working in enterprise-grade scenarios, the context of the current turn alone is not enough; it also needs a memory system that stores information of different lifespans and uses in separate places. Dongfang Yiteng splits memory into three layers. L1 is the current stream of consciousness — the minimal necessary set the model should see at this moment, the direct input to the current reasoning or reply. L2 is the milestone log, which records where work has reached and what was just completed, persisted in a database in structured form. L3 is lessons learned, produced when a task succeeds or fails by distilling and summarizing the narrative context at that time, stored in a vector store and indexed semantically through embeddings. Each layer governs one span of time: L1 is the immediate present, L2 is the trajectory of this task, and L3 is the experience accumulated across tasks.</p>
-            <h2>How it works</h2>
-            <p>The part of this layering most worth making clear is how L3 and L2 connect, which borrows the idea of memory paging from operating systems. L3 stores semantic summaries: small in size and easy to retrieve by semantics. But a summary leaves out detail, and when you actually need to review the concrete situation of some past experience, the summary alone is not enough. So the data structure of L3 keeps an id pointing to the original memory fact in L2: most of the time it waits in the vector store carrying only the lightweight summary, and when the original detail is needed, this id is used to recall the full fact from L2. This is exactly one concrete implementation of operating-system memory paging — what stays resident is the summary, and the original detail is loaded on demand.</p>
-            <p>What it avoids is two opposite kinds of waste. One is keeping all historical detail resident in the context, which once the chain grows long will exceed the prompt's capacity limit and drive up the cost of every step. The other is compressing experience into summaries to save context, which then loses the original facts needed for review. Paging-style access strikes a balance between the two: retrieval works only on lightweight summaries, and the original detail is read on demand by id.</p>
-            <p>You can see how L3 helps in Dongfang Yiteng's payroll-setup scenario. If a scenario has previously been found to be solvable with a certain skill, this round of reasoning can converge quickly on the strength of a similar past experience, which amounts to a check against a familiar task of the same kind. Conversely, if an interface call in some intermediate step has failed before, this task's planning can first call a health-check interface to confirm that API has recovered, and only then orchestrate the later execution, sparing a heavyweight scenario from running its prior tasks for nothing. There is also a discipline for putting this into practice: L3 recall is expensive, so do not recall it at every reasoning step; recall it only at the large reasoning entry points — the first reasoning step of a reasoning chain, the first reasoning step of ReAct, and when planning the execution of a task. These are the entry points that most need full reference information, and if the first step is done right under more complete information, the later steps are more likely to follow correctly.</p>
-            <h2>When you need it</h2>
-            <p>When your agent has to accumulate experience across tasks and you do not want historical detail to blow up the context of every step, you need to layer memory by lifespan and use, keeping lightweight summaries resident and recalling original detail on demand. Its summaries come from the continually distilled progress in <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>, and the package actually injected into the model at each step is assembled by the <a href="../memory-envelope/">memory envelope</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/layered-memory.png" alt="Layered memory L1, L2, and L3" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>An agent needs current user input on every turn, task facts throughout one run, and selected lessons across later runs. Applying one retention and loading rule to all three either loses useful history or fills every prompt with stale material.</p>
+<h2>Definition</h2>
+<table><thead><tr><th>Layer</th><th>Scope</th><th>Examples</th><th>Loading rule</th></tr></thead><tbody><tr><td>L1</td><td>Current turn or step</td><td>Message, observation, temporary scratchpad</td><td>Loaded directly; discarded or promoted after the step</td></tr><tr><td>L2</td><td>Current task or session</td><td>Milestones, decisions, evidence, artifacts</td><td>Selected by task and step; retained through recovery</td></tr><tr><td>L3</td><td>Across tasks</td><td>Reviewed preferences, lessons, procedures</td><td>Retrieved by scope and task signature; source facts loaded on demand</td></tr></tbody></table>
+<h2>Engineering mechanism</h2>
+<p>Promotion is explicit. An L1 observation becomes L2 only when it changes progress, evidence, or a decision. An L2 lesson becomes L3 after source review, scope assignment, conflict checks, and publication. L3 summaries keep references to L2 facts so the runtime can load the full record when a decision requires detail.</p>
+<h2>Boundary</h2>
+<p>The three labels are functional tiers, not required databases. A deployment may use files, relational tables, object storage, and indexes together. Fast-changing control state remains outside memory even when it is referenced from a task record.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS added loading and reference rules for current input, task facts, and cross-task experience.</dd></div>
+<div><dt>Current standing</dt><dd>ADPS restatement</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

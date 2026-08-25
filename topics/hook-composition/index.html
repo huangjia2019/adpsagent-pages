@@ -71,6 +71,7 @@ before_tool  → identity_check → policy_decision → approval_if_needed
 after_tool   → receipt_capture → state_diff → next_stage_or_recovery
 </code></pre>
 <p>The runtime should display the effective order. When two hooks rewrite arguments, order changes behavior. When an audit hook fails, the design must state whether business execution blocks or observation degrades.</p>
+<p>For a payroll commit, <code>before_tool</code> first verifies the caller, then reads policy and determines whether approval is required. After resume, <code>before_commit</code> rechecks employee state and the Intent digest. Following a successful call, <code>after_tool</code> records the receipt and after-read. A telemetry failure may degrade a low-risk read, while a production write normally blocks. Order and failure semantics belong to the composition and cannot depend on accidental plugin registration order.</p>
 <h2>HookSpec</h2>
 <pre><code class="language-yaml">hook_id: payroll.before_commit.policy
 event: before_tool

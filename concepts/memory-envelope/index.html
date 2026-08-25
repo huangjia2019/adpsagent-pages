@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Envelope · Concept · ADPS</title><meta name="description" content="Assemble only the goal, progress, intent, evidence, and recalled experience needed by the current step.">
+    <title>Memory Envelope · Engineering Concept · ADPS</title><meta name="description" content="Assemble a versioned context package for one model call.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/memory-envelope/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,69 +92,95 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/" class="active">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/" class="active">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>The Memory Envelope: The Context Package Injected to the Model at Each Step</h1><p class="publication-deck">Assemble only the goal, progress, intent, evidence, and recalled experience needed by the current step.</p>
+                <h1>Memory Envelope</h1><p class="publication-deck">Assemble a versioned context package for one model call.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/memory-envelope.png" alt="The Memory Envelope: The Context Package Injected to the Model at Each Step" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: each step needs a different slice of context</h2>
-            <p>While checking Singapore provident-fund rules, the agent needs the original goal, the selected pay group, confirmed policy evidence, and perhaps one relevant prior failure. It does not need the full conversation replay or sensitive records for unrelated employees.</p>
-            <p>Reasoning input should therefore be assembled for the current step as a bounded, inspectable package, rather than formed by concatenating all available history.</p>
-            <h2>Definition</h2>
-            <p>Every reasoning step of an execution-type agent first assembles an input struct before handing it to the model. In Dongfang Yiteng's code this struct is called ReasonContext; the name ADPS gives it is the memory envelope — at every step you seal an envelope and hand it to the model, and it holds only what this step needs to see.</p>
-            <p>An envelope usually holds four things: the anchor, the original goal of the user session; the current progress (collection) projected and trimmed out of the ledger; the conclusion drawn by upstream intent recognition; and the relevant lessons recalled from the experience store. When needed, it also attaches the necessary mechanical state. Once this package is assembled, the model at this step knows where it is going, how far it has come, and what mistakes others made in similar spots. What goes into the envelope is narrative content, the semantics the model is to understand; the control signals the program branches on travel through a separate channel and do not enter the envelope.</p>
-            <h2>How it works</h2>
-            <p>What the memory envelope guards against is two kinds of distortion in a long chain. The first is goal drift: the execution chain receives the original request at the entry point and runs it through reasoning, action, and task planning, with the information reworked, expanded, or compressed as it is passed down. If the context simply takes the previous step's output as the next step's input, fed straight down a single-pass chain, then over a long enough path the original goal's share is diluted. By the task-planning stage, what is fed to the model to generate a plan may consist mostly of the trains of thought from the reasoning process, with what the user actually wants reduced to a fraction. The most typical case is when the user replies with nothing but "continue" in a new turn: without the anchor, the model either cannot understand what "continue" means or acts wildly on its own interpretation. Fix the anchor into every envelope, and this kind of distortion is blocked.</p>
-            <p>The second is context overflow. Even as a distilled progress summary, the ledger still piles up a great deal of content over a long chain, and the full record cannot be stuffed into the prompt. The memory envelope's approach is to project just once, at the key reasoning entry points: based on the scenario being handled at that moment, it trims a temporary working set out of the ledger and puts it into the envelope, rather than dumping all of history on the model at once.</p>
-            <p>The payroll-setup scenario at Dongfang Yiteng shows clearly how this envelope is used. The task is broken into several steps, completed in relay by different reasoning and action stages. When a given reasoning step's turn comes, what is assembled into ReasonContext is not every detail of all preceding steps, but the trimmed key milestones plus the ever-present original goal. Most of the details produced by earlier steps are irrelevant to the current one; the envelope keeps only the key results relevant to the task at hand, picking out and sealing in what this step needs to see before handing it to the model.</p>
-            <h2>When you need it</h2>
-            <p>When your agent has a long execution chain, and each reasoning step has to choose what to feed the model from among the original goal, the current progress, and past experience, rather than mindlessly concatenating the entire history into the prompt. What it holds comes from <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>, the sources it draws on span <a href="../layered-memory/">layered memory L1/L2/L3</a>, and the act of sealing the envelope itself can be understood as a downstream link of <a href="../intent-as-compilation/">intent as compilation</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/memory-envelope.png" alt="Memory envelope assembled for one reasoning step" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A reasoning step that decides how to associate employees needs the task goal, current plan node, relevant policy, created payroll-group identifier, and unresolved exceptions. It does not need every tool response and discussion from earlier stages. Passing the full history raises cost and lets recent detail displace the original goal.</p>
+<h2>Definition</h2>
+<p>A Memory Envelope is the versioned context package assembled for one model call. It combines the stable Anchor, current progress, selected evidence, exact state references, recalled experience, and the output contract expected from this step.</p>
+<h2>Engineering mechanism</h2>
+<pre><code class="language-yaml">goal: ref://anchor/17
+step: associate-employees
+progress: ref://workspace/node-4
+facts: [ref://state/pay-group-id]
+evidence: [ref://policy/sg-payroll@v8]
+experience: [ref://lesson/bulk-association@v3]
+output_schema: AssociationDecision</code></pre>
+<p>The runtime records the envelope hash and source versions with the model call. A later replay can therefore reconstruct what the model was allowed to see without storing a hidden, mutable prompt.</p>
+<h2>Boundary</h2>
+<p>The envelope is a read package, not the system of record. It points to authoritative values and artifacts. Selection policy may use relevance and priority, but permissions, validity, and task scope filter candidates before ranking.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>The implementation structure is ReasonContext; ADPS supplied the name Memory Envelope.</dd></div>
+<div><dt>Current standing</dt><dd>Case-derived name</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

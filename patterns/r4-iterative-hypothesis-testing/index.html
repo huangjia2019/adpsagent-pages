@@ -84,7 +84,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
@@ -107,46 +107,62 @@
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main">
 
@@ -181,7 +197,7 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Some tasks cannot be answered in a single pass of reasoning: the root cause is unknown, the evidence must be gathered step by step, and the first judgment is often wrong. Diagnostic tasks are the typical case—when a fault alarm fires, the "most likely cause" that the model ranks by prior may be badly miscalibrated, with the true root cause ranked far down or not even considered at first. If the model reasons once and then commits, it walks further and further in the wrong direction; if it simply retries, the retry itself does not solve the problem, because the issue is not that "the result is unstable" but that "the understanding of the world is still wrong."</p>
+            <p>Some tasks cannot be answered in one reasoning pass. The cause is unknown, evidence arrives step by step, and the first judgment is often wrong. Fault diagnosis is a typical case: a model may rank the actual cause far below a familiar but irrelevant explanation. Committing after one pass amplifies that error. Repeating the same pass does not help because the agent still has the wrong account of the system.</p>
             <p>Iterative hypothesis testing replaces single-pass reasoning with a loop of "hypothesize → validate → revise → hypothesize again." The fundamental difference from ordinary retry is this: retry assumes that the retry itself can solve the problem, while iterative hypothesis testing assumes that each loop must update the understanding of the world. Its design center is also not "retry until success," but converging through falsification to the single hypothesis that has not been refuted. It is the dual of parallel exploration (R3): parallel opens N lines at once along the spatial dimension, while iteration runs one line many times along the time dimension.</p>
             <h2>Classification: Reasoning × Loop</h2>
             <ul>
@@ -198,7 +214,7 @@
             <p>The loop rules are: falsified goes back to the generation stage, confirmed exits, and insufficient evidence goes back to gather more. Two engineering practices are easy to overlook but critical: first, when entirely new evidence appears, reset the whole hypothesis tree rather than fine-tuning the old one; second, when the limit is reached without convergence, trigger human-in-the-loop (HITL) rather than letting the agent force-pick the hypothesis with the highest prior and ram into it.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Diagnostic tasks</strong>: Industrial fault localization, medical diagnosis, safety incident root-cause analysis. The root cause is unknown, evidence must be gathered step by step, and a single line that goes astray can be reset and restarted.</li>
+            <li><strong>Diagnostic tasks</strong>: Industrial fault localization, medical diagnosis, and safety incident analysis. Evidence must be gathered step by step, and a line of inquiry that fails can be reset and restarted.</li>
             <li><strong>Complex code debugging</strong>: Change one place, validate one place, let the failure information flow back to form new hypotheses, and repeatedly converge to the real bug.</li>
             <li><strong>Judgments that require a strict evidence chain</strong>: Scenarios where every step's conclusion must be backed by reproducible evidence and the reasoning path must ultimately be explainable to a regulator.</li>
             </ul>
@@ -237,7 +253,7 @@
             <ul>
             <li><strong>Parallel exploration (R3)</strong>: A dual relationship. Parallel opens N lines at once along the spatial dimension and selects the best in one shot; iteration runs one line many times along the time dimension and converges step by step.</li>
             <li><strong>Chain of thought (R1)</strong>: The interior of each iteration round is a chain of thought; iteration strings multiple chains of thought together along the time dimension and revises them repeatedly.</li>
-            <li><strong>Complexity routing (R2)</strong>: Using different model tiers for the three roles inside iteration is exactly the application of routing thinking inside a loop.</li>
+            <li><strong>Complexity routing (R2)</strong>: Different model tiers can serve the three roles inside the loop.</li>
             <li><strong>Dual-mode architecture (R5)</strong>: Also in the Loop column. Iteration is a single agent looping to validate against itself; dual-mode is two agents collaborating and dividing the work.</li>
             </ul>
             <h2>Design conclusion</h2>

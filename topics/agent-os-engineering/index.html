@@ -77,6 +77,7 @@
 </table>
 <h2>Where the analogy helps</h2>
 <p>Operating systems separate the ability to execute from the ability to manage execution over time. A model that calls tools has not necessarily solved fairness, isolation, resource leaks, or failure propagation. The analogy forces those responsibilities into the architecture.</p>
+<p>Consider two coding agents changing a client and a service. Scheduling must detect whether both alter the same API contract. Isolation supplies separate worktrees and short-lived credentials. Communication uses a versioned Handoff Contract. Storage retains checkpoints. Cancelling one task must also release its sandbox, leases, and queued callbacks. “Start two agents at once” answers none of those responsibilities.</p>
 <h2>Where it distorts</h2>
 <p>Agent intent and output are probabilistic in ways ordinary processes are not. Agent memory includes selection, trust, forgetting, and versioning rather than only storage. Human-in-the-loop is a business-control and organizational-responsibility problem, not just interrupt handling.</p>
 <p>Agent OS is therefore an engineering checklist and research agenda, not a settled product category.</p>

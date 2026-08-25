@@ -81,6 +81,7 @@ after_tool
   → next_stage_or_recovery
 </code></pre>
 <p>运行时需要展示最终顺序。两个 Hook 都修改参数时，先后顺序会改变结果；一个审计 Hook 失败时，是阻断业务还是降级记录，也必须提前定义。</p>
+<p>以薪酬提交为例：<code>before_tool</code> 先验证调用身份，再读取策略并决定是否需要审批；恢复后，<code>before_commit</code> 重新检查员工状态和 Intent 摘要；工具成功后，<code>after_tool</code> 保存回执与写后读取。若审计写入失败，系统可以把低风险只读调用降级记录，但生产写入通常应阻断。顺序和失败语义属于 Hook 组合本身，不能依赖插件注册的偶然先后。</p>
 <h2>HookSpec</h2>
 <pre><code class="language-yaml">hook_id: payroll.before_commit.policy
 event: before_tool

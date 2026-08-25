@@ -1,0 +1,12 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  A[一次 Agent 运行] --> B[即时反馈时钟]
+  A --> C[延迟反馈时钟]
+  B --> B1[格式 / 规则 / 测试 / 工具回执]
+  C --> C1[复访 / 下游采用 / 业务结果 / 事故]
+  B1 --> D[归因]
+  C1 --> D
+  D --> E[候选修改]
+  E --> F[Evals 与回归]
+  F -->|通过| G[发布或扩大权限]
+  F -->|未通过| H[保留现状、降级或转人工]

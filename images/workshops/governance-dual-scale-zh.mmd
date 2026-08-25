@@ -1,0 +1,12 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart TB
+  G[目标尺度：原始目标 / 当前计划 / 产物 / 业务结果]
+  A[动作尺度：身份 / 工具 / 参数 / 资源 / 配额]
+  I[Intent：冻结动作与前置条件] --> P[Approval：限时、单次、绑定摘要]
+  P --> R[恢复前重读现实状态]
+  R -->|条件仍成立| E[Execution：短时凭证执行]
+  R -->|条件已变化| X[重新审批或终止]
+  A --> I
+  E --> O[回执、写后读取与 trace]
+  O --> G
+  G -->|漂移或未推进| X

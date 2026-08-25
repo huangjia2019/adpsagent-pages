@@ -1,0 +1,16 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  subgraph O[Dynamic orchestration: one owner holds the full plan]
+    O1[Orchestrator] --> O2[Payment agent]
+    O1 --> O3[Inventory agent]
+    O1 --> O4[Notification agent]
+    O2 --> O1
+    O3 --> O1
+    O4 --> O1
+  end
+  subgraph C[Choreography: participants subscribe and publish under local rules]
+    C1[PaymentConfirmed] --> C2[Reserve inventory]
+    C2 --> C3[StockReserved]
+    C3 --> C4[Arrange delivery]
+    C3 --> C5[Notify customer]
+  end

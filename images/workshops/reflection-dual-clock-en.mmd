@@ -1,0 +1,12 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  A[One agent run] --> B[Immediate feedback clock]
+  A --> C[Delayed feedback clock]
+  B --> B1[Format / rules / tests / receipts]
+  C --> C1[Repeat contact / adoption / outcome / incident]
+  B1 --> D[Attribution]
+  C1 --> D
+  D --> E[Candidate change]
+  E --> F[Evals and regression]
+  F -->|pass| G[Release or expand authority]
+  F -->|fail| H[Keep, demote, or hand to human]

@@ -76,7 +76,9 @@
 <p>The workshop separated action governance from goal governance. The first checks the current tool, arguments, authority, and preconditions. The second compares the original goal, current plan, completed artifacts, and real outcome across a long run. Every local action may pass while the task spends most of its time on an irrelevant branch.</p>
 <p>This distinction led to three objectives: authorization, accountability, and containment.</p>
 
+<figure class="workshop-diagram"><img src="/images/workshops/governance-dual-scale-en.svg" alt="Action governance constrains the current call; goal governance checks whether the long-running job still advances."><figcaption>Action governance constrains the current call; goal governance checks whether the long-running job still advances.</figcaption></figure>
 <h2>2. A sandbox bounds reach; domain authorization decides this invocation</h2>
+<p class="workshop-field-note"><strong>Willem Jiang used DeerFlow’s code history to answer what remains after sandboxing.</strong> The sandbox limits process, network, and file effects. Pre-tool middleware still obtains a trusted Principal and decides against the current tool, arguments, and resource. Assembly and invocation share the same policy source so a hidden tool cannot be reached indirectly and a visible tool still requires call-time authority.</p>
 <p>A sandbox isolates process, files, and network. It does not know whether the current user may change a business record or whether these arguments require review.</p>
 <ul><li><strong>Assembly-time filtering</strong> removes unauthorized tools from the model-visible set.</li><li><strong>Runtime review</strong> evaluates principal, arguments, resource, environment, quota, and approval for each call.</li></ul>
 <p>The same payroll tool can yield three different outcomes. Reading one's own payroll record may execute directly. Changing one employee's allowance requires fixed arguments and review. A batch payment above the daily ceiling is denied even when a reviewer is available. A sandbox cannot infer these domain distinctions.</p>
@@ -93,6 +95,7 @@
 <p>An allowance change needs employee lookup, policy lookup, change preparation, review, and commit capabilities. Batch payment, employee deletion, and tenant administration should not become visible merely because they share a payroll tool package. The intersection is recomputed when task, role, or active skill changes.</p>
 
 <h2>4. Approval needs durable intent after the button</h2>
+<p class="workshop-field-note"><strong>Xu Yibo separated identity and state across the approval wait.</strong> User delegation, agent workload, session, run, immutable tool version, canonical arguments, and policy version form Durable Intent; Approval binds only to that digest. Balance, risk, and target-resource version cannot be frozen, so resume must revalidate business preconditions.</p>
 <p>The difficult question was how to prove, after a long pause, that execution is still the action the reviewer saw. Tool versions, arguments, and resource scope can be frozen, while balance, inventory, date, and target versions continue to change.</p>
 <p>The workshop therefore split the control into Intent, Approval, and Execution. Intent fixes the action and preconditions. Approval records reviewer, expiry, and single use. Execution revalidates on resume and records the external receipt. Domains still need to define which changed preconditions invalidate approval.</p>
 <p>Suppose the reviewer approved “employee E-1842, transport allowance 800→1000, effective next month.” If the employee leaves, policy changes, or another request changes the current value to 900 during the wait, the old approval cannot be consumed unchanged. Execution compares the intent digest, resource version, and business preconditions before continuing, requesting new review, or terminating.</p>
@@ -112,6 +115,7 @@
 <p>This separation also changes G5: a hook is an enforcement point, a provider supplies policy, a decision service issues the verdict, and the then-G4 specification, now X1, stores evidence.</p>
 
 <h2>8. Progressive commitment is capability-specific and bidirectional</h2>
+<p class="workshop-field-note"><strong>Wu Bin asked whether blast radius should expand and contract with runtime evidence.</strong> The question changed progression from one-way promotion into two-way disposition: read capability may stay open while write capability is demoted after a version change or incident, then restored only for a specific capability, scenario, and scope after new regression evidence.</p>
 <p>One agent's query, validation, mutation, and release capabilities can require different tiers. The useful unit is agent version × capability × scenario × resource scope. Authority expands with evidence and contracts after incidents, version change, missing evaluation, missing ownership, or retirement.</p>
 
 <h2>9. Observation, evals, reflection, and governance form one change loop</h2>

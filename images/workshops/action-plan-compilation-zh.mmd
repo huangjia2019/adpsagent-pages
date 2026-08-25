@@ -1,0 +1,15 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  A[自然语言目标] --> B[结构化 Plan]
+  B --> C{Plan 编译}
+  C --> C1[合法性与依赖]
+  C --> C2[权限与冲突域]
+  C --> C3[成本与验收]
+  C1 --> D[可执行图]
+  C2 --> D
+  C3 --> D
+  D --> E[Executor 选择 PlanStep]
+  E --> F[PRE 检查]
+  F --> G[TOOL 隔离执行]
+  G --> H[POST 验证]
+  H --> I[业务回执、ActionEvent、Checkpoint]

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anchor / Ledger / Collection · Concept · ADPS</title><meta name="description" content="Keep the original goal fixed, append milestones, and project only the facts needed now.">
+    <title>Anchor, Ledger, Collection · Engineering Concept · ADPS</title><meta name="description" content="Preserve the goal, append task facts, and project only the material needed now.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/anchor-ledger-collection/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,72 +92,88 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/" class="active">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/" class="active">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Anchor, Ledger, Collection: The Core Trio of the Narrative Plane</h1><p class="publication-deck">Keep the original goal fixed, append milestones, and project only the facts needed now.</p>
+                <h1>Anchor, Ledger, Collection</h1><p class="publication-deck">Preserve the goal, append task facts, and project only the material needed now.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/anchor-ledger-collection.png" alt="Anchor, Ledger, Collection: the core trio of the narrative plane" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: a long job must still recognize its starting point</h2>
-            <p>A request to configure next month's payroll for the Singapore team passes through rule confirmation, pay-group creation, employee assignment, and approval. Late in the run, the newest conversation detail may concern one employee's assignment. That detail must not replace the original delivery goal.</p>
-            <p>A long-running agent needs a fixed goal, an append-only progress record, and a compact view for the current step. Together they limit goal drift without sending the full history to every model call.</p>
-            <h2>Definition</h2>
-            <p>The core semantics of an execution-type agent's narrative plane can be summed up in one phrase: a description of goal and progress. It works like a continuously kept set of work notes — the agent records what it has done as it executes, while preserving the user's original goal at every step. These notes are made of three elements, which the team calls anchor, ledger, and collection.</p>
-            <p>The anchor anchors the original input of every session and conversation from the user, serving as the fixed top-level goal. In complex business scenarios the execution chain is long: from the entry point that receives the raw request, it passes through reasoning, action, and task planning, and the information is processed, expanded, or compacted as it moves downstream. If the narrative content is only a chained one-way pass where each step's output becomes the next step's input, a long path will gradually drift away from the original goal — by the task-planning stage, the input fed to the model may already have become the thoughts produced during reasoning, while the user's goal takes up only a small share. So in the context of every reasoning step, the user's original goal must be carried through as fixed data.</p>
-            <p>The ledger is a running record of key progress, kept as appended summaries. For each completed key milestone-level reasoning or action, a semantically compacted summary is written into it. A later step, while knowing the user's goal, must also know what was done before and what results were achieved, in order to reason out what this step should accomplish. The ledger answers "where it came from, where it has reached."</p>
-            <p>The collection is the temporary in-memory information cut out by distilling and projecting from the ledger once more at certain key reasoning points. Even though the ledger is already a compacted summary, a long chain still accumulates a long context, and the full content cannot be stuffed into the prompt. So at a key reasoning entry, a set of temporary information is projected and trimmed from the ledger according to the scenario being injected at that moment, and is injected into the current step together with the anchor.</p>
-            <p>The collection step can be understood through the act of taking over work. When you take over a task whose earlier steps were each completed by different colleagues, what you need to know is not every detail of each step, but which key milestones each of them completed — and only the few most relevant to the task in front of you. What an agent needs at a key reasoning point is exactly this kind of trimmed handover note: it captures the important prior progress without bloating the context with the full history.</p>
-            <h2>How it works</h2>
-            <p>What the trio is meant to guard against is goal drift over a long chain. The most typical case is the user's "continue." After one round of conversation completes and the user is asked whether to continue, the user's next turn is only the single word "continue." When the agent then starts to reason, it may already have drifted from the essential goal: either it cannot understand what "continue" refers to, or it acts directly on its own on-the-spot reading of "continue." The anchor pins the original goal into the context of every step, the ledger keeps the mid-course results from being lost, and the collection injects both at a controllable size — only then does "continue" have something to go on.</p>
-            <p>In Dongfang Yiteng's narrative state plane, the anchor and ledger are the persistent source of truth, while the collection is the working set projected temporarily at a key reasoning entry. The ledger keeps appending; the collection is cut on the spot each time, used, and discarded. This structure separates "the full history" from "what this step actually needs to look at," and stable delivery over a long execution chain rests on this separation.</p>
-            <h2>When you need it</h2>
-            <p>When your agent must deliver a multi-step task over a very long execution chain, and may be interrupted mid-course by a minimal instruction from the user such as "continue," chained context passing alone will gradually lose memory, and you need anchor, ledger, and collection to manage goal and progress explicitly.</p>
-            <p>Related concepts: <a href="../unified-session-state/">unified session state and its separation of powers</a>, <a href="../memory-envelope/">memory envelope</a>, <a href="../layered-memory/">L1/L2/L3 layered memory</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/anchor-ledger-collection.png" alt="Anchor, ledger, and collection structures for narrative state" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A payroll setup task moves through policy confirmation, group creation, employee association, approval, and submission. Late in the run, the newest conversation may focus on one employee. That detail must not replace the original delivery goal or erase earlier milestones.</p>
+<h2>Definition</h2>
+<ul><li><strong>Anchor</strong> preserves the original goal, non-goals, acceptance conditions, and stable constraints;</li><li><strong>Ledger</strong> appends milestones, decisions, blockers, evidence references, and supersession events;</li><li><strong>Collection</strong> projects the Anchor and relevant Ledger entries into the current read view.</li></ul>
+<h2>Engineering mechanism</h2>
+<p>The Anchor changes only through an explicit revision event. Ledger entries are append-only and carry source, author, time, scope, and links to artifacts. A Collection query selects entries for the current step and records which filters and versions were used. Full source material remains outside the prompt and is loaded through references when needed.</p>
+<h2>Boundary</h2>
+<p>These structures manage task narrative, not authoritative business state. Current balances, approval status, identifiers, and tool receipts remain in the mechanical state plane. Cross-task experience belongs in a separate memory lifecycle.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS separated the original goal, append-only facts, and current read view by lifetime.</dd></div>
+<div><dt>Current standing</dt><dd>Case-derived name</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Events and Timeline · Concept · ADPS</title><meta name="description" content="Record model, tool, state, latency, and cost events on one execution timeline.">
+    <title>Activity Events and Timeline · Engineering Concept · ADPS</title><meta name="description" content="Record model, tool, state, latency, cost, and external results on one execution timeline.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/observability-glass-dome/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,69 +92,88 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/" class="active">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/" class="active">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Observability: A Swiss Mechanical Watch Under a Glass Dome</h1><p class="publication-deck">Record model, tool, state, latency, and cost events on one execution timeline.</p>
+                <h1>Activity Events and Timeline</h1><p class="publication-deck">Record model, tool, state, latency, cost, and external results on one execution timeline.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/observability-glass-dome.png" alt="Observability: A Swiss Mechanical Watch Under a Glass Dome" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: "completed" is not enough for diagnosis</h2>
-            <p>A user sees "pay group configured" and later finds that two employees were never attached. The developer needs one timeline showing how intent was classified, which node the scheduler selected, which parameters the tool received, what the API returned, and when the state changed to completed.</p>
-            <p>Ordinary service logs can show that a process ran. Agent diagnosis also needs the decision chain and its effects represented as correlated events.</p>
-            <h2>Definition</h2>
-            <p>A single conversation with an execution-type agent sits on top of a long string of invisible actions: recognizing intent, routing branches, chained reasoning, calling tools, reading and writing state, synthesizing a reply. If the developer can see only two layers — the user input and the final reply — and everything in between is a black box, then every time the system goes wrong, locating the fault comes down to guessing. Observability is what addresses this: it exposes every action the agent takes, and the thinking that drives each action, to the developer along a complete timeline.</p>
-            <p>The word "observable" here carries a sense that should be made clear first. It does not refer to the agent's perception of the world it inhabits, but the reverse — making the agent's consciousness and behavior visible to the developer. The series of actions an agent produces within a conversation is its bodily activity; the reasoning and judgment that drive those actions are its mental activity. Observability lays both of them out to be seen.</p>
-            <h2>How it works</h2>
-            <p>The glass dome metaphor comes in right here. Once the development mode turns on the full set of observable events, assembling this intricate and precise agent feels close to repairing a Swiss mechanical watch inside a transparent glass dome. A mechanical watch has many parts that mesh precisely, but as long as the dome is transparent, you can see where each gear is turning and which hairspring is moving. The agent is the same: what the intent-recognition step identified, which downstream chain the intent gateway routed it to, how far the ReAct loop has run, what prompt the LLM call at this step used, what the model returned, how much it cost — all laid out in order along the timeline. The more complex the system, the more this transparent dome eases the developer's cognitive load. It does not reduce the system's own complexity, but it makes that complexity visible and inspectable.</p>
-            <p>The failures it guards against are concrete. An execution-type agent has long chains and many stages; once a delivery falls short of expectations, the problem may lie in a misjudged intent recognition, in a reasoning step that veered off, or in the argument binding of a single tool call. Without a timeline, the developer can only replay the whole conversation again and again to guess which stage went wrong, and the debugging cycle stretches out. Lay out every step's action and the LLM call's details along the timeline, and locating the fault shifts from guessing to looking — which step's output does not match expectation lands on that one cell at a glance.</p>
-            <p>Dongfang Yiteng placed this lesson at the starting stage, rather than waiting until the system grew complex to add it. The project started by wiring up the most basic conversation pipeline, and the first piece of infrastructure it did in earnest was observability. The approach is to wrap and abstract the agent's activity and the program logic uniformly into events that carry semantics — user intent recognition, intent gateway routing decisions, and ReAct execution are all such events — and then to present the whole execution process of a conversation clearly along a timeline. At each step you can see both what action the agent produced and, in time order, the LLM call details for that step: the prompt actually used at runtime, the model's output, and the various costs associated with that step. These debugging details can be turned off in production and turned on in the front end during development. Once the foundation is laid, the system stacks intent recognition, reasoning, and action capabilities on top step by step, and with each layer you can directly see how it works inside the dome.</p>
-            <h2>When you need it</h2>
-            <p>When a single conversation with your agent has to run multiple steps across multiple capability stages, and each step may go wrong. The more stages and the longer the chain, the greater the return on laying the execution process out as a transparent timeline in development mode. What this timeline presents is the string of activity events that the <a href="../orchestrator/">Orchestrator</a> arranges at runtime.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/observability-glass-dome.png" alt="Agent activity events and execution timeline" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A user reports that an agent selected the wrong template and stopped at approval. A platform trace shows model latency and tool spans, while the business reviewer needs the interpreted intent, route decision, parameter source, approval state, and external result on one timeline.</p>
+<h2>Definition</h2>
+<p>Activity Events provide a semantic execution record for one task. An Activity identifies a meaningful stage such as intent classification, planning, tool execution, approval, or verification. Frames within the Activity record model calls, tool calls, state transitions, duration, cost, evidence references, and visible output.</p>
+<h2>Engineering mechanism</h2>
+<p>Events share <code>run_id</code>, <code>activity_id</code>, causation, principal, component version, and redaction policy. The UI can show a business timeline while engineers open detailed frames under role-based access. Checkpoints and external receipts link to the same event chain, allowing replay and failure attribution.</p>
+<h2>Boundary</h2>
+<p>Provider traces remain useful for model and tool diagnostics. Activity Events add domain meaning and state transitions; they do not require prompts or private reasoning to be visible to every operator. Retention and detail follow risk, privacy, and audit policy.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS organized model, tool, state, latency, and cost events on one timeline.</dd></div>
+<div><dt>Current standing</dt><dd>Case-derived name</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

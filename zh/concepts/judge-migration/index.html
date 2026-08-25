@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>裁判迁移 · 工程概念 · ADPS</title>
+    <meta name="description" content="跟踪验收标准怎样从需求阶段移交到测试、评审、部署和业务结果。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/concepts/judge-migration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more active">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/" aria-current="page">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/concepts/judge-migration/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">历史入口 → X1</span></a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
+            </div></div>
+          <div class="sb-section open">
+  <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/zh/concepts/">概念目录</a>
+    <details class="sb-concept-group" open><summary>关键概念</summary>
+      <a href="/zh/concepts/control-narrative-dualism/">控制平面与叙事平面</a>
+      <a href="/zh/concepts/execution-vs-content/">执行型与内容生成型 Agent</a>
+      <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+      <a href="/zh/concepts/abstraction-reconstruction-loop/">抽象—还原往返</a>
+      <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
+      <a href="/zh/concepts/context-contract/">上下文合同</a>
+      <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
+      <a href="/zh/concepts/three-powers-of-agency/">Agent 的三种权力</a>
+    </details>
+    <details class="sb-concept-group"><summary>系统边界与状态</summary>
+      <a href="/zh/concepts/unified-session-state/">会话统一状态三平面</a>
+      <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+      <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+    </details>
+    <details class="sb-concept-group"><summary>上下文与记忆</summary>
+      <a href="/zh/concepts/anchor-ledger-collection/">锚、账、集</a>
+      <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+      <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+      <a href="/zh/concepts/layered-memory/">L1/L2/L3 分层记忆</a>
+      <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
+    </details>
+    <details class="sb-concept-group"><summary>规划、执行与写回</summary>
+      <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+      <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+      <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+      <a href="/zh/concepts/typed-ir-chain/">类型化中间表示链</a>
+      <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+      <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+      <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+      <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+    </details>
+    <details class="sb-concept-group"><summary>协作与运行时控制</summary>
+      <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
+      <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
+      <a href="/zh/concepts/handoff-contract/">交接合同</a>
+      <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
+      <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+      <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
+    </details>
+    <details class="sb-concept-group" open><summary>评测、反思与治理</summary>
+      <a href="/zh/concepts/observability-glass-dome/">活动事件与执行时间线</a>
+      <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+      <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+      <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+      <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+      <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
+      <a href="/zh/concepts/durable-intent/">持久化意图</a>
+      <a href="/zh/concepts/judge-migration/" class="active">裁判迁移</a>
+      <a href="/zh/concepts/dual-scale-governance/">双尺度治理</a>
+    </details>
+  </div>
+</div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/concepts/">概念</a><span style="margin:0 0.45rem;">/</span>概念定义</p>
+<header class="publication-head"><p class="publication-series">ADPS Agent 系统 · 工程概念</p><h1>裁判迁移</h1><p class="publication-deck">跟踪验收标准怎样从需求阶段移交到测试、评审、部署和业务结果。</p></header>
+
+<h2>应用背景：同一个“正确”在不同阶段由不同对象证明</h2>
+<p>需求阶段，产品负责人用验收条件判断方案是否对题；编码阶段，测试用例判断实现是否符合接口；发布阶段，部署检查判断版本能否运行；上线以后，业务结果说明用户是否得到所需结果。若后一阶段没有继承前一阶段的条件，系统可能每一关都通过，最终仍交付错误结果。</p>
+<h2>概念定义</h2>
+<p>裁判迁移描述一项工作沿生命周期推进时，裁决主体、裁决标准和证据类型的变化及交接。迁移记录至少包括上一阶段确认了什么、下一阶段需要重新证明什么、哪些假设仍未验证，以及最终业务结果如何回链到当时的 Agent 版本和运行轨迹。</p>
+<h2>工程用法</h2>
+<p>一项“把交通津贴调到 1000”的请求，可以依次形成需求验收条款、参数和权限校验、写后读取、下一薪资周期对账。单元测试证明函数按预期执行，不能替代业务对账；业务对账失败时，也要能追到当时采用的政策版本、批准记录和工具回执。</p>
+<h2>使用边界</h2>
+<p>裁判迁移关注证据链的连续性，不主张由一个中央评审者包办全部阶段。各阶段可以保留专业裁判，但交接合同需要携带仍有效的约束和尚待验证的结论。</p>
+
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">提出与来源</h2>
+<dl>
+<div><dt>ADPS 内初始来源</dt><dd>ADPS 内初始提出：黄佳</dd></div>
+<div><dt>首次记录</dt><dd><a href="/zh/workshops/perception-2026-08-13/">感知模块第一次研讨会，2026-08-13</a></dd></div>
+<div><dt>ADPS 整理</dt><dd>ADPS 将需求、测试、评审、部署和业务结果中的裁判类型及其交接整理为生命周期问题。</dd></div>
+<div><dt>当前地位</dt><dd>候选概念</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><a href="/zh/concepts/">概念目录</a> · <a href="/zh/workshops/">研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

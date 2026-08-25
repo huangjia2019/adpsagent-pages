@@ -1,0 +1,10 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  A[Need a memory service?] --> B[Candidate admission]
+  B --> C[Compile and index]
+  C --> D[Task-time retrieval]
+  D --> E[Use in current run]
+  E --> F[Correctness and outcome evaluation]
+  F -->|retain or revise| C
+  F -->|demote, retire, or delete| G[Leave active memory]
+  H[Business DB / state machine / ledger] -. authoritative state reference .-> D

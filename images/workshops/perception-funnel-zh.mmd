@@ -1,0 +1,9 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  G[目标、约束与验收] --> A[信号准入]
+  S[代码 / 工单 / 日志 / 图像] --> A
+  A --> B[清洗、去重与归一化]
+  B --> C[关联业务实体与历史]
+  C --> D[分类、分级、置信度]
+  D --> R[进入推理与后续控制]
+  D -. 不直接执行业务动作 .-> X[感知边界]

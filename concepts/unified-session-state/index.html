@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three State Planes · Concept · ADPS</title><meta name="description" content="Keep narrative, mechanical values, and task scheduling in separate state planes.">
+    <title>Three Session-State Planes · Engineering Concept · ADPS</title><meta name="description" content="Coordinate narrative, mechanical business values, and task scheduling without mixing write ownership.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/unified-session-state/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,68 +92,89 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/" class="active">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group" open><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/" class="active">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Unified Session State Plane: Separation of Powers</h1><p class="publication-deck">Keep narrative, mechanical values, and task scheduling in separate state planes.</p>
+                <h1>Three Session-State Planes</h1><p class="publication-deck">Coordinate narrative, mechanical business values, and task scheduling without mixing write ownership.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/unified-session-state.png" alt="Unified Session State Plane: Separation of Powers" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: one job has three kinds of progress</h2>
-            <p>A payroll configuration job must remember why the user chose a rule, preserve the exact <code>pay_group_id</code> returned by a tool, and know whether the "attach employees" node has completed. All three move through one session, but they have different structures and validation rules.</p>
-            <p>Putting everything into a conversation summary can lose exact identifiers and dependencies. Putting everything into one generic state map mixes semantic notes, business parameters, and scheduling state.</p>
-            <h2>Definition</h2>
-            <p>All of the runtime context within a single session should not be read and written in one place. The unified session state plane splits this context into three planes with clear responsibilities. Each plane answers one question, uses one data form, and does not cross into another's territory. This is the backbone design that the Dongfang Yiteng execution agent finally settled on.</p>
-            <h2>How it works</h2>
-            <p>Separation of powers means that the narrative, mechanical, and scheduling planes each govern one segment. The narrative state plane gathers, in natural language, what the user wants and how far the work has gotten. It is the agent's perception and understanding of the world and the current situation: some information is kept in full, some is compacted and distilled, some lives only in memory, and some is persisted to storage and even given a vector index. The mechanical state plane governs the API parameter dictionary alone. It answers where a parameter came from and whether it is correct. It stores strict key-value pairs, every parameter carries a provenance coordinate, and it is auditable and able to fail fast on error. The task scheduling state plane cares only about the order and status of the nodes in the task graph. It answers which step runs first and whether a step has finished. A downstream node can only be started once all its upstream nodes are complete and the node itself is ready. The three planes speak three languages about three things: progress in natural language, parameters in machine-readable key-value pairs, scheduling in a task graph.</p>
-            <p>The failure it prevents is the kind that recurs whenever these three things get tangled together. In the earliest scheduling context, narrative content was mixed in, and the result details of each task node were read, written, and passed in the same place. The consequence was that parameters and progress polluted each other: from a single stretch of context containing goal descriptions, intermediate thoughts, and API return values all at once, the model had to work out for itself which value was the id to bind in the next step. In an enterprise business system, such an id is often a random string of dozens of characters generated by a snowflake algorithm. Asking the model to pull it verbatim out of the mixed context and then bind it is highly unreliable — it sometimes succeeds and sometimes fails, and when it fails is neither controllable nor predictable. Once the three things are separated, parameters go through the mechanical plane and are passed mechanically by the program rather than generated by the model, progress goes through the narrative plane, and scheduling goes through the task graph. Each line is independent, and drift on one line does not spread to another.</p>
-            <p>The rapid setup of a salary group at Dongfang Yiteng is a clear slice. This scenario first takes a snapshot of the enterprise's existing salary-group data, then imports the matched template after the snapshot is confirmed, then rolls back to the snapshot if the import fails. The order of "snapshot first, then import, then roll back" belongs to the scheduling plane, pinned down by the node dependencies of the task graph rather than decided by the model on the spot. The template_id returned by the template-matching interface must be used verbatim as the input parameter when the downstream import runs; this belongs to the mechanical plane, maintained by parameter coordinates and passed mechanically. Descriptions such as what kind of salary group the user wants to set up and which step the work has reached belong to the narrative plane, recorded in natural language and projected and injected when needed. The by-products generated within the same task execution are assigned to these three planes by their nature, and nowhere does the model need to make a judgment on the program's behalf inside a mixed context.</p>
-            <h2>When you need it</h2>
-            <p>When your agent has to deliver a multi-step process on top of business interfaces you cannot modify, and the parameter of every step needs a unique, auditable source that can fail fast on error, rather than relying on the model to guess it from context. Upstream of this three-way split is first splitting the runtime into <a href="../control-narrative-dualism/">control plane and narrative plane</a>; how the mechanical plane guarantees a unique source for every parameter is covered in <a href="../mechanical-state-plane/">the mechanical state plane and provenance coordinates</a>; how the narrative plane organizes its own goals and progress is covered in <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/unified-session-state.png" alt="Three session-state planes" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A long-running setup task contains three kinds of change. The conversation records what the user wants and what the agent has concluded. Tool calls return exact business values. The scheduler tracks which step is ready, blocked, complete, or failed. Storing all three in one chat history makes ownership and recovery ambiguous.</p>
+<h2>Definition</h2>
+<p>Unified Session State separates one session into three coordinated planes:</p>
+<ul><li><strong>SessionNarrative</strong> stores goals, observations, summaries, and reasoning inputs;</li><li><strong>SessionState</strong> stores exact business parameters, source coordinates, versions, and tool receipts;</li><li><strong>Workspace</strong> stores task nodes, dependencies, status, checkpoints, and artifacts.</li></ul>
+<h2>Engineering mechanism</h2>
+<p>Each plane has a different writer. The model may update narrative through a typed interface. Tool adapters and business services write mechanical values. The scheduler owns task transitions. References connect the planes: a Workspace node points to the artifact and state values it consumed, while narrative links to source records instead of copying them.</p>
+<h2>Boundary</h2>
+<p>“Unified” means coordinated under one session identity, not stored in one object or database table. Short, read-only conversations may need only narrative state. Multi-step execution and resume require explicit mechanical and scheduling planes.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS organized narrative, mechanical parameters, and task scheduling into three state planes with distinct write ownership.</dd></div>
+<div><dt>Current standing</dt><dd>Case-derived name</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

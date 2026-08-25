@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control/Narrative Planes · Concept · ADPS</title><meta name="description" content="Separate discrete program control from the language context used for reasoning.">
+    <title>Control and Narrative Planes · Engineering Concept · ADPS</title><meta name="description" content="Separate model-readable context from bounded values that drive the runtime.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/control-narrative-dualism/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,70 +92,89 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/" class="active">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/" class="active">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Control Plane and Narrative Plane: The Dualism of Execution-Type Agents</h1><p class="publication-deck">Separate discrete program control from the language context used for reasoning.</p>
+                <h1>Control and Narrative Planes</h1><p class="publication-deck">Separate model-readable context from bounded values that drive the runtime.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/control-narrative-dualism.png" alt="Control Plane and Narrative Plane: the dualism of execution-type agents" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: one request carries two kinds of information</h2>
-            <p>A payroll specialist says, "Create next month's pay group for the Singapore team, reuse the headquarters rules, and ask me before submission." The team, period, and policy provide semantic context for later reasoning. "Create" and "ask before submission" must also become a known route and an approval node.</p>
-            <p>Keeping only the sentence leaves the program without a stable branch. Keeping only a <code>create_pay_group</code> enum strips away the business context that later reasoning needs. Both forms belong in the runtime, but different mechanisms consume them.</p>
-            <h2>Definition</h2>
-            <p>The runtime context of an execution-type agent should be split, from the very first step, into two planes of different character.</p>
-            <p>The control plane is mechanical, deterministic, and discrete: a small set of signals that decide which branch the program takes next — small talk ends the turn, a query triggers retrieval, a task triggers planning. The narrative plane is semantic context in natural language: it feeds every reasoning step and, after reasoning, produces new control signals. Both run in parallel. Without control signals the engineering has nothing to drive it; without narrative context each reasoning step has no raw material.</p>
-            <p>This dualism is the cognitive foundation of the whole system. It answers the question that stalls most people new to agent work: where do you even grip something described with words like "intelligence" and "uncertainty"? The move is to convert the live and uncertain into the dead and controllable first — because only the dead can be controlled, and control is mechanical by nature.</p>
-            <h2>How it works</h2>
-            <p>The control plane must be mechanized. The narrative plane has its own management — semantic compaction, assembly, writing, scenario-based injection — but that is not strict state control; it is closer to steering. Bo Liang puts the difference in terms of riding a horse: the control plane is the reins and stirrups, which keep the horse going where you intend most of the time; the narrative plane is the horse's mind, which you can steer but cannot guarantee will obey the next instant. Kubernetes splits a cluster into a data plane and a control plane on the same judgment.</p>
-            <p>Skip the split and you pay for it. If the execution order of a business process is handed to the model as narrative context, in the hope that it runs the right steps inside a loop, the observed result is that it sometimes runs correctly and sometimes skips or repeats a step — and when it fails is neither controllable nor predictable. The root cause is that an LLM is a probabilistic model; handing deterministic control flow to it for on-the-spot judgment conflicts at the root.</p>
-            <p>Dongfang Yiteng first saw these two planes at the earliest intent-recognition step: a single capability's output already separated into a control signal that drives where the program goes, and narrative content for downstream reasoning to consume. Every architectural trade-off after that was built on this line.</p>
-            <h2>When you need it</h2>
-            <p>When your agent executes a chain of business steps with strict state dependencies, rather than generating content. Splitting the control plane's state further is the <a href="../unified-session-state/">unified session state and its separation of powers</a>; how the narrative plane organizes itself is <a href="../anchor-ledger-collection/">anchor, ledger, collection</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/control-narrative-dualism.png" alt="Control and narrative planes in an execution agent" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>A payroll agent receives “create the Singapore payroll group from last month’s template.” The model can interpret the request and explain the intended result. The runtime still needs a finite route, exact tenant and template identifiers, approval state, and a deterministic branch for failure. Free-form language and program control serve different consumers.</p>
+<h2>Definition</h2>
+<p>The narrative plane contains model-readable goals, observations, explanations, and summaries. The control plane contains bounded values that select program branches: intent enums, node states, policy decisions, approval status, retry state, and error codes. Narrative helps the model reason. Control determines what the runtime is allowed to do next.</p>
+<h2>Engineering mechanism</h2>
+<table><thead><tr><th>Plane</th><th>Typical data</th><th>Writer</th><th>Consumer</th></tr></thead><tbody><tr><td>Narrative</td><td>Goal, evidence summary, current explanation</td><td>Model and application</td><td>Model, reviewer, UI</td></tr><tr><td>Control</td><td><code>task_type</code>, node state, approval decision, reason code</td><td>Typed program logic or policy engine</td><td>Router, scheduler, guardrail</td></tr></tbody></table>
+<p>The model may propose a control value, but a parser validates it against a finite schema and maps invalid output to an explicit fallback. Tool responses enter mechanical state before a narrative summary is produced.</p>
+<h2>Boundary</h2>
+<p>This separation does not remove language from execution. It prevents prose from becoming the sole authority for routing, approval, and recovery. Content-only work can use a thinner control plane; external writes require explicit control values and recorded transitions.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS named the separation between program control signals and model-readable narrative, then stated its boundary.</dd></div>
+<div><dt>Current standing</dt><dd>ADPS restatement</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

@@ -511,6 +511,181 @@
     overflow-x: auto;
 }
 
+.sb-concepts > a:first-child {
+    margin-bottom: 0.35rem;
+}
+
+.sb-concept-group {
+    border-top: 1px solid var(--color-rule);
+    margin-top: 0.2rem;
+    padding-top: 0.2rem;
+}
+
+.sb-concept-group summary {
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 650;
+    line-height: 1.4;
+    list-style: none;
+    padding: 0.42rem 0.2rem;
+}
+
+.sb-concept-group summary::-webkit-details-marker {
+    display: none;
+}
+
+.sb-concept-group summary::before {
+    content: "+";
+    display: inline-block;
+    font-family: var(--font-mono);
+    margin-right: 0.35rem;
+    width: 0.7rem;
+}
+
+.sb-concept-group[open] summary::before {
+    content: "−";
+}
+
+.sb-concept-group a {
+    padding-left: 1.25rem;
+}
+
+.concept-key-list,
+.concept-catalogue {
+    margin-top: 2.5rem;
+}
+
+.concept-key-list > div {
+    border-bottom: 1px solid var(--color-rule);
+    border-top: 1px solid var(--color-rule);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.concept-key-list article {
+    min-width: 0;
+    padding: 1rem 1.15rem 1.1rem 0;
+}
+
+.concept-key-list article:nth-child(even) {
+    border-left: 1px solid var(--color-rule);
+    padding-left: 1.15rem;
+}
+
+.concept-key-list article:nth-child(n + 3) {
+    border-top: 1px solid var(--color-rule);
+}
+
+.concept-key-list h3,
+.concept-group h3 {
+    font-size: 1rem;
+    line-height: 1.45;
+    margin: 0 0 0.25rem;
+}
+
+.concept-key-list h3 a,
+.concept-group h3 a {
+    text-decoration: none;
+}
+
+.concept-key-list article p,
+.concept-group article p {
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+.concept-group {
+    border-top: 1px solid var(--color-rule);
+}
+
+.concept-group:last-child {
+    border-bottom: 1px solid var(--color-rule);
+}
+
+.concept-group > summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 650;
+    justify-content: space-between;
+    list-style: none;
+    padding: 0.9rem 0;
+}
+
+.concept-group > summary::-webkit-details-marker {
+    display: none;
+}
+
+.concept-group > summary::after {
+    content: "+";
+    font-family: var(--font-mono);
+    font-weight: 400;
+    margin-left: 0.75rem;
+}
+
+.concept-group[open] > summary::after {
+    content: "−";
+}
+
+.concept-group > summary span {
+    color: var(--color-text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 400;
+    margin-left: auto;
+}
+
+.concept-group > div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-bottom: 0.75rem;
+}
+
+.concept-group article {
+    border-top: 1px solid var(--color-rule);
+    min-width: 0;
+    padding: 0.8rem 1rem 0.9rem 0;
+}
+
+.concept-group article:nth-child(even) {
+    border-left: 1px solid var(--color-rule);
+    padding-left: 1rem;
+}
+
+.concept-provenance {
+    border-top: 1px solid var(--color-rule);
+    margin-top: 2.75rem;
+    padding-top: 0.3rem;
+}
+
+.concept-provenance dl {
+    margin: 0;
+}
+
+.concept-provenance dl > div {
+    border-top: 1px solid var(--color-rule);
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(8rem, 0.3fr) minmax(0, 1fr);
+    padding: 0.65rem 0;
+}
+
+.concept-provenance dt {
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+
+.concept-provenance dd {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
 @media (max-width: 900px) {
     .site-header .container {
         display: block;
@@ -536,6 +711,27 @@
     }
 
     .knowledge-flow > div {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .concept-key-list > div,
+    .concept-group > div {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .concept-key-list article:nth-child(even),
+    .concept-group article:nth-child(even) {
+        border-left: 0;
+        padding-left: 0;
+    }
+
+    .concept-key-list article + article,
+    .concept-group article + article {
+        border-top: 1px solid var(--color-rule);
+    }
+
+    .concept-provenance dl > div {
+        gap: 0.15rem;
         grid-template-columns: minmax(0, 1fr);
     }
 

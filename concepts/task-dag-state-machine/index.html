@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task DAG and State Machine · Concept · ADPS</title><meta name="description" content="Encode dependencies in a graph and lifecycle transitions in a state machine.">
+    <title>Task DAG and State Machine · Engineering Concept · ADPS</title><meta name="description" content="Make dependencies, node status, acceptance, and recovery explicit.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/task-dag-state-machine/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,69 +92,88 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/" class="active">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group" open><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/" class="active">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>Task DAG and Task State Machine: The Skeleton of Plan-and-Execute</h1><p class="publication-deck">Encode dependencies in a graph and lifecycle transitions in a state machine.</p>
+                <h1>Task DAG and State Machine</h1><p class="publication-deck">Make dependencies, node status, acceptance, and recovery explicit.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/task-dag-state-machine.png" alt="Task DAG and Task State Machine: The Skeleton of Plan-and-Execute" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: steps have order, and each step has a lifecycle</h2>
-            <p>A payroll job creates a pay group, attaches employees, calculates results, obtains approval, and submits. Approval depends on the calculation result. The approval node itself may be pending, running, waiting for a person, completed, or failed.</p>
-            <p>A prompt that says "run these steps in order" cannot reliably support parallel nodes, recovery, or local retry. Dependencies and node state need to be program-readable data.</p>
-            <h2>Definition</h2>
-            <p>Plan-and-execute is an action pattern that first lays out and fixes the several steps a business process has to take, then schedules execution by dependency, instead of deciding one step at a time. The two core data structures that carry this plan are the task DAG and the task state machine. The task DAG is a directed acyclic graph that organizes task nodes by dependency, fixing the ordering constraints between steps; the task state machine maintains each node's own state and drives the whole graph forward.</p>
-            <h2>How it works</h2>
-            <p>What this structure solves is taking execution order out of the model's on-the-spot judgment and fixing it on the task graph. Letting the LLM work out the correct step order on its own inside a ReAct loop amounts to handing deterministic control flow to a probabilistic model. Plan-and-execute pulls this order out of the narrative context and lays it down as edges in the graph and node states, scheduled by the program through the state machine, so the model no longer re-decides the ordering at every step.</p>
-            <p>What it guards against is ReAct skipping or missing steps on a process with strict dependencies. Dongfang Yiteng hit this failure while validating fast setup of payroll groups in the mock stage: this scenario has to snapshot the enterprise's existing payroll-group data first, confirm the snapshot is built before importing the matched template, and roll back from the snapshot if the import fails — a sequence that cannot be reordered and that has strict progressive dependencies. The first idea was natural: describe each API as a tool, describe in the skill how each scenario should be orchestrated, feed "call this step first, then that step" to the agent as narrative context, and expect it to work out the correct order on its own inside ReAct. In testing it did not work: once the skill orchestration was given to the model as narrative context, it sometimes ran correctly and sometimes clearly skipped or missed a step, leaving the task not matching expectations. The root cause is again the uncertainty of the LLM — handing execution order to a probabilistic model for on-the-spot judgment cannot guarantee it is right every time.</p>
-            <p>So the team identified one more missing action pattern: plan-and-execute. ReAct's core control structure is essentially a chained loop with an exit boundary; once you understand the concept the data structure is easy to write. Plan-and-execute has to lay out and manage the scheduling and dependencies of several consecutive tasks, which means maintaining more complex task-planning and scheduling state, and its implementation complexity is an order of magnitude higher than ReAct's. Its core components are the task DAG, the planner, the executor, the verifier, and the task state machine together with the mechanism that dynamically maintains task-graph state. The most demanding part is the task state machine model: each node has its own state, and the precondition for a downstream node to be scheduled and started is that all of its upstream dependencies are complete and the node itself is ready; the whole scheduling semantics is driven by this state machine.</p>
-            <p>The two action patterns need not be an either-or choice. Control flows between the Orchestrator and the specific action pattern: when ReAct runs to a step where the path becomes clear and can be planned into several parallel or sequential tasks, it hands control back to the Orchestrator and switches into plan-and-execute, alternating between the two by how clear the task is. Once the state machine is in place, human-review blocking and resumption of key tasks also gain a ready-made structure to ride on; the node state itself can express "paused, awaiting approval," with no need to design a separate mechanism for it.</p>
-            <h2>When you need it</h2>
-            <p>When your agent has to deliver a business process whose steps have strict ordering dependencies, where the wrong order means delivery fails, and ReAct's step-by-step free decision can no longer hold down skipped or missed steps. How this plan maintains task-scheduling state and keeps it separate from narrative and mechanical parameters is what the <a href="../unified-session-state/">separation of powers in the unified session state plane</a> answers; key tasks blocking for human review and resuming the execution flow after approval rely on this state machine, see <a href="../hitl-block-resume/">HITL block and resume</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/task-dag-state-machine.png" alt="Task DAG and node state machine" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>Payroll setup must create a snapshot before importing a template, associate employees only after the payroll group exists, and roll back when import fails. Describing this order in a Skill leaves the model responsible for remembering every dependency during execution.</p>
+<h2>Definition</h2>
+<p>The task DAG stores dependency edges. The node state machine stores lifecycle transitions such as <code>pending</code>, <code>ready</code>, <code>running</code>, <code>waiting</code>, <code>completed</code>, <code>failed</code>, and <code>compensating</code>. A node becomes schedulable only when its dependencies and preconditions hold.</p>
+<h2>Engineering mechanism</h2>
+<p>The Planner creates typed nodes with inputs, outputs, resource keys, authority, acceptance, retry, and compensation. The Executor claims a ready node through a lease. The Verifier records acceptance evidence before completion. Every transition is conditional and persisted; recovery reconstructs runnable nodes from the graph and external receipts rather than replaying conversation.</p>
+<h2>Boundary</h2>
+<p>A short, reversible sequence can remain a prompt chain or ReAct loop. Strict dependencies, parallel branches, approval waits, rollback, and cross-session recovery justify a DAG and state machine. The graph controls execution order; it does not decide whether the original business goal was correct.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS placed dependency, acceptance, and recovery in one agent task contract.</dd></div>
+<div><dt>Current standing</dt><dd>Agent adaptation of established terms</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

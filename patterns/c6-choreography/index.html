@@ -84,7 +84,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/" class="active">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/" class="active">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/governance/">Governance module overview</a>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
@@ -107,46 +107,62 @@
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main">
 
@@ -181,40 +197,41 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>The Orchestrate pattern has a central conductor that commands each agent in turn: "do this step, then that step." This structure is correct in most scenarios, but it has two hard constraints that eventually hit a ceiling. The central conductor is itself a single point: if it fails, the whole flow stops. And every new agent added requires going back to change the conductor's logic. As the number and variety of agents keep growing and business boundaries fall under different teams, this central point turns from a coordinator into a bottleneck.</p>
-            <p>Choreography solves exactly this coupling problem at scale. It removes the central conductor and makes each agent an autonomous unit: it subscribes only to the events it cares about, reacts when an event arrives, and emits its result as a new event back onto the shared event stream, reporting to no center. The system's overall behavior is no longer written into a flowchart in one place; it emerges from every agent's local "subscribe–react–publish" rules. Adding a new agent only requires subscribing it to the events it should subscribe to, with no other agent changing a single line.</p>
-            <p>This deserves to be a pattern of its own because it is not a parameter variant of Orchestrate but the other pole of the collaboration topology: control shifts from centralized to distributed. In structural orientation it is the opposite of centralized collaboration patterns such as fan-out/gather and hierarchical delegation.</p>
-            <h2>Classification: Collaboration × Choreography</h2>
-            <p>This is the first pattern in the Collaboration module that does not fall on one of the six core topology columns, so it needs to be spelled out explicitly, just as the Action module's minimal tool set (A5) falls on "constraint" rather than a concrete topology column.</p>
-            <ul>
-            <li><strong>Vertical axis · Collaboration</strong>: Choreography describes how multiple agents coordinate; there is no single-agent version, so the vertical axis sits firmly in the Collaboration module.</li>
-            <li><strong>Horizontal axis · Choreography (emerging topology, not one of the six core columns)</strong>: The six core topologies (Chain, Route, Parallel, Loop, Hierarchy, Orchestrate) share an implicit premise—there is a designable control point. Chain has order, Route has a router, Parallel has fan-out/gather, Loop has an iterator, Hierarchy has a manager, Orchestrate has a conductor. The defining feature of Choreography is the removal of this control point. So it is not a seventh value on the core axis but the negative pole of the dimension "is control at the center or not." It and Orchestrate are a pair of twins: Orchestrate is coordinated by a conductor, Choreography is coordinated by events.</li>
-            </ul>
-            <p>The reason it remains in the extension ring is methodological: a core topology should recur across several cognitive functions. Choreography is clearest in Collaboration, with adjacent echoes in event-sourced memory, blackboard reasoning, and event-based governance. The current evidence is not yet broad enough to make it a core column. ADPS can revisit that decision when attributed production cases show the topology recurring beyond collaboration.</p>
-            <h2>Solution and mechanics</h2>
-            <p>Choreography is built from four engineering elements:</p>
-            <ol>
-            <li><strong>A shared event medium</strong>: an event bus (pub/sub), a shared blackboard, or a trace-leaving mechanism (stigmergy). All agents communicate through it indirectly, never calling each other point to point.</li>
-            <li><strong>Autonomous subscribe–react units</strong>: each agent declares which events it subscribes to, decides on arrival whether and how to act, and publishes the result back as a new event. It does not know, and does not need to know, who picks up next.</li>
-            <li><strong>Emergent global behavior</strong>: no single place holds the full flow. The overall collaboration is the result of all local rules running on the event stream. This is the entire power of Choreography, and the source of all its trouble.</li>
-            <li><strong>Explicit termination and observability</strong>: because no center declares "the task is done," boundaries must be defined with an explicit terminal event or with an orchestrated saga's compensation chain. At the same time, every event must carry a correlation ID, or the causal chain cannot be traced when something goes wrong.</li>
-            </ol>
-            <h2>Applicability</h2>
-            <ul>
-            <li><strong>Ecosystems with many agent types, owned by different teams, evolving independently</strong>: each team owns its own agents and joins by subscribing to the bus, with no need to change a company-wide central orchestrator.</li>
-            <li><strong>High-throughput event streams where central orchestration becomes a bottleneck or single point</strong>: systems such as risk control, content moderation, and monitoring alerts, where events flow in continuously and high availability is required.</li>
-            <li><strong>Highly dynamic environments where the flow cannot be fixed in advance</strong>: you cannot enumerate "which steps to take" ahead of time, and can only let agents react to the events at hand.</li>
-            <li><strong>Scenarios that require resilience and cannot have a central point of failure</strong>: there is no central conductor to fail, and a single agent's failure loses only its share of the function.</li>
-            </ul>
-            <h2>Known failure modes</h2>
-            <ul>
-            <li><strong>Deploying Choreography without observability</strong>: emergent behavior has no central trace, and when something goes wrong there is no place to start. Choreography depends heavily on Observability (X1)—every event must carry a correlation ID and be replayable along the causal chain. Build the Observability Harness first, then deploy Choreography; reversing the order guarantees trouble.</li>
-            <li><strong>Event storms / infinite loops</strong>: A emits an event that triggers B, B reacts and emits an event that triggers A, and the loop does not converge. You must enforce idempotency, add event TTLs, and detect loops.</li>
-            <li><strong>No one declares completion</strong>: after decentralization, "is this task actually finished" becomes a question no one can answer directly. Define it with an explicit terminal event or saga compensation; do not leave it vague.</li>
-            <li><strong>Treating Choreography as a cure-all</strong>: the default for most systems should be Orchestrate. Choreography earns its place only when scale, coupling, or availability hit a ceiling. Deploying it for the sake of being "advanced" means solving with the hardest-to-debug topology a problem that a single orchestrator would have handled.</li>
-            <li><strong>Forcing global constraints onto Choreography</strong>: decentralization and governance are naturally at odds. When strongly consistent approvals, quotas, or compliance constraints are needed, either keep a thin central gate (hybrid) or admit that Choreography does not fit that segment.</li>
-            </ul>
-            <h2>Verification and metrics</h2>
+<p>Consider two order flows that both change at runtime. In the first, an orchestrator owns the complete plan. A model may select payment, inventory, or notification agents dynamically, while one interpreter schedules calls and gathers results. The flow is dynamic and control remains centralized.</p>
+<p>In the second, no component owns that plan. Payment publishes <code>PaymentConfirmed</code>. Inventory subscribes, reserves stock, and publishes <code>StockReserved</code>. Delivery and notification subscribe to the new event. Each participant knows its input events, local conditions, and output events; their rules collectively advance the order.</p>
+<p>Choreography addresses the second design. Autonomous participants under different team or service boundaries need to evolve independently without making one central flow the entry point for every change. Event contracts reduce direct coupling, while completion, causal tracing, retry, and compensation become explicit engineering obligations.</p>
+<figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-en.svg" alt="Control ownership in dynamic orchestration and choreography"><figcaption>Runtime change is not the criterion. The boundary is who owns the complete plan.</figcaption></figure>
+<h2>Classification: Collaboration × Choreography</h2>
+<p>Choreography belongs to Collaboration because it describes how participants continue one another's work. It remains an extension topology rather than a seventh core column.</p>
+<ul>
+<li><strong>Dynamic orchestration</strong> retains an interpreter that owns the complete plan, call order, and result closure. Choreography distributes progression rules among event subscribers.</li>
+<li><strong>Event-driven infrastructure</strong> handles trigger, queueing, delivery, and replay. Choreography describes where control resides. A centrally orchestrated flow can also begin with an event.</li>
+<li><strong>Candidate standing</strong> reflects the current evidence base: public agent-engineering examples remain concentrated in collaboration. Cross-domain production cases and failure records are still needed.</li>
+</ul>
+<h2>Solution and mechanics</h2>
+<ol>
+<li><strong>Versioned event contracts</strong> define name, schema, producer, visibility, version, idempotency key, causal identifiers, and sensitive fields. A shared bus does not imply universal read access.</li>
+<li><strong>Local subscription rules</strong> state the event condition, state read, allowed action, and emitted event. A participant does not invoke or assume the next participant.</li>
+<li><strong>Completion and timeout ownership</strong> identifies terminal events, missing-event detection, and the owner of compensation, human takeover, or a thin saga. Decentralized control does not remove accountability.</li>
+<li><strong>Causal evidence</strong> carries <code>run_id</code>, <code>correlation_id</code>, <code>causation_id</code>, principal, and component versions. X1 reconstructs the chain; G2 aggregates budget and impact across it.</li>
+</ol>
+<h2>Applicability</h2>
+<ul>
+<li><strong>Participants have clear autonomous boundaries</strong>: payment, inventory, and delivery own local state and release cadence.</li>
+<li><strong>A new subscriber should not change an existing flow owner</strong>: analytics or notification can subscribe to <code>StockReserved</code> under the event contract.</li>
+<li><strong>Throughput or availability exceeds central step-by-step dispatch</strong>: independent events can be consumed in parallel.</li>
+<li><strong>The domain accepts eventual consistency and supports compensation</strong>: globally atomic approval or commit normally retains a central gate or transaction coordinator.</li>
+</ul>
+<p>A short, fixed flow owned by one team usually favours orchestration. Choreography adds event governance and diagnosis cost; it is not a default upgrade.</p>
+<h2>Known failure modes</h2>
+<ul>
+<li><strong>Calling dynamic sub-agents choreography</strong>: if one interpreter owns the plan and gathers results, the design is dynamic orchestration.</li>
+<li><strong>Event storms and cycles</strong>: A triggers B, which triggers A. Consumers need idempotency, TTL, duplicate detection, quotas, and circuit breakers.</li>
+<li><strong>No owner of completion</strong>: local success events exist without a terminal condition, timeout owner, or compensation state.</li>
+<li><strong>Shared schema becomes hidden central coupling</strong>: one field change forces every producer and consumer to upgrade together. Versioning and compatibility require tests.</li>
+<li><strong>Local limits expand globally</strong>: every participant stays below its own cap while fan-out, retries, and loops exceed the run or tenant budget.</li>
+</ul>
+<h2>Verification and metrics</h2>
             <ul>
             <li><strong>Event traceability</strong>: Test whether a complete causal chain can be reconstructed from the correlation-ID event log. A chain that cannot be replayed is not ready for production choreography.</li>
             <li><strong>Convergence and event storms</strong>: Measure whether a collaboration reaches a terminal event or repeats publication until a circuit breaker fires.</li>

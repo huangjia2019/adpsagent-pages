@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mechanical State Plane · Concept · ADPS</title><meta name="description" content="Bind business parameters to auditable sources instead of regenerating them through a model.">
+    <title>Mechanical State Plane · Engineering Concept · ADPS</title><meta name="description" content="Bind exact business values to auditable source coordinates.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png"><meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/concepts/mechanical-state-plane/"><link rel="icon" type="image/png" href="/favicon.png"><link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg"><link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
@@ -71,7 +71,7 @@
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
               <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
               <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
-              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
               <h4>Governance</h4>
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
@@ -92,69 +92,95 @@
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
-            <div class="sb-body">
-              <a href="/concepts/">Concepts home</a>
-              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
-              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
-              <a href="/concepts/unified-session-state/">Three State Planes</a>
-              <a href="/concepts/mechanical-state-plane/" class="active">Mechanical State Plane</a>
-              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
-              <a href="/concepts/scratchpad/">Scratchpad Board</a>
-              <a href="/concepts/memory-envelope/">Memory Envelope</a>
-              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
-              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
-              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
-              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
-              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
-              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
-              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
-              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
-              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
-              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
-              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
-              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
-              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
-              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
-              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
-              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
-              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
-              <a href="/concepts/topology-lowering/">Topology Lowering</a>
-              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
-              <a href="/concepts/handoff-contract/">Handoff Contract</a>
-              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
-              <a href="/concepts/hook-composition/">Hook Composition</a>
-              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
-              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
-              <a href="/concepts/context-contract/">Context Contract</a>
-              <a href="/concepts/plan-compilation/">Plan Compilation</a>
-              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
-              <a href="/concepts/durable-intent/">Durable Intent</a>
-              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
-            </div></div>
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/" class="active">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
         </aside>
         <div class="docs-main"><article class="essay">
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/concepts/" style="color: var(--color-text-muted);">Concepts</a><span style="margin:0 0.45rem;">/</span>Concept</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Systems Blue Book · Engineering Concept</p>
-                <h1>The Mechanical State Plane and Provenance Coordinates</h1><p class="publication-deck">Bind business parameters to auditable sources instead of regenerating them through a model.</p>
+                <h1>Mechanical State Plane</h1><p class="publication-deck">Bind exact business values to auditable source coordinates.</p>
             </header>
-            <p style="color: var(--color-text-muted); font-size: 1.05rem; margin: -0.4rem 0 1.6rem;">From the Dongfang Yiteng execution agent (case by Bo Liang)</p>
-
-            <p><img src="/images/concepts/en/mechanical-state-plane.png" alt="The Mechanical State Plane and Provenance Coordinates" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
-            <h2>Application context: the next call needs the original value</h2>
-            <p>After creating a pay group, an API returns <code>pay_group_id=pg_84721</code>. The employee-assignment step needs that exact value and evidence of which call and tenant produced it. If a model first summarizes "the Singapore pay group was created" and later reconstructs the identifier, a tool fact has become a probabilistic generation.</p>
-            <p>Values consumed directly by later APIs, including entity IDs, currencies, time ranges, and idempotency keys, need programmatic storage with provenance.</p>
-            <h2>Definition</h2>
-            <p>The mechanical state plane is the layer of an execution-type agent's runtime context that governs business API parameters. It separates the reading, writing, binding, and passing of state values entirely from the content the LLM touches, so that every API call's input parameters have a single, auditable, fail-fast mechanical source rather than being generated on the spot by a model that drifts.</p>
-            <p>Picture it as a whole wall of small cells, built when the agent starts. Each cell corresponds to one mechanical parameter, and its key is determined by two things together: which tool supplies the parameter, and at which runtime stage it is produced. Along the session's timeline, each cell holds only the latest value of that parameter. Whoever needs a piece of state reads it from the corresponding cell, instead of letting the model guess it out of a long stretch of narrative context. Every parameter in the runtime corresponds to a Provenance structure, assembled by parsing the various specifications and descriptions into a single coordinate — key name plus scope plus supplier plus production stage. All reads and writes go by this coordinate, so a parameter's ownership and value stay unambiguous.</p>
-            <h2>How it works</h2>
-            <p>The failure it prevents is concrete. The first step of building a payroll group calls a template-matching interface; on a match it returns a template_id, and downstream, when the template is imported, that id must be passed in verbatim. The trouble is that the various ids in an enterprise are commonly 64-bit or even 128-bit random strings generated by snowflake algorithms. Asking a model to read the conversation and then reproduce such an id exactly — every character restored correctly, not one digit off — is something models still cannot do today. The reason is that an LLM is a stateless probabilistic function: even when told the id's value in context, it does not take your parameter by value; it only tries to regenerate an approximate string. In this scenario, an id missing one digit fails validation, and a wrong digit is worse — the agent may execute "successfully" while the business data is quietly corrupted, and the expected state change never happens.</p>
-            <p>Dongfang Yiteng fell into this pit early on. Tasks were still in an MCP-like form: after the first task succeeded, its result was assembled into the conversation context, and the second task parsed its binding parameters from the latest context. A travel assistant has no problem with this, because what it passes is text like city or weather, where a semantic deviation is not fatal. Switched to a scenario with strict mechanical-parameter binding, it proved extremely unreliable in practice — sometimes succeeding, sometimes failing, and when it failed was neither controllable nor predictable. The solution is to carve out the mechanical state plane on its own, with parameter values maintained mechanically and accurately at each execution stage according to the tool call's receipt. This way no line of the existing SaaS API has to change; exposed through the gateway, it can be orchestrated flexibly by the agent per scenario, calling any number of interfaces in sequence, with no more parameter-binding errors.</p>
-            <p>This solution holds on one premise: the system is an enterprise-grade closed system, where all tools are managed and registered by the team itself, with no need or wish for users to plug in arbitrary external tools. Precisely because of this, the agent can determine at startup the full dictionary of state keys possible in the world it perceives, pinning down each parameter's coordinate.</p>
-            <h2>When you need it</h2>
-            <p>When your agent executes a chain of business steps with strict state dependencies, where what passes between steps is mechanical parameters like ids and status codes, and one digit off corrupts data or causes a false success. Splitting the whole runtime context by responsibility is the <a href="../unified-session-state/">unified session state and its separation of powers</a>; the task scheduling that the mechanical parameters serve is maintained by the <a href="../task-dag-state-machine/">task DAG and state machine</a>; its fundamental distinction from narrative content and control signals is <a href="../control-narrative-dualism/">the dualism of the control plane and the narrative plane</a>.</p>
-            <div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p><img src="/images/concepts/mechanical-state-plane.png" alt="Mechanical state plane with provenance coordinates" style="display:block; width:100%; max-width:760px; margin:0.6rem auto 1.9rem; border:1px solid var(--color-rule); border-radius:8px;"></p>
+<h2>Application context</h2>
+<p>Template matching returns <code>template_id=tpl_84721</code>. The import step must receive that exact value for the same tenant and run. A valid-looking identifier reconstructed from conversation can point to the wrong entity even when its type and format pass schema validation.</p>
+<h2>Definition</h2>
+<p>The Mechanical State Plane stores exact values that drive business operations together with their provenance coordinates. A coordinate identifies the producing tool call, tenant, run, field, version, timestamp, and validation state. Downstream code reads the value by reference instead of asking the model to reproduce it.</p>
+<h2>Engineering mechanism</h2>
+<pre><code class="language-json">{
+  "key": "matched_template_id",
+  "value": "tpl_84721",
+  "source": {"run": "r-19", "tool_call": "tc-7", "field": "template_id"},
+  "scope": {"tenant": "sg-04", "task": "payroll-setup"},
+  "version": 3
+}</code></pre>
+<p>Tool adapters write state after response validation. Plan nodes declare required keys and scope. Before a call, the runtime checks existence, provenance, tenant, freshness, and expected producer. Sensitive values may be stored behind opaque references.</p>
+<h2>Boundary</h2>
+<p>The plane fits managed tools whose outputs and state keys can be registered. Open-ended external tools require an admission layer before their values become trusted state. Narrative summaries may describe the result, but they cannot overwrite the stored value.</p>
+<section class="concept-provenance" aria-labelledby="concept-provenance-title">
+<h2 id="concept-provenance-title">Proposal and provenance</h2>
+<dl>
+<div><dt>Initial source within ADPS</dt><dd>Initial practice: Bo Liang</dd></div>
+<div><dt>First recorded in</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution-agent case</a></dd></div>
+<div><dt>ADPS editorial work</dt><dd>ADPS added provenance coordinates and fail-fast checks before a tool call.</dd></div>
+<div><dt>Current standing</dt><dd>Candidate concept</dd></div>
+</dl>
+</section>
+<div class="document-citation"><p><strong>Initial source:</strong> <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case report</a>; contributed by Bo Liang.</p><p><a href="/concepts/">Concept registry</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

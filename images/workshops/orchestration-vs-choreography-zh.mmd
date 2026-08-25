@@ -1,0 +1,16 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  subgraph O[动态编排：一个地方持有完整计划]
+    O1[Orchestrator] --> O2[付款 Agent]
+    O1 --> O3[库存 Agent]
+    O1 --> O4[通知 Agent]
+    O2 --> O1
+    O3 --> O1
+    O4 --> O1
+  end
+  subgraph C[编舞：参与者按本地规则订阅和发布]
+    C1[PaymentConfirmed] --> C2[库存预留]
+    C2 --> C3[StockReserved]
+    C3 --> C4[物流安排]
+    C3 --> C5[客户通知]
+  end
