@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X2 · Evals & Testing · 评测与测试 · ADPS</title>
+    <title>X2 · Evaluation & Validation · 评测与验证 · ADPS</title>
     <meta name="description" content="以可重复样本、评分器、回归和外部验收管理 Agent 能力证据。">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -99,7 +99,7 @@
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
-              <a href="/zh/patterns/x2-evals-and-testing/" class="active">X2 评测与测试</a>
+              <a href="/zh/patterns/x2-evals-and-testing/" class="active">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
@@ -146,9 +146,10 @@
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式目录</a><span style="margin: 0 0.45rem;">/</span>横切工程面<span style="margin: 0 0.45rem;">/</span>X2</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS 横切工程面规范</p>
-                <h1>X2 · Evals & Testing · 评测与测试</h1>
+                <h1>X2 · Evaluation & Validation · 评测与验证</h1>
                 <p class="publication-deck">以可重复样本、评分器、回归和外部验收管理 Agent 能力证据。</p>
             </header>
+<p><strong>样本、评分器、回归和验收</strong>共同构成 X2 的能力证据。样本界定任务与边界，评分器把标准变成可重复判断，回归保护已经建立的能力，外部验收核对真实系统中的结果。</p>
 <p>X2 管理 Agent 能力的验证证据。它把确定性测试、行为评测、外部验收和生产反馈接到同一发布与复验流程。</p>
 <h2>范围</h2>
 <p>被测对象可以是模型、提示词、工具、Skill、路由、工作流、治理策略或完整 Agent 系统。对象不同，样本、环境、评分器和发布门也随之变化。</p>
@@ -178,8 +179,8 @@ evidence: artifacts/evals/payroll-v3/</code></pre>
 <h2>常见失效</h2>
 <ul><li>只测最终文本，不检查外部状态；</li><li>只运行一次，将随机成功当成稳定能力；</li><li>只有正例，没有拒绝、越权、恢复和未知输入；</li><li>用一条 golden trajectory 排除其他正确路径；</li><li>只公布综合分数，不保留样本级失败和轨迹；</li><li>grader 未经人工校准，分数变化无法解释。</li></ul>
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《X2 · Evals & Testing · 评测与测试》，ADPS 横切工程面规范 v0.5，2026-08-20。</p>
-                <p><a href="/zh/topics/agent-evals-and-testing/">Evals 与测试专题</a> · <a href="/zh/workshops/reflection-2026-08-12/">反思研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p><strong>引用建议：</strong>ADPS，《X2 · Evaluation & Validation · 评测与验证》，ADPS 横切工程面规范 v0.5，2026-08-20。</p>
+                <p><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证专题</a> · <a href="/zh/workshops/reflection-2026-08-12/">反思研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>使用边界：</strong>本页定义工程范围与接口，不构成产品认证。具名实践以案例页与公开代码为准。</p>
             </div>
         </article>

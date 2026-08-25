@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent 设计模式白皮书 · 模式目录与选型框架 · ADPS</title>
-    <meta name="description" content="ADPS Agent 设计模式白皮书 v0.7：27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式。">
-    <meta property="og:image" content="https://adpsagent.com/images/matrix-v07-zh-20260825.png">
+    <meta name="description" content="ADPS Agent 设计模式白皮书 v0.8：27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式。">
+    <meta property="og:image" content="https://adpsagent.com/images/matrix-v08-zh-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
 
@@ -99,7 +99,7 @@
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
-              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
@@ -151,7 +151,7 @@
 
             <h2>摘要</h2>
             <p>Agent 正在从“会回答问题的模型”进入“能参与业务流程的系统”。这个变化把工程重点推向上下文、证据、状态、工具、权限、协作和审计，prompt 表达只是其中一环。</p>
-            <p>ADPS（Agent 设计模式共同体）把这些工程经验整理为一套可以组合和评审的模式语言。v0.7 收录 <strong>27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式</strong>。双轴框架负责模式定位，横切工程面补充系统级责任。生命周期、模式组合和人机协作边界分别列为专题。</p>
+            <p>ADPS（Agent 设计模式共同体）把这些工程经验整理为一套可以组合和评审的模式语言。v0.8 收录 <strong>27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式</strong>。双轴框架负责模式定位，横切工程面补充系统级责任。生命周期、模式组合和人机协作边界分别列为专题。</p>
             <p>本白皮书为 Agent 架构评审提供五项检查：</p>
             <ol>
             <li>这个 Agent 需要哪些认知功能？</li>
@@ -270,7 +270,7 @@
             <p>两条轴合起来，能把模糊的“我们做了一个 Agent 工作流”翻译成可评审的工程语言。比如“记忆 × 编排”的进度追踪，和“推理 × 路由”的复杂度路由，听起来都在做决策，但工程边界完全不同。</p>
             <h2>ADPS Agent 设计模式框架</h2>
             <figure class="matrix-figure">
-                <img src="/images/matrix-v07-zh-20260825.png" alt="ADPS Agent 设计模式框架：27 个矩阵模式与 3 个横切工程面">
+                <img src="/images/matrix-v08-zh-20260825.png" alt="ADPS Agent 设计模式框架：27 个矩阵模式与 3 个横切工程面">
                 <figcaption>双轴矩阵保留 27 个占格模式；X1–X3 贯穿全部认知功能与执行拓扑。</figcaption>
             </figure>
             <p>模式怎样跨格组成运行方案，见<a href="/zh/topics/pattern-composition/">Agent 模式组合</a>；能力怎样进入生产并持续演进，见<a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期</a>；人与 Agent 在不同步骤怎样分配授权与接管，见<a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a>。</p>
@@ -409,7 +409,7 @@
             <thead><tr><th>工程面</th><th>覆盖范围</th><th>关键产物</th></tr></thead>
             <tbody>
             <tr><td><a href="/zh/patterns/x1-observability/"><strong>X1 可观测性</strong></a></td><td>全部认知功能、执行拓扑与生命周期阶段</td><td>事件、因果关系、版本、状态差异、外部回执</td></tr>
-            <tr><td><a href="/zh/patterns/x2-evals-and-testing/"><strong>X2 评测与测试</strong></a></td><td>规格、模型、工具、Skill、策略与组合系统</td><td>样本、评分器、回归、业务验收、发布门</td></tr>
+            <tr><td><a href="/zh/patterns/x2-evals-and-testing/"><strong>X2 评测与验证</strong></a></td><td>规格、模型、工具、Skill、策略与组合系统</td><td>样本、评分器、回归、业务验收、发布门</td></tr>
             <tr><td><a href="/zh/patterns/x3-security-and-identity/"><strong>X3 安全与身份</strong></a></td><td>用户、Agent、workload、run、委托链与资源</td><td>主体、委派、allow / deny / ask、短时凭证</td></tr>
             </tbody></table>
             <p>Loop 仍是执行拓扑。ReAct 等循环运行方式通过 Loop 表达，并由上述工程面提供运行证据、能力验证和身份权限基础。</p>
@@ -622,7 +622,7 @@
             <strong>适用问题：</strong> 工程团队能否从输入来源、版本、决策、工具、状态差异和外部回执还原一次运行，并把运行事实交给 Evals、反思和治理。</p>
             <p><strong>工程要点：</strong> 统一事件合同，保留 run、step、parent、principal、component version、policy version、state delta 和 receipt。观测事实与评测结论分开存储。</p>
             <p><strong>常见失效：</strong> 只有日志文本和 token 指标，没有业务目标、因果关系、外部结果或版本，因此无法判断一次修改是否真的改善系统。</p>
-            <h3><a href="/zh/patterns/x2-evals-and-testing/">X2 · Evals &amp; Testing · 评测与测试</a></h3>
+            <h3><a href="/zh/patterns/x2-evals-and-testing/">X2 · Evaluation &amp; Validation · 评测与验证</a></h3>
             <p><strong>范围：能力验证与发布证据。</strong> 用样本、评分器、回归与外部验收判断能力能否进入下一生命周期阶段。</p>
             <h3><a href="/zh/patterns/x3-security-and-identity/">X3 · Security &amp; Identity · 安全与身份</a></h3>
             <p><strong>范围：主体、委派与资源权限。</strong> 沿用户、Agent、workload、run 和工具传播身份，并以最小权限和短时凭证落实授权。</p>
@@ -747,6 +747,11 @@
             <td style="text-align: left;">2026-08-25</td>
             <td style="text-align: left;">标准图回归双轴与横切工程面；生命周期、模式组合和人机协作边界改为独立专题</td>
             </tr>
+            <tr>
+            <td style="text-align: left;">v0.8</td>
+            <td style="text-align: left;">2026-08-25</td>
+            <td style="text-align: left;">删除横切框解释小字，收紧底部版面；X2 定名为“评测与验证”</td>
+            </tr>
             </tbody>
             </table>
             <h2>最小落地清单</h2>
@@ -777,7 +782,7 @@
 
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.7：模式目录与选型框架》，2026-08-25。</p>
+                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.8：模式目录与选型框架》，2026-08-25。</p>
                 <p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>使用边界：</strong>本版提供架构词汇、适用边界与评审方法，不对具体产品、实现或组织成熟度作认证。模式规范、场景化示例与具名蓝皮书案例采用不同证据口径；示例用于说明机制。</p>
             </div>

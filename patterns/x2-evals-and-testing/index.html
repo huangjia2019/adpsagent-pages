@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X2 · Evals & Testing · ADPS</title>
+    <title>X2 · Evaluation & Validation · ADPS</title>
     <meta name="description" content="Use repeatable cases, graders, regression, and external acceptance to govern capability evidence.">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -93,7 +93,7 @@
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
-              <a href="/patterns/x2-evals-and-testing/" class="active">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x2-evals-and-testing/" class="active">X2 Evaluation &amp; Validation</a>
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
@@ -140,9 +140,10 @@
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X2</p>
             <header class="publication-head">
                 <p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
-                <h1>X2 · Evals & Testing</h1>
+                <h1>X2 · Evaluation & Validation</h1>
                 <p class="publication-deck">Use repeatable cases, graders, regression, and external acceptance to govern capability evidence.</p>
             </header>
+<p><strong>Cases, graders, regression, and acceptance</strong> form X2's capability evidence. Cases define tasks and boundaries, graders make criteria repeatable, regression protects established behavior, and external acceptance checks the result in the real system.</p>
 <p>X2 governs evidence that a capability works. It joins deterministic tests, behavioral evals, external acceptance, and production feedback into release and revalidation decisions.</p>
 <h2>Scope</h2>
 <p>The system under test may be a model, prompt, tool, skill, router, workflow, governance policy, or complete agent system. Each object requires its own cases, environment, graders, and release gate.</p>
@@ -172,8 +173,8 @@ evidence: artifacts/evals/payroll-v3/</code></pre>
 <h2>Failure modes</h2>
 <ul><li>Testing the final text while ignoring external state;</li><li>treating one stochastic success as stable capability;</li><li>positive cases without refusal, overreach, recovery, or unknown input;</li><li>one golden trajectory that rejects alternative correct paths;</li><li>a composite score without sample-level failures and trajectories;</li><li>uncalibrated graders whose score changes cannot be explained.</li></ul>
             <div class="document-citation">
-                <p><strong>Suggested citation:</strong> ADPS, <em>X2 · Evals & Testing</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
-                <p><a href="/topics/agent-evals-and-testing/">Evals and testing topic</a> · <a href="/workshops/reflection-2026-08-12/">Reflection workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+                <p><strong>Suggested citation:</strong> ADPS, <em>X2 · Evaluation & Validation</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
+                <p><a href="/topics/agent-evals-and-testing/">Agent evaluation and validation topic</a> · <a href="/workshops/reflection-2026-08-12/">Reflection workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
             </div>
         </article>

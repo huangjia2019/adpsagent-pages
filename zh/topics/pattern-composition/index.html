@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent 模式组合 · 从单个模式到可运行方案 · ADPS</title>
     <meta name="description" content="以任务边界、状态交接、治理保护、证据和失败策略组合 Agent 设计模式，并用薪酬变更说明完整运行路径。">
-    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v01-zh-20260825.png">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v02-zh-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/zh/topics/pattern-composition/">
     <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/pattern-composition/">
@@ -40,7 +40,7 @@
             <p>模式组合是一张有方向的关系图。节点是模式或业务步骤，边是数据、状态、授权和证据的交接。它不增加第三条坐标轴，也不要求每个方案覆盖更多模式。组合质量取决于接口是否明确，以及失败时能否判断由谁停止、回滚或接管。</p>
 
             <figure>
-                <img src="/images/topics/pattern-composition-v01-zh-20260825.png" alt="薪酬变更的 Agent 模式组合：核心路径、保护机制、反馈和横切工程面">
+                <img src="/images/topics/pattern-composition-v02-zh-20260825.png" alt="薪酬变更的 Agent 模式组合：核心路径、保护机制、反馈和横切工程面">
                 <figcaption>薪酬变更示例。核心路径完成业务动作，保护机制约束高风险步骤，反馈处理失败，横切工程面保存系统级证据与边界。</figcaption>
             </figure>
 
@@ -65,7 +65,7 @@
                     <tr><td>顺序</td><td>上一步产生结构化产物，下一步按契约消费</td><td>P1 上下文分诊输出 Goal Contract，A2 规划执行据此建立 PlanStep</td></tr>
                     <tr><td>保护</td><td>控制机制包围高风险动作，决定准入、影响上限和执行前后检查</td><td>G1 审批门、G2 爆炸半径控制和 A4 护栏三明治共同保护 A1 工具调度</td></tr>
                     <tr><td>反馈</td><td>运行结果进入复核、失败记录或修复流程，再回到设计与验证</td><td>X1 事件与外部回执进入 F1 生成评审、M4 失败日记或 F4 自愈循环</td></tr>
-                    <tr><td>共享底座</td><td>若干能力跨越全部节点，提供统一事件、评测、身份和委派语义</td><td>X1 可观测性、X2 评测与测试、X3 安全与身份</td></tr>
+                    <tr><td>共享底座</td><td>若干能力跨越全部节点，提供统一事件、评测、身份和委派语义</td><td>X1 可观测性、X2 评测与验证、X3 安全与身份</td></tr>
                 </tbody>
             </table>
 

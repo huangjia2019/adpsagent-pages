@@ -99,7 +99,7 @@
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/" class="active">X1 可观测性</a>
-              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
@@ -149,6 +149,7 @@
                 <h1>X1 · Observability · 可观测性</h1>
                 <p class="publication-deck">以事件、因果、版本、状态差异和外部回执建立 Agent 证据链。</p>
             </header>
+<p><strong>事件、因果、版本和外部结果</strong>是 X1 的四个支点。事件保存最小事实，因果关系连接跨 Agent 与工具的调用，版本说明当时实际运行的组件，外部结果确认现实世界是否真的发生变化。缺少其中任何一项，日志都很难支撑复盘、评测和责任归因。</p>
 <p>X1 用统一事件、因果标识、版本引用、状态差异和外部回执，把一次运行组织成可以查询、评测和归因的证据链。</p>
 <h2>位置</h2>
 <p>可观测性贯穿七个认知功能、六种执行拓扑和完整生命周期，不占用双轴矩阵格位。旧编号 G4 仅作为历史入口保留，当前规范编号为 X1。</p>

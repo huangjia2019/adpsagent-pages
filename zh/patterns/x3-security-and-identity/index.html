@@ -99,7 +99,7 @@
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
-              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与测试</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/" class="active">X3 安全与身份</a>
             </div></div>
           <div class="sb-section">
@@ -149,6 +149,7 @@
                 <h1>X3 · Security & Identity · 安全与身份</h1>
                 <p class="publication-deck">沿 Agent 委派链传播身份，以最小权限和短时凭证约束每次运行。</p>
             </header>
+<p><strong>主体、委派、凭证和资源边界</strong>构成 X3 的控制主线。主体确认谁在行动，委派说明它代表谁并获准做什么，凭证把裁决落实到外部系统，资源边界限制权限能够触及的对象、环境和时限。</p>
 <p>X3 沿用户、Agent、工作负载、运行、工具和资源传播身份，并把委派、授权和凭证限制在具体能力与环境内。</p>
 <h2>身份链</h2>
 <pre><code>principal → tenant → agent version → workload → session/run

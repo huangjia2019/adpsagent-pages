@@ -93,7 +93,7 @@
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
-              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
@@ -161,7 +161,7 @@
 <h3>Cross-cutting engineering planes</h3>
 <table><thead><tr><th>Plane</th><th>Scope</th><th>Outputs</th></tr></thead><tbody>
 <tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Every pattern and lifecycle stage</td><td>Events, causality, versions, state deltas, receipts</td></tr>
-<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Artifacts, trajectories, business outcomes</td><td>Regression, graders, deterministic tests, acceptance</td></tr>
+<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evaluation &amp; Validation</strong></a></td><td>Artifacts, trajectories, business outcomes</td><td>Regression, graders, deterministic tests, acceptance</td></tr>
 <tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, authority, and resource boundaries</td><td>Allow, deny, ask, limits, execution conditions</td></tr>
 </tbody></table>
 <p>The planes do not belong to the Governance row and do not occupy matrix cells. X1 supplies runtime facts, X2 supplies validation judgements, and X3 supplies identity and authority. Governance patterns consume that evidence to approve, contain, expand, or withdraw authority.</p>
@@ -217,7 +217,7 @@ execution:
 <tr><td><a href="/patterns/g2-blast-radius-control/"><strong>G2 Blast-Radius Control</strong></a></td><td>Maximum action, run, and fleet impact</td><td>Agent judgement and historical success cannot alter hard limits</td></tr>
 <tr><td><a href="/patterns/g3-progressive-commitment/"><strong>G3 Progressive Commitment</strong></a></td><td>Capability- and scenario-specific autonomy</td><td>Promote, hold, demote, freeze, and retire</td></tr>
 <tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Cross-cutting evidence chain</td><td>Keep observed facts separate from evaluation judgements</td></tr>
-<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Capability and regression evidence</td><td>Keep graders independent from the candidate system</td></tr>
+<tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evaluation &amp; Validation</strong></a></td><td>Capability and regression evidence</td><td>Keep graders independent from the candidate system</td></tr>
 <tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, and credentials</td><td>Propagate identity and narrow authority by resource</td></tr>
 <tr><td><a href="/patterns/g5-hooks-pipeline/"><strong>G5 Hooks Pipeline</strong></a></td><td>Deterministic enforcement points</td><td>A hook is not the policy source or domain judge</td></tr>
 </tbody></table>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Composing Agent Patterns: From Individual Patterns to an Operable Design · ADPS</title>
     <meta name="description" content="Compose agent patterns around task boundaries, state handoffs, governance guards, evidence, and failure policy, with a complete payroll change example.">
-    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v01-en-20260825.png">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v02-en-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/topics/pattern-composition/">
     <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/pattern-composition/">
@@ -40,7 +40,7 @@
             <p>A composition is a directed relationship graph. Its nodes are patterns or business steps. Its edges carry data, state, authorization, and evidence. The matrix remains two-dimensional; composition is recorded outside it as a runtime graph. More patterns do not strengthen a design by themselves. The interfaces must be explicit, including who stops, rolls back, or takes over when a step fails.</p>
 
             <figure>
-                <img src="/images/topics/pattern-composition-v01-en-20260825.png" alt="Agent pattern composition for a payroll change with a core path, guards, feedback, and cross-cutting planes">
+                <img src="/images/topics/pattern-composition-v02-en-20260825.png" alt="Agent pattern composition for a payroll change with a core path, guards, feedback, and cross-cutting planes">
                 <figcaption>A payroll change example. The core path performs the business action, guards protect consequential steps, feedback handles failures, and the cross-cutting planes carry system-wide evidence and boundaries.</figcaption>
             </figure>
 
@@ -65,7 +65,7 @@
                     <tr><td>Sequence</td><td>One step emits a structured artefact that the next step consumes under a contract</td><td>P1 Context Triage emits a Goal Contract; A2 Plan-and-Execute builds PlanSteps from it</td></tr>
                     <tr><td>Guard</td><td>Controls surround a consequential action and decide admission, maximum impact, and pre- and postconditions</td><td>G1 Approval Gate, G2 Blast-Radius Control, and A4 Guardrail Sandwich protect A1 Tool Dispatch</td></tr>
                     <tr><td>Feedback</td><td>Runtime outcomes enter review, failure recording, or repair before returning to design and validation</td><td>X1 events and receipts feed F1 Generator-Critic, M4 Failure Journals, or F4 Self-Heal Loop</td></tr>
-                    <tr><td>Shared substrate</td><td>System-wide capabilities supply common event, evaluation, identity, and delegation semantics</td><td>X1 Observability, X2 Evals &amp; Testing, and X3 Security &amp; Identity</td></tr>
+                    <tr><td>Shared substrate</td><td>System-wide capabilities supply common event, evaluation, identity, and delegation semantics</td><td>X1 Observability, X2 Evaluation &amp; Validation, and X3 Security &amp; Identity</td></tr>
                 </tbody>
             </table>
 

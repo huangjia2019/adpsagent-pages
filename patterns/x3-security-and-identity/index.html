@@ -93,7 +93,7 @@
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
-              <a href="/patterns/x2-evals-and-testing/">X2 Evals &amp; Testing</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
               <a href="/patterns/x3-security-and-identity/" class="active">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
@@ -143,6 +143,7 @@
                 <h1>X3 · Security & Identity</h1>
                 <p class="publication-deck">Propagate identity across delegation and constrain each run with least privilege and short-lived credentials.</p>
             </header>
+<p><strong>Principals, delegation, credentials, and resource boundaries</strong> form the X3 control line. The principal identifies who acts, delegation records whom it represents and what it may do, credentials enforce the verdict externally, and resource boundaries constrain the objects, environments, and time windows that authority can reach.</p>
 <p>X3 propagates identity across users, agents, workloads, runs, tools, and resources, then bounds delegation, authorization, and credentials to a concrete capability and environment.</p>
 <h2>Identity chain</h2>
 <pre><code>principal → tenant → agent version → workload → session/run
