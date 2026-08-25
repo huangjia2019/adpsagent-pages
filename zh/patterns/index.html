@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent 设计模式白皮书 · 模式目录与选型框架 · ADPS</title>
-    <meta name="description" content="ADPS Agent 设计模式白皮书 v0.5：27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式。">
-    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="description" content="ADPS Agent 设计模式白皮书 v0.7：27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式。">
+    <meta property="og:image" content="https://adpsagent.com/images/matrix-v07-zh-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
 
@@ -151,7 +151,7 @@
 
             <h2>摘要</h2>
             <p>Agent 正在从“会回答问题的模型”进入“能参与业务流程的系统”。这个变化把工程重点推向上下文、证据、状态、工具、权限、协作和审计，prompt 表达只是其中一环。</p>
-            <p>ADPS（Agent 设计模式共同体）把这些工程经验整理为一套可以组合和评审的模式语言。v0.5 收录 <strong>27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式</strong>。双轴框架仍是主结构；横切工程面补充系统级责任，生命周期说明能力怎样进入、改变和退出生产。</p>
+            <p>ADPS（Agent 设计模式共同体）把这些工程经验整理为一套可以组合和评审的模式语言。v0.7 收录 <strong>27 个矩阵模式、3 个横切工程面、5 个扩展模式和 1 个候选模式</strong>。双轴框架负责模式定位，横切工程面补充系统级责任。生命周期、模式组合和人机协作边界分别列为专题。</p>
             <p>本白皮书为 Agent 架构评审提供五项检查：</p>
             <ol>
             <li>这个 Agent 需要哪些认知功能？</li>
@@ -173,7 +173,7 @@
             <p>传统软件的控制流主要由代码决定。Agent 系统里，部分控制流会经过模型判断。用户说一句话，模型要判断它是闲聊、查询、分析、执行，还是需要人审。工具返回一段结果，模型要判断证据够不够。长任务跑到中途，模型要判断继续、回滚、重取证，还是停下来请人。</p>
             <p>这些判断需要映射到可执行的工程结构，包括路由、状态、证据、权限、日志、回滚和评估。</p>
             <h2>从一项业务变更开始</h2>
-            <p>考虑一个薪酬 Agent 请求：“把员工 E-1842 的月度交通津贴从 800 元调整为 1000 元，下月生效。”这句话不应直接变成一次工具调用。先把它切成一个<strong>最小可控闭环</strong>：一项能够独立判断、审批、执行、验收和补偿的业务变更。</p>
+            <p>考虑一个薪酬 Agent 请求：“把员工 E-1842 的月度交通津贴从 800 元调整为 1000 元，下月生效。”这句话不应直接变成一次工具调用。它对应一个<strong>最小可控闭环</strong>：一项能够独立判断、审批、执行、验收和补偿的业务变更。</p>
             <table>
             <thead><tr><th>阶段</th><th>工程问题</th><th>最小产物</th><th>参与模式</th></tr></thead>
             <tbody>
@@ -268,11 +268,12 @@
             </tbody>
             </table>
             <p>两条轴合起来，能把模糊的“我们做了一个 Agent 工作流”翻译成可评审的工程语言。比如“记忆 × 编排”的进度追踪，和“推理 × 路由”的复杂度路由，听起来都在做决策，但工程边界完全不同。</p>
-            <h2>ADPS 模式坐标 v0.5</h2>
+            <h2>ADPS Agent 设计模式框架</h2>
             <figure class="matrix-figure">
-                <img src="/images/matrix-v05-zh-20260820.png" alt="ADPS v0.5：27 个矩阵模式、3 个横切工程面与 Agent 生命周期">
-                <figcaption>双轴矩阵保留 27 个占格模式；X1–X3 贯穿全部认知功能、执行拓扑与生命周期。</figcaption>
+                <img src="/images/matrix-v07-zh-20260825.png" alt="ADPS Agent 设计模式框架：27 个矩阵模式与 3 个横切工程面">
+                <figcaption>双轴矩阵保留 27 个占格模式；X1–X3 贯穿全部认知功能与执行拓扑。</figcaption>
             </figure>
+            <p>模式怎样跨格组成运行方案，见<a href="/zh/topics/pattern-composition/">Agent 模式组合</a>；能力怎样进入生产并持续演进，见<a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期</a>；人与 Agent 在不同步骤怎样分配授权与接管，见<a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a>。</p>
             <table>
             <thead>
             <tr>
@@ -413,10 +414,12 @@
             </tbody></table>
             <p>Loop 仍是执行拓扑。ReAct 等循环运行方式通过 Loop 表达，并由上述工程面提供运行证据、能力验证和身份权限基础。</p>
 
-            <h2>Agent 生命周期</h2>
-            <p><img src="/images/patterns/agent-governance-lifecycle-zh.svg" alt="Agent 从登记、设计、评测、灰度、运行到降级和退役的生命周期"></p>
-            <p>模式描述局部结构，生命周期处理这些结构何时进入生产、怎样改变、何时收回。登记保存所有者和版本；设计与装配确定工具和策略；离线评测建立发布证据；影子与灰度观察真实分布；受控运行连接审批、限界与执行；观测和归因连接外部结果；修改后重新评测；能力最终晋级、维持、降级、冻结或退役。</p>
-            <p>前文的津贴变更会沿这条路径重复出现：初版先影子对照，常规请求进入受限运行，异常进入回归集；政策或工具换版后重新验证，权限证据不足时自动收紧。<a href="/zh/patterns/governance/#payroll-lifecycle">治理模块总纲给出完整运行记录</a>。</p>
+            <h2>相关设计专题</h2>
+            <ul>
+                <li><a href="/zh/topics/agent-design-lifecycle/"><strong>Agent 设计生命周期</strong></a>：登记、设计、验证、运行、复验、升降级与退役。</li>
+                <li><a href="/zh/topics/pattern-composition/"><strong>Agent 模式组合</strong></a>：核心路径、保护关系、反馈与横切工程面的连接方法。</li>
+                <li><a href="/zh/topics/human-agent-interaction/"><strong>人与 Agent 的协作边界</strong></a>：共同编辑、门控执行、监督运行和有界委托。</li>
+            </ul>
 
             <h2>六个工程契约</h2>
             <p>生产级 Agent 应显式设计六个契约。</p>
@@ -734,6 +737,16 @@
             <td style="text-align: left;">2026-08-20</td>
             <td style="text-align: left;">建立 X1–X3 横切工程面；可观测性改用 X1，旧 G4 保留为历史入口；标准图增加外侧生命周期时间轨</td>
             </tr>
+            <tr>
+            <td style="text-align: left;">v0.6</td>
+            <td style="text-align: left;">2026-08-25</td>
+            <td style="text-align: left;">调整标准图标题、比例与字距；验证阶段合并呈现离线评测与灰度</td>
+            </tr>
+            <tr>
+            <td style="text-align: left;">v0.7</td>
+            <td style="text-align: left;">2026-08-25</td>
+            <td style="text-align: left;">标准图回归双轴与横切工程面；生命周期、模式组合和人机协作边界改为独立专题</td>
+            </tr>
             </tbody>
             </table>
             <h2>最小落地清单</h2>
@@ -764,7 +777,7 @@
 
 
             <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.5：模式目录与选型框架》，2026-08-20。</p>
+                <p><strong>引用建议：</strong>ADPS，《ADPS Agent 设计模式白皮书 v0.7：模式目录与选型框架》，2026-08-25。</p>
                 <p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>使用边界：</strong>本版提供架构词汇、适用边界与评审方法，不对具体产品、实现或组织成熟度作认证。模式规范、场景化示例与具名蓝皮书案例采用不同证据口径；示例用于说明机制。</p>
             </div>

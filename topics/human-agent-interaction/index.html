@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human-Agent Interaction: Intent, Authority, Intervention, and Accountability · ADPS</title>
+    <meta name="description" content="Co-editing, gated action, supervised operation, and bounded delegation, with engineering boundaries for information, acceptance, authority, and intervention.">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/human-agent-interaction-v01-en-20260825.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/human-agent-interaction/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/human-agent-interaction/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/human-agent-interaction/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/human-agent-interaction/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Human-Agent Interaction</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Topic Research</p>
+                <h1>Human-Agent Interaction: Intent, Authority, Intervention, and Accountability</h1>
+                <p class="publication-deck">Define human involvement at concrete steps, permissions, evidence gates, and takeover conditions.</p>
+            </header>
+
+            <p>“A human reviews it” does not describe an operating relationship. A person may revise content continuously, approve one consequential action, or intervene only when an agent exceeds a threshold. The agent may wait after every step or run continuously within a fixed limit. A design review must locate where the person enters, what they can see, which decision they make, and how that decision binds the next action.</p>
+            <p>One label rarely covers an entire workflow. Requirements may use co-editing, payment may use gated action, reconciliation may use supervised operation, and low-risk information handling may use bounded delegation. The relationship changes with the step, failure cost, and reversibility.</p>
+
+            <figure>
+                <img src="/images/topics/human-agent-interaction-v01-en-20260825.png" alt="Four human-agent operating relationships: co-editing, gated action, supervised operation, and bounded delegation">
+                <figcaption>Several relationships may appear in one workflow. Greater delegated authority requires stronger evidence, limits, pause conditions, and revocation.</figcaption>
+            </figure>
+
+            <h2>Four operating relationships</h2>
+            <table>
+                <thead><tr><th>Relationship</th><th>Human responsibility</th><th>Agent responsibility</th><th>Suitable conditions</th></tr></thead>
+                <tbody>
+                    <tr><td>Co-editing</td><td>Set the goal, add context, and revise each round</td><td>Draft candidates, explain differences, and rewrite</td><td>Judgement depends on human preference; revision is cheap</td></tr>
+                    <tr><td>Gated action</td><td>Approve or reject a concrete action</td><td>Prepare normalized parameters, evidence, impact, and rollback</td><td>The action has a real side effect and can be approved before execution</td></tr>
+                    <tr><td>Supervised operation</td><td>Handle anomalies, boundary breaches, and escalation</td><td>Run within thresholds and pause with context when a boundary is crossed</td><td>Routine work is stable, anomalies are detectable, and human response is available</td></tr>
+                    <tr><td>Bounded delegation</td><td>Set scope, budget, and revocation conditions; revalidate outcomes</td><td>Complete low-risk work independently and submit receipts</td><td>Impact is hard-limited, recovery exists, and evidence can be checked externally</td></tr>
+                </tbody>
+            </table>
+            <p>These are operating relationships, not maturity levels. Bounded delegation is not inherently better than co-editing. High-risk, infrequent, or subjective work often belongs in co-editing or gated action.</p>
+
+            <h2>Three powers and one intervention condition</h2>
+            <p>The human-agent boundary can be reviewed through three powers:</p>
+            <ol>
+                <li><strong>Information admission:</strong> What information is allowed to influence a decision? Who controls source, time, version, and visibility?</li>
+                <li><strong>Acceptance authority:</strong> Which standard may prove that the result is correct? Where do model self-evaluation, deterministic checks, external receipts, and human judgement apply?</li>
+                <li><strong>Action authority:</strong> Which permission may change the real world? Which tool, parameters, resource, version, and validity period does an approval bind?</li>
+            </ol>
+            <p>Intervention conditions return control to a person when evidence is missing, a budget expires, rules conflict, an irreversible action approaches, external state diverges, or failures repeat. Without executable intervention conditions, “human in the loop” remains an organizational slogan.</p>
+
+            <h2>The interaction contract</h2>
+            <p>Record the operating relationship in the workflow definition. A generic confirmation button does not define the authorization boundary.</p>
+<pre><code class="language-yaml">interaction_contract:
+  task: payroll.allowance.change
+
+  mode_by_step:
+    clarify_goal: co_edit
+    prepare_change: supervised
+    commit_change: gated_action
+    verify_result: supervised
+
+  human_roles:
+    requester: supplies_goal
+    approver: authorizes_intent
+    operator: handles_exception
+
+  approval_binding:
+    fields: [tool_version, normalized_args, resource, preconditions]
+    expires_after: 15m
+    single_use: true
+
+  intervention:
+    pause_when:
+      - evidence_missing
+      - amount_delta_above_200
+      - employee_state_changed
+      - retry_budget_exhausted
+    handoff_artifact: exception_packet
+
+  acceptance:
+    probe: payroll_read_after_write
+    reviewer: requester
+</code></pre>
+            <p><code>approval_binding</code> is critical. The user should authorize a replayable, auditable Intent, not a vague “continue.” If the tool version, normalized parameters, or target resource changes, the previous approval expires.</p>
+
+            <h2>An effective interaction sequence</h2>
+            <ol>
+                <li><strong>The agent exposes a gap:</strong> It lists missing fields, conflicting evidence, or authority limits without presenting guesses as facts.</li>
+                <li><strong>The human completes the intent:</strong> They confirm the goal, non-goals, priority, and unacceptable outcomes.</li>
+                <li><strong>The agent submits a candidate decision:</strong> It shows current and target state, evidence, proposed action, maximum impact, and rollback point.</li>
+                <li><strong>A person or policy decides:</strong> The result is approve, reject, modify, or request evidence, bound to a concrete Intent.</li>
+                <li><strong>The agent executes within bounds:</strong> It calls admitted tools and records ActionEvents and business-ledger entries.</li>
+                <li><strong>The system returns an external result:</strong> A receipt, state delta, or consumer probe shows whether the action completed.</li>
+                <li><strong>The human handles an exception:</strong> The handoff retains the original goal, completed work, remaining risk, evidence, and a recovery point.</li>
+            </ol>
+
+            <h2>Approval interfaces should present a concrete Intent</h2>
+            <p>A payment or data-change approval view should show the target object, current and target values, effective time, tool and version, normalized parameters, evidence, maximum impact, and recovery method. Approval and rejection should emit structured events, and timeout behaviour should be explicit.</p>
+            <p>Long model explanations can be placed behind details. The approver first needs to see what will change, why it is allowed, the maximum possible effect, and how completion will be verified. Reviewing a prompt or reasoning transcript does not authorize a concrete side effect.</p>
+
+            <h2>The handoff packet makes takeover possible</h2>
+            <p>If the agent pauses with only “task failed, please handle manually,” the person must investigate from the beginning. An actionable handoff packet includes:</p>
+            <ul>
+                <li>original goal, active version, and non-goals;</li>
+                <li>completed and remaining steps plus the last checkpoint;</li>
+                <li>key evidence, conflicts, and current external state;</li>
+                <li>attempted recovery, remaining budget, and non-repeatable actions;</li>
+                <li>available next steps and their effects, without making the final judgement for the person.</li>
+            </ul>
+            <p>Takeover also needs a resume protocol. If the person changes external state, the agent must read the facts again before it continues from an old context.</p>
+
+            <h2>Relationship changes in a payroll workflow</h2>
+            <p>When an employee requests an allowance change, the agent and requester co-edit the goal and complete the effective date and policy basis. The prepared change enters gated action, where the approver sees the concrete Intent. After the write, verification can run under supervision. A read-after-write mismatch pauses the workflow and creates a handoff packet. After repeated stable operation, small, single-employee, reversible changes may enter bounded delegation; batch, cross-region, or policy-conflict cases keep the approval gate.</p>
+
+            <h2>Changing the relationship</h2>
+            <table>
+                <thead><tr><th>Observed condition</th><th>Adjustment</th></tr></thead>
+                <tbody>
+                    <tr><td>External acceptance is stable, anomalies are detectable, and compensation works</td><td>Move gradually from gated action to supervised operation</td></tr>
+                    <tr><td>Task scope expands, or a tool or policy changes version</td><td>Restore gated action and revalidate</td></tr>
+                    <tr><td>Impact is hard to limit or the action is irreversible</td><td>Keep human approval and reduce the task boundary if possible</td></tr>
+                    <tr><td>Humans approve mechanically without inspecting the request</td><td>Test whether approval carries a useful signal; strengthen deterministic policy or switch to exception handling</td></tr>
+                    <tr><td>Takeovers are frequent and humans still investigate from scratch</td><td>Improve state, evidence, and handoff packets before expanding delegation</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Common problems</h2>
+            <ul>
+                <li>The system has one HITL label but does not say where the person decides.</li>
+                <li>The approval object is a prose plan; the tool, parameters, or resource changes before execution.</li>
+                <li>The person carries accountability but cannot see evidence, impact, or rollback.</li>
+                <li>The agent asks about every uncertainty and consumes human attention with low-value confirmations.</li>
+                <li>The agent runs continuously without breach thresholds, pause points, or revocation.</li>
+                <li>A human changes external state during takeover, and the agent resumes without perceiving it again.</li>
+            </ul>
+
+            <h2>Review checklist</h2>
+            <ol>
+                <li>Which human-agent relationship applies at each consequential step, and why?</li>
+                <li>Does the person see a concrete Intent, evidence, and impact, or only a general explanation?</li>
+                <li>Who controls information admission, acceptance authority, and action authority?</li>
+                <li>Does approval bind tool version, parameters, resource, preconditions, and expiry?</li>
+                <li>Are pause, escalation, revocation, and takeover conditions executable?</li>
+                <li>Can the handoff packet resume from a checkpoint instead of restarting investigation?</li>
+                <li>Do runtime evidence and revalidation support changes in the operating relationship?</li>
+            </ol>
+
+            <h2>Related material</h2>
+            <ul>
+                <li><a href="/topics/pattern-composition/">Composing Agent Patterns</a></li>
+                <li><a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a></li>
+                <li><a href="/patterns/g1-approval-gate/">G1 Approval Gate</a></li>
+                <li><a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a></li>
+                <li><a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a></li>
+                <li><a href="/cases/liangbo-execution-agent/">Bo Liang execution-agent case</a></li>
+                <li><a href="/workshops/governance-2026-08-18/">First Governance Module Workshop</a></li>
+            </ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Human-Agent Interaction: Intent, Authority, Intervention, and Accountability</em>, ADPS Topic Research, 2026-08-25.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">This topic addresses engineering boundaries for human-agent interaction. Legal accountability, role authority, and regulatory obligations remain specific to each organization and operating context.</p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

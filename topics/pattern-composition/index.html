@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composing Agent Patterns: From Individual Patterns to an Operable Design · ADPS</title>
+    <meta name="description" content="Compose agent patterns around task boundaries, state handoffs, governance guards, evidence, and failure policy, with a complete payroll change example.">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v01-en-20260825.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/pattern-composition/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/pattern-composition/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/pattern-composition/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/pattern-composition/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Pattern Composition</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Topic Research</p>
+                <h1>Composing Agent Patterns: From Individual Patterns to an Operable Design</h1>
+                <p class="publication-deck">Connect local mechanisms into a stateful runtime path with guards, evidence, and recovery.</p>
+            </header>
+
+            <p>The dual-axis framework locates a pattern by cognitive function and execution topology. A working system needs another design step: connecting several patterns into a path that can run, fail, and recover.</p>
+            <p>A composition is a directed relationship graph. Its nodes are patterns or business steps. Its edges carry data, state, authorization, and evidence. The matrix remains two-dimensional; composition is recorded outside it as a runtime graph. More patterns do not strengthen a design by themselves. The interfaces must be explicit, including who stops, rolls back, or takes over when a step fails.</p>
+
+            <figure>
+                <img src="/images/topics/pattern-composition-v01-en-20260825.png" alt="Agent pattern composition for a payroll change with a core path, guards, feedback, and cross-cutting planes">
+                <figcaption>A payroll change example. The core path performs the business action, guards protect consequential steps, feedback handles failures, and the cross-cutting planes carry system-wide evidence and boundaries.</figcaption>
+            </figure>
+
+            <h2>Start with a task boundary</h2>
+            <p>Define one business change that can be decided, approved, executed, accepted, and compensated independently. This boundary is more concrete than “build a payroll agent” and more complete than “call a write API.” Before choosing patterns, record the following:</p>
+            <table>
+                <thead><tr><th>Object</th><th>What must be explicit</th></tr></thead>
+                <tbody>
+                    <tr><td>Goal</td><td>What should change and which outcomes are outside scope</td></tr>
+                    <tr><td>Completion</td><td>Which external fact or consumer receipt proves completion</td></tr>
+                    <tr><td>Failure cost</td><td>The effect of a wrong decision, wrong action, duplicate action, or delay</td></tr>
+                    <tr><td>State</td><td>Which facts belong to the business system, work progress, or model context</td></tr>
+                    <tr><td>Authority</td><td>What the agent may read, recommend, or execute, and who may expand or revoke authority</td></tr>
+                    <tr><td>Recovery</td><td>Where retry resumes, which actions need compensation, and when a human takes over</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Four composition relationships</h2>
+            <table>
+                <thead><tr><th>Relationship</th><th>Meaning</th><th>Example</th></tr></thead>
+                <tbody>
+                    <tr><td>Sequence</td><td>One step emits a structured artefact that the next step consumes under a contract</td><td>P1 Context Triage emits a Goal Contract; A2 Plan-and-Execute builds PlanSteps from it</td></tr>
+                    <tr><td>Guard</td><td>Controls surround a consequential action and decide admission, maximum impact, and pre- and postconditions</td><td>G1 Approval Gate, G2 Blast-Radius Control, and A4 Guardrail Sandwich protect A1 Tool Dispatch</td></tr>
+                    <tr><td>Feedback</td><td>Runtime outcomes enter review, failure recording, or repair before returning to design and validation</td><td>X1 events and receipts feed F1 Generator-Critic, M4 Failure Journals, or F4 Self-Heal Loop</td></tr>
+                    <tr><td>Shared substrate</td><td>System-wide capabilities supply common event, evaluation, identity, and delegation semantics</td><td>X1 Observability, X2 Evals &amp; Testing, and X3 Security &amp; Identity</td></tr>
+                </tbody>
+            </table>
+
+            <h2>The composition contract</h2>
+            <p>A composition needs a structured definition. This example omits business fields and retains the interfaces needed for architecture review.</p>
+<pre><code class="language-yaml">composition_id: payroll-allowance-change
+goal: change one employee allowance for the next pay period
+
+steps:
+  - id: triage
+    pattern: P1
+    output: goal_contract
+  - id: retrieve_policy
+    pattern: M2
+    input: goal_contract
+    output: evidence_bundle
+  - id: plan
+    pattern: A2
+    input: [goal_contract, evidence_bundle]
+    output: plan_steps
+  - id: execute
+    pattern: A1
+    input: approved_intent
+    output: action_receipt
+
+guards:
+  - pattern: G1
+    protects: execute
+  - pattern: G2
+    limits: [amount_delta, batch_size, employee_scope]
+  - pattern: A4
+    checks: [preconditions, tool_result, postconditions]
+
+acceptance:
+  probe: payroll_read_after_write
+  evidence: [action_receipt, state_delta]
+
+failure_policy:
+  duplicate_request: return_existing_receipt
+  policy_conflict: stop_and_escalate
+  partial_write: compensate_then_checkpoint
+</code></pre>
+            <p>Each edge should name its artefact type and owner. If a node emits only prose, the next node cannot reliably distinguish a suggestion, decision, authorization, and execution result.</p>
+
+            <h2>Composing the payroll change</h2>
+            <ol>
+                <li><strong>P1 Context Triage</strong> parses the request into a Goal Contract that separates the employee, field, target value, effective date, and non-goals.</li>
+                <li><strong>M2 RAG Pipeline</strong> retrieves policy versions and explanatory evidence. Current allowance, employment status, and approval state come directly from business systems.</li>
+                <li><strong>A2 Plan-and-Execute</strong> creates read, validate, prepare, approve, commit, and read-after-write steps, each with a completion condition.</li>
+                <li><strong>A1 Tool Dispatch</strong> exposes only tools allowed for the current step. G1 binds approval to a concrete Intent, G2 limits amount, batch, and resource scope, and A4 checks state before and after the call.</li>
+                <li><strong>External acceptance</strong> reads the final payroll state and verifies the effective period. A generated completion statement is not a receipt.</li>
+                <li><strong>X1, X2, and feedback patterns</strong> connect the trajectory, state delta, and delayed outcomes to regression cases, failure journals, and later changes.</li>
+            </ol>
+
+            <h2>Guards need distinct decision ownership</h2>
+            <p>Approval Gate decides whether a concrete Intent is authorized. Blast-Radius Control fixes the maximum impact if a decision is wrong. Guardrail Sandwich checks tool preconditions, result structure, and post-action state. All three may protect one action, but they do not replace one another.</p>
+            <p>If two components can rewrite the same decision, accountability becomes unclear. One component admits the call, another silently reverses it, and the trace no longer identifies the governing decision. Assign a single owner to admission, limits, execution, acceptance, and compensation.</p>
+
+            <h2>A second public code path: DeerFlow Guardrail</h2>
+            <p>The <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail case</a> shows a different composition. Tools are filtered during assembly, then pass through providers, policy decisions, and deterministic hooks at runtime. The path separates which tools the agent can see, whether a particular call may execute, and where enforcement evidence is emitted.</p>
+            <p>The business domain differs from payroll, but the review method remains the same. Follow a tool from registration through exposure, selection, admission, execution, and recording instead of placing every control in one prompt or middleware component.</p>
+
+            <h2>Common composition problems</h2>
+            <ul>
+                <li><strong>Pattern shopping:</strong> the team selects fashionable patterns first and looks for a problem later.</li>
+                <li><strong>Pattern stacking:</strong> the design contains many labels, while nodes still exchange untyped prose.</li>
+                <li><strong>Loops without exit:</strong> reflection, retries, or multi-agent debate have no budget, termination condition, or takeover point.</li>
+                <li><strong>Overlapping control:</strong> routers, approvers, guardrails, and tools can all rewrite the same decision.</li>
+                <li><strong>Internal-only acceptance:</strong> a grader approves the response, but the external system is never checked.</li>
+                <li><strong>Editable protection:</strong> the agent can change execution logic, guardrails, and graders in the same change set.</li>
+            </ul>
+
+            <h2>Composition review checklist</h2>
+            <ol>
+                <li>Does the composition serve a concrete business change or task boundary?</li>
+                <li>Are input, output, state owner, and completion conditions explicit for every node?</li>
+                <li>Who admits, limits, executes, and accepts each consequential action?</li>
+                <li>Do retries, loops, parallel branches, and delegation have budgets and termination conditions?</li>
+                <li>Can a failure be located at a node, version, and state handoff?</li>
+                <li>Do external outcomes, human corrections, and delayed feedback enter the next validation round?</li>
+                <li>Does each added pattern close a specific gap?</li>
+            </ol>
+
+            <h2>Composition and lifecycle</h2>
+            <p>Composition describes how one version operates. The lifecycle manages how that composition is registered, validated, released, revalidated, and retired. A change to prompts, tools, skills, policies, or topology may create a new version that needs fresh evidence. See the <a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a>.</p>
+
+            <h2>Related material</h2>
+            <ul>
+                <li><a href="/patterns/">ADPS Pattern Catalogue and Selection Framework</a></li>
+                <li><a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a></li>
+                <li><a href="/topics/human-agent-interaction/">Human-Agent Interaction</a></li>
+                <li><a href="/cases/liangbo-execution-agent/">Bo Liang execution-agent case</a></li>
+                <li><a href="/cases/deerflow-guardrail/">DeerFlow Guardrail code and architecture evolution</a></li>
+                <li><a href="/patterns/action/">Action overview</a></li>
+                <li><a href="/patterns/governance/">Governance overview</a></li>
+            </ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Composing Agent Patterns: From Individual Patterns to an Operable Design</em>, ADPS Topic Research, 2026-08-25.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">The payroll change illustrates a composition structure. Named practices remain governed by their case pages and source material.</p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

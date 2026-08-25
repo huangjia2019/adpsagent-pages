@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Design Pattern White Papers · Pattern Matrix · ADPS</title>
-    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.5: 27 matrix patterns, three cross-cutting engineering planes, five extensions, one candidate, lifecycle, and review method.">
-    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.7: 27 matrix patterns, three cross-cutting engineering planes, five extensions, one candidate, and a selection method.">
+    <meta property="og:image" content="https://adpsagent.com/images/matrix-v07-en-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/">
     <link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/">
@@ -161,7 +161,7 @@
                 <h1>Pattern Catalog and Selection Framework</h1>
                 <p class="publication-deck">Cognitive function × execution topology · 27 matrix patterns · 3 cross-cutting engineering planes · five extensions and one candidate.</p>
             </header>
-            <p>v0.5 contains <strong>27 cell-bound patterns, three cross-cutting engineering planes, five extension patterns, and one candidate</strong>. The dual axis remains the primary structure. The engineering planes add system-wide responsibilities; lifecycle records how a capability enters, changes, and leaves production.</p>
+            <p>v0.7 contains <strong>27 cell-bound patterns, three cross-cutting engineering planes, five extension patterns, and one candidate</strong>. The dual axis locates patterns and the engineering planes carry system-wide responsibilities. Lifecycle, composition, and human-agent operating boundaries are documented as separate topics.</p>
             <p>Pattern specifications define recurring problems, mechanisms, boundaries, and verification. <a href="/cases/">Blue Book cases</a> show how pattern combinations behave under named engineering constraints; <a href="/workshops/">workshop records</a> preserve field questions and unresolved disagreement.</p>
 
             <h2>Why agents need a new set of design patterns</h2>
@@ -192,9 +192,10 @@
             <p>The two axes form a 7 × 6 matrix. Twenty-seven cells currently hold core patterns. Empty cells prevent the catalog from inventing symmetry where no stable, independent structure has been established.</p>
 
             <figure class="matrix-figure">
-                <img src="/images/matrix-v05-en-20260820.png" alt="ADPS v0.5 with 27 matrix patterns, three cross-cutting engineering planes, and an agent lifecycle">
-                <figcaption>The dual-axis matrix retains 27 cell-bound patterns. X1–X3 span every cognitive function, execution topology, and lifecycle stage.</figcaption>
+                <img src="/images/matrix-v07-en-20260825.png" alt="ADPS Agent Design Pattern Framework with 27 matrix patterns and three cross-cutting engineering planes">
+                <figcaption>The dual-axis matrix retains 27 cell-bound patterns. X1–X3 span every cognitive function and execution topology.</figcaption>
             </figure>
+            <p>See <a href="/topics/pattern-composition/">Composing Agent Patterns</a> for cross-cell runtime designs, the <a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a> for production state transitions, and <a href="/topics/human-agent-interaction/">Human-Agent Interaction</a> for authority and intervention boundaries.</p>
 
             <p>The same matrix in text, for search and citation.</p>
             <div class="wp-scroll">
@@ -218,10 +219,12 @@
             <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Plane</th><th>Scope</th><th>Key artifacts</th></tr></thead><tbody><tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Every function, topology, and lifecycle stage</td><td>Events, causality, versions, state deltas, external receipts</td></tr><tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evals &amp; Testing</strong></a></td><td>Specifications, models, tools, skills, policies, and composed systems</td><td>Cases, graders, regression, business acceptance, release gates</td></tr><tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Users, agents, workloads, runs, delegation chains, resources</td><td>Principals, delegation, allow / deny / ask, short-lived credentials</td></tr></tbody></table></div>
             <p>Loop remains an execution topology. ReAct-style runtime loops use that topology and depend on the planes for runtime evidence, capability validation, and identity and authority.</p>
 
-            <h2>Agent lifecycle</h2>
-            <p><img src="/images/patterns/agent-governance-lifecycle-en.svg" alt="Agent lifecycle from registration, design, evaluation, and canary to operation, demotion, and retirement"></p>
-            <p>Patterns describe local structure. Lifecycle governs when those structures enter production, how they change, and when authority is withdrawn. Registration records owner and version; design and assembly fix tools and policy; offline eval supplies release evidence; shadow and canary expose real distributions; controlled operation joins approval, containment, and execution; observation links external outcomes; every change triggers revalidation; a capability is promoted, held, demoted, frozen, or retired.</p>
-            <p>The allowance change follows the same lifecycle across repeated runs: begin in shadow comparison, admit routine requests to bounded operation, turn anomalies into regression cases, and revalidate after policy or tool changes. <a href="/patterns/governance/#payroll-lifecycle">The Governance overview follows the complete path</a>.</p>
+            <h2>Related design topics</h2>
+            <ul>
+                <li><a href="/topics/agent-design-lifecycle/"><strong>Agent Design Lifecycle</strong></a>: registration, design, validation, operation, revalidation, promotion, demotion, and retirement.</li>
+                <li><a href="/topics/pattern-composition/"><strong>Composing Agent Patterns</strong></a>: core paths, guards, feedback, and cross-cutting planes.</li>
+                <li><a href="/topics/human-agent-interaction/"><strong>Human-Agent Interaction</strong></a>: co-editing, gated action, supervised operation, and bounded delegation.</li>
+            </ul>
 
             <h2>Six engineering contracts</h2>
             <p>Production agents should make six contracts explicit.</p>
@@ -369,8 +372,8 @@
                 <li>Liu Chunlei, Yi Hong, and Wang Lin, <em>Technology Control: Seeking Efficiency from Methods</em> (Chinese), CITIC Press, 2024, ISBN 9787521764666.</li>
             </ul>
             <h2>Version history</h2>
-            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved the then-G4 Observability specification outside the matrix; added lifecycle, a payroll running example, and revised Governance.</td></tr><tr><td>v0.5</td><td>20 August 2026</td><td>Established X1–X3 as cross-cutting engineering planes; retained the old G4 route as a legacy entry; added a thin lifecycle rail to the canonical figure.</td></tr></tbody></table></div>
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.5: Pattern Catalog and Selection Framework</em>, 20 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
+            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved the then-G4 Observability specification outside the matrix; added lifecycle, a payroll running example, and revised Governance.</td></tr><tr><td>v0.5</td><td>20 August 2026</td><td>Established X1–X3 as cross-cutting engineering planes; retained the old G4 route as a legacy entry; added a thin lifecycle rail to the canonical figure.</td></tr><tr><td>v0.6</td><td>25 August 2026</td><td>Revised the canonical title, proportions, and typography; combined offline evaluation and canary under validation.</td></tr><tr><td>v0.7</td><td>25 August 2026</td><td>Returned the canonical figure to the dual axis and cross-cutting planes; moved lifecycle, composition, and human-agent boundaries into separate topics.</td></tr></tbody></table></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.7: Pattern Catalog and Selection Framework</em>, 25 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
 
         </article>
 

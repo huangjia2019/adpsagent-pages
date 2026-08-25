@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent 模式组合 · 从单个模式到可运行方案 · ADPS</title>
+    <meta name="description" content="以任务边界、状态交接、治理保护、证据和失败策略组合 Agent 设计模式，并用薪酬变更说明完整运行路径。">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v01-zh-20260825.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/pattern-composition/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/pattern-composition/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/pattern-composition/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a><a href="/zh/cases/">案例</a><a href="/zh/workshops/">研讨会</a><a href="/zh/topics/" aria-current="page">专题</a><a href="/zh/founders/">团队</a>
+                <details class="site-nav-more"><summary>更多</summary><div class="site-nav-more-menu"><a href="/zh/concepts/">概念库</a><a href="/zh/research/">论文与研究</a><a href="/zh/positions/">技术立场</a><a href="/zh/news/">新闻</a><a href="/zh/join/">加入我们</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/topics/pattern-composition/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>Agent 模式组合</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS 专题研究</p>
+                <h1>Agent 模式组合 · 从单个模式到可运行方案</h1>
+                <p class="publication-deck">把模式目录中的局部机制连接成有状态、有保护、有证据的运行路径。</p>
+            </header>
+
+            <p>双轴框架帮助团队定位模式：当前问题属于哪种认知功能，采用哪种执行拓扑。真实系统还要完成下一步，把多个模式连接成一条能运行、能失败、能恢复的路径。</p>
+            <p>模式组合是一张有方向的关系图。节点是模式或业务步骤，边是数据、状态、授权和证据的交接。它不增加第三条坐标轴，也不要求每个方案覆盖更多模式。组合质量取决于接口是否明确，以及失败时能否判断由谁停止、回滚或接管。</p>
+
+            <figure>
+                <img src="/images/topics/pattern-composition-v01-zh-20260825.png" alt="薪酬变更的 Agent 模式组合：核心路径、保护机制、反馈和横切工程面">
+                <figcaption>薪酬变更示例。核心路径完成业务动作，保护机制约束高风险步骤，反馈处理失败，横切工程面保存系统级证据与边界。</figcaption>
+            </figure>
+
+            <h2>组合从一个任务边界开始</h2>
+            <p>先定义一项能够独立判断、审批、执行、验收和补偿的业务变更。这个边界比“做一个薪酬 Agent”更具体，也比“调用一次写入 API”更完整。开始选模式前，应写清以下内容：</p>
+            <table>
+                <thead><tr><th>对象</th><th>需要明确的内容</th></tr></thead>
+                <tbody>
+                    <tr><td>目标</td><td>期望改变什么，哪些结果不在本次范围</td></tr>
+                    <tr><td>完成条件</td><td>哪项外部事实或消费端回执可以证明完成</td></tr>
+                    <tr><td>失败代价</td><td>错误判断、错误动作、重复动作和延迟分别造成什么影响</td></tr>
+                    <tr><td>状态</td><td>哪些是业务事实，哪些是工作进度，哪些只属于模型上下文</td></tr>
+                    <tr><td>权限</td><td>Agent 可以读什么、建议什么、执行什么，谁可以扩大或撤销权限</td></tr>
+                    <tr><td>恢复</td><td>在哪些 checkpoint 重试，哪些动作需要补偿，何时转人工</td></tr>
+                </tbody>
+            </table>
+
+            <h2>四类组合关系</h2>
+            <table>
+                <thead><tr><th>关系</th><th>含义</th><th>例子</th></tr></thead>
+                <tbody>
+                    <tr><td>顺序</td><td>上一步产生结构化产物，下一步按契约消费</td><td>P1 上下文分诊输出 Goal Contract，A2 规划执行据此建立 PlanStep</td></tr>
+                    <tr><td>保护</td><td>控制机制包围高风险动作，决定准入、影响上限和执行前后检查</td><td>G1 审批门、G2 爆炸半径控制和 A4 护栏三明治共同保护 A1 工具调度</td></tr>
+                    <tr><td>反馈</td><td>运行结果进入复核、失败记录或修复流程，再回到设计与验证</td><td>X1 事件与外部回执进入 F1 生成评审、M4 失败日记或 F4 自愈循环</td></tr>
+                    <tr><td>共享底座</td><td>若干能力跨越全部节点，提供统一事件、评测、身份和委派语义</td><td>X1 可观测性、X2 评测与测试、X3 安全与身份</td></tr>
+                </tbody>
+            </table>
+
+            <h2>组合契约</h2>
+            <p>组合关系需要落到结构化定义。下面的示例省略业务字段，只保留架构评审所需的接口。</p>
+<pre><code class="language-yaml">composition_id: payroll-allowance-change
+goal: change one employee allowance for the next pay period
+
+steps:
+  - id: triage
+    pattern: P1
+    output: goal_contract
+  - id: retrieve_policy
+    pattern: M2
+    input: goal_contract
+    output: evidence_bundle
+  - id: plan
+    pattern: A2
+    input: [goal_contract, evidence_bundle]
+    output: plan_steps
+  - id: execute
+    pattern: A1
+    input: approved_intent
+    output: action_receipt
+
+guards:
+  - pattern: G1
+    protects: execute
+  - pattern: G2
+    limits: [amount_delta, batch_size, employee_scope]
+  - pattern: A4
+    checks: [preconditions, tool_result, postconditions]
+
+acceptance:
+  probe: payroll_read_after_write
+  evidence: [action_receipt, state_delta]
+
+failure_policy:
+  duplicate_request: return_existing_receipt
+  policy_conflict: stop_and_escalate
+  partial_write: compensate_then_checkpoint
+</code></pre>
+            <p>每条边都应说明产物类型与所有者。若一个节点只输出自然语言，后续节点往往无法区分建议、决策、授权和执行结果。</p>
+
+            <h2>薪酬变更怎样组合</h2>
+            <ol>
+                <li><strong>P1 上下文分诊</strong>把用户表达解析为 Goal Contract，分离员工、字段、目标值、生效日期和 non-goals。</li>
+                <li><strong>M2 检索增强</strong>读取政策版本和解释性证据；当前津贴值、员工状态和审批状态直接查询业务系统。</li>
+                <li><strong>A2 规划执行</strong>建立读取、校验、准备、审批、提交和写后读取六类步骤，每一步带完成条件。</li>
+                <li><strong>A1 工具调度</strong>只暴露当前步骤允许的工具。G1 把批准绑定到具体 Intent，G2 限制金额、批量和资源范围，A4 在调用前后检查状态。</li>
+                <li><strong>外部验收</strong>读取薪酬系统最终值并核对生效期。模型生成的完成说明不能替代这一结果。</li>
+                <li><strong>X1、X2 与反馈模式</strong>把运行轨迹、状态差异和延迟结果连接到回归集、失败日记和后续修改。</li>
+            </ol>
+
+            <h2>保护机制不应重复拥有同一项裁决权</h2>
+            <p>审批门决定某个具体 Intent 是否获准；爆炸半径控制规定系统即使判断错误，最多能影响多少对象与资源；护栏三明治检查工具调用前置条件、返回结构和执行后状态。这三者可以保护同一个动作，但职责不能互相替代。</p>
+            <p>当两个组件都能修改同一项决策，系统会出现责任不清：一个组件放行，另一个组件事后收回，日志却无法说明最终裁决来自哪里。组合设计应为准入、限界、执行、验收和补偿分别指定唯一责任主体。</p>
+
+            <h2>另一个公开代码路径：DeerFlow Guardrail</h2>
+            <p><a href="/zh/cases/deerflow-guardrail/">DeerFlow Guardrail 案例</a>展示了另一种组合方式。工具在装配时先经过筛选，进入运行时后再通过 Provider、策略决策和 hook 执行确定性检查。这个路径把“Agent 看见哪些工具”“某次调用能否执行”“执行点怎样留下证据”拆成不同责任。</p>
+            <p>它与薪酬示例的业务对象不同，但组合评审方法相同：沿工具从注册到暴露、选择、准入、执行和记录逐段检查，避免把全部控制塞进一个 prompt 或一个中间件。</p>
+
+            <h2>常见组合问题</h2>
+            <ul>
+                <li><strong>按名称购物：</strong>先挑流行模式，再寻找问题，结果是状态和控制重复。</li>
+                <li><strong>模式堆叠：</strong>模式数量很多，节点之间仍然只传递长文本，没有明确产物。</li>
+                <li><strong>循环无退出：</strong>反思、重试或多 Agent 辩论没有预算、终止条件和人工接管点。</li>
+                <li><strong>控制权重叠：</strong>路由器、审批器、护栏和工具都能改写同一决策，无法归因。</li>
+                <li><strong>验收停在 Agent 内部：</strong>评分器确认文本合理，却没有核对真实系统是否改变。</li>
+                <li><strong>保护面可被一起改写：</strong>Agent 同时修改执行逻辑、护栏和评分器，回归结果失去独立性。</li>
+            </ul>
+
+            <h2>组合评审清单</h2>
+            <ol>
+                <li>组合是否围绕一个明确的业务变更或任务边界？</li>
+                <li>每个节点的输入、输出、状态所有者和完成条件是否明确？</li>
+                <li>高风险动作由谁准入、谁限界、谁执行、谁验收？</li>
+                <li>重试、循环、并行和委派是否有预算与终止条件？</li>
+                <li>失败能否定位到具体节点、版本和状态交接？</li>
+                <li>外部结果、人工纠正和延迟反馈是否进入下一轮验证？</li>
+                <li>新增模式是否消除了一个明确缺口，还是只增加了结构？</li>
+            </ol>
+
+            <h2>组合与生命周期</h2>
+            <p>组合描述一个版本在运行时怎样工作；生命周期管理这个组合怎样登记、验证、发布、复验和退出。组合中的 prompt、工具、Skill、策略或拓扑发生变化，都可能产生一个需要重新验证的新版本。完整阶段见<a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期</a>。</p>
+
+            <h2>相关资料</h2>
+            <ul>
+                <li><a href="/zh/patterns/">ADPS 模式目录与选型框架</a></li>
+                <li><a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期</a></li>
+                <li><a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a></li>
+                <li><a href="/zh/cases/liangbo-execution-agent/">梁博执行型 Agent 案例</a></li>
+                <li><a href="/zh/cases/deerflow-guardrail/">DeerFlow Guardrail 代码与架构演进</a></li>
+                <li><a href="/zh/patterns/action/">行动模块总纲</a></li>
+                <li><a href="/zh/patterns/governance/">治理模块总纲</a></li>
+            </ul>
+
+            <div class="document-citation"><p><strong>引用建议：</strong>ADPS，《Agent 模式组合：从单个模式到可运行方案》，ADPS 专题研究，2026-08-25。</p><p><a href="/zh/topics/">专题目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">文中的薪酬变更用于说明组合结构。具名实践以案例页和原始资料为准。</p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
