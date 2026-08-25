@@ -85,6 +85,7 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">历史入口 → X1</span></a>
               <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
@@ -126,6 +127,19 @@
               <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
               <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
               <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+              <a href="/zh/concepts/abstraction-reconstruction-loop/">抽象—还原往返</a>
+              <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
+              <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
+              <a href="/zh/concepts/handoff-contract/">交接合同</a>
+              <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
+              <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+              <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
+              <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
+              <a href="/zh/concepts/context-contract/">上下文合同</a>
+              <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
+              <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
+              <a href="/zh/concepts/durable-intent/">持久化意图</a>
+              <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -136,7 +150,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS 企业 Agent 系统蓝皮书</p>
                 <h1>工程概念目录</h1>
-                <p class="publication-deck">从具体案例中提炼，用于比较 Agent 系统的工程语言。</p>
+                <p class="publication-deck">从案例、研讨会和模式实践中提炼，用于比较 Agent 系统的工程语言。</p>
             </header>
 
             <p>这个目录不要求读者先懂行业术语。请先按案例阅读：看懂任务、失败和交付结果，再进入单个概念页。</p>
@@ -177,8 +191,9 @@
                 <li style="margin-bottom:0.7rem; line-height:1.6;"><a href="vocabulary-equivalence-layer/" style="font-weight:600; font-size:1.02rem;">词表等价层</a><span style="color:var(--color-text-muted);"> — 以版本化映射对齐规划词表、领域类型和宿主元模型。</span></li>
             </ul>
 
+<h2>研讨会与跨模块方法</h2><p>这些概念来自感知、记忆、行动、反思、治理和协作研讨。它们用于连接多个模式或说明模式方法。</p><ul style="list-style:none;margin:1.1rem 0 1.7rem;padding:0;"><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="abstraction-reconstruction-loop/" style="font-weight:600;font-size:1.02rem;">抽象—还原往返</a><span style="color:var(--color-text-muted);"> — 从现场提炼共同结构，再恢复关键差异检验能否施工。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="topology-lowering/" style="font-weight:600;font-size:1.02rem;">拓扑降阶</a><span style="color:var(--color-text-muted);"> — 把高层协作语义编译为串行、并行和路由等运行原语。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="topology-governance-matrix/" style="font-weight:600;font-size:1.02rem;">拓扑治理矩阵</a><span style="color:var(--color-text-muted);"> — 用身份、权限、防护与溯源检查串行、并行和路由结构。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="handoff-contract/" style="font-weight:600;font-size:1.02rem;">交接合同</a><span style="color:var(--color-text-muted);"> — 在一次交接中共同转移目标、产物、决定、权限、责任和验收。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="three-collaboration-planes/" style="font-weight:600;font-size:1.02rem;">三类协作关系</a><span style="color:var(--color-text-muted);"> — 同时审查 Agent-Agent、Human-Agent 与 Agent 环境中的 Human-Human。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="hook-composition/" style="font-weight:600;font-size:1.02rem;">Hook 组合</a><span style="color:var(--color-text-muted);"> — 在生命周期事件上组合编排、治理、观测和恢复动作。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="probabilistic-core-deterministic-shell/" style="font-weight:600;font-size:1.02rem;">概率内核与确定性外壳</a><span style="color:var(--color-text-muted);"> — 模型处理开放判断，确定性机制守住生产边界。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="knowledge-compilation/" style="font-weight:600;font-size:1.02rem;">知识编译</a><span style="color:var(--color-text-muted);"> — 把知识源转换成可直接消费、可追溯、可增量更新的运行资产。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="context-contract/" style="font-weight:600;font-size:1.02rem;">上下文合同</a><span style="color:var(--color-text-muted);"> — 规定一类任务允许进入推理窗口的信息、来源、时效与预算。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="plan-compilation/" style="font-weight:600;font-size:1.02rem;">Plan 编译</a><span style="color:var(--color-text-muted);"> — 把推理产出的计划转换为带依赖、类型、权限和验收的可执行结构。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="dual-feedback-clock/" style="font-weight:600;font-size:1.02rem;">双反馈时钟</a><span style="color:var(--color-text-muted);"> — 把任务内即时反馈与跨任务延迟结果分开处理。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="durable-intent/" style="font-weight:600;font-size:1.02rem;">持久化意图</a><span style="color:var(--color-text-muted);"> — 让审批等待与恢复执行指向同一个不可变动作。</span></li><li style="margin-bottom:0.7rem;line-height:1.6;"><a href="write-conflict-domain/" style="font-weight:600;font-size:1.02rem;">写入冲突域</a><span style="color:var(--color-text-muted);"> — 识别并行任务可能共同改变的文件、标识、配置、领域对象和外部环境。</span></li></ul>
             <div class="document-citation">
-                <p><strong>版本：</strong>ADPS 工程概念目录 v0.4，2026-08-02。</p>
+                <p><strong>版本：</strong>ADPS 工程概念目录 v0.5，2026-08-26。</p>
                 <p><a href="/zh/cases/">案例报告目录</a> · <a href="/zh/patterns/">模式目录</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>范围：</strong>收录表示这个术语已有可说清的工程机制和来源，不表示它已成为行业标准。</p>
     </div>

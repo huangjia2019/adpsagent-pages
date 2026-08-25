@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent OS · From analogy to engineering checklist · ADPS</title>
+    <meta name="description" content="Agent OS engineering checklist across scheduling, isolation, communication, storage, identity, observation, reclamation, and failure handling.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/agent-os-engineering/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-os-engineering/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-os-engineering/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/agent-os-engineering/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Agent OS</p>
+<header class="publication-head"><p class="publication-series">ADPS Topic Study</p><h1>Agent OS · From analogy to engineering checklist</h1><p class="publication-deck">Use operating-system responsibilities to inspect a multi-agent runtime while keeping the limits of the analogy visible.</p></header>
+<p>A multi-agent runtime increasingly resembles a small operating system. It schedules execution units, isolates resources, carries messages, stores state, handles failures, and lets people pause, take over, and resume. The analogy is useful as a completeness check.</p>
+<h2>Eight responsibilities</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS view</th>
+<th style="text-align: left;">Question for an agent runtime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Scheduling</td>
+<td style="text-align: left;">Which agent runs, with what priority, budget, and cancellation?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Isolation</td>
+<td style="text-align: left;">Are context, tools, credentials, workspace, and failure separated?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Communication</td>
+<td style="text-align: left;">Do messages, events, artifacts, and hand-offs have schemas and versions?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Storage</td>
+<td style="text-align: left;">How are checkpoints, memory, workspace, and external facts separated?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Identity</td>
+<td style="text-align: left;">How does human delegation reach agents, runs, tools, and resources?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Observation</td>
+<td style="text-align: left;">How do causal trace, component versions, state deltas, and outcomes connect?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Reclamation</td>
+<td style="text-align: left;">When are temporary credentials, locks, queues, tasks, and sandboxes released?</td>
+</tr>
+<tr>
+<td style="text-align: left;">Failure handling</td>
+<td style="text-align: left;">How do timeout, retry, compensation, circuit breaking, and takeover combine?</td>
+</tr>
+</tbody>
+</table>
+<h2>Where the analogy helps</h2>
+<p>Operating systems separate the ability to execute from the ability to manage execution over time. A model that calls tools has not necessarily solved fairness, isolation, resource leaks, or failure propagation. The analogy forces those responsibilities into the architecture.</p>
+<h2>Where it distorts</h2>
+<p>Agent intent and output are probabilistic in ways ordinary processes are not. Agent memory includes selection, trust, forgetting, and versioning rather than only storage. Human-in-the-loop is a business-control and organizational-responsibility problem, not just interrupt handling.</p>
+<p>Agent OS is therefore an engineering checklist and research agenda, not a settled product category.</p>
+<h2>Minimal runtime surface</h2>
+<pre><code class="language-text">submit(task, principal, constraints)
+spawn(role, task_packet, authority_scope)
+handoff(contract)
+observe(run_id)
+checkpoint(run_id)
+cancel(run_id, reason)
+reclaim(run_id)
+</code></pre>
+<p>Names may change; responsibilities remain. Central orchestration, distributed events, and hybrid architectures all need answers.</p>
+<h2>Research questions</h2>
+<ol>
+<li>How should agent, workload, run, and tool-invocation identity be layered?</li>
+<li>Can cross-session resource conflicts be declared and detected before scheduling?</li>
+<li>How should Handoff Contracts connect to agent protocols?</li>
+<li>Which versions and external preconditions belong in a long-running checkpoint?</li>
+<li>How does reclamation cover trial shutdown, owner departure, and retirement?</li>
+</ol>
+<h2>Source</h2>
+<p>This topic grew from cross-layer discussion in the Collaboration and Governance workshops and connects C5 Sub-Agent Isolation, C6 Choreography, X1 Observability, and X3 Security &amp; Identity.</p>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent OS · From analogy to engineering checklist</em>, ADPS Topic Study, 26 August 2026.</p><p><a href="/topics/">Topic index</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

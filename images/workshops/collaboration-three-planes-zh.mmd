@@ -1,0 +1,16 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Noto Sans CJK SC, Source Han Sans SC, Microsoft YaHei, sans-serif", "primaryColor": "#f7f9fc", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f", "secondaryColor": "#eef3f8", "tertiaryColor": "#ffffff"}, "flowchart": {"curve": "basis", "nodeSpacing": 55, "rankSpacing": 65}}}%%
+flowchart LR
+    AA["Agent 与 Agent<br/><small>拆分 · 并行 · 交接 · 复核</small>"]
+    HA["人与 Agent<br/><small>意图 · 授权 · 接管 · 验收</small>"]
+    HH["Agent 环境中的人与人<br/><small>决定 · 证据 · 责任 · 传承</small>"]
+    SYS(("协作系统"))
+
+    AA --> SYS
+    HA --> SYS
+    HH --> SYS
+
+    classDef plane fill:#f7f9fc,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    classDef center fill:#0b1b30,stroke:#0b1b30,stroke-width:2px,color:#ffffff;
+    class AA,HA,HH plane;
+    class SYS center;
+

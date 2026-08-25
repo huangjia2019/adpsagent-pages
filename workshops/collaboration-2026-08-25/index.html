@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Collaboration Module Workshop · ADPS</title>
+    <meta name="description" content="ADPS Collaboration workshop on topology lowering, delegated authority, handoff contracts, hook composition, human relationships, and Agent OS.">
+    <meta property="og:image" content="https://adpsagent.com/images/workshops/collaboration-three-planes-en.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/collaboration-2026-08-25/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/collaboration-2026-08-25/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/collaboration-2026-08-25/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/" aria-current="page">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/collaboration-2026-08-25/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+
+<p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/workshops/">Workshops</a><span style="margin: 0 0.45rem;">/</span>Collaboration</p>
+<header class="publication-head">
+  <p class="publication-series">ADPS Design Pattern Workshop Series</p>
+  <h1>First Collaboration Module Workshop</h1>
+  <p class="publication-deck">From multiple agents to collaboration that can be explained, handed off, and constrained.</p>
+</header>
+<p class="publication-date">25 August 2026</p>
+<table><tbody>
+<tr><td><strong>Hosts</strong></td><td>Haili Zhang and Jia Huang</td></tr>
+<tr><td><strong>Core workshop guests</strong></td><td>Dong Zhang and Wei Wang</td></tr>
+</tbody></table>
+<p>The session began with LangGraph, Deep Agents, and the six ADPS collaboration patterns, then moved into delegated authority, cross-session conflicts, heterogeneous agents, hook composition, human relationships, and the Agent OS analogy. Several questions changed how the module is organized and exposed an important boundary between C6 Choreography and G5 Hooks Pipeline.</p>
+
+<figure><img src="/images/workshops/collaboration-three-planes-en.svg" alt="Three collaboration planes: agent-agent, human-agent, and human-human around agent systems"><figcaption>A collaboration design that shows only agent-to-agent arrows misses intent, authority, team decisions, and takeover.</figcaption></figure>
+
+<h2>1. Dynamic sub-agents can still be centrally orchestrated</h2>
+<p>A dynamic workflow may let a model interpret the task, select sub-agents, generate call steps, and pass them to an interpreter. The flow changes at runtime, but the interpreter still owns the current plan, call order, and result aggregation.</p>
+<p>C6 Choreography uses a different criterion. Participants subscribe to events, act under local rules, and publish new events without one node holding the full plan. Both designs are dynamic; the location of control differs. C6 remains a candidate, and dynamic sub-agent execution is no longer treated as direct evidence of choreography.</p>
+
+<h2>2. Six design topologies can lower to three runtime primitives</h2>
+<p>Many enterprise collaboration graphs eventually reduce to serial edges, parallel branches, and routing. That observation is useful at runtime, but it does not remove the design semantics of loops, hierarchy, or orchestration.</p>
+<p>Hierarchical Delegation may execute as route, parallel workers, and gather. Adversarial Review may execute as generate, review, adjudicate, and conditional loop. Similar low-level edges still carry different ownership, acceptance, and failure responsibilities. ADPS calls this <a href="/concepts/topology-lowering/">topology lowering</a>: preserve responsibility in design, then compile it into runtime primitives supported by the framework.</p>
+
+<figure><img src="/images/workshops/topology-governance-matrix-en.svg" alt="Topology governance matrix across serial, parallel, routing and identity, authority, safeguards, provenance"><figcaption>The runtime graph shows how control unfolds. Identity, authority, safeguards, and provenance determine whether it is ready for production.</figcaption></figure>
+
+<h2>3. Every topology needs four more checks</h2>
+<table><thead><tr><th>Runtime structure</th><th>Identity</th><th>Authority</th><th>Safeguards</th><th>Provenance</th></tr></thead><tbody>
+<tr><td>Serial</td><td>Principal at each hop</td><td>Scoped per leg and reclaimed</td><td>Gates stop error propagation</td><td>Linear responsibility chain</td></tr>
+<tr><td>Parallel</td><td>Independent shard roles</td><td>Branch isolation; read-only gather</td><td>Branch checks plus global validation</td><td>One trace with child spans</td></tr>
+<tr><td>Routing</td><td>Route matches identity and risk</td><td>Tighter scope on high-risk routes</td><td>Ingress filtering and differentiated controls</td><td>Route reason and full path</td></tr>
+</tbody></table>
+<p>A manager's broad data access should not automatically pass to a worker that verifies one record. Effective authority narrows across user scope, task scope, agent role, tool, and resource. Sharing a long-lived human token across the graph spreads the user's maximum authority to every participant.</p>
+
+<h2>4. Production requires a freezing gradient</h2>
+<p>Development can allow coding agents to split work and try new branches under close review. In test, the main graph, agent roles, tools, and policies become versioned. Staging approaches production conditions. Production pins agent, model, tool, and policy versions while keeping only evaluated dynamic choices.</p>
+
+<h2>5. Collaboration has three planes</h2>
+<p>Agent-Agent collaboration covers decomposition, parallel work, hand-off, and review. Human-Agent collaboration covers intent, missing evidence, approval, takeover, and acceptance. Human-Human collaboration around the agent carries team decisions and responsibility over time.</p>
+<p>The third plane often remains in meetings and chat. A later agent can read the repository but cannot see why a path was chosen. Decisions, evidence, and boundaries that affect future work belong in versioned assets such as RFCs, ADRs, and runbooks. Raw conversations do not need to be copied wholesale.</p>
+
+<h2>6. Worktrees do not isolate every conflict</h2>
+<p>Separate worktrees isolate files, but concurrent sessions may still compete for requirement IDs, shared configuration, test databases, deployment environments, and external quotas. The scheduler must identify the <a href="/concepts/write-conflict-domain/">write-conflict domain</a> before launching parallel work.</p>
+
+<h2>7. A hand-off needs a contract</h2>
+<p>Conversation history rarely states which decisions are binding, which paths were rejected, what the next role may change, and how its work will be accepted.</p>
+<pre><code class="language-yaml">handoff_id: h_01K...
+goal: preserve the compatibility interface
+from_role: requirements-agent
+to_role: implementation-agent
+artifacts:
+  - uri: artifact://spec/417
+    version: sha256:...
+decisions:
+  - choice: keep the public schema
+    evidence: adr://23
+authority:
+  allowed_tools: [repo_read, patch_write]
+  resource_scope: repo://service-a
+acceptance:
+  checks: [unit_tests, contract_tests]</code></pre>
+<p>A <a href="/concepts/handoff-contract/">Handoff Contract</a> transfers goal, artifacts, decisions, authority, responsibility, and acceptance together. The receiver explicitly accepts or rejects the hand-off, and temporary authority from the previous leg is reclaimed.</p>
+
+<h2>8. Independent review creates its own gap</h2>
+<p>Separating generator and reviewer reduces self-review bias. Execution may then expose missing dependencies, version differences, or insufficient authority. Those facts must return to the review layer; otherwise the next run repeats an obsolete judgement.</p>
+
+<h2>9. A hook is a mechanism whose role comes from composition</h2>
+<p>The same hook mechanism can start a coding agent after requirements, pause before a dangerous tool call, record trace data, save a checkpoint, or release resources. These are orchestration, governance, observation, and recovery roles.</p>
+<p>No C7 was added. G5 keeps its historical identifier for deterministic governance enforcement. Cross-module use is documented in the <a href="/topics/hook-composition/">Hook Composition</a> topic.</p>
+
+<h2>10. Probabilistic core, deterministic shell</h2>
+<pre><code>ambiguous goal → model interpretation and candidates → structured intent
+              → rules / state / authority / tests → controlled action → external result</code></pre>
+<p>Models handle open-ended understanding, planning, and candidate generation. Identity, money, resources, state transitions, idempotency, tests, and receipts require reproducible mechanisms. The shell protects boundaries that cannot be carried by probability.</p>
+
+<h2>11. Agent OS is an engineering checklist</h2>
+<p>The operating-system analogy helps locate missing responsibilities: scheduling, isolation, communication, storage, identity, observability, reclamation, and failure handling. It is not evidence that Agent OS already has a stable industry boundary, and operating-system terms should not be mapped mechanically.</p>
+
+<h2>12. Abstract, then reconstruct</h2>
+<p>Abstraction extracts recurring structure. Reconstruction restores roles, objects, state, authority, evidence, and acceptance to test whether the structure can be built. A difference must survive abstraction when it changes business judgement, state transition, power boundary, evidentiary effect, next action, responsibility, or acceptance.</p>
+
+<h2>Resulting revisions</h2>
+<ol>
+<li>A new <a href="/patterns/collaboration/">Collaboration module overview</a> separates relationship patterns, constraints, distributed candidates, and implementation mechanisms.</li>
+<li>C1-C5 now cover task identities, write-conflict domains, review feedback, Handoff Contracts, and cross-session isolation.</li>
+<li>C6 distinguishes dynamic orchestration from choreography and remains a candidate.</li>
+<li>G5 retains its identifier; cross-module hook composition moves to a topic.</li>
+<li>G4 remains a legacy catalog entry that leads to X1 Observability.</li>
+</ol>
+
+<h2>Open questions</h2>
+<ul>
+<li>How should design intent survive topology lowering into a runtime graph?</li>
+<li>Which Handoff Contract fields can remain stable across frameworks?</li>
+<li>How can a scheduler discover cross-session write-conflict domains before execution?</li>
+<li>How should hook composition expose order, idempotency, and failure semantics?</li>
+<li>Where does the Agent OS analogy predict useful architecture, and where does it distort it?</li>
+</ul>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/collaboration/">Collaboration module overview</a></li>
+<li><a href="/topics/human-agent-interaction/">Human-Agent collaboration boundaries</a></li>
+<li><a href="/topics/hook-composition/">Hook Composition</a></li>
+<li><a href="/topics/abstraction-reconstruction/">Abstraction and Reconstruction</a></li>
+<li><a href="/topics/agent-os-engineering/">Agent OS engineering checklist</a></li>
+</ul>
+<p class="publication-note publication-note-end">The public record is organized by technical theme. Names, scale, rules, and responsibility structures of internal systems are anonymized.</p>
+
+        </article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

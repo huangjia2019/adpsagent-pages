@@ -138,6 +138,19 @@
               <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
               <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
               <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+              <a href="/zh/concepts/abstraction-reconstruction-loop/">抽象—还原往返</a>
+              <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
+              <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
+              <a href="/zh/concepts/handoff-contract/">交接合同</a>
+              <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
+              <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+              <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
+              <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
+              <a href="/zh/concepts/context-contract/">上下文合同</a>
+              <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
+              <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
+              <a href="/zh/concepts/durable-intent/">持久化意图</a>
+              <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -188,6 +201,7 @@ visible tool + arguments + resource + environment + quota + approval
 <h2>常见失效与验证</h2>
 <p>重点排查 prompt 中的安全规则、旁路入口、静默扩大权限的 payload 改写、POST 替代 PRE、策略与执行混在一个函数、依赖故障默认放行，以及非幂等 hook 重试。</p>
 <p>验证主 Agent、子 Agent、同步、异步、恢复和嵌入式入口覆盖；deny 后 handler 调用必须为零；同一配置的顺序稳定；每个 reason code、冲突与故障分支都有合同测试。</p>
+<h2>2026-08-25 研讨会修订：Hook 组合的边界</h2><p>Hook 可以承担编排、治理、观测和恢复职责。G5 保留历史编号并聚焦治理中的确定性执行点；跨模块组合另见 Hook 组合专题，不新增 C7。</p><p><a href="/zh/workshops/collaboration-2026-08-25/">协作模块研讨记录</a></p>
             <div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《G5 · Hooks Pipeline · 钩子流水线》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>

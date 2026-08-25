@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽象—还原 · 从工程现场到模式，再回到工程现场 · ADPS</title>
+    <meta name="description" content="ADPS 抽象—还原方法：从现场提炼模式，再恢复角色、对象、状态、权限、证据和验收。">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/abstraction-reconstruction-zh.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/abstraction-reconstruction/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/abstraction-reconstruction/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/abstraction-reconstruction/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a><a href="/zh/cases/">案例</a><a href="/zh/workshops/">研讨会</a><a href="/zh/topics/" aria-current="page">专题</a><a href="/zh/founders/">团队</a>
+                <details class="site-nav-more"><summary>更多</summary><div class="site-nav-more-menu"><a href="/zh/concepts/">概念库</a><a href="/zh/research/">论文与研究</a><a href="/zh/positions/">技术立场</a><a href="/zh/news/">新闻</a><a href="/zh/join/">加入我们</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/topics/abstraction-reconstruction/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>抽象—还原</p>
+<header class="publication-head"><p class="publication-series">ADPS 专题研究</p><h1>抽象—还原 · 从工程现场到模式，再回到工程现场</h1><p class="publication-deck">控制抽象损失，让模式既能解释共性，也能恢复施工所需的关键差异。</p></header>
+<p>模式语言依靠抽象工作。多个项目中反复出现的结构被压缩成名称、问题、机制和边界，团队因此可以比较方案。压缩也会丢信息。若把决定结果的差异一起删掉，模式看起来整洁，回到项目时却无法施工。</p>
+<p><img alt="抽象—还原往返" src="/images/topics/abstraction-reconstruction-zh.svg"></p>
+<h2>两个方向</h2>
+<p><strong>抽象</strong>从实例中寻找重复机制：哪些角色反复出现，状态怎样流转，哪里需要控制，什么证据可以验证。</p>
+<p><strong>还原</strong>把模式重新放入一个具体场景：谁发起任务，操作哪些对象，当前状态在哪里，谁有权改变它，结果由什么事实证明，异常由谁接管。</p>
+<p>这两个方向组成往返。抽象结束于模式定义；还原结束于可实现的对象、合同、边界和验收。</p>
+<h2>抽象损失检查</h2>
+<p>以下差异会改变工程结果，不应在抽象时抹掉：</p>
+<ol>
+<li>业务判断会不会变化；</li>
+<li>状态迁移是否不同；</li>
+<li>权力边界由谁掌握；</li>
+<li>证据在流程中是否具有不同效力；</li>
+<li>下一动作、责任归属或验收结果是否变化。</li>
+</ol>
+<p>例如“人工审批”可以抽象成一个 gate。还原到薪酬、代码发布和内容推荐时，审批对象、前置条件、有效期、回滚能力和责任人完全不同。这些字段决定 gate 是否有效，不能被一个通用按钮代替。</p>
+<h2>在 ADPS 中怎样使用</h2>
+<p>新模式先从两个以上的独立实例中抽取共同结构，再写清适用边界和失败方式。案例落地时沿角色、对象、状态、权限、证据、异常和验收七个方面还原。若模式只有上行抽象，没有下行还原，它暂时只是一条观点。</p>
+<p>这套方法也用于审查术语。名称可以新，机制必须能指向可观察的结构；若只是旧概念换名，不进入目录。</p>
+<h2>与领域建模的关系</h2>
+<p>领域建模帮助团队发现对象、术语、状态和不变量；模式语言整理跨项目重复出现的协作与控制结构。两者的交点在还原阶段：模式进入领域模型以后，才能得到准确的资源边界、权限语义和验收事实。</p>
+<h2>评审问题</h2>
+<ol>
+<li>这个抽象省略了哪些现场差异？</li>
+<li>被省略的差异会不会改变判断、权限、状态或验收？</li>
+<li>模式还原后有哪些明确的数据结构、事件和责任者？</li>
+<li>失败时能否从运行证据回到原始设计决定？</li>
+<li>第二个场景是否仍然成立，还是只换了术语？</li>
+</ol>
+<h2>来源</h2>
+<p>该方法在 2026-08-25 ADPS 协作模块研讨会中形成明确表述，并用于审查协作模式的分层、拓扑降阶和人机边界。</p>
+<div class="document-citation"><p><strong>引用建议：</strong>ADPS，《抽象—还原 · 从工程现场到模式，再回到工程现场》，ADPS 专题研究，2026-08-26。</p><p><a href="/zh/topics/">专题目录</a> · <a href="/zh/workshops/collaboration-2026-08-25/">协作研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

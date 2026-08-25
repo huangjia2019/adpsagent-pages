@@ -132,6 +132,19 @@
               <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
               <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
               <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+              <a href="/concepts/topology-lowering/">Topology Lowering</a>
+              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+              <a href="/concepts/handoff-contract/">Handoff Contract</a>
+              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+              <a href="/concepts/hook-composition/">Hook Composition</a>
+              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+              <a href="/concepts/context-contract/">Context Contract</a>
+              <a href="/concepts/plan-compilation/">Plan Compilation</a>
+              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+              <a href="/concepts/durable-intent/">Durable Intent</a>
+              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -180,6 +193,7 @@ visible tool + arguments + resource + environment + quota + approval
 <h2>Failure semantics and verification</h2>
 <p>Define order, verdict conflicts, timeout and exception defaults, sync/async equivalence, audit failure, and retry semantics. High-risk authorization usually fails closed; low-risk telemetry may buffer and continue.</p>
 <p>Look for prompt-only rules, bypass entries, protected-field mutation, POST replacing PRE, policy and enforcement in one function, fail-open dependencies, and retried non-idempotent hooks. Verify all agent and client paths, zero handler calls after deny, stable order, and contract tests for every reason and fault branch.</p>
+<h2>Workshop revision, 25 August 2026: Boundary of Hook Composition</h2><p>Hooks can perform orchestration, governance, observation, and recovery. G5 retains its historical identifier and focuses on deterministic governance enforcement. Cross-module composition is documented separately; no C7 is added.</p><p><a href="/workshops/collaboration-2026-08-25/">Collaboration workshop record</a></p>
             <div class="document-citation">
                 <p><strong>Suggested citation:</strong>ADPS, <em>G5 · Hooks Pipeline</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
                 <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>

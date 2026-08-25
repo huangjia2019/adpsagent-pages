@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent OS · 从类比到工程清单 · ADPS</title>
+    <meta name="description" content="Agent OS 工程专题：调度、隔离、通信、存储、身份、观测、资源回收与故障处理。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/agent-os-engineering/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/agent-os-engineering/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/agent-os-engineering/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a><a href="/zh/cases/">案例</a><a href="/zh/workshops/">研讨会</a><a href="/zh/topics/" aria-current="page">专题</a><a href="/zh/founders/">团队</a>
+                <details class="site-nav-more"><summary>更多</summary><div class="site-nav-more-menu"><a href="/zh/concepts/">概念库</a><a href="/zh/research/">论文与研究</a><a href="/zh/positions/">技术立场</a><a href="/zh/news/">新闻</a><a href="/zh/join/">加入我们</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/topics/agent-os-engineering/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>Agent OS</p>
+<header class="publication-head"><p class="publication-series">ADPS 专题研究</p><h1>Agent OS · 从类比到工程清单</h1><p class="publication-deck">用操作系统的责任划分检查多 Agent runtime，同时保留类比的边界。</p></header>
+<p>多 Agent runtime 越来越像一个小型操作系统：它要安排执行单元、隔离资源、传递消息、保存状态、处理失败，还要让人随时暂停、接管和恢复。这个类比适合用来检查工程缺项。</p>
+<h2>八项责任</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS 视角</th>
+<th style="text-align: left;">Agent runtime 中的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">调度</td>
+<td style="text-align: left;">哪个 Agent 何时运行，优先级、预算和取消怎样处理</td>
+</tr>
+<tr>
+<td style="text-align: left;">隔离</td>
+<td style="text-align: left;">context、工具、凭证、工作区和故障是否彼此隔离</td>
+</tr>
+<tr>
+<td style="text-align: left;">通信</td>
+<td style="text-align: left;">消息、事件、artifact 和 handoff 是否有 schema 与版本</td>
+</tr>
+<tr>
+<td style="text-align: left;">存储</td>
+<td style="text-align: left;">checkpoint、memory、workspace 和外部事实如何分层</td>
+</tr>
+<tr>
+<td style="text-align: left;">身份</td>
+<td style="text-align: left;">用户委托怎样传给 Agent、run、工具和资源</td>
+</tr>
+<tr>
+<td style="text-align: left;">观测</td>
+<td style="text-align: left;">因果 trace、组件版本、状态差异与外部结果怎样连接</td>
+</tr>
+<tr>
+<td style="text-align: left;">回收</td>
+<td style="text-align: left;">临时凭证、锁、队列、子任务和沙箱何时释放</td>
+</tr>
+<tr>
+<td style="text-align: left;">故障处理</td>
+<td style="text-align: left;">超时、重试、补偿、熔断、降级和人工接管怎样协作</td>
+</tr>
+</tbody>
+</table>
+<h2>类比在哪里有用</h2>
+<p>操作系统把“能运行”与“能长期管理”分开。一个模型能够调用多个工具，并不代表 runtime 已经处理调度、公平性、隔离、资源泄漏和故障传播。类比迫使架构师给这些责任安排明确位置。</p>
+<h2>类比在哪里失真</h2>
+<p>Agent 的执行意图和结果具有概率性，传统进程通常没有这种语义。Agent 的记忆也不等同于内存：它还涉及内容选择、可信度、遗忘和版本。Human-in-the-loop 更接近业务控制与组织责任，不能简单映射为中断处理。</p>
+<p>因此，Agent OS 目前适合作为工程清单和研究议程，不作为统一产品定义。</p>
+<h2>最小运行时接口</h2>
+<pre><code class="language-text">submit(task, principal, constraints)
+spawn(role, task_packet, authority_scope)
+handoff(contract)
+observe(run_id)
+checkpoint(run_id)
+cancel(run_id, reason)
+reclaim(run_id)
+</code></pre>
+<p>接口名称可以变化，责任不能消失。实现采用中心 Orchestrator、分布式事件总线或混合架构，都要回答这些问题。</p>
+<h2>研究问题</h2>
+<ol>
+<li>Agent、workload、run 和 tool invocation 的身份模型怎样分层？</li>
+<li>跨 Session 的资源冲突能否在调度前声明和检测？</li>
+<li>Handoff Contract 与 Agent Protocol 怎样对接？</li>
+<li>长程任务的 checkpoint 应冻结哪些版本与外部前置条件？</li>
+<li>资源回收怎样覆盖试点结束、责任人离岗和系统退役？</li>
+</ol>
+<h2>来源</h2>
+<p>该专题来自协作与治理模块研讨中的跨层讨论，并连接 C5 子 Agent 隔离、C6 编舞、X1 可观测性和 X3 安全与身份。</p>
+<div class="document-citation"><p><strong>引用建议：</strong>ADPS，《Agent OS · 从类比到工程清单》，ADPS 专题研究，2026-08-26。</p><p><a href="/zh/topics/">专题目录</a> · <a href="/zh/workshops/collaboration-2026-08-25/">协作研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

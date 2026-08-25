@@ -1,0 +1,16 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Arial, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f"}, "flowchart": {"curve": "basis", "nodeSpacing": 48, "rankSpacing": 55}}}%%
+flowchart LR
+    FIELD["Engineering field<br/><small>roles · objects · state · constraints</small>"]
+    PATTERN["Pattern<br/><small>problem · mechanism · boundary · verification</small>"]
+    BUILD["Implementable design<br/><small>contracts · authority · evidence · acceptance</small>"]
+
+    FIELD -- "abstract recurring structure" --> PATTERN
+    PATTERN -- "reconstruct critical differences" --> BUILD
+    BUILD -- "runtime evidence" --> FIELD
+
+    classDef field fill:#f7f9fc,stroke:#56708f,stroke-width:2px,color:#0b1b30;
+    classDef pattern fill:#0b1b30,stroke:#0b1b30,stroke-width:2px,color:#ffffff;
+    classDef build fill:#fff8ea,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    class FIELD field;
+    class PATTERN pattern;
+    class BUILD build;

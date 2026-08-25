@@ -1,0 +1,13 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Noto Sans CJK SC, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f"}, "themeCSS": ".nodeLabel, .edgeLabel { font-family: 'Noto Sans CJK SC', sans-serif !important; }", "flowchart": {"curve": "linear", "nodeSpacing": 38, "rankSpacing": 48}}}%%
+flowchart LR
+    T["运行拓扑<br/><small>串行 · 并行 · 路由</small>"]
+    I["身份<br/><small>每一步代表谁</small>"]
+    A["权限<br/><small>范围怎样收窄</small>"]
+    Q["防护与质控<br/><small>错误在哪里停止</small>"]
+    V["溯源<br/><small>结果怎样还原</small>"]
+    T --> I --> A --> Q --> V
+
+    classDef topology fill:#0b1b30,stroke:#0b1b30,color:#ffffff;
+    classDef check fill:#ffffff,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    class T topology;
+    class I,A,Q,V check;

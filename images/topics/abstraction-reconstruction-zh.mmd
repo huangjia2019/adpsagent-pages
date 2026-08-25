@@ -1,0 +1,17 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Noto Sans CJK SC, Source Han Sans SC, Microsoft YaHei, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f"}, "flowchart": {"curve": "basis", "nodeSpacing": 48, "rankSpacing": 55}}}%%
+flowchart LR
+    FIELD["工程现场<br/><small>角色 · 对象 · 状态 · 约束</small>"]
+    PATTERN["模式<br/><small>问题 · 机制 · 边界 · 验证</small>"]
+    BUILD["可施工设计<br/><small>合同 · 权限 · 证据 · 验收</small>"]
+
+    FIELD -- "抽象：提炼共同结构" --> PATTERN
+    PATTERN -- "还原：恢复关键差异" --> BUILD
+    BUILD -- "运行证据" --> FIELD
+
+    classDef field fill:#f7f9fc,stroke:#56708f,stroke-width:2px,color:#0b1b30;
+    classDef pattern fill:#0b1b30,stroke:#0b1b30,stroke-width:2px,color:#ffffff;
+    classDef build fill:#fff8ea,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    class FIELD field;
+    class PATTERN pattern;
+    class BUILD build;
+

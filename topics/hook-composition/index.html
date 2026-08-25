@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hook Composition · Make hidden callbacks a readable control structure · ADPS</title>
+    <meta name="description" content="Hook Composition across orchestration, governance, observation, and recovery, including order, idempotency, and failure semantics.">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/hook-composition/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/hook-composition/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/hook-composition/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/hook-composition/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Hook Composition</p>
+<header class="publication-head"><p class="publication-series">ADPS Topic Study</p><h1>Hook Composition · Make hidden callbacks a readable control structure</h1><p class="publication-deck">Compose orchestration, governance, observation, and recovery at lifecycle events with explicit order, idempotency, and failure semantics.</p></header>
+<p>Hooks place deterministic code at stable lifecycle events. A hook can shrink context before a model call, check authority before a tool call, start the next agent after an artifact is accepted, record trace data, save a checkpoint, or release resources.</p>
+<p>A hook is a mechanism. Its role comes from the event, the state it reads, the authority it holds, and its failure semantics.</p>
+<h2>Four roles</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Role</th>
+<th style="text-align: left;">Typical events</th>
+<th style="text-align: left;">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Orchestration</td>
+<td style="text-align: left;">artifact accepted, stage completed</td>
+<td style="text-align: left;">start stage, route task, gather results</td>
+</tr>
+<tr>
+<td style="text-align: left;">Governance</td>
+<td style="text-align: left;">before tool, before commit</td>
+<td style="text-align: left;">identity, policy, approval, quota, argument checks</td>
+</tr>
+<tr>
+<td style="text-align: left;">Observation</td>
+<td style="text-align: left;">model/tool/step completed</td>
+<td style="text-align: left;">events, versions, state deltas, receipts</td>
+</tr>
+<tr>
+<td style="text-align: left;">Recovery</td>
+<td style="text-align: left;">failure, timeout, cancel</td>
+<td style="text-align: left;">checkpoint, compensation, lease release, escalation</td>
+</tr>
+</tbody>
+</table>
+<h2>Composition</h2>
+<pre><code class="language-text">before_model → context_policy → prompt_trace
+before_tool  → identity_check → policy_decision → approval_if_needed
+after_tool   → receipt_capture → state_diff → next_stage_or_recovery
+</code></pre>
+<p>The runtime should display the effective order. When two hooks rewrite arguments, order changes behavior. When an audit hook fails, the design must state whether business execution blocks or observation degrades.</p>
+<h2>HookSpec</h2>
+<pre><code class="language-yaml">hook_id: payroll.before_commit.policy
+event: before_tool
+priority: 200
+reads: [principal, intent, tool_digest, resource_scope]
+writes: [policy_decision]
+idempotency_key: run_id + intent_digest
+on_failure: deny
+emits: [policy.decided]
+owner: security-platform
+version: 7
+</code></pre>
+<h2>Relation to G5</h2>
+<p>G5 keeps its historical identifier and focuses on deterministic governance enforcement. Hook Composition spans a wider set of responsibilities, so no new collaboration pattern has been added.</p>
+<h2>Common failures</h2>
+<ul>
+<li>Effective order depends on registration order and remains invisible.</li>
+<li>Retry repeats a notification, quota charge, or external action.</li>
+<li>Policy source, decision, enforcement, and logging live in one handler.</li>
+<li>Failure of a non-critical observation hook blocks the main task.</li>
+<li>Parent and child agents use different hook sets without version evidence.</li>
+</ul>
+<h2>Review questions</h2>
+<ol>
+<li>Which event triggers each hook, and what state does it read or write?</li>
+<li>Are order and conflict rules explicit?</li>
+<li>Are retry, resume, and duplicate events idempotent?</li>
+<li>Does failure fail open, fail closed, or escalate?</li>
+<li>Can a run show the effective hook set and versions?</li>
+</ol>
+<h2>Source</h2>
+<p>The Governance workshop separated policy source, decision, enforcement, and evidence. The Collaboration workshop added stage transitions, cross-agent triggers, and recovery. This topic joins both discussions while retaining G5 as the historical governance entry.</p>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Hook Composition · Make hidden callbacks a readable control structure</em>, ADPS Topic Study, 26 August 2026.</p><p><a href="/topics/">Topic index</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

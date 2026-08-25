@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hook 组合 · 把隐藏回调变成可读的控制结构 · ADPS</title>
+    <meta name="description" content="Hook 组合专题：编排、治理、观测与恢复 Hook 的职责、顺序、幂等和失败语义。">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/topics/hook-composition/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/hook-composition/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/hook-composition/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a><a href="/zh/cases/">案例</a><a href="/zh/workshops/">研讨会</a><a href="/zh/topics/" aria-current="page">专题</a><a href="/zh/founders/">团队</a>
+                <details class="site-nav-more"><summary>更多</summary><div class="site-nav-more-menu"><a href="/zh/concepts/">概念库</a><a href="/zh/research/">论文与研究</a><a href="/zh/positions/">技术立场</a><a href="/zh/news/">新闻</a><a href="/zh/join/">加入我们</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/topics/hook-composition/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/topics/">专题</a><span style="margin:0 0.45rem;">/</span>Hook 组合</p>
+<header class="publication-head"><p class="publication-series">ADPS 专题研究</p><h1>Hook 组合 · 把隐藏回调变成可读的控制结构</h1><p class="publication-deck">在生命周期事件上编排治理、观测、恢复与阶段流转，并显式处理顺序、幂等和失败。</p></header>
+<p>Hook 把确定性代码放到 Agent 生命周期的固定事件上。它可以在模型调用前收缩上下文，在工具调用前检查权限，在阶段结束后启动下一位 Agent，也可以记录 trace、保存 checkpoint 或清理资源。</p>
+<p>Hook 是机制。具体职责来自它所在的事件、读取的状态、拥有的权限以及失败后的处理方式。</p>
+<h2>四类职责</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">类别</th>
+<th style="text-align: left;">典型事件</th>
+<th style="text-align: left;">主要动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">编排</td>
+<td style="text-align: left;">artifact accepted、stage completed</td>
+<td style="text-align: left;">启动下一阶段、路由任务、聚合结果</td>
+</tr>
+<tr>
+<td style="text-align: left;">治理</td>
+<td style="text-align: left;">before tool、before commit</td>
+<td style="text-align: left;">鉴权、策略裁决、审批、限额与参数复核</td>
+</tr>
+<tr>
+<td style="text-align: left;">观测</td>
+<td style="text-align: left;">model/tool/step completed</td>
+<td style="text-align: left;">写入事件、版本、状态差异和外部回执</td>
+</tr>
+<tr>
+<td style="text-align: left;">恢复</td>
+<td style="text-align: left;">failure、timeout、cancel</td>
+<td style="text-align: left;">保存 checkpoint、补偿、回收租约、升级人工</td>
+</tr>
+</tbody>
+</table>
+<h2>组合图</h2>
+<pre><code class="language-text">before_model
+  → context_policy
+  → prompt_trace
+
+before_tool
+  → identity_check
+  → policy_decision
+  → approval_if_needed
+
+after_tool
+  → receipt_capture
+  → state_diff
+  → next_stage_or_recovery
+</code></pre>
+<p>运行时需要展示最终顺序。两个 Hook 都修改参数时，先后顺序会改变结果；一个审计 Hook 失败时，是阻断业务还是降级记录，也必须提前定义。</p>
+<h2>HookSpec</h2>
+<pre><code class="language-yaml">hook_id: payroll.before_commit.policy
+event: before_tool
+priority: 200
+reads: [principal, intent, tool_digest, resource_scope]
+writes: [policy_decision]
+idempotency_key: run_id + intent_digest
+on_failure: deny
+emits: [policy.decided]
+owner: security-platform
+version: 7
+</code></pre>
+<h2>与 G5 的关系</h2>
+<p>G5 保留历史编号，聚焦治理中的确定性执行点。Hook 组合覆盖更大的范围，所以不增加新的协作模式编号。若未来出现无法由现有模式和机制说明的独立问题，再讨论目录调整。</p>
+<h2>常见问题</h2>
+<ul>
+<li>Hook 顺序依赖代码注册顺序，运行图不可见。</li>
+<li>重试时重复发通知、扣配额或提交外部动作。</li>
+<li>策略来源、裁决、执行和日志写进同一个 handler。</li>
+<li>一个非关键观测 Hook 故障，意外阻断主任务。</li>
+<li>子 Agent 与父 Agent 使用不同 Hook 集合，却没有版本记录。</li>
+</ul>
+<h2>评审问题</h2>
+<ol>
+<li>每个 Hook 由什么事件触发，读写哪些状态？</li>
+<li>顺序和冲突规则是否显式？</li>
+<li>重试、恢复和重复事件是否幂等？</li>
+<li>失败时 fail-open、fail-closed 还是升级人工？</li>
+<li>运行记录能否显示最终 Hook 集合和版本？</li>
+</ol>
+<h2>来源</h2>
+<p>治理研讨会明确了策略来源、裁决、执行与证据的分层；协作研讨会补充了阶段流转、跨 Agent 触发和恢复职责。本专题合并两场讨论，G5 继续作为历史与治理入口。</p>
+<div class="document-citation"><p><strong>引用建议：</strong>ADPS，《Hook 组合 · 把隐藏回调变成可读的控制结构》，ADPS 专题研究，2026-08-26。</p><p><a href="/zh/topics/">专题目录</a> · <a href="/zh/workshops/collaboration-2026-08-25/">协作研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

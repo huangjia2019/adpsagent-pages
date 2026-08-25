@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaboration · How multiple participants complete one body of work · ADPS</title>
+    <meta name="description" content="ADPS Collaboration module overview covering three collaboration planes, topology lowering, handoff contracts, delegated authority, isolation, hooks, and verification.">
+    <meta property="og:image" content="https://adpsagent.com/images/workshops/topology-governance-matrix-en.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/collaboration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/collaboration/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">ext</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/governance/">Governance module overview</a>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
+              <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/concepts/">Concepts home</a>
+              <a href="/concepts/control-narrative-dualism/">Control/Narrative Planes</a>
+              <a href="/concepts/execution-vs-content/">Execution vs Content</a>
+              <a href="/concepts/unified-session-state/">Three State Planes</a>
+              <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+              <a href="/concepts/anchor-ledger-collection/">Anchor / Ledger / Collection</a>
+              <a href="/concepts/scratchpad/">Scratchpad Board</a>
+              <a href="/concepts/memory-envelope/">Memory Envelope</a>
+              <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+              <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+              <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+              <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+              <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+              <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+              <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+              <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+              <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+              <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+              <a href="/concepts/capability-certification-lifecycle/">Capability Certification</a>
+              <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+              <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+              <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+              <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+              <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+              <a href="/concepts/topology-lowering/">Topology Lowering</a>
+              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+              <a href="/concepts/handoff-contract/">Handoff Contract</a>
+              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+              <a href="/concepts/hook-composition/">Hook Composition</a>
+              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+              <a href="/concepts/context-contract/">Context Contract</a>
+              <a href="/concepts/plan-compilation/">Plan Compilation</a>
+              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+              <a href="/concepts/durable-intent/">Durable Intent</a>
+              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+            </div></div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>Collaboration</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent Design Pattern White Paper · Module Overview</p>
+<h1>Collaboration · How multiple participants complete one body of work</h1>
+<p class="publication-deck">The movement of tasks, context, authority, evidence, and responsibility across participants.</p>
+</header>
+
+<p>Collaboration pays off through task scale, specialist boundaries, independent review, or fault isolation. Adding participants also adds hand-off loss, resource conflicts, and goal drift. This module defines those boundaries and shows how the six collaboration patterns fit together.</p>
+<p><img alt="Three collaboration planes" src="/images/workshops/collaboration-three-planes-en.svg"></p>
+<h2>Three collaboration planes</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Plane</th>
+<th style="text-align: left;">Typical question</th>
+<th style="text-align: left;">Engineering objects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Agent-Agent</strong></td>
+<td style="text-align: left;">How should work be divided, parallelized, handed off, reviewed, and isolated?</td>
+<td style="text-align: left;">topology, role, artifact, handoff, workspace, trace</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Human-Agent</strong></td>
+<td style="text-align: left;">Where do people set intent, provide evidence, approve, take over, and accept?</td>
+<td style="text-align: left;">intent, interrupt, checkpoint, approval, acceptance</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Human-Human around the agent</strong></td>
+<td style="text-align: left;">How do decisions and responsibility survive for later people and agents?</td>
+<td style="text-align: left;">RFC, ADR, runbook, decision record</td>
+</tr>
+</tbody>
+</table>
+<p>The third plane often remains in meetings, chat, and individual memory. Decisions, evidence, and boundaries that affect later work belong in versioned assets; raw conversation does not need to be copied wholesale.</p>
+<h2>Design semantics and runtime primitives</h2>
+<p>Complex collaboration graphs often reduce to serial, parallel, and routing edges. These primitives describe connectivity. Loops, hierarchy, and orchestration retain higher-level semantics about global state, review, reassignment, and acceptance.</p>
+<p>Hierarchical Delegation may compile to routing, parallel calls, and gather. Adversarial Review may compile to generate, review, adjudicate, and conditional loop. Similar edges still carry different responsibility. ADPS calls this <a href="/concepts/topology-lowering/">topology lowering</a>. Runtime records should preserve the design pattern, roles, contracts, and acceptance references.</p>
+<h2>Four layers of collaboration design</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Layer</th>
+<th style="text-align: left;">Entries</th>
+<th style="text-align: left;">Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Relationship patterns</td>
+<td style="text-align: left;"><a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>, <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>, <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>, <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a></td>
+<td style="text-align: left;">Who collaborates, and where global state and responsibility live</td>
+</tr>
+<tr>
+<td style="text-align: left;">Constraint</td>
+<td style="text-align: left;"><a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation</a></td>
+<td style="text-align: left;">Context, tools, credentials, budget, workspace, and failure propagation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Distributed candidate</td>
+<td style="text-align: left;"><a href="/patterns/c6-choreography/">C6 Choreography</a></td>
+<td style="text-align: left;">Event collaboration without a central orchestrator</td>
+</tr>
+<tr>
+<td style="text-align: left;">Mechanisms</td>
+<td style="text-align: left;">hooks, skills, event buses, interpreters, agent protocols</td>
+<td style="text-align: left;">Runtime capabilities used by several patterns</td>
+</tr>
+</tbody>
+</table>
+<p>Dynamic workflows, sub-agents, and code-act systems can still have one interpreter owning the full plan. C6 is distinguished by distributed control, not by whether the flow was written in advance.</p>
+<h2>Topology governance matrix</h2>
+<p><img alt="Topology governance matrix" src="/images/workshops/topology-governance-matrix-en.svg"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Structure</th>
+<th style="text-align: left;">Identity</th>
+<th style="text-align: left;">Authority</th>
+<th style="text-align: left;">Safeguards</th>
+<th style="text-align: left;">Provenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Serial</td>
+<td style="text-align: left;">Principal at each hop</td>
+<td style="text-align: left;">Scoped per leg and reclaimed</td>
+<td style="text-align: left;">Gates stop propagation</td>
+<td style="text-align: left;">Linear responsibility chain</td>
+</tr>
+<tr>
+<td style="text-align: left;">Parallel</td>
+<td style="text-align: left;">Independent shard roles</td>
+<td style="text-align: left;">Branch isolation; read-only gather</td>
+<td style="text-align: left;">Branch checks plus global validation</td>
+<td style="text-align: left;">One trace with child spans</td>
+</tr>
+<tr>
+<td style="text-align: left;">Routing</td>
+<td style="text-align: left;">Route matches identity and risk</td>
+<td style="text-align: left;">Tighter scope on high-risk routes</td>
+<td style="text-align: left;">Ingress and differentiated controls</td>
+<td style="text-align: left;">Route reason and full path</td>
+</tr>
+</tbody>
+</table>
+<p>Topology describes how control unfolds; it does not replace authorization or audit. Effective authority narrows across the user, current task, agent role, tool, and resource.</p>
+<h2>Handoff Contract</h2>
+<p>Conversation history does not reliably express binding decisions, rejected paths, authority, or acceptance criteria.</p>
+<pre><code class="language-yaml">handoff_id: h_01K...
+goal: preserve the compatibility interface
+from_role: requirements-agent
+to_role: implementation-agent
+artifacts:
+  - uri: artifact://spec/417
+    version: sha256:...
+decisions:
+  - choice: keep the public schema
+    evidence: adr://23
+authority:
+  allowed_tools: [repo_read, patch_write]
+  resource_scope: repo://service-a
+acceptance:
+  checks: [unit_tests, contract_tests]
+</code></pre>
+<p>A <a href="/concepts/handoff-contract/">Handoff Contract</a> transfers goal, artifacts, decisions, responsibility, authority, and acceptance. The receiver explicitly accepts or rejects it, and temporary authority from the previous leg is reclaimed.</p>
+<h2>Same-stack, heterogeneous, and cross-session collaboration</h2>
+<p>Agents in one session share a runtime but still need constrained context and tools. Separate sessions or worktrees isolate files, not requirement IDs, shared configuration, databases, or external environments. The scheduler must declare a <a href="/concepts/write-conflict-domain/">write-conflict domain</a> before parallel execution.</p>
+<p>Heterogeneous agents may use an upper-level coordinator or distributed capability discovery and message forwarding. Both designs require capability descriptions, identity, status, timeout, idempotency, and traceable hand-off.</p>
+<h2>Independent review and feedback</h2>
+<p>Separating generator and reviewer reduces self-review bias but can sever execution feedback. Review artifacts should carry evidence, risks, conditions, and revalidation requirements. C3 sets conditions, C4 transfers them, and X1/X2 verify the external result.</p>
+<h2>Hook composition</h2>
+<p>Hooks can advance stages, enforce policy decisions, record observation events, or preserve state for recovery. G5 keeps its historical identifier for unavoidable governance enforcement points. Cross-module use is documented in <a href="/topics/hook-composition/">Hook Composition</a>.</p>
+<h2>From exploration to production pinning</h2>
+<p>Development can try new task splits and topologies. Test and staging progressively pin agents, models, tools, policies, and the main runtime graph. Production keeps dynamic choices only inside evaluated boundaries. Version changes require new evidence.</p>
+<h2>When multiple agents are justified</h2>
+<ol>
+<li>A long task inflates one context until early detail interferes with current judgement.</li>
+<li>Subtasks require different skills, tools, data, or authority.</li>
+<li>A high-risk artifact needs structurally independent review.</li>
+<li>Work can be partitioned safely and wall-clock gains exceed communication and aggregation cost.</li>
+</ol>
+<p>If one agent with clear skills can complete the task, the single-agent baseline is usually steadier.</p>
+<h2>Verification</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Measure</th>
+<th style="text-align: left;">What to observe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Goal retention</td>
+<td style="text-align: left;">Whether the final artifact still meets the original goal and non-goals</td>
+</tr>
+<tr>
+<td style="text-align: left;">Hand-off loss</td>
+<td style="text-align: left;">Where decisions, evidence, authority, or open questions disappear</td>
+</tr>
+<tr>
+<td style="text-align: left;">Resource conflict</td>
+<td style="text-align: left;">Collisions over files, identifiers, configuration, and external state</td>
+</tr>
+<tr>
+<td style="text-align: left;">Aggregation quality</td>
+<td style="text-align: left;">Contradiction, duplication, partial failure, and evidence ranking</td>
+</tr>
+<tr>
+<td style="text-align: left;">Isolation effect</td>
+<td style="text-align: left;">Whether worker failure or excess authority stops locally</td>
+</tr>
+<tr>
+<td style="text-align: left;">Collaboration overhead</td>
+<td style="text-align: left;">Added tokens, latency, cost, and human review versus the baseline</td>
+</tr>
+</tbody>
+</table>
+<h2>Workshop record</h2>
+<p>This overview incorporates the first Collaboration Module Workshop on 25 August 2026. Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang and Wei Wang.</p>
+<p><a href="/workshops/collaboration-2026-08-25/">Read the workshop record</a> · <a href="/topics/human-agent-interaction/">Human-Agent collaboration</a> · <a href="/topics/abstraction-reconstruction/">Abstraction and Reconstruction</a></p>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Collaboration: How multiple participants complete one body of work</em>, Agent Design Pattern White Paper v0.9, 26 August 2026.</p><p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">This is a public review draft. Named implementations appear in the case library; internal examples discussed in workshops are anonymized.</p></div>
+        </article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

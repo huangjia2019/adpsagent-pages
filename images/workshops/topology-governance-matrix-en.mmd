@@ -1,0 +1,13 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Arial, sans-serif", "primaryColor": "#ffffff", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f"}, "themeCSS": ".nodeLabel, .edgeLabel { font-family: Inter, Arial, sans-serif !important; }", "flowchart": {"curve": "linear", "nodeSpacing": 38, "rankSpacing": 48}}}%%
+flowchart LR
+    T["Runtime topology<br/><small>serial · parallel · routing</small>"]
+    I["Identity<br/><small>who is represented</small>"]
+    A["Authority<br/><small>how scope narrows</small>"]
+    Q["Safeguards<br/><small>where errors stop</small>"]
+    V["Provenance<br/><small>how results are reconstructed</small>"]
+    T --> I --> A --> Q --> V
+
+    classDef topology fill:#0b1b30,stroke:#0b1b30,color:#ffffff;
+    classDef check fill:#ffffff,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    class T topology;
+    class I,A,Q,V check;

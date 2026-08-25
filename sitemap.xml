@@ -210,4 +210,40 @@
   <url><loc>https://adpsagent.com/zh/patterns/governance/</loc><lastmod>2026-08-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/patterns/governance/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/patterns/governance/"/></url>
   <url><loc>https://adpsagent.com/workshops/governance-2026-08-18/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/governance-2026-08-18/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/governance-2026-08-18/"/></url>
   <url><loc>https://adpsagent.com/zh/workshops/governance-2026-08-18/</loc><lastmod>2026-08-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/governance-2026-08-18/"/><xhtml:link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/governance-2026-08-18/"/></url>
+  <url><loc>https://adpsagent.com/zh/workshops/collaboration-2026-08-25/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/workshops/collaboration-2026-08-25/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/patterns/collaboration/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/patterns/collaboration/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/topics/abstraction-reconstruction/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/topics/abstraction-reconstruction/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/topics/hook-composition/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/topics/hook-composition/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/topics/agent-os-engineering/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/topics/agent-os-engineering/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/abstraction-reconstruction-loop/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/abstraction-reconstruction-loop/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/topology-lowering/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/topology-lowering/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/topology-governance-matrix/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/topology-governance-matrix/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/handoff-contract/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/handoff-contract/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/three-collaboration-planes/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/three-collaboration-planes/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/hook-composition/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/hook-composition/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/probabilistic-core-deterministic-shell/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/probabilistic-core-deterministic-shell/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/knowledge-compilation/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/knowledge-compilation/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/context-contract/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/context-contract/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/plan-compilation/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/plan-compilation/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/dual-feedback-clock/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/dual-feedback-clock/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/durable-intent/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/durable-intent/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/zh/concepts/write-conflict-domain/</loc><lastmod>2026-08-26</lastmod></url>
+  <url><loc>https://adpsagent.com/concepts/write-conflict-domain/</loc><lastmod>2026-08-26</lastmod></url>
 </urlset>

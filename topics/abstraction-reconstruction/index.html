@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abstraction and Reconstruction · From field evidence to patterns and back · ADPS</title>
+    <meta name="description" content="The ADPS abstraction-reconstruction method: extract a pattern, then restore roles, objects, state, authority, evidence, and acceptance.">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/abstraction-reconstruction-en.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/abstraction-reconstruction/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/abstraction-reconstruction/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/abstraction-reconstruction/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/abstraction-reconstruction/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Abstraction and Reconstruction</p>
+<header class="publication-head"><p class="publication-series">ADPS Topic Study</p><h1>Abstraction and Reconstruction · From field evidence to patterns and back</h1><p class="publication-deck">Control abstraction loss so a pattern can explain common structure and still recover what implementation needs.</p></header>
+<p>Pattern languages work by abstraction. Repeated structures become names, problems, mechanisms, and boundaries that teams can compare. Compression also loses information. If the distinctions that determine outcomes disappear, the pattern may look clean but cannot guide implementation.</p>
+<p><img alt="Abstraction and reconstruction" src="/images/topics/abstraction-reconstruction-en.svg"></p>
+<h2>Two directions</h2>
+<p><strong>Abstraction</strong> finds recurring roles, state transitions, control points, and evidence across cases.</p>
+<p><strong>Reconstruction</strong> places the pattern back into a concrete setting: who starts the work, which objects change, where current state lives, who may alter it, what proves the result, and who takes over on failure.</p>
+<h2>Abstraction-loss test</h2>
+<p>A distinction must survive when it changes business judgement, state transition, power boundary, evidentiary effect, next action, responsibility, or acceptance.</p>
+<p>For example, human approval can be abstracted as a gate. In payroll, code deployment, and content recommendation, the approved object, preconditions, expiry, rollback, and accountable role differ. Those fields determine whether the gate works.</p>
+<h2>Use in ADPS</h2>
+<p>A new pattern should extract common structure from independent examples, define boundaries and failure modes, then reconstruct roles, objects, state, authority, evidence, exceptions, and acceptance in a case. A statement that travels upward but cannot come back down remains a proposition, not a finished pattern.</p>
+<h2>Relation to domain modelling</h2>
+<p>Domain modelling finds objects, language, states, and invariants. Pattern language organizes recurring collaboration and control structures across projects. Reconstruction is where they meet: the domain model gives a pattern precise resource boundaries, authority semantics, and acceptance facts.</p>
+<h2>Review questions</h2>
+<ol>
+<li>Which field differences did the abstraction remove?</li>
+<li>Do any of them change judgement, authority, state, or acceptance?</li>
+<li>Which data structures, events, and responsible roles appear after reconstruction?</li>
+<li>Can runtime evidence lead back to the design decision?</li>
+<li>Does the structure survive a second context, or only the vocabulary?</li>
+</ol>
+<h2>Source</h2>
+<p>The method received its explicit ADPS formulation during the Collaboration Module Workshop on 25 August 2026 and is used to review pattern layering, topology lowering, and human-agent boundaries.</p>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Abstraction and Reconstruction · From field evidence to patterns and back</em>, ADPS Topic Study, 26 August 2026.</p><p><a href="/topics/">Topic index</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

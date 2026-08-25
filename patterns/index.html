@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Design Pattern White Papers · Pattern Matrix · ADPS</title>
-    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.8: 27 matrix patterns, three cross-cutting engineering planes, five extensions, one candidate, and a selection method.">
+    <meta name="description" content="ADPS Agent Design Pattern White Paper v0.9: 27 matrix patterns, three cross-cutting engineering planes, five extensions, one candidate, and a selection method.">
     <meta property="og:image" content="https://adpsagent.com/images/matrix-v08-en-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/patterns/">
@@ -109,6 +109,7 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
               <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
@@ -151,6 +152,19 @@
               <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
               <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
               <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+              <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+              <a href="/concepts/topology-lowering/">Topology Lowering</a>
+              <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+              <a href="/concepts/handoff-contract/">Handoff Contract</a>
+              <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+              <a href="/concepts/hook-composition/">Hook Composition</a>
+              <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+              <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+              <a href="/concepts/context-contract/">Context Contract</a>
+              <a href="/concepts/plan-compilation/">Plan Compilation</a>
+              <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+              <a href="/concepts/durable-intent/">Durable Intent</a>
+              <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
             </div></div>
         </aside>
         <div class="docs-main">
@@ -161,7 +175,7 @@
                 <h1>Pattern Catalog and Selection Framework</h1>
                 <p class="publication-deck">Cognitive function × execution topology · 27 matrix patterns · 3 cross-cutting engineering planes · five extensions and one candidate.</p>
             </header>
-            <p>v0.8 contains <strong>27 cell-bound patterns, three cross-cutting engineering planes, five extension patterns, and one candidate</strong>. The dual axis locates patterns and the engineering planes carry system-wide responsibilities. Lifecycle, composition, and human-agent operating boundaries are documented as separate topics.</p>
+            <p>v0.9 contains <strong>27 cell-bound patterns, three cross-cutting engineering planes, five extension patterns, and one candidate</strong>. The dual axis locates patterns and the engineering planes carry system-wide responsibilities. Lifecycle, composition, and human-agent operating boundaries are documented as separate topics.</p>
             <p>Pattern specifications define recurring problems, mechanisms, boundaries, and verification. <a href="/cases/">Blue Book cases</a> show how pattern combinations behave under named engineering constraints; <a href="/workshops/">workshop records</a> preserve field questions and unresolved disagreement.</p>
 
             <h2>Why agents need a new set of design patterns</h2>
@@ -238,7 +252,7 @@
             </ul>
 
             <h2>White-paper catalog</h2>
-            <p>The catalog contains 27 matrix patterns and three cross-cutting engineering planes. Five extension specifications cover more specific runtime structures: M5 Procedural Memory, R5 Talker-Reasoner, A5 Minimal Tool Set, C5 Sub-Agent Isolation, and G5 Hooks Pipeline. C6 Choreography remains a candidate pending evidence across more than the collaboration function. Extensions are marked <span class="ext-badge">ext</span>.</p>
+            <p>White Paper v0.9 contains 27 matrix patterns and three cross-cutting engineering planes. Five extension specifications cover more specific runtime structures: M5 Procedural Memory, R5 Talker-Reasoner, A5 Minimal Tool Set, C5 Sub-Agent Isolation, and G5 Hooks Pipeline. C6 Choreography remains a candidate pending evidence across more than the collaboration function. Extensions are marked <span class="ext-badge">ext</span>.</p>
             <p>Every specification follows the same review structure: problem, classification, solution and mechanics, applicability, known failure modes, verification metrics, reference implementation, application example, related patterns, and design conclusion.</p>
 
             <h3>Perception · 4 core</h3>
@@ -285,7 +299,7 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/f4-self-heal-loop/" style="font-weight: 600;">F4 · Self-Heal Loop</a><span style="color: var(--color-text-muted);"> — When a deterministic failure signal fires, the agent automatically diagnoses, repairs, verifies, and loops until convergence or a circuit break.</span></li>
             </ul>
             <h3>Collaboration · 4 core + 2 extensions</h3>
-            <p class="grp-intro">Division of labor across agents. Collaboration is forced by scale; below that scale a single agent is usually steadier. The floor: each agent has its own context, permissions, output, and failure boundary.</p>
+            <p class="grp-intro">Collaboration governs the movement of tasks, context, authority, evidence, and responsibility across participants. The <a href="/patterns/collaboration/">module overview</a> separates relationship patterns, isolation constraints, distributed candidates, and mechanisms, then explains topology lowering.</p>
             <ul style="list-style: none; margin: 0.5rem 0 1.75rem 0; padding: 0;">
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c1-hierarchical-delegation/" style="font-weight: 600;">C1 · Hierarchical Delegation</a><span style="color: var(--color-text-muted);"> — A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/c2-fan-out-gather/" style="font-weight: 600;">C2 · Fan-Out/Gather</a><span style="color: var(--color-text-muted);"> — The orchestrator distributes independently executable subtasks to parallel sub-agents, then an aggregator deduplicates, resolves conflicts, and merges their results.</span></li>
@@ -299,6 +313,7 @@
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g1-approval-gate/" style="font-weight: 600;">G1 · Approval Gate</a><span style="color: var(--color-text-muted);"> — Route a concrete intent by principal, immutable tool version, canonical arguments, resource, environment, impact, and preconditions. Revalidate on resume; consume approval once.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g2-blast-radius-control/" style="font-weight: 600;">G2 · Blast-Radius Control</a><span style="color: var(--color-text-muted);"> — Set hard limits for resource, amount, batch, rate, budget, tenant, and fleet aggregation, then keep those limits outside agent judgement.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g3-progressive-commitment/" style="font-weight: 600;">G3 · Progressive Commitment</a><span style="color: var(--color-text-muted);"> — Hold, promote, narrow, demote, freeze, or retire authority by agent version, capability, scenario, resource, and environment.</span></li>
+                <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g4-observability-harness/" style="font-weight: 600;">G4 · Observability Harness · legacy entry → X1</a><span style="color: var(--color-text-muted);"> — The identifier and old route remain visible for catalog history. The current cross-cutting specification is X1 Observability.</span></li>
                 <li style="margin-bottom: 0.7rem; line-height: 1.55;"><a href="/patterns/g5-hooks-pipeline/" style="font-weight: 600;">G5 · Hooks Pipeline</a> <span class="ext-badge">ext</span><span style="color: var(--color-text-muted);"> — Enforce deterministic controls at unavoidable lifecycle points while separating policy source, decision, enforcement, and evidence. <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> provides a public code path.</span></li>
             </ul>
             <h3>Cross-cutting engineering planes</h3>
@@ -333,6 +348,7 @@
             <p>Its entry point is a <strong>Pattern Selection Card</strong> with three panels: ASSESS (which cognitive functions the task needs), ROUTE (which topology fits the constraints), SELECT (which patterns live at the intersections). The card turns "I want to build an X agent" into a reviewable shortlist of candidate patterns.</p>
 
             <h2>Workshop records</h2>
+            <p><strong><a href="/workshops/collaboration-2026-08-25/">First Collaboration Module Workshop</a> · 25 August 2026.</strong> Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang and Wei Wang. The session covered topology lowering, delegated authority, cross-session conflicts, Handoff Contracts, Hook Composition, three collaboration planes, Agent OS, and abstraction-reconstruction.</p>
             <p><strong><a href="/workshops/governance-2026-08-18/">First Governance Module Workshop</a> · 18 August 2026.</strong> Hosts: Willem Jiang and Jia Huang. Core workshop guests: Yangyang Ma, Dong Zhang, Qingfeng Li, Bo Long, Yibo Xu, and Bin Wu. Topics included dangerous tool calls, agent fleets, lifecycle, sandboxing and domain authorization, assembly-time filtering and runtime review, durable intent, capability-specific authority, agent registry, evidence attribution, and the change loop across observation, evaluation, reflection, and governance.</p>
             <p><strong><a href="/workshops/perception-2026-08-13/">First Perception Module Workshop</a> · 13 August 2026.</strong> Host: Jia Huang. Core workshop guests: Dong Zhang, Xianglong Huang, Qingfeng Li, and Cheng Huang. The session covered signal admission, event ingress, the boundary between multi-source and multi-modal input, and context in AI-driven software engineering.</p>
             <p><strong><a href="/workshops/reflection-2026-08-12/">First Reflection Module Workshop</a> · 12 August 2026.</strong> Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang, Mo Zhou, Wei Wang, Qianchun Lu, Pylon Peng, and Jiaqi Li. The session covered online and offline reflection, feedback latency, evaluation evidence, skill evolution, attribution, and self-repair boundaries.</p>
@@ -372,8 +388,8 @@
                 <li>Liu Chunlei, Yi Hong, and Wang Lin, <em>Technology Control: Seeking Efficiency from Methods</em> (Chinese), CITIC Press, 2024, ISBN 9787521764666.</li>
             </ul>
             <h2>Version history</h2>
-            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved the then-G4 Observability specification outside the matrix; added lifecycle, a payroll running example, and revised Governance.</td></tr><tr><td>v0.5</td><td>20 August 2026</td><td>Established X1–X3 as cross-cutting engineering planes; retained the old G4 route as a legacy entry; added a thin lifecycle rail to the canonical figure.</td></tr><tr><td>v0.6</td><td>25 August 2026</td><td>Revised the canonical title, proportions, and typography; combined offline evaluation and canary under validation.</td></tr><tr><td>v0.7</td><td>25 August 2026</td><td>Returned the canonical figure to the dual axis and cross-cutting planes; moved lifecycle, composition, and human-agent boundaries into separate topics.</td></tr><tr><td>v0.8</td><td>25 August 2026</td><td>Removed explanatory microcopy from the cross-cutting cards, tightened the lower section, and renamed X2 Evaluation &amp; Validation.</td></tr></tbody></table></div>
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.8: Pattern Catalog and Selection Framework</em>, 25 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
+            <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead><tbody><tr><td>v0.1</td><td>May 2026</td><td>Established seven cognitive functions and pattern cards.</td></tr><tr><td>v0.2</td><td>18 June 2026</td><td>Converged 28 core patterns, six execution topologies, and engineering contracts.</td></tr><tr><td>v0.3</td><td>13 July 2026</td><td>Aligned web and local catalogs; added extension and candidate status plus evidence boundaries.</td></tr><tr><td>v0.4</td><td>19 August 2026</td><td>Retained the dual axis; moved the then-G4 Observability specification outside the matrix; added lifecycle, a payroll running example, and revised Governance.</td></tr><tr><td>v0.5</td><td>20 August 2026</td><td>Established X1–X3 as cross-cutting engineering planes; retained the old G4 route as a legacy entry; added a thin lifecycle rail to the canonical figure.</td></tr><tr><td>v0.6</td><td>25 August 2026</td><td>Revised the canonical title, proportions, and typography; combined offline evaluation and canary under validation.</td></tr><tr><td>v0.7</td><td>25 August 2026</td><td>Returned the canonical figure to the dual axis and cross-cutting planes; moved lifecycle, composition, and human-agent boundaries into separate topics.</td></tr><tr><td>v0.8</td><td>25 August 2026</td><td>Removed explanatory microcopy from the cross-cutting cards, tightened the lower section, and renamed X2 Evaluation &amp; Validation.</td></tr><tr><td>v0.9</td><td>26 August 2026</td><td>Reorganized Collaboration; added its module overview, workshop record, topology-lowering and handoff concepts; retained the G4 legacy route to X1 while keeping the v0.8 canonical figure.</td></tr></tbody></table></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Agent Design Pattern White Paper v0.9: Pattern Catalog and Selection Framework</em>, 26 August 2026.</p><p><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Scope:</strong> This release defines architecture vocabulary, applicability boundaries, and a review method. It does not certify products, implementations, or organizational readiness. Pattern specifications, illustrative scenarios, and attributed Blue Book cases use different evidence standards; scenarios explain mechanisms.</p></div>
 
         </article>
 

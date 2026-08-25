@@ -1,0 +1,16 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Arial, sans-serif", "primaryColor": "#f7f9fc", "primaryTextColor": "#0b1b30", "primaryBorderColor": "#b57a18", "lineColor": "#56708f", "secondaryColor": "#eef3f8", "tertiaryColor": "#ffffff"}, "flowchart": {"curve": "basis", "nodeSpacing": 55, "rankSpacing": 65}}}%%
+flowchart LR
+    AA["Agent-Agent<br/><small>decompose · parallelize · hand off · review</small>"]
+    HA["Human-Agent<br/><small>intent · authority · takeover · acceptance</small>"]
+    HH["Human-Human around agents<br/><small>decisions · evidence · responsibility · continuity</small>"]
+    SYS(("Collaboration<br/>system"))
+
+    AA --> SYS
+    HA --> SYS
+    HH --> SYS
+
+    classDef plane fill:#f7f9fc,stroke:#b57a18,stroke-width:2px,color:#0b1b30;
+    classDef center fill:#0b1b30,stroke:#0b1b30,stroke-width:2px,color:#ffffff;
+    class AA,HA,HH plane;
+    class SYS center;
+
