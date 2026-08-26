@@ -1018,6 +1018,10 @@ article.essay td {
     text-align: left;
     vertical-align: top;
 }
+article.essay table.workshop-roster th:nth-child(-n + 2),
+article.essay table.workshop-roster td:nth-child(-n + 2) {
+    white-space: nowrap;
+}
 article.essay hr {
     border: 0;
     text-align: center;
@@ -2360,6 +2364,13 @@ article.essay footer a { color: var(--color-link); }
         max-width: 100%;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    article.essay table.workshop-roster {
+        font-size: 0.88rem;
+    }
+    article.essay table.workshop-roster th,
+    article.essay table.workshop-roster td {
+        padding: 0.45rem 0.5rem;
     }
     /* 长标识符（如 REL_ADCS_THRUSTER_1553B_DIRECTEDAGGREGATION）在窄屏无断点可换，
        会把整页撑出横向滚动条。只在小屏允许任意位置断行。 */

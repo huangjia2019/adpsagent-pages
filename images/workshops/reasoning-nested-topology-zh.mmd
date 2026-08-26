@@ -1,0 +1,23 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  S[入口问题] --> C1[链式步骤]
+  C1 --> B{需要多个假设?}
+  B -->|否| C2[下一步骤]
+  B -->|是| H1[假设 A]
+  B -->|是| H2[假设 B]
+  H1 --> L1{证据足够?}
+  H2 --> L2{证据足够?}
+  L1 -->|否| E1[补充证据]
+  L2 -->|否| E2[补充证据]
+  E1 --> H1
+  E2 --> H2
+  L1 -->|是| G[统一收敛节点]
+  L2 -->|是| G
+  C2 --> G
+  G --> D[带证据的判断]
+  classDef route fill:#0f3a5f,stroke:#0f3a5f,color:#ffffff,stroke-width:2px;
+  classDef mode fill:#f7f9fc,stroke:#b8842b,color:#11213a,stroke-width:2px;
+  classDef artifact fill:#eef3f8,stroke:#0f3a5f,color:#11213a,stroke-width:2px;
+  class B,L1,L2 route;
+  class C1,C2,H1,H2,E1,E2 mode;
+  class S,G,D artifact;

@@ -1,0 +1,20 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  U[用户请求] --> C[粗场景分类]
+  C --> R[路由 Agent<br/>选择最终能力]
+  C --> A[候选 Agent A<br/>预取数据]
+  C --> B[候选 Agent B<br/>预取数据]
+  C --> D[候选 Agent C<br/>预取数据]
+  R --> M{命中已准备候选?}
+  A --> M
+  B --> M
+  D --> M
+  M -->|命中| O[复核后回复]
+  M -->|未命中| F[启动目标 Agent<br/>复用已取数据]
+  F --> O
+  classDef route fill:#0f3a5f,stroke:#0f3a5f,color:#ffffff,stroke-width:2px;
+  classDef mode fill:#f7f9fc,stroke:#b8842b,color:#11213a,stroke-width:2px;
+  classDef artifact fill:#eef3f8,stroke:#0f3a5f,color:#11213a,stroke-width:2px;
+  class R,M route;
+  class A,B,D,F mode;
+  class U,C,O artifact;

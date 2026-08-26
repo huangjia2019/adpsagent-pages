@@ -1,0 +1,19 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+block-beta
+  columns 2
+  A["Tool facts and sources"] B["Schema and format gate"]
+  D["Model judge"] C["Business steps and policy"]
+  E["Historical regression set"] F["Product and business sampling"]
+  space G["Release or return"]
+  A --> B
+  B --> C
+  C --> D
+  D --> E
+  E --> F
+  F --> G
+  classDef gate fill:#0f3a5f,stroke:#0f3a5f,color:#ffffff,stroke-width:2px;
+  classDef check fill:#f7f9fc,stroke:#b8842b,color:#11213a,stroke-width:2px;
+  classDef result fill:#eef3f8,stroke:#0f3a5f,color:#11213a,stroke-width:2px;
+  class B,D gate;
+  class A,C,E,F check;
+  class G result;

@@ -1,0 +1,20 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  U[User request] --> C[Coarse category]
+  C --> R[Routing agent<br/>selects final capability]
+  C --> A[Candidate agent A<br/>prefetches data]
+  C --> B[Candidate agent B<br/>prefetches data]
+  C --> D[Candidate agent C<br/>prefetches data]
+  R --> M{Prepared candidate hit?}
+  A --> M
+  B --> M
+  D --> M
+  M -->|Hit| O[Review and respond]
+  M -->|Miss| F[Start selected agent<br/>reuse fetched data]
+  F --> O
+  classDef route fill:#0f3a5f,stroke:#0f3a5f,color:#ffffff,stroke-width:2px;
+  classDef mode fill:#f7f9fc,stroke:#b8842b,color:#11213a,stroke-width:2px;
+  classDef artifact fill:#eef3f8,stroke:#0f3a5f,color:#11213a,stroke-width:2px;
+  class R,M route;
+  class A,B,D,F mode;
+  class U,C,O artifact;
