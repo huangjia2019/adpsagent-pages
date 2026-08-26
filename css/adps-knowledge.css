@@ -858,6 +858,10 @@
 }
 
 @media (max-width: 680px) {
+    .home-matrix-head h2 {
+        font-size: 1.4rem;
+    }
+
     .workshop-grid,
     .topic-grid,
     .home-path-grid {
