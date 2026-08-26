@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推理模块第一次研讨会 · ADPS</title>
+    <meta name="description" content="ADPS 推理模块研讨：推理产物、复杂度与风险路由、并行探索、假设验证、双模架构与工程验收。">
+    <meta property="article:published_time" content="2026-08-26">
+    <meta property="og:image" content="https://adpsagent.com/images/workshops/reasoning-selection-zh.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/zh/workshops/reasoning-2026-08-26/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/reasoning-2026-08-26/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/reasoning-2026-08-26/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/">案例</a>
+                <a href="/zh/workshops/" aria-current="page">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/chronicle/">来源时间线</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/workshops/reasoning-2026-08-26/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/workshops/">研讨会</a><span style="margin: 0 0.45rem;">/</span>推理 Reasoning</p>
+<header class="publication-head">
+  <p class="publication-series">ADPS 设计模式系列研讨会</p>
+  <h1>推理模块第一次研讨会</h1>
+  <p class="publication-deck">从单次回答走向有证据、有预算、有退出条件的推理系统。</p>
+</header>
+<p class="publication-date">2026-08-26</p>
+<table><thead><tr><th>研讨嘉宾</th><th>公开身份</th></tr></thead><tbody>
+<tr><td>李庆丰</td><td>新浪微博高级总监</td></tr>
+<tr><td>张栋</td><td>腾讯专家工程师，悟空研发安全负责人</td></tr>
+<tr><td>赵翰</td><td>蚂蚁 AIGC 多模态推理方向</td></tr>
+<tr><td>李娣娣</td><td>数智元镜产品业务负责人</td></tr>
+<tr><td>钟福海</td><td>去哪儿网资深技术专家</td></tr>
+<tr><td>熊钰柯</td><td>成都玄宿科技技术架构师、创业合伙人</td></tr>
+</tbody></table>
+
+<p>本次研讨以 R1–R5 的公开规范为基础，检查推理在生产系统里的输入、输出、资源预算、验证和停止条件。</p>
+
+<figure class="workshop-diagram"><img src="/images/workshops/reasoning-selection-zh.svg" alt="推理请求经过复杂度路由后进入链式、并行、循环或分层路径，最后形成结构化判断"><figcaption>推理拓扑的选择取决于任务难度、风险、证据状态和时延要求。多个模式可以嵌套。</figcaption></figure>
+
+<h2>讨论范围</h2>
+<ol>
+<li>哪些请求值得进入深度推理，哪些可以由规则或轻量路径处理？</li>
+<li>复杂度、风险、证据缺口和时延目标怎样共同影响路由？</li>
+<li>并行分支怎样保持独立，又怎样在超时和冲突后收口？</li>
+<li>循环推理在什么条件下停止、转交人工或放弃当前假设？</li>
+<li>怎样保存可审计的依据，同时不把模型私有推理 token 当成事实？</li>
+</ol>
+
+<h2>当前模式目录</h2>
+<table><thead><tr><th>模式</th><th>工程职责</th></tr></thead><tbody>
+<tr><td><a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a></td><td>管理推理摘要、证据绑定、决策记录与模型元数据</td></tr>
+<tr><td><a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a></td><td>选择模型、推理深度、成本档位与回退路径</td></tr>
+<tr><td><a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a></td><td>隔离候选路径，并按业务错误代价聚合</td></tr>
+<tr><td><a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a></td><td>用新证据更新假设，直到收敛或达到退出条件</td></tr>
+<tr><td><a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构</a></td><td>分离实时交互与后台深度推理</td></tr>
+</tbody></table>
+
+<h2>一个组合示例</h2>
+<p>线上服务出现间歇性超时，日志里同时出现网络抖动、配置变更和数据库慢查询。系统先用 R2 判断这不是可以直接套规则的普通告警，并设置时间与调用预算。R3 启动三个隔离分支，分别检查网络、配置和数据库；各分支只能读取同一份带时间戳的证据快照，不能看到其他分支的中间结论。</p>
+<p>聚合节点发现配置分支有直接证据，数据库分支仍有疑点，于是进入 R4：先在灰度实例复现，再验证回滚配置能否消除超时。若证据仍无法区分两个假设，系统携带假设树、已做检查和未决问题转交值班人员。R5 的交互者在这段时间只报告进度和继续收集事实，不自行宣布根因。最终决策记录交给行动模块，回滚权限仍由治理模块检查。</p>
+
+<h2>阅读路径</h2>
+<p>先读<a href="/zh/patterns/reasoning/">推理模块总纲</a>，确认推理产物与相邻模块的接口；再根据任务结构选择单个模式。需要改变外部系统时，继续检查<a href="/zh/patterns/action/">行动模块</a>与<a href="/zh/patterns/governance/">治理模块</a>。需要证明判断质量时，使用<a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>。</p>
+
+<h2>相关页面</h2>
+<ul>
+<li><a href="/zh/patterns/reasoning/">推理模块总纲</a></li>
+<li><a href="/zh/topics/pattern-composition/">Agent 模式组合</a></li>
+<li><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证专题</a></li>
+<li><a href="/zh/concepts/reasoning-assetization/">推理资产化</a></li>
+</ul>
+
+<p class="publication-note publication-note-end">本页列出研讨参与者，并按公开模式规范整理讨论范围。企业内部实践采用脱敏表述，不逐条对应个人或机构。</p>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">溯源记录</h2>
+  <dl>
+    <div><dt>来源记录</dt><dd>推理模块第一次研讨会；会议日期 <time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>来源日期</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+  </dl>
+  <p><a href="/zh/chronicle/#workshops-reasoning-2026-08-26">在 ADPS Chronicle 中查看</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

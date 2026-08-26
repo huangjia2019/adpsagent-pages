@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Reasoning Module Workshop · ADPS</title>
+    <meta name="description" content="ADPS Reasoning workshop: decision artifacts, complexity and risk routing, parallel exploration, hypothesis testing, Talker-Reasoner, and validation.">
+    <meta property="article:published_time" content="2026-08-26">
+    <meta property="og:image" content="https://adpsagent.com/images/workshops/reasoning-selection-en.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
+    <link rel="canonical" href="https://adpsagent.com/workshops/reasoning-2026-08-26/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/workshops/reasoning-2026-08-26/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/workshops/reasoning-2026-08-26/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/" aria-current="page">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/chronicle/">Chronicle</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/workshops/reasoning-2026-08-26/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+<p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/workshops/">Workshops</a><span style="margin: 0 0.45rem;">/</span>Reasoning</p>
+<header class="publication-head">
+  <p class="publication-series">ADPS Design Pattern Workshop Series</p>
+  <h1>First Reasoning Module Workshop</h1>
+  <p class="publication-deck">Moving from one-shot answers to reasoning with evidence, budgets, verification, and exit conditions.</p>
+</header>
+<p class="publication-date">26 August 2026</p>
+<table><thead><tr><th>Participant</th><th>Public role</th></tr></thead><tbody>
+<tr><td>Qingfeng Li</td><td>Senior Director, Sina Weibo</td></tr>
+<tr><td>Dong Zhang</td><td>Tencent expert engineer; head of Wukong R&amp;D security</td></tr>
+<tr><td>Han Zhao</td><td>AIGC multimodal reasoning, Ant</td></tr>
+<tr><td>Didi Li</td><td>Business Lead, Shuzhi Yuanjing</td></tr>
+<tr><td>Fuhai Zhong</td><td>Senior Technical Expert, Qunar</td></tr>
+<tr><td>Yuke Xiong</td><td>Technical Architect and Startup Partner, Chengdu Xuanxu Technology</td></tr>
+</tbody></table>
+
+<p>The workshop reviewed the published R1–R5 specifications and the inputs, outputs, resource budgets, verification, and stop conditions needed in a production reasoning system.</p>
+
+<figure class="workshop-diagram"><img src="/images/workshops/reasoning-selection-en.svg" alt="A reasoning request is routed into serial, parallel, iterative, or layered reasoning before producing a structured decision"><figcaption>The topology depends on difficulty, risk, evidence state, and latency. Several patterns may be nested.</figcaption></figure>
+
+<h2>Discussion scope</h2>
+<ol>
+<li>Which requests need deep reasoning, and which can use rules or a lightweight path?</li>
+<li>How do complexity, risk, evidence gaps, and latency jointly affect routing?</li>
+<li>How do parallel branches stay independent and later converge under timeout or conflict?</li>
+<li>When should an iterative run stop, escalate to a person, or abandon its current hypothesis?</li>
+<li>How can a system retain auditable support without treating private model tokens as facts?</li>
+</ol>
+
+<h2>Current catalog</h2>
+<table><thead><tr><th>Pattern</th><th>Engineering responsibility</th></tr></thead><tbody>
+<tr><td><a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a></td><td>Manage reasoning summaries, evidence bindings, decisions, and model metadata</td></tr>
+<tr><td><a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a></td><td>Select a model, effort level, cost tier, and fallback path</td></tr>
+<tr><td><a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a></td><td>Isolate candidate paths and aggregate according to the business cost of error</td></tr>
+<tr><td><a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a></td><td>Update hypotheses with new evidence until convergence or an exit condition</td></tr>
+<tr><td><a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner</a></td><td>Separate live interaction from background deep reasoning</td></tr>
+</tbody></table>
+
+<h2>A composition example</h2>
+<p>An online service begins to time out intermittently. The same evidence window contains network instability, a recent configuration change, and slow database queries. R2 classifies the incident as unsuitable for a simple rule path and assigns time and call budgets. R3 then starts three isolated branches for the network, configuration, and database hypotheses. Each branch reads the same timestamped evidence snapshot and cannot inspect another branch's intermediate conclusion.</p>
+<p>The convergence node finds direct support for the configuration hypothesis while the database path remains plausible. R4 therefore tests the two explanations: reproduce the failure on a canary, roll back the configuration there, and observe whether the timeout clears. If the evidence cannot separate the hypotheses, the system hands a person the hypothesis tree, completed checks, and open questions. During this work, the R5 Talker reports progress and gathers new facts without declaring a root cause. The final decision record moves to Action; Governance still controls rollback authority.</p>
+
+<h2>Reading path</h2>
+<p>Start with the <a href="/patterns/reasoning/">Reasoning module overview</a> to establish the decision artifact and adjacent-module interfaces, then choose a pattern from the task structure. A decision that changes an external system also requires the <a href="/patterns/action/">Action</a> and <a href="/patterns/governance/">Governance</a> modules. Use <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a> to establish decision quality.</p>
+
+<h2>Related pages</h2>
+<ul>
+<li><a href="/patterns/reasoning/">Reasoning module overview</a></li>
+<li><a href="/topics/pattern-composition/">Agent pattern composition</a></li>
+<li><a href="/topics/agent-evals-and-testing/">Agent evaluation and validation</a></li>
+<li><a href="/concepts/reasoning-assetization/">Reasoning assetization</a></li>
+</ul>
+
+<p class="publication-note publication-note-end">This page lists workshop participants and organizes the public discussion scope around published pattern specifications. Internal practices are anonymized and are not mapped line by line to people or institutions.</p>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">Chronicle</h2>
+  <dl>
+    <div><dt>Recorded source</dt><dd>First Reasoning Module Workshop; workshop held on <time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>Source date</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+  </dl>
+  <p><a href="/chronicle/#workshops-reasoning-2026-08-26">View in the ADPS Chronicle</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+            <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+        </footer>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

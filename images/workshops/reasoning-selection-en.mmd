@@ -1,0 +1,17 @@
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Arial, sans-serif','primaryColor':'#f7f9fc','primaryTextColor':'#11213a','primaryBorderColor':'#b7791f','lineColor':'#68768a','secondaryColor':'#eef3f8','tertiaryColor':'#ffffff'}}}%%
+flowchart LR
+  I[Request<br/>evidence · state · constraints] --> R2{R2 Complexity Routing<br/>difficulty · risk · budget}
+  R2 --> R1[R1 Chain of Thought<br/>sequential judgment]
+  R2 --> R3[R3 Parallel Exploration<br/>independent candidates]
+  R2 --> R4[R4 Iterative Hypothesis Testing<br/>hypothesis and counter-evidence]
+  R2 --> R5[R5 Talker-Reasoner<br/>live and background]
+  R1 --> D[Structured decision<br/>evidence · uncertainty · validation]
+  R3 --> D
+  R4 --> D
+  R5 --> D
+  classDef route fill:#0f3a5f,stroke:#0f3a5f,color:#ffffff,stroke-width:2px;
+  classDef mode fill:#f7f9fc,stroke:#b8842b,color:#11213a,stroke-width:2px;
+  classDef artifact fill:#eef3f8,stroke:#0f3a5f,color:#11213a,stroke-width:2px;
+  class R2 route;
+  class R1,R3,R4,R5 mode;
+  class I,D artifact;

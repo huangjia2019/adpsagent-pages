@@ -418,6 +418,17 @@
     "anchor": "patterns-r5-talker-reasoner"
   },
   {
+    "path": "patterns/reasoning/index.html",
+    "url": "/patterns/reasoning/",
+    "language": "en",
+    "category": "patterns",
+    "title": "Reasoning · Compiling Evidence into Reviewable Decisions",
+    "source_text": "First Reasoning Module Workshop (26 August 2026); published ADPS Reasoning pattern specifications",
+    "source_date": "2026-08-26",
+    "first_public": "2026-08-26",
+    "anchor": "patterns-reasoning"
+  },
+  {
     "path": "patterns/reflection/index.html",
     "url": "/patterns/reflection/",
     "language": "en",
@@ -966,6 +977,17 @@
     "source_date": null,
     "first_public": "2026-06-07",
     "anchor": "patterns-r5-talker-reasoner"
+  },
+  {
+    "path": "zh/patterns/reasoning/index.html",
+    "url": "/zh/patterns/reasoning/",
+    "language": "zh",
+    "category": "patterns",
+    "title": "推理模块 · 把证据编译成可检查的判断",
+    "source_text": "推理模块第一次研讨会 （2026-08-26）；ADPS 推理模式公开规范",
+    "source_date": "2026-08-26",
+    "first_public": "2026-08-26",
+    "anchor": "patterns-reasoning"
   },
   {
     "path": "zh/patterns/reflection/index.html",
@@ -2046,6 +2068,17 @@
     "anchor": "workshops-perception-2026-08-13"
   },
   {
+    "path": "workshops/reasoning-2026-08-26/index.html",
+    "url": "/workshops/reasoning-2026-08-26/",
+    "language": "en",
+    "category": "workshops",
+    "title": "First Reasoning Module Workshop",
+    "source_text": "First Reasoning Module Workshop; workshop held on 2026-08-26",
+    "source_date": "2026-08-26",
+    "first_public": "2026-08-26",
+    "anchor": "workshops-reasoning-2026-08-26"
+  },
+  {
     "path": "workshops/reflection-2026-08-12/index.html",
     "url": "/workshops/reflection-2026-08-12/",
     "language": "en",
@@ -2110,6 +2143,17 @@
     "source_date": "2026-08-13",
     "first_public": "2026-08-14",
     "anchor": "workshops-perception-2026-08-13"
+  },
+  {
+    "path": "zh/workshops/reasoning-2026-08-26/index.html",
+    "url": "/zh/workshops/reasoning-2026-08-26/",
+    "language": "zh",
+    "category": "workshops",
+    "title": "推理模块第一次研讨会",
+    "source_text": "推理模块第一次研讨会；会议日期 2026-08-26",
+    "source_date": "2026-08-26",
+    "first_public": "2026-08-26",
+    "anchor": "workshops-reasoning-2026-08-26"
   },
   {
     "path": "zh/workshops/reflection-2026-08-12/index.html",
