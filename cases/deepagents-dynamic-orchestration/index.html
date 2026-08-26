@@ -171,13 +171,13 @@
         <article class="essay">
 <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/cases/">Cases</a><span style="margin:0 0.45rem;">/</span>Open-source framework study</p>
 <header class="publication-head"><p class="publication-series">ADPS Open-Source Framework Case</p><h1>Deep Agents: From Fixed Graphs to Code-Generated Collaboration</h1><p class="publication-deck">LangGraph carries state and execution, LangChain assembles the agent loop, and Deep Agents packages the context, filesystem, skills, and delegation needed by long-running work. Dynamic collaboration adds a constrained interpreter that writes the task-specific orchestration at runtime.</p><p class="publication-date"><time datetime="2026-08-26">2026-08-26</time></p></header>
-<p>At the ADPS Collaboration workshop on 25 August 2026, Haili Zhang placed LangGraph, LangChain agents, and Deep Agents on one technical stack. This resolves a recurring source of confusion: the three names do not describe mutually exclusive agent frameworks. They own the runtime, the agent abstraction, and the harness respectively.</p>
-<p>His demonstration then moved one step further. A model can write JavaScript for the current task and call tools and subagents as constrained functions. Loops, branches, parallel batches, and aggregation remain in interpreter variables. The runtime still enforces the execution boundary, while the shape of this particular workflow is determined after the task arrives.</p>
+<p>At the ADPS Collaboration workshop on 25 August 2026, Haili Zhang placed LangGraph, LangChain agents, and Deep Agents on one technical stack. He showed that the three names do not describe mutually exclusive agent frameworks. They own the runtime, the agent abstraction, and the harness respectively.</p>
+<p>He then demonstrated dynamic subagents. A model can write JavaScript for the current task and call tools and subagents as constrained functions. Loops, branches, parallel batches, and aggregation remain in interpreter variables. The runtime still enforces the execution boundary, while the shape of this particular workflow is determined after the task arrives.</p>
 <p>This case uses public documentation and source code to examine that mechanism and map it to ADPS Collaboration, Reflection, Governance, and cross-cutting engineering planes.</p>
-<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-en.svg" alt="Three layers of LangGraph, LangChain and Deep Agents"><figcaption>Figure 1 · The layers own different concerns. Dynamic subagents sit between the harness and runtime rather than introducing another execution engine.</figcaption></figure>
+<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-en.svg" alt="Three layers of LangGraph, LangChain and Deep Agents"><figcaption>Figure 1 · LangGraph supplies the runtime, LangChain agents assemble the agent loop, and Deep Agents provides the harness. Dynamic subagents sit between the harness and runtime.</figcaption></figure>
 
-<h2>1. Three layers, three responsibilities</h2>
-<p>The public Deep Agents architecture document defines the stack directly.</p>
+<h2>1. LangGraph, LangChain agents, and Deep Agents</h2>
+<p>The public Deep Agents architecture document distinguishes the three layers.</p>
 <table>
 <thead>
 <tr>
@@ -206,7 +206,7 @@
 </table>
 <p><code>create_deep_agent()</code> ultimately calls LangChain's <code>create_agent()</code> and returns a runnable graph driven by LangGraph. Deep Agents contributes assembly. It packages middleware, backends, and prompt defaults commonly needed by long-running agents.</p>
 <p>The separation also guides diagnosis. Failed checkpoint recovery belongs first to LangGraph state. Excess tools visible to delegated work belong to the subagent's middleware and permissions. A growing main context points to delegation results, summarization, and file offload.</p>
-<h2>2. Multi-agent is not one architecture</h2>
+<h2>2. Multi-agent design depends on the movement of control and context</h2>
 <p>LangChain's multi-agent guide distinguishes Subagents, Handoffs, Skills, Router, and Custom workflow by the location of control and the movement of context.</p>
 <table>
 <thead>
@@ -286,17 +286,57 @@ const verified = await Promise.all(
 
 return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 </code></pre>
-<p>The application did not commit this exact graph in advance. The model generated temporary orchestration for the current input. The interpreter executes it, <code>task()</code> exposes configured subagents as capabilities, and LangGraph continues to hold run state and events.</p>
+<p>The application does not define this exact workflow graph in advance. The model generates temporary orchestration for the current input. The interpreter executes it, <code>task()</code> exposes configured subagents as capabilities, and LangGraph continues to hold run state and events.</p>
 <figure class="matrix-figure case-diagram case-diagram-flow"><img src="/images/cases/deepagents-dynamic-review-en.svg" alt="Dynamic subagent security review flow"><figcaption>Figure 2 · Discovery, batching, and deduplication stay in interpreter variables. Isolated subagents make specialist judgments, and verified results enter one acceptance path.</figcaption></figure>
 
 <h2>5. Context savings come from the data path</h2>
-<p>Dynamic orchestration is often described as token-efficient. The claim requires measurement; the mechanism can still be stated precisely.</p>
+<p>Dynamic orchestration is often described as token-efficient, a claim that readers can test in their own workloads. Its effect on the main context comes from the data path.</p>
 <p>Ordinary tool calls add arguments and outputs to message history. Dynamic orchestration can retain file lists, batches, and intermediate collections in interpreter variables or backend files. The main agent receives summaries and structured results. Subagents also isolate the detailed search, reads, and reasoning that produced each result.</p>
 <p>A fair comparison measures main-context tokens, total tokens across subagents, model calls, P50/P95 latency, retries, and human review time. A shorter main context alone may conceal cost moved into delegated runs.</p>
-<h2>6. Dynamic workflow is still orchestration</h2>
-<p>Runtime generation does not make this <a href="/patterns/c6-choreography/">C6 Choreography</a>. The interpreter still owns the file set, branch order, concurrency boundary, and aggregation rule. Every <code>task()</code> result returns to that control point.</p>
-<p>C6 requires event-reactive participants operating under local rules without one node holding the complete plan. Dynamicity asks when the graph is determined. Orchestration and choreography ask where control resides. These are separate dimensions.</p>
-<h2>7. One program composes several patterns</h2>
+<h2>6. Dynamic workflows, orchestration, and choreography</h2>
+<p><strong>A dynamic workflow describes when the path is determined.</strong> A fixed workflow defines its nodes and edges before execution. A dynamic workflow waits until the task arrives, then creates the loops, branches, and parallel steps required by the current file set, task type, or intermediate results.</p>
+<p><strong>Orchestration and choreography describe who holds the complete plan.</strong> A system is orchestrated when one control point stores the steps, decides the call order, and gathers the results. The Deep Agents example generates JavaScript at runtime, but the interpreter still owns the file collection, concurrency boundary, verification order, and aggregation rule. Every <code>task()</code> result returns to the interpreter, so this is <strong>dynamic orchestration</strong>.</p>
+<p><a href="/patterns/c6-choreography/">C6 Choreography</a> distributes control differently. In an order flow, a payment service publishes <code>PaymentConfirmed</code>. An inventory service subscribes to that event, reserves stock, and publishes <code>StockReserved</code>. Logistics and notification services then react to the events they subscribe to. Each participant knows its own trigger and local rule; no participant stores the complete payment-to-delivery plan.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Fixed orchestration</th>
+<th>Dynamic orchestration</th>
+<th>Choreography</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>When is the path determined?</td>
+<td>Before execution</td>
+<td>After the task arrives</td>
+<td>Local rules exist in advance; the global path unfolds through events</td>
+</tr>
+<tr>
+<td>Who holds the complete plan?</td>
+<td>A central graph or orchestrator</td>
+<td>A runtime interpreter or orchestrator</td>
+<td>No single participant</td>
+</tr>
+<tr>
+<td>How does the next step happen?</td>
+<td>The central node follows a fixed graph</td>
+<td>The central node follows generated code</td>
+<td>A participant receives an event, acts, and publishes another event</td>
+</tr>
+<tr>
+<td>Example here</td>
+<td>A predefined LangGraph</td>
+<td>Deep Agents dynamic subagents</td>
+<td>Payment, inventory, and logistics event subscribers</td>
+</tr>
+</tbody>
+</table>
+<p>“Dynamic” and “orchestration versus choreography” therefore describe different dimensions. Dynamic describes when the path is determined. Orchestration and choreography describe where control resides. A dynamic workflow may still be centrally orchestrated, or it may emerge from event-reactive participants.</p>
+<figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-en.svg" alt="Control ownership in dynamic orchestration and choreography"><figcaption>Figure 3 · One node still holds the complete plan in dynamic orchestration; choreography progresses through events and local rules.</figcaption></figure>
+
+<h2>7. Pattern composition in dynamic code</h2>
 <table>
 <thead>
 <tr>
@@ -343,23 +383,23 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 </tr>
 </tbody>
 </table>
-<p>Order matters. Gather-then-verify and verify-in-each-branch create different costs and failure-propagation paths. A trace must preserve the actual composition, not only a list of pattern names.</p>
-<h2>8. Connection to Reflection</h2>
-<p>Dynamic subagents provide a flexible execution vehicle for reflection patterns; they do not supply the evaluation standard.</p>
+<p>Order matters. Gather-then-verify and verify-in-each-branch create different costs and failure-propagation paths. The article and trace should record the actual pattern order so that a run can be reproduced and the entry point of an error can be located.</p>
+<h2>8. Dynamic subagents and Reflection patterns</h2>
+<p>Dynamic subagents can assign generation, verification, and repair to different roles. The evaluation standard and external results still determine whether reflection succeeds.</p>
 <p><a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a> can use one agent under two role prompts. <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a> requires independent participants, separate context, and preserved disagreement. The security example uses an independent verifier because a false confirmation would enter the repair path. Structural separation alone adds little when generator and verifier share the same model, evidence, and rubric.</p>
-<p><a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a> also needs an external result. Unit tests, static analysis, and permission checks determine whether a repair can exit the loop. A model's own completion statement is not an exit condition.</p>
-<h2>9. Dynamic capability needs stronger boundaries</h2>
-<p>The public documentation marks interpreters and dynamic subagents as Beta. Production use should cover these boundaries:</p>
+<p><a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a> also needs an external result. Unit tests, static analysis, and permission checks determine whether a repair can exit the loop.</p>
+<h2>9. Production boundaries for dynamic subagents</h2>
+<p>The public Deep Agents documentation marks interpreters and dynamic subagents as Beta, so they remain test-stage capabilities. Production adoption should address the following points:</p>
 <ol>
-<li>PTC remains off by default and receives an explicit tool allowlist.</li>
-<li><code>task()</code> dispatches from an active <code>eval</code> call rather than the parent's ordinary tool-call path. Approval should gate the interpreter entry when per-dispatch parent interrupts do not apply.</li>
+<li>PTC (Programmatic Tool Calling) remains off by default. Enable it only when generated code must call external tools, and give the interpreter an explicit tool allowlist.</li>
+<li><code>task()</code> dispatches from inside the interpreter's active <code>eval</code> call rather than the parent's ordinary per-tool path. An approval hook attached only to parent tool calls may not see these subagent dispatches. Put the approval gate at interpreter entry or cover high-risk calls inside the interpreter.</li>
 <li>Each subagent declares tools, filesystem scope, model, and middleware independently rather than inheriting the main agent's maximum capability.</li>
 <li>Response schemas, maximum concurrency, timeout, recursion depth, and total budget receive hard limits.</li>
 <li>Synchronous subagents block the main agent. Long-running, cancellable, or independently retried work belongs in async subagents or an external job system.</li>
 <li>Traces retain generated code, interpreter version, input collection, subagent role and result for each <code>task()</code>, and the final aggregation decision.</li>
 </ol>
-<p>Dynamic workflows increase the control structures a model can express and the program surface that needs verification. A constrained interpreter is the appropriate boundary; arbitrary generated code should not run directly on the host.</p>
-<h2>10. Choosing among three implementations</h2>
+<p>Dynamic code can create loops, branches, and parallel calls for the current task. It can also loop indefinitely, exceed call budgets, or reach tools it should not use. Run it only inside an interpreter that limits tools, resources, duration, and concurrency. Do not pass arbitrary model-generated code directly to the host.</p>
+<h2>10. Choosing among the three implementations</h2>
 <table>
 <thead>
 <tr>
@@ -421,8 +461,9 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <li>Against fixed-graph and ordinary-subagent baselines, do quality, total tokens, latency, and human time improve?</li>
 </ul>
 <h2>12. Effect on the ADPS catalogue</h2>
-<p>Haili Zhang's research adds an implementation layer to the Collaboration module. Design patterns can lower to serial, parallel, routing, and loop primitives; the dynamic interpreter composes those primitives into a task-specific transient graph.</p>
-<p>It also corrects the <a href="/patterns/c6-choreography/">C6</a> example. Dynamic subagents provide a public implementation of runtime-generated workflows, but they do not establish decentralized control. ADPS therefore links the case to <a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c3-adversarial-review/">C3</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a>, Reflection, and the cross-cutting planes. C6 retains its event-driven, distributed-control criterion.</p>
+<p>Haili Zhang's research connects the Collaboration patterns to runtime code. C1, C2, C3, and C5 lower to serial, parallel, routing, and loop primitives in a framework; the dynamic interpreter then composes those primitives for the current task.</p>
+<p>An early ADPS discussion treated “runtime-generated subagent workflows” as a possible example of <a href="/patterns/c6-choreography/">C6</a>. Haili Zhang's comparison shows why that example belongs to dynamic orchestration: the interpreter still stores the complete plan, chooses the call order, and gathers the results. C6 now retains the event-driven, distributed-control criterion: participants subscribe and publish under local rules, and no node holds the complete plan.</p>
+<p>This case maps to <a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c3-adversarial-review/">C3</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a>, Reflection, and the cross-cutting planes. C6 remains a candidate pattern pending more production evidence from agent systems.</p>
 <h2>Public sources</h2>
 <ul>
 <li><a href="https://adpsagent.com/workshops/collaboration-2026-08-25/">First ADPS Collaboration workshop</a></li>
@@ -437,7 +478,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
   <h2 id="page-chronicle-title">Chronicle</h2>
   <dl>
-    <div><dt>Recorded source</dt><dd>Haili Zhang's LangGraph and Deep Agents research at the Collaboration workshop; checked by ADPS against public documentation and source</dd></div>
+    <div><dt>Recorded source</dt><dd>Haili Zhang&#x27;s framework research and demonstration at the first ADPS Collaboration workshop, checked against public LangChain documentation and Deep Agents source code.</dd></div>
     <div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
     <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
   </dl>
