@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","primaryTextColor":"#102033","lineColor":"#6f8195","background":"#ffffff"},"flowchart":{"curve":"basis","nodeSpacing":32,"rankSpacing":32}}}%%
+flowchart TB
+  D["Deep Agents harness<br/><small>Planning · Files · Skills · Memory · Subagents · Compaction</small>"]
+  L["LangChain agent abstraction<br/><small>Model + Tools + Middleware → Agent loop</small>"]
+  G["LangGraph runtime<br/><small>State · Checkpoints · Streaming · Interrupts · Resume</small>"]
+  I["Dynamic subagents<br/><small>The interpreter creates task-specific loops, branches, parallel batches, and gathers</small>"]
+
+  I -->|calls task and tools| D
+  D -->|assembles create_agent| L
+  L -->|compiles and runs| G
+
+  classDef runtime fill:#eaf1f7,stroke:#315b7d,color:#102033,stroke-width:2px;
+  classDef agent fill:#eef4ef,stroke:#4e755d,color:#102033,stroke-width:2px;
+  classDef harness fill:#f7f0df,stroke:#a67525,color:#102033,stroke-width:2px;
+  classDef dynamic fill:#f1e9d2,stroke:#b8842b,color:#102033,stroke-width:3px;
+  class G runtime;
+  class L agent;
+  class D harness;
+  class I dynamic;

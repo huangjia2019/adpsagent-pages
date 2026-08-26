@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>G1 · Approval Gate · 审批门 · ADPS</title>
     <meta name="description" content="固定审批对象，并在暂停恢复后证明执行的仍是获批意图。">
+    <meta property="article:published_time" content="2026-06-07">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://adpsagent.com/images/og-card.png">
@@ -36,6 +37,7 @@
                         <a href="/zh/concepts/">概念库</a>
                         <a href="/zh/research/">论文与研究</a>
                         <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/chronicle/">来源时间线</a>
                         <a href="/zh/news/">新闻</a>
                         <a href="/zh/join/">加入我们</a>
                     </div>
@@ -111,6 +113,7 @@
               <a href="/zh/cases/xuanxu-gis-agent/">玄宿科技 · GIS 发布 Agent</a>
               <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
               <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
+              <a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents · 动态协作</a>
             </div></div>
           <div class="sb-section">
   <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
@@ -230,12 +233,29 @@ execution:
 <p>测试参数篡改、策略换版、审批过期、并发消费、重复回调、前置条件变化和审批服务故障。生产观测至少覆盖获批摘要与执行摘要的一致性、旧审批拦截、高风险旁路和低风险误入人审。</p>
 <h2>相邻规范</h2>
 <p><a href="/zh/patterns/g2-blast-radius-control/">G2</a>限制获准动作的最大影响；<a href="/zh/patterns/g3-progressive-commitment/">G3</a>提供能力级自治档位；<a href="/zh/patterns/x1-observability/">X1</a>连接 Intent、Approval、Execution 与回执；<a href="/zh/patterns/g5-hooks-pipeline/">G5</a>提供调用前和恢复前的执行位置。</p>
-            <div class="document-citation">
+<!-- RELATED-CASE-DEERFLOW:START -->
+<section class="related-case-band" aria-labelledby="related-deerflow-case">
+  <p class="related-case-label">相关开源工程案例</p>
+  <h2 id="related-deerflow-case"><a href="/zh/cases/deerflow-guardrail/">DeerFlow：从调用前拦截到双层授权</a></h2>
+  <p>姜宁分享的 Guardrail 演进以五个公开 PR 为证据，展示装配过滤、运行时授权、身份、策略和审计怎样进入同一条工具执行路径。</p>
+</section>
+<!-- RELATED-CASE-DEERFLOW:END -->
+<div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《G1 · Approval Gate · 审批门》，Agent 设计模式白皮书 v0.4，2026-08-19。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/governance-2026-08-18/">治理研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>使用边界：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；运行实例用于说明机制，具名实践另见案例库。</p>
             </div>
-        </article>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">溯源记录</h2>
+  <dl>
+    <div><dt>来源记录</dt><dd>ADPS 模式白皮书；先行工作与参考资料见正文</dd></div>
+    <div><dt>本页首次公开</dt><dd><time datetime="2026-06-07">2026-06-07</time></dd></div>
+  </dl>
+  <p><a href="/zh/chronicle/#patterns-g1-approval-gate">在 ADPS Chronicle 中查看</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

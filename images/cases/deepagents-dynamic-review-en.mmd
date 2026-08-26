@@ -1,0 +1,20 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, sans-serif","primaryTextColor":"#102033","lineColor":"#6f8195","background":"#ffffff"},"flowchart":{"curve":"basis","nodeSpacing":24,"rankSpacing":42}}}%%
+flowchart TB
+  T["Security review task"] --> I["Constrained interpreter<br/><small>Discover · Batch · Budget</small>"]
+  I --> W1["Reviewer A<br/><small>Isolated context</small>"]
+  I --> W2["Reviewer B<br/><small>Isolated context</small>"]
+  I --> W3["Reviewer C<br/><small>Isolated context</small>"]
+  W1 --> C["Code aggregation<br/><small>Deduplicate · Align sources</small>"]
+  W2 --> C
+  W3 --> C
+  C --> V["Independent verifier<br/><small>Evidence and rule check</small>"]
+  V --> A["Acceptance<br/><small>Confirm · Reject · Escalate</small>"]
+
+  classDef input fill:#eaf1f7,stroke:#315b7d,color:#102033,stroke-width:2px;
+  classDef control fill:#f7f0df,stroke:#a67525,color:#102033,stroke-width:2px;
+  classDef worker fill:#eef4ef,stroke:#4e755d,color:#102033,stroke-width:2px;
+  classDef verify fill:#f3e9ee,stroke:#8a536b,color:#102033,stroke-width:2px;
+  class T input;
+  class I,C control;
+  class W1,W2,W3 worker;
+  class V,A verify;

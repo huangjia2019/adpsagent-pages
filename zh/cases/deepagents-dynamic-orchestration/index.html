@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Agents：从固定图到代码生成的动态协作 · ADPS</title>
+    <meta name="description" content="张海立在 ADPS 协作研讨会上分享的 LangGraph、LangChain 与 Deep Agents 架构研究，以及动态子 Agent 如何通过解释器代码完成受控编排。">
+    <meta property="article:published_time" content="2026-08-26">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/zh/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="zh-CN" href="https://adpsagent.com/zh/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/deepagents-dynamic-orchestration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="主导航">
+                <a href="/zh/patterns/">模式</a>
+                <a href="/zh/cases/" aria-current="page">案例</a>
+                <a href="/zh/workshops/">研讨会</a>
+                <a href="/zh/topics/">专题</a>
+                <a href="/zh/founders/">团队</a>
+                <details class="site-nav-more">
+                    <summary>更多</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/zh/concepts/">概念库</a>
+                        <a href="/zh/research/">论文与研究</a>
+                        <a href="/zh/positions/">技术立场</a>
+                        <a href="/zh/chronicle/">来源时间线</a>
+                        <a href="/zh/news/">新闻</a>
+                        <a href="/zh/join/">加入我们</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/cases/deepagents-dynamic-orchestration/" class="lang-switch">EN</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">模式矩阵<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>感知 Perception</h4>
+              <a href="/zh/patterns/p1-context-triage/">P1 上下文分诊</a>
+              <a href="/zh/patterns/p2-semantic-compaction/">P2 语义压缩</a>
+              <a href="/zh/patterns/p3-progressive-discovery/">P3 渐进发现</a>
+              <a href="/zh/patterns/p4-multi-modal-fusion/">P4 多模态融合</a>
+              <h4>记忆 Memory</h4>
+              <a href="/zh/patterns/m1-hierarchical-retention/">M1 分层保留</a>
+              <a href="/zh/patterns/m2-rag-pipeline/">M2 检索增强生成</a>
+              <a href="/zh/patterns/m3-progress-tracking/">M3 进度追踪</a>
+              <a href="/zh/patterns/m4-failure-journals/">M4 失败日记</a>
+              <a href="/zh/patterns/m5-procedural-memory/">M5 程序性记忆 <span class="ext">扩展</span></a>
+              <h4>推理 Reasoning</h4>
+              <a href="/zh/patterns/r1-chain-of-thought/">R1 思维链</a>
+              <a href="/zh/patterns/r2-complexity-based-routing/">R2 复杂度路由</a>
+              <a href="/zh/patterns/r3-parallel-exploration/">R3 并行探索</a>
+              <a href="/zh/patterns/r4-iterative-hypothesis-testing/">R4 迭代假设验证</a>
+              <a href="/zh/patterns/r5-talker-reasoner/">R5 双模架构 <span class="ext">扩展</span></a>
+              <h4>行动 Action</h4>
+              <a href="/zh/patterns/a1-tool-dispatch/">A1 工具调度</a>
+              <a href="/zh/patterns/a2-plan-and-execute/">A2 规划执行</a>
+              <a href="/zh/patterns/a3-prompt-chaining/">A3 提示链</a>
+              <a href="/zh/patterns/a4-guardrail-sandwich/">A4 护栏三明治</a>
+              <a href="/zh/patterns/a5-minimal-tool-set/">A5 最简工具集 <span class="ext">扩展</span></a>
+              <h4>反思 Reflection</h4>
+              <a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>
+              <a href="/zh/patterns/f2-skill-package/">F2 技能包</a>
+              <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
+              <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
+              <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
+              <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
+              <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
+              <a href="/zh/patterns/c4-handoff-chain/">C4 交接链</a>
+              <a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/c6-choreography/">C6 编舞 <span class="ext">候选</span></a>
+              <h4>治理 Governance</h4>
+              <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
+              <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
+              <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
+              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">历史入口 → X1</span></a>
+              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <h4>横切工程面 Cross-cutting</h4>
+              <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
+              <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
+              <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/zh/cases/">案例库首页</a>
+              <a href="/zh/cases/liangbo-execution-agent/">东方屹腾 · 执行型 Agent</a>
+              <a href="/zh/cases/xuanxu-gis-agent/" >玄宿科技 · GIS 发布 Agent</a>
+              <a href="/zh/cases/ark-mbse-agent/">AI4MBSE · 建模 Agent 项目</a>
+              <a href="/zh/cases/deerflow-guardrail/">DeerFlow · Guardrail 演进</a>
+              <a href="/zh/cases/deepagents-dynamic-orchestration/" class="active">Deep Agents · 动态协作</a>
+            </div></div>
+          <div class="sb-section">
+  <button class="sb-head" type="button">概念<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/zh/concepts/">概念目录</a>
+    <details class="sb-concept-group" open><summary>关键概念</summary>
+      <a href="/zh/concepts/control-narrative-dualism/">控制平面与叙事平面</a>
+      <a href="/zh/concepts/execution-vs-content/">执行型与内容生成型 Agent</a>
+      <a href="/zh/concepts/mechanical-state-plane/">机械状态平面</a>
+      <a href="/zh/concepts/abstraction-reconstruction-loop/">抽象—还原往返</a>
+      <a href="/zh/concepts/probabilistic-core-deterministic-shell/">概率内核与确定性外壳</a>
+      <a href="/zh/concepts/context-contract/">上下文合同</a>
+      <a href="/zh/concepts/plan-compilation/">Plan 编译</a>
+      <a href="/zh/concepts/three-powers-of-agency/">Agent 的三种权力</a>
+    </details>
+    <details class="sb-concept-group"><summary>系统边界与状态</summary>
+      <a href="/zh/concepts/unified-session-state/">会话统一状态三平面</a>
+      <a href="/zh/concepts/orchestrator/">Orchestrator 与门面</a>
+      <a href="/zh/concepts/disk-fact-plane/">磁盘事实平面</a>
+    </details>
+    <details class="sb-concept-group"><summary>上下文与记忆</summary>
+      <a href="/zh/concepts/anchor-ledger-collection/">锚、账、集</a>
+      <a href="/zh/concepts/scratchpad/">草稿纸看板</a>
+      <a href="/zh/concepts/memory-envelope/">记忆信封</a>
+      <a href="/zh/concepts/layered-memory/">L1/L2/L3 分层记忆</a>
+      <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
+    </details>
+    <details class="sb-concept-group"><summary>规划、执行与写回</summary>
+      <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
+      <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
+      <a href="/zh/concepts/reasoning-assetization/">推理资产化</a>
+      <a href="/zh/concepts/typed-ir-chain/">类型化中间表示链</a>
+      <a href="/zh/concepts/one-diagram-unit-of-work/">单图事务</a>
+      <a href="/zh/concepts/structural-writeback-gate/">结构写回门禁</a>
+      <a href="/zh/concepts/resumable-clarification-job/">可续跑澄清作业</a>
+      <a href="/zh/concepts/vocabulary-equivalence-layer/">词表等价层</a>
+    </details>
+    <details class="sb-concept-group"><summary>协作与运行时控制</summary>
+      <a href="/zh/concepts/topology-lowering/">拓扑降阶</a>
+      <a href="/zh/concepts/topology-governance-matrix/">拓扑治理矩阵</a>
+      <a href="/zh/concepts/handoff-contract/">交接合同</a>
+      <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
+      <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+      <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
+    </details>
+    <details class="sb-concept-group"><summary>评测、反思与治理</summary>
+      <a href="/zh/concepts/observability-glass-dome/">活动事件与执行时间线</a>
+      <a href="/zh/concepts/hitl-block-resume/">HITL 阻塞与恢复</a>
+      <a href="/zh/concepts/external-acceptance-probe/">外部验收探针</a>
+      <a href="/zh/concepts/failure-to-rule-loop/">失败到规则闭环</a>
+      <a href="/zh/concepts/capability-certification-lifecycle/">能力认证生命周期</a>
+      <a href="/zh/concepts/dual-feedback-clock/">双反馈时钟</a>
+      <a href="/zh/concepts/durable-intent/">持久化意图</a>
+      <a href="/zh/concepts/judge-migration/">裁判迁移</a>
+      <a href="/zh/concepts/dual-scale-governance/">双尺度治理</a>
+    </details>
+  </div>
+</div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/cases/">案例</a><span style="margin:0 0.45rem;">/</span>开源框架研究</p>
+<header class="publication-head"><p class="publication-series">ADPS 开源框架案例</p><h1>Deep Agents：从固定图到代码生成的动态协作</h1><p class="publication-deck">LangGraph 保存状态与运行图，LangChain 组装 Agent 循环，Deep Agents 用中间件补齐长程任务所需的上下文、文件、技能和子 Agent。动态协作再把一次任务的具体编排写进受限解释器。</p><p class="publication-date"><time datetime="2026-08-26">2026-08-26</time></p></header>
+<p>2026 年 8 月 25 日的 ADPS 协作模块研讨会上，张海立把 LangGraph、LangChain Agent 与 Deep Agents 放在同一条技术栈里讲了一遍。这个对照解决了一个常见困惑：三者并非三套互斥的 Agent 框架，它们分别承担运行时、Agent 抽象和 Harness 的职责。</p>
+<p>他随后演示了更值得展开的一步。模型可以根据当前任务写出一段 JavaScript，把工具和子 Agent 当作受控函数调用；循环、分支、并行和聚合留在解释器变量中。工作流依旧受运行时约束，具体形状则在任务到来后生成。</p>
+<p>本文以公开文档和源码为依据，拆解这套动态协作机制，并把它放回 ADPS 的协作、反思、治理和横切工程面中检查。</p>
+<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-zh.svg" alt="LangGraph、LangChain 与 Deep Agents 三层架构"><figcaption>图 1 · 三层解决不同问题。动态子 Agent 位于 Harness 与运行时之间，不另造一套执行引擎。</figcaption></figure>
+
+<h2>1. 三层各管什么</h2>
+<p>Deep Agents 公开架构文档把三层关系写得很清楚。</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>主要职责</th>
+<th>出现问题时先看哪里</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LangGraph</td>
+<td>状态、checkpoint、stream、interrupt、暂停与恢复</td>
+<td>节点迁移、持久化和运行控制</td>
+</tr>
+<tr>
+<td>LangChain Agent</td>
+<td><code>model + tools + middleware</code> 组成的 Agent 循环</td>
+<td>模型请求、工具调用和中间件顺序</td>
+</tr>
+<tr>
+<td>Deep Agents</td>
+<td>规划、文件系统、记忆、技能、子 Agent、压缩和后端的默认装配</td>
+<td>Harness 配置、上下文与能力表面</td>
+</tr>
+</tbody>
+</table>
+<p><code>create_deep_agent()</code> 最终仍调用 LangChain 的 <code>create_agent()</code>，返回由 LangGraph 驱动的可运行图。Deep Agents 的价值在于装配：它把长程 Agent 常用的中间件、后端和默认提示组合起来，让项目不用从空白图开始。</p>
+<p>这一区分也决定了故障定位。checkpoint 不能恢复，应先看 LangGraph 状态；子 Agent 看见了过多工具，应看它自己的 middleware 与权限；主 Agent 上下文持续膨胀，则要检查委派结果、摘要与文件 offload。</p>
+<h2>2. 多 Agent 不是一种结构</h2>
+<p>LangChain 官方多 Agent 指南列出 Subagents、Handoffs、Skills、Router 与 Custom workflow。它们的区别落在控制权和上下文怎样移动。</p>
+<table>
+<thead>
+<tr>
+<th>结构</th>
+<th>控制权</th>
+<th>上下文</th>
+<th>适合的问题</th>
+<th>ADPS 对照</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subagents</td>
+<td>主 Agent 持有</td>
+<td>每次调用隔离，结果返回主 Agent</td>
+<td>专业分工、并行研究、上下文隔离</td>
+<td><a href="/zh/patterns/c1-hierarchical-delegation/">C1</a>、<a href="/zh/patterns/c2-fan-out-gather/">C2</a>、<a href="/zh/patterns/c5-sub-agent-isolation/">C5</a></td>
+</tr>
+<tr>
+<td>Handoffs</td>
+<td>当前 Agent 可把控制交给下一角色</td>
+<td>会话状态随角色切换</td>
+<td>客服、逐步接管、直接面向用户</td>
+<td><a href="/zh/patterns/c4-handoff-chain/">C4</a></td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>一个 Agent 仍持有</td>
+<td>按需加载指令与知识</td>
+<td>能力很多、无需新增运行主体</td>
+<td><a href="/zh/patterns/f2-skill-package/">F2</a>、<a href="/zh/patterns/m5-procedural-memory/">M5</a></td>
+</tr>
+<tr>
+<td>Router</td>
+<td>路由步骤持有</td>
+<td>按分类送往一个或多个分支</td>
+<td>领域分流、并行查询</td>
+<td><a href="/zh/patterns/r2-complexity-based-routing/">R2</a>、<a href="/zh/patterns/c2-fan-out-gather/">C2</a></td>
+</tr>
+<tr>
+<td>Custom workflow</td>
+<td>图设计者持有</td>
+<td>由状态 schema 明确管理</td>
+<td>固定 SOP、复杂条件和可重复流程</td>
+<td><a href="/zh/patterns/a2-plan-and-execute/">A2</a> 与多种拓扑组合</td>
+</tr>
+</tbody>
+</table>
+<p>“多 Agent”只说明参与者数量，尚未说明谁掌握计划、谁面向用户、每个角色看到什么，以及最终由谁验收。选择框架之前，应先回答这些控制问题。</p>
+<h2>3. 固定图何时开始吃力</h2>
+<p>设想一次代码安全审查。仓库里有 120 个文件，任务要求找出硬编码凭证、危险反序列化和越权文件访问，并给出可复核证据。</p>
+<p>文件集合与语言分布在运行前并不完全清楚。部分文件适合规则扫描，部分需要语义分析；一个发现还可能触发跨文件追踪。预先画一张覆盖所有分支的图并非做不到，但图会同时承载业务步骤和本次输入的偶然形状。</p>
+<p>普通 Subagent 调用也有局限。模型逐个选择 <code>task</code> 时，每次调用都要经过消息与工具调用路径。十几个分片会把调度过程和中间结果不断写回主上下文。模型还要在自然语言中记住哪些文件已经检查、哪些发现需要复核。</p>
+<p>动态子 Agent 把这部分临时控制流移到解释器。模型仍决定策略，循环、集合、去重和并发由代码执行。</p>
+<h2>4. <code>task()</code> 把子 Agent 接进解释器</h2>
+<p>Deep Agents 的解释器中间件可以暴露一个 <code>task()</code> 全局函数。它接收任务描述、子 Agent 类型以及可选的结构化输出 schema。启用程序化工具调用（Programmatic Tool Calling，PTC）后，解释器还可以通过显式 allowlist 调用 <code>tools.*</code>。</p>
+<pre><code class="language-javascript">const files = await tools.glob({ pattern: &quot;src/**/*.{py,js,ts}&quot; });
+const batches = chunk(files, 12);
+
+const reviews = await Promise.all(
+  batches.map(batch =&gt; task({
+    subagentType: &quot;security-reviewer&quot;,
+    description: `Review these files and return evidence: ${batch.join(&quot;, &quot;)}`,
+    responseSchema: findingSchema
+  }))
+);
+
+const candidates = deduplicate(reviews.flat());
+const verified = await Promise.all(
+  candidates.map(item =&gt; task({
+    subagentType: &quot;independent-verifier&quot;,
+    description: `Verify this finding against its source: ${JSON.stringify(item)}`,
+    responseSchema: verdictSchema
+  }))
+);
+
+return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
+</code></pre>
+<p>这段代码不是应用预先提交的固定工作流，而是模型根据当前任务生成的临时编排。解释器负责执行它；<code>task()</code> 把已经配置好的子 Agent 暴露成能力；LangGraph 继续保存运行状态和事件。</p>
+<figure class="matrix-figure case-diagram case-diagram-flow"><img src="/images/cases/deepagents-dynamic-review-zh.svg" alt="动态子 Agent 代码安全审查流程"><figcaption>图 2 · 文件发现、分片和去重留在解释器变量中；专业判断交给隔离的子 Agent；确认结果进入统一验收。</figcaption></figure>
+
+<h2>5. 上下文节省来自数据路径</h2>
+<p>动态编排经常被概括为“更省 token”。这个判断需要实测，机制本身可以先讲清楚。</p>
+<p>普通工具调用会在消息历史中留下调用参数与返回内容。动态编排可以把文件列表、分片和中间集合保留在解释器变量或后端文件中，主 Agent 最后只接收摘要和结构化结果。Subagent 又把搜索、读取和推理的细节隔离在自己的上下文里。</p>
+<p>真正需要测量的是：主上下文 token、所有子 Agent 的总 token、模型调用次数、P50/P95 时延、失败重试和最终人工复核时间。只报告主 Agent 变短，会漏掉转移到子 Agent 与解释器中的成本。</p>
+<h2>6. 动态工作流仍是编排</h2>
+<p>工作流由模型临时生成，不会自动变成 <a href="/zh/patterns/c6-choreography/">C6 编舞</a>。上述代码仍有一个控制中心：解释器持有文件集合、分支顺序、并行边界和聚合规则，<code>task()</code> 返回后也由它收口。</p>
+<p>C6 编舞要求参与者订阅事件，依据本地规则行动并继续发布事件；没有一个节点掌握完整计划。动态性描述“图何时确定”，编排与编舞描述“控制权在哪里”。两个判断维度不能混用。</p>
+<h2>7. 一段动态代码可以组合多个模式</h2>
+<p>安全审查示例包含一组可分开的模式机制。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>模式</th>
+<th>可检查的产物</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主 Agent 选择专业角色</td>
+<td><a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a></td>
+<td>角色、任务范围、权限</td>
+</tr>
+<tr>
+<td>文件分片并发检查</td>
+<td><a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a></td>
+<td>分片清单、子 trace、聚合规则</td>
+</tr>
+<tr>
+<td>每个 Agent 使用独立上下文和工具</td>
+<td><a href="/zh/patterns/c5-sub-agent-isolation/">C5 子代理隔离</a></td>
+<td>middleware、工具 allowlist、状态边界</td>
+</tr>
+<tr>
+<td>独立 Agent 复核发现</td>
+<td><a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a></td>
+<td>finding、verdict、分歧与裁决</td>
+</tr>
+<tr>
+<td>失败后修复并重新验证</td>
+<td><a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a></td>
+<td>修复补丁、回归结果、停止条件</td>
+</tr>
+<tr>
+<td>全链路记录</td>
+<td><a href="/zh/patterns/x1-observability/">X1 可观测性</a></td>
+<td>主 trace、子运行、代码版本与事件</td>
+</tr>
+<tr>
+<td>用冻结样本比较不同组合</td>
+<td><a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a></td>
+<td>基线、消融、成本与质量指标</td>
+</tr>
+</tbody>
+</table>
+<p>模式组合的顺序影响结果。先聚合再复核与每个分支先复核再聚合，会产生不同成本和错误传播路径。文章和 trace 都应保存实际顺序，不能只列一串模式名称。</p>
+<h2>8. 它与反思模块怎样连接</h2>
+<p>动态子 Agent 给反思模式提供了更灵活的执行载体，但没有替代反思的评价标准。</p>
+<p><a href="/zh/patterns/f1-generator-critic/">F1 生成评审</a>可以由同一个 Agent 用两个角色 Prompt 完成；<a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>强调独立参与者、不同上下文和可保留的分歧。安全审查示例选择独立 verifier，是因为一次错误确认会进入修复流程。若 verifier 只是重复 generator 的输入、模型和标准，结构上分开也未必带来真正独立性。</p>
+<p><a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>还需要外部结果。修复 Agent 生成补丁以后，单元测试、静态扫描和权限检查决定是否进入下一轮。模型给自己一句“已经修好”不构成终止条件。</p>
+<h2>9. 动态能力需要更强的边界</h2>
+<p>公开文档把动态子 Agent 和解释器标为 Beta。生产接入至少处理以下边界：</p>
+<ol>
+<li>PTC 默认关闭，只为解释器开放明确的工具 allowlist。</li>
+<li><code>task()</code> 从正在执行的 <code>eval</code> 内部分发，不经过父 Agent 的普通工具调用路径；需要审批时，应把门设在 <code>eval</code> 或等价解释器入口。</li>
+<li>每个 Subagent 的工具、文件路径、模型和 middleware 单独声明，不能默认继承主 Agent 的最大能力。</li>
+<li>结构化输出 schema、最大并发、超时、递归深度和总预算都需要硬限制。</li>
+<li>同步 Subagent 会阻塞主 Agent；长时任务、可取消任务和独立重试应使用异步子 Agent 或外部作业系统。</li>
+<li>trace 需要保留生成代码、解释器版本、输入集合、每次 <code>task()</code> 的角色与结果，以及最后的聚合决定。</li>
+</ol>
+<p>动态工作流扩大了模型可以表达的控制结构，也扩大了需要验证的程序表面。它适合受限解释器，不适合把任意生成代码直接交给宿主机。</p>
+<h2>10. 三种实现怎样选</h2>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>固定 LangGraph</th>
+<th>Deep Agents Subagents</th>
+<th>动态 Subagents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>业务顺序稳定、审计要求高</td>
+<td>首选</td>
+<td>可作为节点</td>
+<td>只在受限局部使用</td>
+</tr>
+<tr>
+<td>角色稳定、任务内容每次变化</td>
+<td>可用</td>
+<td>首选</td>
+<td>任务分片很动态时使用</td>
+</tr>
+<tr>
+<td>输入规模与分支运行时才知道</td>
+<td>图会膨胀</td>
+<td>主 Agent 调度成本上升</td>
+<td>适合</td>
+</tr>
+<tr>
+<td>需要复杂循环、批处理和去重</td>
+<td>显式编码，容易复现</td>
+<td>依赖模型多轮调度</td>
+<td>解释器代码更直接</td>
+</tr>
+<tr>
+<td>需要逐步人工审批</td>
+<td>interrupt 路径清晰</td>
+<td>可配置 HITL</td>
+<td>对解释器入口统一设门</td>
+</tr>
+<tr>
+<td>需要严格复现同一运行图</td>
+<td>较强</td>
+<td>中等</td>
+<td>必须保存生成代码与全部输入</td>
+</tr>
+</tbody>
+</table>
+<p>稳定 SOP 可以固定在 LangGraph。专业角色与上下文隔离由 Subagents 承担。只有任务形状确实需要运行时发现时，才值得引入动态代码编排。</p>
+<h2>11. 可复用的验收清单</h2>
+<ul>
+<li>能否从 trace 还原本次生成的完整控制流？</li>
+<li>子 Agent 的输入、工具、资源范围和输出 schema 是否明确？</li>
+<li>并发分支是否写入同一个文件、状态键或外部系统？</li>
+<li>聚合器怎样处理部分失败、重复发现和相互矛盾的结果？</li>
+<li>verifier 与 generator 的模型、上下文和标准是否真正独立？</li>
+<li>超时、取消、重试和递归深度由谁控制？</li>
+<li>人工审批位于解释器入口、每次高风险动作，还是最终写回之前？</li>
+<li>与固定图和普通 Subagent 基线相比，质量、总 token、时延和人工时间是否改善？</li>
+</ul>
+<h2>12. 对 ADPS 模式体系的影响</h2>
+<p>张海立的研究给协作模块补上了一层实现解释：设计模式可以在运行时降低为串行、并行、路由和循环，动态解释器再把这些原语组合成本次任务的临时图。</p>
+<p>它同时纠正了 <a href="/zh/patterns/c6-choreography/">C6</a> 的例子。动态子 Agent 说明“运行时生成工作流”已有公开实现，却不说明系统已经去中心化。ADPS 因此把它链接到 <a href="/zh/patterns/c1-hierarchical-delegation/">C1</a>、<a href="/zh/patterns/c2-fan-out-gather/">C2</a>、<a href="/zh/patterns/c3-adversarial-review/">C3</a>、<a href="/zh/patterns/c5-sub-agent-isolation/">C5</a>以及反思与横切工程面；C6 仍保留事件驱动、分散控制的独立判据。</p>
+<h2>公开来源</h2>
+<ul>
+<li><a href="https://adpsagent.com/zh/workshops/collaboration-2026-08-25/">ADPS 协作模块第一次研讨会</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langchain/multi-agent/index">LangChain Multi-agent overview</a></li>
+<li><a href="https://docs.langchain.com/oss/python/deepagents/dynamic-subagents">Deep Agents Dynamic subagents</a></li>
+<li><a href="https://docs.langchain.com/oss/python/deepagents/subagents">Deep Agents Subagents</a></li>
+<li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/ARCHITECTURE.md">Deep Agents ARCHITECTURE.md</a></li>
+<li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/deepagents/deepagents/middleware/subagents.py">SubAgentMiddleware source</a></li>
+</ul>
+<div class="document-citation"><p><strong>研究来源：</strong>张海立在 2026-08-25 ADPS 协作模块第一次研讨会中的 LangGraph 与 Deep Agents 架构研究和演示。ADPS 根据公开文档与源码复核整理。</p><p><strong>证据边界：</strong>本文说明公开框架中的机制及其模式映射，不代表 LangChain 官方架构说明，也不构成企业部署效果验证。</p><p><a href="/zh/cases/">案例与研究报告目录</a> · <a href="/zh/patterns/collaboration/">协作模块</a> · <a href="/zh/patterns/reflection/">反思模块</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">溯源记录</h2>
+  <dl>
+    <div><dt>来源记录</dt><dd>张海立在协作模块研讨会中的 LangGraph 与 Deep Agents 架构研究；ADPS 依据公开文档与源码复核整理</dd></div>
+    <div><dt>来源日期</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+  </dl>
+  <p><a href="/zh/chronicle/#cases-deepagents-dynamic-orchestration">在 ADPS Chronicle 中查看</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

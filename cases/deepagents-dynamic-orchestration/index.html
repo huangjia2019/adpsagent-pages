@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Agents: From Fixed Graphs to Code-Generated Collaboration · ADPS</title>
+    <meta name="description" content="Haili Zhang&#x27;s ADPS workshop research on LangGraph, LangChain, Deep Agents, and the use of interpreter code to orchestrate dynamic subagents.">
+    <meta property="article:published_time" content="2026-08-26">
+    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="zh-CN" href="https://adpsagent.com/zh/cases/deepagents-dynamic-orchestration/">
+    <link rel="alternate" hreflang="x-default" href="https://adpsagent.com/cases/deepagents-dynamic-orchestration/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+    <link rel="stylesheet" href="/css/adps-case-study.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a>
+                <a href="/cases/" aria-current="page">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/chronicle/">Chronicle</a>
+                        <a href="/news/">News</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/cases/deepagents-dynamic-orchestration/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
+            </div></div>
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/cases/xuanxu-gis-agent/" >Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
+              <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
+              <a href="/cases/deepagents-dynamic-orchestration/" class="active">Deep Agents · Dynamic Collaboration</a>
+            </div></div>
+          <div class="sb-section">
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+    </details>
+  </div>
+</div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/cases/">Cases</a><span style="margin:0 0.45rem;">/</span>Open-source framework study</p>
+<header class="publication-head"><p class="publication-series">ADPS Open-Source Framework Case</p><h1>Deep Agents: From Fixed Graphs to Code-Generated Collaboration</h1><p class="publication-deck">LangGraph carries state and execution, LangChain assembles the agent loop, and Deep Agents packages the context, filesystem, skills, and delegation needed by long-running work. Dynamic collaboration adds a constrained interpreter that writes the task-specific orchestration at runtime.</p><p class="publication-date"><time datetime="2026-08-26">2026-08-26</time></p></header>
+<p>At the ADPS Collaboration workshop on 25 August 2026, Haili Zhang placed LangGraph, LangChain agents, and Deep Agents on one technical stack. This resolves a recurring source of confusion: the three names do not describe mutually exclusive agent frameworks. They own the runtime, the agent abstraction, and the harness respectively.</p>
+<p>His demonstration then moved one step further. A model can write JavaScript for the current task and call tools and subagents as constrained functions. Loops, branches, parallel batches, and aggregation remain in interpreter variables. The runtime still enforces the execution boundary, while the shape of this particular workflow is determined after the task arrives.</p>
+<p>This case uses public documentation and source code to examine that mechanism and map it to ADPS Collaboration, Reflection, Governance, and cross-cutting engineering planes.</p>
+<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-en.svg" alt="Three layers of LangGraph, LangChain and Deep Agents"><figcaption>Figure 1 · The layers own different concerns. Dynamic subagents sit between the harness and runtime rather than introducing another execution engine.</figcaption></figure>
+
+<h2>1. Three layers, three responsibilities</h2>
+<p>The public Deep Agents architecture document defines the stack directly.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Main responsibility</th>
+<th>First place to inspect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LangGraph</td>
+<td>State, checkpoints, streaming, interrupts, pause and resume</td>
+<td>Node transitions, persistence, runtime control</td>
+</tr>
+<tr>
+<td>LangChain agent</td>
+<td>The agent loop assembled from model, tools, and middleware</td>
+<td>Model requests, tool calls, middleware order</td>
+</tr>
+<tr>
+<td>Deep Agents</td>
+<td>Defaults for planning, filesystem, memory, skills, subagents, compaction, and backends</td>
+<td>Harness configuration, context, capability surface</td>
+</tr>
+</tbody>
+</table>
+<p><code>create_deep_agent()</code> ultimately calls LangChain's <code>create_agent()</code> and returns a runnable graph driven by LangGraph. Deep Agents contributes assembly. It packages middleware, backends, and prompt defaults commonly needed by long-running agents.</p>
+<p>The separation also guides diagnosis. Failed checkpoint recovery belongs first to LangGraph state. Excess tools visible to delegated work belong to the subagent's middleware and permissions. A growing main context points to delegation results, summarization, and file offload.</p>
+<h2>2. Multi-agent is not one architecture</h2>
+<p>LangChain's multi-agent guide distinguishes Subagents, Handoffs, Skills, Router, and Custom workflow by the location of control and the movement of context.</p>
+<table>
+<thead>
+<tr>
+<th>Structure</th>
+<th>Control</th>
+<th>Context</th>
+<th>Suitable work</th>
+<th>ADPS mapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Subagents</td>
+<td>Main agent</td>
+<td>Isolated per call; result returns to main</td>
+<td>Specialist work, parallel research, context isolation</td>
+<td><a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a></td>
+</tr>
+<tr>
+<td>Handoffs</td>
+<td>Current agent transfers control</td>
+<td>Session state follows the active role</td>
+<td>Support, staged takeover, direct user contact</td>
+<td><a href="/patterns/c4-handoff-chain/">C4</a></td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>One agent remains active</td>
+<td>Instructions and knowledge load on demand</td>
+<td>Many capabilities without another runtime actor</td>
+<td><a href="/patterns/f2-skill-package/">F2</a>, <a href="/patterns/m5-procedural-memory/">M5</a></td>
+</tr>
+<tr>
+<td>Router</td>
+<td>Routing step</td>
+<td>One or more branches receive classified input</td>
+<td>Domain dispatch, parallel lookup</td>
+<td><a href="/patterns/r2-complexity-based-routing/">R2</a>, <a href="/patterns/c2-fan-out-gather/">C2</a></td>
+</tr>
+<tr>
+<td>Custom workflow</td>
+<td>Graph designer</td>
+<td>Explicit state schema</td>
+<td>Stable SOPs, complex conditions, repeatable flows</td>
+<td><a href="/patterns/a2-plan-and-execute/">A2</a> plus topology composition</td>
+</tr>
+</tbody>
+</table>
+<p>The phrase “multi-agent” states the number of participants. It leaves the plan owner, user-facing role, context boundary, and acceptance authority unspecified. Those control questions come before framework selection.</p>
+<h2>3. Where fixed graphs become expensive</h2>
+<p>Consider a security review over 120 repository files. The task looks for embedded credentials, unsafe deserialization, and unauthorized file access, with source evidence for every finding.</p>
+<p>The file set and language distribution become known only at runtime. Some files suit deterministic scanning; others require semantic analysis; one finding may trigger a cross-file trace. A fixed graph can represent every branch, but it then carries both stable business policy and the accidental shape of one input set.</p>
+<p>Ordinary subagent calls have another cost. When the model selects <code>task</code> repeatedly, scheduling decisions and intermediate results keep returning through the message and tool-call path. The model must remember which files have been checked and which findings require verification.</p>
+<p>Dynamic subagents move that temporary control flow into the interpreter. The model chooses the strategy; code executes iteration, sets, deduplication, and concurrency.</p>
+<h2>4. <code>task()</code> connects subagents to interpreter code</h2>
+<p>Deep Agents interpreter middleware can expose a global <code>task()</code> function with a description, subagent type, and optional response schema. With Programmatic Tool Calling (PTC) enabled, explicitly allowlisted <code>tools.*</code> calls are also available.</p>
+<pre><code class="language-javascript">const files = await tools.glob({ pattern: &quot;src/**/*.{py,js,ts}&quot; });
+const batches = chunk(files, 12);
+
+const reviews = await Promise.all(
+  batches.map(batch =&gt; task({
+    subagentType: &quot;security-reviewer&quot;,
+    description: `Review these files and return evidence: ${batch.join(&quot;, &quot;)}`,
+    responseSchema: findingSchema
+  }))
+);
+
+const candidates = deduplicate(reviews.flat());
+const verified = await Promise.all(
+  candidates.map(item =&gt; task({
+    subagentType: &quot;independent-verifier&quot;,
+    description: `Verify this finding against its source: ${JSON.stringify(item)}`,
+    responseSchema: verdictSchema
+  }))
+);
+
+return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
+</code></pre>
+<p>The application did not commit this exact graph in advance. The model generated temporary orchestration for the current input. The interpreter executes it, <code>task()</code> exposes configured subagents as capabilities, and LangGraph continues to hold run state and events.</p>
+<figure class="matrix-figure case-diagram case-diagram-flow"><img src="/images/cases/deepagents-dynamic-review-en.svg" alt="Dynamic subagent security review flow"><figcaption>Figure 2 · Discovery, batching, and deduplication stay in interpreter variables. Isolated subagents make specialist judgments, and verified results enter one acceptance path.</figcaption></figure>
+
+<h2>5. Context savings come from the data path</h2>
+<p>Dynamic orchestration is often described as token-efficient. The claim requires measurement; the mechanism can still be stated precisely.</p>
+<p>Ordinary tool calls add arguments and outputs to message history. Dynamic orchestration can retain file lists, batches, and intermediate collections in interpreter variables or backend files. The main agent receives summaries and structured results. Subagents also isolate the detailed search, reads, and reasoning that produced each result.</p>
+<p>A fair comparison measures main-context tokens, total tokens across subagents, model calls, P50/P95 latency, retries, and human review time. A shorter main context alone may conceal cost moved into delegated runs.</p>
+<h2>6. Dynamic workflow is still orchestration</h2>
+<p>Runtime generation does not make this <a href="/patterns/c6-choreography/">C6 Choreography</a>. The interpreter still owns the file set, branch order, concurrency boundary, and aggregation rule. Every <code>task()</code> result returns to that control point.</p>
+<p>C6 requires event-reactive participants operating under local rules without one node holding the complete plan. Dynamicity asks when the graph is determined. Orchestration and choreography ask where control resides. These are separate dimensions.</p>
+<h2>7. One program composes several patterns</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Pattern</th>
+<th>Inspectable artifact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main agent selects specialist roles</td>
+<td><a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a></td>
+<td>Role, task scope, authority</td>
+</tr>
+<tr>
+<td>Files fan out for concurrent review</td>
+<td><a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a></td>
+<td>Shard list, child traces, gather rule</td>
+</tr>
+<tr>
+<td>Each agent receives isolated context and tools</td>
+<td><a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation</a></td>
+<td>Middleware, tool allowlist, state boundary</td>
+</tr>
+<tr>
+<td>Independent agents verify findings</td>
+<td><a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a></td>
+<td>Finding, verdict, disagreement, adjudication</td>
+</tr>
+<tr>
+<td>Failed checks trigger repair and retest</td>
+<td><a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a></td>
+<td>Patch, regression result, exit condition</td>
+</tr>
+<tr>
+<td>The complete route is recorded</td>
+<td><a href="/patterns/x1-observability/">X1 Observability</a></td>
+<td>Parent trace, child runs, code version, events</td>
+</tr>
+<tr>
+<td>Frozen samples compare compositions</td>
+<td><a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a></td>
+<td>Baseline, ablation, cost and quality metrics</td>
+</tr>
+</tbody>
+</table>
+<p>Order matters. Gather-then-verify and verify-in-each-branch create different costs and failure-propagation paths. A trace must preserve the actual composition, not only a list of pattern names.</p>
+<h2>8. Connection to Reflection</h2>
+<p>Dynamic subagents provide a flexible execution vehicle for reflection patterns; they do not supply the evaluation standard.</p>
+<p><a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a> can use one agent under two role prompts. <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a> requires independent participants, separate context, and preserved disagreement. The security example uses an independent verifier because a false confirmation would enter the repair path. Structural separation alone adds little when generator and verifier share the same model, evidence, and rubric.</p>
+<p><a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a> also needs an external result. Unit tests, static analysis, and permission checks determine whether a repair can exit the loop. A model's own completion statement is not an exit condition.</p>
+<h2>9. Dynamic capability needs stronger boundaries</h2>
+<p>The public documentation marks interpreters and dynamic subagents as Beta. Production use should cover these boundaries:</p>
+<ol>
+<li>PTC remains off by default and receives an explicit tool allowlist.</li>
+<li><code>task()</code> dispatches from an active <code>eval</code> call rather than the parent's ordinary tool-call path. Approval should gate the interpreter entry when per-dispatch parent interrupts do not apply.</li>
+<li>Each subagent declares tools, filesystem scope, model, and middleware independently rather than inheriting the main agent's maximum capability.</li>
+<li>Response schemas, maximum concurrency, timeout, recursion depth, and total budget receive hard limits.</li>
+<li>Synchronous subagents block the main agent. Long-running, cancellable, or independently retried work belongs in async subagents or an external job system.</li>
+<li>Traces retain generated code, interpreter version, input collection, subagent role and result for each <code>task()</code>, and the final aggregation decision.</li>
+</ol>
+<p>Dynamic workflows increase the control structures a model can express and the program surface that needs verification. A constrained interpreter is the appropriate boundary; arbitrary generated code should not run directly on the host.</p>
+<h2>10. Choosing among three implementations</h2>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Fixed LangGraph</th>
+<th>Deep Agents Subagents</th>
+<th>Dynamic Subagents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stable business order and strong audit</td>
+<td>Preferred</td>
+<td>Useful inside nodes</td>
+<td>Confine to a bounded section</td>
+</tr>
+<tr>
+<td>Stable roles, variable task content</td>
+<td>Suitable</td>
+<td>Preferred</td>
+<td>Use when sharding is highly dynamic</td>
+</tr>
+<tr>
+<td>Branch shape known only at runtime</td>
+<td>Graph expands</td>
+<td>Main-agent scheduling grows</td>
+<td>Suitable</td>
+</tr>
+<tr>
+<td>Complex loops, batches, and deduplication</td>
+<td>Explicit and reproducible</td>
+<td>Requires repeated model scheduling</td>
+<td>Direct in interpreter code</td>
+</tr>
+<tr>
+<td>Stepwise human approval</td>
+<td>Clear interrupt path</td>
+<td>Configurable HITL</td>
+<td>Gate the interpreter entry</td>
+</tr>
+<tr>
+<td>Exact replay of the execution graph</td>
+<td>High</td>
+<td>Moderate</td>
+<td>Archive generated code and all inputs</td>
+</tr>
+</tbody>
+</table>
+<p>Stable SOPs belong in LangGraph. Subagents provide specialist roles and context isolation. Dynamic code orchestration is justified when the task shape genuinely emerges at runtime.</p>
+<h2>11. Reusable acceptance checklist</h2>
+<ul>
+<li>Can the trace reconstruct the full generated control flow?</li>
+<li>Are each subagent's input, tools, resource scope, and output schema explicit?</li>
+<li>Can parallel branches write the same file, state key, or external system?</li>
+<li>How does the gather step handle partial failure, duplicate findings, and contradiction?</li>
+<li>Are verifier and generator actually independent in model, context, and rubric?</li>
+<li>Who controls timeout, cancellation, retry, and recursion depth?</li>
+<li>Does human approval sit at interpreter entry, each high-risk action, or final write-back?</li>
+<li>Against fixed-graph and ordinary-subagent baselines, do quality, total tokens, latency, and human time improve?</li>
+</ul>
+<h2>12. Effect on the ADPS catalogue</h2>
+<p>Haili Zhang's research adds an implementation layer to the Collaboration module. Design patterns can lower to serial, parallel, routing, and loop primitives; the dynamic interpreter composes those primitives into a task-specific transient graph.</p>
+<p>It also corrects the <a href="/patterns/c6-choreography/">C6</a> example. Dynamic subagents provide a public implementation of runtime-generated workflows, but they do not establish decentralized control. ADPS therefore links the case to <a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c3-adversarial-review/">C3</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a>, Reflection, and the cross-cutting planes. C6 retains its event-driven, distributed-control criterion.</p>
+<h2>Public sources</h2>
+<ul>
+<li><a href="https://adpsagent.com/workshops/collaboration-2026-08-25/">First ADPS Collaboration workshop</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langchain/multi-agent/index">LangChain Multi-agent overview</a></li>
+<li><a href="https://docs.langchain.com/oss/python/deepagents/dynamic-subagents">Deep Agents Dynamic subagents</a></li>
+<li><a href="https://docs.langchain.com/oss/python/deepagents/subagents">Deep Agents Subagents</a></li>
+<li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/ARCHITECTURE.md">Deep Agents ARCHITECTURE.md</a></li>
+<li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/deepagents/deepagents/middleware/subagents.py">SubAgentMiddleware source</a></li>
+</ul>
+<div class="document-citation"><p><strong>Research source:</strong> Haili Zhang's LangGraph and Deep Agents research and demonstration at the first ADPS Collaboration workshop on 25 August 2026. ADPS checked the account against public documentation and source code.</p><p><strong>Evidence boundary:</strong> This article describes mechanisms in public frameworks and maps them to patterns. It is neither an official LangChain architecture document nor evidence of deployment outcomes.</p><p><a href="/cases/">Cases and research reports</a> · <a href="/patterns/collaboration/">Collaboration</a> · <a href="/patterns/reflection/">Reflection</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">Chronicle</h2>
+  <dl>
+    <div><dt>Recorded source</dt><dd>Haili Zhang's LangGraph and Deep Agents research at the Collaboration workshop; checked by ADPS against public documentation and source</dd></div>
+    <div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+  </dl>
+  <p><a href="/chronicle/#cases-deepagents-dynamic-orchestration">View in the ADPS Chronicle</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+</body>
+</html>

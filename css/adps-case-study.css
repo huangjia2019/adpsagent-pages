@@ -212,6 +212,22 @@ article.essay .case-outcome {
     margin-top: 0.8rem;
 }
 
+.case-diagram img {
+    display: block;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.case-diagram-stack img {
+    max-width: 24rem;
+}
+
+.case-diagram-flow img {
+    max-width: 46rem;
+}
+
 @media (max-width: 840px) {
     .case-route-list,
     .case-replay-list,

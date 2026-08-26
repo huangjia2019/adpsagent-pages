@@ -1,0 +1,20 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, Noto Sans CJK SC, sans-serif","primaryTextColor":"#102033","lineColor":"#6f8195","background":"#ffffff"},"flowchart":{"curve":"basis","nodeSpacing":24,"rankSpacing":42}}}%%
+flowchart TB
+  T["安全审查任务"] --> I["受限解释器<br/><small>发现文件 · 分片 · 控制预算</small>"]
+  I --> W1["审查 Agent A<br/><small>隔离上下文</small>"]
+  I --> W2["审查 Agent B<br/><small>隔离上下文</small>"]
+  I --> W3["审查 Agent C<br/><small>隔离上下文</small>"]
+  W1 --> C["代码聚合<br/><small>去重 · 对齐来源</small>"]
+  W2 --> C
+  W3 --> C
+  C --> V["独立复核 Agent<br/><small>证据与规则校验</small>"]
+  V --> A["统一验收<br/><small>确认 · 驳回 · 转人工</small>"]
+
+  classDef input fill:#eaf1f7,stroke:#315b7d,color:#102033,stroke-width:2px;
+  classDef control fill:#f7f0df,stroke:#a67525,color:#102033,stroke-width:2px;
+  classDef worker fill:#eef4ef,stroke:#4e755d,color:#102033,stroke-width:2px;
+  classDef verify fill:#f3e9ee,stroke:#8a536b,color:#102033,stroke-width:2px;
+  class T input;
+  class I,C control;
+  class W1,W2,W3 worker;
+  class V,A verify;

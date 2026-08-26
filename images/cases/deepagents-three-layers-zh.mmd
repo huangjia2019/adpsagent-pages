@@ -1,0 +1,19 @@
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"Arial, Noto Sans CJK SC, sans-serif","primaryTextColor":"#102033","lineColor":"#6f8195","background":"#ffffff"},"flowchart":{"curve":"basis","nodeSpacing":32,"rankSpacing":32}}}%%
+flowchart TB
+  D["Deep Agents Harness<br/><small>规划 · 文件 · 技能 · 记忆 · 子 Agent · 压缩</small>"]
+  L["LangChain Agent 抽象<br/><small>模型 + 工具 + 中间件 → Agent 循环</small>"]
+  G["LangGraph 运行时<br/><small>状态 · Checkpoint · Stream · Interrupt · 恢复</small>"]
+  I["动态子 Agent<br/><small>解释器生成本次任务的循环、分支、并行与聚合</small>"]
+
+  I -->|调用 task 与 tools| D
+  D -->|组装 create_agent| L
+  L -->|编译并运行| G
+
+  classDef runtime fill:#eaf1f7,stroke:#315b7d,color:#102033,stroke-width:2px;
+  classDef agent fill:#eef4ef,stroke:#4e755d,color:#102033,stroke-width:2px;
+  classDef harness fill:#f7f0df,stroke:#a67525,color:#102033,stroke-width:2px;
+  classDef dynamic fill:#f1e9d2,stroke:#b8842b,color:#102033,stroke-width:3px;
+  class G runtime;
+  class L agent;
+  class D harness;
+  class I dynamic;
