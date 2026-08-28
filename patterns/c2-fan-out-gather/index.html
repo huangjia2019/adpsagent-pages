@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -202,20 +202,20 @@
             <hr />
             <h2>Problem</h2>
             <p>Some tasks cannot meet a business window when one agent processes every item sequentially. A quarterly disclosure review, for example, may contain more documents than one run can inspect before the legal deadline.</p>
-            <p>Fan-out / gather splits a large task into independently executable subtasks, distributes them to parallel sub-agents, and aggregates the results at the end. It usually spends more total compute to reduce wall-clock time, although provider limits and the gather stage prevent ideal linear speedup. Dispatch is the easy part; merging the results is where most of the engineering lies. When workers see overlapping material, the aggregation stage must deduplicate and resolve conflicts.</p>
+            <p>Fan-Out/Gather splits a task into independent work units, runs them concurrently, and combines typed results. It may trade higher total compute for shorter wall-clock time. Provider limits, shared dependencies, output overlap, and aggregation determine the actual speedup.</p>
             <h2>Classification: Collaboration × Parallel</h2>
             <ul>
-            <li><strong>Vertical axis · Collaboration</strong>: This splits one task across multiple sub-agents that work in parallel and then summarize. The entities being distributed are different subtasks, which makes it a multi-agent collaboration topology. This differs from parallel exploration in the reasoning module—the latter parallelizes multiple solution paths for the same problem (a reasoning strategy), while the former parallelizes different subtasks split across different agents (a collaboration topology).</li>
-            <li><strong>Horizontal axis · Parallel</strong>: N sub-agents run simultaneously, unaware of one another, and are gathered together at the end. This is the classic map-reduce parallel structure. It is neither sequential chaining nor loop iteration.</li>
+            <li><strong>Vertical axis · Collaboration</strong>: Fan-Out/Gather assigns independent work units to multiple participants and combines their typed results. Parallel Exploration (R3) instead runs alternative hypotheses or solution paths for the same decision.</li>
+            <li><strong>Horizontal axis · Parallel</strong>: Work units run concurrently without consuming one another's intermediate state. A gather owner combines their artifacts and records partial failures.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>A single fan-out / gather consists of three stages:</p>
             <ol>
-            <li><strong>Split and fan out</strong>: The large task is split into N parts by "semantic independence" and distributed in parallel. The splitting criterion is not equal division by document count, but making the subtasks independent of one another—worker B must not depend on worker A's output, otherwise a handoff chain rather than fan-out is called for.</li>
-            <li><strong>Isolated execution</strong>: Each sub-agent runs in an independent context and completes its own subtask without communicating with the others. The strength of isolation is proportional to the likelihood of output conflicts—research tasks that each query different corpora need only soft isolation, while code-writing tasks where multiple agents modify overlapping files require physical isolation (separate Git worktrees or separate containers).</li>
-            <li><strong>Gather and collect</strong>: An aggregation strategy merges the N sets of results. If aggregation is done wrong, the entire pipeline falls apart.</li>
+            <li><strong>Split and fan out</strong>: Define work units by dependency and write-conflict domains, not by equal item count alone. If one unit requires another's result, keep the dependency serial or model it in an orchestrated graph.</li>
+            <li><strong>Isolated execution</strong>: Each worker has bounded context, tools, credentials, and mutable resources. Research tasks may need context isolation; concurrent code changes may also need separate worktrees or containers plus shared-resource locks.</li>
+            <li><strong>Gather</strong>: The aggregator validates schemas, discloses missing partitions, deduplicates overlap, resolves or exposes conflicts, and preserves source attribution.</li>
             </ol>
-            <p>Aggregation is not simple concatenation; it must do at least five things:</p>
+            <p>The gather contract may include the following operations:</p>
             <table>
             <thead>
             <tr>
@@ -252,13 +252,13 @@
             <li><strong>Research tasks that split cleanly by semantic independence</strong>: Parallel verification across multiple corpus sources, where each sub-agent queries a different category of content and the outputs barely conflict.</li>
             <li><strong>Multi-agent parallel code writing</strong>: Assign independent agents to separable work packages and use worktrees or containers to isolate files and commits. Measure whether integration effort cancels the time saved.</li>
             </ul>
-            <p>Three conditions must hold simultaneously: the task can be split into independent parallel parts, total duration is the bottleneck, and the budget can absorb N times the tokens. If any one fails, fan-out merely moves the bottleneck from duration to quality.</p>
+            <p>Use fan-out when work units are independent enough to run concurrently, wall-clock time matters, and the measured aggregation and execution cost is acceptable. Otherwise keep the task serial or use an explicit dependency graph.</p>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Forcing a split when subtasks have strong dependencies</strong>: For tasks where workers need to exchange intermediate state, or must be read in sequence to recognize an evolution trajectory, fan-out flattens sequential dependencies into parallelism, and the gather stage then spends a great deal of effort rebuilding those dependencies. Such scenarios call for a handoff chain.</li>
-            <li><strong>Aggregation costs more than execution</strong>: When too little is invested in aggregation, fan-out merely moves the bottleneck from duration to quality. If the business has no engineering capacity for deduplication, conflict resolution, and cross-slice integration, fan-out should not be turned on.</li>
-            <li><strong>Aggregation bottleneck</strong>: As the number of workers N grows, the aggregator must read every worker's output, blowing out its context and causing quality to drop sharply. When N is large, the aggregator should work in layers (first group-level sub-aggregation, then final synthesis) to reduce the context pressure to logarithmic scale.</li>
-            <li><strong>Slicing by function rather than by conflict</strong>: Slicing for "most complete function coverage" (one group each for frontend, backend, algorithms, and testing) leads to daily conflict resolution at the integration stage; slicing to "minimize output conflicts" is the right approach. The fan-out topology should mirror the actual collaboration topology of the business team.</li>
+            <li><strong>Hidden dependencies between units</strong>: Workers exchange intermediate state or must process material in sequence, and the gather step attempts to reconstruct the missing order. Model those dependencies before dispatch.</li>
+            <li><strong>Unfunded aggregation</strong>: The design budgets worker calls but not schema validation, deduplication, conflict handling, and integration review. Measure gather cost as part of the pattern.</li>
+            <li><strong>Aggregation bottleneck</strong>: The aggregator cannot fit or compare all worker artifacts. Reduce artifact size, aggregate in reviewed layers, or lower fan-out; do not assume logarithmic savings without measurement.</li>
+            <li><strong>Partitioning that ignores write conflicts</strong>: Separate files can still share identifiers, configuration, databases, or deployment environments. Declare conflict domains and keep unknown overlaps serial.</li>
             <li><strong>Implicit batching cuts concurrency</strong>: The application may launch many calls while the model provider queues or batches them, so observed concurrency is much lower. The implementation must measure and align with provider limits.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -274,23 +274,23 @@
                 results = parallel gather(                  # semaphore for concurrency + retry + backoff
                     execute_worker(w) for w in workers      # independent context each, failures don't block others
                 )
-                return aggregate(goal, results, strategy)   # the soul is in this step
+                return aggregate(goal, results, strategy)   # validate, disclose gaps, merge, attribute
 
             aggregate(results, strategy):
                 concatenate → simple concatenation (only when no overlap)
                 vote        → majority vote
-                synthesize  → strong model synthesis, explicit contradiction resolution + dedup
+                synthesize  → synthesis model selected by evaluation, with explicit contradiction resolution and deduplication
                 structured  → schema-based structured merge
             </code></pre>
-            <p>Four engineering points: choose worker and aggregator models from local quality and cost measurements; align concurrency with provider limits and raise it only after observation; failed workers must not block unrelated branches, and the final artifact must disclose partial failure; retain a complete trace of each path for audit.</p>
+            <p>Select worker and aggregator models from local evaluations, align concurrency with provider limits, isolate unrelated worker failures, disclose incomplete partitions, and retain each branch trace for audit and replay.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a quarterly compliance-scanning agent. Sequential review cannot meet the disclosure window, while parallel workers introduce duplicate findings, inconsistent terminology, and incomparable confidence labels. The gather stage therefore performs semantic deduplication, concept normalization, evidence merging, and <code>needs_review</code> classification. Government or regulated bid-evaluation workflows may also require worker independence and policy-defined trace retention. Every partial failure remains visible in the final report. Throughput and coverage claims require results from an authorized document set.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Parallel exploration (reasoning module R3)</strong>: Same structure, shared aggregation mechanism, differing in what is parallelized. Fan-out / gather assigns different subtasks to different agents (a collaboration topology); parallel exploration runs multiple solution paths for the same problem (a reasoning strategy).</li>
-            <li><strong>Hierarchical delegation (C1)</strong>: Both are one-to-many, but fan-out is one-to-many by quantity (multiple workers simultaneously handling different parts of the same kind of work) with shallow collaboration (fire-and-collect), while hierarchical delegation is one-to-many by specialty with deep collaboration (the supervisor continuously monitors). Anthropic's multi-agent research is both hierarchical (the lead supervises) and fan-out (the subagents run in parallel).</li>
-            <li><strong>Adversarial review (C3)</strong>: The N workers in fan-out are complementary (each looks at one facet to assemble the full picture), while the reviewers in adversarial review are adversarial (independently scrutinizing the robustness of a decision).</li>
-            <li><strong>Sub-agent isolation (C5)</strong>: Each parallel branch in fan-out depends on the inner discipline of isolation—an independent context, with the gather stage seeing only the reduced result.</li>
+            <li><strong>Parallel Exploration (R3)</strong>: C2 assigns different work units; R3 runs alternative reasoning or evidence paths for the same decision.</li>
+            <li><strong>Hierarchical Delegation (C1)</strong>: C1 adds a supervisor-worker responsibility structure. A design may use C1 for role assignment and C2 for independent workers that run concurrently.</li>
+            <li><strong>Adversarial Review (C3)</strong>: C2 branches contribute parts of one result. C3 reviewers challenge the same decision under distinct review duties.</li>
+            <li><strong>Sub-Agent Isolation (C5)</strong>: C5 supplies context, permission, runtime, failure, and artifact boundaries for each parallel worker.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Fan-out / gather exchanges additional execution and aggregation work for shorter wall-clock time. It works when partitions are independent, outputs are contract-shaped, and the gather stage can reconstruct one auditable result.</p>
@@ -300,7 +300,7 @@
 <section class="related-case-band" aria-labelledby="related-deepagents-case">
   <p class="related-case-label">Related open-source framework case</p>
   <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C2 Fan-Out/Gather</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>

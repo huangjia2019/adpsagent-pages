@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A1 Tool Dispatch · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.">
+    <meta name="description" content="Before execution, the runtime narrows eligible tools using metadata, permissions, risk, and current state. The model chooses only within that admitted set.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>A1 · Tool Dispatch</h1>
-                <p class="publication-deck">Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.</p>
+                <p class="publication-deck">Before execution, the runtime narrows eligible tools using metadata, permissions, risk, and current state. The model chooses only within that admitted set.</p>
             </header>
 
                         <table>
@@ -195,23 +195,23 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Before each step of action, the engineering layer selects the most suitable tool from the tool set based on tool metadata, rather than letting the model decide on the spot.</td>
+            <td style="text-align: left;">Before execution, the runtime narrows eligible tools using metadata, permissions, risk, and current state. The model chooses only within that admitted set.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>As the tool registry grows, overlapping names and stale state make selection harder. A logistics dispatch agent can repeatedly choose the same driver if it does not refresh availability or check the session quota. The individual tool call may be valid while the sequence is operationally wrong.</p>
-            <p>Tool Dispatch takes "which tool to choose" out of the model's hands and returns it to the engineering layer. Its core judgment is that tool selection is reliability engineering. It relies not on writing a smarter prompt, but on supplying complete metadata for each tool, plus a full set of engineering contracts: quotas, state refresh, and side-effect tracking.</p>
+            <p>Tool Dispatch places tool admission in the runtime. Metadata describes each tool's capability, schema, version, cost, permission requirements, and side effects. Dispatch rules apply quotas, state-freshness checks, and trace requirements before a call can proceed.</p>
             <h2>Classification: Action × Route</h2>
             <ul>
-            <li><strong>Vertical axis · Action</strong>: an agent turns decisions into outward effect through tool calls. In multi-tool scenarios, "which one to call" is the earliest and most frequent decision on the action side, so it belongs to the action module rather than the reasoning module.</li>
-            <li><strong>Horizontal axis · Route</strong>: it works by directing a given call to the most suitable tool based on current intent and context. This is a typical routing structure, not a chained sequence or a hierarchical wrapper. The minimal tool set (A5) in the same module also falls on the routing side, but with a different division of labor—A1 addresses "how to pick," while A5 addresses "trim before picking."</li>
+            <li><strong>Vertical axis · Action</strong>: Tool Dispatch selects the capability that will affect an external system and checks whether the call may proceed.</li>
+            <li><strong>Horizontal axis · Route</strong>: Intent, metadata, permissions, risk, and current state narrow the registry to one admitted call path. Minimal Tool Set (A5) controls which candidates are exposed before this decision.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>Production Tool Dispatch depends on tool metadata that covers identity, schemas, execution behavior, source, progressive disclosure, and lifecycle. A name, description, and parameters are enough to invoke a demo tool, but not enough to govern side effects and state.</p>
             <p>Useful execution characteristics include <code>isReadOnly</code>, <code>isConcurrencySafe</code>, <code>isDestructive</code>, <code>requiresFreshState</code>, and <code>requiresApproval</code>. Unknown values should take the conservative path: no parallel execution, no approval bypass, and no assumption that state is fresh. If booleans cannot represent "undeclared," use explicit enums or reject incomplete schemas at registration.</p>
-            <p>Around the metadata, three engineering disciplines must be in place:</p>
+            <p>Runtime admission adds quota, freshness, and side-effect controls around that metadata:</p>
             <table>
             <thead>
             <tr>
@@ -236,14 +236,14 @@
             </table>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>When many tools, many side effects, and a high cost of mis-dispatch stack together</strong>: logistics dispatch, customer-service tickets, operations actions.</li>
-            <li><strong>When integrating external tool protocols such as MCP</strong>: external tool sources are untrusted, so additional security review must rely on the source marking in the metadata.</li>
-            <li><strong>Fixed-process tasks</strong>: one can go further with Programmatic Tool Calling, where the engineering layer explicitly orchestrates the call sequence and the model only fills in parameters and interprets results, reducing round trips, improving fault tolerance, and making auditing clearer.</li>
+            <li><strong>Large registries with side-effecting tools</strong>: Logistics, customer support, and operations need selection plus permission, freshness, quota, and recovery controls.</li>
+            <li><strong>External tool protocols such as MCP</strong>: Record source and version, validate schemas and descriptions, and admit each server under the organization's trust policy.</li>
+            <li><strong>Fixed procedures</strong>: Programmatic Tool Calling can move call order into the engineering layer while the model supplies bounded parameters or interprets results.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Metadata too thin</strong>: with only name plus description, an agent picks a tool from a single sentence, which is like handing an intern a one-line job description and expecting them to start. This is the leading root cause of mis-dispatch.</li>
-            <li><strong>Side-effect tools without supporting controls</strong>: tools that write to a database, send messages, or deduct payment, without quota, state refresh, or saga—one mis-dispatch is a production incident.</li>
+            <li><strong>Metadata too thin</strong>: Name and description do not express permissions, freshness, idempotency, approval, side effects, or result contracts. The runtime cannot distinguish two semantically similar tools safely.</li>
+            <li><strong>Side-effect tools without supporting controls</strong>: Database writes, messages, and payments need appropriate quotas, current-state checks, idempotency, receipts, and compensation or escalation paths.</li>
             <li><strong>Tool stuffing</strong>: Sending a large registry to the model consumes context and increases ambiguity. Keep core tools resident and retrieve extended tools on demand.</li>
             <li><strong>Tool poisoning</strong>: An attacker can place hidden instructions in an external tool description. Defenses include allowlisting, description scanning, sandboxing, behavior monitoring, and least privilege, selected from the system's threat model.</li>
             </ul>
@@ -265,15 +265,15 @@
                     failure                → record trace, hand off to upper-layer saga rollback
                 return DispatchTrace (tool / parameters / trigger / status / rejection reason / latency)
             </code></pre>
-            <p>Engineering implementation points: metadata defaults to being treated as unsafe; quota is counted by the primary parameter (e.g., dispatch counted by driver id); MCP tools carry a source marking and go through additional description validation and behavior monitoring.</p>
+            <p>Treat undeclared execution properties conservatively. Count quota at the business-resource level, such as driver ID, as well as at task level. External tools retain source and version metadata and pass registration and runtime monitoring.</p>
             <h2>Illustrative scenario</h2>
-            <p>Liang Bo's execution-oriented agent separates knowledge retrieval, skill loading, and tool calls into <code>retrieve</code>, <code>use_skill</code>, and <code>call_tool</code>. In an intra-city dispatch scenario, the dispatch layer adds richer metadata, selection guidance, mandatory state refresh before writes, a per-session driver quota, and saga side-effect tracking. The named practice shows that most Tool Dispatch work sits in contracts, state, and side-effect control. Any outcome figure should be published only with the team's approved evaluation method.</p>
+            <p>Bo Liang's execution-oriented agent separates knowledge retrieval, skill loading, and tool calls into <code>retrieve</code>, <code>use_skill</code>, and <code>call_tool</code>. In an intra-city dispatch scenario, the dispatch layer adds richer metadata, selection guidance, mandatory state refresh before writes, a per-session driver quota, and saga side-effect tracking. The implementation places most Tool Dispatch work in contracts, state, and side-effect control. Any outcome figure should be published only with the team's approved evaluation method.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Minimal tool set (A5)</strong>: complementary within the same cell. A1 picks accurately within a given tool set; A5 first trims the tool set to a reasonable size so that A1 can pick at all.</li>
-            <li><strong>Plan-and-execute (A2)</strong>: A1 optimizes single-step decisions, while A2 orchestrates the whole multi-step task. Programmatic Tool Calling is where the two meet—the engineering layer sets the call sequence, and within each step it is still a single dispatch.</li>
-            <li><strong>Guardrail sandwich (A4)</strong>: A4 wraps a pre-check and a post-check around the dispatch, nesting with A1's quota and state refresh—A1 picks the right tool, and A4 ensures the wrong pick is still caught.</li>
-            <li><strong>Complexity routing (R2)</strong>: same line of thinking, both routing based on context. The difference is that R2 routes the reasoning tier, while A1 routes the tool.</li>
+            <li><strong>Minimal Tool Set (A5)</strong>: A5 limits per-decision exposure; A1 selects and admits a call from the resulting candidate set.</li>
+            <li><strong>Plan-and-Execute (A2)</strong>: A2 schedules the task graph. Each executable step may invoke A1 to select an eligible tool.</li>
+            <li><strong>Guardrail Sandwich (A4)</strong>: A1 handles candidate selection and call admission. A4 adds policy checks and result validation around high-risk execution.</li>
+            <li><strong>Complexity-Based Routing (R2)</strong>: R2 routes a request to a model and effort tier. A1 routes an approved action intent to a tool.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Tool Dispatch encodes permission, idempotency, state freshness, approval, rollback, rate limits, and audit behavior as metadata and runtime contracts. Tool choice cannot rely on name, description, and parameter schema alone.</p>

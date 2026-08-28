@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C5 Sub-Agent Isolation · Pattern White Paper · ADPS</title>
-    <meta name="description" content="A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw traj">
+    <meta name="description" content="Run each delegated worker within bounded context, tools, credentials, budget, and workspace, then return a schema-valid artifact with evidence links and failure state.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>C5 · Sub-Agent Isolation</h1>
-                <p class="publication-deck">A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw trajectory.</p>
+                <p class="publication-deck">Run each delegated worker within bounded context, tools, credentials, budget, and workspace, then return a schema-valid artifact with evidence links and failure state.</p>
             </header>
 
                         <table>
@@ -195,40 +195,40 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern summary</strong></td>
-            <td style="text-align: left;">A sub-agent runs in an isolated context and must reduce its work into a schema-formed artifact before returning. The supervisor agent consumes only the artifact, never the raw trajectory.</td>
+            <td style="text-align: left;">Run each delegated worker within bounded context, tools, credentials, budget, and workspace, then return a schema-valid artifact with evidence links and failure state.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>The supervisor dispatches sub-agents, each sub-agent returns its entire working process, and the supervisor's context is quickly flooded. In a batch review, raw analyses scale with every item while the supervisor usually needs only verdicts, key findings, and evidence. It should receive the work product, not every intermediate step.</p>
-            <p>Sub-agent isolation controls context pollution in multi-agent systems. Each sub-agent runs in an isolated context and reduces its result into a structured artifact before returning, so the supervisor consumes only the artifact. This is the boundary discipline used by hierarchical delegation and fan-out aggregation to contain context and local failures.</p>
+            <p>If every worker returns its complete trace, supervisor context grows with each item and leaves less capacity for comparison and synthesis. Most coordination steps need a verdict, findings, evidence links, unresolved questions, and failure state.</p>
+            <p>Sub-Agent Isolation bounds each worker's context, tools, credentials, budget, workspace, and failure propagation. The worker returns a schema-valid artifact while its full trace remains separately addressable for review.</p>
             <h2>Classification: Collaboration × Hierarchy</h2>
             <ul>
-            <li><strong>Vertical axis · Collaboration</strong>: Giving a sub-agent its own context and permissions is a design that adds boundaries within collaboration. It is not simple task dispatch but adds isolation discipline to collaboration—the information flow between supervisor and sub-agent is deliberately cut down to "pass only refined conclusions."</li>
-            <li><strong>Horizontal axis · Hierarchy</strong>: A parent agent schedules a sub-agent, and the sub-agent runs in its own sandbox—this is a structure of hierarchy plus isolation. It shares a cell with hierarchical delegation (both sit at the Collaboration × Hierarchy intersection), but the emphasis differs—hierarchical delegation stresses dispatch, while sub-agent isolation stresses isolation plus summarized return.</li>
+            <li><strong>Vertical axis · Collaboration</strong>: Sub-Agent Isolation adds context and permission boundaries to delegated work. The supervisor sends a task contract and receives a bounded artifact instead of the worker's full trace.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: A parent assigns a bounded task and consumes the returned artifact. C1 defines assignment and reporting; C5 defines the worker boundary.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>Sub-agent isolation is built from four engineering elements:</p>
+            <p>The worker boundary covers four areas:</p>
             <ol>
             <li><strong>Context isolation</strong>: When the sub-agent starts, it does not inherit the parent's history; it receives only its own system prompt, the specific task instruction, and its own tool set. It cannot see what the supervisor has run or what other sub-agents are doing.</li>
-            <li><strong>Schema-formed artifact return</strong>: The sub-agent returns a structured artifact defined with a Pydantic model or JSON Schema. Fields may include verdict (success / partial / failure), ranked findings, citations, and unresolved questions. The supervisor can validate it with deterministic code instead of inferring state from free text.</li>
+            <li><strong>Schema-valid artifact return</strong>: The sub-agent returns a Pydantic or JSON Schema artifact containing verdict, ranked findings, citations, and unresolved questions. The supervisor validates it without inferring state from free text.</li>
             <li><strong>Failure boundary isolation</strong>: When a sub-agent times out or throws an exception, the supervisor receives an artifact with <code>verdict=failure</code> rather than an unhandled exception. A local failure remains attached to its branch.</li>
             <li><strong>Parallel non-interference</strong>: N sub-agents each run their own context, cannot see each other's intermediate state, and do not communicate directly—exchanging information must go through the supervisor.</li>
             </ol>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Batch tasks where subtasks produce a lot of output and the supervisor's context is tight</strong>: contract review, document scanning, large-scale code search, where each sub-agent handles one item and returns only a refined conclusion.</li>
-            <li><strong>Scenarios that must prevent cross-task pollution</strong>: each contract should get an independent fresh review, not be primed by details from other contracts (avoiding anchoring bias), so an independent context is required.</li>
-            <li><strong>Scenarios where data scope must not cross over</strong>: sensitive data seen by one sub-agent must not flow to another sub-agent or pollute the supervisor; an isolated context provides a natural data boundary.</li>
-            <li><strong>Scenarios that need protection against prompt pollution</strong>: a sub-agent's trial-and-error failure traces and out-of-bounds attempts should not drag down the later reasoning of the supervisor or other sub-agents.</li>
+            <li><strong>Independent item review</strong>: Each contract or record receives only its authorized task context, reducing cross-item influence and accidental disclosure.</li>
+            <li><strong>Restricted data scope</strong>: Worker credentials and context expose only the records required for that task. Isolation complements, but does not replace, authorization enforcement.</li>
+            <li><strong>Verbose local exploration</strong>: Trial-and-error traces remain in the worker runtime while the supervisor receives a bounded artifact.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>The sub-agent inherits the supervisor's history</strong>: As the parent history grows, every new sub-agent starts with unrelated tokens, increasing cost and interference. Start from local messages with only the contracted task context.</li>
             <li><strong>Returning free text instead of a schema artifact</strong>: Free text cannot be reliably parsed, ranked, or routed by deterministic code. Enforce the artifact schema and reject non-conforming returns.</li>
-            <li><strong>Direct communication between sub-agents</strong>: letting sub-agent A call sub-agent B for convenience immediately turns the hierarchical topology into a mesh topology, and the risk of cascade failure soars. Exchanging information must go through the supervisor.</li>
-            <li><strong>Failure has no boundary</strong>: the sub-agent throws an exception that is not caught, the supervisor receives a raw exception, the reasoning loop is interrupted, and the whole task fails. On failure, a schema-formed failure artifact must be returned.</li>
+            <li><strong>Uncontrolled worker-to-worker calls</strong>: if worker A can invoke worker B outside the supervisor's plan, dependencies and authority move beyond the coordinator's trace. Route cross-worker requests through the supervisor or an explicit shared protocol.</li>
+            <li><strong>Failure has no boundary</strong>: An uncaught worker exception interrupts the parent task. Convert timeout, cancellation, and execution errors into typed failure artifacts and apply partial-failure policy.</li>
             <li><strong>Wrapping isolation around a trivial subtask</strong>: When the output is already small or the supervisor genuinely needs intermediate detail, isolation may add needless overhead. Compare it with direct execution under the real context budget.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -252,15 +252,15 @@
                 )
                 return synthesize_from_artifacts(artifacts) # supervisor sees only artifacts, never raw trajectory
             </code></pre>
-            <p>The four engineering points correspond to the four elements: starting from local messages implements context isolation; reduce_to_artifact implements schema-formed return; try/except plus timeout implements the failure boundary; parallel gather plus a separate context each implements non-interference.</p>
+            <p>Start from local messages, validate the returned artifact, convert timeout and exceptions into typed failures, and isolate mutable state for concurrent workers.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a law-firm contract review agent. A first version lets every worker return its complete analysis, leaving too little context for portfolio-level synthesis. A stronger version gives each contract an independent review context and requires <code>verdict</code>, <code>top_concerns</code>, <code>recommendation</code>, citations, and uncertainty in the returned artifact. A failed worker does not interrupt the others, and low-confidence findings are routed to lawyers. Sub-agent runtimes such as task-oriented coding-agent tools illustrate the same boundary: separate context and tools, then return a final artifact instead of injecting the full internal trace. Actual context savings and review quality require measurement on an authorized corpus.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Hierarchical delegation (C1)</strong>: same cell and two sides of the same coin. Hierarchical delegation is the move (the supervisor dispatches workers), sub-agent isolation is the internal discipline (the worker isolates context plus schema artifact plus failure boundary). Hierarchical delegation without isolation is bound to cause context explosion plus cascade failure; the two must come as a set.</li>
-            <li><strong>Fan-out aggregation (C2)</strong>: every parallel branch of the fan-out depends on isolation—an independent context, and the gather stage sees only reduced results. Isolation is the engineering foundation that lets fan-out scale to large parallelism.</li>
-            <li><strong>Hierarchical Retention (memory module)</strong>: same root idea. Information is distributed by level and grows more concise the higher up it goes; sub-agent isolation is the landing of this scope-layering principle at the multi-agent collaboration layer.</li>
-            <li><strong>Context triage (perception module)</strong>: same line of thinking. The supervisor does not preload the sub-agent's intermediate state but fetches it on demand (usually unnecessary, since the artifact is enough), similar to lazy loading.</li>
+            <li><strong>Hierarchical Delegation (C1)</strong>: C1 defines how a supervisor assigns work; C5 defines the context, permissions, runtime, and result boundary of each worker. They are commonly combined, but they answer different design questions.</li>
+            <li><strong>Fan-Out/Gather (C2)</strong>: C5 supplies the context, permission, runtime, failure, and artifact boundary for each parallel branch.</li>
+            <li><strong>Layered Retention (M1)</strong>: M1 controls retained information by scope and access tier. C5 applies an independent working set and credential scope to one delegated task.</li>
+            <li><strong>Context Triage (P1)</strong>: The supervisor may retrieve detailed worker evidence on demand instead of preloading every intermediate trace.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Sub-agent isolation limits each worker's context, tools, credentials, budget, and workspace. The supervisor receives a verifiable artifact, so local work and local failure do not automatically contaminate the parent task.</p>
@@ -270,7 +270,7 @@
 <section class="related-case-band" aria-labelledby="related-deepagents-case">
   <p class="related-case-label">Related open-source framework case</p>
   <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C5 Sub-Agent Isolation</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>

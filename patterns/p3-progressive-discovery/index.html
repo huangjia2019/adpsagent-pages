@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P3 Progressive Discovery · Pattern White Paper · ADPS</title>
-    <meta name="description" content="When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space ">
+    <meta name="description" content="Scan an unfamiliar information space broadly, inspect promising sources, and deepen the search only where evidence justifies the cost.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>P3 · Progressive Discovery</h1>
-                <p class="publication-deck">When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space out through a three-stage loop of broad scan → close read → deep follow.</p>
+                <p class="publication-deck">Scan an unfamiliar information space broadly, inspect promising sources, and deepen the search only where evidence justifies the cost.</p>
             </header>
 
                         <table>
@@ -195,7 +195,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">When an agent faces an unfamiliar information space and does not know where the relevant information sits, it takes a quick look before deciding how deep to dig, working the space out through a three-stage loop of broad scan → close read → deep follow.</td>
+            <td style="text-align: left;">Scan an unfamiliar information space broadly, inspect promising sources, and deepen the search only where evidence justifies the cost.</td>
             </tr>
             </tbody>
             </table>
@@ -205,8 +205,8 @@
             <p>Progressive discovery starts with a broad scan, lets the evidence reshape the next query, and iterates until the signal is sufficient, no new evidence appears, or the budget is exhausted. It governs active exploration of an unknown space within the current session.</p>
             <h2>Classification: Perception × Loop</h2>
             <ul>
-            <li><strong>Vertical axis · Perception</strong>: Progressive discovery is staged information acquisition that "takes a quick look before deciding whether to dig deeper", a form of progressive attention on the perception side. It decides what the agent looks at next; it is an input-side matter, not reasoning or memory.</li>
-            <li><strong>Horizontal axis · Loop</strong>: look → decide → look again → decide, where each round carries the previous round's findings into the next decision, terminating when "there is enough information" or "the cost cap is reached". It is iterative, unlike triage's single-pass routing or compression's linear cascade.</li>
+            <li><strong>Vertical axis · Perception</strong>: Progressive Discovery acquires evidence in stages and decides which source to inspect next. It operates before the evidence is used to make the domain decision.</li>
+            <li><strong>Horizontal axis · Loop</strong>: Each search round updates the query from observed files, terms, references, or failures. The loop stops when evidence is sufficient, no new signal appears, or a budget is exhausted.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>A single discovery runs the three forage-focus-deepen stages, decreasing in breadth and increasing in depth:</p>
@@ -241,13 +241,13 @@
             <ul>
             <li><strong>Root-cause localization in an unfamiliar codebase</strong>: The original author has left, documentation is sparse, and no one knows which files a pipeline crosses. The agent must find an entry point and narrow the search along call relationships.</li>
             <li><strong>Operations incident response</strong>: after receiving an alert, derive keywords from the metric, trim the log by time window, localize the fault source through the three stages, and give the on-call engineer an initial assessment report plus a "what to do first" recommendation.</li>
-            <li><strong>Contract clause risk scanning, research literature review</strong>: any scenario that fits the pattern of "receive a task → do not know where the relevant information is → explore to locate it".</li>
+            <li><strong>Contract and literature search</strong>: The request identifies the issue but not the source location, so findings from one document guide the next query.</li>
             <li><strong>Privacy-sensitive codebase that remains directly searchable</strong>: grep + read can keep code inside the controlled file system instead of copying it into a vector store.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forage keywords too broad</strong>: Translating “user login has gotten slow” only into <code>["login", "slow"]</code> produces too many candidates. Add component names, error fields, or call entry points to narrow the query.</li>
-            <li><strong>Focus stage picks the wrong files</strong>: the scorer miscounts and ranks test files ahead of production files, the agent reads a pile of spec files, and the key <code>services/auth.rb</code> goes unread. Give the scorer business weights: production files &gt; test files, recently modified &gt; old code, core directories &gt; peripheral directories.</li>
+            <li><strong>Focus stage ranks the wrong files</strong>: test files may outrank the production path while <code>services/auth.rb</code> remains unread. Tune ranking with repository role, recency, call relationships, and evidence from completed tasks.</li>
             <li><strong>Deepen dead end</strong>: Following dependencies into a third-party library may produce no new signal. Set scope and depth limits unless current evidence points outside the repository.</li>
             <li><strong>Discovery collides with RAG</strong>: The two paths may return overlapping or conflicting results. Rank sources by freshness, permission boundary, and index coverage, and preserve provenance for both.</li>
             </ul>
@@ -268,17 +268,17 @@
                     else → refine keywords from what was discovered, run another round
                 emit one DiscoveryEvent per stage (phase / keyword / candidate count / files_read / tokens / wall_time)
             </code></pre>
-            <p>The three atomic tools (grep / read / scorer) are injected rather than wrapped, so the same code can run against the local file system, an MCP server, or an external indexing engine, swapping only the injected implementation.</p>
+            <p>Expose search, read, and ranking behind small interfaces. The discovery loop can then use a local file system, an MCP server, or an external index without changing its state transitions or trace schema.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider an e-commerce system whose order-confirmation emails occasionally include another customer's items. Semantic retrieval misses the implementation because the relevant code does not use the word “order.” The agent first runs <code>grep "send.*confirm"</code> to locate sending entry points, then reads the mailer and cache call chain, and finally follows <code>Cache.get_user</code>. It finds that the cache key lacks a tenant dimension. This failure depends on code structure, so traversing files and calls can be more effective than semantic recall alone.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Context triage (P1)</strong>: naturally coupled. Triage's P3 handle is the entry point that progressive discovery pulls from on demand — one selects passively, the other finds actively. The most important distinction is activeness — triage and compression are both passive (they act only when information arrives or the window fills), whereas discovery is the agent deciding for itself what to grep and what to read.</li>
-            <li><strong>Semantic compression (P2)</strong>: the three divide labor along different time dimensions of tokens, with discovery governing unknown tokens (deciding which to find). Pushing exploration to a sub-agent so the main agent only gets back a summary is exactly compression's ObservationMasking idea replicated at the discovery layer.</li>
-            <li><strong>Procedural memory (Memory module)</strong>: it is advisable to build this as a two-layer architecture of "discovery finds + memory persists". The final_files explored this time are retained across sessions, so the next similar task first checks memory and starts discovery only on a miss, and the agent's experience begins to accumulate.</li>
+            <li><strong>Context Triage (P1)</strong>: Triage defers lower-priority sources behind handles. Discovery follows those handles when the current investigation needs them.</li>
+            <li><strong>Semantic Compaction (P2)</strong>: Discovery may produce a long search trace. Compaction returns a bounded finding with evidence links to the coordinating agent.</li>
+            <li><strong>Procedural Memory (M5)</strong>: Repeatedly successful search procedures may become versioned skills after evaluation. The files found in one run remain task evidence unless a separate memory-admission policy retains them.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The strongest agent is not the one that knows the most but the one that knows where to look — progressive discovery is the echo of information foraging theory in the LLM era. The agent does not try to understand the entire codebase; it stops once it has found enough.</p>
+            <p>Progressive Discovery stops when the agent has enough evidence for the current decision, not when it has read the entire repository. Track search depth, duplicate reads, evidence coverage, and failures caused by a required source that was never opened.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P3 Progressive Discovery</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

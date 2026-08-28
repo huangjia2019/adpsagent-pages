@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3 Progress Tracking · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects">
+    <meta name="description" content="Track a long task with a goal contract, authoritative state references, structured progress, and checkpoints that support safe resume.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -205,8 +205,8 @@
             <p>Progress tracking externalizes the goal, milestones, blockers, and next step, then reloads them before consequential decisions. Databases, state machines, and ledgers remain authoritative for business state. The progress record carries references and task narrative; an old summary cannot decide which operational version is current.</p>
             <h2>Classification: Memory × Orchestrate</h2>
             <ul>
-            <li><strong>Vertical axis · Memory</strong>: It gives the agent a "work log" that preserves task context across steps. This is the simplest form of memory (session memory)—remembering "what I just did, what I'm doing now, what comes next."</li>
-            <li><strong>Horizontal axis · Orchestrate</strong>: Progress tracking does not sit inside any single task step; it cuts across all steps. It maintains a todo state that runs through the entire long task, coordinating the agent so that it does not drift across multiple steps, can resume when interrupted, and can return when it jumps ahead. This "standing above all the steps and coordinating" is exactly what Orchestrate does, not the Chain approach where one step hands its result to the next.</li>
+            <li><strong>Vertical axis · Memory</strong>: Progress state preserves the goal, current step, completed artifacts, blockers, and recovery position across decisions and sessions.</li>
+            <li><strong>Horizontal axis · Orchestrate</strong>: One coordinator owns the plan state, chooses the next ready step, and updates checkpoints across the task. This differs from a chain in which each step only passes an artifact to its successor.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <ol>
@@ -222,7 +222,7 @@
             <ul>
             <li><strong>Multi-step long tasks</strong>: Tasks spanning many turns and prone to losing planned work during detail-chasing, such as refactoring, multi-file changes, and complex debugging.</li>
             <li><strong>Recoverable long flows</strong>: Scenarios where a task may crash midway and need to resume. After progress is persisted, the second session reads the progress, skips what is completed, and recovers from the interrupted step without redoing work.</li>
-            <li><strong>Tasks driven forward over multiple weeks</strong>: Scenarios where the same goal is advanced across several weeks (such as investment research forming a judgment on a single stock), requiring a two-layer todo—the high-level research plan persists across weeks, while concrete actions within a session are merged back into the high level once done.</li>
+            <li><strong>Goals advanced over multiple sessions</strong>: Investment research, migration work, and long investigations can retain durable milestones while each session creates bounded local steps and writes completed artifacts back to the task ledger.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
@@ -273,9 +273,9 @@
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Layered Retention (M1)</strong>: Progress tracking is the hottest layer within the hierarchy. The runtime loads the active item and enough of the higher-level goal for each decision.</li>
-            <li><strong>Failure Diary (M4)</strong>: A twin relationship, both in the Loop column. Progress tracking manages "the path of what was done right," the failure diary manages "the pitfalls stepped into." One records successful steps, the other records failure cases.</li>
-            <li><strong>Plan-and-Execute (Reasoning module)</strong>: Progress tracking is the runtime twin of Plan. Planning produces a one-shot static list of "what we want to do"; progress tracking maintains, in a loop, the dynamic state of "how far we've gotten." Two different things—do not conflate them.</li>
-            <li><strong>Hooks Pipeline (Governance module)</strong>: The framework-level nudge and persistence hook points fit the hook mechanism naturally and can be implemented with PreToolUse / PostToolUse hooks.</li>
+            <li><strong>Failure Journals (M4)</strong>: M3 records expected work and current position. M4 preserves failure events, candidate diagnoses, and verified lessons. Link both to the same task, step, and trace identifiers.</li>
+            <li><strong>Plan-and-Execute (A2)</strong>: A2 creates and schedules the plan. M3 persists the changing execution state, artifacts, blockers, and resume cursor for that plan.</li>
+            <li><strong>Hooks Pipeline (G4 legacy entry, now X1)</strong>: Runtime hooks can persist progress after tool calls and reload the Goal Contract before risk boundaries. Hook behavior must remain idempotent and observable.</li>
             <li><strong>Observability (X1)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
             </ul>
             <h2>Design conclusion</h2>

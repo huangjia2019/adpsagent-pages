@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A2 Plan and Execute · Pattern White Paper · ADPS</title>
-    <meta name="description" content="The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full">
+    <meta name="description" content="Represent a long task as a versioned dependency plan, execute ready steps, and replan affected future work when assumptions change.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>A2 · Plan-and-Execute</h1>
-                <p class="publication-deck">The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full rewrite when it drifts.</p>
+                <p class="publication-deck">Represent a long task as a versioned dependency plan, execute ready steps, and replan affected future work when assumptions change.</p>
             </header>
 
                         <table>
@@ -195,39 +195,39 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">The agent first generates a complete plan (with dependency structure, resource estimates, approval nodes), then executes against the plan, doing local replanning rather than a full rewrite when it drifts.</td>
+            <td style="text-align: left;">Represent a long task as a versioned dependency plan, execute ready steps, and replan affected future work when assumptions change.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>In a long process, a purely reactive Agent can lose the global sequence. An HR recruiting Agent may send compensation information after rejection, skip a required background check, or query the same record repeatedly when each step is chosen only from the latest observation.</p>
-            <p>Plan-and-Execute splits the action side into two phases: plan first, then execute. The planning phase lays the task out in one pass as an ordered sequence of steps, marking dependencies, resources, and the nodes that require human review; the execution phase advances against the plan. Its value is in taking the macro-level ordering out of the model's in-the-moment judgment and pinning it into an auditable plan.</p>
+            <p>In a long process, a purely reactive agent can lose the global sequence. An HR recruiting agent may send compensation information after rejection, skip a required background check, or query the same record repeatedly when each step is chosen only from the latest observation.</p>
+            <p>Plan-and-Execute represents the task as a versioned plan before execution. The plan records dependencies, expected artifacts, resources, approval nodes, and acceptance conditions. A scheduler advances ready steps, writes checkpoints, and replans affected future work when assumptions change.</p>
             <h2>Classification: Action × Orchestrate</h2>
             <ul>
-            <li><strong>Vertical axis · Action</strong>: the agent does not execute a single step; it turns a goal into a sequence of outward actions. The two-phase "think first, then act" belongs to the action side, not the single-point thinking of the reasoning side.</li>
-            <li><strong>Horizontal axis · Orchestrate</strong>: the center of Plan-and-Execute is an orchestrator—it holds the complete plan, schedules each step along the dependency graph, maintains global state and checkpoints, and does local replanning when things drift. This differs from the pure chaining of prompt chaining (A3): A3 is a linear hand-off where the previous segment's output feeds the next, whereas A2 is a central node coordinating multiple steps, where independent steps can expand in parallel, key nodes drop checkpoints, and errors can roll back and replan. This layer of coordination and recovery is exactly what distinguishes Orchestrate from Chain.</li>
+            <li><strong>Vertical axis · Action</strong>: The pattern turns a goal into a controlled sequence of external actions and verifies progress against a plan.</li>
+            <li><strong>Horizontal axis · Orchestrate</strong>: One orchestrator owns the dependency graph, schedules ready steps, maintains checkpoints, and revises affected future nodes. Prompt Chaining (A3) passes artifacts through a fixed linear sequence instead.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>Plan-and-Execute depends on separation, approval, and context reset. Aider's architect mode is a compact product example: the architect produces a plan, the editor starts from that artifact, and user confirmation can sit between planning and execution.</p>
-            <p>Several key designs matter in engineering practice:</p>
+            <p>Three implementation choices shape the runtime:</p>
             <ul>
-            <li><strong>Heterogeneous models</strong>: Planning usually requires stronger global reasoning, while execution is more structured and verifiable. Compare model combinations on the same task set for quality, cost, and rework.</li>
-            <li><strong>The plan is a user-owned artifact</strong>: Claude Code writes the plan to a file rather than keeping it in the prompt. A file is an audit log by nature—it can be reviewed by multiple people, versioned, and diffed; the user reads from the file and the agent reads from it too.</li>
+            <li><strong>Independent model selection</strong>: Evaluate planning and execution responsibilities separately. They may use different models, tools, or effort levels when the task evidence supports that choice.</li>
+            <li><strong>The plan is a user-owned artifact</strong>: Claude Code writes the plan to a file instead of keeping it only in the prompt. People and agents can review, version, and diff the same artifact. It becomes part of the audit trail when approvals, revisions, and execution references point back to that version.</li>
             <li><strong>Local replanning</strong>: When reality conflicts with the plan, change only affected future nodes and preserve committed work. Set review frequency and replan budget from task length, external volatility, and replay results.</li>
             </ul>
             <p>ReWOO illustrates a related optimization: plan variable dependencies first, execute intermediate tool calls without returning to the model for every step, then synthesize the result. Its published results are research evidence for that benchmark, not a universal production ratio.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Where a clear goal, enumerable steps, and side-effect sensitivity stack together</strong>: HR recruiting, credit approval, operations changes.</li>
+            <li><strong>Goals with enumerable dependencies and consequential actions</strong>: HR recruiting, credit workflows, and operations changes benefit from explicit order, approval, and recovery state.</li>
             <li><strong>Compliance scenarios with hard process constraints</strong>: for example, "the background check must come before the offer." Such constraints can be encoded into a plan validator that rejects a violating plan during the planning phase.</li>
             <li><strong>Long tasks that need crash recovery</strong>: write a checkpoint at each step, resume from the checkpoint after a crash, and design plan-execute as a recoverable transaction.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Plan ossification</strong>: once the plan is written, the executor runs straight through; some step midway returns an unexpected result (a candidate withdraws, a schema changes, an external API changes its protocol), the planner does not intervene in time, and all subsequent steps are wasted computation. The remedy is to do an alignment check every N steps between the current subtask and the original goal.</li>
-            <li><strong>Plan thrashing</strong>: replanning fires too often, every failure triggers a rewrite, and the agent is forever planning and never executing. The remedy is a hard cap on replans plus a replan budget ceiling.</li>
-            <li><strong>Stale context accumulating quietly</strong>: long-task state held as free-form notes easily becomes "still parseable on the surface but semantically broken." The remedy is to strictly type state with a JSON schema so partial corruption surfaces early.</li>
+            <li><strong>Plan ossification</strong>: A withdrawal, schema change, or API change invalidates future steps, but execution continues. Revalidate assumptions at defined milestones and before high-risk actions.</li>
+            <li><strong>Plan thrashing</strong>: Every local failure rewrites the plan. Limit replans, preserve unaffected completed work, and distinguish retryable execution faults from invalid plan assumptions.</li>
+            <li><strong>Stale or inconsistent task state</strong>: free-form notes may retain obsolete assumptions while still looking plausible. Use typed state, version references, and validation at step boundaries so incompatible updates fail before execution.</li>
             <li><strong>Cache friendliness ignored</strong>: Rewriting stable prefixes at every step prevents cache reuse. Keep system instructions, tool definitions, and plan prefixes stable where semantics allow, while refreshing external state separately.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -238,7 +238,7 @@
             <li><strong>Cache hit rate</strong>: Observe reuse of stable prefixes together with stale-state incidents so that cache efficiency does not hide outdated context.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code>plan = planner(goal, context)            # strong model, once
+            <pre><code>plan = planner(goal, context)            # model selected from planning evaluation
             if user does not approve → return
             while plan is not complete:
                 ready = steps in plan whose dependencies are satisfied   # topological order
@@ -248,18 +248,18 @@
                 every N steps → adaptive replan check whether the plan still holds
             return plan + full execution trace
             </code></pre>
-            <p>Engineering points: inject Planner, Executor, and Approval as dependencies, letting the business decide the concrete models and prompts; register a saga inverse for destructive steps; write the plan to a file and version it.</p>
+            <p>Keep Planner, Executor, and Approval behind explicit interfaces. Version the plan, register compensation where a side effect is reversible, and retain receipts for irreversible actions.</p>
             <h2>Illustrative scenario</h2>
-            <p>Liang Bo's team explicitly separates strategic planning from tactical execution. The planning layer writes a DAG into the Workspace, and a deterministic scheduler advances by dependency rather than asking the LLM to rediscover the macro path at every step. In an HR workflow, Planner creates the dependency graph, Executor handles only the current node, and changes to screening criteria or candidate status pass through an Approval Gate. Cost, cycle time, and error outcomes should be published only with the named team's approved measurement.</p>
+            <p>Bo Liang's team explicitly separates strategic planning from tactical execution. The planning layer writes a DAG into the Workspace, and a deterministic scheduler advances by dependency rather than asking the LLM to rediscover the overall path at every step. In an HR workflow, Planner creates the dependency graph, Executor handles only the current node, and changes to screening criteria or candidate status pass through an Approval Gate. Cost, cycle time, and error outcomes should be published only with the named team's approved measurement.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Prompt chaining (A3)</strong>: a dual pair, one heavy and one light. A2 is a complete plan plus DAG parallelism plus replanning; A3 is linear chaining with no replanning. The most common form in production is A2 on the outside and A3 on the inside—each planned subtask runs a prompt chain internally.</li>
-            <li><strong>Tool dispatch (A1)</strong>: each execution step in A2 internally does one round of A1 tool selection. The idea of using heterogeneous models for Planner and Executor shares its origin with A1's Programmatic Tool Calling.</li>
-            <li><strong>Guard sandwich (A4)</strong>: the approval nodes and compliance checks in the plan are often implemented by A4's pre-check at deployment time. Both hand control back to the user.</li>
-            <li><strong>Iterative hypothesis testing (R4)</strong>: R4 is the reasoning side's "adjust as you go," while A2 is the action side's "fix first, then adjust." A2's local replanning borrows R4's feedback-adjustment idea.</li>
+            <li><strong>Prompt Chaining (A3)</strong>: A3 executes a fixed linear sequence. A2 owns a dependency graph and recovery state; one A2 step may contain an A3 chain.</li>
+            <li><strong>Tool Dispatch (A1)</strong>: An executable plan step may invoke A1 to select and admit a tool call.</li>
+            <li><strong>Guardrail Sandwich (A4)</strong>: Approval and policy nodes in the plan can invoke A4 checks around the corresponding action.</li>
+            <li><strong>Iterative Hypothesis Testing (R4)</strong>: R4 revises hypotheses from evidence. A2 replans future actions when evidence invalidates a plan assumption.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>Plan-and-Execute is not "make a todo list." It replicates decades of human project-management engineering (WBS, PERT, Saga, DAG scheduling) onto the LLM as is—it is more durable than a single ReAct agent because it stands on the shoulders of mature engineering, and because it hands control back to the user.</p>
+            <p>Plan-and-Execute makes dependencies, approvals, checkpoints, and recovery explicit. Its value can be measured through plan omissions, repeated side effects, replan causes, recovery success, and acceptance evidence.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>A2 Plan and Execute</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

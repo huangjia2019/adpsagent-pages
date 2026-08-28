@@ -55,23 +55,23 @@
 </header>
 <p class="publication-date">26 August 2026</p>
 <table class="workshop-roster"><thead><tr><th>Role</th><th>Name</th><th>Public affiliation</th></tr></thead><tbody>
-<tr><td>Host</td><td>Huisheng Yin</td><td>Vice President, Geekbang Technology; Tencent Cloud Architects Alliance Hall of Fame expert</td></tr>
-<tr><td>Host</td><td>Jia Huang</td><td>ADPS initiator; author of <em>Designing AI Agents</em> (Manning)</td></tr>
+<tr><td>Chair</td><td>Huisheng Yin</td><td>Vice President, Geekbang Technology; member of the Tencent Cloud Architects Alliance Hall of Fame</td></tr>
+<tr><td>Chair</td><td>Jia Huang</td><td>ADPS initiator; author of <em>Designing AI Agents</em> (Manning)</td></tr>
 <tr><td>Core participant</td><td>Qingfeng Li</td><td>Senior Director, Sina Weibo</td></tr>
 <tr><td>Core participant</td><td>Dong Zhang</td><td>Expert Engineer, Tencent; head of Wukong R&amp;D security</td></tr>
 <tr><td>Core participant</td><td>Han Zhao</td><td>AIGC multimodal reasoning, Ant</td></tr>
 <tr><td>Core participant</td><td>Fuhai Zhong</td><td>Senior Technical Expert, Qunar</td></tr>
-<tr><td>Core participant</td><td>Yuke Xiong</td><td>Technical Architect and Startup Partner, Chengdu Xuanxu Technology</td></tr>
+<tr><td>Core participant</td><td>Yuke Xiong</td><td>Technical Architect and Founding Partner, Chengdu Xuanxu Technology</td></tr>
 <tr><td>Core participant</td><td>Didi Li</td><td>Business Lead, Shuzhi Yuanjing</td></tr>
 </tbody></table>
 
-<p>The discussion ran for two hours and twenty-seven minutes. The six participants drew on online question answering, large codebase analysis, multimodal generation, latency-sensitive user services, GIS toolchains, and physical simulation. These settings place reasoning control in different locations. A model may hold it in one system; a harness, deterministic program, or human business process may hold it in another.</p>
+<p>The discussion ran for two hours and twenty-seven minutes. The six core participants drew on online question answering, large codebase analysis, multimodal generation, latency-sensitive user services, GIS toolchains, and physical simulation. These settings place reasoning control in different locations. A model may hold it in one system; a harness, deterministic program, or human business process may hold it in another.</p>
 <p>The session did not walk through R1–R5 as a catalog. It began with deciding which requests deserve deeper reasoning, then moved through tree search, speculative execution, mirror agents, external acceptance, and business evaluation sets. The closing concern was practical: after a reasoning run, what evidence and reusable control remain, and what allows the next release to be trusted?</p>
 
 <figure class="workshop-diagram"><img src="/images/workshops/reasoning-selection-en.svg" alt="A reasoning request is routed into serial, parallel, iterative, or layered reasoning before producing a structured decision"><figcaption>The topology depends on difficulty, risk, evidence state, and latency. Several patterns may be nested.</figcaption></figure>
 
-<h2>1. The hosts began with five engineering questions</h2>
-<p class="workshop-field-note"><strong>Huisheng Yin opened with System 1 and System 2, then quickly returned the analogy to system design.</strong> Which requests enter a slow path? Which topology does that path use? How much time, model usage, and tool usage may it consume? Who verifies the result? What evidence is sufficient to stop?</p>
+<h2>1. The chairs began with five engineering questions</h2>
+<p class="workshop-field-note"><strong>Huisheng Yin framed System 1 and System 2 as five system-design questions.</strong> Which requests enter a slow path? Which topology does that path use? How much time, model usage, and tool usage may it consume? Who verifies the result? What evidence is sufficient to stop?</p>
 <table><thead><tr><th>Question</th><th>What the design must state</th></tr></thead><tbody>
 <tr><td>Trigger</td><td>Conditions for a direct answer, a rule path, or deeper reasoning</td></tr>
 <tr><td>Topology</td><td>Chain, tree, parallel, loop, hierarchy, and where they may nest</td></tr>
@@ -85,19 +85,19 @@
 <h2>2. Stronger models require controls to be measured again</h2>
 <p class="workshop-field-note"><strong>Qingfeng Li and Huisheng Yin debated whether an established Skill can begin to constrain a stronger model.</strong> Earlier models benefited from manually decomposed tasks, explicit plans, and multi-sample reasoning. After a model upgrade, the same Skill may remain useful or may duplicate the model's own planning. Li kept the answer conditional on model version, scenario, and a local benchmark.</p>
 <p>Online question answering supplied a concrete check. An answer should carry source excerpts from the knowledge base. The run log records which evidence supported the answer, and the team reviews those logs to decide whether an existing SOP still fits. The auditable record is evidence, output, and execution trace, not private chain-of-thought tokens.</p>
-<p class="workshop-field-note"><strong>Jia Huang added the enterprise protocol case.</strong> Code has public training material, compilers, and mature test tools. Proprietary business processes often do not. A prose-only instruction may still lose domain objects, protocol fields, state boundaries, and acceptance criteria.</p>
+<p class="workshop-field-note"><strong>Jia Huang compared software code with proprietary enterprise protocols.</strong> Code has public training material, compilers, and mature test tools. Proprietary business processes often do not. A prose-only instruction may still lose domain objects, protocol fields, state boundaries, and acceptance criteria.</p>
 <p>After a model upgrade, teams can compare three versions: retain the current control, simplify it, and delegate most of it to the model. Quality, cost, latency, and failure modes determine whether the control remains in the model, harness, or deterministic program. Results should not be inherited across model versions without testing.</p>
 
 <h2>3. Large context must first become a usable structure</h2>
-<p class="workshop-field-note"><strong>Dong Zhang used security analysis of a large codebase to show why more context is not automatically better context.</strong> Feeding many files directly to a model can leave it with disconnected points. Static analysis can extract syntax trees, call relationships, control flow, and data flow, then present a coherent path from entry point to sensitive operation.</p>
+<p class="workshop-field-note"><strong>Dong Zhang described security analysis over a large codebase.</strong> Feeding many files directly to a model can leave it with disconnected points. Static analysis can extract syntax trees, call relationships, control flow, and data flow, then present a coherent path from entry point to sensitive operation.</p>
 <p>This preparation removes irrelevant material while retaining causal structure. Acceptance therefore checks more than compression ratio. Entry points, propagation paths, and critical states must survive. The work sits at the Perception–Reasoning boundary: Perception turns raw material into structure; Reasoning forms a decision on that structure.</p>
-<p>Zhang described continuous improvement as “scenario plus benchmark.” A team builds a test set and acceptance threshold for one defined scenario. New bad cases return to the same data, where the team can determine whether the prompt, retrieval, harness, or model needs to change. The scenario gives the change a purpose; the benchmark determines whether it can ship.</p>
+<p>Dong Zhang described continuous improvement as “scenario plus benchmark.” A team builds a test set and acceptance threshold for one defined scenario. New bad cases return to the same data, where the team can determine whether the prompt, retrieval, harness, or model needs to change. The scenario gives the change a purpose; the benchmark determines whether it can ship.</p>
 
 <h2>4. Chains, trees, and reflection loops can nest</h2>
 <p>Stable steps fit a chain. Open questions expand into a tree of hypotheses. A branch may also contain a local reflection loop. Production graphs commonly combine all three: one step in a chain can open a tree, and one node in that tree can gather evidence repeatedly.</p>
 <figure class="workshop-diagram"><img src="/images/workshops/reasoning-nested-topology-en.svg" alt="A chain opens a local hypothesis tree, nodes may run bounded loops, and all branches return to a shared convergence node"><figcaption>Tree search needs branch, depth, and budget limits. Branches may be generated at runtime; evidence standards and adjudication at the convergence node should already exist.</figcaption></figure>
 <p class="workshop-field-note"><strong>Dong Zhang separated precompiled branches from runtime branches.</strong> A known business process may be encoded as a workflow. An exploratory task may allow the model to propose hypotheses while it runs. Both still need one convergence node that compares conflicting conclusions under the same evidence rules.</p>
-<p>Tree search also needs maximum branch count, maximum depth, and a cheap pruning rule. Yin placed retries at local nodes: a syntax error, a business-rule failure, and missing evidence require different repairs. A generic retry around the whole graph cannot explain why the system is trying again.</p>
+<p>Tree search also needs maximum branch count, maximum depth, and a cheap pruning rule. Huisheng Yin placed retries at local nodes: a syntax error, a business-rule failure, and missing evidence require different repairs. A generic retry around the whole graph cannot explain why the system is trying again.</p>
 
 <h2>5. Five failure modes expose weak designs early</h2>
 <table><thead><tr><th>Failure</th><th>Observed behavior</th><th>Required control</th></tr></thead><tbody>
@@ -107,35 +107,35 @@
 <tr><td>Unbounded reasoning</td><td>The path reaches unauthorized data or tools to complete its goal</td><td>Resource scope, tool allowlists, and identity constraints</td></tr>
 <tr><td>Decision sent directly to execution</td><td>A model judgment becomes a production command</td><td>Rule validation, risk classification, and required approval</td></tr>
 </tbody></table>
-<p class="workshop-field-note"><strong>Zhang put these failures before pattern selection.</strong> A reflection loop also needs hard and soft exits. Hard exits cap rounds and resources. Soft exits test whether the goal is met, a quality gate has passed, or two consecutive rounds produced no material change.</p>
+<p class="workshop-field-note"><strong>Dong Zhang required failure and exit conditions before pattern selection.</strong> A reflection loop needs hard and soft exits. Hard exits cap rounds and resources. Soft exits test whether the goal is met, a quality gate has passed, or two consecutive rounds produced no material change.</p>
 
 <h2>6. Online reasoning is constrained by the serving path</h2>
-<p class="workshop-field-note"><strong>Han Zhao brought first-token latency, throughput, and cost into the discussion.</strong> Quantization, prefix caching, and request scheduling reduce repeated work at the serving layer. The Agent layer then selects a model, Skill, prompt parameters, and reasoning effort for the task.</p>
+<p class="workshop-field-note"><strong>Han Zhao separated serving-layer latency controls from agent-layer routing.</strong> Quantization, prefix caching, and request scheduling reduce repeated work at the serving layer. The agent layer then selects a model, Skill, prompt parameters, and reasoning effort for the task.</p>
 <p>Prefix caching depends on the order of the system prompt, tool descriptions, and user messages. Multi-instance deployments must also handle cache locality. Providers expose different cache semantics, so “enable caching” is not a complete design.</p>
 <p>A capable main model can choose a downstream model, yet that choice may itself consume too much latency and compute. Zhao described a lightweight classifier or small DAG that proposes a model from known scenarios. The proposal anchors the main model and does not replace its final decision. High-volume interactive services need to measure the saving; an offline task may not need the extra layer.</p>
-<p>Model, harness, and artifact evolution also run on different clocks. Prompts, Skills, Agent definitions, and plugins can change quickly. Model updates require data preparation, training, deployment, and regression. Harness updates change routing, loops, and tool behavior, so they need separate compatibility and failure-path tests. The phrase “Agent self-evolution” becomes operational only after the modified object and release gate are named.</p>
+<p>Model, harness, and artifact evolution also run on different clocks. Prompts, Skills, agent definitions, and plugins can change quickly. Model updates require data preparation, training, deployment, and regression. Harness updates change routing, loops, and tool behavior, so they need separate compatibility and failure-path tests. The phrase “agent self-evolution” becomes operational only after the modified object and release gate are named.</p>
 
 <h2>7. Speculative execution spends extra compute to reduce waiting</h2>
-<p class="workshop-field-note"><strong>Fuhai Zhong described a latency-sensitive user service.</strong> An upstream classifier first narrows a request to a broad business category. Historical hit rates then identify a few likely Agent candidates. Those candidates begin loading tools and fetching slower data while a routing Agent decides which capability is actually required.</p>
+<p class="workshop-field-note"><strong>Fuhai Zhong described a latency-sensitive user service.</strong> An upstream classifier first narrows a request to a broad business category. Historical hit rates then identify a few likely agent candidates. Those candidates begin loading tools and fetching slower data while a routing agent decides which capability is actually required.</p>
 <figure class="workshop-diagram"><img src="/images/workshops/reasoning-speculative-execution-en.svg" alt="Candidate agents pre-execute in parallel with precise routing; a hit reuses a ready result while a miss reuses fetched data before continuing"><figcaption>Speculative execution runs work that may be discarded in exchange for lower latency on a hit.</figcaption></figure>
-<p>When the router selects a candidate, the system can reuse its prepared result. On a miss, the selected Agent starts later while sharing any generally useful data already fetched. Evaluation needs candidate hit rate, extra-call cost, end-to-end latency, wrong selection, and stale results. Average latency alone can hide added cost and tail failures.</p>
+<p>When the router selects a candidate, the system can reuse its prepared result. On a miss, the selected agent starts later while sharing any generally useful data already fetched. Evaluation needs candidate hit rate, extra-call cost, end-to-end latency, wrong selection, and stale results. Average latency alone can hide added cost and tail failures.</p>
 
 <h2>8. People and model judges begin with the same rubric</h2>
 <p>When the discussion reached confidence scores, Zhong described a layered evaluation path: verify that facts came from real tool data; check that the strategy followed business steps; require evidence for the conclusion; validate labels, schema, and required fields deterministically; use a model judge for open-ended quality; run historical regression; and retain product or business sampling.</p>
 <figure class="workshop-diagram"><img src="/images/workshops/reasoning-evaluation-ladder-en.svg" alt="Layered validation from tool facts and business rules through deterministic structure checks, model judges, regression sets, and human sampling"><figcaption>Programs handle deterministic checks first. Model judges handle qualities that resist formalization. People calibrate the standard and review samples.</figcaption></figure>
 <p class="workshop-field-note"><strong>Huisheng Yin asked how a model judge can be consistent when human reviewers do not share a stable standard.</strong> Zhong's answer was to start people and model judges from one checklist: required points, deductions for omissions, and format errors that block the result. Human ratings may still differ, but the team can now locate whether the problem is the standard or its application.</p>
-<p>Zhong also described a mirror Agent. In an offline environment, it reproduces the tool interfaces, prompt, configuration, and answer policy of a deployed business Agent. A developer or coding Agent can modify tools, prompts, model selection, and configuration, then run the existing test set. Product or operations staff sample the results. Approved changes move to production code and still pass end-to-end and regression tests. The mirror shortens experimentation; it does not replace production acceptance.</p>
+<p>Fuhai Zhong also described a mirror agent. In an offline environment, it reproduces the tool interfaces, prompt, configuration, and answer policy of a deployed business agent. A developer or coding agent can modify tools, prompts, model selection, and configuration, then run the existing test set. Product or operations staff sample the results. Approved changes move to production code and still pass end-to-end and regression tests. The mirror shortens experimentation; it does not replace production acceptance.</p>
 
 <h2>9. Deterministic toolchains still need external acceptance</h2>
 <p class="workshop-field-note"><strong>Yuke Xiong used a GIS publishing chain to show why tool success does not prove task completion.</strong> A coordinate error introduced during data processing may leave the publishing call successful while the rendered map is blank. Diagnosis must cross data processing, service publication, and visual rendering.</p>
-<p>Mature command-line tools, database statements, and REST APIs allow many decisions to be compiled into fixed stages, routing tables, and error maps. A known transient failure can follow a retry rule. An unknown error should stop the current path and update the hypothesis, or hand a person or Agent the symptoms, hypotheses tested and rejected, and supporting evidence. A raw log bundle is large but does not tell the receiver where to continue.</p>
+<p>Mature command-line tools, database statements, and REST APIs allow many decisions to be compiled into fixed stages, routing tables, and error maps. A known transient failure can follow a retry rule. An unknown error should stop the current path and update the hypothesis, or hand a person or agent the symptoms, hypotheses tested and rejected, and supporting evidence. A raw log bundle is large but does not tell the receiver where to continue.</p>
 <p>Completion comes from the external result. The system requests the published service, opens it in a headless browser, stores a screenshot, and uses image checks or stable tools to confirm that the map appears. A model's statement that the job is complete is not acceptance evidence.</p>
 <p>This setting currently favors serial checks. Evidence is cheap and precise, and the toolchain is stable. Parallel exploration would add cost and make causal diagnosis harder. A pattern catalog should preserve why a pattern was not selected as well as why another one was.</p>
 
 <h2>10. Technical evaluation is followed by business evaluation</h2>
 <p class="workshop-field-note"><strong>Didi Li noted that some physical-simulation settings lack even a shared semantic layer before reasoning begins.</strong> Data can be irregular and discontinuous, while physical structures, physical laws, and business processes remain in separate silos. She described maintaining physical and business ontologies that connect objects, processes, and operational data in a shared semantic space.</p>
 <p>Passing individual technical metrics does not guarantee the assembled business result. Every component may pass inspection while the yield of the assembled module still falls. A business evaluation set follows real processes, weights critical scenarios, and connects them to business measures. Its version cadence differs from unit tests and should be maintained independently.</p>
-<p>The input itself can also be incomplete. Business users may not be able to state their intent fully, especially across roles and processes. More reasoning depth cannot invent missing facts. Jia Huang connected this issue to FDE and enterprise modeling: interviews, questionnaires, and field study establish a usable business model before that model is given to an Agent. The work crosses Perception, Reasoning, Evaluation, and organizational process.</p>
+<p>The input itself can also be incomplete. Business users may not be able to state their intent fully, especially across roles and processes. More reasoning depth cannot invent missing facts. Jia Huang connected this issue to forward-deployed engineering (FDE) and enterprise modeling: interviews, questionnaires, and field study establish a usable business model before that model is given to an agent. The work crosses Perception, Reasoning, Evaluation, and organizational process.</p>
 
 <h2>11. Changes to the pattern specifications</h2>
 <ol>
@@ -144,7 +144,7 @@
 <li><a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a> adds speculative execution and distinguishes multiple solutions to one question from subtask fan-out.</li>
 <li><a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a> adds known transients, unknown failures, reasoning handoff packages, and external acceptance.</li>
 <li><a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner</a> retains tests for topic changes, background cancellation, stale results, and front-channel overreach.</li>
-<li>Scenario–benchmark contracts, common convergence nodes, mirror Agents, and business evaluation sets enter concept review. The workshop did not add an R6 simply to expand the catalog.</li>
+<li>Scenario–benchmark contracts, common convergence nodes, mirror agents, and business evaluation sets enter concept review. The workshop did not add an R6 simply to expand the catalog.</li>
 </ol>
 
 <h2>12. Questions still open</h2>
@@ -168,11 +168,11 @@
 <p class="publication-note publication-note-end">This public record is grounded in the workshop transcript and organized around the questions raised in the session. Internal system names, exact scale, configuration, and responsibility details have been anonymized.</p>
 <!-- PAGE-CHRONICLE:START -->
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Provenance record</h2>
+  <h2 id="page-chronicle-title">Chronicle</h2>
   <dl>
-    <div><dt>Source record</dt><dd>First Reasoning Module Workshop; meeting date <time datetime="2026-08-26">26 August 2026</time></dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-26">26 August 2026</time></dd></div>
-    <div><dt>First published</dt><dd><time datetime="2026-08-26">26 August 2026</time></dd></div>
+    <div><dt>Recorded source</dt><dd>First Reasoning Module Workshop; workshop held on <time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>Source date</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
   </dl>
   <p><a href="/chronicle/#workshops-reasoning-2026-08-26">View in the ADPS Chronicle</a></p>
 </section>

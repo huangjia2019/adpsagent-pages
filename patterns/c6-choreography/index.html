@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C6 Choreography · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Multiple agents operate without a central conductor. Each subscribes to events, reacts on its own, and emits new events of its own. The overall collaborative behavior emerges from ">
+    <meta name="description" content="Let event participants advance work under local rules without a complete central plan; define completion, causal trace, timeout, and compensation.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,14 +176,14 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>C6 · Choreography</h1>
-                <p class="publication-deck">Multiple agents operate without a central conductor. Each subscribes to events, reacts on its own, and emits new events of its own. The overall collaborative behavior emerges from local rules.</p>
+                <p class="publication-deck">Participants subscribe to events and publish new events under local rules; no component owns the complete plan. Event contracts define completion, causal trace, timeout, and compensation.</p>
             </header>
 
                         <table>
             <tbody>
             <tr>
             <td style="text-align: left;"><strong>Coordinate</strong></td>
-            <td style="text-align: left;">Collaboration × Choreography (emerging topology, the decentralized twin of Orchestrate)</td>
+            <td style="text-align: left;">Collaboration × Choreography (candidate topology with distributed control)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
@@ -195,7 +195,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern summary</strong></td>
-            <td style="text-align: left;">Multiple agents operate without a central conductor. Each subscribes to events, reacts on its own, and emits new events of its own. The overall collaborative behavior emerges from local rules.</td>
+            <td style="text-align: left;">Participants subscribe to events and publish new events under local rules; no component owns the complete plan. Event contracts define completion, causal trace, timeout, and compensation.</td>
             </tr>
             </tbody>
             </table>
@@ -206,7 +206,7 @@
 <p>Choreography addresses the second design. Autonomous participants under different team or service boundaries need to evolve independently without making one central flow the entry point for every change. Event contracts reduce direct coupling, while completion, causal tracing, retry, and compensation become explicit engineering obligations.</p>
 <figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-en.svg" alt="Control ownership in dynamic orchestration and choreography"><figcaption>Runtime change is not the criterion. The boundary is who owns the complete plan.</figcaption></figure>
 <h2>Classification: Collaboration × Choreography</h2>
-<p>Choreography belongs to Collaboration because it describes how participants continue one another's work. It remains an extension topology rather than a seventh core column.</p>
+<p>Choreography belongs to Collaboration because it describes how participants continue one another's work. It remains a candidate topology rather than a seventh core column.</p>
 <ul>
 <li><strong>Dynamic orchestration</strong> retains an interpreter that owns the complete plan, call order, and result closure. Choreography distributes progression rules among event subscribers.</li>
 <li><strong>Event-driven infrastructure</strong> handles trigger, queueing, delivery, and replay. Choreography describes where control resides. A centrally orchestrated flow can also begin with an event.</li>
@@ -243,39 +243,41 @@
             <li><strong>End-to-end latency</strong>: Compare against an orchestrated control and separate queueing, retry, and eventual-consistency wait time.</li>
             </ul>
             <h2>Reference implementation</h2>
-            <pre><code># Orchestrate (control group): the center holds the full plan and commands one by one
+            <pre><code># Orchestration: one runtime owns the plan, order, and result
             orchestrator.run(task):
                 for step in plan(task):
-                    result = agents[step].execute()      # central scheduling
-                    state.update(result)                 # central convergence
+                    result = agents[step].execute()
+                    state.update(result)
                 return state.result
 
-            # Choreography: no center, each subscribes + reacts + emits events
-            bus = EventBus()                             # shared event medium
+            # Choreography: participants apply local event rules
+            bus = EventBus()
 
             class ChoreographedAgent:
-                subscribes_to = [...]                    # I only care about these events
+                subscribes_to = [...]
                 def on_event(self, e):
-                    if self.should_act(e):               # autonomous decision
+                    if self.should_act(e):
                         out = self.act(e)
-                        bus.publish(out, correlation_id=e.cid)  # after reacting, emit a new event, no report to center
+                        bus.publish(out,
+                            correlation_id=e.correlation_id,
+                            causation_id=e.event_id)
 
             for a in agents:
                 bus.subscribe(a.subscribes_to, a.on_event)
-            bus.publish(initial_event)                   # ignition, then it all runs on emergence
-            # Completion = a terminal event appears; tracing = thread the full causal chain by correlation_id
+            bus.publish(initial_event)
+            # A terminal-event policy owns completion, timeout, and compensation.
             </code></pre>
-            <p>The four engineering points map to the four elements: EventBus is the shared event medium; subscribes_to plus on_event is the autonomous subscribe–react unit; no place holding the plan is emergence; correlation_id plus the terminal event is explicit termination and observability.</p>
+            <p>The event bus carries versioned contracts; each subscriber owns a local rule and bounded action; correlation and causation IDs reconstruct the path; a terminal-event policy defines completion, timeout, compensation, and escalation.</p>
             <h2>Illustrative scenario</h2>
             <p>A content risk-control platform may begin with a central orchestrator that calls spam, fraud, policy, and brand detectors in sequence. As detectors and ownership boundaries grow, every new capability requires a shared orchestrator change. In a choreographed design, detection agents subscribe to <code>content.received</code> and publish events such as <code>flag.spam</code> or <code>flag.fraud</code>; a policy agent consumes flags, and an escalation agent publishes <code>case.opened</code> for high-risk cases. A new detector joins through the event contract rather than a direct call graph.</p>
             <p>Every event carries a correlation ID and can be replayed by case. A thin orchestrated saga remains at the point that defines whether the case is complete, because pure choreography has no central owner of completion. This hybrid preserves decentralized reaction while centralizing the state that requires a single authoritative answer. Event-driven agent runtimes and interoperability protocols provide implementation references, but production claims should come from attributed deployments.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Observability (X1)</strong>: a hard prerequisite dependency. Choreography has no central trace and relies entirely on correlation-ID event logs to trace causality. Without X1, Choreography is undebuggable and cannot go to production.</li>
-            <li><strong>Orchestrate (scattered across Hierarchy / Governance)</strong>: a pair of twins, each other's opposite. Orchestrate is coordinated by a conductor with centralized control; Choreography is coordinated by events with distributed control. Production systems are mostly a mix of the two rather than pure-bred.</li>
-            <li><strong>Fan-out/gather (C2)</strong>: similar in form, different in spirit. Fan-out has a center responsible for fan-out and gather; workers run in parallel but must return to the center to converge. Choreography has no such center; reaction results enter the event stream directly. Fan-out is parallelism with a center; Choreography is collaboration without a center.</li>
-            <li><strong>Failure journal (Memory module M4)</strong>: event sourcing records state changes as an immutable event stream and can provide historical state for a choreographed system.</li>
-            <li><strong>Blast-radius control (G2) / Approval gate (G1)</strong>: naturally at odds with Choreography. For chains that need strong governance constraints, either keep a thin central gate or do not use Choreography in that segment.</li>
+            <li><strong>Observability (X1)</strong>: Choreography has no central execution trace. Correlation IDs, event lineage, subscriber outcomes, timeouts, and compensation records are required to reconstruct causality and operate the system.</li>
+            <li><strong>Orchestration</strong>: one component owns the plan and decides which participant runs next. In Choreography, participants react to events under local rules and publish new events. Most production systems combine a centrally controlled path for high-risk work with event-driven collaboration around it.</li>
+            <li><strong>Fan-Out/Gather (C2)</strong>: A fan-out owner creates parallel branches and gathers their results. Choreography has no gather owner; each participant consumes events under local rules and publishes the next event. Use C2 when one task owns completion, and C6 when completion is defined across event participants.</li>
+            <li><strong>Failure Journals (M4)</strong>: Subscriber failures can create immutable failure events and reviewed lessons, while the operational event stream remains a separate system record.</li>
+            <li><strong>Blast-Radius Control (G2) and Approval Gate (G1)</strong>: Aggregate impact across subscribers and retain a central gate for actions that require one authoritative approval or commit.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Choreography distributes collaboration control from a central coordinator to each agent's local subscription and publication rules. Events advance the global process. The structure reduces central coupling and requires explicit event contracts, causal tracing, completion criteria, and compensation.</p>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C1 Hierarchical Delegation · Pattern White Paper · ADPS</title>
-    <meta name="description" content="A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collabo">
+    <meta name="description" content="A supervisor delegates bounded tasks and authority to workers, then verifies and integrates their artifacts against a shared contract.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>C1 · Hierarchical Delegation</h1>
-                <p class="publication-deck">A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</p>
+                <p class="publication-deck">A supervisor delegates bounded tasks and authority to workers, then verifies and integrates their artifacts against a shared contract.</p>
             </header>
 
                         <table>
@@ -195,27 +195,27 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">A supervisor agent dynamically splits a task, dispatches it to N worker agents for execution, and then merges the results. This is the classic multi-agent supervisor-worker collaboration.</td>
+            <td style="text-align: left;">A supervisor delegates bounded tasks and authority to workers, then verifies and integrates their artifacts against a shared contract.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>A single agent that researches, writes the body text, produces figures, and assembles the report all at once is not specialized in any of them, and across a long workflow its context keeps growing. The more subtle problem is this: when one agent processes several subtasks in sequence, the execution details of the earlier tasks stay in its context the whole time, and by the third or fourth task its reasoning quality starts to degrade.</p>
-            <p>Hierarchical delegation replaces "one all-purpose agent" with "one supervisor plus several specialized workers." The supervisor splits the task, monitors progress, and merges the output; each worker only does the one kind of work it is good at, running in its own isolated context. This lets each segment of work be handled by an appropriate model and prompt, and it also frees the supervisor's context from execution details so it can focus on coordination. The price is that token consumption rises by a multiple, so this pattern only fits scenarios where the value of the task can cover that multiple.</p>
+            <p>A single agent may need to research, draft, generate figures, and assemble a report while carrying every intermediate trace in one context. As the workflow grows, earlier tool output and local decisions compete with the current coordination state.</p>
+            <p>Hierarchical Delegation gives one supervisor responsibility for decomposition, assignment, progress, and synthesis. Workers receive bounded task contracts and return typed artifacts from isolated contexts. The additional calls and coordination are justified only when evaluation shows better quality, latency, isolation, or capability coverage than a simpler design.</p>
             <h2>Classification: Collaboration × Hierarchy</h2>
             <ul>
-            <li><strong>Vertical axis · Collaboration</strong>: This is genuine multi-agent role differentiation—the supervisor and the workers are different agents that carry different responsibilities, not an engineering abstraction inside a single agent. Researcher, Writer, and Visualizer each correspond to one professional capability, and this division of labor by occupational ability is the classic form of multi-agent collaboration.</li>
-            <li><strong>Horizontal axis · Hierarchy</strong>: The topology is a tree. The orchestrator sits on top and several workers sit below; workers do not communicate directly, and to exchange information they must go through the supervisor. This is a natural hierarchical structure, distinct from the fan-out aggregation of Parallel, the review loop of adversarial review, and the sequential handoff chain.</li>
+            <li><strong>Vertical axis · Collaboration</strong>: Several agent roles contribute distinct artifacts to one outcome under explicit contracts.</li>
+            <li><strong>Horizontal axis · Hierarchy</strong>: A supervisor owns assignment and synthesis. Worker-to-worker dependencies either return through the supervisor or use another explicitly modelled topology.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>A single hierarchical delegation consists of three stages:</p>
             <ol>
-            <li><strong>Dynamic splitting</strong>: The supervisor decides, based on the specific input, how many workers to split into and what each worker does. Researching the AI industry and researching the coffee industry produce different subtask structures, so the split must be tied to the input and cannot be hardcoded.</li>
+            <li><strong>Task decomposition</strong>: The supervisor creates bounded work units from the goal, dependencies, available capabilities, and conflict domains. The decomposition may be fixed for stable workflows or generated within evaluated limits.</li>
             <li><strong>Isolated execution</strong>: Each worker runs in an isolated context, does not inherit the supervisor's history, and receives only its own system prompt, its specific task instruction, and its own tool set. Workers run in parallel wherever they can.</li>
-            <li><strong>Centralized synthesis</strong>: The supervisor looks only at the structured artifacts the workers return, not at the workers' raw trajectories, and makes its overall judgment and final merge based on these refined summaries.</li>
+            <li><strong>Centralized synthesis</strong>: The supervisor consumes structured artifacts and evidence links. Full worker traces remain retrievable for review without occupying the coordination context.</li>
             </ol>
-            <p>The supervisor and workers usually use different models. The supervisor does the splitting and synthesis, which require deep reasoning, so it uses a strong model; the workers do specialized execution, so they use cheaper models. This is the same idea as Plan-and-Execute separating the planner from the executor, only extended from inside a single agent to across multiple agents.</p>
+            <p>Supervisor and worker models can be selected independently. Evaluate the supervisor on decomposition, assignment, and synthesis, and evaluate workers on their bounded tasks. Different roles may justify different models, budgets, tools, and context limits; the topology itself does not require a particular capability or price tier.</p>
             <p>The artifact a worker returns should have at least a three-field structure:</p>
             <table>
             <thead>
@@ -227,7 +227,7 @@
             <tbody>
             <tr>
             <td style="text-align: left;">verdict (success / partial / failure)</td>
-            <td style="text-align: left;">Lets the supervisor judge at a glance whether this output can be used directly</td>
+            <td style="text-align: left;">States whether the artifact is complete, partial, or failed</td>
             </tr>
             <tr>
             <td style="text-align: left;">ranked findings</td>
@@ -241,17 +241,17 @@
             </table>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Long-workflow tasks with clear professional division of labor</strong>: industry research report generation, investment research analysis, new-drug R&amp;D processes, where each stage needs a different professional capability.</li>
-            <li><strong>Isolated processing of batches of similar tasks</strong>: contract review, resume screening, document compliance scanning, where each item is handed independently to a worker to avoid mutual contamination and context explosion.</li>
+            <li><strong>Long workflows with separable responsibilities</strong>: Research, analysis, drafting, and verification may need different tools, evidence, permissions, or context boundaries.</li>
+            <li><strong>Isolated processing of similar items</strong>: contract review, resume screening, and document compliance scanning can assign each item to a worker with its own bounded context and result schema.</li>
             <li><strong>Tasks valuable enough to cover the collaboration overhead</strong>: Compare a single-agent baseline with the delegated version on the same task set, including quality, latency, total tokens, and review effort.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>The form of delegation without the spirit of isolation</strong>: the supervisor sees the worker's full execution process rather than a schema artifact, and after a few tasks its context is filled with details from earlier tasks, causing reasoning quality to fall off a cliff. Workers must reduce to a structured artifact before returning.</li>
-            <li><strong>Workers communicating directly</strong>: letting worker A call worker B turns the delegation tree into a mesh. Failures can then cross worker boundaries, and the coordinator can no longer account for every dependency.</li>
+            <li><strong>Delegation without isolation</strong>: when the supervisor receives every worker trace, intermediate details accumulate and reduce the context available for coordination. Workers should return schema-defined artifacts with evidence links; full traces remain addressable outside the supervisor prompt.</li>
+            <li><strong>Undeclared worker dependencies</strong>: Worker A calls worker B outside the supervisor's plan, so authority, retries, and failure propagation disappear from the coordination trace. Route the dependency through the supervisor or model it explicitly.</li>
             <li><strong>No boundary on worker failure</strong>: a worker throws an uncaught exception, the supervisor receives a raw exception rather than a failure artifact, and the whole task is interrupted. Each worker needs a timeout plus exception wrapping.</li>
             <li><strong>Too many parallel workers</strong>: As worker count grows, the supervisor may struggle to compare and synthesize the returned artifacts. Set the concurrency and fan-out limit from provider capacity, artifact size, and measured synthesis quality.</li>
-            <li><strong>Misuse in Collaboration Light scenarios</strong>: if the system has no genuine multiple roles and is only an engineering-level abstract split (for example, the same agent swapping a few prompts), hierarchical delegation should not be applied. It requires that there really be multiple agents with professional differentiation.</li>
+            <li><strong>Delegation without an isolation or capability benefit</strong>: Splitting one prompt into several roles may add cost without changing tools, evidence, permissions, or context. Compare with one agent and a structured prompt chain.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
@@ -275,15 +275,15 @@
                 except: return Artifact(verdict=&quot;failure&quot;, ...)
                 return reduce_to_artifact(raw)      # force reduce to verdict/findings/confidence
             </code></pre>
-            <p>Four engineering points: each worker starts in an isolated context; workers are forced to reduce to a schema artifact; each worker uses a timeout plus exception wrapping to isolate failures; a semaphore controls the concurrency cap, and workers share no state with one another.</p>
+            <p>Start each worker from the contracted context, require a schema artifact, wrap timeouts and failures into typed results, and cap concurrency. Shared mutable state requires explicit ownership and conflict control.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a law-firm contract review agent. A first version lets every sub-agent return its full analysis, quickly filling the supervisor's context with detail. A stronger version assigns each contract to an isolated worker and requires a fixed-schema artifact containing <code>contract_id</code>, <code>risk_level</code>, <code>top_concerns</code>, <code>recommendation</code>, and a tamper-evident <code>contract_hash</code>. High-risk contracts enter a lawyer-review queue, timed-out workers return a failure artifact, and the portfolio report is retained for audit. Actual throughput and review quality must be evaluated on an authorized contract set.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Sub-Agent Isolation (C5)</strong>: the implementation core. Hierarchical delegation is the move (the supervisor dispatches workers), and sub-agent isolation is the inner skill (the worker's isolated context plus schema artifact plus failure boundary). Hierarchical delegation without isolation will inevitably suffer context explosion plus cascade failure, so the two must go together.</li>
-            <li><strong>Fan-out Aggregation (C2)</strong>: also one-to-many, but the division logic differs. Hierarchical delegation is one-to-many by specialty (each worker does something different), while fan-out aggregation is one-to-many by volume (multiple workers do different parts of the same kind of work at the same time).</li>
-            <li><strong>Handoff Chain (C4)</strong>: hierarchical delegation has a supervisor as a stable anchor, while a handoff chain has no supervisor and every leg is a peer.</li>
-            <li><strong>Plan-and-Execute (Action module)</strong>: hierarchical delegation is its extension at the multi-agent layer, extending "plan-execute separation inside one agent" to "separation across multiple agents."</li>
+            <li><strong>Sub-Agent Isolation (C5)</strong>: C1 defines assignment and reporting; C5 defines the worker's context, permissions, runtime, failure boundary, and returned artifact. Use them together when delegated work must not expose its full trace or authority to the supervisor.</li>
+            <li><strong>Fan-Out/Gather (C2)</strong>: C2 distributes independent work units for parallel completion. C1 adds a hierarchical assignment and reporting relationship and may include different worker capabilities.</li>
+            <li><strong>Handoff Chain (C4)</strong>: C1 keeps a supervisor responsible for the whole task. C4 transfers responsibility and state from one participant to the next.</li>
+            <li><strong>Plan-and-Execute (A2)</strong>: A2 schedules a dependency graph. C1 can supply workers for selected plan nodes while the orchestrator retains task ownership.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>Hierarchical delegation divides both work and information scope. The supervisor receives structured conclusions from the layer below instead of inheriting every worker's raw trajectory, keeping synthesis and responsibility boundaries manageable.</p>
@@ -293,7 +293,7 @@
 <section class="related-case-band" aria-labelledby="related-deepagents-case">
   <p class="related-case-label">Related open-source framework case</p>
   <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>C1 Hierarchical Delegation</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>

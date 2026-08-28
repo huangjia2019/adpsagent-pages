@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>G1 · Approval Gate · ADPS</title>
-    <meta name="description" content="Freeze the approval object and prove that resumed execution still matches it.">
+    <meta name="description" content="Bind approval to an immutable execution intent, then revalidate identity, arguments, resources, policy, and business state before action.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -175,14 +175,14 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>G1 · Approval Gate</h1>
-                <p class="publication-deck">Freeze the approval object and prove that resumed execution still matches it.</p>
+                <p class="publication-deck">Bind approval to an immutable execution intent, then revalidate identity, arguments, resources, policy, and business state before action.</p>
             </header>
 <p>Approval Gate runs before a high-risk action becomes effective. Its input is a concrete intent made of an immutable tool version, canonical arguments, resource scope, delegated identity, and business preconditions.</p>
 <h2>Coordinate and boundary</h2>
 <p><strong>Governance × Route.</strong> The same tool can reach deny, allow, or ask according to principal, arguments, environment, impact, and reversibility. Action generation belongs to the Action module; G2 bounds impact after admission.</p>
 <h2>Three records</h2>
 <table><thead><tr><th>Record</th><th>Contents</th><th>Constraint</th></tr></thead><tbody>
-<tr><td><strong>Intent</strong></td><td>Agent, run, tool digest, arguments, resources, policy version, preconditions</td><td>A material change creates a new intent</td></tr>
+<tr><td><strong>Intent</strong></td><td>Agent ID, run, tool digest, arguments, resources, policy version, preconditions</td><td>A material change creates a new intent</td></tr>
 <tr><td><strong>Approval</strong></td><td>Reviewer, decision, basis, expiry, use count, intent digest</td><td>One decision refers to one explicit object</td></tr>
 <tr><td><strong>Execution</strong></td><td>Revalidation, idempotency, actual call, state delta, external receipt</td><td>Proves execution matches approval</td></tr>
 </tbody></table>

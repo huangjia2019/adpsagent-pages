@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>F1 Generator-Critic · Pattern White Paper · ADPS</title>
-    <meta name="description" content="A Generator produces an output and a Critic reviews it against evidence and a rubric. Scope, rounds, and cost are bounded; the run exits when release criteria or the iteration cap ">
+    <meta name="description" content="A Generator produces an output and a Critic reviews it against evidence and a rubric. The run stops at release criteria or a hard limit.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -201,8 +201,8 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>Tasks dense with subjective judgment have no single correct answer, only a quality spectrum—writing, design, code style, product copy, and academic abstracts all fall into this category. A first draft often misses details that become visible on review. Human writers revise until the remaining gain no longer justifies another pass. A single generation lacks this deliberate look back.</p>
-            <p>Generator-Critic encodes this process into an agent: the generator writes a draft, the critic looks back and finds problems, the generator revises with that feedback, and the loop continues until the critic is satisfied or the iteration cap is hit. Research systems such as Reflexion and Self-Refine showed that language feedback can improve later attempts without model retraining. The size of the gain depends on the task, critic, model, and evaluation method, so a production team should reproduce it on its own evaluation set.</p>
+            <p>Writing, design, code readability, product copy, and academic abstracts combine several quality dimensions that deterministic checks do not fully cover. A first draft may satisfy the schema while still missing evidence, clarity, terminology, or audience requirements.</p>
+            <p>Generator-Critic separates drafting from review. The critic returns a structured verdict with evidence; the generator revises within a fixed scope and budget. Research systems such as Reflexion and Self-Refine provide prior evidence for language feedback, while production value still depends on the local task set, critic calibration, and acceptance criteria.</p>
             <h2>Classification: Reflection × Chain</h2>
             <ul>
             <li><strong>Vertical axis · Reflection</strong>: The Critic examines the current output using a model, rules, tests, retrieved evidence, or human judgment.</li>
@@ -211,9 +211,9 @@
             <h2>Solution and mechanics</h2>
             <p>A Generator-Critic loop consists of three segments:</p>
             <ol>
-            <li><strong>Generate</strong>: The generator produces a draft. The model used in this step determines how much the critic has to make up for.</li>
-            <li><strong>Critique</strong>: The critic evaluates the current output and produces a structured verdict (an issues list / severity / an explicit no_changes_needed field). The key innovation of the Reflexion paper is that the critic produces natural-language reflection text rather than a bare score, telling the generator what is wrong, why it is wrong, and how to fix it next time.</li>
-            <li><strong>Revise</strong>: The generator rewrites with the critique in hand. It then returns to step 2, until the critic passes the output or iteration bottoms out.</li>
+            <li><strong>Generate</strong>: The generator produces a draft under an output contract. Evaluate this stage independently so the critic is not used to compensate for avoidable generation defects.</li>
+            <li><strong>Critique</strong>: the critic evaluates the current output and returns a structured verdict with an issue list, severity, evidence, and an explicit <code>no_changes_needed</code> field. Reflexion showed how natural-language feedback can carry the error, its cause, and repair guidance in addition to a score.</li>
+            <li><strong>Revise</strong>: The generator applies accepted findings within the allowed scope. The loop exits on acceptance, no material change, budget exhaustion, or human hand-off.</li>
             </ol>
             <p>The verdict should cite its evidence rather than collapse the review into a single score. Common evidence sources have different strengths and limits:</p>
             <table>
@@ -261,7 +261,7 @@
             <p>Both clocks use the same evidence structure. Online verdicts and hand-off reasons feed the offline dataset; revised standards return to production only after evaluation and release approval.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Content-generation tasks</strong>: Writing, translation, summarization, copywriting, polishing academic abstracts—no objective right or wrong, but a clear quality difference, where the critic can reliably spot "where it falls short."</li>
+            <li><strong>Content-generation tasks</strong>: Writing, translation, summarization, copywriting, and academic editing can use explicit rubrics for evidence, terminology, audience, style, and completeness.</li>
             <li><strong>Code style and readability optimization</strong>: Naming, comments, structural adjustments, and similar improvements that do not affect correctness but do affect quality.</li>
             <li><strong>High-frequency generation with cost constraints</strong>: A lower-cost generator can be paired with a critic, but quality and total cost must be compared with a direct high-capability baseline on the same task set.</li>
             </ul>
@@ -270,10 +270,10 @@
             <li><strong>Using an LLM where a deterministic check exists</strong>: For mathematics, SQL, schemas, and unit tests, run the check directly and use the model to explain or repair the failure.</li>
             <li><strong>An unvalidated critic</strong>: A critic that misses important defects or introduces noisy objections can degrade the output. Evaluate critic recall, false alarms, and revision outcomes independently of the generator's model tier.</li>
             <li><strong>A critic that forces problems into existence</strong>: If the critic prompt does not state that "no changes needed is a valid option," it may invent problems to fill the quota. Treat an unchanged result as a legitimate verdict, then measure false alarms on a reviewed set of already-qualified outputs.</li>
-            <li><strong>No guard against same-source bias</strong>: When the critic and generator are the same LLM, a self-enhancement bias exists, and it tends to score its own output highly. High-stake tasks should switch vendors or add external grounding.</li>
+            <li><strong>Correlated generator and critic errors</strong>: Shared models, prompts, or evidence can preserve the same blind spot. Add deterministic checks, independent evidence, a differently configured reviewer, or qualified human review according to risk.</li>
             <li><strong>Collapsing a multidimensional rubric into one score</strong>: Accuracy, compliance, readability, and cost can move in different directions. Keep per-dimension verdicts and blocking criteria visible.</li>
             <li><strong>Reviewing only the final answer</strong>: A plausible answer may hide unnecessary tool calls, incorrect retrieval, or a lucky result. High-risk work needs both outcome and trajectory evaluation.</li>
-            <li><strong>No circuit breaker on iteration</strong>: Not setting max_iterations triggers over-thinking—the critic keeps inventing on top of the previous round's fabrications, and after a few rounds the agent convinces itself that the output is severely flawed.</li>
+            <li><strong>No bounded exit</strong>: An unconstrained critic can keep producing low-value or false findings. Set round, cost, latency, and no-material-change limits, then preserve the unresolved verdict for hand-off.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
@@ -304,8 +304,8 @@
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Self-Heal Loop (F4)</strong>: Generator-Critic improves a usable output and may stop after one review. Self-Heal starts from a verified failure and runs a bounded repair loop with rollback and hand-off.</li>
-            <li><strong>Adversarial Review (collaboration module)</strong>: An upgraded form. Generator-Critic is "the same model with a different prompt," while Adversarial Review is "an independent agent with adversarial incentives." The former addresses "how an agent revises itself," needing one LLM process and separate prompts; the latter addresses "how a decision passes audit-grade independent review," requiring model routing, an independent trace, and cross-agent orchestration. Use the former when the cost of error is low, and upgrade to the latter for scenarios that demand regulatory independence, such as financial approval or medical diagnosis.</li>
-            <li><strong>Skill Package (F2)</strong>: A connecting relationship. Generator-Critic revises this one current output, while Skill Package distills the successful process across tasks.</li>
+            <li><strong>Adversarial Review (C3)</strong>: F1 generates and revises an artifact through a bounded feedback loop; generator and critic may share a model or runtime. C3 introduces independent review roles, evidence, and traces when the decision requires separation of duties or stronger challenge.</li>
+            <li><strong>Skill Package (F2)</strong>: F1 revises the current artifact. Repeatedly successful and reviewed procedures may later become F2 candidates.</li>
             </ul>
             <h2>Engineering judgment</h2>
             <p>Generator-Critic separates generation from evaluation. The Critic needs explicit criteria and should use tests, rules, source evidence, independent models, or human judgment according to the task.</p>
@@ -320,7 +320,7 @@
 <section class="related-case-band" aria-labelledby="related-deepagents-case">
   <p class="related-case-label">Related open-source framework case</p>
   <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>F1 Generator-Critic</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>

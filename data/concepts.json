@@ -237,63 +237,63 @@
     {
       "slug": "topology-lowering", "group": "collaboration-runtime", "key": false,
       "zh_label": "拓扑降阶", "en_label": "Topology Lowering",
-      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；整理命名：ADPS", "origin_en": "Engineering observation: Zhang Dong; name formalized by ADPS",
-      "adps_zh": "张栋提出串行、并行、路由是常见运行原语；ADPS 补入高层责任语义的保留规则。", "adps_en": "Zhang Dong identified serial, parallel, and routing as common runtime primitives; ADPS added rules for preserving higher-level responsibility semantics.",
+      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；整理命名：ADPS", "origin_en": "Engineering observation: Dong Zhang; name formalized by ADPS",
+      "adps_zh": "张栋提出串行、并行、路由是常见运行原语；ADPS 补入高层责任语义的保留规则。", "adps_en": "Dong Zhang identified serial, parallel, and routing as common runtime primitives; ADPS added rules for preserving higher-level responsibility semantics.",
       "status_zh": "模块级方法概念", "status_en": "Module-level method concept"
     },
     {
       "slug": "topology-governance-matrix", "group": "collaboration-runtime", "key": false,
       "zh_label": "拓扑治理矩阵", "en_label": "Topology Governance Matrix",
-      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：张栋", "origin_en": "First proposed within ADPS by Zhang Dong",
+      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：张栋", "origin_en": "First proposed within ADPS by Dong Zhang",
       "adps_zh": "ADPS 按公开口径整理身份、权限、防护和溯源四层检查表。", "adps_en": "ADPS edited the four-layer identity, authority, safeguard, and provenance checklist for public use.",
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
     {
       "slug": "handoff-contract", "group": "collaboration-runtime", "key": false,
       "zh_label": "交接合同", "en_label": "Handoff Contract",
-      "source": "collaboration-workshop", "origin_zh": "初始问题与建议：王伟；字段结构：ADPS", "origin_en": "Initial problem and proposal: Wang Wei; field structure: ADPS",
+      "source": "collaboration-workshop", "origin_zh": "初始问题与建议：王伟；字段结构：ADPS", "origin_en": "Initial problem and proposal: Wei Wang; field structure: ADPS",
       "adps_zh": "ADPS 将不同团队的 Handoff 协议差异整理为目标、产物、决定、权限和验收字段。", "adps_en": "ADPS organized differing handoff protocols around goal, artifacts, decisions, authority, and acceptance.",
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
     {
       "slug": "three-collaboration-planes", "group": "collaboration-runtime", "key": false,
       "zh_label": "三类协作关系", "en_label": "Three Collaboration Planes",
-      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：王伟", "origin_en": "First proposed within ADPS by Wang Wei",
+      "source": "collaboration-workshop", "origin_zh": "ADPS 内初始提出：王伟", "origin_en": "First proposed within ADPS by Wei Wang",
       "adps_zh": "ADPS 将 Agent-Agent、Human-Agent 和 Agent 环境中的 Human-Human 关系整理为统一设计视角。", "adps_en": "ADPS organized Agent-Agent, Human-Agent, and Human-Human relations around the agent environment into one design view.",
       "status_zh": "跨模块概念", "status_en": "Cross-module concept"
     },
     {
       "slug": "hook-composition", "group": "collaboration-runtime", "key": false,
       "zh_label": "Hook 组合", "en_label": "Hook Composition",
-      "source": "collaboration-workshop", "origin_zh": "初始问题与实践：王伟；分类整理：ADPS", "origin_en": "Initial problem and practice: Wang Wei; classification formalized by ADPS",
+      "source": "collaboration-workshop", "origin_zh": "初始问题与实践：王伟；分类整理：ADPS", "origin_en": "Initial problem and practice: Wei Wang; classification formalized by ADPS",
       "adps_zh": "ADPS 区分编排、治理、观测和恢复四类职责，并补充顺序、幂等和失败语义。", "adps_en": "ADPS separated orchestration, governance, observation, and recovery duties and added ordering, idempotency, and failure semantics.",
       "status_zh": "跨模块概念", "status_en": "Cross-module concept"
     },
     {
       "slug": "probabilistic-core-deterministic-shell", "group": "system-boundaries", "key": true,
       "zh_label": "概率内核与确定性外壳", "en_label": "Probabilistic Core, Deterministic Shell",
-      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；外壳表述：黄佳", "origin_en": "Engineering observation: Zhang Dong; shell formulation: Jia Huang",
+      "source": "collaboration-workshop", "origin_zh": "工程判断：张栋；外壳表述：黄佳", "origin_en": "Engineering observation: Dong Zhang; shell formulation: Jia Huang",
       "adps_zh": "ADPS 将模型的开放判断与身份、状态、权限、测试和外部回执的确定性控制连接起来。", "adps_en": "ADPS connected open model judgement to deterministic controls over identity, state, authority, tests, and external receipts.",
       "status_zh": "跨模块架构概念", "status_en": "Cross-module architecture concept"
     },
     {
       "slug": "knowledge-compilation", "group": "context-memory", "key": false,
       "zh_label": "知识编译", "en_label": "Knowledge Compilation",
-      "source": "memory-workshop", "origin_zh": "ADPS 研讨会初始引入：张颖峰", "origin_en": "Introduced into ADPS workshops by Zhang Yingfeng",
+      "source": "memory-workshop", "origin_zh": "ADPS 研讨会初始引入：张颖峰", "origin_en": "Introduced into ADPS workshops by Yingfeng Zhang",
       "adps_zh": "ADPS 将其整理为 M2 写入侧机制，并保留这一术语已有公开技术前史的说明。", "adps_en": "ADPS placed it on the write side of M2 while recognizing that the term has a broader public technical lineage.",
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
     {
       "slug": "context-contract", "group": "context-memory", "key": true,
       "zh_label": "上下文合同", "en_label": "Context Contract",
-      "source": "perception-workshop", "origin_zh": "初始议题：黄佳；工程实践：黄湘龙；整理命名：ADPS", "origin_en": "Initial question: Jia Huang; engineering practice: Huang Xianglong; name formalized by ADPS",
+      "source": "perception-workshop", "origin_zh": "初始议题：黄佳；工程实践：黄湘龙；整理命名：ADPS", "origin_en": "Initial question: Jia Huang; engineering practice: Xianglong Huang; name formalized by ADPS",
       "adps_zh": "ADPS 将 Why、What、How、验收材料与 P1/P2 的信息边界整理为可测试合同。", "adps_en": "ADPS organized Why, What, How, acceptance material, and P1/P2 information boundaries into a testable contract.",
       "status_zh": "跨模块概念", "status_en": "Cross-module concept"
     },
     {
       "slug": "plan-compilation", "group": "planning-execution", "key": true,
       "zh_label": "Plan 编译", "en_label": "Plan Compilation",
-      "source": "action-workshop", "origin_zh": "ADPS 内初始提出：茹炳晟；实践补充：王伟、Pylon PENG", "origin_en": "First proposed within ADPS by Bingsheng Ru; practice discussed by Wang Wei and Pylon Peng",
+      "source": "action-workshop", "origin_zh": "ADPS 内初始提出：茹炳晟；实践补充：王伟、Pylon PENG", "origin_en": "First proposed within ADPS by Bingsheng Ru; practice discussed by Wei Wang and Pylon Peng",
       "adps_zh": "ADPS 将合法性、依赖、权限、冲突和经济性检查整理为计划进入执行前的编译步骤。", "adps_en": "ADPS organized legality, dependency, authority, conflict, and economy checks into a compilation step before execution.",
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
@@ -307,14 +307,14 @@
     {
       "slug": "durable-intent", "group": "verification-governance", "key": false,
       "zh_label": "持久化意图", "en_label": "Durable Intent",
-      "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：徐一博", "origin_en": "First proposed within ADPS by Xu Yibo",
+      "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：徐一博", "origin_en": "First proposed within ADPS by Yibo Xu",
       "adps_zh": "ADPS 将研讨中的 Durable Intent 连接到 G1 审批门，并补充 Intent、Approval、Execution 三段记录。", "adps_en": "ADPS connected Durable Intent to G1 Approval Gate and organized Intent, Approval, and Execution as three records.",
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
     {
       "slug": "write-conflict-domain", "group": "collaboration-runtime", "key": false,
       "zh_label": "写入冲突域", "en_label": "Write-Conflict Domain",
-      "source": "action-workshop", "origin_zh": "初始问题：唐洪山；实践补充：Pylon PENG、王伟；整理命名：ADPS", "origin_en": "Initial problem: Tang Hongshan; practice discussed by Pylon Peng and Wang Wei; name formalized by ADPS",
+      "source": "action-workshop", "origin_zh": "初始问题：唐洪山；实践补充：Pylon PENG、王伟；整理命名：ADPS", "origin_en": "Initial problem: Hongshan Tang; practice discussed by Pylon Peng and Wei Wang; name formalized by ADPS",
       "adps_zh": "ADPS 将文件冲突扩展到编号、配置、数据库记录、测试环境和外部资源。", "adps_en": "ADPS extended file conflicts to identifiers, configuration, database records, test environments, and external resources.",
       "status_zh": "跨模块概念", "status_en": "Cross-module concept"
     },

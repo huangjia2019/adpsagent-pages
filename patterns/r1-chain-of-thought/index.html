@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -201,62 +201,62 @@
             </table>
             <hr />
             <h2>Problem</h2>
-            <p>The model returns a conclusion, but no one knows how it got there. When the conclusion is correct, no one asks; when it is wrong, there is no way to debug it; and when a regulator comes to inspect, there is no evidence to produce. One of the biggest differences between an agent and traditional software is this "gray-box" quality—it is neither a black box nor a true white box. If the reasoning layer in the middle is not captured, there is no way to root-cause an incident.</p>
+            <p>A model may return a plausible conclusion without exposing the evidence, intermediate decisions, model settings, or fallback path needed to review it. When the result fails, ordinary application logs may show the request and answer but not which sources or decision artifacts influenced the action.</p>
             <p>Here, Chain-of-Thought means engineering the reasoning trajectory: storing permitted reasoning artifacts or summaries, preserving input evidence, handling cross-model fallback, and controlling reasoning effort by task complexity. The familiar “Let's think step by step” prompt is only one prompting technique; reasoning APIs expose different structured fields that the runtime must normalize.</p>
             <h2>Classification: Reasoning × Chain</h2>
             <ul>
             <li><strong>Vertical axis · Reasoning</strong>: CoT concerns the trajectory from evidence to decision. Depending on the model interface, the system may receive a public rationale, a structured summary, or protected reasoning tokens. The other reasoning patterns build on this trajectory in different ways.</li>
-            <li><strong>Horizontal axis · Chain</strong>: Reasoning itself is a linear trajectory, running from input to output, where each step depends on the one before it (thinking → intermediate conclusion → final answer). This is a naturally chained structure, not a parallel fan-out, and not a looping iteration.</li>
+            <li><strong>Horizontal axis · Chain</strong>: The retained trajectory links input evidence, intermediate decisions, and output in order. Later patterns may branch or iterate, but each branch still needs an ordered evidence-to-decision record.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>CoT is a multi-form engineering category. Its runtime responsibilities include:</p>
             <ol>
             <li><strong>Persistence</strong>: Retain the reasoning summaries, evidence references, decisions, and model metadata that the provider and policy allow, indexed by <code>trace_id</code>.</li>
             <li><strong>Cross-model normalization</strong>: Providers expose public summaries, structured fields, or protected reasoning tokens differently. Normalize available artifacts into one schema and retain provider, model, interface version, and visibility metadata.</li>
-            <li><strong>Cross-model fallback strip</strong>: a thinking block's signature is bound to the model that generated it. When the primary model is rate-limited and traffic switches to a fallback model, the fallback model does not accept signatures from another model. All incompatible thinking blocks must be stripped before sending, otherwise the entire request is rejected and the agent call fails.</li>
-            <li><strong>Effort control</strong>: thinking consumes paid tokens, but more thinking does not necessarily mean higher quality. Provide an effort control surface (off / low / medium / high / max), so simple tasks use low and complex tasks use high.</li>
+            <li><strong>Cross-model fallback normalization</strong>: reasoning fields and signatures can be provider-specific. Before a fallback call, remove or transform fields that the target model does not accept, then validate the request against the target schema.</li>
+            <li><strong>Effort control</strong>: Reasoning effort consumes tokens and latency without guaranteeing better task outcomes. Expose supported effort levels as a per-request setting and select them from task-level evaluation.</li>
             </ol>
             <p>One boundary matters: a model's written rationale may be a post-hoc account rather than a faithful record of its internal computation. Treat it as an observability signal, not proof of how the model reached the answer. Critical decisions still need external evidence and verification.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Multi-hop logic and judgments that need explanation</strong>: claims review, contract risk identification, credit decisions—each conclusion must be explainable to a regulator in terms of "what the basis is."</li>
+            <li><strong>Multi-step judgments that require an evidence trail</strong>: Claims review, contract analysis, and credit workflows may need each conclusion linked to source evidence, applicable rules, model version, and approval.</li>
             <li><strong>Compliance audit-trail scenarios</strong>: Finance, healthcare, and legal workflows may require decision evidence, model metadata, approvals, and retained rationale. The exact record follows applicable policy and provider constraints.</li>
             <li><strong>Teaching and debugging scenarios</strong>: Show processed reasoning summaries and intermediate evidence when this helps locate an error, without assuming access to private model reasoning.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Forcing step instructions onto a reasoning model</strong>: Adding a generic “analyze step by step” instruction can increase token use without improving the target task. Test prompting choices on the actual evaluation set.</li>
-            <li><strong>Not stripping thinking on fallback</strong>: failing to clean up cross-model signatures when the primary model goes down and traffic switches to fallback causes the entire request to be rejected and the agent call to fail. This kind of incident is not exposed in normal operation but breaks out all at once when the primary model is rate-limited.</li>
+            <li><strong>Fallback signature mismatch</strong>: provider-specific reasoning fields or signatures may be invalid when traffic moves to another model. Normalize the message schema before fallback and test the switch path; otherwise the fallback request can fail when the primary model is rate-limited.</li>
             <li><strong>Writing traces only to log files</strong>: When a reviewer needs the evidence, applicable rules, model version, and final decision for a case, scattered log records are difficult to reconstruct. Use structured traces that are queryable by <code>trace_id</code>.</li>
-            <li><strong>Running every task at one effort level</strong>: using the same effort for a simple task ("what day is it today") and a complex task ("what risks does this contract have") both wastes tokens on the simple task and shortchanges the quality of the complex one.</li>
+            <li><strong>Using one effort level for every task</strong>: Template extraction and multi-source risk analysis have different latency and quality needs. Compare effort levels by task class and risk instead of setting one global default.</li>
             <li><strong>Enabling deep reasoning in latency-sensitive scenarios</strong>: Extended reasoning can violate an interactive response budget. Use a lower effort level, asynchronous execution, or the Talker-Reasoner pattern.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Reasoning token share</strong>: Track the share of reasoning tokens by task class. A material rise from the local baseline may indicate over-thinking; a drop should be checked for under-reasoning on difficult tasks.</li>
-            <li><strong>Fallback strip success rate</strong>: Verify that model-specific reasoning fields are removed or transformed before a fallback call. Any incompatible payload is an operational defect.</li>
+            <li><strong>Fallback normalization success rate</strong>: Verify that model-specific reasoning fields are removed or transformed before a fallback call. Any incompatible payload is an operational defect.</li>
             <li><strong>Trace queryability</strong>: Verify that a historical decision can be reconstructed from its trace ID using retained evidence, model metadata, outputs, and allowed reasoning summaries. Applicable policy defines what may be stored.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>task arrives → choose effort tier by complexity (off / low / medium / high / max)
             model returns retainable summary / structured decision / model metadata → normalize into a unified schema → into structured trace
             if primary model is rate-limited and falls back:
-                strip all thinking blocks incompatible with the target model, then send the request
+                normalize or remove reasoning fields that the target model does not accept, then validate and send
             dual views for audit retrieval:
                 audit view    → permitted reasoning summary + evidence + final decision + fallback chain
                 customer view → redacted rationale, no protected reasoning details
             return final_answer + audit trace (indexed by trace_id, retained according to policy)
             </code></pre>
-            <p>Four points for implementation: do not add step instructions to a reasoning model; make effort control a per-request / per-task configuration; keep extending tag normalization as new models appear; and emit traces to a structured trace bus that supports long-cycle retrieval.</p>
+            <p>Test prompting and effort settings on the target task set. Keep provider-field normalization versioned, and emit evidence, decisions, model metadata, and fallback transitions as structured events that remain queryable by <code>trace_id</code>.</p>
             <h2>Illustrative scenario</h2>
-            <p>Liang Bo's execution-oriented agent separates explanatory reasoning from the structured <code>answer</code> that downstream programs consume. The runtime stores provider-permitted summaries and evidence in the trace, while the <code>answer</code> is a JSON decision object that drives subsequent actions. This keeps audit material separate from the executable control contract.</p>
+            <p>Bo Liang's execution-oriented agent separates explanatory reasoning from the structured <code>answer</code> that downstream programs consume. The runtime stores provider-permitted summaries and evidence in the trace, while the <code>answer</code> is a JSON decision object that drives subsequent actions. This keeps audit material separate from the executable control contract.</p>
             <p>When JSON parsing fails, the runtime uses a predefined safe fallback instead of crashing or retrying at random. The answer schema is strictly validated, parse failures enter monitoring, and audit retention follows the visibility allowed by the model interface and organizational policy.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Complexity routing (R2)</strong>: CoT's effort control adjusts the reasoning tier by task depth, while routing selects the model tier by task complexity—the same line of thought, lifted from a single call to the task level.</li>
-            <li><strong>Parallel exploration (R3)</strong>: each branch of a parallel run is usually a chain of thought internally, and parallelism layers "multi-sampling" on top of CoT.</li>
-            <li><strong>Iterative hypothesis verification (R4)</strong>: each round of iteration is also a chain of thought, and iteration strings multiple chains of thought together along the time dimension for repeated correction.</li>
-            <li><strong>Dual-mode architecture (R5)</strong>: the Reasoner performs the full reasoning sequence, while the Talker stays responsive and deliberately avoids deep analysis.</li>
+            <li><strong>Complexity-Based Routing (R2)</strong>: R2 selects a model and effort tier. R1 normalizes and records the resulting evidence-to-decision trajectory.</li>
+            <li><strong>Parallel Exploration (R3)</strong>: Each branch keeps its own ordered trace; the verifier compares branch artifacts and evidence.</li>
+            <li><strong>Iterative Hypothesis Testing (R4)</strong>: Each round records a hypothesis, evidence request, result, and verdict. The next round links to that transition.</li>
+            <li><strong>Talker-Reasoner (R5)</strong>: The Reasoner produces the slower analysis artifact while the Talker maintains the interaction contract.</li>
             </ul>
             <h2>Design conclusion</h2>
             <p>The engineering task is to manage available reasoning artifacts, evidence, decisions, and fallback metadata across their lifecycle. Private model reasoning is not required for an auditable action contract.</p>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P2 Semantic Compaction · Pattern White Paper · ADPS</title>
-    <meta name="description" content="After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly a">
+    <meta name="description" content="Compact long sessions while preserving goals, accepted evidence, unresolved failures, provenance, and recovery state.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>P2 · Semantic Compaction</h1>
-                <p class="publication-deck">After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly afterward.</p>
+                <p class="publication-deck">Long sessions approach the context limit. Semantic compaction removes redundant material while preserving goals, accepted evidence, unresolved failures, provenance, and recovery state.</p>
             </header>
 
                         <table>
@@ -187,7 +187,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Medium (summarization can use a cheap model, triggered by threshold)</td>
+            <td style="text-align: left;">Medium (threshold-triggered summarization plus replay evaluation)</td>
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern group</strong></td>
@@ -195,18 +195,18 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">After an agent runs for a while its context fills up and has to be compacted. What you keep, what you drop, and how far you compress determine whether it can still reason clearly afterward.</td>
+            <td style="text-align: left;">Long sessions approach the context limit. Semantic compaction removes redundant material while preserving goals, accepted evidence, unresolved failures, provenance, and recovery state.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>As a long task progresses, the context approaches capacity and some history must be compacted. If a stack trace containing connection-pool settings, queue depth, and call sites becomes only “a database error occurred,” the evidence and previously rejected remedies disappear. The agent may then repeat work that the earlier session already ruled out.</p>
-            <p>Semantic compaction turns this into an engineering practice: a three-level cascade (clean up verbose tool results → summarize old conversation → compress further) is triggered progressively against context-occupancy thresholds, each level more aggressive than the last. It governs the capacity of the context window within a single session. It does not aim for unlimited compression but for every segment of history to be produced by high-quality reasoning, so that it does not poison the next segment.</p>
+            <p>A three-level cascade can trigger from context-occupancy thresholds: remove redundant tool output, summarize older exchanges, then produce a compact recovery record. Each level preserves the current goal, accepted evidence, unresolved failures, provenance, and next action. Replay tests should verify that a later step can recover those fields from the compacted history.</p>
             <h2>Classification: Perception × Chain</h2>
             <ul>
-            <li><strong>Vertical axis · Perception</strong>: Compaction operates on the input history that has "already been taken in," performing an input → semantically-preserving-compression. It is not about writing information into cross-session storage (memory), nor about reasoning through a problem (reasoning); it decides which evidence to keep in the current window.</li>
-            <li><strong>Horizontal axis · Chain</strong>: The three levels of compression form a cascade, each level taking the output of the previous one. The original text is relayed through cleanup, summarization, and further compression, getting tighter at each step. What flows along the chain is the compressed history.</li>
+            <li><strong>Vertical axis · Perception</strong>: Compaction changes how admitted history is represented inside the current context. It preserves the evidence needed for later reasoning without writing a cross-session memory.</li>
+            <li><strong>Horizontal axis · Chain</strong>: Cleanup, summarization, and deep compaction form an ordered cascade. Each stage consumes the previous representation and emits a smaller, traceable artifact.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>Compaction is triggered in tiers, from light to heavy according to context occupancy, with the error stack protected across the whole flow:</p>
@@ -246,10 +246,10 @@
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Summary loses key information</strong>: Reducing an error with line numbers, pool settings, and queue depth to “a database error occurred” removes the basis for diagnosis. Require the summary to preserve business figures, file paths, function names, and error codes.</li>
-            <li><strong>Compacting across an error boundary</strong>: Triggering compaction in the middle of the agent's active reasoning—say, just after it has narrowed the bug down to two candidate files and is about to decide—causes the reasoning context to be lost when compaction kicks in, forcing a restart. Compact only conversation segments that are complete and that the agent has already moved on from.</li>
+            <li><strong>Compacting an active investigation</strong>: If compaction runs after the agent has narrowed a fault to two files but before it records the evidence and next test, the later step may restart the investigation. Compact completed segments or write a recovery record first.</li>
             <li><strong>Drift from repeated compaction</strong>: Repeatedly summarizing the same material compounds omissions. Track summary lineage and limit re-compaction; if capacity is still insufficient, hand off or start a new session with a structured packet.</li>
             <li><strong>Compacting too late</strong>: Waiting until the window is nearly exhausted may allow degraded reasoning before compaction begins. Determine the trigger through replay evaluation.</li>
-            <li><strong>Never compact the error stack</strong>: The error stack is the agent's feedback loop; losing it is amnesia. It must be specially protected across the entire compaction flow.</li>
+            <li><strong>Dropping diagnostic evidence</strong>: Preserve the relevant stack frames, error code, parameters, call site, and source pointer. A generic error summary cannot support recovery or regression testing.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
@@ -266,18 +266,18 @@
                 Level 3: reduce old errors to structured records while keeping key parameters and recent evidence
             Record one CompactionEvent per compaction (level / before-and-after tokens / error stacks preserved)
             </code></pre>
-            <p>The anchor's "ruled-out options" field must be hard-coded in the summary prompt as "ruled-out options must be preserved; new decisions are appended, not overwritten." The summarization call can use a cheap model.</p>
+            <p>Make <code>ruled_out_options</code> a required field in the anchor schema, and append new decisions instead of overwriting prior exclusions. A lower-cost model may perform summarization after it passes the same replay checks.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a customer reporting an API that fails intermittently during peak traffic and succeeds on retry. A support agent works across shifts, calling log search, metrics, and configuration tools while raw outputs accumulate. The system first removes verbose outputs whose evidence has already been captured and writes an anchor containing symptoms, actions, and ruled-out paths. If the session keeps growing, earlier dialogue is merged into the anchor. If the investigation still does not converge, the runtime exports the anchor and evidence pointers for a second-line engineer.</p>
             <p>The handoff should be operational: current symptoms, evidence for and against each hypothesis, rejected paths, and the next untested step. Deep compaction is also an exit signal. Set thresholds from observed session distributions and replay quality rather than inferring them from ticket severity.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Context Triage (P1)</strong>: Complementary. Triage governs future tokens (which ones come in), compaction governs past tokens (how to compress what has already come in without losing the key parts). P1's "load after P2-level compaction" is precisely where the two connect.</li>
-            <li><strong>Progressive Discovery (P3)</strong>: The three divide the labor across different time dimensions of tokens. Triage governs the future, compaction the past, and discovery the unknown. A production agent needs all three; doing one fewer leaks in that dimension.</li>
-            <li><strong>Layered Memory (Memory module)</strong>: The boundary must be held. Compaction governs window capacity within a single session, and all compaction events are cleared the moment the session ends. Remembering "this user reported a similar bug last week" is memory's job; do not make the compactor do memory's work.</li>
+            <li><strong>Context Triage (P1)</strong>: Triage decides which sources enter the current context. Compaction reduces admitted history when the window approaches its operating limit.</li>
+            <li><strong>Progressive Discovery (P3)</strong>: Discovery acquires missing evidence. Compaction preserves its useful findings without retaining every search step.</li>
+            <li><strong>Layered Retention (M1)</strong>: Compaction manages one session's working history. Memory retains information for later tasks. A compaction anchor becomes memory only after a separate admission and retention decision.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>Good compaction is itself a form of cognition—what the agent chooses to keep determines what it can reason clearly about next; compacting away an error stack is like deleting the tests during a refactoring, so that on the next regression you won't know where it broke.</p>
+            <p>Compaction quality can be tested by replaying later steps. The agent should still identify the current goal, accepted evidence, open failures, and next action. If compaction removes an error stack or rejection reason, a later run loses the evidence required for recovery.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P2 Semantic Compaction</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

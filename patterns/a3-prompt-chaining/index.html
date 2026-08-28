@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A3 Prompt Chaining · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to comp">
+    <meta name="description" content="Decompose a workflow into ordered model or tool steps with explicit input, output, and acceptance contracts. Each artifact is validated before the next step consumes it.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>A3 · Prompt Chaining</h1>
-                <p class="publication-deck">Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to complete the work.</p>
+                <p class="publication-deck">Decompose a workflow into ordered model or tool steps with explicit input, output, and acceptance contracts. Each artifact is validated before the next step consumes it.</p>
             </header>
 
                         <table>
@@ -195,41 +195,41 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern summary</strong></td>
-            <td style="text-align: left;">Break a complex task into a series of small tasks. Each step runs with its own independent prompt, and the output of one step becomes the input of the next, strung together to complete the work.</td>
+            <td style="text-align: left;">Decompose a workflow into ordered model or tool steps with explicit input, output, and acceptance contracts. Each artifact is validated before the next step consumes it.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>A single prompt that handles proofreading, rewriting, style, number checking, headlines, summaries, and image suggestions makes several constraints compete for attention. A rewrite step may alter a figure from the source, and later steps then propagate the error.</p>
-            <p>Prompt Chaining breaks a large task into several independent prompts processed in sequence. Each segment does only one thing, has its own role and the model best suited to it, and has its own success criterion. The difference from a single oversized prompt is that complexity can only be brought down by splitting; stuffing it into a bigger box does not bring it down.</p>
+            <p>Prompt Chaining separates a workflow into model or tool steps that run in sequence. Each step has a bounded responsibility, an input and output schema, a model or tool selected from step-level evaluation, and an acceptance condition. The structure makes intermediate failures visible and allows a failed step to be retried without rerunning completed work.</p>
             <h2>Classification: Action × Chain</h2>
             <ul>
-            <li><strong>Vertical axis · Action</strong>: A task one prompt cannot complete is split into several sequential prompts, each of which triggers a model call or tool output. The landing point is "doing" rather than single-point "thinking," so it belongs to the Action module.</li>
-            <li><strong>Horizontal axis · Chain</strong>: prompt1 → prompt2 → prompt3 is a typical linear pipeline, where the output of one segment is the input of the next. It is neither routing diversion nor graph-shaped dependency. It shares the Chain topology with Plan-Execute (A2); the difference is that A3 is a pure straight line with no replan, while A2 is a DAG with replan.</li>
+            <li><strong>Vertical axis · Action</strong>: The pattern turns a task into an executable sequence of model and tool steps. Each step produces an artifact that the next step can validate and consume.</li>
+            <li><strong>Horizontal axis · Chain</strong>: Each step consumes the previous step's accepted artifact in a fixed order. If the workflow needs branching dependencies or replanning, use an orchestrated plan instead.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>Its engineering prototype is the Unix pipe. <code>cat data.csv | grep ERROR | sort | uniq -c</code> strings together several single-responsibility small programs via stdin/stdout. Each program only reads input and writes output, with no need to know who comes before or after. A prompt chain reproduces the same thing at the LLM layer, where each prompt segment is a "small program."</p>
+            <p>The Unix pipe provides a useful precedent: <code>cat data.csv | grep ERROR | sort | uniq -c</code> connects programs through explicit input and output. A prompt chain applies the same compositional idea to model and tool steps, but each boundary also needs a schema, acceptance check, and trace.</p>
             <p>The extra layer beyond the Unix pipe is the gate. A programmatic check sits between stages and retries or escalates on failure. In a research chain, for example, the gate can validate topic coverage, source type, and traceability against project policy before allowing the next stage to run.</p>
-            <p>A few points for implementation:</p>
+            <p>Each step needs the following controls:</p>
             <ul>
             <li><strong>Each prompt segment uses an explicit contract</strong>: role, task, context, format, and constraints can be represented with structured tags so the next step can validate the output.</li>
             <li><strong>Each segment selects its model independently</strong>: Proofreading, creative rewriting, and number checking may use different models and tools. Choose each model from step-level evaluation and calculate the whole-chain cost from replay.</li>
             <li><strong>Gates need tolerance</strong>: do not require an exact word count when the business accepts a range. Express content requirements separately from length tolerance.</li>
-            <li><strong>Retries should feed back the failure reason</strong>: tell the model "where it fell short last time" rather than rerunning blindly, and the hit rate goes up.</li>
+            <li><strong>Retries should include failure evidence</strong>: pass the failed assertion, rejected field, or tool error into the next attempt. Measure the pass rate by failure class instead of assuming that additional context improves it.</li>
             </ul>
-            <p>Claude Code has produced three industrial forms of the chain: in the perceive-reason-act main loop, each tool result is a chain link (the implicit chain); a slash command is a prefabricated chain (<code>/commit</code> is a five-step template of status → diff → reasoning → drafting → commit); and SKILL.md is a composable chain segment (a declarative definition of a multi-step process embedded into a larger chain).</p>
+            <p>Agent-coding tools expose the same structure in several forms. A tool result feeds the next model call; a command can package a fixed sequence such as status → diff → review → draft → commit; and a skill can define a reusable multi-step segment inside a larger workflow.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>The workflow has clear stages, and acceptance between stages can be expressed with deterministic checks or a concise rubric</strong>: content editing, contract review, and customer-ticket triage.</li>
-            <li><strong>Productizing the workflow into a reusable entry point</strong>: a slash command packages a domain-specific workflow into a prefabricated chain, where the user triggers the whole chain with one command instead of handwriting the steps each time.</li>
+            <li><strong>Reusable workflow entry points</strong>: A command or API can invoke a versioned chain without requiring the caller to reconstruct each step.</li>
             <li><strong>Output that needs to be traceable</strong>: A full-chain trace lets reviewers move backward from the final draft through each input, output, gate result, and human change.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Information starvation</strong>: information needed downstream can disappear during an intermediate handoff. Carry a separate cumulative context object that every step can read, similar to a saga context.</li>
-            <li><strong>Gate tyranny</strong>: brittle exact-value conditions can reject usable results indefinitely. Use business tolerances and explicit necessary conditions.</li>
-            <li><strong>The multiplicative effect is underestimated</strong>: When every step has a failure probability, adding steps lowers full-chain success. Use local step-level results to calculate chain risk and remove unnecessary links.</li>
+            <li><strong>Missing downstream evidence</strong>: An intermediate artifact omits a source or field required later. Define cumulative evidence separately from the transformed artifact and reference it by version.</li>
+            <li><strong>Brittle gates</strong>: Exact-value checks can reject usable results indefinitely. Encode required conditions and business tolerances separately.</li>
+            <li><strong>Unmeasured chain reliability</strong>: Each additional step and gate introduces another failure path. Measure step and full-chain success on the same replay set and remove links that add no decision value.</li>
             <li><strong>Assembly of the first prompt is overlooked</strong>: a production system prompt is usually assembled from several data sources—base instructions, user identity, history, current task, tool list, style, format constraints—and hardcoding it into one long string makes the most frequently updated part impossible to maintain independently.</li>
             </ul>
             <h2>Verification and metrics</h2>
@@ -253,17 +253,17 @@
                         return failure(step, trace)
             return success(current, total_tokens, trace)
             </code></pre>
-            <p>Engineering points for implementation: gates carry tolerance; the trace's tokens and latency are written structured into the logging system; when needed mid-chain, actively retrieve the original input for reference (for example, number checking returns to the original draft so that versions produced by upstream rewriting do not contaminate the numbers).</p>
+            <p>Store gate tolerances in the contract and emit structured token, latency, retry, and artifact-version events. A step that verifies source facts should read the original source or an authoritative system, not a transformed upstream draft.</p>
             <h2>Illustrative scenario</h2>
-            <p>Consider a financial-media editing Agent that separates proofreading, rewriting, style normalization, number checking, headline generation, summarization, and image suggestions. Number checking returns to the original draft or an authoritative data source rather than trusting the rewritten text. Each step has its own schema, model choice, and gate, and the trace records where a figure was read, checked, or changed. The same structure can support contract review, medical assistance, or customer-service triage, but each domain needs its own gates.</p>
+            <p>Consider a financial-media editing agent that separates proofreading, rewriting, style normalization, number checking, headline generation, summarization, and image suggestions. Number checking returns to the original draft or an authoritative data source rather than trusting the rewritten text. Each step has its own schema, model choice, and gate, and the trace records where a figure was read, checked, or changed. The same structure can support contract review, medical assistance, or customer-service triage, but each domain needs its own gates.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Plan-Execute (A2)</strong>: a dual pair, one light and one heavy. A3 is a straight line, A2 is a graph. If the task can be drawn as a DAG (with parallelism and cross-step dependencies), use A2; if it is a straight line, use A3. A common hybrid form in production is A2 on the outside, A3 on the inside.</li>
-            <li><strong>Tool Dispatch (A1)</strong>: a nesting relationship rather than a substitution. A step inside a chain may call a tool, and that step is A1 (choosing one among several tools), but it happens within one link of the chain.</li>
-            <li><strong>Guardrail Sandwich (A4)</strong>: a chain's gate is a synchronous programmatic check, while A4's hook is a sandwich layer wrapped around tool calls before and after. Both make "the process interceptable at checkpoints."</li>
+            <li><strong>Plan-and-Execute (A2)</strong>: Use A3 for a fixed linear flow and A2 for a dependency graph with scheduling, checkpoints, and replanning. An A2 step may contain an A3 chain.</li>
+            <li><strong>Tool Dispatch (A1)</strong>: A chain step may invoke A1 to select and admit a tool call.</li>
+            <li><strong>Guardrail Sandwich (A4)</strong>: A chain gate validates an artifact between steps. A4 applies policy checks and result validation around a tool action.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>As long as your system holds a multi-turn conversation with an LLM, you are already using a prompt chain; the only difference is whether it is explicit or implicit. With an explicit chain you can assign a model to each segment, add gates, keep a trace, and replay failed steps; with an implicit chain you can only pray the model does not crash this time.</p>
+            <p>An explicit prompt chain gives each step a contract, model or tool assignment, gate, and trace. That structure supports step-level replay and failure localization; a free-form multi-turn exchange does not provide those guarantees by itself.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>A3 Prompt Chaining</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

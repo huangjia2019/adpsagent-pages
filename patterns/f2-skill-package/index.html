@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -214,20 +214,20 @@
             <li><strong>Loading pipeline</strong>: When a task arrives, the agent routes from the skill library to the right skill. Three-stage loading keeps context use under control: startup exposes only a name and short description, activation loads the full <code>SKILL.md</code> after a match, and execution loads bundled scripts only when needed. The exact context cost depends on the catalogue and model tokenizer and should be measured locally.</li>
             <li><strong>Release pipeline</strong>: A skill may be written by a person or distilled with agent assistance. Both paths move through candidate → safety review → isolated evaluation → coexistence evaluation → canary → release → monitoring → refine, merge, or retire.</li>
             </ol>
-            <p>Useful operating discipline includes putting critical constraints where they are hard to miss, preferring deterministic scripts when the work can be encoded, adding worked examples, testing each skill, and reviewing usage evidence so stale or low-value packages do not accumulate.</p>
+            <p>Keep critical constraints in the loaded instruction path, use deterministic scripts for operations that can be encoded, include worked examples for judgment points, and review usage evidence for stale or conflicting packages.</p>
             <p>Isolated evaluation asks whether a skill can complete its own task. Coexistence evaluation asks whether it still behaves correctly when other skills are available. A skill may pass alone and then steal triggers, lose routing decisions, or interfere with a neighbouring skill. When an outcome degrades, the trace must distinguish the main agent, skill content, trigger description, and host harness.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Recurring tasks with a relatively stable flow</strong>: operations runbooks (batch cluster restarts, configuration changes), customer-service triage SOPs, standard sales processes—tasks of the same kind that recur frequently with flows that do not change daily.</li>
             <li><strong>Enterprise processes that need to be observable and reusable</strong>: structuring the tacit flow in a veteran employee's head into a SKILL.md so that new employees and the agent read and use the same thing, and a sales leader can review and version it.</li>
-            <li><strong>Critical processes where mistakes are costly and worth solidifying</strong>: financial approval flows, incident-response steps, and similar processes where a mistake is expensive—solidifying them into a skill is steadier than relying on the agent's improvisation each time.</li>
+            <li><strong>Repeated high-cost procedures</strong>: financial approval and incident-response workflows benefit from a reviewed, versioned procedure when the same controls recur across tasks.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
-            <li><strong>Forcing a skill onto a task that should not be solidified</strong>: tasks that differ every time (open-domain research), run only once, still iterate rapidly, or are judgment-intensive—these four categories carry more retention risk than reuse benefit. A Skill Package pays off when "recurring + stable flow + costly mistakes" hold together.</li>
-            <li><strong>Skill library pollution</strong>: low-quality self-distilled skills enter the production library without curation and mislead later runs. A growing catalogue can therefore reduce, rather than improve, task success. The defense is evidence-based distillation, a probation period, replay tests, and regular curation.</li>
-            <li><strong>Stale skills</strong>: the infrastructure changed but the skill did not follow, so an agent executing a stale skill makes mistakes instead, especially common in operations scenarios. The defense is success-rate monitoring plus automatic alerts plus version binding (mark tested_with in SKILL.md).</li>
-            <li><strong>Description mismatch</strong>: a description written too broad or too narrow makes the agent pick the wrong skill on recall, or fail to use one it should have. The description must contain concrete scenarios, and the triggers list must be fine-grained enough.</li>
+            <li><strong>Packaging an unstable task</strong>: open-domain research, one-off work, rapidly changing workflows, and judgment-heavy tasks may accumulate exceptions faster than reuse value. Package a skill when the task recurs, its procedure is stable enough to test, and inconsistent execution is costly.</li>
+            <li><strong>Unreviewed catalogue growth</strong>: Agent-distilled candidates enter the active library without replay, coexistence tests, or review. Keep candidates separate and promote them through a versioned release path.</li>
+            <li><strong>Stale skills</strong>: Tool, schema, or policy versions change while the skill remains active. Bind certification evidence to dependency versions and move affected skills to revalidation.</li>
+            <li><strong>Description mismatch</strong>: A description that is too broad causes false activation; one that is too narrow causes missed activation. Test descriptions and triggers on labelled eligible and ineligible tasks.</li>
             <li><strong>Passes in isolation, regresses in combination</strong>: A new skill works alone but conflicts with existing triggers in the production catalogue. Run conflict cases and mixed-skill tasks before release, and retain a known rollback version.</li>
             <li><strong>Weak attribution</strong>: A failed task is labelled as a “skill failure” without saving route candidates, selected content, model version, and harness version. The team then cannot identify which layer needs repair.</li>
             </ul>
@@ -273,10 +273,10 @@
             <p>Consider a B2B sales team whose strongest salesperson follows a repeatable but undocumented process: researching the account before contact, using a consistent discovery structure, selecting objection-handling material, and sending a decision checklist before signature. The team can package this process as a human-authored <code>SKILL.md</code>, with scripts for deterministic checks and examples for judgment-heavy steps. Agent-distilled variations stay in a lower-trust namespace, customer-facing changes require review, and promotion depends on replay against historical opportunities. The example demonstrates lifecycle and trust controls. Any claim about improved conversion or onboarding speed would require the company's own records and publication approval.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Procedural Memory (memory module M5)</strong>: nearly isomorphic in deployment—both are skill libraries, both store procedural knowledge in SKILL.md form, and the difference is design intent. A Skill Package emphasizes "package after reflection"—the agent proactively distills and solidifies the successful path after repeated success (post-reflection); M5 emphasizes "store what is learned"—writing procedural knowledge in as memory. The former is the reflection view, the latter the memory view, with a high overlap in engineering substrate.</li>
-            <li><strong>Generator-Critic (F1)</strong>: a sequential link. Generator-Critic is reflection within a single task, while a Skill Package is reflection across tasks, solidifying "the thing done right."</li>
-            <li><strong>Experience Replay (F3)</strong>: a paired sibling pattern. A Skill Package holds verified callable units (done many times, all successful, packaged into a skill to call directly), while Experience Replay holds broader reference assets (useful but not necessarily verified). The agent calls a skill first and falls back to experience retrieval when nothing matches.</li>
-            <li><strong>RAG (memory module)</strong>: a complementary ensemble. RAG handles "what is known" (declarative, fact retrieval), and a Skill Package handles "how to do the work" (procedural, flow reuse); in enterprise agent deployments the two are used together.</li>
+            <li><strong>Procedural Memory (M5)</strong>: Both patterns may use the same runtime package format. F2 focuses on evaluating and releasing a procedure after reflection; M5 focuses on retaining and retrieving procedural knowledge. One released asset can participate in both mechanisms.</li>
+            <li><strong>Generator-Critic (F1)</strong>: F1 reviews and revises an artifact within one task. F2 packages a procedure for reuse across tasks after it has passed evaluation.</li>
+            <li><strong>Experience Replay (F3)</strong>: F2 holds verified callable procedures; F3 holds broader reference assets that still require adaptation. A runtime can route to a skill first and retrieve experience when no skill matches.</li>
+            <li><strong>RAG (M2)</strong>: RAG retrieves declarative evidence and domain knowledge. A Skill Package supplies a tested procedure for acting on that material. Many enterprise workflows need both.</li>
             </ul>
             <h2>Engineering judgment</h2>
             <p>A Skill Package turns a verified procedure, its tools, and its boundary conditions into a versioned runtime asset. Its value depends on routing quality and lifecycle discipline as much as on the instructions inside the package.</p>

@@ -1072,7 +1072,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Capability Certification Lifecycle: How a Capability Earns Automatic Execution Rights",
-    "source_text": "Xuanxu Technology GIS Publishing Agent Chinese case report ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-capability-certification-lifecycle"
@@ -1105,7 +1105,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Disk Fact Plane: Connect Runtime Stages through External Contracts",
-    "source_text": "Xuanxu Technology GIS Publishing Agent Chinese case report ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-disk-fact-plane"
@@ -1160,7 +1160,7 @@
     "language": "en",
     "category": "concepts",
     "title": "External Acceptance Probe: Let the User-Side Result Decide Success",
-    "source_text": "Xuanxu Technology GIS Publishing Agent Chinese case report ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-external-acceptance-probe"
@@ -1171,7 +1171,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Failure-to-Rule Loop: Make an Incident Change the Next Run",
-    "source_text": "Xuanxu Technology GIS Publishing Agent Chinese case report ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-failure-to-rule-loop"
@@ -1336,7 +1336,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Reasoning Assetization: Move Repeated Decisions into Runtime Assets",
-    "source_text": "Xuanxu Technology GIS Publishing Agent Chinese case report ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-reasoning-assetization"
@@ -1919,7 +1919,7 @@
     "language": "en",
     "category": "cases",
     "title": "Deep Agents: From Fixed Graphs to Code-Generated Collaboration",
-    "source_text": "Haili Zhang's LangGraph and Deep Agents research at the Collaboration workshop; checked by ADPS against public documentation and source",
+    "source_text": "Haili Zhang's LangGraph and Deep Agents analysis at the Collaboration workshop; checked by ADPS against public documentation and source code",
     "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "cases-deepagents-dynamic-orchestration"
@@ -1930,7 +1930,7 @@
     "language": "en",
     "category": "cases",
     "title": "DeerFlow Guardrails: From Pre-Call Interception to Two-Layer Authorization",
-    "source_text": "Willem Jiang's DeerFlow Guardrail architecture presentation at the Governance workshop; checked by ADPS against public pull requests, source, and documentation",
+    "source_text": "Willem Jiang's DeerFlow Guardrail architecture presentation at the Governance workshop; checked by ADPS against public pull requests, source code, and documentation",
     "source_date": "2026-08-18",
     "first_public": "2026-08-19",
     "anchor": "cases-deerflow-guardrail"

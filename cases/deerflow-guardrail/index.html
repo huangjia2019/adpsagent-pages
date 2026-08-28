@@ -99,11 +99,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/cases/xuanxu-gis-agent/" >Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/" class="active">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -206,7 +206,7 @@
               <img src="/images/cases/deerflow-tool-assembly-en.svg" alt="DeerFlow tool assembly and two-layer authorization">
               <figcaption>Figure 1 · Relevance narrows candidates; authorization decides what the current principal may see and call.</figcaption>
             </figure>
-            <p>Two questions are easy to conflate. <strong>Is the tool relevant?</strong> is handled by <code>tool_groups</code>, subagent allow/deny lists, Skill activation, and deferred discovery. <strong>May this principal use it?</strong> is handled by the AuthorizationProvider. Relevance does not grant permission, and authorization does not guess the best tool for the task.</p>
+            <p>Tool relevance and authorization are separate decisions. <strong>Is the tool relevant?</strong> is handled by <code>tool_groups</code>, subagent allow/deny lists, Skill activation, and deferred discovery. <strong>May this principal use it?</strong> is handled by the AuthorizationProvider. Relevance does not grant permission, and authorization does not guess the best tool for the task.</p>
 
             <h2>2. Assembly filtering and run-time interception share one policy</h2>
             <p><code>apply_tool_authorization</code> resolves the provider, constructs the principal, and filters candidates through one entry point. It returns both the filtered list and the provider instance, which the caller then wires into run-time middleware.</p>
@@ -267,7 +267,7 @@ return handler(request)</code></pre>
             <p>The event intentionally omits raw <code>tool_input</code> and user identifiers. Arguments may contain credentials or business data; an audit stream should not create a second exposure surface. Journal persistence is best-effort. A storage failure emits a warning but does not change the authorization result.</p>
             <p>Current code also records an open boundary: native subagents do not automatically inherit <code>__run_journal</code>. Custom runtimes can supply it, but cross-agent evidence still needs further consolidation.</p>
 
-            <h2>7. PR #4260: separate the policy brain from the enforcement point</h2>
+            <h2>7. PR #4260: separate policy decisions from enforcement</h2>
             <p>GuardrailMiddleware owns the execution point. AuthorizationProvider owns resource decisions. A provider receives a Principal, resource, action, target, and context. Built-in RBAC validates and compiles role policy during construction, leaving deterministic lookups on the request path.</p>
             <p>Deny wins over allow. Unknown roles, empty targets, and misspelled configuration keys fail. <code>allow: false</code> and an empty allow list both mean deny-all. Only an absent policy for a resource type means unrestricted. Tests, rather than operator intuition, fix these semantics.</p>
 
@@ -338,7 +338,7 @@ return handler(request)</code></pre>
 
             <h2>13. Work that remains outside this implementation</h2>
             <p>The public implementation provides a substantial PRE authorization path, but it does not solve all production governance. High-risk actions still need POST business verification, idempotency keys, external receipts, and compensation. Human decisions require an ask state, approval expiry, resume-time state checks, and single consumption. Policy hot updates need versioning, atomic cutover, and rollback.</p>
-            <p>The case therefore shows more than a deny list. A production guardrail is an engineering path from capability assembly and trusted identity through policy decisions and execution interception to durable evidence.</p>
+            <p>A production guardrail connects capability assembly, trusted identity, policy decisions, execution interception, and durable evidence. A deny list covers only one part of that path.</p>
 
 
 <!-- CASE-V06-EVIDENCE-deerflow-guardrail-False:START -->
@@ -369,7 +369,7 @@ return handler(request)</code></pre>
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
   <h2 id="page-chronicle-title">Chronicle</h2>
   <dl>
-    <div><dt>Recorded source</dt><dd>Willem Jiang's DeerFlow Guardrail architecture presentation at the Governance workshop; checked by ADPS against public pull requests, source, and documentation</dd></div>
+    <div><dt>Recorded source</dt><dd>Willem Jiang's DeerFlow Guardrail architecture presentation at the Governance workshop; checked by ADPS against public pull requests, source code, and documentation</dd></div>
     <div><dt>Source date</dt><dd><time datetime="2026-08-18">2026-08-18</time></dd></div>
     <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-19">2026-08-19</time></dd></div>
   </dl>

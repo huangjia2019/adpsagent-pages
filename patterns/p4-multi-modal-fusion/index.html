@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P4 Multi-Modal Fusion · Pattern White Paper · ADPS</title>
-    <meta name="description" content="The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning laye">
+    <meta name="description" content="Convert each modality into the representation required by downstream checks, process independent channels in parallel, and preserve provenance in the fused artifact.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>P4 · Multi-Modal Fusion</h1>
-                <p class="publication-deck">The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning layer.</p>
+                <p class="publication-deck">Convert each modality into the representation required by downstream checks, process independent channels in parallel, and preserve provenance in the fused artifact.</p>
             </header>
 
                         <table>
@@ -195,7 +195,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Pattern summary</strong></td>
-            <td style="text-align: left;">The agent receives input that includes images, text, tables, and logs. It converts each into the form the LLM can best digest, then merges them and feeds them to the reasoning layer.</td>
+            <td style="text-align: left;">Convert each modality into the representation required by downstream checks, process independent channels in parallel, and preserve provenance in the fused artifact.</td>
             </tr>
             </tbody>
             </table>
@@ -205,11 +205,11 @@
             <p>Multi-modal fusion decides how each segment should enter the context: vision input, extracted text, structured data, or no input at all. This decision happens before the agent reasons over the material. A poor representation cannot be repaired by better selection, compaction, or exploration downstream.</p>
             <h2>Classification: Perception × Parallel</h2>
             <ul>
-            <li><strong>Vertical axis · Perception</strong>: Fusion processes multi-channel input (PDF, image, audio, structured data) and synthesizes a unified representation. This is the most primitive "fusion" problem in perception, occurring before reasoning.</li>
-            <li><strong>Horizontal axis · Parallel</strong>: Each channel of data is handed simultaneously to its own specialist processor (PDF parser, OCR, table extractor, log sub-agent) for <strong>parallel conversion</strong>. The channels do not depend on each other and can run at the same time, after which a fuser <strong>gathers</strong> the results from the channels into unified prompt content. This is a classic fan-out / gather: N channels processed in parallel + one merge, neither a single sequential chain nor single-point routing.</li>
+            <li><strong>Vertical axis · Perception</strong>: Fusion converts PDFs, images, audio, logs, and structured data into representations that downstream checks can consume while preserving source references.</li>
+            <li><strong>Horizontal axis · Parallel</strong>: Independent modality processors can run concurrently, after which a fuser joins their typed artifacts. The gather step records how each claim maps back to its source.</li>
             </ul>
             <h2>Solution and mechanics</h2>
-            <p>The core judgment in fusion is to choose the right carrier for each channel of data, then merge. The decision criterion is: keep it as an image when spatial information is the signal, convert it to markdown when structural information is the signal.</p>
+            <p>Choose each representation from the signal the next check needs. Preserve images for spatial evidence, use Markdown or JSON for document structure, keep timestamped transcripts with audio references for speech, and filter logs into typed events. Fusion then joins those artifacts while retaining source references.</p>
             <table>
             <thead>
             <tr>
@@ -231,8 +231,8 @@
             </tr>
             <tr>
             <td style="text-align: left;">Charts, heatmaps</td>
-            <td style="text-align: left;">Keep the image but use it only as a retrieval anchor; to get numbers, go through chart→CSV secondary extraction</td>
-            <td style="text-align: left;">Reading charts directly through vision has low accuracy and cannot be used as a reasoning engine</td>
+            <td style="text-align: left;">Keep the image as evidence; extract required values into typed records and retain coordinates or labels</td>
+            <td style="text-align: left;">Verify numeric values against source data, tables, or a reviewed chart-extraction result</td>
             </tr>
             <tr>
             <td style="text-align: left;">Long logs (&gt;&gt; window)</td>
@@ -247,7 +247,7 @@
             <li><strong>Financial research report analysis</strong>: PDF tables + analyst text + market-size charts. None of the channels is complete on its own; they must be assembled before a judgment can be made.</li>
             <li><strong>Insurance claims</strong>: Accident photos + claim report text + structured policy data combined.</li>
             <li><strong>Operations incident response</strong>: Monitoring screenshots + long log fragments + configuration files. Long logs must go through the three-layer pipeline.</li>
-            <li><strong>Any scenario where input mixes structured and unstructured data</strong>: The decision criterion is whether the channels of information are complementary—if it is just a repeated expression of the same information, skip fusion and go straight to reasoning, since fusion has a cost.</li>
+            <li><strong>Mixed structured and unstructured input</strong>: Use fusion when different channels contribute distinct evidence. If they repeat the same information, select the most reliable representation instead of processing every channel.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
@@ -274,17 +274,17 @@
                 merge into unified content blocks, return + a trace (per channel: modality / tokens_out / method)
             health_check: watch token share by form, alert early on anomalous forms
             </code></pre>
-            <p>Specialist tools (ocr / stt / pdf_extract / log_subagent / bash_filter) should be injected rather than wrapped, so that migrating environments only swaps the injected implementation (e.g., OCR from Textract to a local engine) without touching the fuser's main flow. Multi-modal dependencies (cv2, pyaudio, pdfplumber) should be lazy-imported inside the function body with an ImportError fallback, to avoid crashing on startup in a headless environment.</p>
+            <p>Define small interfaces for OCR, speech-to-text, PDF extraction, log filtering, and specialist agents. Environment-specific implementations can then change without rewriting the fusion flow. Load optional multimedia libraries only on the path that needs them, and return a typed capability error when a dependency is unavailable.</p>
             <h2>Illustrative scenario</h2>
             <p>Consider a research-report agent evolving through three implementations. The first sends the whole PDF to vision and misreads the magnitude of a chart. The second converts everything to OCR text and loses spatial relationships. The third extracts the table of contents, locates relevant pages, keeps key figures as images, converts tables to markdown, drops decorative material, and cross-checks chart values against text and tables. The lesson is to choose a representation for each modality and retain the provenance needed to verify it.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Context triage (P1), semantic compaction (P2), progressive discovery (P3)</strong>: Fusion sits at the very front of the four perception blades. If the form is wrong, then no matter how downstream Triage selects, Compaction compacts, or Discovery explores, it is just continuing to burn resources on the wrong form.</li>
-            <li><strong>Fan-out gather (C2, collaboration module)</strong>: In the three-layer pipeline for long logs, handing the filtered data to a sub-agent for processing is fan-out gather expressed at the perception layer—multiple specialist processors process in parallel and converge at a central fuser.</li>
-            <li><strong>Layered memory (Memory module)</strong>: The countermeasure for sub-agent infinite loops, the Memory Pointer Pattern, shares the same idea as the memory module—store the complete artifact in an external store and pass only the pointer in the context.</li>
+            <li><strong>Context Triage (P1), Semantic Compaction (P2), Progressive Discovery (P3)</strong>: Fusion determines the representation. Triage selects among represented sources, compaction reduces admitted material, and discovery acquires missing evidence.</li>
+            <li><strong>Fan-Out/Gather (C2)</strong>: Independent modality processors may use C2, with one gather step producing the fused artifact and provenance map.</li>
+            <li><strong>Layered Retention (M1)</strong>: Large source artifacts can remain in external storage while the context carries a versioned pointer and a bounded extraction. Cross-session retention still requires memory admission.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>Multi-modal fusion is not prompt engineering, it is data-form engineering—good fusion lets the agent see the appropriate little rather than the complete much.</p>
+            <p>Measure fusion through extraction error, missing cross-modal links, context cost, and acceptance failures by modality. The fused artifact should preserve the evidence required by downstream checks without copying every source in full.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>P4 Multi-Modal Fusion</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R4 Iterative Hypothesis Testing · Pattern White Paper · ADPS</title>
-    <meta name="description" content="The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scie">
+    <meta name="description" content="Test versioned hypotheses against evidence, revise the active set, and stop on confirmation, no progress, or a hard limit.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>R4 · Iterative Hypothesis Testing</h1>
-                <p class="publication-deck">The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scientific method into reasoning.</p>
+                <p class="publication-deck">Test versioned hypotheses against evidence, revise the active set, and stop on confirmation, no progress, or a hard limit.</p>
             </header>
 
                         <table>
@@ -195,18 +195,18 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">The agent forms a hypothesis, validates it against evidence, revises based on the result, and loops until the evidence converges or an iteration limit is reached, bringing the scientific method into reasoning.</td>
+            <td style="text-align: left;">Test versioned hypotheses against evidence, revise the active set, and stop on confirmation, no progress, or a hard limit.</td>
             </tr>
             </tbody>
             </table>
             <hr />
             <h2>Problem</h2>
             <p>Some tasks cannot be answered in one reasoning pass. The cause is unknown, evidence arrives step by step, and the first judgment is often wrong. Fault diagnosis is a typical case: a model may rank the actual cause far below a familiar but irrelevant explanation. Committing after one pass amplifies that error. Repeating the same pass does not help because the agent still has the wrong account of the system.</p>
-            <p>Iterative hypothesis testing replaces single-pass reasoning with a loop of "hypothesize → validate → revise → hypothesize again." The fundamental difference from ordinary retry is this: retry assumes that the retry itself can solve the problem, while iterative hypothesis testing assumes that each loop must update the understanding of the world. Its design center is also not "retry until success," but converging through falsification to the single hypothesis that has not been refuted. It is the dual of parallel exploration (R3): parallel opens N lines at once along the spatial dimension, while iteration runs one line many times along the time dimension.</p>
+            <p>Iterative hypothesis testing maintains a set of hypotheses and updates it after each evidence-gathering step. A retry repeats an operation under the same diagnosis. This pattern changes the diagnosis, evidence request, or experiment before the next round. Parallel Exploration evaluates several branches at once; R4 revises hypotheses across time.</p>
             <h2>Classification: Reasoning × Loop</h2>
             <ul>
-            <li><strong>Vertical axis · Reasoning</strong>: It follows empirical, scientific-style reasoning of "hypothesize → validate → revise → hypothesize," not a single deduction. Each round actively revises its own belief rather than waiting for the result to stabilize.</li>
-            <li><strong>Horizontal axis · Loop</strong>: Multiple iterations until the evidence converges or a limit is reached form a natural loop structure. The dual-mode architecture (R5) in the same column is also in the Loop column but has a different emphasis—iteration is a single agent looping with itself to validate hypotheses, while dual-mode is two agents collaborating to split the handling of "talking" and "thinking."</li>
+            <li><strong>Vertical axis · Reasoning</strong>: Each round proposes or updates hypotheses, requests evidence that can distinguish them, and records a verdict.</li>
+            <li><strong>Horizontal axis · Loop</strong>: The next round depends on the previous evidence and verdict. The loop exits on confirmation, falsification of all active hypotheses, no progress, or a configured budget.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>A production implementation separates three responsibilities. They may be stages in one agent or roles assigned to different agents:</p>
@@ -215,27 +215,27 @@
             <li><strong>Evidence collection (Generator)</strong>: Given a hypothesis, choose tools that can test it, such as metrics, logs, or sensors. Evidence must come from traceable, reproducible data sources; the model's own impression is not external evidence.</li>
             <li><strong>Judgment (Evaluator)</strong>: Decide whether the evidence confirms, falsifies, or leaves the hypothesis unresolved. The Evaluator should search explicitly for counterevidence. Compare prompts and model configurations on replay data instead of assuming that one framing always improves accuracy.</li>
             </ol>
-            <p>The loop rules are: falsified goes back to the generation stage, confirmed exits, and insufficient evidence goes back to gather more. Two engineering practices are easy to overlook but critical: first, when entirely new evidence appears, reset the whole hypothesis tree rather than fine-tuning the old one; second, when the limit is reached without convergence, trigger human-in-the-loop (HITL) rather than letting the agent force-pick the hypothesis with the highest prior and ram into it.</p>
+            <p>Falsified hypotheses leave the active set, confirmed hypotheses exit, and insufficient evidence creates another evidence request. New evidence that invalidates earlier assumptions rebuilds the active set. When the time, token, or round budget expires without convergence, record the unresolved hypotheses and escalate instead of selecting the highest prior by default.</p>
             <h2>Applicability</h2>
             <ul>
             <li><strong>Diagnostic tasks</strong>: Industrial fault localization, medical diagnosis, and safety incident analysis. Evidence must be gathered step by step, and a line of inquiry that fails can be reset and restarted.</li>
-            <li><strong>Complex code debugging</strong>: Change one place, validate one place, let the failure information flow back to form new hypotheses, and repeatedly converge to the real bug.</li>
-            <li><strong>Judgments that require a strict evidence chain</strong>: Scenarios where every step's conclusion must be backed by reproducible evidence and the reasoning path must ultimately be explainable to a regulator.</li>
+            <li><strong>Complex code debugging</strong>: Each failing test, trace, or controlled change updates the active hypotheses and determines the next diagnostic action.</li>
+            <li><strong>Judgments that require reproducible evidence</strong>: Each verdict can retain the test, source, version, and transition that supported or rejected a hypothesis.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Using it under a tight response budget</strong>: When latency matters more than iterative diagnosis or the cost of error is low, a single pass may be sufficient.</li>
             <li><strong>Continuing after the configured limit</strong>: Reaching the cap without convergence calls for reset, task decomposition, better evidence, or human escalation, not an unbounded extra round.</li>
             <li><strong>The Evaluator only looks for supporting evidence</strong>: This framing amplifies confirmation bias. Record supporting, falsifying, and missing evidence, and prefer tests that distinguish competing hypotheses.</li>
-            <li><strong>Fine-tuning the old tree when new evidence arrives</strong>: When entirely new evidence appears, the hypothesis tree should be reset and regenerated; patching the old tree will be dragged off course by the wrong prior.</li>
-            <li><strong>No circuit breaker</strong>: Every iteration must have a hard max_iterations cap plus a cost cap, or the cost explodes and the agent hangs.</li>
+            <li><strong>Preserving invalid assumptions</strong>: New evidence may invalidate the root framing or only one branch. Record dependency links so the runtime can retire affected hypotheses and rebuild the active set at the correct level.</li>
+            <li><strong>No bounded exit</strong>: Enforce limits for rounds, cost, tokens, elapsed time, and no-progress. On exhaustion, preserve unresolved hypotheses and escalate or decompose the task.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
             <li><strong>Convergence Rate</strong>: The share of cases that reach a verifiable conclusion within budget. Separate failures caused by task size, unavailable evidence, and weak hypotheses.</li>
             <li><strong>Iterations to convergence</strong>: Track the distribution by task class. Sustained growth indicates low information gain per round or weaker hypothesis generation.</li>
             <li><strong>Falsification Rate</strong>: Observe whether candidate hypotheses are actually eliminated by counterevidence. A long period with no falsification may indicate confirmation bias.</li>
-            <li><strong>HITL Trigger Rate</strong>: Interpret escalation by task risk, evidence gaps, and outcome. The key question is whether cases that required a human were escalated.</li>
+            <li><strong>Human-escalation coverage</strong>: Review whether cases with unresolved high-risk hypotheses or exhausted evidence paths reached the required decision owner.</li>
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Task arrives → Planner generates a hypothesis list (ranked by prior probability)
@@ -246,7 +246,7 @@
                     confirmed   → converge, exit
                     falsified   → prune, continue to the next hypothesis
                     if all hypotheses are falsified → take the new evidence back to the Planner to regenerate
-                Entirely new evidence arrives → reset the whole hypothesis tree
+                New evidence invalidates assumptions → retire dependent hypotheses and rebuild the affected set
             Loop ends still without convergence → trigger HITL, attach the full hypothesis tree + evidence + iterations run
             Keep a trace on file throughout (compliance scenarios require long-term retention)
             </code></pre>
@@ -255,13 +255,13 @@
             <p>Consider a plant alarm whose initial hypotheses focus on common mechanical faults. A field engineer then supplies a new fact: a remote configuration change occurred before the alarm. The system resets the hypothesis tree instead of forcing the fact into the old ranking, and it traces the changed control parameter. Hypothesis generation, evidence collection, and judgment use separate schemas; the evaluator searches for counterevidence; insufficient evidence escalates to a human; and restarting critical equipment always requires approval. Convergence must be evaluated through incident replay and field review.</p>
             <h2>Related patterns</h2>
             <ul>
-            <li><strong>Parallel exploration (R3)</strong>: A dual relationship. Parallel opens N lines at once along the spatial dimension and selects the best in one shot; iteration runs one line many times along the time dimension and converges step by step.</li>
-            <li><strong>Chain of thought (R1)</strong>: The interior of each iteration round is a chain of thought; iteration strings multiple chains of thought together along the time dimension and revises them repeatedly.</li>
-            <li><strong>Complexity routing (R2)</strong>: Different model tiers can serve the three roles inside the loop.</li>
-            <li><strong>Dual-mode architecture (R5)</strong>: Also in the Loop column. Iteration is a single agent looping to validate against itself; dual-mode is two agents collaborating and dividing the work.</li>
+            <li><strong>Parallel Exploration (R3)</strong>: R3 evaluates several hypotheses or solution paths concurrently. R4 updates a hypothesis set over successive evidence-gathering rounds. A system may use R3 inside one R4 round when parallel tests are independent.</li>
+            <li><strong>Chain of Thought (R1)</strong>: Each round retains an ordered evidence request, observation, and verdict trace.</li>
+            <li><strong>Complexity-Based Routing (R2)</strong>: Hypothesis generation, evidence interpretation, and evaluation can use independently selected models and effort levels.</li>
+            <li><strong>Talker-Reasoner (R5)</strong>: A Reasoner may run R4 asynchronously while the Talker remains bound to accepted results in shared state.</li>
             </ul>
             <h2>Design conclusion</h2>
-            <p>The exit condition of iterative hypothesis testing is not "find a correct hypothesis" but "falsify all the wrong hypotheses"—it encodes centuries of the human scientific method into a probabilistic system, because the reliability of a probabilistic system can only be built through falsification.</p>
+            <p>Exit when evidence meets the confirmation rule, every active hypothesis has been falsified, or a budget or no-progress rule requires escalation. The trace should retain each hypothesis version, its evidence, its verdict, and the reason for the next transition.</p>
 
             <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>R4 Iterative Hypothesis Testing</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->

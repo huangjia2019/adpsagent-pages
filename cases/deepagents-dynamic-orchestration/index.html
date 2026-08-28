@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep Agents: From Fixed Graphs to Code-Generated Collaboration · ADPS</title>
-    <meta name="description" content="Haili Zhang&#x27;s ADPS workshop research on LangGraph, LangChain, Deep Agents, and the use of interpreter code to orchestrate dynamic subagents.">
+    <meta name="description" content="An engineering case based on Haili Zhang&#x27;s analysis of LangGraph, LangChain, and Deep Agents, including interpreter-driven dynamic subagent orchestration.">
     <meta property="article:published_time" content="2026-08-26">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -99,11 +99,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section open">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/cases/xuanxu-gis-agent/" >Xuanxu · GIS Publishing Agent</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/" class="active">Deep Agents · Dynamic Collaboration</a>
@@ -383,7 +383,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 </tr>
 </tbody>
 </table>
-<p>Order matters. Gather-then-verify and verify-in-each-branch create different costs and failure-propagation paths. The article and trace should record the actual pattern order so that a run can be reproduced and the entry point of an error can be located.</p>
+<p>Order matters. Gather-then-verify and verify-in-each-branch create different costs and failure-propagation paths. The implementation record and trace should preserve the actual pattern order so that a run can be reproduced and the entry point of an error can be located.</p>
 <h2>8. Dynamic subagents and Reflection patterns</h2>
 <p>Dynamic subagents can assign generation, verification, and repair to different roles. The evaluation standard and external results still determine whether reflection succeeds.</p>
 <p><a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a> can use one agent under two role prompts. <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a> requires independent participants, separate context, and preserved disagreement. The security example uses an independent verifier because a false confirmation would enter the repair path. Structural separation alone adds little when generator and verifier share the same model, evidence, and rubric.</p>
@@ -452,7 +452,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <h2>11. Reusable acceptance checklist</h2>
 <ul>
 <li>Can the trace reconstruct the full generated control flow?</li>
-<li>Are each subagent's input, tools, resource scope, and output schema explicit?</li>
+<li>Are the input, tools, resource scope, and output schema explicit for every subagent?</li>
 <li>Can parallel branches write the same file, state key, or external system?</li>
 <li>How does the gather step handle partial failure, duplicate findings, and contradiction?</li>
 <li>Are verifier and generator actually independent in model, context, and rubric?</li>
@@ -461,7 +461,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <li>Against fixed-graph and ordinary-subagent baselines, do quality, total tokens, latency, and human time improve?</li>
 </ul>
 <h2>12. Effect on the ADPS catalogue</h2>
-<p>Haili Zhang's research connects the Collaboration patterns to runtime code. C1, C2, C3, and C5 lower to serial, parallel, routing, and loop primitives in a framework; the dynamic interpreter then composes those primitives for the current task.</p>
+<p>Haili Zhang's analysis connects the Collaboration patterns to runtime code. C1, C2, C3, and C5 lower to serial, parallel, routing, and loop primitives in a framework; the dynamic interpreter then composes those primitives for the current task.</p>
 <p>An early ADPS discussion treated “runtime-generated subagent workflows” as a possible example of <a href="/patterns/c6-choreography/">C6</a>. Haili Zhang's comparison shows why that example belongs to dynamic orchestration: the interpreter still stores the complete plan, chooses the call order, and gathers the results. C6 now retains the event-driven, distributed-control criterion: participants subscribe and publish under local rules, and no node holds the complete plan.</p>
 <p>This case maps to <a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c3-adversarial-review/">C3</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a>, Reflection, and the cross-cutting planes. C6 remains a candidate pattern pending more production evidence from agent systems.</p>
 <h2>Public sources</h2>
@@ -478,7 +478,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
   <h2 id="page-chronicle-title">Chronicle</h2>
   <dl>
-    <div><dt>Recorded source</dt><dd>Haili Zhang&#x27;s framework research and demonstration at the first ADPS Collaboration workshop, checked against public LangChain documentation and Deep Agents source code.</dd></div>
+    <div><dt>Recorded source</dt><dd>Haili Zhang's LangGraph and Deep Agents analysis at the Collaboration workshop; checked by ADPS against public documentation and source code</dd></div>
     <div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
     <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
   </dl>

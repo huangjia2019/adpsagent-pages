@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R2 Complexity-Based Routing · Pattern White Paper · ADPS</title>
-    <meta name="description" content="Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive ">
+    <meta name="description" content="Route each request to a model and effort tier using task complexity, risk, and acceptance evidence. Record the decision and escalate when the selected tier fails its checks.">
     <meta property="article:published_time" content="2026-06-21">
     <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -101,11 +101,11 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
-            <button class="sb-head" type="button">Cases · Blue Book<span class="sb-caret">▸</span></button>
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
               <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
-              <a href="/zh/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing (ZH)</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
               <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
               <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
               <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
@@ -176,7 +176,7 @@
             <header class="publication-head">
                 <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
                 <h1>R2 · Complexity-Based Routing</h1>
-                <p class="publication-deck">Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive one. Trade routing for the bill.</p>
+                <p class="publication-deck">Route each request to a model and effort tier using task complexity, risk, and acceptance evidence. Record the decision and escalate when the selected tier fails its checks.</p>
             </header>
 
                         <table>
@@ -195,7 +195,7 @@
             </tr>
             <tr>
             <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Before a query enters the main loop, pick a model and effort tier based on complexity signals, so that simple queries go to a cheap model and only complex queries use an expensive one. Trade routing for the bill.</td>
+            <td style="text-align: left;">Route each request to a model and effort tier using task complexity, risk, and acceptance evidence. Record the decision and escalate when the selected tier fails its checks.</td>
             </tr>
             </tbody>
             </table>
@@ -205,8 +205,8 @@
             <p>Complexity-based routing assigns model resources from task difficulty and risk. Simple requests use a lower-cost tier; difficult or high-risk requests use a more capable tier. Savings depend on the traffic distribution and model mix and should be calculated from replayed production traces. The pattern can coexist with parallel exploration: routing allocates routine requests, while parallel branches add verification for selected decisions.</p>
             <h2>Classification: Reasoning × Route</h2>
             <ul>
-            <li><strong>Vertical axis · Reasoning</strong>: A routing decision is at heart "should this question use cheap fast thinking or expensive slow thinking." What it selects is a reasoning policy. It belongs to the reasoning-strategy layer, not to splitting a task across multiple agents.</li>
-            <li><strong>Horizontal axis · Route</strong>: Based on the complexity signal of the input, it dispatches different queries to different reasoning depths (model tier + effort tier). This is a natural branch-selection structure: a query comes in and one path is chosen.</li>
+            <li><strong>Vertical axis · Reasoning</strong>: The router selects a model, effort level, or reasoning policy for the current request. It does not decompose the request among multiple agents.</li>
+            <li><strong>Horizontal axis · Route</strong>: Complexity, risk, domain, and historical outcomes choose one initial execution tier, with explicit escalation if its acceptance checks fail.</li>
             </ul>
             <h2>Solution and mechanics</h2>
             <p>A single complexity-based routing pass consists of three stages:</p>
@@ -219,7 +219,7 @@
             <table>
             <thead>
             <tr>
-            <th style="text-align: left;">Line</th>
+            <th style="text-align: left;">Control location</th>
             <th style="text-align: left;">Form</th>
             <th style="text-align: left;">Trade-off</th>
             </tr>
@@ -227,35 +227,35 @@
             <tbody>
             <tr>
             <td style="text-align: left;">Internalized in the model</td>
-            <td style="text-align: left;">The model decides on its own whether to take the fast or slow path</td>
-            <td style="text-align: left;">Convenient, but a black box + single-vendor lock-in</td>
+            <td style="text-align: left;">The model or provider selects an internal reasoning path</td>
+            <td style="text-align: left;">Low integration effort; limited routing trace and portability</td>
             </tr>
             <tr>
             <td style="text-align: left;">Explicit in the harness</td>
-            <td style="text-align: left;">The application layer writes its own classifier + fallback</td>
-            <td style="text-align: left;">More engineering effort, but loggable, auditable, multi-vendor</td>
+            <td style="text-align: left;">The application owns classification, acceptance, and fallback</td>
+            <td style="text-align: left;">More implementation work; explicit trace and multi-provider control</td>
             </tr>
             <tr>
             <td style="text-align: left;">Third-party router service</td>
-            <td style="text-align: left;">Call a middle-layer API that dispatches automatically</td>
-            <td style="text-align: left;">The simplest interface, but one more dependency + data passes through a third party</td>
+            <td style="text-align: left;">A routing service selects the target model</td>
+            <td style="text-align: left;">Common interface; additional dependency and data-processing boundary</td>
             </tr>
             </tbody>
             </table>
-            <p>Serious production agents generally take the explicit-harness line, because cost control is at the core of product economics, and handing that power to a model vendor or a third party is giving up control. PoCs and small projects can use the other two.</p>
+            <p>Choose the control location from the evidence and governance needed. An explicit harness supports local replay, policy overrides, and provider comparison. Provider-managed or third-party routing may fit when its trace, data boundary, and fallback behavior meet the product's requirements.</p>
             <h2>Applicability</h2>
             <ul>
-            <li><strong>Many easy cases, few hard ones, with cost sensitivity but no room for accuracy to drop</strong>: internal BI self-service queries, customer-support Q&amp;A, document processing—most queries are simple, a few are complex, and routing spends money exactly where it matters.</li>
+            <li><strong>Mixed request difficulty under a cost or latency budget</strong>: internal BI, customer support, and document processing often combine routine requests with a smaller set of high-risk or multi-step cases. Routing allocates different model and effort tiers while preserving acceptance thresholds.</li>
             <li><strong>Multi-vendor mixed scenarios</strong>: a team using Claude / DeepSeek / its own fine-tuned model at the same time cannot hand routing to a single vendor and must do it at the engineering layer.</li>
-            <li><strong>Specialized agents that split by action type</strong>: code changes use the main model, git operations use a weak model—routing by action rather than by query complexity is a variant of the routing idea.</li>
+            <li><strong>Specialized agents that split by action type</strong>: code changes may use the primary model while routine Git operations use a lower-cost model. This routes by action type instead of query complexity.</li>
             </ul>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Classifier built only on fixed rules</strong>: Keyword matching may misroute unseen query forms. Add uncertainty-based escalation or a lower-cost model, and compare the cost of false downgrades on a replay set.</li>
             <li><strong>Acceptability check looks only at length</strong>: checking only whether the output is long enough lets through results that violate the schema, exceed numeric bounds, or cite the wrong source data. Do schema-aware validation.</li>
-            <li><strong>Fallback ends up more expensive than going straight to the expensive tier</strong>: running the cheap tier first, finding it inadequate, then escalating to the expensive tier costs more in total than going expensive from the start. As soon as the fallback rate rises, check whether the classifier is misfiring.</li>
+            <li><strong>Escalation costs more than the target tier</strong>: A lower tier followed by escalation can exceed the direct cost and latency of the final tier. Review request classes with repeated escalation and adjust their initial route.</li>
             <li><strong>High-risk queries also go to the low tier</strong>: Finance, privacy, or compliance queries may need a reliable tier even when syntactically simple. Encode risk overrides outside the model.</li>
-            <li><strong>A single-model team forcing routing in</strong>: when only one model is used, or the task is always of the same kind, or the cheap model is already good enough, routing is pointless.</li>
+            <li><strong>Routing without meaningful alternatives</strong>: If every request uses the same model, effort level, and control path, the router adds latency without changing execution. Add routing only when evaluated alternatives produce a useful cost, latency, or quality trade-off.</li>
             </ul>
             <h2>Verification and metrics</h2>
             <ul>
@@ -266,17 +266,17 @@
             </ul>
             <h2>Reference implementation</h2>
             <pre><code>Query comes in → extract complexity signals (length / keywords / domain / history)
-            classifier (cheap model or rules) → choose tier + confidence
-            High-risk query (finance / privacy / compliance) → force most expensive tier, skip the split
+            classifier (rules or evaluated classifier model) → choose tier + confidence
+            High-risk query (finance / privacy / compliance) → apply policy override to an approved tier
             Execute:
-                cheap tier runs → result acceptable? → return
-                          not acceptable → escalate (schema validation + cost estimate)
+                selected tier runs → result acceptable? → return
+                              not acceptable → escalate (schema validation + cost estimate)
                 escalation chain reaches its configured ceiling; still failing at the top → raise error / hand off to human
             Emit a trace on every routing decision (query summary / tier / signals / confidence / actual cost / whether escalated)
             </code></pre>
-            <p>Four points for getting it into production: use a cheap model instead of pure rules for the classifier; make the acceptability check schema-aware; add a cost ceiling to the fallback chain to keep extreme cases from blowing up; periodically promote query types that repeatedly escalate to default directly to the high tier, saving the repeated escalation overhead.</p>
+            <p>Evaluate rules and classifier models on the same routing set. Make acceptance checks schema-aware, cap the total cost and latency of fallback, and review request classes that repeatedly escalate so they can start at a more suitable tier.</p>
             <h2>Illustrative scenario</h2>
-            <p>Consider an internal BI agent serving product, growth, and finance teams. Trace review shows that some requests fill SQL templates or add grouping, while others require multi-step attribution or causal analysis. The first version uses the strongest model for all of them and cannot explain whether resources are being spent on difficult work.</p>
+            <p>Consider an internal BI agent serving product, growth, and finance teams. Trace review shows that some requests fill SQL templates or add grouping, while others require multi-step attribution or causal analysis. The first version uses the most capable model for all of them and cannot explain whether resources are being spent on difficult work.</p>
             <p>The revised system assigns tiers to template queries, aggregation, attribution, and high-complexity analysis; combines a rule prefilter with a lower-cost classifier; estimates total cost before escalation; forces finance, privacy, and compliance requests through risk-based overrides; and retains every routing trace for replay. Cost and quality changes are calculated from those traces rather than assumed from an industry percentage.</p>
             <h2>Related patterns</h2>
             <ul>

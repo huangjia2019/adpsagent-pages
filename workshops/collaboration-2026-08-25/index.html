@@ -52,7 +52,7 @@
 <header class="publication-head">
   <p class="publication-series">ADPS Design Pattern Workshop Series</p>
   <h1>First Collaboration Module Workshop</h1>
-  <p class="publication-deck">From multiple agents to collaboration that can be explained, handed off, and constrained.</p>
+  <p class="publication-deck">Task, context, authority, evidence, and responsibility across multi-agent and human collaboration.</p>
 </header>
 <p class="publication-date">25 August 2026</p>
 <table><tbody>
@@ -69,14 +69,14 @@
 
 <figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-en.svg" alt="Dynamic orchestration retains one plan owner; choreography advances through participant-local event rules."><figcaption>Dynamic orchestration retains one plan owner; choreography advances through participant-local event rules.</figcaption></figure>
 <h2>2. Six design topologies can lower to three runtime primitives</h2>
-<p class="workshop-field-note"><strong>Zhang Dong observed that many runtime graphs reduce to serial, parallel, and routing.</strong> That helps implementation, not design semantics. A lead-worker-acceptance hierarchy and a generator-reviewer-adjudicator review may use similar edges while retaining different responsibility and authority.</p>
+<p class="workshop-field-note"><strong>Dong Zhang observed that many runtime graphs reduce to serial, parallel, and routing.</strong> That helps implementation, not design semantics. A lead-worker-acceptance hierarchy and a generator-reviewer-adjudicator review may use similar edges while retaining different responsibility and authority.</p>
 <p>Many enterprise collaboration graphs eventually reduce to serial edges, parallel branches, and routing. That observation is useful at runtime, but it does not remove the design semantics of loops, hierarchy, or orchestration.</p>
 <p>Hierarchical Delegation may execute as route, parallel workers, and gather. Adversarial Review may execute as generate, review, adjudicate, and conditional loop. Similar low-level edges still carry different ownership, acceptance, and failure responsibilities. ADPS calls this <a href="/concepts/topology-lowering/">topology lowering</a>: preserve responsibility in design, then compile it into runtime primitives supported by the framework.</p>
 
 <figure><img src="/images/workshops/topology-governance-matrix-en.svg" alt="Topology governance matrix across serial, parallel, routing and identity, authority, safeguards, provenance"><figcaption>The runtime graph shows how control unfolds. Identity, authority, safeguards, and provenance determine whether it is ready for production.</figcaption></figure>
 
 <h2>3. Every topology needs four more checks</h2>
-<p class="workshop-field-note"><strong>Zhang Dong then crossed topology with identity, authority, safeguards, and provenance.</strong> A lead who may read the full batch does not imply that a worker verifying one record inherits that scope. A gather node may read every branch result without gaining authority to mutate source records.</p>
+<p class="workshop-field-note"><strong>Dong Zhang applied identity, authority, safeguards, and provenance to each topology.</strong> A lead who may read the full batch does not imply that a worker verifying one record inherits that scope. A gather node may read every branch result without gaining authority to mutate source records.</p>
 <table><thead><tr><th>Runtime structure</th><th>Identity</th><th>Authority</th><th>Safeguards</th><th>Provenance</th></tr></thead><tbody>
 <tr><td>Serial</td><td>Principal at each hop</td><td>Scoped per leg and reclaimed</td><td>Gates stop error propagation</td><td>Linear responsibility chain</td></tr>
 <tr><td>Parallel</td><td>Independent shard roles</td><td>Branch isolation; read-only gather</td><td>Branch checks plus global validation</td><td>One trace with child spans</td></tr>
@@ -88,12 +88,12 @@
 <p>Development can allow coding agents to split work and try new branches under close review. In test, the main graph, agent roles, tools, and policies become versioned. Staging approaches production conditions. Production pins agent, model, tool, and policy versions while keeping only evaluated dynamic choices.</p>
 
 <h2>5. Collaboration has three planes</h2>
-<p class="workshop-field-note"><strong>Wang Wei supplied the missing third relationship.</strong> Agents may hand off correctly and humans may approve, yet product, engineering, and test decisions made in meetings remain invisible to the next agent unless they enter versioned project assets.</p>
+<p class="workshop-field-note"><strong>Wei Wang added a third relationship: project decisions must re-enter shared assets.</strong> Agents may hand off correctly and humans may approve, yet product, engineering, and test decisions made in meetings remain invisible to the next agent unless they enter versioned project assets.</p>
 <p>Agent-Agent collaboration covers decomposition, parallel work, hand-off, and review. Human-Agent collaboration covers intent, missing evidence, approval, takeover, and acceptance. Human-Human collaboration around the agent carries team decisions and responsibility over time.</p>
 <p>The third plane often remains in meetings and chat. A later agent can read the repository but cannot see why a path was chosen. Decisions, evidence, and boundaries that affect future work belong in versioned assets such as RFCs, ADRs, and runbooks. Raw conversations do not need to be copied wholesale.</p>
 
 <h2>6. Worktrees do not isolate every conflict</h2>
-<p class="workshop-field-note"><strong>Wang Wei gave a conflict that Git could not see.</strong> Two sessions worked in separate worktrees but allocated the same requirement identifier. Shared configuration, test databases, deployment environments, and API contracts create the same class of conflict.</p>
+<p class="workshop-field-note"><strong>Wei Wang described a conflict that separate Git worktrees did not prevent.</strong> Two sessions allocated the same requirement identifier. Shared configuration, test databases, deployment environments, and API contracts create the same class of conflict.</p>
 <p>Separate worktrees isolate files, but concurrent sessions may still compete for requirement IDs, shared configuration, test databases, deployment environments, and external quotas. The scheduler must identify the <a href="/concepts/write-conflict-domain/">write-conflict domain</a> before launching parallel work.</p>
 
 <h2>7. A hand-off needs a contract</h2>
@@ -119,7 +119,7 @@ acceptance:
 <p>Separating generator and reviewer reduces self-review bias. Execution may then expose missing dependencies, version differences, or insufficient authority. Those facts must return to the review layer; otherwise the next run repeats an obsolete judgement.</p>
 
 <h2>9. A hook is a mechanism whose role comes from composition</h2>
-<p class="workshop-field-note"><strong>Wang Wei asked whether hooks form an independent collaboration pattern.</strong> Starting coding after requirements, pausing before a dangerous call, tracing after a call, and checkpointing on failure were assigned back to orchestration, governance, observation, and recovery. The hook supplies a deterministic insertion point; its design role comes from the responsibility it carries.</p>
+<p class="workshop-field-note"><strong>Wei Wang asked whether hooks form an independent collaboration pattern.</strong> Starting coding after requirements, pausing before a dangerous call, tracing after a call, and checkpointing on failure were assigned back to orchestration, governance, observation, and recovery. The hook supplies a deterministic insertion point; its design role comes from the responsibility it carries.</p>
 <p>The same hook mechanism can start a coding agent after requirements, pause before a dangerous tool call, record trace data, save a checkpoint, or release resources. These are orchestration, governance, observation, and recovery roles.</p>
 <p>No C7 was added. G5 keeps its historical identifier for deterministic governance enforcement. Cross-module use is documented in the <a href="/topics/hook-composition/">Hook Composition</a> topic.</p>
 
@@ -129,7 +129,7 @@ acceptance:
 <p>Models handle open-ended understanding, planning, and candidate generation. Identity, money, resources, state transitions, idempotency, tests, and receipts require reproducible mechanisms. The shell protects boundaries that cannot be carried by probability.</p>
 
 <h2>11. Agent OS is an engineering checklist</h2>
-<p class="workshop-field-note"><strong>Zhang Dong began with processes, threads, coroutines, and IPC; Haili Zhang added service-based sub-agents, standard protocols, and virtual file systems.</strong> The analogy checks scheduling, isolation, communication, and storage. The workshop did not claim that today’s agent runtimes already constitute an operating system.</p>
+<p class="workshop-field-note"><strong>Dong Zhang began with processes, threads, coroutines, and IPC; Haili Zhang added service-based sub-agents, standard protocols, and virtual file systems.</strong> The analogy checks scheduling, isolation, communication, and storage. The workshop did not claim that today’s agent runtimes already constitute an operating system.</p>
 <p>The operating-system analogy helps locate missing responsibilities: scheduling, isolation, communication, storage, identity, observability, reclamation, and failure handling. It is not evidence that Agent OS already has a stable industry boundary, and operating-system terms should not be mapped mechanically.</p>
 
 <h2>12. Abstract, then reconstruct</h2>
@@ -163,13 +163,6 @@ acceptance:
 <li><a href="/topics/agent-os-engineering/">Agent OS engineering checklist</a></li>
 </ul>
 <p class="publication-note publication-note-end">The public record is organized by technical theme. Names, scale, rules, and responsibility structures of internal systems are anonymized.</p>
-<!-- RELATED-CASE-DEEPAGENTS:START -->
-<section class="related-case-band" aria-labelledby="related-deepagents-case">
-  <p class="related-case-label">Related open-source framework case</p>
-  <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
-</section>
-<!-- RELATED-CASE-DEEPAGENTS:END -->
 <!-- PAGE-CHRONICLE:START -->
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
   <h2 id="page-chronicle-title">Chronicle</h2>
@@ -181,6 +174,13 @@ acceptance:
   <p><a href="/chronicle/#workshops-collaboration-2026-08-25">View in the ADPS Chronicle</a></p>
 </section>
 <!-- PAGE-CHRONICLE:END -->
+<!-- RELATED-CASE-DEEPAGENTS:START -->
+<section class="related-case-band" aria-labelledby="related-deepagents-case">
+  <p class="related-case-label">Related open-source framework case</p>
+  <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
+  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+</section>
+<!-- RELATED-CASE-DEEPAGENTS:END -->
 </article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
