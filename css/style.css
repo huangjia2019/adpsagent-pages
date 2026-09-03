@@ -164,6 +164,7 @@ hr {
 /* Writing pages: bump essay + writing-index from the narrow --measure
    to a roomier 52rem. Still readable prose, but no longer cramped. */
 .page-essay article.essay { max-width: 52rem; }
+.page-pattern-selection-card article.essay { min-width: 0; width: 100%; }
 .page-essay .writing-index { max-width: 52rem; }
 
 /* Dual-axis page: lift article.essay's default narrow column (38rem) up
@@ -975,6 +976,20 @@ article.essay blockquote {
     color: var(--color-text-muted);
     font-style: italic;
     font-family: var(--font-serif);
+}
+.page-pattern-selection-card article.essay figure {
+    margin: 1.5rem 0;
+    max-width: 100%;
+}
+.page-pattern-selection-card article.essay figure img {
+    height: auto;
+    width: 100%;
+}
+.page-pattern-selection-card article.essay figure figcaption {
+    color: var(--color-text-muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+    margin-top: 0.55rem;
 }
 article.essay code {
     font-family: var(--font-mono);
@@ -2357,6 +2372,10 @@ article.essay footer a { color: var(--color-link); }
     .docs-main article.essay { width: 100%; max-width: 100%; margin: 0 auto; }
 }
 @media (max-width: 720px) {
+    .page-pattern-selection-card article.essay {
+        max-width: calc(100vw - 2.5rem);
+        width: calc(100vw - 2.5rem);
+    }
     .publication-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .publication-head h1 { font-size: 1.75rem; }
     article.essay table {

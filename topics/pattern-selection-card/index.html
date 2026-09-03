@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pattern Selection Card: Turning Constraints into an Agent Design · ADPS</title>
+    <meta name="description" content="A one-page ADPS method for moving from scenario boundaries and cognitive needs to execution topology, pattern choices, tradeoffs, and an architecture sketch.">
+    <meta property="article:published_time" content="2026-09-03">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-selection-card-en-20260903.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/pattern-selection-card/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/pattern-selection-card/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/pattern-selection-card/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-pattern-selection-card">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a><a href="/chronicle/">Chronicle</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/pattern-selection-card/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Pattern Selection Card</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Design Method</p>
+                <h1>Pattern Selection Card: Turning Constraints into an Agent Design</h1>
+                <p class="publication-deck">A one-page record from scenario boundary to architecture sketch, with the decisions and tradeoffs kept visible.</p>
+            </header>
+
+            <p>The ADPS matrix helps locate patterns by cognitive function and execution topology. A design review still needs to explain why a particular scenario calls for a particular combination. The Pattern Selection Card supplies that missing decision record.</p>
+            <p>The card is deliberately small. It asks a team to name the boundary, identify the two or three cognitive needs that dominate the work, choose a topology, shortlist patterns, expose tradeoffs, and draw the runtime path. The result is compact enough for a workshop and specific enough for an architecture review.</p>
+
+            <figure>
+                <img src="/images/topics/pattern-selection-card-en-20260903.png" alt="Blank ADPS Pattern Selection Card with six fields for scenario boundary, cognitive needs, execution topology, candidate patterns, tradeoffs, and architecture sketch">
+                <figcaption>The blank card. Use one card for one bounded scenario; split the work when a single card contains unrelated goals, authorities, or failure policies.</figcaption>
+            </figure>
+
+            <div class="asset-downloads" aria-label="Editable Pattern Selection Card downloads">
+                <strong>Editable PowerPoint:</strong>
+                <a href="/downloads/ADPS-Pattern-Selection-Card-EN.pptx" download>English card (.pptx)</a>
+                <a href="/downloads/ADPS-Pattern-Selection-Card-ZH.pptx" download>Chinese card (.pptx)</a>
+            </div>
+
+            <h2>What the six fields record</h2>
+            <table>
+                <thead><tr><th>Field</th><th>Design question</th><th>Reviewable output</th></tr></thead>
+                <tbody>
+                    <tr><td>01 Scenario boundary</td><td>What enters, what leaves, what may change, and what failure matters?</td><td>Input, output, authority, failure modes</td></tr>
+                    <tr><td>02 Cognitive needs</td><td>Which functions dominate this scenario?</td><td>Two or three priorities from perception, memory, reasoning, action, reflection, collaboration, and governance</td></tr>
+                    <tr><td>03 Execution topology</td><td>How does work move and where does control return?</td><td>Chain, Route, Parallel, Loop, Hierarchy, or Orchestrate, plus the selection reason</td></tr>
+                    <tr><td>04 Candidate patterns</td><td>Which reusable mechanisms close the identified gaps?</td><td>Two or three core patterns and their composition rationale</td></tr>
+                    <tr><td>05 Tradeoffs</td><td>What does the design gain, spend, and constrain?</td><td>Explicit choices across safety and efficiency, accuracy and cost, simplicity and robustness</td></tr>
+                    <tr><td>06 Architecture sketch</td><td>How do data, decisions, controls, and evidence move at runtime?</td><td>Main flow, quality gates, human intervention points, and observation points</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Begin with a scenario that can fail</h2>
+            <p>A useful boundary is smaller than a product and larger than a model call. It has an identifiable input, an externally meaningful output, a defined authority envelope, and failure consequences that can be discussed. “Review this design proposal against these standards” is a scenario. “Build a knowledge assistant” is still a programme of work.</p>
+            <p>Authority belongs in the first field because it changes the architecture. A read-only reviewer can report and escalate. An agent that may edit a source document also needs admission rules, version control, rollback, and evidence of the change.</p>
+
+            <h2>Select the dominant cognitive needs</h2>
+            <p>Marking every cognitive function does not improve the design. Select the two or three functions whose failure would change the outcome. A document review may depend on perception for extracting the right evidence, reasoning for comparing claims with criteria, and reflection for finding unsupported conclusions. Memory and collaboration may still appear in implementation, but they need not drive the first pattern search.</p>
+
+            <h2>Choose the runtime shape</h2>
+            <p>The topology describes how execution moves, not the department chart or the number of agents. Use <strong>Chain</strong> for staged transformations, <strong>Route</strong> for selecting a path, <strong>Parallel</strong> for independent branches, <strong>Loop</strong> for bounded iteration, <strong>Hierarchy</strong> for delegated levels, and <strong>Orchestrate</strong> for dynamic coordination across workers or capabilities.</p>
+            <p>A scenario may compose several topologies. Record the main path first and then mark local structures, such as a review loop inside one routed branch. Every loop needs a budget and stop condition; every branch needs a merge or acceptance rule.</p>
+
+            <h2>Shortlist patterns, then add the engineering planes</h2>
+            <p>Candidate patterns should answer a named need. Two or three are usually enough to expose the architecture. Cross-cutting planes are recorded separately: <a href="/patterns/x1-observability/">X1 Observability</a> carries trajectory and evidence, <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a> supplies acceptance and regression, and <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a> supplies principals, delegation, and policy boundaries.</p>
+            <p>The card is not a pattern inventory. If a pattern cannot be tied to a failure mode, interface, or quality requirement, leave it out.</p>
+
+            <h2>Worked example: technical document review</h2>
+            <table>
+                <thead><tr><th>Card field</th><th>Example decision</th></tr></thead>
+                <tbody>
+                    <tr><td>Scenario boundary</td><td>Input: a technical proposal and review criteria. Output: a cited review with unresolved questions. Authority: read-only. Main failures: missed requirements, unsupported findings, and shallow review.</td></tr>
+                    <tr><td>Cognitive needs</td><td>Perception, reasoning, and reflection.</td></tr>
+                    <tr><td>Execution topology</td><td>Route a simple proposal to a fast path and a complex or high-risk proposal to a deeper chain; run a bounded review loop before release.</td></tr>
+                    <tr><td>Candidate patterns</td><td><a href="/patterns/p1-context-triage/">P1 Context Triage</a>, <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>, and <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>.</td></tr>
+                    <tr><td>Tradeoffs</td><td>Broader evidence search raises coverage and cost. A stronger critic loop raises review quality and latency. The loop therefore receives an iteration budget and an unresolved-question exit.</td></tr>
+                    <tr><td>Architecture sketch</td><td>Sources and criteria flow through triage, routing, and a generator-critic loop into a cited report. X1 records evidence and versions; X2 tests acceptance and regression.</td></tr>
+                </tbody>
+            </table>
+
+            <figure>
+                <img src="/images/topics/pattern-selection-card-example-en-20260903.svg" alt="Technical document review flow from source documents through Context Triage, Complexity-Based Routing, and a Generator-Critic loop to a cited review">
+                <figcaption>The worked card becomes a reviewable architecture. Pattern labels remain attached to concrete interfaces, stop conditions, and evidence.</figcaption>
+            </figure>
+
+            <h2>Finish with one decision statement</h2>
+            <p>End the card with a sentence that can survive a design review:</p>
+            <blockquote><p>We use P1 to establish a scope and evidence contract, R2 to reserve deeper work for complex proposals, and F1 to challenge unsupported findings before release. X1 preserves the trace and X2 verifies cited coverage. The review loop stops at its budget and returns unresolved questions instead of inventing certainty.</p></blockquote>
+            <p>The sentence binds the scenario, pattern choices, tradeoffs, and failure policy. If it cannot be written without vague claims, the card still contains an unresolved design decision.</p>
+
+            <h2>Review questions</h2>
+            <ol>
+                <li>Does the card describe one bounded scenario with an externally meaningful output?</li>
+                <li>Are authority and failure modes stated before pattern selection?</li>
+                <li>Do the selected cognitive needs identify actual bottlenecks?</li>
+                <li>Does the topology show movement, return paths, budgets, and merge rules?</li>
+                <li>Can every candidate pattern be traced to a need or failure mode?</li>
+                <li>Are human intervention, quality gates, and observation points visible?</li>
+                <li>Can the team explain what it chose not to optimize?</li>
+            </ol>
+
+            <h2>Related material</h2>
+            <ul>
+                <li><a href="/patterns/">ADPS Pattern Catalogue and Selection Framework</a></li>
+                <li><a href="/topics/pattern-composition/">Composing Agent Patterns</a></li>
+                <li><a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a></li>
+                <li><a href="/topics/human-agent-interaction/">Human-Agent Interaction</a></li>
+            </ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Pattern Selection Card: Turning Constraints into an Agent Design</em>, ADPS Design Method, 2026-09-03.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">The worked example illustrates the selection method. Production designs require domain-specific evidence, controls, and acceptance criteria.</p></div>
+        </article>
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
