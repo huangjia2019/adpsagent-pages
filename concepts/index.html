@@ -120,6 +120,11 @@
       <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
       <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
     </details>
+    <details class="sb-concept-group"><summary>Reasoning and action mechanisms</summary>
+      <a href="/concepts/react-loop/">ReAct Reasoning-Action Loop</a>
+      <a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a>
+      <a href="/concepts/code-as-action/">CodeAct: Code as Action</a>
+    </details>
     <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
       <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
       <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
@@ -136,6 +141,7 @@
       <a href="/concepts/handoff-contract/">Handoff Contract</a>
       <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
       <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/unified-convergence-node/">Unified Convergence Node</a>
       <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
     </details>
     <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
@@ -148,6 +154,8 @@
       <a href="/concepts/durable-intent/">Durable Intent</a>
       <a href="/concepts/judge-migration/">Judge Migration</a>
       <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+      <a href="/concepts/scenario-benchmark-contract/">Scenario–Benchmark Contract</a>
+      <a href="/concepts/business-evaluation-set/">Business Evaluation Set</a>
     </details>
   </div>
 </div>
@@ -171,7 +179,8 @@
 <article><h3><a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a></h3><p>Inspect agent power at the points of information, judgement, and action.</p></article>
 </div></section>
 <section class="concept-catalogue"><h2>Browse by problem</h2>
-<details class="concept-group"><summary>System boundaries and state<span>7</span></summary><div>
+<details class="concept-group" id="group-system-boundaries"><summary>System boundaries and state<span>7</span></summary>
+<p class="concept-group-desc">Locate control, factual state, and runtime boundaries.</p><div>
 <article><h3><a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a></h3><p>Separate model-readable context from bounded values that drive the runtime.</p></article>
 <article><h3><a href="/concepts/execution-vs-content/">Execution vs Content Agents</a></h3><p>Choose runtime controls from the deliverable, state dependency, and cost of failure.</p></article>
 <article><h3><a href="/concepts/unified-session-state/">Three Session-State Planes</a></h3><p>Coordinate narrative, mechanical business values, and task scheduling without mixing write ownership.</p></article>
@@ -180,7 +189,8 @@
 <article><h3><a href="/concepts/disk-fact-plane/">Disk Fact Plane</a></h3><p>Keep stage facts, progress, and acceptance evidence in recoverable external contracts.</p></article>
 <article><h3><a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a></h3><p>Models handle open judgement; deterministic mechanisms protect production boundaries.</p></article>
 </div></details>
-<details class="concept-group"><summary>Context and memory<span>6</span></summary><div>
+<details class="concept-group" id="group-context-memory"><summary>Context and memory<span>6</span></summary>
+<p class="concept-group-desc">Control how information enters context, persists across steps, and is retrieved.</p><div>
 <article><h3><a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a></h3><p>Preserve the goal, append task facts, and project only the material needed now.</p></article>
 <article><h3><a href="/concepts/scratchpad/">Scratchpad Board</a></h3><p>Store the current goal, step, observation, blocker, evidence, and next action in a small working surface.</p></article>
 <article><h3><a href="/concepts/memory-envelope/">Memory Envelope</a></h3><p>Assemble a versioned context package for one model call.</p></article>
@@ -188,7 +198,14 @@
 <article><h3><a href="/concepts/knowledge-compilation/">Knowledge Compilation</a></h3><p>Transform knowledge sources into traceable, incrementally updated runtime assets.</p></article>
 <article><h3><a href="/concepts/context-contract/">Context Contract</a></h3><p>Specify what information may enter a task context, with source, freshness, and budget.</p></article>
 </div></details>
-<details class="concept-group"><summary>Planning, execution, and write-back<span>9</span></summary><div>
+<details class="concept-group" id="group-reasoning-action-runtime"><summary>Reasoning and action mechanisms<span>3</span></summary>
+<p class="concept-group-desc">Compare how a model advances work through reasoning, observations, code, and tool calls.</p><div>
+<article><h3><a href="/concepts/react-loop/">ReAct Reasoning-Action Loop</a></h3><p>Alternate reasoning and action so each next step can use a fresh observation from the environment.</p></article>
+<article><h3><a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a></h3><p>Let the model write a bounded program that calls registered tools and reduces intermediate results before they enter context.</p></article>
+<article><h3><a href="/concepts/code-as-action/">CodeAct: Code as Action</a></h3><p>Use executable code as the agent&#x27;s action language for computation, libraries, and tool composition.</p></article>
+</div></details>
+<details class="concept-group" id="group-planning-execution"><summary>Planning, execution, and write-back<span>9</span></summary>
+<p class="concept-group-desc">Turn intent into schedulable steps and govern write-back of intermediate and business results.</p><div>
 <article><h3><a href="/concepts/intent-as-compilation/">Intent as Compilation</a></h3><p>Translate open language into a validated, bounded control signal with an explicit fallback.</p></article>
 <article><h3><a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a></h3><p>Make dependencies, node status, acceptance, and recovery explicit.</p></article>
 <article><h3><a href="/concepts/reasoning-assetization/">Reasoning Assetization</a></h3><p>Move repeated, reviewable decisions into versioned capability assets before runtime.</p></article>
@@ -199,15 +216,18 @@
 <article><h3><a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a></h3><p>Align planning terms, domain types, and the host metamodel through one tested mapping.</p></article>
 <article><h3><a href="/concepts/plan-compilation/">Plan Compilation</a></h3><p>Compile a reasoned plan into an executable structure with dependencies, types, authority, and acceptance.</p></article>
 </div></details>
-<details class="concept-group"><summary>Collaboration and runtime control<span>6</span></summary><div>
+<details class="concept-group" id="group-collaboration-runtime"><summary>Collaboration and runtime control<span>7</span></summary>
+<p class="concept-group-desc">Handle handoffs, concurrency, responsibility, and runtime composition across participants.</p><div>
 <article><h3><a href="/concepts/topology-lowering/">Topology Lowering</a></h3><p>Compile high-level collaboration semantics into runtime primitives such as serial, parallel, and routing edges.</p></article>
 <article><h3><a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a></h3><p>Review serial, parallel, and routed structures across identity, authority, safeguards, and provenance.</p></article>
 <article><h3><a href="/concepts/handoff-contract/">Handoff Contract</a></h3><p>Transfer goal, artifacts, decisions, authority, responsibility, and acceptance together.</p></article>
 <article><h3><a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a></h3><p>Review Agent-Agent, Human-Agent, and Human-Human collaboration around the system.</p></article>
 <article><h3><a href="/concepts/hook-composition/">Hook Composition</a></h3><p>Compose orchestration, governance, observation, and recovery at lifecycle events.</p></article>
+<article><h3><a href="/concepts/unified-convergence-node/">Unified Convergence Node</a></h3><p>Resolve several reasoning branches into one actionable result under shared evidence and adjudication rules.</p></article>
 <article><h3><a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a></h3><p>Identify files, identifiers, configuration, domain objects, and environments that concurrent tasks may jointly mutate.</p></article>
 </div></details>
-<details class="concept-group"><summary>Evaluation, reflection, and governance<span>10</span></summary><div>
+<details class="concept-group" id="group-verification-governance"><summary>Evaluation, reflection, and governance<span>12</span></summary>
+<p class="concept-group-desc">Define who judges results, how feedback returns, and when the system may continue acting.</p><div>
 <article><h3><a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a></h3><p>Record model, tool, state, latency, cost, and external results on one execution timeline.</p></article>
 <article><h3><a href="/concepts/hitl-block-resume/">HITL Block and Resume</a></h3><p>Persist a protected execution point, revalidate it, and resume the same action after review.</p></article>
 <article><h3><a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a></h3><p>Test the result from the user side and let that evidence decide success.</p></article>
@@ -218,12 +238,31 @@
 <article><h3><a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a></h3><p>Inspect agent power at the points of information, judgement, and action.</p></article>
 <article><h3><a href="/concepts/judge-migration/">Judge Migration</a></h3><p>Track how acceptance authority moves across requirements, tests, review, deployment, and outcomes.</p></article>
 <article><h3><a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a></h3><p>Govern the current action and the long-running goal at the same time.</p></article>
+<article><h3><a href="/concepts/scenario-benchmark-contract/">Scenario–Benchmark Contract</a></h3><p>Bind production scenarios to evaluation sets, acceptance thresholds, and version-change conditions.</p></article>
+<article><h3><a href="/concepts/business-evaluation-set/">Business Evaluation Set</a></h3><p>Judge technical changes against business processes, representative scenarios, weights, and outcome measures.</p></article>
 </div></details>
-<details class="concept-group"><summary>Pattern method and evolution<span>1</span></summary><div>
+<details class="concept-group" id="group-pattern-method"><summary>Pattern method and evolution<span>1</span></summary>
+<p class="concept-group-desc">Describe how patterns are abstracted from practice and tested again in concrete systems.</p><div>
 <article><h3><a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a></h3><p>Extract common structure, then restore critical differences to test implementability.</p></article>
 </div></details>
 </section>
 <p class="publication-note publication-note-end">‘Initial source within ADPS’ identifies the earliest record in ADPS material; it is not a claim of global invention.</p>
+<script>
+(function () {
+  function openTargetGroup() {
+    var id = window.location.hash.slice(1);
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (target && target.matches('details.concept-group')) {
+      target.open = true;
+      window.requestAnimationFrame(function () { target.scrollIntoView({ block: 'start' }); });
+    }
+  }
+  openTargetGroup();
+  window.addEventListener('load', openTargetGroup);
+  window.addEventListener('hashchange', openTargetGroup);
+})();
+</script>
         </article>
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

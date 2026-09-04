@@ -142,6 +142,11 @@
       <a href="/zh/concepts/layered-memory/">L1/L2/L3 分层记忆</a>
       <a href="/zh/concepts/knowledge-compilation/">知识编译</a>
     </details>
+    <details class="sb-concept-group"><summary>推理与行动机制</summary>
+      <a href="/zh/concepts/react-loop/">ReAct 推理—行动循环</a>
+      <a href="/zh/concepts/programmatic-tool-calling/">程序化工具调用</a>
+      <a href="/zh/concepts/code-as-action/">CodeAct：代码即行动</a>
+    </details>
     <details class="sb-concept-group"><summary>规划、执行与写回</summary>
       <a href="/zh/concepts/intent-as-compilation/">意图即编译</a>
       <a href="/zh/concepts/task-dag-state-machine/">任务 DAG 与状态机</a>
@@ -158,6 +163,7 @@
       <a href="/zh/concepts/handoff-contract/">交接合同</a>
       <a href="/zh/concepts/three-collaboration-planes/">三类协作关系</a>
       <a href="/zh/concepts/hook-composition/">Hook 组合</a>
+      <a href="/zh/concepts/unified-convergence-node/">统一收敛节点</a>
       <a href="/zh/concepts/write-conflict-domain/">写入冲突域</a>
     </details>
     <details class="sb-concept-group"><summary>评测、反思与治理</summary>
@@ -170,6 +176,8 @@
       <a href="/zh/concepts/durable-intent/">持久化意图</a>
       <a href="/zh/concepts/judge-migration/">裁判迁移</a>
       <a href="/zh/concepts/dual-scale-governance/">双尺度治理</a>
+      <a href="/zh/concepts/scenario-benchmark-contract/">场景–Benchmark 契约</a>
+      <a href="/zh/concepts/business-evaluation-set/">业务评测集</a>
     </details>
   </div>
 </div>
@@ -246,9 +254,20 @@
             <h2>适用场景</h2>
             <ul>
             <li><strong>工具数量多、副作用多、错调代价大三者叠加</strong>：物流派单、客服工单、运维操作。</li>
-            <li><strong>接入 MCP 等外部工具协议</strong>：外部工具来源不可信，必须靠元数据里的来源标记加额外安全审查。</li>
-            <li><strong>固定流程任务</strong>：可以更进一步走 Programmatic Tool Calling，由工程层显式编排调用序列，模型只负责填参数和解读结果，减少来回、容错更强、审计更清晰。</li>
+            <li><strong>接入 MCP 等外部工具协议</strong>：工具跨越了新的信任边界，需要记录来源和版本，并按风险检查描述、参数、权限与运行行为。</li>
+            <li><strong>工具密集、可用局部程序表达的任务</strong>：例如从多家门店读取库存、筛选缺货项，再为每项查询替代品。模型可以通过 Programmatic Tool Calling 生成一段受限程序，在沙箱内循环或并行调用已注册工具，先汇总结果，再把必要信息交回上下文。调用顺序来自模型生成的程序，并非工程人员预先写死；工具注册、权限、配额和每次调用的准入仍由 A1 控制。</li>
             </ul>
+            <h2>四种运行方式的边界</h2>
+            <table>
+            <thead><tr><th style="text-align: left;">运行方式</th><th style="text-align: left;">如何推进任务</th><th style="text-align: left;">主要边界</th></tr></thead>
+            <tbody>
+            <tr><td style="text-align: left;">直接工具调用</td><td style="text-align: left;">模型选择一个工具和参数，取得结果后再决定下一步</td><td style="text-align: left;">每次调用都经过 A1 的候选选择和准入</td></tr>
+            <tr><td style="text-align: left;"><a href="/zh/concepts/react-loop/">ReAct</a></td><td style="text-align: left;">推理、行动、观察交替进行；新观察直接影响下一轮判断</td><td style="text-align: left;">适合路径尚不确定、需要边做边看的任务，模型往返通常较多</td></tr>
+            <tr><td style="text-align: left;"><a href="/zh/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a></td><td style="text-align: left;">模型先写受限程序，再由程序循环、分支、并行调用已注册工具</td><td style="text-align: left;">程序负责局部控制流，工具的身份、权限和副作用边界没有改变</td></tr>
+            <tr><td style="text-align: left;"><a href="/zh/concepts/code-as-action/">CodeAct</a></td><td style="text-align: left;">模型把可执行代码作为行动语言，用代码计算、调用库或组合可用能力</td><td style="text-align: left;">行动空间比已注册工具更宽，需要更严格的沙箱、资源和凭证隔离</td></tr>
+            </tbody>
+            </table>
+            <p>这四种名称描述的层次不同。A1 负责工具注册、候选选择和调用准入；A2 可以把多阶段任务编成计划；ReAct、Programmatic Tool Calling 和 CodeAct 则说明某一步在运行时怎样推进。一次任务里生成的代码只有经过验证、命名、版本化并允许跨任务复用后，才进入 M5 程序性记忆。</p>
             <h2>已知失效方式</h2>
             <ul>
             <li><strong>元数据不足</strong>：只有 name 和 description 时，Agent 无法判断工具的副作用、状态要求和审批条件，容易发生错调。</li>
@@ -274,13 +293,13 @@
         失败              → 记 trace，交由上层 saga 回滚
     返回 DispatchTrace（工具/参数/触发方/状态/拒因/耗时）
 </code></pre>
-            <p>生产实现对未声明的元数据采用不安全默认值；quota 按主参数计数，例如派单按司机 id；MCP 工具记录来源，并执行额外的描述校验和行为监控。</p>
+            <p>生产实现应把未声明的执行属性按高风险处理；quota 同时按任务和业务资源计数，例如派单还要按司机 id 计数；MCP 工具记录来源与版本，并执行相应的描述校验和行为监控。</p>
             <h2>场景化示例</h2>
             <p>梁博团队的执行型 Agent 将知识检索、技能加载和工具调用分为 <code>retrieve</code>、<code>use_skill</code> 和 <code>call_tool</code> 三类接口。城配派单 Agent 的 dispatch 层增加工具元数据、selection guidance、写操作前状态刷新、单 session 派单配额和 saga 副作用追踪。这个具名实践说明，工具调度的主要工作量落在契约、状态和副作用控制上，效果应以团队授权的生产评测为准。</p>
             <h2>相邻模式</h2>
             <ul>
             <li><strong>最简工具集（A5）</strong>：A1 在给定工具集中选择，A5 控制单次暴露的工具规模。</li>
-            <li><strong>规划-执行（A2）</strong>：A1 是单步决策的优化，A2 是多步任务的整体编排。Programmatic Tool Calling 是两者的交汇——工程层定调用序列，每步内部仍是一次 dispatch。</li>
+            <li><strong>规划-执行（A2）</strong>：A2 决定多阶段任务先做什么、何时验收；某个步骤内部可以用 Programmatic Tool Calling 批量调用工具，每次工具调用仍经过 A1 准入。</li>
             <li><strong>护栏三明治（A4）</strong>：A4 在 dispatch 前后执行 pre-check 和 post-check，与 A1 的 quota 和 state refresh 形成嵌套控制。</li>
             <li><strong>复杂度路由（R2）</strong>：思路同源，都是基于 context 做路由，区别在 R2 路由的是推理档位，A1 路由的是工具。</li>
             </ul>

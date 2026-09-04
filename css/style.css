@@ -2255,6 +2255,31 @@ article.essay footer a { color: var(--color-link); }
 .docs-main { flex: 1 1 auto; min-width: 0; }
 .docs-main article.essay { max-width: 52rem; margin: 0; }
 
+.pattern-tools-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(22rem, 1.1fr);
+    gap: 2rem;
+    align-items: start;
+    margin: 1rem 0 2.5rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+}
+.pattern-tools-copy > p { margin-top: 0; }
+.pattern-tool-list { margin: 0; padding-left: 1.35rem; }
+.pattern-tool-list li { margin-bottom: 1rem; }
+.pattern-tool-list h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+.pattern-tool-list p { margin: 0; color: var(--color-text-muted); font-size: 0.92rem; }
+.pattern-tools-visual { margin: 0; }
+.pattern-tools-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--color-rule);
+    border-radius: 4px;
+}
+.pattern-tools-visual figcaption { margin-top: 0.6rem; }
+
 /* Publication identity for white papers, blue books, and case-derived concepts. */
 .publication-head {
     margin: 0 0 2rem;
@@ -2370,6 +2395,7 @@ article.essay footer a { color: var(--color-link); }
     }
     .docs-main { width: 100%; max-width: 100%; }
     .docs-main article.essay { width: 100%; max-width: 100%; margin: 0 auto; }
+    .pattern-tools-feature { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
     .page-pattern-selection-card article.essay {

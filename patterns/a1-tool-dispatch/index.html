@@ -136,6 +136,11 @@
       <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
       <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
     </details>
+    <details class="sb-concept-group"><summary>Reasoning and action mechanisms</summary>
+      <a href="/concepts/react-loop/">ReAct Reasoning-Action Loop</a>
+      <a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a>
+      <a href="/concepts/code-as-action/">CodeAct: Code as Action</a>
+    </details>
     <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
       <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
       <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
@@ -152,6 +157,7 @@
       <a href="/concepts/handoff-contract/">Handoff Contract</a>
       <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
       <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/unified-convergence-node/">Unified Convergence Node</a>
       <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
     </details>
     <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
@@ -164,6 +170,8 @@
       <a href="/concepts/durable-intent/">Durable Intent</a>
       <a href="/concepts/judge-migration/">Judge Migration</a>
       <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+      <a href="/concepts/scenario-benchmark-contract/">Scenario–Benchmark Contract</a>
+      <a href="/concepts/business-evaluation-set/">Business Evaluation Set</a>
     </details>
   </div>
 </div>
@@ -237,9 +245,20 @@
             <h2>Applicability</h2>
             <ul>
             <li><strong>Large registries with side-effecting tools</strong>: Logistics, customer support, and operations need selection plus permission, freshness, quota, and recovery controls.</li>
-            <li><strong>External tool protocols such as MCP</strong>: Record source and version, validate schemas and descriptions, and admit each server under the organization's trust policy.</li>
-            <li><strong>Fixed procedures</strong>: Programmatic Tool Calling can move call order into the engineering layer while the model supplies bounded parameters or interprets results.</li>
+            <li><strong>External tool protocols such as MCP</strong>: A new tool crosses a trust boundary. Record its source and version, then review descriptions, parameters, permissions, and runtime behaviour according to risk.</li>
+            <li><strong>Tool-heavy work that can be expressed as a local program</strong>: For example, read inventory from several stores, filter missing items, and query substitutes for each one. With Programmatic Tool Calling, the model writes a bounded program that loops over or parallelizes calls to registered tools inside a sandbox, reduces the results, and returns only the needed information to context. The model-generated program expresses call order; engineers do not predefine that exact sequence. A1 still governs tool registration, authority, quotas, and admission for every call.</li>
             </ul>
+            <h2>Boundaries between four runtime mechanisms</h2>
+            <table>
+            <thead><tr><th style="text-align: left;">Mechanism</th><th style="text-align: left;">How work advances</th><th style="text-align: left;">Primary boundary</th></tr></thead>
+            <tbody>
+            <tr><td style="text-align: left;">Direct tool calling</td><td style="text-align: left;">The model selects one tool and its arguments, observes the result, and then chooses the next step</td><td style="text-align: left;">A1 selects and admits each call</td></tr>
+            <tr><td style="text-align: left;"><a href="/concepts/react-loop/">ReAct</a></td><td style="text-align: left;">Reasoning, action, and observation alternate; each observation informs the next decision</td><td style="text-align: left;">Useful when the route is uncertain and work must proceed by inspection, usually with more model round trips</td></tr>
+            <tr><td style="text-align: left;"><a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a></td><td style="text-align: left;">The model writes a bounded program that loops, branches, or parallelizes calls to registered tools</td><td style="text-align: left;">The program owns local control flow; tool identity, authority, and side-effect boundaries remain in force</td></tr>
+            <tr><td style="text-align: left;"><a href="/concepts/code-as-action/">CodeAct</a></td><td style="text-align: left;">The model uses executable code as its action language for computation, libraries, and available capabilities</td><td style="text-align: left;">The action space is broader than a registered-tool catalogue and needs stronger isolation for code, resources, and credentials</td></tr>
+            </tbody>
+            </table>
+            <p>These labels describe different layers. A1 governs tool registration, candidate selection, and call admission. A2 can schedule a multi-stage plan. ReAct, Programmatic Tool Calling, and CodeAct describe how a step proceeds at runtime. Code generated in one run becomes M5 Procedural Memory only after validation, naming, versioning, and approval for reuse across tasks.</p>
             <h2>Known failure modes</h2>
             <ul>
             <li><strong>Metadata too thin</strong>: Name and description do not express permissions, freshness, idempotency, approval, side effects, or result contracts. The runtime cannot distinguish two semantically similar tools safely.</li>
@@ -271,7 +290,7 @@
             <h2>Related patterns</h2>
             <ul>
             <li><strong>Minimal Tool Set (A5)</strong>: A5 limits per-decision exposure; A1 selects and admits a call from the resulting candidate set.</li>
-            <li><strong>Plan-and-Execute (A2)</strong>: A2 schedules the task graph. Each executable step may invoke A1 to select an eligible tool.</li>
+            <li><strong>Plan-and-Execute (A2)</strong>: A2 decides stage order and acceptance points. A step may use Programmatic Tool Calling to batch several tool calls, while A1 still admits each call.</li>
             <li><strong>Guardrail Sandwich (A4)</strong>: A1 handles candidate selection and call admission. A4 adds policy checks and result validation around high-risk execution.</li>
             <li><strong>Complexity-Based Routing (R2)</strong>: R2 routes a request to a model and effort tier. A1 routes an approved action intent to a tool.</li>
             </ul>

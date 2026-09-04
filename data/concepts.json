@@ -1,68 +1,148 @@
 {
-  "version": "1.0",
-  "updated": "2026-08-26",
+  "version": "1.1",
+  "updated": "2026-09-04",
   "groups": [
-    {"id": "system-boundaries", "zh": "系统边界与状态", "en": "System boundaries and state"},
-    {"id": "context-memory", "zh": "上下文与记忆", "en": "Context and memory"},
-    {"id": "planning-execution", "zh": "规划、执行与写回", "en": "Planning, execution, and write-back"},
-    {"id": "collaboration-runtime", "zh": "协作与运行时控制", "en": "Collaboration and runtime control"},
-    {"id": "verification-governance", "zh": "评测、反思与治理", "en": "Evaluation, reflection, and governance"},
-    {"id": "pattern-method", "zh": "模式方法与演进", "en": "Pattern method and evolution"}
+    {
+      "id": "system-boundaries",
+      "zh": "系统边界与状态",
+      "en": "System boundaries and state",
+      "zh_desc": "识别控制权、事实状态和运行边界分别由谁持有。",
+      "en_desc": "Locate control, factual state, and runtime boundaries."
+    },
+    {
+      "id": "context-memory",
+      "zh": "上下文与记忆",
+      "en": "Context and memory",
+      "zh_desc": "处理信息如何进入上下文、跨步骤保留并在需要时重新取回。",
+      "en_desc": "Control how information enters context, persists across steps, and is retrieved."
+    },
+    {
+      "id": "reasoning-action-runtime",
+      "zh": "推理与行动机制",
+      "en": "Reasoning and action mechanisms",
+      "zh_desc": "比较模型如何在思考、观察、代码和工具调用之间推进任务。",
+      "en_desc": "Compare how a model advances work through reasoning, observations, code, and tool calls."
+    },
+    {
+      "id": "planning-execution",
+      "zh": "规划、执行与写回",
+      "en": "Planning, execution, and write-back",
+      "zh_desc": "把意图变成可调度步骤，并控制中间表示与业务结果的写回。",
+      "en_desc": "Turn intent into schedulable steps and govern write-back of intermediate and business results."
+    },
+    {
+      "id": "collaboration-runtime",
+      "zh": "协作与运行时控制",
+      "en": "Collaboration and runtime control",
+      "zh_desc": "处理多参与者之间的交接、并发、职责和运行时组合。",
+      "en_desc": "Handle handoffs, concurrency, responsibility, and runtime composition across participants."
+    },
+    {
+      "id": "verification-governance",
+      "zh": "评测、反思与治理",
+      "en": "Evaluation, reflection, and governance",
+      "zh_desc": "定义谁来判断结果、如何回收反馈，以及什么条件下允许系统继续行动。",
+      "en_desc": "Define who judges results, how feedback returns, and when the system may continue acting."
+    },
+    {
+      "id": "pattern-method",
+      "zh": "模式方法与演进",
+      "en": "Pattern method and evolution",
+      "zh_desc": "记录模式如何从现场抽象出来，再回到具体系统接受检验。",
+      "en_desc": "Describe how patterns are abstracted from practice and tested again in concrete systems."
+    }
   ],
   "sources": {
     "liangbo-case": {
       "zh": "东方屹腾执行型 Agent 案例",
       "en": "Dongfang Yiteng execution-agent case",
+      "date": "2026-06-19",
       "zh_url": "/zh/cases/liangbo-execution-agent/",
       "en_url": "/cases/liangbo-execution-agent/"
     },
     "gis-case": {
       "zh": "玄宿科技 GIS 数据发布 Agent 案例",
       "en": "Xuanxu GIS publishing-agent case",
+      "date": "2026-07-30",
       "zh_url": "/zh/cases/xuanxu-gis-agent/",
       "en_url": "/cases/xuanxu-gis-agent/"
     },
     "mbse-case": {
       "zh": "AI4MBSE 建模 Agent 项目",
       "en": "AI4MBSE modeling-agent project",
+      "date": "2026-08-02",
       "zh_url": "/zh/cases/ark-mbse-agent/",
       "en_url": "/cases/ark-mbse-agent/"
     },
     "memory-workshop": {
-      "zh": "记忆模块第一次研讨会，2026-08-05",
-      "en": "First Memory workshop, 5 August 2026",
+      "zh": "记忆模块第一次研讨会",
+      "en": "First Memory workshop",
+      "date": "2026-08-05",
       "zh_url": "/zh/workshops/memory-2026-08-05/",
       "en_url": "/workshops/memory-2026-08-05/"
     },
     "action-workshop": {
-      "zh": "行动模块第一次研讨会，2026-08-06",
-      "en": "First Action workshop, 6 August 2026",
+      "zh": "行动模块第一次研讨会",
+      "en": "First Action workshop",
+      "date": "2026-08-06",
       "zh_url": "/zh/workshops/action-2026-08-06/",
       "en_url": "/workshops/action-2026-08-06/"
     },
     "reflection-workshop": {
-      "zh": "反思模块第一次研讨会，2026-08-12",
-      "en": "First Reflection workshop, 12 August 2026",
+      "zh": "反思模块第一次研讨会",
+      "en": "First Reflection workshop",
+      "date": "2026-08-12",
       "zh_url": "/zh/workshops/reflection-2026-08-12/",
       "en_url": "/workshops/reflection-2026-08-12/"
     },
     "perception-workshop": {
-      "zh": "感知模块第一次研讨会，2026-08-13",
-      "en": "First Perception workshop, 13 August 2026",
+      "zh": "感知模块第一次研讨会",
+      "en": "First Perception workshop",
+      "date": "2026-08-13",
       "zh_url": "/zh/workshops/perception-2026-08-13/",
       "en_url": "/workshops/perception-2026-08-13/"
     },
     "governance-workshop": {
-      "zh": "治理模块第一次研讨会，2026-08-18",
-      "en": "First Governance workshop, 18 August 2026",
+      "zh": "治理模块第一次研讨会",
+      "en": "First Governance workshop",
+      "date": "2026-08-18",
       "zh_url": "/zh/workshops/governance-2026-08-18/",
       "en_url": "/workshops/governance-2026-08-18/"
     },
     "collaboration-workshop": {
-      "zh": "协作模块第一次研讨会，2026-08-25",
-      "en": "First Collaboration workshop, 25 August 2026",
+      "zh": "协作模块第一次研讨会",
+      "en": "First Collaboration workshop",
+      "date": "2026-08-25",
       "zh_url": "/zh/workshops/collaboration-2026-08-25/",
       "en_url": "/workshops/collaboration-2026-08-25/"
+    },
+    "reasoning-workshop": {
+      "zh": "推理模块第一次研讨会",
+      "en": "First Reasoning workshop",
+      "date": "2026-08-26",
+      "zh_url": "/zh/workshops/reasoning-2026-08-26/",
+      "en_url": "/workshops/reasoning-2026-08-26/"
+    },
+    "react-paper": {
+      "external": true,
+      "zh": "ReAct：协同语言模型中的推理与行动，2022",
+      "en": "ReAct: Synergizing Reasoning and Acting in Language Models, 2022",
+      "zh_url": "https://arxiv.org/abs/2210.03629",
+      "en_url": "https://arxiv.org/abs/2210.03629"
+    },
+    "programmatic-tool-calling-docs": {
+      "external": true,
+      "zh": "Anthropic Programmatic Tool Calling 文档",
+      "en": "Anthropic Programmatic Tool Calling documentation",
+      "zh_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling",
+      "en_url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling"
+    },
+    "codeact-paper": {
+      "external": true,
+      "zh": "Executable Code Actions Elicit Better LLM Agents，ICML 2024",
+      "en": "Executable Code Actions Elicit Better LLM Agents, ICML 2024",
+      "zh_url": "https://arxiv.org/abs/2402.01030",
+      "en_url": "https://arxiv.org/abs/2402.01030"
     }
   },
   "concepts": [
@@ -298,6 +378,34 @@
       "status_zh": "研讨会概念", "status_en": "Workshop concept"
     },
     {
+      "slug": "unified-convergence-node", "group": "collaboration-runtime", "key": false,
+      "zh_label": "统一收敛节点", "en_label": "Unified Convergence Node",
+      "source": "reasoning-workshop", "origin_zh": "ADPS 内初始提出：张栋", "origin_en": "First proposed within ADPS by Dong Zhang",
+      "adps_zh": "ADPS 将多条推理分支的候选、证据、冲突处理和最终裁决整理为统一接口。", "adps_en": "ADPS organized candidates, evidence, conflict handling, and final adjudication from several reasoning branches into one interface.",
+      "status_zh": "推理模块概念", "status_en": "Reasoning-module concept"
+    },
+    {
+      "slug": "react-loop", "group": "reasoning-action-runtime", "key": false,
+      "zh_label": "ReAct 推理—行动循环", "en_label": "ReAct Reasoning-Action Loop",
+      "source": "react-paper", "origin_zh": "外部研究术语：Yao 等", "origin_en": "External research term: Yao et al.",
+      "adps_zh": "ADPS 将 ReAct 作为连接推理与行动的运行机制记录，并明确它不单独占用模式坐标。", "adps_en": "ADPS records ReAct as a runtime mechanism joining reasoning and action, without assigning it a separate pattern coordinate.",
+      "status_zh": "执行机制概念", "status_en": "Runtime-mechanism concept"
+    },
+    {
+      "slug": "programmatic-tool-calling", "group": "reasoning-action-runtime", "key": false,
+      "zh_label": "程序化工具调用", "en_label": "Programmatic Tool Calling",
+      "source": "programmatic-tool-calling-docs", "origin_zh": "外部工程术语：Anthropic", "origin_en": "External engineering term: Anthropic",
+      "adps_zh": "ADPS 将其放在 A1 工具调度与 A2 规划执行的交界，并补充与 ReAct、CodeAct 和 M5 的边界。", "adps_en": "ADPS places it between A1 Tool Dispatch and A2 Plan and Execute and distinguishes it from ReAct, CodeAct, and M5.",
+      "status_zh": "执行机制概念", "status_en": "Runtime-mechanism concept"
+    },
+    {
+      "slug": "code-as-action", "group": "reasoning-action-runtime", "key": false,
+      "zh_label": "CodeAct：代码即行动", "en_label": "CodeAct: Code as Action",
+      "source": "codeact-paper", "origin_zh": "外部研究术语：Wang 等", "origin_en": "External research term: Wang et al.",
+      "adps_zh": "ADPS 将一次性代码行动与经过认证、可跨任务复用的 M5 程序性记忆分开。", "adps_en": "ADPS separates one-run code actions from validated, reusable M5 Procedural Memory.",
+      "status_zh": "执行机制概念", "status_en": "Runtime-mechanism concept"
+    },
+    {
       "slug": "dual-feedback-clock", "group": "verification-governance", "key": false,
       "zh_label": "双反馈时钟", "en_label": "Dual Feedback Clock",
       "source": "reflection-workshop", "origin_zh": "ADPS 内初始提出：李佳奇；整理命名：ADPS", "origin_en": "First proposed within ADPS by Li Jiaqi; name formalized by ADPS",
@@ -338,6 +446,20 @@
       "source": "governance-workshop", "origin_zh": "ADPS 内初始提出：黄佳", "origin_en": "First proposed within ADPS by Jia Huang",
       "adps_zh": "ADPS 将单步动作合规与长程目标漂移分为两个同时运行的治理尺度。", "adps_en": "ADPS separates per-action compliance from long-horizon goal drift as two concurrent governance scales.",
       "status_zh": "跨模块治理概念", "status_en": "Cross-module governance concept"
+    },
+    {
+      "slug": "scenario-benchmark-contract", "group": "verification-governance", "key": false,
+      "zh_label": "场景–Benchmark 契约", "en_label": "Scenario–Benchmark Contract",
+      "source": "reasoning-workshop", "origin_zh": "ADPS 内初始提出：张栋", "origin_en": "First proposed within ADPS by Dong Zhang",
+      "adps_zh": "ADPS 将生产场景、样本来源、错误代价、验收阈值和组件版本整理为同一份能力契约。", "adps_en": "ADPS organized production scenarios, sample sources, error costs, acceptance thresholds, and component versions into one capability contract.",
+      "status_zh": "跨模块概念", "status_en": "Cross-module concept"
+    },
+    {
+      "slug": "business-evaluation-set", "group": "verification-governance", "key": false,
+      "zh_label": "业务评测集", "en_label": "Business Evaluation Set",
+      "source": "reasoning-workshop", "origin_zh": "ADPS 内初始提出：李娣娣", "origin_en": "First proposed within ADPS by Didi Li",
+      "adps_zh": "ADPS 将业务流程、代表场景、场景权重、指标口径和版本记录整理为业务层评测资产。", "adps_en": "ADPS organized business processes, representative scenarios, scenario weights, metric definitions, and versions into a business-level evaluation asset.",
+      "status_zh": "X2 下的跨模块概念", "status_en": "Cross-module concept under X2"
     }
   ]
 }

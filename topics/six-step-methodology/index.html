@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Six-Step Selection Method: From Business Problem to Pattern Composition · ADPS</title>
+    <meta name="description" content="The ADPS six-step method bounds task completion, tests a baseline, diagnoses constraints, forms candidate compositions, reviews seams and ablations, and issues a decision receipt with reopen conditions.">
+    <meta property="article:published_time" content="2026-09-04">
+    <meta property="og:image" content="https://adpsagent.com/images/topics/six-step-methodology-en-20260904.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/topics/six-step-methodology/">
+    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/six-step-methodology/">
+    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/six-step-methodology/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-six-step-methodology">
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/">Topics</a><a href="/founders/">Team</a>
+                <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a>
+                        <a href="/chronicle/">Chronicle</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/six-step-methodology/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+        <article class="essay">
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Patterns</a><span style="margin:0 0.45rem;">/</span>Composition tools<span style="margin:0 0.45rem;">/</span>Six-Step Selection Method</p>
+            <header class="publication-head">
+                <p class="publication-series">ADPS Design Method</p>
+                <h1>Six-Step Selection Method: From Business Problem to Pattern Composition</h1>
+                <p class="publication-deck">Observe how the simplest design fails before deciding which patterns deserve a place in the architecture. The method leaves an experiment record, seam contracts, and a decision receipt with explicit reopen conditions.</p>
+            </header>
+
+            <p>The <a href="/topics/pattern-selection-card/">Pattern Selection Card</a> is useful for bounding an early discussion. Before implementation or architecture review, a team needs a more exact account: where the current design fails, what crosses each pattern seam, which metric an added pattern changes, and what the added mechanism costs.</p>
+            <p>The six-step method arranges those decisions as an evidence chain. Each step leaves a structured artifact for the next. A change in workload, authority, model, tool, data, or interface reopens the decision.</p>
+
+            <figure>
+                <img src="/images/topics/six-step-methodology-en-20260904.svg" alt="Six-step selection method: bound completion, run the baseline, diagnose constraints, form candidates, review seams and test, then decide and set reopening conditions">
+                <figcaption>The six steps produce a Task Completion Contract, baseline evidence, a constraint diagnosis, candidate compositions, experiment records, and a decision receipt.</figcaption>
+            </figure>
+
+            <h2>What each step leaves behind</h2>
+            <table>
+                <thead><tr><th>Step</th><th>Engineering question</th><th>Artifact</th></tr></thead>
+                <tbody>
+                    <tr><td>1 Bound completion</td><td>Who initiated the task, what may change, and what external result counts as complete?</td><td>Task Completion Contract</td></tr>
+                    <tr><td>2 Run the baseline</td><td>How does the simplest plausible design fail on the same input and fault conditions?</td><td>Baseline evidence</td></tr>
+                    <tr><td>3 Diagnose constraints</td><td>Does the failure arise in information, state, reasoning, authority, tools, or a seam?</td><td>Constraint diagnosis</td></tr>
+                    <tr><td>4 Form candidates</td><td>Which pattern compositions address the observed deficits?</td><td>Candidate designs</td></tr>
+                    <tr><td>5 Review seams and test</td><td>Can the patterns connect correctly, and does each added mechanism improve the result?</td><td>Seam contracts, comparison, and ablation record</td></tr>
+                    <tr><td>6 Decide and reopen</td><td>Which design is adopted, which are rejected, and what change invalidates the result?</td><td>Decision receipt</td></tr>
+                </tbody>
+            </table>
+
+            <h2>Running example: a payroll plan collides with a settled fact</h2>
+            <p>Consider a payroll calculation. The formula service times out on its first call. The system then creates <code>payroll_plan v2</code> with a net amount of <code>9600</code>. A downstream component has already accepted that plan as a settled fact and issued a receipt. A late writer then attempts to change the same field to <code>9900</code>.</p>
+            <p>The <code>9900</code> value is a fault-injection probe. It tests whether an upstream component can overwrite a fact after it has crossed the handoff boundary. The design needs local recovery and single-writer ownership. Plan and Execute and Handoff Chain address those deficits separately, but a composition can still create two writers.</p>
+
+            <h2>1. Bound task completion</h2>
+            <p>Do not select patterns yet. Record the decision boundary:</p>
+            <ul>
+                <li>An uncommitted payroll plan may be revised after a formula-service timeout.</li>
+                <li>Once a downstream component accepts the settled fact, correction requires a new version and receipt. The value cannot be overwritten in place.</li>
+                <li>The exercise excludes bank settlement, distributed transactions, and cryptographic signing.</li>
+            </ul>
+            <p>The Task Completion Contract also records the principal, authoritative inputs, environment, authority boundary, external outcome, acceptance owner, and recovery rule. Every candidate is compared against the same contract.</p>
+
+            <h2>2. Run the smallest baseline</h2>
+            <p>The baseline may be one shared mutable object. The upstream writer stores <code>net_amount=9600</code>, and the downstream component treats it as committed. The late writer then changes the field to <code>9900</code>. The program reports no exception, but the business meaning has changed.</p>
+<pre><code>recovery_success = 0
+committed_fact_overwrites = 1
+settlement_receipts = 0</code></pre>
+            <p>These fields check local recovery, overwrites of committed facts, and version-bound receipts. They record what happened under the workload without prescribing a solution.</p>
+
+            <h2>3. Convert failures into constraint diagnoses</h2>
+            <table>
+                <thead><tr><th>Observed result</th><th>Constraint diagnosis</th><th>Evidence to retain</th></tr></thead>
+                <tbody>
+                    <tr><td>No plan remains ready for handoff after timeout</td><td>No local recovery boundary</td><td>Failed step, dependencies, plan version</td></tr>
+                    <tr><td><code>9600</code> is overwritten by <code>9900</code></td><td>No single owner for the settled fact</td><td>Before value, after value, writer, commit time</td></tr>
+                    <tr><td>The consumer cannot identify the accepted plan</td><td>No version-bound handoff receipt</td><td>Plan digest, version, consumer, receipt</td></tr>
+                </tbody>
+            </table>
+            <p>Every diagnosis points to a failed gate and evidence. The pattern catalog enters at Step 4, after the deficits are visible.</p>
+
+            <h2>4. Form a small candidate set</h2>
+            <ol>
+                <li><strong>Shared-object baseline.</strong> Add no pattern and retain it as the control.</li>
+                <li><strong>Handoff Chain only.</strong> Protect ownership and versioned receipts, without recovering the upstream timeout.</li>
+                <li><strong>Plan and Execute + Handoff Chain.</strong> Plan and Execute owns <code>payroll_plan</code> and may version it before commit. Handoff Chain exclusively produces <code>settled_net_amount</code>; correction after commit appends a new fact and receipt.</li>
+            </ol>
+            <p>Each selected pattern must address a diagnosis from Step 3. A pattern with no such link stays out of the candidate.</p>
+
+            <h2>5. Review seams before running the experiment</h2>
+            <p>Two valid patterns can still disagree at their boundary. The seam contract states what Plan and Execute produces, which version Handoff Chain consumes, who owns mutation rights, and what proves acceptance.</p>
+<pre><code class="language-yaml">artifact: payroll_plan
+producer: plan_and_execute
+consumer: handoff_chain
+owner: payroll_planner
+mutation_policy: versioned_before_commit
+version_field: plan_version
+acceptance: settlement_receipt</code></pre>
+            <p>If both patterns claim the right to mutate <code>net_amount</code>, reject the candidate before execution. Candidates that pass the seam check run against the same timeout workload as the baseline. Then remove Plan and Execute, Handoff Chain, or the versioned receipt one at a time. The ablation shows which mechanism earned its place.</p>
+
+            <h2>6. Record the decision and its reopen conditions</h2>
+            <p>The decision receipt names the adopted version, rejected candidates, metric changes, known costs, and accountable owner. The payroll example can provisionally adopt the split plan-and-fact composition. It reopens when the plan or fact schema changes, when correction semantics change, when authority or an interface is revised, or when production reveals a new failure mode.</p>
+
+            <h2>A compact record</h2>
+<pre><code class="language-yaml">decision:
+  id: payroll-plan-to-settlement
+  goal: recover calculation without rewriting committed facts
+  exclusions: [bank_settlement, distributed_transaction]
+
+baseline:
+  workload: formula-timeout-with-late-writer-v1
+  failed_gates: [recovery, single_writer, versioned_receipt]
+
+candidates:
+  - id: handoff-only
+    patterns: [C4]
+  - id: split-plan-and-fact
+    patterns: [A2, C4]
+
+experiments:
+  same_workload: true
+  seam_checks: [owner, mutation_policy, version, acceptance]
+  ablations: [remove_A2, remove_C4, remove_receipt]
+
+receipt:
+  decision: adopt_split_plan_and_fact
+  external_acceptance_passed: true
+  seam_tests_passed: true
+  reopen_on: [schema_change, authority_change, interface_change, new_failure]</code></pre>
+
+            <h2>When to use the full method</h2>
+            <p>Use the Pattern Selection Card for a short design discussion. Use all six steps before production, when an agent can write to another system, or when the composition contains state handoffs, loops, parallel branches, or delegation. A disposable prototype can shorten the experiment, but it still needs a task boundary and completion condition.</p>
+            <p>An existing reference architecture can shorten candidate generation. It does not remove the baseline or the seam experiment. The same pattern composition can behave differently under another workload, permission model, or interface.</p>
+
+            <h2>Review checklist</h2>
+            <ol>
+                <li>Do all six steps address the same architecture decision?</li>
+                <li>Do baseline and candidates use the same input and fault workload?</li>
+                <li>Does each diagnosis point to inspectable failure evidence?</li>
+                <li>Does every candidate pattern address an observed deficit?</li>
+                <li>Do consequential seams name the artifact, owner, version, mutation rule, and acceptance evidence?</li>
+                <li>Did the team compare against the baseline and remove patterns one at a time?</li>
+                <li>Does the decision receipt record costs, ownership, and reopen conditions?</li>
+            </ol>
+
+            <h2>Related material</h2>
+            <ul>
+                <li><a href="/patterns/">ADPS pattern catalog and selection framework</a></li>
+                <li><a href="/topics/pattern-selection-card/">Pattern Selection Card</a></li>
+                <li><a href="/topics/pattern-composition/">Common Pattern Compositions</a></li>
+            </ul>
+
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Six-Step Selection Method: From Business Problem to Pattern Composition</em>, ADPS Design Method, 4 September 2026.</p><p><a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">The payroll scenario demonstrates the selection and experiment method. Production designs require real workloads, authority, interfaces, and acceptance records from the target domain.</p></div>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">Chronicle</h2>
+  <dl>
+    <div><dt>Recorded source</dt><dd>ADPS topic study; evidence and references are listed in the article</dd></div>
+    <div><dt>First published on ADPS</dt><dd><time datetime="2026-09-04">2026-09-04</time></dd></div>
+  </dl>
+  <p><a href="/chronicle/#topics-six-step-methodology">View in the ADPS Chronicle</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+        </article>
+        <footer style="margin-top:4rem;padding-top:2rem;border-top:1px solid var(--color-rule);color:var(--color-text-faint);font-size:0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+    </main>
+    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

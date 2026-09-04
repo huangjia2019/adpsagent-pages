@@ -1050,8 +1050,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Abstraction-Reconstruction Loop",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-abstraction-reconstruction-loop"
   },
@@ -1061,10 +1061,21 @@
     "language": "en",
     "category": "concepts",
     "title": "Anchor, Ledger, Collection",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-anchor-ledger-collection"
+  },
+  {
+    "path": "concepts/business-evaluation-set/index.html",
+    "url": "/concepts/business-evaluation-set/",
+    "language": "en",
+    "category": "concepts",
+    "title": "Business Evaluation Set",
+    "source_text": "First Reasoning workshop ( 2026-08-26 )",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-business-evaluation-set"
   },
   {
     "path": "concepts/capability-certification-lifecycle/index.html",
@@ -1072,10 +1083,21 @@
     "language": "en",
     "category": "concepts",
     "title": "Capability Certification Lifecycle: How a Capability Earns Automatic Execution Rights",
-    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu GIS publishing-agent case ( 2026-07-30 )",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-capability-certification-lifecycle"
+  },
+  {
+    "path": "concepts/code-as-action/index.html",
+    "url": "/concepts/code-as-action/",
+    "language": "en",
+    "category": "concepts",
+    "title": "CodeAct: Code as Action",
+    "source_text": "Executable Code Actions Elicit Better LLM Agents, ICML 2024",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-code-as-action"
   },
   {
     "path": "concepts/context-contract/index.html",
@@ -1083,8 +1105,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Context Contract",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Perception workshop ( 2026-08-13 )",
+    "source_date": "2026-08-13",
     "first_public": "2026-08-26",
     "anchor": "concepts-context-contract"
   },
@@ -1094,7 +1116,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Control and Narrative Planes",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-control-narrative-dualism"
@@ -1105,7 +1127,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Disk Fact Plane: Connect Runtime Stages through External Contracts",
-    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu GIS publishing-agent case ( 2026-07-30 )",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-disk-fact-plane"
@@ -1116,8 +1138,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Dual Feedback Clock",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Reflection workshop ( 2026-08-12 )",
+    "source_date": "2026-08-12",
     "first_public": "2026-08-26",
     "anchor": "concepts-dual-feedback-clock"
   },
@@ -1127,8 +1149,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Dual-Scale Governance",
-    "source_text": "ADPS public page",
-    "source_date": null,
+    "source_text": "First Governance workshop ( 2026-08-18 )",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-dual-scale-governance"
   },
@@ -1138,8 +1160,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Durable Intent",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Governance workshop ( 2026-08-18 )",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-durable-intent"
   },
@@ -1149,7 +1171,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Execution vs Content Agents",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-execution-vs-content"
@@ -1160,7 +1182,7 @@
     "language": "en",
     "category": "concepts",
     "title": "External Acceptance Probe: Let the User-Side Result Decide Success",
-    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu GIS publishing-agent case ( 2026-07-30 )",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-external-acceptance-probe"
@@ -1171,7 +1193,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Failure-to-Rule Loop: Make an Incident Change the Next Run",
-    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu GIS publishing-agent case ( 2026-07-30 )",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-failure-to-rule-loop"
@@ -1182,8 +1204,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Handoff Contract",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-handoff-contract"
   },
@@ -1193,7 +1215,7 @@
     "language": "en",
     "category": "concepts",
     "title": "HITL Block and Resume",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-hitl-block-resume"
@@ -1204,8 +1226,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Hook Composition",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-hook-composition"
   },
@@ -1215,7 +1237,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Intent as Compilation",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-intent-as-compilation"
@@ -1226,8 +1248,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Judge Migration",
-    "source_text": "ADPS public page",
-    "source_date": null,
+    "source_text": "First Perception workshop ( 2026-08-13 )",
+    "source_date": "2026-08-13",
     "first_public": "2026-08-26",
     "anchor": "concepts-judge-migration"
   },
@@ -1237,8 +1259,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Knowledge Compilation",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Memory workshop ( 2026-08-05 )",
+    "source_date": "2026-08-05",
     "first_public": "2026-08-26",
     "anchor": "concepts-knowledge-compilation"
   },
@@ -1248,7 +1270,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Layered Memory L1/L2/L3",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-layered-memory"
@@ -1259,7 +1281,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Mechanical State Plane",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-mechanical-state-plane"
@@ -1270,7 +1292,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Memory Envelope",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-memory-envelope"
@@ -1281,7 +1303,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Activity Events and Timeline",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-observability-glass-dome"
@@ -1292,7 +1314,7 @@
     "language": "en",
     "category": "concepts",
     "title": "One-Diagram Unit of Work: Commit One Verifiable Modeling Increment",
-    "source_text": "AI4MBSE modeling agent project ; authored by Liangding Yuan.",
+    "source_text": "AI4MBSE modeling-agent project ( 2026-08-02 )",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-one-diagram-unit-of-work"
@@ -1303,7 +1325,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Responsibility Boundary Between the Orchestrator and MessageHandler",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-orchestrator"
@@ -1314,8 +1336,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Plan Compilation",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Action workshop ( 2026-08-06 )",
+    "source_date": "2026-08-06",
     "first_public": "2026-08-26",
     "anchor": "concepts-plan-compilation"
   },
@@ -1325,10 +1347,32 @@
     "language": "en",
     "category": "concepts",
     "title": "Probabilistic Core, Deterministic Shell",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-probabilistic-core-deterministic-shell"
+  },
+  {
+    "path": "concepts/programmatic-tool-calling/index.html",
+    "url": "/concepts/programmatic-tool-calling/",
+    "language": "en",
+    "category": "concepts",
+    "title": "Programmatic Tool Calling",
+    "source_text": "Anthropic Programmatic Tool Calling documentation",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-programmatic-tool-calling"
+  },
+  {
+    "path": "concepts/react-loop/index.html",
+    "url": "/concepts/react-loop/",
+    "language": "en",
+    "category": "concepts",
+    "title": "ReAct Reasoning-Action Loop",
+    "source_text": "ReAct: Synergizing Reasoning and Acting in Language Models, 2022",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-react-loop"
   },
   {
     "path": "concepts/reasoning-assetization/index.html",
@@ -1336,7 +1380,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Reasoning Assetization: Move Repeated Decisions into Runtime Assets",
-    "source_text": "Xuanxu Technology GIS publishing-agent case ; contributed by Yuke Xiong.",
+    "source_text": "Xuanxu GIS publishing-agent case ( 2026-07-30 )",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-reasoning-assetization"
@@ -1347,10 +1391,21 @@
     "language": "en",
     "category": "concepts",
     "title": "Resumable Clarification Job: Pause the Same Task When Information Is Missing",
-    "source_text": "AI4MBSE modeling agent project ; authored by Liangding Yuan.",
+    "source_text": "AI4MBSE modeling-agent project ( 2026-08-02 )",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-resumable-clarification-job"
+  },
+  {
+    "path": "concepts/scenario-benchmark-contract/index.html",
+    "url": "/concepts/scenario-benchmark-contract/",
+    "language": "en",
+    "category": "concepts",
+    "title": "Scenario–Benchmark Contract",
+    "source_text": "First Reasoning workshop ( 2026-08-26 )",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-scenario-benchmark-contract"
   },
   {
     "path": "concepts/scratchpad/index.html",
@@ -1358,7 +1413,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Scratchpad Board: A Short-Lived Work Surface for an Agent",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-scratchpad"
@@ -1369,7 +1424,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Structural Write-Back Gate: Check Engineering Invariants before Side Effects",
-    "source_text": "AI4MBSE modeling agent project ; authored by Liangding Yuan.",
+    "source_text": "AI4MBSE modeling-agent project ( 2026-08-02 )",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-structural-writeback-gate"
@@ -1380,7 +1435,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Task DAG and State Machine",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-task-dag-state-machine"
@@ -1391,8 +1446,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Three Collaboration Planes",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-three-collaboration-planes"
   },
@@ -1402,8 +1457,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Three Powers of Agency",
-    "source_text": "ADPS public page",
-    "source_date": null,
+    "source_text": "First Governance workshop ( 2026-08-18 )",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-three-powers-of-agency"
   },
@@ -1413,8 +1468,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Topology Governance Matrix",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-topology-governance-matrix"
   },
@@ -1424,8 +1479,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Topology Lowering",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Collaboration workshop ( 2026-08-25 )",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-topology-lowering"
   },
@@ -1435,10 +1490,21 @@
     "language": "en",
     "category": "concepts",
     "title": "Typed Intermediate Representation Chain: Narrow Language into Verifiable Structure",
-    "source_text": "AI4MBSE modeling agent project ; authored by Liangding Yuan.",
+    "source_text": "AI4MBSE modeling-agent project ( 2026-08-02 )",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-typed-ir-chain"
+  },
+  {
+    "path": "concepts/unified-convergence-node/index.html",
+    "url": "/concepts/unified-convergence-node/",
+    "language": "en",
+    "category": "concepts",
+    "title": "Unified Convergence Node",
+    "source_text": "First Reasoning workshop ( 2026-08-26 )",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-unified-convergence-node"
   },
   {
     "path": "concepts/unified-session-state/index.html",
@@ -1446,7 +1512,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Three Session-State Planes",
-    "source_text": "Dongfang Yiteng Execution Agent case report ; contributed by Bo Liang.",
+    "source_text": "Dongfang Yiteng execution-agent case ( 2026-06-19 )",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-unified-session-state"
@@ -1457,7 +1523,7 @@
     "language": "en",
     "category": "concepts",
     "title": "Vocabulary Equivalence Layer: Align Planning Terms with the Host Metamodel",
-    "source_text": "AI4MBSE modeling agent project ; authored by Liangding Yuan.",
+    "source_text": "AI4MBSE modeling-agent project ( 2026-08-02 )",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-vocabulary-equivalence-layer"
@@ -1468,8 +1534,8 @@
     "language": "en",
     "category": "concepts",
     "title": "Write-Conflict Domain",
-    "source_text": "ADPS White Paper workshops and pattern development.",
-    "source_date": null,
+    "source_text": "First Action workshop ( 2026-08-06 )",
+    "source_date": "2026-08-06",
     "first_public": "2026-08-26",
     "anchor": "concepts-write-conflict-domain"
   },
@@ -1479,8 +1545,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "抽象—还原往返",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-abstraction-reconstruction-loop"
   },
@@ -1490,10 +1556,21 @@
     "language": "zh",
     "category": "concepts",
     "title": "锚、账、集：叙事状态的数据结构",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-anchor-ledger-collection"
+  },
+  {
+    "path": "zh/concepts/business-evaluation-set/index.html",
+    "url": "/zh/concepts/business-evaluation-set/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "业务评测集",
+    "source_text": "推理模块第一次研讨会 （ 2026-08-26 ）",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-business-evaluation-set"
   },
   {
     "path": "zh/concepts/capability-certification-lifecycle/index.html",
@@ -1501,10 +1578,21 @@
     "language": "zh",
     "category": "concepts",
     "title": "能力认证生命周期：能力如何取得自动运行权",
-    "source_text": "玄宿科技 GIS 数据发布 Agent 案例报告 ；案例提供：熊钰柯（Yuke Xiong）。",
+    "source_text": "玄宿科技 GIS 数据发布 Agent 案例 （ 2026-07-30 ）",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-capability-certification-lifecycle"
+  },
+  {
+    "path": "zh/concepts/code-as-action/index.html",
+    "url": "/zh/concepts/code-as-action/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "CodeAct：代码即行动",
+    "source_text": "Executable Code Actions Elicit Better LLM Agents，ICML 2024",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-code-as-action"
   },
   {
     "path": "zh/concepts/context-contract/index.html",
@@ -1512,8 +1600,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "上下文合同",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "感知模块第一次研讨会 （ 2026-08-13 ）",
+    "source_date": "2026-08-13",
     "first_public": "2026-08-26",
     "anchor": "concepts-context-contract"
   },
@@ -1523,7 +1611,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "控制平面与叙事平面",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-control-narrative-dualism"
@@ -1534,7 +1622,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "磁盘事实平面：用外置合同连接运行阶段",
-    "source_text": "玄宿科技 GIS 数据发布 Agent 案例报告 ；案例提供：熊钰柯（Yuke Xiong）。",
+    "source_text": "玄宿科技 GIS 数据发布 Agent 案例 （ 2026-07-30 ）",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-disk-fact-plane"
@@ -1545,8 +1633,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "双反馈时钟",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "反思模块第一次研讨会 （ 2026-08-12 ）",
+    "source_date": "2026-08-12",
     "first_public": "2026-08-26",
     "anchor": "concepts-dual-feedback-clock"
   },
@@ -1556,8 +1644,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "双尺度治理",
-    "source_text": "ADPS 公开页面",
-    "source_date": null,
+    "source_text": "治理模块第一次研讨会 （ 2026-08-18 ）",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-dual-scale-governance"
   },
@@ -1567,8 +1655,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "持久化意图",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "治理模块第一次研讨会 （ 2026-08-18 ）",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-durable-intent"
   },
@@ -1578,7 +1666,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "执行型与内容生成型 Agent",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-execution-vs-content"
@@ -1589,7 +1677,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "外部验收探针：从用户一侧裁决成功",
-    "source_text": "玄宿科技 GIS 数据发布 Agent 案例报告 ；案例提供：熊钰柯（Yuke Xiong）。",
+    "source_text": "玄宿科技 GIS 数据发布 Agent 案例 （ 2026-07-30 ）",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-external-acceptance-probe"
@@ -1600,7 +1688,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "失败到规则闭环：让事故改变下一次运行",
-    "source_text": "玄宿科技 GIS 数据发布 Agent 案例报告 ；案例提供：熊钰柯（Yuke Xiong）。",
+    "source_text": "玄宿科技 GIS 数据发布 Agent 案例 （ 2026-07-30 ）",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-failure-to-rule-loop"
@@ -1611,8 +1699,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "交接合同",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-handoff-contract"
   },
@@ -1622,7 +1710,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "HITL：阻塞、审批与恢复",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-hitl-block-resume"
@@ -1633,8 +1721,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "Hook 组合",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-hook-composition"
   },
@@ -1644,7 +1732,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "意图编译：从自然语言到控制信号",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-intent-as-compilation"
@@ -1655,8 +1743,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "裁判迁移",
-    "source_text": "ADPS 公开页面",
-    "source_date": null,
+    "source_text": "感知模块第一次研讨会 （ 2026-08-13 ）",
+    "source_date": "2026-08-13",
     "first_public": "2026-08-26",
     "anchor": "concepts-judge-migration"
   },
@@ -1666,8 +1754,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "知识编译",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "记忆模块第一次研讨会 （ 2026-08-05 ）",
+    "source_date": "2026-08-05",
     "first_public": "2026-08-26",
     "anchor": "concepts-knowledge-compilation"
   },
@@ -1677,7 +1765,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "L1/L2/L3 分层记忆与经验召回",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-layered-memory"
@@ -1688,7 +1776,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "机械状态平面与 Provenance 来源坐标",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-mechanical-state-plane"
@@ -1699,7 +1787,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "记忆信封：推理步骤的上下文包",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-memory-envelope"
@@ -1710,7 +1798,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "可观测性：活动事件与执行时间线",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-observability-glass-dome"
@@ -1721,7 +1809,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "单图事务：一次提交一个可验证建模增量",
-    "source_text": "AI4MBSE 建模 Agent 项目 ；作者：袁良锭（Liangding Yuan）。",
+    "source_text": "AI4MBSE 建模 Agent 项目 （ 2026-08-02 ）",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-one-diagram-unit-of-work"
@@ -1732,7 +1820,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "Orchestrator 与 MessageHandler 的职责边界",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-orchestrator"
@@ -1743,8 +1831,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "Plan 编译",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "行动模块第一次研讨会 （ 2026-08-06 ）",
+    "source_date": "2026-08-06",
     "first_public": "2026-08-26",
     "anchor": "concepts-plan-compilation"
   },
@@ -1754,10 +1842,32 @@
     "language": "zh",
     "category": "concepts",
     "title": "概率内核与确定性外壳",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-probabilistic-core-deterministic-shell"
+  },
+  {
+    "path": "zh/concepts/programmatic-tool-calling/index.html",
+    "url": "/zh/concepts/programmatic-tool-calling/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "程序化工具调用",
+    "source_text": "Anthropic Programmatic Tool Calling 文档",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-programmatic-tool-calling"
+  },
+  {
+    "path": "zh/concepts/react-loop/index.html",
+    "url": "/zh/concepts/react-loop/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "ReAct 推理—行动循环",
+    "source_text": "ReAct：协同语言模型中的推理与行动，2022",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "concepts-react-loop"
   },
   {
     "path": "zh/concepts/reasoning-assetization/index.html",
@@ -1765,7 +1875,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "推理资产化：把低频判断固化为运行资产",
-    "source_text": "玄宿科技 GIS 数据发布 Agent 案例报告 ；案例提供：熊钰柯（Yuke Xiong）。",
+    "source_text": "玄宿科技 GIS 数据发布 Agent 案例 （ 2026-07-30 ）",
     "source_date": "2026-07-30",
     "first_public": "2026-08-02",
     "anchor": "concepts-reasoning-assetization"
@@ -1776,10 +1886,21 @@
     "language": "zh",
     "category": "concepts",
     "title": "可续跑澄清作业：缺信息时暂停同一任务",
-    "source_text": "AI4MBSE 建模 Agent 项目 ；作者：袁良锭（Liangding Yuan）。",
+    "source_text": "AI4MBSE 建模 Agent 项目 （ 2026-08-02 ）",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-resumable-clarification-job"
+  },
+  {
+    "path": "zh/concepts/scenario-benchmark-contract/index.html",
+    "url": "/zh/concepts/scenario-benchmark-contract/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "场景–Benchmark 契约",
+    "source_text": "推理模块第一次研讨会 （ 2026-08-26 ）",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-scenario-benchmark-contract"
   },
   {
     "path": "zh/concepts/scratchpad/index.html",
@@ -1787,7 +1908,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "草稿纸看板：Agent 的短期工作面",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-scratchpad"
@@ -1798,7 +1919,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "结构写回门禁：在副作用前检查工程不变量",
-    "source_text": "AI4MBSE 建模 Agent 项目 ；作者：袁良锭（Liangding Yuan）。",
+    "source_text": "AI4MBSE 建模 Agent 项目 （ 2026-08-02 ）",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-structural-writeback-gate"
@@ -1809,7 +1930,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "任务 DAG 与节点状态机",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-task-dag-state-machine"
@@ -1820,8 +1941,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "三类协作关系",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-three-collaboration-planes"
   },
@@ -1831,8 +1952,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "Agent 的三种权力",
-    "source_text": "ADPS 公开页面",
-    "source_date": null,
+    "source_text": "治理模块第一次研讨会 （ 2026-08-18 ）",
+    "source_date": "2026-08-18",
     "first_public": "2026-08-26",
     "anchor": "concepts-three-powers-of-agency"
   },
@@ -1842,8 +1963,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "拓扑治理矩阵",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-topology-governance-matrix"
   },
@@ -1853,8 +1974,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "拓扑降阶",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "协作模块第一次研讨会 （ 2026-08-25 ）",
+    "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "concepts-topology-lowering"
   },
@@ -1864,10 +1985,21 @@
     "language": "zh",
     "category": "concepts",
     "title": "类型化中间表示链：逐步收敛自然语言结构",
-    "source_text": "AI4MBSE 建模 Agent 项目 ；作者：袁良锭（Liangding Yuan）。",
+    "source_text": "AI4MBSE 建模 Agent 项目 （ 2026-08-02 ）",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-typed-ir-chain"
+  },
+  {
+    "path": "zh/concepts/unified-convergence-node/index.html",
+    "url": "/zh/concepts/unified-convergence-node/",
+    "language": "zh",
+    "category": "concepts",
+    "title": "统一收敛节点",
+    "source_text": "推理模块第一次研讨会 （ 2026-08-26 ）",
+    "source_date": "2026-08-26",
+    "first_public": "2026-09-04",
+    "anchor": "concepts-unified-convergence-node"
   },
   {
     "path": "zh/concepts/unified-session-state/index.html",
@@ -1875,7 +2007,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "会话统一状态：三个状态平面",
-    "source_text": "东方屹腾执行型 Agent 案例报告 ；案例提供：梁博（Bo Liang）。",
+    "source_text": "东方屹腾执行型 Agent 案例 （ 2026-06-19 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-06-21",
     "anchor": "concepts-unified-session-state"
@@ -1886,7 +2018,7 @@
     "language": "zh",
     "category": "concepts",
     "title": "词表等价层：对齐规划词表与宿主元模型",
-    "source_text": "AI4MBSE 建模 Agent 项目 ；作者：袁良锭（Liangding Yuan）。",
+    "source_text": "AI4MBSE 建模 Agent 项目 （ 2026-08-02 ）",
     "source_date": "2026-08-02",
     "first_public": "2026-08-02",
     "anchor": "concepts-vocabulary-equivalence-layer"
@@ -1897,8 +2029,8 @@
     "language": "zh",
     "category": "concepts",
     "title": "写入冲突域",
-    "source_text": "ADPS 白皮书研讨与模式整理。",
-    "source_date": null,
+    "source_text": "行动模块第一次研讨会 （ 2026-08-06 ）",
+    "source_date": "2026-08-06",
     "first_public": "2026-08-26",
     "anchor": "concepts-write-conflict-domain"
   },
@@ -2270,11 +2402,33 @@
     "url": "/topics/pattern-composition/",
     "language": "en",
     "category": "topics",
-    "title": "Composing Agent Patterns: From Individual Patterns to an Operable Design",
+    "title": "Common Pattern Compositions: From Task Terrain to Runtime Architecture",
     "source_text": "Workshop and case records cited in the article: Bo Liang execution-agent case ( 2026-06-19 ); DeerFlow Guardrail case ( 2026-08-18 ); DeerFlow Guardrail code and architecture evolution ( 2026-08-18 )",
     "source_date": "2026-06-19",
     "first_public": "2026-08-25",
     "anchor": "topics-pattern-composition"
+  },
+  {
+    "path": "topics/pattern-selection-card/index.html",
+    "url": "/topics/pattern-selection-card/",
+    "language": "en",
+    "category": "topics",
+    "title": "Pattern Selection Card: Turning Constraints into an Agent Design",
+    "source_text": "ADPS topic study; evidence and references are listed in the article",
+    "source_date": null,
+    "first_public": "2026-09-03",
+    "anchor": "topics-pattern-selection-card"
+  },
+  {
+    "path": "topics/six-step-methodology/index.html",
+    "url": "/topics/six-step-methodology/",
+    "language": "en",
+    "category": "topics",
+    "title": "Six-Step Selection Method: From Business Problem to Pattern Composition",
+    "source_text": "ADPS topic study; evidence and references are listed in the article",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "topics-six-step-methodology"
   },
   {
     "path": "zh/topics/abstraction-reconstruction/index.html",
@@ -2380,11 +2534,33 @@
     "url": "/zh/topics/pattern-composition/",
     "language": "zh",
     "category": "topics",
-    "title": "Agent 模式组合 · 从单个模式到可运行方案",
+    "title": "常见模式组合：从任务地形到可运行架构",
     "source_text": "正文关联的研讨会与案例： 梁博执行型 Agent 案例 （ 2026-06-19 ）； DeerFlow Guardrail 案例 （ 2026-08-18 ）； DeerFlow Guardrail 代码与架构演进 （ 2026-08-18 ）",
     "source_date": "2026-06-19",
     "first_public": "2026-08-25",
     "anchor": "topics-pattern-composition"
+  },
+  {
+    "path": "zh/topics/pattern-selection-card/index.html",
+    "url": "/zh/topics/pattern-selection-card/",
+    "language": "zh",
+    "category": "topics",
+    "title": "模式选型卡：从场景约束到 Agent 架构",
+    "source_text": "ADPS 专题研究；形成依据与参考资料见正文",
+    "source_date": null,
+    "first_public": "2026-09-03",
+    "anchor": "topics-pattern-selection-card"
+  },
+  {
+    "path": "zh/topics/six-step-methodology/index.html",
+    "url": "/zh/topics/six-step-methodology/",
+    "language": "zh",
+    "category": "topics",
+    "title": "六步选型法：从业务问题到模式组合",
+    "source_text": "ADPS 专题研究；形成依据与参考资料见正文",
+    "source_date": null,
+    "first_public": "2026-09-04",
+    "anchor": "topics-six-step-methodology"
   },
   {
     "path": "positions/evaluation-as-engineering/index.html",

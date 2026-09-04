@@ -119,6 +119,13 @@
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
             </div></div>
           <div class="sb-section">
+            <button class="sb-head" type="button">Pattern composition<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/topics/pattern-selection-card/">Pattern Selection Card</a>
+              <a href="/topics/six-step-methodology/">Six-Step Selection Method</a>
+              <a href="/topics/pattern-composition/">Common Pattern Compositions</a>
+            </div></div>
+          <div class="sb-section">
             <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
             <div class="sb-body">
               <a href="/cases/">Cases home</a>
@@ -154,6 +161,11 @@
       <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
       <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
     </details>
+    <details class="sb-concept-group"><summary>Reasoning and action mechanisms</summary>
+      <a href="/concepts/react-loop/">ReAct Reasoning-Action Loop</a>
+      <a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a>
+      <a href="/concepts/code-as-action/">CodeAct: Code as Action</a>
+    </details>
     <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
       <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
       <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
@@ -170,6 +182,7 @@
       <a href="/concepts/handoff-contract/">Handoff Contract</a>
       <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
       <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/unified-convergence-node/">Unified Convergence Node</a>
       <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
     </details>
     <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
@@ -182,6 +195,8 @@
       <a href="/concepts/durable-intent/">Durable Intent</a>
       <a href="/concepts/judge-migration/">Judge Migration</a>
       <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+      <a href="/concepts/scenario-benchmark-contract/">Scenario–Benchmark Contract</a>
+      <a href="/concepts/business-evaluation-set/">Business Evaluation Set</a>
     </details>
   </div>
 </div>
@@ -222,13 +237,11 @@
                 </tbody>
             </table>
             </div>
-            <p>The two axes form a 7 × 6 matrix. Twenty-seven cells currently hold core patterns. Empty cells prevent the catalog from inventing symmetry where no stable, independent structure has been established.</p>
-
             <figure class="matrix-figure">
                 <img src="/images/matrix-v08-en-20260825.png" alt="ADPS Agent Design Pattern Framework with 27 matrix patterns and three cross-cutting engineering planes">
                 <figcaption>The dual-axis matrix retains 27 cell-bound patterns. X1–X3 span every cognitive function and execution topology.</figcaption>
             </figure>
-            <p>Use the <a href="/topics/pattern-selection-card/">Pattern Selection Card</a> to move from a bounded scenario to a reviewable shortlist. See <a href="/topics/pattern-composition/">Composing Agent Patterns</a> for cross-cell runtime designs, the <a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a> for production state transitions, and <a href="/topics/human-agent-interaction/">Human-Agent Interaction</a> for authority and intervention boundaries.</p>
+            <p>Use the <a href="/topics/pattern-selection-card/">Pattern Selection Card</a> for an initial shortlist, then apply the <a href="/topics/six-step-methodology/">Six-Step Selection Method</a> to test the baseline, constraints, and seams before implementation. See <a href="/topics/pattern-composition/">Common Pattern Compositions</a> for cross-cell runtime designs, the <a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a> for production state transitions, and <a href="/topics/human-agent-interaction/">Human-Agent Interaction</a> for authority and intervention boundaries.</p>
 
             <p>The same matrix in text, for search and citation.</p>
             <div class="wp-scroll">
@@ -245,18 +258,20 @@
                 </tbody>
             </table>
             </div>
-            <p style="font-size: 0.9rem; color: var(--color-text-muted);">M2 RAG occupies the single Memory × Chain cell; query-evaluate-rewrite iterations are an implementation of the same pattern, not a second coordinate.</p>
+            <p>You will notice several empty cells in the matrix. At those intersections, ADPS has not yet found a stable structure that warrants its own name, or an existing pattern already explains the main engineering problem.</p>
+            <p>A pattern implementation may use several topologies; the matrix marks its primary coordinate. M2 RAG, for example, sits at Memory × Chain because evidence moves through a retrieval pipeline. A production implementation may also loop through query, evaluation, rewrite, and retrieval, or navigate a hierarchical index. These remain implementation choices within M2, whose identifying coordinate is Memory × Chain.</p>
 
             <h2>Cross-cutting engineering planes</h2>
             <p>The dual axis locates patterns. Cross-cutting planes supply shared infrastructure without adding matrix columns or replacing the two-axis model.</p>
             <div class="wp-scroll"><table class="wp-table"><thead><tr><th>Plane</th><th>Scope</th><th>Key artifacts</th></tr></thead><tbody><tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Every function, topology, and lifecycle stage</td><td>Events, causality, versions, state deltas, external receipts</td></tr><tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evaluation &amp; Validation</strong></a></td><td>Specifications, models, tools, skills, policies, and composed systems</td><td>Cases, graders, regression, business acceptance, release gates</td></tr><tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Users, agents, workloads, runs, delegation chains, resources</td><td>Principals, delegation, allow / deny / ask, short-lived credentials</td></tr></tbody></table></div>
-            <p>Loop remains an execution topology. ReAct-style runtime loops use that topology and depend on the planes for runtime evidence, capability validation, and identity and authority.</p>
+            <p>Loop remains an execution topology. Runtime mechanisms such as <a href="/concepts/react-loop/">ReAct</a> can use it, with the engineering planes supplying evidence, validation, identity, and authority.</p>
 
             <h2>Related design topics</h2>
             <ul>
                 <li><a href="/topics/pattern-selection-card/"><strong>Pattern Selection Card</strong></a>: scenario boundary, cognitive needs, topology, candidate patterns, tradeoffs, and architecture sketch.</li>
+                <li><a href="/topics/six-step-methodology/"><strong>Six-Step Selection Method</strong></a>: baseline evidence, constraint diagnosis, seam tests, ablations, and a decision receipt.</li>
                 <li><a href="/topics/agent-design-lifecycle/"><strong>Agent Design Lifecycle</strong></a>: registration, design, validation, operation, revalidation, promotion, demotion, and retirement.</li>
-                <li><a href="/topics/pattern-composition/"><strong>Composing Agent Patterns</strong></a>: core paths, guards, feedback, and cross-cutting planes.</li>
+                <li><a href="/topics/pattern-composition/"><strong>Common Pattern Compositions</strong></a>: connect complete tasks, state handoffs, and control boundaries into runtime architectures.</li>
                 <li><a href="/topics/human-agent-interaction/"><strong>Human-Agent Interaction</strong></a>: co-editing, gated action, supervised operation, and bounded delegation.</li>
             </ul>
 
@@ -348,25 +363,25 @@
             <p>In choreography, each participant subscribes to defined events, applies local rules, and publishes new events. No component owns the complete plan. Adding a participant changes event contracts and subscriptions instead of a central call graph, but the system still needs explicit completion, timeout, causal trace, and compensation rules.</p>
             <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. A core column must cut across several cognitive functions; current public agent-engineering evidence for choreography remains concentrated in collaboration. X1 Observability is essential because decentralized execution still needs causal trace, timeout, compensation, and a defined completion owner. Hybrid designs can keep event-driven collaboration while retaining explicit coordination at critical commits. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
 
-            <h2>Three starter compositions</h2>
-            <p>These three combinations provide compact starting points. Any agent with write permission needs an explicit authority boundary and an evidence chain.</p>
-            <ul style="margin: 0.5rem 0 1.5rem 1.5rem; list-style: disc;">
-                <li style="margin-bottom: 0.6rem;"><strong>Knowledge-QA agent.</strong> P1 Context Triage + M2 RAG + R2 Complexity-Based Routing + X1 Observability. Boundary: RAG provides business evidence, not mechanical ground truth; every citation must be traceable.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Execution-type SaaS agent.</strong> P1 + M2 RAG + M3 Progress Tracking + R2 + A1 Tool Dispatch + A2 Plan-and-Execute + G1 Approval Gate + G2 Blast-Radius Control + X1 Observability. Boundary: mechanical state like employee_id, amount, approval_id must come from tools and SessionState, never synthesized by the model on the spot.</li>
-                <li style="margin-bottom: 0.6rem;"><strong>Multi-agent research or review system.</strong> P3 Progressive Discovery + M2 RAG + R3 Parallel Exploration + C1 Hierarchical Delegation + C2 Fan-out Gather + C3 Adversarial Review + X1 Observability. Boundary: add participants only when task scale, role separation, or independent review justifies the coordination cost.</li>
-            </ul>
-
-            <h2>Methodology</h2>
-            <p>Use the <strong>six-step selection method</strong> to reduce a business problem to three to seven patterns. Add other patterns only when a concrete requirement or failure mode calls for them.</p>
-            <ul style="margin: 0.5rem 0 1rem 1.5rem; list-style: decimal;">
-                <li>Bound — write a one-page scope statement: what's in, what's out.</li>
-                <li>Map — score each of the seven functions None / Light / Heavy to get a capability vector.</li>
-                <li>Select — fix the primary topology by the main constraint.</li>
-                <li>Pick — choose 5–7 patterns on the matrix by coordinate.</li>
-                <li>Assess — validate the combination on accuracy, latency, and cost.</li>
-                <li>Build — begin with one controlled loop, then extend memory, reflection, collaboration, and lifecycle controls as the task requires.</li>
-            </ul>
-            <p>The <strong>Pattern Selection Card</strong> records three decisions: ASSESS identifies the required cognitive functions, ROUTE selects a topology from the operating constraints, and SELECT lists the patterns at those intersections. The result is a reviewable architecture shortlist.</p>
+            <h2 id="composition-tools">Pattern composition</h2>
+            <section class="pattern-tools-feature">
+              <div class="pattern-tools-copy">
+                <p>The matrix locates individual mechanisms. Composition tools connect them to one complete business task.</p>
+                <ol class="pattern-tool-list">
+                  <li><h3><a href="/topics/pattern-selection-card/">Pattern Selection Card</a></h3><p>Record the scenario boundary, failure cost, cognitive needs, topology, and candidate patterns on one page for the first design discussion.</p></li>
+                  <li><h3><a href="/topics/six-step-methodology/">Six-Step Selection Method</a></h3><p>Run the baseline and candidate designs against the same workload, inspect their seams, perform ablations, and issue a decision receipt with reopen conditions.</p></li>
+                  <li><h3><a href="/topics/pattern-composition/">Common Pattern Compositions</a></h3><p>Review an execution-agent reference architecture and starting compositions for knowledge work, long-running research, content production, coding, business transactions, and multi-agent work.</p></li>
+                </ol>
+              </div>
+              <figure class="pattern-tools-visual">
+                <a href="/topics/pattern-selection-card/"><img src="/images/topics/pattern-selection-card-en-20260903.png" alt="ADPS Pattern Selection Card with scenario boundary, cognitive needs, topology, candidate patterns, tradeoffs, and architecture sketch"></a>
+                <figcaption>The card records the architecture hypothesis; the six-step method tests it against a baseline.</figcaption>
+              </figure>
+            </section>
+            <h3>Execution-agent reference architecture</h3>
+            <p>An execution agent connects goals and evidence, plans and tools, authority and external acceptance. P1, M2, A1/A2, G1/G2, and X1 are common starting points. Add M3 when work crosses sessions, A4 around consequential writes, and F1 or C3 when the result needs independent review. See <a href="/topics/pattern-composition/">Common Pattern Compositions</a> for the full structures and boundaries.</p>
+            <h3>Three common runtime mechanisms</h3>
+            <p><a href="/concepts/react-loop/">ReAct</a> lets the model choose its next action after each observation, which suits tasks whose path is not known in advance. <a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a> lets the model write a bounded program that loops over, runs, or filters results from registered tools. It suits tool-heavy steps whose local control flow can be expressed as code. <a href="/concepts/code-as-action/">CodeAct</a> provides a broader executable-code action space for computation, libraries, and currently available capabilities. All three are runtime-mechanism concepts and have no separate matrix coordinates.</p>
 
             <h2>Workshop records</h2>
             <p><strong><a href="/workshops/collaboration-2026-08-25/">First Collaboration Module Workshop</a> · 25 August 2026.</strong> Hosts: Haili Zhang and Jia Huang. Core workshop guests: Dong Zhang and Wei Wang. The session covered topology lowering, delegated authority, cross-session conflicts, Handoff Contracts, Hook Composition, three collaboration planes, Agent OS, and abstraction-reconstruction.</p>

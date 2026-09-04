@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Composing Agent Patterns: From Individual Patterns to an Operable Design · ADPS</title>
-    <meta name="description" content="Compose agent patterns around task boundaries, state handoffs, governance guards, evidence, and failure policy, with a complete payroll change example.">
+    <title>Common Pattern Compositions: From Task Terrain to Runtime Architecture · ADPS</title>
+    <meta name="description" content="Compose agent patterns from a complete task, four continuity lines, and three fit tests, with reference architectures for knowledge work, long-running work, transactions, coding, and multi-agent systems.">
     <meta property="article:published_time" content="2026-08-25">
+    <meta property="article:modified_time" content="2026-09-04">
     <meta property="og:image" content="https://adpsagent.com/images/topics/pattern-composition-v02-en-20260825.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://adpsagent.com/topics/pattern-composition/">
@@ -21,7 +22,7 @@
         <div class="container">
             <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
             <nav class="site-nav" aria-label="Main navigation">
-                <a href="/patterns/">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/" aria-current="page">Topics</a><a href="/founders/">Team</a>
+                <a href="/patterns/" aria-current="page">Patterns</a><a href="/cases/">Cases</a><a href="/workshops/">Workshops</a><a href="/topics/">Topics</a><a href="/founders/">Team</a>
                 <details class="site-nav-more"><summary>More</summary><div class="site-nav-more-menu"><a href="/concepts/">Concepts</a><a href="/research/">Research</a><a href="/positions/">Technical positions</a>
                         <a href="/chronicle/">Chronicle</a><a href="/news/">News</a><a href="/join/">Join</a></div></details>
                 <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a><a href="/zh/topics/pattern-composition/" class="lang-switch">中文</a>
@@ -31,22 +32,34 @@
 
     <main class="container content">
         <article class="essay">
-            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Pattern Composition</p>
+            <p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Patterns</a><span style="margin:0 0.45rem;">/</span>Composition tools<span style="margin:0 0.45rem;">/</span>Common Pattern Compositions</p>
             <header class="publication-head">
-                <p class="publication-series">ADPS Topic Research</p>
-                <h1>Composing Agent Patterns: From Individual Patterns to an Operable Design</h1>
-                <p class="publication-deck">Connect local mechanisms into a stateful runtime path with guards, evidence, and recovery.</p>
+                <p class="publication-series">ADPS Design Method</p>
+                <h1>Common Pattern Compositions: From Task Terrain to Runtime Architecture</h1>
+                <p class="publication-deck">Patterns supply local mechanisms. The task terrain determines how they connect and whether task, state, authority, and evidence remain continuous from request to external acceptance.</p>
             </header>
 
-            <p>The dual-axis framework locates a pattern by cognitive function and execution topology. A working system needs another design step: connecting several patterns into a path that can run, fail, and recover.</p>
-            <p>A composition is a directed relationship graph. Its nodes are patterns or business steps. Its edges carry data, state, authorization, and evidence. The matrix remains two-dimensional; composition is recorded outside it as a runtime graph. More patterns do not strengthen a design by themselves. The interfaces must be explicit, including who stops, rolls back, or takes over when a step fails.</p>
+            <p>The dual-axis framework is a map of patterns. Applications, data, people, policy, waiting states, and acceptance points make up the task terrain. Two teams can choose the same patterns and still produce different architectures because they place facts and responsibility differently.</p>
+            <p>A composition is a directed task graph. Its nodes are business activities or patterns. Its edges carry task identity, business state, authority, and completion evidence. For every consequential edge, the design names the producer, consumer, mutation rights, and the owner of stop, compensation, or takeover.</p>
 
             <figure>
                 <img src="/images/topics/pattern-composition-v02-en-20260825.png" alt="Agent pattern composition for a payroll change with a core path, guards, feedback, and cross-cutting planes">
                 <figcaption>A payroll change example. The core path performs the business action, guards protect consequential steps, feedback handles failures, and the cross-cutting planes carry system-wide evidence and boundaries.</figcaption>
             </figure>
 
-            <h2>Start with a task boundary</h2>
+            <h2>Keep four continuity lines intact</h2>
+            <table>
+                <thead><tr><th>Line</th><th>What must remain continuous</th><th>What a break looks like</th></tr></thead>
+                <tbody>
+                    <tr><td>Task</td><td>One task identity, original goal, non-goals, completion criteria, and current step</td><td>Local work expands while the promised deliverable stops advancing</td></tr>
+                    <tr><td>State</td><td>Business facts, work progress, and model narrative have owners, versions, and mutation rules</td><td>An upstream plan overwrites a committed fact, or recovery repeats an external effect</td></tr>
+                    <tr><td>Authority</td><td>Principal, delegated tools and resources, expiry, approval, and revocation conditions</td><td>An approval covers one action, but execution changes its arguments, tool version, or resource</td></tr>
+                    <tr><td>Evidence</td><td>Input provenance, model and policy versions, state deltas, tool receipts, and external outcomes</td><td>The system declares completion without evidence that the external result occurred</td></tr>
+                </tbody>
+            </table>
+            <p>Review fit at three levels. <strong>Task-pattern fit</strong> asks whether each pattern addresses an observed failure. <strong>Pattern-pattern fit</strong> checks the artifact, owner, and acceptance rule at each seam. <strong>Architecture-workload fit</strong> compares the composition with the smallest baseline under the same input, faults, and authority.</p>
+
+            <h2>Draw the complete task first</h2>
             <p>Define one business change that can be decided, approved, executed, accepted, and compensated independently. This boundary is more concrete than “build a payroll agent” and more complete than “call a write API.” Before choosing patterns, record the following:</p>
             <table>
                 <thead><tr><th>Object</th><th>What must be explicit</th></tr></thead>
@@ -130,6 +143,43 @@ failure_policy:
             <p>The <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail case</a> shows a different composition. Tools are filtered during assembly, then pass through providers, policy decisions, and deterministic hooks at runtime. The path separates which tools the agent can see, whether a particular call may execute, and where enforcement evidence is emitted.</p>
             <p>The business domain differs from payroll, but the review method remains the same. Follow a tool from registration through exposure, selection, admission, execution, and recording instead of placing every control in one prompt or middleware component.</p>
 
+            <h2>An execution-agent reference architecture</h2>
+            <p>A task that changes an external system usually passes through goal, evidence, plan, commitment, and acceptance. P1 turns the request into a Goal Contract. M2 and structured queries supply policy evidence and mechanical state. A2 owns the plan and step state. A1 binds the current Intent to a tool. G1, G2, and A4 handle authorization, impact limits, and state checks around the commit. X1 links the state delta and external receipt to the run.</p>
+            <p>Adapt this starting architecture to the task. Read-only answering may not need an approval gate. Cross-session work needs M3. Parallel writes add C5 and write-conflict checks. Independent review adds F1 or C3. Each addition should trace to a failure record or business constraint.</p>
+
+            <figure>
+                <img src="/images/topics/common-pattern-compositions-en-20260904.svg" alt="Four common pattern compositions for knowledge answering, long-running work, transactions, and multi-agent research">
+                <figcaption>Four frequent starting points. The figure shows primary paths; cross-cutting planes and governance controls enter according to data, authority, and side-effect risk.</figcaption>
+            </figure>
+
+            <h2>Starting points for eight application types</h2>
+            <table>
+                <thead><tr><th>Application</th><th>Starting composition</th><th>When to add more</th><th>First boundary to protect</th></tr></thead>
+                <tbody>
+                    <tr><td>Enterprise knowledge Q&amp;A</td><td>P1 + M2 + R2 + X1</td><td>Add P4 for document and chart evidence; F1 or C3 for independent review of consequential claims</td><td>Claims resolve to source evidence; balances, inventory, and other mechanical facts use structured queries</td></tr>
+                    <tr><td>Long-running research</td><td>P1 + P3 + M3 + A2 + M4 + X1</td><td>Add R3/C2 for independent research paths and F1 for review</td><td>Checkpoints retain the goal, accepted facts, open questions, and next action without promoting a guess to a durable fact</td></tr>
+                    <tr><td>Document production</td><td>P1 + M2 + A3 + F1 + X2</td><td>Add M3 across chapters or sessions and C3 for role-independent review</td><td>Facts, citations, and revision comments keep distinct provenance; reviewer and generator do not inherit one unchecked premise</td></tr>
+                    <tr><td>Code maintenance</td><td>P3 + A1 + A2 + A4 + F1 + X1/X2</td><td>Add C2/C5 for parallel changes and M3 for extended jobs</td><td>Tests, builds, and runtime checks provide acceptance; workspaces, credentials, and write scopes remain isolated</td></tr>
+                    <tr><td>Execution-oriented SaaS</td><td>P1 + M2 + M3 + A1/A2 + G1/G2 + A4 + X1</td><td>Add M4/F2 for reusable failure lessons and C4 for cross-role handoffs</td><td>Fields such as employee_id, amount, and approval_id come from business systems; approval binds to a concrete Intent</td></tr>
+                    <tr><td>Batch or GIS publishing</td><td>A2 + C2 + A4 + G2 + M3 + X1</td><td>Add P4 for heterogeneous input and M5 after a publication procedure earns reuse</td><td>Each batch, diagram, or dataset has its own receipt; partial failure does not replay accepted objects</td></tr>
+                    <tr><td>Multi-agent research and review</td><td>P3 + R3 + C1/C2 + C3 + X1/X2</td><td>Add C4/C5 across contexts and M2 for shared evidence</td><td>Branches keep independent assumptions and evidence; aggregation and final adjudication have named owners</td></tr>
+                    <tr><td>Event-driven cross-system work</td><td>C6 candidate + C4 + G2 + X1</td><td>Use when participants subscribe independently, act under local rules, and publish new events</td><td>Define event contracts, causal identity, timeout compensation, and final completion ownership; a central owner of the full plan remains orchestration</td></tr>
+                </tbody>
+            </table>
+
+            <h2>ReAct, Programmatic Tool Calling, and CodeAct</h2>
+            <p>All three connect reasoning to action at runtime, with different control rhythms and action spaces.</p>
+            <table>
+                <thead><tr><th>Mechanism</th><th>How one run advances</th><th>Best fit</th><th>Boundary</th></tr></thead>
+                <tbody>
+                    <tr><td><a href="/concepts/react-loop/"><strong>ReAct</strong></a></td><td>The model emits reasoning and an action; the environment returns an observation; the model chooses the next action</td><td>The path cannot be fixed in advance and each observation may change the next choice</td><td>Turns, budget, stop conditions, tool authority, and observation provenance</td></tr>
+                    <tr><td><a href="/concepts/programmatic-tool-calling/"><strong>Programmatic Tool Calling</strong></a></td><td>The model writes a short program that loops over, runs, or filters registered tools in a sandbox, returning only the required result</td><td>Many similar calls, large intermediate results, and local control flow that is clearer as code</td><td>Callable-tool allowlist, sandbox, resource limits, timeout, network egress, and complete trace</td></tr>
+                    <tr><td><a href="/concepts/code-as-action/"><strong>CodeAct</strong></a></td><td>The model uses executable code as its action language for computation, libraries, and currently available capabilities</td><td>Data processing, analysis, and work that needs dynamic helper functions</td><td>Isolation of files, processes, networks, resources, and credentials</td></tr>
+                    <tr><td><a href="/patterns/m5-procedural-memory/"><strong>M5 Procedural Memory</strong></a></td><td>A tested method is named, versioned, and admitted for reuse across tasks</td><td>A method has repeatedly earned reuse as a durable capability</td><td>Admission review, dependency versions, authority, provenance, and recertification after change</td></tr>
+                </tbody>
+            </table>
+            <p>ADPS catalogues ReAct, Programmatic Tool Calling, and CodeAct as runtime-mechanism concepts without separate pattern IDs. ReAct commonly uses Loop. Programmatic Tool Calling sits between A1 Tool Dispatch and A2 Plan and Execute. CodeAct provides a broader code action space. A generated procedure enters M5 Procedural Memory only after validation, naming, versioning, and admission for reuse across tasks.</p>
+
             <h2>Common composition problems</h2>
             <ul>
                 <li><strong>Pattern shopping:</strong> the team selects fashionable patterns first and looks for a problem later.</li>
@@ -158,6 +208,7 @@ failure_policy:
             <ul>
                 <li><a href="/patterns/">ADPS Pattern Catalogue and Selection Framework</a></li>
                 <li><a href="/topics/pattern-selection-card/">Pattern Selection Card</a></li>
+                <li><a href="/topics/six-step-methodology/">Six-Step Selection Method</a></li>
                 <li><a href="/topics/agent-design-lifecycle/">Agent Design Lifecycle</a></li>
                 <li><a href="/topics/human-agent-interaction/">Human-Agent Interaction</a></li>
                 <li><a href="/cases/liangbo-execution-agent/">Bo Liang execution-agent case</a></li>
@@ -166,7 +217,7 @@ failure_policy:
                 <li><a href="/patterns/governance/">Governance overview</a></li>
             </ul>
 
-            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Composing Agent Patterns: From Individual Patterns to an Operable Design</em>, ADPS Topic Research, 2026-08-25.</p><p><a href="/topics/">Topic index</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">The payroll change illustrates a composition structure. Named practices remain governed by their case pages and source material.</p></div>
+            <div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Common Pattern Compositions: From Task Terrain to Runtime Architecture</em>, ADPS Design Method, 25 August 2026; revised 4 September 2026.</p><p><a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">The payroll change and starter compositions explain the method. Production designs require real state, authority, workloads, and acceptance evidence from the target system.</p></div>
 <!-- PAGE-CHRONICLE:START -->
 <section class="page-chronicle" aria-labelledby="page-chronicle-title">
   <h2 id="page-chronicle-title">Chronicle</h2>
