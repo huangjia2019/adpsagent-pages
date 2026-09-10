@@ -118,7 +118,7 @@ function renderTabs() {
  if(identity?.moderator)modes.push("review");
  if(mode==="review"&&!identity?.moderator)mode="article";
  for(const value of modes) {
-  const b=el("button",{type:"button",role:"tab","aria-selected":String(mode===value),text:T[value],
+  const b=el("button",{type:"button",role:"tab","aria-selected":String(mode===value),text:workspace&&value==="article"?(zh?"公开讨论":"Public discussion"):T[value],
     onclick:()=>{mode=value;composing=false;editing=null;renderTabs();load(true);}});
   tabs.append(b);
  }
