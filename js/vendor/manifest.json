@@ -1,0 +1,14 @@
+{
+  "@supabase/supabase-js": {
+    "version": "2.116.0",
+    "url": "/js/vendor/supabase-2.116.0.js",
+    "integrity": "sha384-iLddHTLokph6Omwoyid4XKxHaWa6w41BnoEj0q5oOrzmYPpHIKt1wyjReA7s//pP",
+    "npm_integrity": "sha512-YyWmKXt2NspV9iO8FPnlswUFJIRnrLd3oTCb+3ZyYRuKZtBH0xCUDgnUqoyA0fGUxpM/UhfwDjYf/dht/9bp7g=="
+  },
+  "lucide": {
+    "version": "1.44.0",
+    "url": "/js/vendor/lucide-1.44.0.js",
+    "integrity": "sha384-kD99911U851z1bpAnYjOX2pi++mAqTsBllNg3SEAFMc9GFF2RPfz7E0mtJ0B+5fC",
+    "npm_integrity": "sha512-d30uv1R6AOLBddzVMeeSk6aDAhobqh7nFxMsXuWHyhMmxKRhpLivikbfkmgzbWsn8WTLQIceGMlFY4g3gn4reg=="
+  }
+}
