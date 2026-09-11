@@ -1,0 +1,160 @@
+/* Change log: paragraph-level revision records. Palette inherited from style.css. */
+.change-entry {
+    margin: 2.5rem 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-rule);
+}
+.change-entry-head h2 {
+    margin: 0.3rem 0 0.45rem;
+    font-size: 1.15rem;
+    line-height: 1.45;
+}
+.change-date {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin: 0;
+    font-size: 0.82rem;
+    color: var(--color-text-faint);
+}
+.change-commit {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    padding: 0.08rem 0.4rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 3px;
+    color: var(--color-text-muted);
+}
+.change-count {
+    margin: 0;
+    font-size: 0.84rem;
+    color: var(--color-text-muted);
+}
+.change-credit {
+    margin: 0.6rem 0 0;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.86rem;
+    background: var(--color-badge-bg);
+    border-left: 3px solid var(--color-badge);
+    border-radius: 0 3px 3px 0;
+}
+.change-credit-note {
+    color: var(--color-text-muted);
+}
+.change-page {
+    margin: 1.35rem 0 0;
+    padding-left: 0.95rem;
+    border-left: 2px solid var(--color-rule);
+}
+.change-page h3 {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+.change-tallies {
+    margin: 0.3rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+.change-tally {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    background: var(--color-quote-bg);
+    color: var(--color-text-muted);
+}
+.change-tally.is-added { background: #e7f4ec; color: #1f6b40; }
+.change-tally.is-removed { background: #fbecec; color: #9b2c2c; }
+.change-tally.is-changed { background: #eaf0f7; color: #1e5a8a; }
+.change-tally.is-page { background: var(--color-badge-bg); color: #8a6420; }
+
+.change-diff {
+    margin-top: 0.6rem;
+}
+.change-diff > summary {
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--color-link);
+}
+.change-diff > summary:hover { color: var(--color-link-hover); }
+.change-diff ul {
+    list-style: none;
+    margin: 0.7rem 0 0;
+    padding: 0;
+}
+.change-block {
+    margin: 0 0 0.55rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 3px;
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+.change-block p { margin: 0; }
+.change-block.is-added { background: #f1f9f4; border-left: 3px solid #3f9d6a; }
+.change-block.is-removed { background: #fdf2f2; border-left: 3px solid #c05a5a; }
+.change-block.is-removed p { color: var(--color-text-muted); }
+.change-block.is-changed { background: var(--color-quote-bg); border-left: 3px solid #4a7fb0; }
+.change-before { color: var(--color-text-muted); margin-bottom: 0.35rem !important; }
+.change-block ins {
+    background: #d8f0e2;
+    text-decoration: none;
+    border-radius: 2px;
+    padding: 0 0.1em;
+}
+.change-block del {
+    background: #f7dcdc;
+    border-radius: 2px;
+    padding: 0 0.1em;
+}
+.change-more,
+.change-footnote {
+    font-size: 0.8rem;
+    color: var(--color-text-faint);
+}
+.change-footnote {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-rule);
+}
+@media (max-width: 640px) {
+    .change-page { padding-left: 0.65rem; }
+    .change-block { font-size: 0.85rem; }
+    .change-date { flex-wrap: wrap; gap: 0.4rem; }
+}
+
+.change-bulk {
+    margin: 1.1rem 0 0;
+    font-size: 0.82rem;
+    color: var(--color-text-faint);
+}
+.change-roster {
+    margin: 1.1rem 0 0;
+    padding-left: 0.95rem;
+    border-left: 2px dashed var(--color-rule);
+}
+.change-roster > summary {
+    cursor: pointer;
+    font-size: 0.86rem;
+    color: var(--color-text-muted);
+}
+.change-roster > summary:hover { color: var(--color-link); }
+.change-roster p {
+    margin: 0.55rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.9;
+    color: var(--color-text-muted);
+}
+
+.change-redacted {
+    margin: 0 !important;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--color-text-faint);
+}
+
+.change-entry:first-of-type {
+    margin-top: 1.5rem;
+    padding-top: 0;
+    border-top: none;
+}

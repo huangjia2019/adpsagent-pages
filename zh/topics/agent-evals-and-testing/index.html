@@ -34,6 +34,7 @@
                         <a href="/zh/research/">论文与研究</a>
                         <a href="/zh/positions/">技术立场</a>
                         <a href="/zh/chronicle/">来源时间线</a>
+                        <a href="/zh/changes/">变更日志</a>
                         <a href="/zh/news/">新闻</a>
                         <a href="/zh/contribute/">讨论与修订</a>
                         <a href="/zh/join/">加入我们</a>
@@ -57,6 +58,11 @@
 
 <p>传统软件测试在 Agent 时代仍然有效。数据结构、权限、工具契约、幂等性和业务账本继续由确定性测试锁住。新增的难题来自概率性输出、多条可行路径、外部工具和延迟结果。一次运行可能换一条轨迹仍能完成任务，也可能文字回答漂亮而外部状态已经写错。</p>
 <p>Agent Evals 测量这类不确定行为。它与单元测试、集成测试、沙箱验收、生产监控和人工复核共同构成验证体系。</p>
+<h2>验证为什么是分水岭</h2>
+<p>近十年的人工智能进展，实践大多走在理论前面。2025 年底以来 Agent 的快速扩散尤其如此：它不是从一套理论推导出来的，而是一个个痛点被逐个解决之后累积出来的结果。补上理论这一课，第一个要回答的问题是，Agent 为什么会在“大模型加 Agent”这类方案里处在中枢位置。</p>
+<p>一种能解释这段历史的说法是，分界线在于输出能不能被检验。缺少验证环节时，大模型可以一本正经地一直推理下去，没有任何机制让它停下来认错。在那个阶段，商业上跑得比较顺的多是不需要判定真伪的场景：陪伴与情绪价值不依赖外部事实确认对错，因而不受这一限制，同时也不构成生产力工具。</p>
+<p>工具调用和 Agent 出现之后，模型的输出第一次可以被外部世界检验。调用有返回，动作有后果，结果可以和目标状态比对。AI 由此从提供情绪价值转向提供生产力。第一个大规模商业化的生产力场景是 AI 编程，一个重要原因是编程天然自带多层裁判：编译器、类型检查、测试用例和运行结果，都能在很短的时间内给出确定的判定。</p>
+<p>由此得到一条贯穿本文的判断。一个场景能不能被 Agent 变成生产力，很大程度上取决于它的验证能不能做好；不同阶段会有不同的关键技术成为瓶颈，验证则始终是决定上限的那个变量。<a href="/zh/workshops/reflection-2026-08-12/">ADPS 反思模块第一次研讨会</a>从另一个方向记录过相近的结论：真值什么时候到达，决定了修正应该闭合在哪一层。</p>
 <h2>概念定义</h2>
 <table>
 <thead>
@@ -250,6 +256,7 @@ owner: geo-platform
   <h2 id="page-chronicle-title">溯源记录</h2>
   <dl>
     <div><dt>来源记录</dt><dd>正文关联的研讨会与案例：<a href="/zh/cases/liangbo-execution-agent/">东方屹腾·执行型 Agent</a>（<time datetime="2026-06-19">2026-06-19</time>）；<a href="/zh/cases/xuanxu-gis-agent/">玄宿科技·GIS 数据发布 Agent</a>（<time datetime="2026-07-30">2026-07-30</time>）；<a href="/zh/workshops/action-2026-08-06/">ADPS 行动模块第一次研讨会</a>（<time datetime="2026-08-06">2026-08-06</time>）；<a href="/zh/workshops/reflection-2026-08-12/">ADPS 反思模块第一次研讨会</a>（<time datetime="2026-08-12">2026-08-12</time>）</dd></div>
+    <div><dt>社区贡献</dt><dd>「验证为什么是分水岭」一节由 <a href="https://github.com/wikimatt" target="_blank" rel="noopener">@wikimatt</a> 通过<a href="/zh/contribute/">段落讨论</a>提出，经 ADPS 编辑整理（<time datetime="2026-09-11">2026-09-11</time>）。逐次修订见<a href="/zh/changes/">变更日志</a>。</dd></div>
     <div><dt>来源日期</dt><dd><time datetime="2026-06-19">2026-06-19</time></dd></div>
     <div><dt>本页首次公开</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
   </dl>

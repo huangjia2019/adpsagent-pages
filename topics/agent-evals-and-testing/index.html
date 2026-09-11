@@ -34,6 +34,7 @@
                         <a href="/research/">Research</a>
                         <a href="/positions/">Technical positions</a>
                         <a href="/chronicle/">Chronicle</a>
+                        <a href="/changes/">Change log</a>
                         <a href="/news/">News</a>
                         <a href="/contribute/">Discussion & revisions</a>
                         <a href="/join/">Join</a>
@@ -57,6 +58,11 @@
 
 <p>Traditional software tests remain essential for agents. Data structures, permissions, tool contracts, idempotency, and business ledgers still need deterministic assertions. The new difficulty comes from probabilistic outputs, multiple valid paths, external tools, and delayed outcomes. A run may follow a different trajectory and still succeed, or produce fluent text after writing the wrong external state.</p>
 <p>Agent evals address this uncertain layer. They work alongside unit tests, integration tests, sandbox acceptance, production monitoring, and human review.</p>
+<h2>Why validation is the dividing line</h2>
+<p>For most of the past decade, practice in artificial intelligence has run ahead of theory. The rapid spread of agents since late 2025 is a clear case: it did not follow from a body of theory, but accumulated as one concrete problem after another was solved. The first question any theory now owes an answer to is why agents sit at the centre of a "large model plus agent" system.</p>
+<p>One account that fits the history is that the dividing line runs through verifiability. Without a validation step, a large model can reason on indefinitely and with complete confidence, because nothing in the loop forces it to stop and concede an error. During that period the applications that worked commercially were largely those where truth did not have to be adjudicated. Companionship and emotional value do not depend on external facts to be judged correct, so they escaped the constraint, and they are also not productivity tools.</p>
+<p>Tool calls and agents changed this. For the first time, model output could be checked against the external world: calls return, actions have consequences, and results can be compared with a target state. That shift is what moved AI from emotional value toward productivity. The first productivity domain to commercialise at scale was AI-assisted programming, and one reason is that programming carries several layers of native adjudication. Compilers, type checks, test cases, and run results all return a definite verdict within a short interval.</p>
+<p>This yields a judgement that runs through the rest of this article. Whether a domain can be turned into productive work by an agent depends substantially on whether its validation can be made to work. Different stages will place the bottleneck on different technologies, but validation remains the variable that sets the ceiling. The <a href="/workshops/reflection-2026-08-12/">first ADPS Reflection workshop</a> recorded a related conclusion from another direction: when ground truth arrives determines which layer a correction should close in.</p>
 <h2>Four terms with different jobs</h2>
 <table>
 <thead>
@@ -250,6 +256,7 @@ Release, shadow, canary, or roll back
   <h2 id="page-chronicle-title">Chronicle</h2>
   <dl>
     <div><dt>Recorded source</dt><dd>Workshop and case records cited in the article: <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng execution agent</a> (<time datetime="2026-06-19">2026-06-19</time>); <a href="/cases/xuanxu-gis-agent/">Xuanxu Technology GIS publishing agent</a> (<time datetime="2026-07-30">2026-07-30</time>); <a href="/workshops/action-2026-08-06/">First ADPS Action Module Workshop</a> (<time datetime="2026-08-06">2026-08-06</time>); <a href="/workshops/reflection-2026-08-12/">First ADPS Reflection Module Workshop</a> (<time datetime="2026-08-12">2026-08-12</time>)</dd></div>
+    <div><dt>Community contribution</dt><dd>The section “Why validation is the dividing line” was proposed by <a href="https://github.com/wikimatt" target="_blank" rel="noopener">@wikimatt</a> through <a href="/contribute/">passage discussion</a> and edited by ADPS (<time datetime="2026-09-11">2026-09-11</time>). Revisions are recorded in the <a href="/changes/">change log</a>.</dd></div>
     <div><dt>Source date</dt><dd><time datetime="2026-06-19">2026-06-19</time></dd></div>
     <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
   </dl>
