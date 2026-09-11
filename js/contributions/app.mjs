@@ -35,6 +35,10 @@ const T = zh ? {
  draftSaved:"Your earlier draft has been restored.", viewDiscussion:"View discussion", applied:"Article change", error:"The service is unavailable.",
  accounts:"Account", noPassage:"Open a passage in an article to submit a suggestion.", refresh:"Refresh"
 };
+T.join = zh ? "参与讨论" : "Join the discussion";
+T.passageChoice = zh ? "建议涉及的内容" : "Passage to discuss";
+T.choosePassage = zh ? "选择原文段落" : "Select a passage";
+const openers = new Set();
 const rootPath = zh ? "/zh" : "";
 const workspace = /\/(?:zh\/)?contribute\/$/.test(location.pathname);
 const callback = location.pathname === "/auth/callback/";
@@ -128,9 +132,9 @@ function makeHost() {
   host=el("section",{class:"adps-workspace adps-widget"});
   document.querySelector("#adps-contributions").append(host);
  } else {
-  dialog=el("dialog",{class:"adps-panel adps-widget","aria-labelledby":"adps-discussion-title"});
+  dialog=el("dialog",{id:"adps-discussion-panel",class:"adps-panel adps-widget","aria-labelledby":"adps-discussion-title"});
   document.body.append(dialog);host=dialog;
-  dialog.addEventListener("close",()=>{trigger?.setAttribute("aria-expanded","false");});
+  dialog.addEventListener("close",()=>setExpanded(false));
  }
  const head=el("div",{class:"adps-panel-head"},
   el("h2",{id:"adps-discussion-title",text:T.title}),
@@ -141,15 +145,59 @@ function makeHost() {
  content=el("div",{class:"adps-panel-content"});
  host.append(head,account,tabs,notice,content);
  if(!workspace&&!callback) {
-  trigger=button(T.title,"messages-square",()=>{mode="article";composing=false;show();},true);
-  trigger.classList.add("adps-launch");trigger.setAttribute("aria-expanded","false");
+  trigger=button(T.title,"messages-square",openArticle,true);
+  trigger.classList.add("adps-launch");registerOpener(trigger);
   document.body.append(trigger);
  }
  renderAccount();renderTabs();
 }
+function setExpanded(value) {
+ for(const opener of openers)opener.setAttribute("aria-expanded",String(value));
+}
+function registerOpener(opener) {
+ opener.setAttribute("aria-controls","adps-discussion-panel");
+ opener.setAttribute("aria-haspopup","dialog");
+ opener.setAttribute("aria-expanded","false");
+ openers.add(opener);
+}
+function openArticle() {
+ selected=null;editing=null;mode="article";composing=false;show();
+}
+function attachEntrances(article) {
+ if(!article || !blockMap.size)return;
+ const invitation=article.querySelector("[data-adps-open-discussion]");
+ if(invitation) {
+  registerOpener(invitation);
+  invitation.addEventListener("click",event=>{event.preventDefault();openArticle();});
+ } else {
+  const heading=article.querySelector("h1");
+  if(heading&&!article.querySelector(".adps-title-entry")) {
+   const entry=el("div",{class:"adps-title-entry adps-widget"});
+   const opener=button(T.join,"messages-square",openArticle,true);
+   registerOpener(opener);entry.append(opener);heading.after(entry);
+  }
+ }
+ icons();
+}
+function discussionComposer() {
+ const group=el("div",{class:"adps-passage-picker"});
+ const choose=el("select",{id:"adps-passage-choice"});
+ choose.append(el("option",{value:"",text:T.choosePassage}));
+ for(const {record} of blockMap.values())
+  choose.append(el("option",{value:record.block_id,text:record.quote.slice(0,100)+(record.quote.length>100?"…":"")}));
+ choose.value=selected?.block_id||"";
+ const propose=button(T.suggest,"square-pen",()=>{
+  selected={...blockMap.get(choose.value).record};
+  requestId=crypto.randomUUID();editing=null;composing=true;renderForm();
+ },true);
+ propose.disabled=!choose.value;
+ choose.addEventListener("change",()=>{propose.disabled=!choose.value;});
+ group.append(el("label",{for:"adps-passage-choice",text:T.passageChoice}),choose,propose);
+ return group;
+}
 function show() {
  if(dialog&&!dialog.open)dialog.showModal();
- trigger?.setAttribute("aria-expanded","true");
+ setExpanded(true);
  renderTabs();load(true);
 }
 function sourceLink(record) {
@@ -244,7 +292,8 @@ async function load(reset=false) {
   for(const [value,label]of[["pending",zh?"待审与待补充":"Pending and needs information"],["published",zh?"已公开":"Published"],["all",zh?"全部状态":"All statuses"]])filter.append(el("option",{value,text:label}));
   filter.value=reviewScope;content.append(filter);
  }
- if(!workspace&&selected&&(mode==="passage"||mode==="article")){
+ if(!workspace&&mode==="article"&&blockMap.size)content.append(discussionComposer());
+ if(!workspace&&selected&&mode==="passage"){
   content.append(button(T.suggest,"square-pen",()=>{editing=null;composing=true;renderForm();},true));
  }
  if(!records.length)content.append(el("p",{class:"adps-empty",text:mode==="mine"?T.noMine:mode==="review"?T.noReview:T.empty}));
@@ -298,6 +347,7 @@ function renderForm(initial=null) {
  content.replaceChildren(form);icons();
 }
 async function attachPassages(article) {
+ if(!article)return;
  const response=await fetch(location.pathname+"discussion-blocks.json",{cache:"no-cache"});
  if(!response.ok)return;
  manifest=await response.json();
@@ -389,7 +439,10 @@ async function start() {
  }
  await refreshIdentity();
  client.auth.onAuthStateChange(()=>setTimeout(refreshIdentity,0));
- if(!workspace)await attachPassages(document.querySelector("article.essay"));
+ if(!workspace) {
+  const article=document.querySelector("[data-adps-discussion-root],article.essay");
+  await attachPassages(article);attachEntrances(article);
+ }
  const draft=getDraft();
  if(draft&&draft.document_path===location.pathname) {
   selected={...draft};editing=draft.editing;requestId=draft.request_id;composing=true;show();message(T.draftSaved);

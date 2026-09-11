@@ -54,3 +54,15 @@
 @media (hover:none){.adps-passage-button{opacity:1}}
 @media(max-width:600px){.adps-panel{inset:0;margin:0;border-radius:0;width:100%;max-width:100%;height:100dvh;border:0}.adps-panel-head{padding-top:max(16px,env(safe-area-inset-top))}.adps-launch{right:12px;bottom:max(12px,env(safe-area-inset-bottom));font-size:13px}.adps-tabs{padding-inline:4px}.adps-tabs button{padding-inline:6px;font-size:13px}.adps-panel-content{padding-bottom:max(24px,env(safe-area-inset-bottom))}}
 @media print{.adps-launch,.adps-panel,.adps-passage-button,.adps-selection{display:none!important}.adps-passage{padding-right:0}}
+
+.adps-title-entry{margin:12px 0 18px}
+.adps-title-entry .adps-command{color:#184c60;border-color:#9eb1ba}
+.adps-community{display:flex;align-items:center;justify-content:space-between;gap:18px 28px;margin:20px 0 24px;padding:18px 0;border-top:1px solid var(--color-rule,#dfe5e9);text-align:left}
+.adps-community p{font-size:15px!important;line-height:1.7!important;margin:0!important;max-width:760px!important;flex:1;color:var(--color-text-muted,#536575)}
+.adps-community .adps-command{flex:none;font-size:14px;color:white}
+.adps-passage-picker{display:grid;gap:8px;margin-bottom:20px;min-width:0}
+.adps-passage-picker label{font-size:14px;font-weight:600}
+.adps-passage-picker select{min-width:0;max-width:100%}
+.adps-passage-picker .adps-command{justify-self:start}
+@media(max-width:680px){.adps-community{align-items:flex-start;flex-direction:column;gap:12px}.adps-title-entry{margin:12px 0 16px}}
+@media print{.adps-title-entry,.adps-community{display:none!important}}

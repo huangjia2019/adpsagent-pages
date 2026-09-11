@@ -36,7 +36,7 @@
 <a href="/zh/chronicle/">来源时间线</a>
 <a href="/zh/news/">新闻</a>
 <a href="/zh/contribute/">讨论与修订</a>
-                        <a href="/zh/join/">加入我们</a>
+<a href="/zh/join/">加入我们</a>
 </div>
 </details>
 <a href="https://github.com/huangjia2019/agent-design-patterns" rel="noopener" target="_blank">GitHub</a>
@@ -49,7 +49,7 @@
 <article class="essay">
 <header class="publication-head"><p class="publication-series">ADPS 专题研究</p><h1>可塑软件：在既有业务上增加 Agent 能力</h1></header>
 <p>企业已经有订单系统、员工账号和审批流程，开发者却拿不到旧系统的源码。业务负责人想让 Agent 协助处理工作，也不准备把正在运行的系统换掉。此时，生成一个新应用只是方案的一部分。新应用还要知道订单从哪里读、操作用谁的身份、什么结果才算业务完成。</p>
-<p>工程师街角·陌路△与黄佳的交流沿着这个问题逐渐展开。七月，他在考虑用内容生产流程展示 Agent 设计，后来转向 OA 与电商，因为这些场景能接上自己做过的业务。九月，他反馈已把 Embabel 与已有业务代码结合使用，也提出了另一个限制：客户不开放原系统代码，新增能力需要从外部接入。他转来的可塑软件资料，为这类改造提供了一个比较角度。</p>
+<p>一位有企业软件项目经验的工程师朋友，在与黄佳的交流中提到了这些约束。七月，他在考虑用内容生产流程展示 Agent 设计，后来转向 OA 与电商，因为这些场景能接上自己做过的业务。九月，他反馈已把 Embabel 与已有业务代码结合使用，也提出了另一个限制：客户不开放原系统代码，新增能力需要从外部接入。他转来的可塑软件资料，为这类改造提供了一个比较角度。</p>
 <p>他还考虑过做一套完整 OA，把业务流程展现出来。完整应用有助于解释上下文，但不必为了展示模式先补齐整个 OA。更合适的起点，是选出一个已有业务确实难处理的任务，说明旧系统缺少哪一步、新增的 Agent 接管哪一步，再保留一次失败及恢复的过程。</p>
 <h2>五种开发选择</h2>
 <p>Michael Dubakov 在 2026 年 8 月的文章中讨论了五种选择：自己写应用、通过 AI 平台生成、使用低代码工具、扩展可塑工作平台，以及购买专用产品。他提出复用稳定基础、用代码补足差异化需求的方向。“80% + 20%”是他的表达方式，不是项目预算或工作量的测量结果。<a href="https://www.mdubakov.me/malleable-software-solid-bases-custom-code/">原文</a></p>
@@ -99,7 +99,7 @@
 <p>产品侧也有相近尝试。Fibery 在 2026 年 8 月介绍 Custom Apps，允许在已有工作数据之上增加自定义界面。它说明了平台开放界面扩展的一种实现方向。权限是否按预期继承、接口是否限制写入范围，仍需针对所用版本和部署方式测试，不能由“基于平台开发”这几个字代替验收。<a href="https://fibery.com/blog/product-updates/why-custom-apps/">产品说明</a></p>
 <p>对企业项目而言，调整可以从一张界面开始，也可能深入到业务流程。前者改变员工怎么看数据，后者改变谁能推进一项业务。两者的验证要求不同。</p>
 <h2>旧系统不能改，扩展放在哪里</h2>
-<p>街角·陌路△提出把部分业务以 MCP 工具形式接出来。MCP 提供工具发现、调用及输入输出描述的协议。工具可以由适配器实现，再调用已有业务 API。客户无需先交出整个系统的源码，开发者也能围绕被允许的能力增加 Agent 工作流。<a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP 工具规范</a></p>
+<p>这位工程师提出把部分业务以 MCP 工具形式接出来。MCP 提供工具发现、调用及输入输出描述的协议。工具可以由适配器实现，再调用已有业务 API。客户无需先交出整个系统的源码，开发者也能围绕被允许的能力增加 Agent 工作流。<a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP 工具规范</a></p>
 <p>接口协议不会自动授予业务权限。以下用“补发商品申请”作为设计示例：客服希望 Agent 查询订单和售后记录，填写补发草案，交给有权限的员工确认。订单系统仍然负责订单、库存和补发记录。Agent 保存查询到的依据及拟执行的动作，不维护一套与业务系统竞争的库存事实。</p>
 <p>一次运行可以这样组织：</p>
 <ol>
@@ -240,7 +240,7 @@
 </tbody>
 </table>
 <p>表中前一列的模式定义来自 ADPS，具体组合属于这里的设计分析。不能因为系统使用了这些名称，就认定它已经达到某个可靠性水平。测试要直接针对右侧那些行为。</p>
-<p>Embabel 值得作为另一条实现路线研究，其公开项目将领域对象、动作、目标与条件放进 JVM 和 Spring 的开发环境。已有 Java 团队可以据此考察怎样复用业务服务。街角·陌路△对它的采用提供了一条实践线索，但目前不足以据此判断它普遍优于其他框架。<a href="https://github.com/embabel/embabel-agent">Embabel 项目</a></p>
+<p>Embabel 值得作为另一条实现路线研究，其公开项目将领域对象、动作、目标与条件放进 JVM 和 Spring 的开发环境。已有 Java 团队可以据此考察怎样复用业务服务。这位工程师对它的采用提供了一条实践线索，但目前不足以据此判断它普遍优于其他框架。<a href="https://github.com/embabel/embabel-agent">Embabel 项目</a></p>
 <h2>扩展能力的验收</h2>
 <p>与其要求开发团队证明“系统用了多少 AI”，可以先选择一条日常业务，让团队拿出运行记录：</p>
 <ul>
@@ -264,7 +264,7 @@
 <li>Bryan Min 等，<em>Gradual Generation of User Interfaces as a Design Method for Malleable Software</em>，2026-01-25。</li>
 <li>Fibery，<em>Why Custom Apps?</em>，2026-08-11。</li>
 </ul>
-<p>实践问题来自街角·陌路△与黄佳在 2026 年 7 月至 9 月的交流。本文保留业务约束，不公开客户资料。补发申请、数据结构及代码用于说明设计，未作为该工程师项目的实测结果。本文不预判某类开发平台会取代其他类别。</p><footer class="publication-meta"><p>黄佳 · 首次公开：2026-09-10 · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p></footer>
+<p>实践问题来自一位工程师朋友与黄佳在 2026 年 7 月至 9 月的交流。本文保留业务约束，不公开客户资料。补发申请、数据结构及代码用于说明设计，未作为该工程师项目的实测结果。本文不预判某类开发平台会取代其他类别。</p><footer class="publication-meta"><p>黄佳 · 首次公开：2026-09-10 · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p></footer>
 </article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>

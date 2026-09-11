@@ -12,7 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
-</head>
+<link rel="stylesheet" href="/css/contributions.css">\n</head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
@@ -172,14 +172,14 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
+        <article class="essay" data-adps-discussion-root>
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"></p>
 
             <header class="publication-head">
-                <p class="publication-series">ADPS Engineering Case Reports</p>
-                <h1>Engineering Case Reports</h1>
-                <p class="publication-deck">Reports from engineering and research projects.</p>
-            </header>
+<p class="publication-series">ADPS Engineering Case Reports</p>
+<h1>Engineering Case Reports</h1>
+<p class="publication-deck" data-adps-source="">Reports from engineering and research projects.</p>
+<div class="adps-community adps-widget"><p>ADPS aims to grow through practitioner contributions, in the spirit of Wikipedia. Corrections, engineering experience and alternative views are welcome.</p><a class="adps-command adps-primary" data-adps-open-discussion="" href="/contribute/"><i aria-hidden="true" data-lucide="messages-square"></i><span>Join the discussion</span></a></div></header>
 
             <p>The registry contains system-level case and research reports that cross multiple patterns. Each report records operating constraints, failure history, architecture decisions, evidence boundaries, and conditions for transfer to another setting.</p>
             <h2>Published case reports</h2>
@@ -226,5 +226,6 @@
       }
     })();
     </script>
+<script type="module" src="/js/contributions/app.mjs"></script>
 </body>
 </html>

@@ -15,7 +15,8 @@ export function counterpart(path) {
 export function collectBlocks(article) {
   if (!article) return [];
   return [...article.querySelectorAll("p,li,pre,table,figure")].filter(el => {
-    if (el.closest("header,footer,nav,aside,.publication-cite,.chronicle-meta,.publication-meta,.adps-widget")) return false;
+    if (el.closest("footer,nav,aside,.publication-cite,.chronicle-meta,.publication-meta,.adps-widget")) return false;
+    if (el.closest("header") && !el.matches("[data-adps-source]")) return false;
     const outer = el.closest("table,pre,figure");
     if (outer && outer !== el) return false;
     if (el.querySelector("p,li,pre,table,figure")) return el.matches("table,pre,figure");

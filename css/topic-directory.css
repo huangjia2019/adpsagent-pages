@@ -1,0 +1,24 @@
+.topic-hub{max-width:1160px}
+.topic-hub .topic-hub-head{margin-bottom:24px;padding-bottom:0;border:0}
+.topic-hub .topic-hub-head>p{max-width:none}
+.topic-group-nav{display:flex;flex-wrap:wrap;gap:10px 24px;padding:20px 0;border-block:1px solid var(--color-rule);margin:28px 0 8px;font-size:15px}
+.topic-group-nav a{padding:4px 0}
+.topic-directory .topic-group{padding:32px 0;border-bottom:1px solid var(--color-rule)}
+.topic-directory h2{font-size:25px;line-height:1.4;margin:0;scroll-margin-top:105px}
+.topic-directory .topic-group-description{font-size:16px;line-height:1.65;color:var(--color-text-muted);margin:8px 0 22px}
+.topic-featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 36px}
+.topic-feature{min-width:0}
+.topic-directory h3{font-size:19px;line-height:1.45;margin:0 0 7px;letter-spacing:0}
+.topic-directory h3 a{color:var(--color-text)}
+.topic-directory h3 a:hover{color:var(--color-accent)}
+.topic-feature p,.topic-related p{font-size:15px;line-height:1.65;margin:0;color:var(--color-text-muted)}
+.topic-related{margin-top:24px;border-top:1px solid var(--color-rule);padding-top:14px}
+.topic-related summary{font-size:15px;cursor:pointer;padding:4px 0;width:fit-content}
+.topic-related summary span{color:var(--color-text-muted)}
+.topic-related ul{list-style:none;margin:12px 0 0;padding:0}
+.topic-related li{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,2fr);align-items:baseline;gap:8px 24px;padding:12px 0}
+.topic-related h3{font-size:16px;margin:0}
+.topic-related li+li{border-top:1px solid var(--color-rule)}
+.topic-directory a:focus-visible,.topic-group-nav a:focus-visible,.topic-related summary:focus-visible{outline:2px solid #2f849b;outline-offset:4px}
+@media(max-width:680px){.topic-featured{grid-template-columns:1fr;gap:22px}.topic-directory h2{font-size:23px}.topic-related li{grid-template-columns:1fr}.topic-group-nav{gap:8px 20px}.topic-directory .topic-group{padding:26px 0}}
+@media print{.topic-group-nav{display:none}.topic-related::details-content{display:block}.topic-related ul{display:block}}

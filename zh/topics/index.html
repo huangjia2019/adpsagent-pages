@@ -1,155 +1,57 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>专题 · ADPS</title>
-    <meta name="description" content="模式处理可重复出现的局部结构，专题整理跨越多个模块的工程问题。">
-    <meta property="og:image" content="https://adpsagent.com/images/og-card.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://adpsagent.com/zh/topics/">
-    <link rel="alternate" hreflang="zh" href="https://adpsagent.com/zh/topics/">
-    <link rel="alternate" hreflang="en" href="https://adpsagent.com/topics/">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/adps-knowledge.css">
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>专题 · ADPS</title>
+<meta content="模式处理可重复出现的局部结构，专题整理跨越多个模块的工程问题。" name="description"/>
+<meta content="https://adpsagent.com/images/og-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://adpsagent.com/zh/topics/" rel="canonical"/>
+<link href="https://adpsagent.com/zh/topics/" hreflang="zh" rel="alternate"/>
+<link href="https://adpsagent.com/topics/" hreflang="en" rel="alternate"/>
+<link href="/favicon.png" rel="icon" type="image/png"/>
+<link href="/images/adps-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/css/style.css" rel="stylesheet"/>
+<link href="/css/adps-knowledge.css" rel="stylesheet"/>
+<link href="/css/topic-directory.css" rel="stylesheet"/><link href="/css/contributions.css" rel="stylesheet"/></head>
 <body class="page-essay page-topic-hub">
-
-    <header class="site-header">
-        <div class="container">
-            <a href="/zh/" class="site-brand" aria-label="ADPS 中文首页"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
-            <nav class="site-nav" aria-label="主导航">
-                <a href="/zh/patterns/">模式</a>
-                <a href="/zh/cases/">案例</a>
-                <a href="/zh/workshops/">研讨会</a>
-                <a href="/zh/topics/" aria-current="page">专题</a>
-                <a href="/zh/founders/">团队</a>
-                <details class="site-nav-more">
-                    <summary>更多</summary>
-                    <div class="site-nav-more-menu">
-                        <a href="/zh/concepts/">概念库</a>
-                        <a href="/zh/research/">论文与研究</a>
-                        <a href="/zh/positions/">技术立场</a>
-                        <a href="/zh/chronicle/">来源时间线</a>
-                        <a href="/zh/news/">新闻</a>
-                        <a href="/zh/contribute/">讨论与修订</a>
-                        <a href="/zh/join/">加入我们</a>
-                    </div>
-                </details>
-                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
-                <a href="/topics/" class="lang-switch">EN</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="container content topic-hub">
-        <header class="topic-hub-head">
-            <p>ADPS 知识体系</p>
-            <h1>专题</h1>
-            <p>模式处理可重复出现的局部结构，专题整理跨越多个模块的工程问题。</p>
-            <p>每个专题说明术语、实践来源、与模式和案例的关系，也保留尚未解决的问题。一手讨论另见<a href="/zh/workshops/">研讨会</a>。</p>
-        </header>
-
-        <section class="topic-round" aria-labelledby="topic-round-title">
-            <h2 id="topic-round-title">当前专题</h2>
-
-            <div class="topic-grid" aria-label="当前专题列表">
-                <article class="topic-card">
-                    <p class="topic-status">专题研究</p>
-                    <h2><a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期 · 从能力登记到演进与退役</a></h2>
-                    <p>用版本、证据和责任管理能力的登记、设计、验证、运行、复验与退役。</p>
-                    <div class="topic-tags"><span>生命周期</span><span>版本</span><span>发布证据</span><span>退役</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究</p>
-                    <h2><a href="/zh/topics/pattern-composition/">常见模式组合 · 从任务地形到可运行架构</a></h2>
-                    <p>按知识问答、长程研究、内容生产、代码维护和业务执行等任务地形组合模式。</p>
-                    <div class="topic-tags"><span>模式组合</span><span>状态交接</span><span>保护</span><span>验收</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">设计方法</p>
-                    <h2><a href="/zh/topics/pattern-selection-card/">模式选型卡 · 从场景约束到 Agent 架构</a></h2>
-                    <p>用一页纸从场景边界和认知需求走到拓扑、模式、取舍与架构草图。</p>
-                    <div class="topic-tags"><span>模式选型</span><span>执行拓扑</span><span>Tradeoff</span><span>架构</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">设计方法</p>
-                    <h2><a href="/zh/topics/six-step-methodology/">六步选型法 · 从任务基线到选型回执</a></h2>
-                    <p>让最小基线和候选组合处理同一份任务，再检查约束、接缝、消融结果和重开条件。</p>
-                    <div class="topic-tags"><span>基线</span><span>约束</span><span>接缝</span><span>消融</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究</p>
-                    <h2><a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界 · 意图、授权、接管与责任</a></h2>
-                    <p>定义共同编辑、门控执行、监督运行和有界委托的工程边界。</p>
-                    <div class="topic-tags"><span>人机协作</span><span>授权</span><span>接管</span><span>责任</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究</p>
-                    <h2><a href="/zh/topics/abstraction-reconstruction/">抽象—还原 · 从工程现场到模式，再回到工程现场</a></h2>
-                    <p>控制抽象损失，让模式既能说明共性，也能恢复施工所需的关键差异。</p>
-                    <div class="topic-tags"><span>模式方法</span><span>领域建模</span><span>案例还原</span><span>审校</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究</p>
-                    <h2><a href="/zh/topics/hook-composition/">Hook 组合 · 从回调机制到控制结构</a></h2>
-                    <p>整理编排、治理、观测和恢复 Hook 的顺序、幂等、失败语义与版本。</p>
-                    <div class="topic-tags"><span>Hooks</span><span>编排</span><span>治理</span><span>恢复</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">研究议题</p>
-                    <h2><a href="/zh/topics/agent-os-engineering/">Agent OS · 从类比到工程清单</a></h2>
-                    <p>用调度、隔离、通信、存储、身份、观测、回收与故障处理检查运行时。</p>
-                    <div class="topic-tags"><span>Runtime</span><span>隔离</span><span>调度</span><span>研究议题</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究底稿</p>
-                    <h2><a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程 · 规格、上下文、执行与反馈</a></h2>
-                    <p>覆盖 AI Coding、SDD 与 Agentic Software Engineering 的规格、上下文、执行、验证与演进。</p>
-                    <div class="topic-tags"><span>AI 软件工程</span><span>SDD</span><span>Harness</span><span>横切主题</span></div>
-                </article>
-<article class="topic-card"><p class="topic-status">工程实践</p><h2><a href="/zh/topics/malleable-software/">可塑软件：在既有业务上增加 Agent 能力</a></h2><p>复用既有业务代码与服务，用受控接口增加 Agent 工作流；以业务草案与投稿评审说明版本和权限的设计。</p></article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究底稿</p>
-                    <h2><a href="/zh/topics/observability-driven-evolution/">可观测性驱动的 Agent 演进 · 从运行时间线到可验证变更</a></h2>
-                    <p>用运行轨迹、组件版本、外部结果和变更证据支撑 Agent 调试、发布与演进。</p>
-                    <div class="topic-tags"><span>可观测性</span><span>Agent 演进</span><span>Trace</span><span>横切主题</span></div>
-                </article>
-                <article class="topic-card">
-                    <p class="topic-status">专题研究底稿</p>
-                    <h2><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证 · 从输出评分到系统验收</a></h2>
-                    <p>组合确定性测试、轨迹评估、外部验收与生产反馈，建立 Agent 发布证据。</p>
-                    <div class="topic-tags"><span>评测</span><span>验证</span><span>验收</span><span>回归</span></div>
-                </article>
-            </div>
-        </section>
-
-        <section class="topic-agenda" aria-labelledby="topic-agenda-title">
-            <h2 id="topic-agenda-title">研究议程</h2>
-            <div class="topic-grid topic-grid-secondary">
-                <article class="topic-card">
-                    <p class="topic-status">研究议程</p>
-                    <h2><a href="/zh/topics/enterprise-agent-evolution/">企业 Agent 演进与组织运行 · 研究议程</a></h2>
-                    <p>跟踪 Agent 权限、工程平台与组织责任的同步演进，为后续企业实践建立问题清单。</p>
-                    <div class="topic-tags"><span>企业演进</span><span>自主权</span><span>组织运行</span><span>研究议程</span></div>
-                </article>
-            </div>
-        </section>
-
-            <section class="topic-lines" aria-labelledby="topic-lines-title">
-                <h2 id="topic-lines-title">后续专题线索</h2>
-                <dl>
-                    <div><dt>长程 Agent 工程</dt><dd>目标保持、进度证据、checkpoint、记忆召回、预算与恢复。</dd></div>
-                    <div><dt>事件驱动与编舞</dt><dd>事件入口、执行拓扑、幂等、补偿和无中心协作的边界。</dd></div>
-                </dl>
-                <p>这些页面会在案例或研讨会累积到足够材料后再发布。</p>
-            </section>
-
-        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
-    </main>
-
-    <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<header class="site-header">
+<div class="container">
+<a aria-label="ADPS 中文首页" class="site-brand" href="/zh/"><img alt="" class="site-brand-mark" src="/images/adps-mark.svg"/><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+<nav aria-label="主导航" class="site-nav">
+<a href="/zh/patterns/">模式</a>
+<a href="/zh/cases/">案例</a>
+<a href="/zh/workshops/">研讨会</a>
+<a aria-current="page" href="/zh/topics/">专题</a>
+<a href="/zh/founders/">团队</a>
+<details class="site-nav-more">
+<summary>更多</summary>
+<div class="site-nav-more-menu">
+<a href="/zh/concepts/">概念库</a>
+<a href="/zh/research/">论文与研究</a>
+<a href="/zh/positions/">技术立场</a>
+<a href="/zh/chronicle/">来源时间线</a>
+<a href="/zh/news/">新闻</a>
+<a href="/zh/contribute/">讨论与修订</a>
+<a href="/zh/join/">加入我们</a>
+</div>
+</details>
+<a href="https://github.com/huangjia2019/agent-design-patterns" rel="noopener" target="_blank">GitHub</a>
+<a class="lang-switch" href="/topics/">EN</a>
+</nav>
+</div>
+</header>
+<main class="container content topic-hub" data-adps-discussion-root=""><header class="topic-hub-head"><p>ADPS</p><h1>专题</h1><p data-adps-source="">跨越多个模式的设计问题：模式选型、生命周期、人机协作、软件工程与运行验证。</p><div class="adps-community adps-widget"><p>ADPS 希望像维基百科一样，由实践者共同完善。欢迎纠正疏漏、补充工程经验，或提出不同看法。</p><a class="adps-command adps-primary" data-adps-open-discussion="" href="/zh/contribute/"><i aria-hidden="true" data-lucide="messages-square"></i><span>参与讨论</span></a></div></header><nav aria-label="专题分组" class="topic-group-nav"><a href="#selection">选型与模式组合</a><a href="#lifecycle">生命周期与人机协作</a><a href="#software">AI 驱动的软件工程</a><a href="#runtime">评测、可观测性与运行时</a></nav><div class="topic-directory"><section aria-labelledby="selection" class="topic-group"><h2 id="selection">选型与模式组合</h2><p class="topic-group-description">从业务约束选择模式，确定状态交接与执行顺序。</p><div class="topic-featured"><article class="topic-feature"><h3><a href="/zh/topics/pattern-selection-card/">模式选型卡</a></h3><p>从场景、约束和认知需求开始，画出架构草图。</p></article><article class="topic-feature"><h3><a href="/zh/topics/pattern-composition/">常见模式组合</a></h3><p>知识问答、长程研究、代码维护与业务执行的组合示例。</p></article></div><details class="topic-related"><summary>相关文章 <span>(2)</span></summary><ul><li><h3><a href="/zh/topics/six-step-methodology/">六步选型法</a></h3><p>用同一组任务比较基线与候选组合，检查约束和消融结果。</p></li><li><h3><a href="/zh/topics/abstraction-reconstruction/">抽象与还原</a></h3><p>从项目中提炼共性，再补齐具体实现所需的差异。</p></li></ul></details></section><section aria-labelledby="lifecycle" class="topic-group"><h2 id="lifecycle">生命周期与人机协作</h2><p class="topic-group-description">设计、验证、运行与退役，以及各阶段的授权和人的责任。</p><div class="topic-featured"><article class="topic-feature"><h3><a href="/zh/topics/agent-design-lifecycle/">Agent 设计生命周期</a></h3><p>用版本和运行证据管理能力的登记、发布、复验与退役。</p></article><article class="topic-feature"><h3><a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a></h3><p>共同编辑、执行审批、人工接管与责任分配。</p></article></div><details class="topic-related"><summary>相关文章 <span>(1)</span></summary><ul><li><h3><a href="/zh/topics/enterprise-agent-evolution/">企业 Agent 演进与组织运行</a></h3><p>自主权扩大时，工程平台和组织职责如何调整。</p></li></ul></details></section><section aria-labelledby="software" class="topic-group"><h2 id="software">AI 驱动的软件工程</h2><p class="topic-group-description">从规格与上下文到代码、业务系统改造和交付验证。</p><div class="topic-featured"><article class="topic-feature"><h3><a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程</a></h3><p>规格、上下文、执行与反馈在研发流程中的配合。</p></article><article class="topic-feature"><h3><a href="/zh/topics/malleable-software/">可塑软件与既有业务改造</a></h3><p>客户不开放源码时，通过业务接口增加 Agent 工作流。</p></article></div></section><section aria-labelledby="runtime" class="topic-group"><h2 id="runtime">评测、可观测性与运行时</h2><p class="topic-group-description">检查结果是否正确，追查运行过程，并约束运行时行为。</p><div class="topic-featured"><article class="topic-feature"><h3><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证</a></h3><p>组合确定性测试、轨迹评估、外部验收与生产反馈。</p></article><article class="topic-feature"><h3><a href="/zh/topics/observability-driven-evolution/">可观测性驱动的 Agent 演进</a></h3><p>从运行轨迹、组件版本和外部结果定位问题，验证变更。</p></article></div><details class="topic-related"><summary>相关文章 <span>(2)</span></summary><ul><li><h3><a href="/zh/topics/hook-composition/">Hook 组合</a></h3><p>回调的执行顺序、幂等、失败处理与版本管理。</p></li><li><h3><a href="/zh/topics/agent-os-engineering/">Agent OS</a></h3><p>从调度、隔离、通信、存储与回收检查 Agent 运行时。</p></li></ul></details></section></div><section aria-labelledby="topic-lines-title" class="topic-lines">
+<h2 id="topic-lines-title">后续专题线索</h2>
+<dl>
+<div><dt>长程 Agent 工程</dt><dd>目标保持、进度证据、checkpoint、记忆召回、预算与恢复。</dd></div>
+<div><dt>事件驱动与编舞</dt><dd>事件入口、执行拓扑、幂等、补偿和无中心协作的边界。</dd></div>
+</dl>
+<p>这些页面会在案例或研讨会累积到足够材料后再发布。</p>
+</section><footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer></main>
+<script async="" data-goatcounter="https://adps.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+<script src="/js/contributions/app.mjs" type="module"></script>
 </body>
 </html>

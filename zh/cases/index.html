@@ -12,7 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adps-knowledge.css">
-</head>
+<link rel="stylesheet" href="/css/contributions.css">\n</head>
 <body class="page-essay page-docs">
 
     <header class="site-header">
@@ -172,14 +172,14 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
+        <article class="essay" data-adps-discussion-root>
             <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"></p>
 
             <header class="publication-head">
-                <p class="publication-series">ADPS Agent 系统蓝皮书</p>
-                <h1>案例与研究报告目录</h1>
-                <p class="publication-deck">来自工程项目与研究项目的 Agent 系统架构记录。</p>
-            </header>
+<p class="publication-series">ADPS Agent 系统蓝皮书</p>
+<h1>案例与研究报告目录</h1>
+<p class="publication-deck" data-adps-source="">来自工程项目与研究项目的 Agent 系统架构记录。</p>
+<div class="adps-community adps-widget"><p>ADPS 希望像维基百科一样，由实践者共同完善。欢迎纠正疏漏、补充工程经验，或提出不同看法。</p><a class="adps-command adps-primary" data-adps-open-discussion="" href="/zh/contribute/"><i aria-hidden="true" data-lucide="messages-square"></i><span>参与讨论</span></a></div></header>
 
             <p>案例与研究报告以完整系统或实验原型为单位，记录运行约束、失败历史、架构决策、证据边界与迁移条件。一份报告可以跨越多个模式，相关模式切片从正文链回白皮书定义。</p>
             <h2>已发布报告</h2>
@@ -230,5 +230,6 @@
       }
     })();
     </script>
+<script type="module" src="/js/contributions/app.mjs"></script>
 </body>
 </html>
