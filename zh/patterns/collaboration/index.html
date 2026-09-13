@@ -90,6 +90,7 @@
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
               <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/collaboration/" class="active">协作模块总纲</a>
               <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
               <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
@@ -107,6 +108,12 @@
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
               <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>模式工程实现</h4>
+              <a href="/zh/patterns/engineering/">工程实现目录</a>
+              <a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆</a>
+              <a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -195,6 +202,7 @@
 </header>
 
 <p>协作带来的收益通常来自任务规模、专业分工、审查独立性或故障隔离。参与者增加以后，交接损耗、资源冲突和目标漂移也会一起增加。协作模块负责说明这些边界，以及不同模式如何组成一套可运行、可验收的系统。</p>
+<p>前端 Agent 复现接口超时，后端 Agent 已经掌握服务日志和事务上下文。交接内容包括当前责任、已核验事实、输入版本、临时权限和复测条件；两个会话各自的调试过程继续留在本地。协作模块从这类具体任务展开，再延伸到委派、并行、独立评审和事件协作。</p>
 <p><img alt="协作系统中的三类关系" src="/images/workshops/collaboration-three-planes-zh.svg"></p>
 <h2>三类协作关系</h2>
 <table>
@@ -371,6 +379,13 @@ next_required: 可评审补丁与测试证据
 </tr>
 </tbody>
 </table>
+<!-- PATTERN-ENGINEERING-NOTE:START -->
+<section class="related-case-band" aria-labelledby="handoff-engineering-note">
+  <p class="related-case-label">模式工程实现</p>
+  <h2 id="handoff-engineering-note"><a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上：从上下文引用到任务交接</a></h2>
+  <p>沿一次前端发现、后端修复和前端复测，展开消息、任务账、交接包、权限收窄和验收证据。</p>
+</section>
+<!-- PATTERN-ENGINEERING-NOTE:END -->
 <h2>研讨会记录</h2>
 <p>本总纲吸收了 2026-08-25 协作模块第一次研讨会。主持人：张海立、黄佳；核心研讨嘉宾：张栋、王伟。</p>
 <p><a href="/zh/workshops/collaboration-2026-08-25/">阅读完整研讨记录</a> · <a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a> · <a href="/zh/topics/abstraction-reconstruction/">抽象—还原</a></p>

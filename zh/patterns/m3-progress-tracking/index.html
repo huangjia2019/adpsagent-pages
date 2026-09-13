@@ -90,6 +90,7 @@
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
               <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/collaboration/">协作模块总纲</a>
               <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
               <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
@@ -107,6 +108,12 @@
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
               <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>模式工程实现</h4>
+              <a href="/zh/patterns/engineering/">工程实现目录</a>
+              <a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆</a>
+              <a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -307,7 +314,14 @@ checkpoint():
             </ul>
             <p style="font-size: 0.88rem; color: var(--color-text-muted);">案例收录要求说明业务约束、实现结构、已知失败和迁移边界。参见 <a href="/zh/join/">贡献与评审规则</a>。</p>
 
-            <div class="document-citation">
+            <!-- PATTERN-ENGINEERING-RELATED:START -->
+<section class="related-case-band" aria-labelledby="related-memory-engineering">
+  <p class="related-case-label">模式工程实现</p>
+  <h2 id="related-memory-engineering"><a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆：存储分层与恢复验证</a></h2>
+  <p>把本模式放进多 Pod 服务，检查权威存储、版本冲突、检索索引和恢复路径。</p>
+</section>
+<!-- PATTERN-ENGINEERING-RELATED:END -->
+<div class="document-citation">
                 <p><strong>引用建议：</strong>ADPS，《M3 进度追踪》，Agent 设计模式白皮书 v0.3，2026-07-30。</p>
                 <p><a href="/zh/patterns/">模式目录</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">参考实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
                 <p class="publication-disclaimer"><strong>文档状态：</strong>本页为公开评审稿。模式定义与分类可供讨论和引用；场景化示例用于说明机制，不代表已经核验的企业案例。具名实践另见<a href="/zh/cases/">案例库</a>。ADPS 欢迎业界提交带来源、测量口径和发布授权的案例。</p>

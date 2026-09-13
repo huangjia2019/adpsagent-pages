@@ -102,6 +102,7 @@
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
               <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
               <h4>Collaboration</h4>
+              <a href="/patterns/collaboration/">Collaboration module overview</a>
               <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
               <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
@@ -119,6 +120,12 @@
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>Pattern engineering notes</h4>
+              <a href="/patterns/engineering/">Engineering notes</a>
+              <a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent memory on Kubernetes</a>
+              <a href="/patterns/engineering/cross-agent-handoff/">Connecting two agents</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Pattern composition<span class="sb-caret">▸</span></button>
@@ -365,7 +372,16 @@
             <p>In choreography, each participant subscribes to defined events, applies local rules, and publishes new events. No component owns the complete plan. Adding a participant changes event contracts and subscriptions instead of a central call graph, but the system still needs explicit completion, timeout, causal trace, and compensation rules.</p>
             <p>ADPS registers choreography as an emerging topology, not a promoted seventh column. A core column must cut across several cognitive functions; current public agent-engineering evidence for choreography remains concentrated in collaboration. X1 Observability is essential because decentralized execution still needs causal trace, timeout, compensation, and a defined completion owner. Hybrid designs can keep event-driven collaboration while retaining explicit coordination at critical commits. Full write-up in the <a href="/patterns/c6-choreography/">C6 Choreography white paper</a>.</p>
 
-            <h2 id="composition-tools">Pattern composition</h2>
+            <!-- PATTERN-ENGINEERING-HUB:START -->
+<h2 id="engineering-notes">Pattern engineering notes</h2>
+<p>Engineering notes begin with one concrete problem, follow its data, state, interfaces, failures, and tests, and link the result back to the relevant specifications.</p>
+<h3><a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent Memory on Kubernetes: Storage Layers and Recovery</a></h3>
+<p>When a request moves to another Pod, how does Markdown memory survive? The note separates workspace files, the system of record, and retrieval indexes, then defines recovery tests.</p>
+<h3><a href="/patterns/engineering/cross-agent-handoff/">Connecting Two Agents: From Context Reference to Task Handoff</a></h3>
+<p>When a frontend agent finds a backend defect, how do facts, responsibility, authority, and retest conditions reach another session? The note defines the task ledger, handoff packet, and acceptance gate.</p>
+<p><a href="/patterns/engineering/">Browse all pattern engineering notes</a></p>
+<!-- PATTERN-ENGINEERING-HUB:END -->
+<h2 id="composition-tools">Pattern composition</h2>
             <section class="pattern-tools-feature">
               <div class="pattern-tools-copy">
                 <p>The matrix locates individual mechanisms. Composition tools connect them to one complete business task.</p>

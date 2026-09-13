@@ -89,6 +89,7 @@
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
               <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/collaboration/">协作模块总纲</a>
               <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
               <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
@@ -106,6 +107,12 @@
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
               <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>模式工程实现</h4>
+              <a href="/zh/patterns/engineering/">工程实现目录</a>
+              <a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆</a>
+              <a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">模式组合<span class="sb-caret">▸</span></button>
@@ -680,7 +687,16 @@
             <p><strong>范围：能力验证与发布证据。</strong> 用样本、评分器、回归与外部验收判断能力能否进入下一生命周期阶段。</p>
             <h3><a href="/zh/patterns/x3-security-and-identity/">X3 · Security &amp; Identity · 安全与身份</a></h3>
             <p><strong>范围：主体、委派与资源权限。</strong> 沿用户、Agent、workload、run 和工具传播身份，并以最小权限和短时凭证落实授权。</p>
-            <h2 id="composition-tools">模式组合</h2>
+            <!-- PATTERN-ENGINEERING-HUB:START -->
+<h2 id="engineering-notes">模式工程实现</h2>
+<p>工程实现从一个具体问题进入，继续追踪数据、状态、接口、失败和验证，再回到相关模式规范。</p>
+<h3><a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆：存储分层与恢复验证</a></h3>
+<p>同一用户的请求换了 Pod，Markdown 记忆怎样继续存在？文章区分工作区、权威存储与检索索引，并给出恢复测试。</p>
+<h3><a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上：从上下文引用到任务交接</a></h3>
+<p>前端 Agent 发现后端问题后，怎样把事实、责任、权限和复测条件交给另一个会话？文章给出任务账、交接包和验收门。</p>
+<p><a href="/zh/patterns/engineering/">查看模式工程实现目录</a></p>
+<!-- PATTERN-ENGINEERING-HUB:END -->
+<h2 id="composition-tools">模式组合</h2>
             <section class="pattern-tools-feature">
               <div class="pattern-tools-copy">
                 <p>矩阵帮助团队找到局部机制，组合工具负责把这些机制接到同一项业务任务上。</p>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Memory on Kubernetes: Storage Layers and Recovery · ADPS</title>
+    <meta name="description" content="A concrete design for authoritative Agent memory, workspace projections, retrieval indexes, and recovery across Kubernetes Pods.">
+    <meta property="article:published_time" content="2026-09-13">
+    <meta property="og:image" content="https://adpsagent.com/images/workshops/topology-governance-matrix-en.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://adpsagent.com/patterns/engineering/memory-storage-on-kubernetes/">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/svg+xml" href="/images/adps-mark.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adps-knowledge.css">
+</head>
+<body class="page-essay page-docs">
+
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-brand" aria-label="ADPS home"><img src="/images/adps-mark.svg" class="site-brand-mark" alt=""><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+            <nav class="site-nav" aria-label="Main navigation">
+                <a href="/patterns/" aria-current="page">Patterns</a>
+                <a href="/cases/">Cases</a>
+                <a href="/workshops/">Workshops</a>
+                <a href="/topics/">Topics</a>
+                <a href="/founders/">Team</a>
+                <details class="site-nav-more">
+                    <summary>More</summary>
+                    <div class="site-nav-more-menu">
+                        <a href="/concepts/">Concepts</a>
+                        <a href="/research/">Research</a>
+                        <a href="/positions/">Technical positions</a>
+                        <a href="/chronicle/">Chronicle</a>
+                        <a href="/changes/">Change log</a>
+                        <a href="/news/">News</a>
+                        <a href="/contribute/">Discussion & revisions</a>
+                        <a href="/join/">Join</a>
+                    </div>
+                </details>
+                <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">GitHub</a>
+                <a href="/zh/patterns/engineering/memory-storage-on-kubernetes/" class="lang-switch">中文</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container content">
+      <div class="docs-layout">
+        <aside class="docs-sidebar">
+          <div class="sb-section open">
+            <button class="sb-head" type="button">Pattern Matrix<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <h4>Perception</h4>
+              <a href="/patterns/perception/">Perception module overview</a>
+              <a href="/patterns/p1-context-triage/">P1 Context Triage</a>
+              <a href="/patterns/p2-semantic-compaction/">P2 Semantic Compaction</a>
+              <a href="/patterns/p3-progressive-discovery/">P3 Progressive Discovery</a>
+              <a href="/patterns/p4-multi-modal-fusion/">P4 Multi-Modal Fusion</a>
+              <h4>Memory</h4>
+              <a href="/patterns/memory/">Memory module overview</a>
+              <a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a>
+              <a href="/patterns/m2-rag-pipeline/">M2 RAG Pipeline</a>
+              <a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a>
+              <a href="/patterns/m4-failure-journals/">M4 Failure Journals</a>
+              <a href="/patterns/m5-procedural-memory/">M5 Procedural Memory <span class="ext">ext</span></a>
+              <h4>Reasoning</h4>
+              <a href="/patterns/reasoning/">Reasoning module overview</a>
+              <a href="/patterns/r1-chain-of-thought/">R1 Chain of Thought</a>
+              <a href="/patterns/r2-complexity-based-routing/">R2 Complexity-Based Routing</a>
+              <a href="/patterns/r3-parallel-exploration/">R3 Parallel Exploration</a>
+              <a href="/patterns/r4-iterative-hypothesis-testing/">R4 Iterative Hypothesis Testing</a>
+              <a href="/patterns/r5-talker-reasoner/">R5 Talker-Reasoner <span class="ext">ext</span></a>
+              <h4>Action</h4>
+              <a href="/patterns/action/">Action module overview</a>
+              <a href="/patterns/a1-tool-dispatch/">A1 Tool Dispatch</a>
+              <a href="/patterns/a2-plan-and-execute/">A2 Plan and Execute</a>
+              <a href="/patterns/a3-prompt-chaining/">A3 Prompt Chaining</a>
+              <a href="/patterns/a4-guardrail-sandwich/">A4 Guardrail Sandwich</a>
+              <a href="/patterns/a5-minimal-tool-set/">A5 Minimal Tool Set <span class="ext">ext</span></a>
+              <h4>Reflection</h4>
+              <a href="/patterns/reflection/">Reflection module overview</a>
+              <a href="/patterns/f1-generator-critic/">F1 Generator-Critic</a>
+              <a href="/patterns/f2-skill-package/">F2 Skill Package</a>
+              <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
+              <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
+              <h4>Collaboration</h4>
+              <a href="/patterns/collaboration/">Collaboration module overview</a>
+              <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
+              <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
+              <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
+              <a href="/patterns/c4-handoff-chain/">C4 Handoff Chain</a>
+              <a href="/patterns/c5-sub-agent-isolation/">C5 Sub-Agent Isolation <span class="ext">ext</span></a>
+              <a href="/patterns/c6-choreography/">C6 Choreography <span class="ext">candidate</span></a>
+              <h4>Governance</h4>
+              <a href="/patterns/governance/">Governance module overview</a>
+              <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
+              <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
+              <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
+              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
+              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <h4>Cross-cutting planes</h4>
+              <a href="/patterns/x1-observability/">X1 Observability</a>
+              <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
+              <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>Pattern engineering notes</h4>
+              <a href="/patterns/engineering/">Engineering notes</a>
+              <a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent memory on Kubernetes</a>
+              <a href="/patterns/engineering/cross-agent-handoff/">Connecting two agents</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
+            </div></div>
+          <div class="sb-section">
+            <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
+            <div class="sb-body">
+              <a href="/cases/">Cases home</a>
+              <a href="/cases/liangbo-execution-agent/">Dongfang Yiteng · Execution Agent</a>
+              <a href="/cases/xuanxu-gis-agent/">Xuanxu · GIS Publishing</a>
+              <a href="/cases/ark-mbse-agent/">AI4MBSE · Modeling Agent Project</a>
+              <a href="/cases/deerflow-guardrail/">DeerFlow · Guardrail Evolution</a>
+              <a href="/cases/deepagents-dynamic-orchestration/">Deep Agents · Dynamic Collaboration</a>
+            </div></div>
+          <div class="sb-section">
+  <button class="sb-head" type="button">Concepts<span class="sb-caret">▸</span></button>
+  <div class="sb-body sb-concepts">
+    <a href="/concepts/">Concept catalogue</a>
+    <details class="sb-concept-group" open><summary>Key concepts</summary>
+      <a href="/concepts/control-narrative-dualism/">Control and Narrative Planes</a>
+      <a href="/concepts/execution-vs-content/">Execution vs Content Agents</a>
+      <a href="/concepts/mechanical-state-plane/">Mechanical State Plane</a>
+      <a href="/concepts/abstraction-reconstruction-loop/">Abstraction-Reconstruction Loop</a>
+      <a href="/concepts/probabilistic-core-deterministic-shell/">Probabilistic Core, Deterministic Shell</a>
+      <a href="/concepts/context-contract/">Context Contract</a>
+      <a href="/concepts/plan-compilation/">Plan Compilation</a>
+      <a href="/concepts/three-powers-of-agency/">Three Powers of Agency</a>
+    </details>
+    <details class="sb-concept-group"><summary>System boundaries and state</summary>
+      <a href="/concepts/unified-session-state/">Three Session-State Planes</a>
+      <a href="/concepts/orchestrator/">Orchestrator and Facade</a>
+      <a href="/concepts/disk-fact-plane/">Disk Fact Plane</a>
+    </details>
+    <details class="sb-concept-group"><summary>Context and memory</summary>
+      <a href="/concepts/anchor-ledger-collection/">Anchor, Ledger, Collection</a>
+      <a href="/concepts/scratchpad/">Scratchpad Board</a>
+      <a href="/concepts/memory-envelope/">Memory Envelope</a>
+      <a href="/concepts/layered-memory/">Layered Memory L1/L2/L3</a>
+      <a href="/concepts/knowledge-compilation/">Knowledge Compilation</a>
+    </details>
+    <details class="sb-concept-group"><summary>Reasoning and action mechanisms</summary>
+      <a href="/concepts/react-loop/">ReAct Reasoning-Action Loop</a>
+      <a href="/concepts/programmatic-tool-calling/">Programmatic Tool Calling</a>
+      <a href="/concepts/code-as-action/">CodeAct: Code as Action</a>
+    </details>
+    <details class="sb-concept-group"><summary>Planning, execution, and write-back</summary>
+      <a href="/concepts/intent-as-compilation/">Intent as Compilation</a>
+      <a href="/concepts/task-dag-state-machine/">Task DAG and State Machine</a>
+      <a href="/concepts/reasoning-assetization/">Reasoning Assetization</a>
+      <a href="/concepts/typed-ir-chain/">Typed IR Chain</a>
+      <a href="/concepts/one-diagram-unit-of-work/">One-Diagram Unit of Work</a>
+      <a href="/concepts/structural-writeback-gate/">Structural Write-Back Gate</a>
+      <a href="/concepts/resumable-clarification-job/">Resumable Clarification Job</a>
+      <a href="/concepts/vocabulary-equivalence-layer/">Vocabulary Equivalence Layer</a>
+    </details>
+    <details class="sb-concept-group"><summary>Collaboration and runtime control</summary>
+      <a href="/concepts/topology-lowering/">Topology Lowering</a>
+      <a href="/concepts/topology-governance-matrix/">Topology Governance Matrix</a>
+      <a href="/concepts/handoff-contract/">Handoff Contract</a>
+      <a href="/concepts/three-collaboration-planes/">Three Collaboration Planes</a>
+      <a href="/concepts/hook-composition/">Hook Composition</a>
+      <a href="/concepts/unified-convergence-node/">Unified Convergence Node</a>
+      <a href="/concepts/write-conflict-domain/">Write-Conflict Domain</a>
+    </details>
+    <details class="sb-concept-group"><summary>Evaluation, reflection, and governance</summary>
+      <a href="/concepts/observability-glass-dome/">Activity Events and Timeline</a>
+      <a href="/concepts/hitl-block-resume/">HITL Block and Resume</a>
+      <a href="/concepts/external-acceptance-probe/">External Acceptance Probe</a>
+      <a href="/concepts/failure-to-rule-loop/">Failure-to-Rule Loop</a>
+      <a href="/concepts/capability-certification-lifecycle/">Capability Certification Lifecycle</a>
+      <a href="/concepts/dual-feedback-clock/">Dual Feedback Clock</a>
+      <a href="/concepts/durable-intent/">Durable Intent</a>
+      <a href="/concepts/judge-migration/">Judge Migration</a>
+      <a href="/concepts/dual-scale-governance/">Dual-Scale Governance</a>
+      <a href="/concepts/scenario-benchmark-contract/">Scenario–Benchmark Contract</a>
+      <a href="/concepts/business-evaluation-set/">Business Evaluation Set</a>
+    </details>
+  </div>
+</div>
+        </aside>
+        <div class="docs-main">
+
+        <article class="essay">
+<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span><a href="/patterns/engineering/">Pattern engineering notes</a></p>
+<header class="publication-head">
+  <p class="publication-series">ADPS Pattern Engineering Note · Memory</p>
+  <h1>Agent memory on Kubernetes: storage layers and recovery tests</h1>
+  <p class="publication-deck">Files can remain the agent interface; durable backends handle cross-Pod survival, version conflicts, and recovery.</p>
+</header>
+<p>A reader described a concrete deployment failure. Their agent writes timestamped Markdown files under its workspace. The design works on a laptop, but a Kubernetes service may send the user's next request to another Pod. The preference saved by Pod A is not present in Pod B.</p>
+<p>Markdown is not the problem. It defines how the body is represented. The storage design determines whether the record survives a process, Pod, or release. A production system should separate the file view presented to the agent from the durable record behind it.</p>
+<p><img alt="Write, persistence, and workspace projection for agent memory on Kubernetes" src="/images/patterns/engineering/k8s-agent-memory-en.svg"></p>
+<h2>Follow one write from end to end</h2>
+<p>Suppose a user says: “Write future weekly reports in Chinese. Put risks before progress.”</p>
+<p>If Pod A only writes the sentence here, the agent cannot honestly confirm durable storage:</p>
+<pre><code class="language-text">/workspace/memory/preferences.md
+</code></pre>
+<p>An <code>emptyDir</code> survives a container crash within the same Pod, but Kubernetes deletes its contents when that Pod is removed. If the next request reaches Pod B, the file is absent and the service has no durable record of the preference.</p>
+<p>A confirmable write has at least six steps:</p>
+<ol>
+<li>Resolve <code>tenant_id</code>, <code>user_id</code>, and <code>project_id</code> from authenticated identity.</li>
+<li>Convert the sentence into a typed candidate record with source and scope.</li>
+<li>Check sensitive data, conflicts, write authority, and the current version.</li>
+<li>Write the body and metadata to a durable backend.</li>
+<li>Commit the new version and its source event.</li>
+<li>Confirm the save to the user only after the durable commit succeeds.</li>
+</ol>
+<p>The next request loads the active version by identity and task scope, whichever Pod receives it. If the agent expects file tools, the service may project the selected records into an isolated workspace. That path is a working view, not the only copy.</p>
+<h2>Four objects that are often conflated</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Object</th>
+<th style="text-align: left;">Question it answers</th>
+<th style="text-align: left;">Common implementations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Content representation</strong></td>
+<td style="text-align: left;">How do people and agents read or edit the body?</td>
+<td style="text-align: left;">Markdown, JSON, typed fields</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Runtime workspace</strong></td>
+<td style="text-align: left;">Where does this run keep drafts, downloads, and intermediate files?</td>
+<td style="text-align: left;">Pod filesystem, <code>emptyDir</code>, isolated sandbox</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>System of record</strong></td>
+<td style="text-align: left;">Where does recovery start, and who may update the record?</td>
+<td style="text-align: left;">PostgreSQL, durable KV, object storage, memory service</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Retrieval path</strong></td>
+<td style="text-align: left;">How are candidates found at scale?</td>
+<td style="text-align: left;">SQL, full-text, vector, graph, or entity indexes</td>
+</tr>
+</tbody>
+</table>
+<p>“Markdown or database” therefore compares different layers. A database field can contain a Markdown body. Object storage can hold Markdown while a database owns its scope and version. A vector index stores a retrieval representation; a hit should still resolve to an authorized, versioned source record.</p>
+<h2>A workable memory record</h2>
+<p>A filename and a body are not enough for tenant isolation, concurrent updates, or retirement:</p>
+<pre><code class="language-json">{
+  &quot;memory_id&quot;: &quot;mem_01J...&quot;,
+  &quot;tenant_id&quot;: &quot;tenant_acme&quot;,
+  &quot;subject_id&quot;: &quot;user_1842&quot;,
+  &quot;project_id&quot;: &quot;weekly-report&quot;,
+  &quot;kind&quot;: &quot;preference&quot;,
+  &quot;body_format&quot;: &quot;text/markdown&quot;,
+  &quot;body&quot;: &quot;Use Chinese; put risks before progress.&quot;,
+  &quot;source_ref&quot;: &quot;trace://run-8842/message-6&quot;,
+  &quot;version&quot;: 13,
+  &quot;valid_from&quot;: &quot;2026-09-12T10:30:00Z&quot;,
+  &quot;supersedes&quot;: &quot;mem_01H...&quot;,
+  &quot;status&quot;: &quot;accepted&quot;
+}
+</code></pre>
+<p><code>subject_id</code> identifies whose memory this is. <code>project_id</code> limits where it may be shared. <code>source_ref</code> points to the event that produced it. <code>version</code> and <code>supersedes</code> make updates explicit. <code>status</code> separates candidates, accepted records, and retired records. The body can remain Markdown.</p>
+<p>An optimistic version check prevents two Pods from silently overwriting each other:</p>
+<pre><code class="language-sql">UPDATE agent_memory
+SET body = :body,
+    version = version + 1,
+    updated_at = now()
+WHERE memory_id = :memory_id
+  AND version = :expected_version;
+</code></pre>
+<p>If no row changes, the writer reloads the active version and chooses whether to merge, retry, or escalate. A filesystem design needs an equivalent control: a single writer, lock, atomic replacement, or external version ledger.</p>
+<h2>What each storage class is for</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Storage</th>
+<th style="text-align: left;">Appropriate content</th>
+<th style="text-align: left;">Controls still required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Pod directory / <code>emptyDir</code></strong></td>
+<td style="text-align: left;">Run-local drafts, caches, downloads, rebuildable intermediates</td>
+<td style="text-align: left;">quotas, run isolation, cleanup; never the sole cross-Pod copy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Shared persistent volume</strong></td>
+<td style="text-align: left;">Bounded shared material that requires a POSIX file interface</td>
+<td style="text-align: left;">access mode, directory partitioning, concurrent writes, backup, retention, small-file measurements</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Relational database</strong></td>
+<td style="text-align: left;">checkpoints, task progress, user preferences, version chains, access metadata</td>
+<td style="text-align: left;">large-body separation, indexes, hot/cold tiers, deletion</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>S3-compatible object storage</strong></td>
+<td style="text-align: left;">large documents, attachments, raw session packages, immutable snapshots</td>
+<td style="text-align: left;">database references, digest, authority, version, orphan cleanup</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Full-text or vector index</strong></td>
+<td style="text-align: left;">candidate retrieval across many records</td>
+<td style="text-align: left;">source-version binding, permission filters, deletion synchronization, retrieval evaluation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dedicated memory store</strong></td>
+<td style="text-align: left;">memory APIs that already package scope, versioning, retrieval, and lifecycle</td>
+<td style="text-align: left;">verify tenant, authority, audit, export, and deletion behavior</td>
+</tr>
+</tbody>
+</table>
+<p>If PostgreSQL is already available, it can hold checkpoints, long-term preferences, and task state. Put large attachments in object storage and add a vector index only when semantic retrieval is needed. Capacity, latency, and ownership boundaries should determine the component count.</p>
+<p><a href="https://docs.langchain.com/oss/python/langgraph/add-memory">LangGraph memory</a> distinguishes checkpoint state from cross-thread storage and uses database-backed checkpointers in its production examples. <a href="https://docs.langchain.com/oss/python/deepagents/backends">Deep Agents backends</a> preserve file-oriented tools such as <code>read_file</code> and <code>write_file</code> while allowing paths to resolve through a <code>StoreBackend</code> and namespace. In both cases, the agent can work through a file-like interface while durability belongs to the backend.</p>
+<h2>A shared volume is valid, but ask the next questions</h2>
+<p>Mounting a PVC does not prove that every Pod can write safely. Kubernetes <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">PersistentVolume access modes</a> distinguish:</p>
+<ul>
+<li><code>ReadWriteOnce</code>: read-write on one node; several Pods on that node may still access it.</li>
+<li><code>ReadWriteMany</code>: read-write from many nodes when the storage driver supports it.</li>
+<li><code>ReadWriteOncePod</code>: restricted to one Pod for supported CSI volumes.</li>
+</ul>
+<p>Access modes govern mounting. They do not provide record-level concurrency control after the volume is mounted.</p>
+<p>The effect of many Markdown files on startup also needs measurement at the actual boundary:</p>
+<ul>
+<li>Does startup traverse the whole directory?</li>
+<li>Does it parse every body or rebuild an index?</li>
+<li>Does volume setup recursively change file ownership or permissions?</li>
+<li>Does the application preload all files?</li>
+<li>What metadata latency does the shared filesystem add for many small files?</li>
+</ul>
+<p>Mounting a volume does not load every file into application memory. Scan, parse, permission, and index work usually create the startup cost. Record mount completion, application readiness, index readiness, and first-request completion separately.</p>
+<h2>Persistence does not replace lifecycle management</h2>
+<p>Moving files into a database only prevents them from disappearing with a Pod. It does not settle conflicting versions, project retention, stale indexes, checkpoint boundaries, or a mistaken summary promoted to tenant scope.</p>
+<p>Retention, merge, retirement, deletion, and index synchronization need background jobs. High-risk memories also need admission and review. A current agent should not turn its own fresh interpretation directly into a durable organization-wide rule.</p>
+<h2>Recovery tests before release</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Failure or operation</th>
+<th style="text-align: left;">Expected observation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Save a preference, remove Pod A, route the next request to Pod B</td>
+<td style="text-align: left;">B reads the committed version under the same tenant and user identity</td>
+</tr>
+<tr>
+<td style="text-align: left;">Two Pods update one record concurrently</td>
+<td style="text-align: left;">One commit wins; the other detects a version conflict</td>
+</tr>
+<tr>
+<td style="text-align: left;">The durable write fails</td>
+<td style="text-align: left;">The agent does not confirm success; the candidate remains retryable or clearly failed</td>
+</tr>
+<tr>
+<td style="text-align: left;">Object upload succeeds but database registration fails</td>
+<td style="text-align: left;">The object enters a traceable orphan-cleanup path and is not exposed as active memory</td>
+</tr>
+<tr>
+<td style="text-align: left;">The user deletes a memory</td>
+<td style="text-align: left;">Body, caches, and indexes become unavailable within the stated period, with a deletion record</td>
+</tr>
+<tr>
+<td style="text-align: left;">A checkpoint resumes before a tool call</td>
+<td style="text-align: left;">The system checks the external receipt before repeating an irreversible action</td>
+</tr>
+<tr>
+<td style="text-align: left;">Another tenant supplies the same <code>memory_id</code></td>
+<td style="text-align: left;">Access is denied before body retrieval, with principal and reason recorded</td>
+</tr>
+<tr>
+<td style="text-align: left;">The corpus grows by an order of magnitude</td>
+<td style="text-align: left;">Startup, query, assembly, and archive times are measured separately</td>
+</tr>
+</tbody>
+</table>
+<h2>Relation to ADPS patterns</h2>
+<ul>
+<li><a href="/patterns/m1-hierarchical-retention/">M1 Hierarchical Retention</a> defines organization, project, user, task, and run scopes.</li>
+<li><a href="/patterns/m2-rag-pipeline/">M2 RAG</a> retrieves evidence from large collections. A vector index is a retrieval path, not an authoritative state store.</li>
+<li><a href="/patterns/m3-progress-tracking/">M3 Progress Tracking</a> keeps goals, milestones, checkpoints, and resume positions for long-running work.</li>
+<li><a href="/patterns/x1-observability/">X1 Observability</a> connects write events, versions, retrieval hits, context assembly, and downstream decisions.</li>
+<li><a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a> constrains tenant, user, task, and resource scope.</li>
+</ul>
+<p>Skill distribution is a separate engineering decision. Skills need tests, versions, dependencies, and release policy. Adding that subject here would mix “how user memory survives a Pod” with “how capability packages are shipped.”</p>
+<h2>References</h2>
+<ul>
+<li><a href="/patterns/memory/">ADPS Memory module overview</a></li>
+<li><a href="/workshops/memory-2026-08-05/">First ADPS Memory workshop</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir">Kubernetes Volumes: <code>emptyDir</code> lifecycle</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes">Kubernetes Persistent Volumes: access modes</a></li>
+<li><a href="https://docs.langchain.com/oss/python/langgraph/add-memory">LangGraph Memory</a></li>
+<li><a href="https://docs.langchain.com/oss/python/deepagents/backends">Deep Agents Backends</a></li>
+<li><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html">Original Chinese engineering note</a></li>
+</ul>
+<p>The source question and original Chinese article date to 12 September 2026. This ADPS engineering note was prepared on 13 September 2026.</p>
+<div class="document-citation">
+  <p><strong>Suggested citation:</strong> ADPS, <em>Agent Memory on Kubernetes: Storage Layers and Recovery</em>, ADPS Pattern Engineering Note · Memory, 13 September 2026.</p>
+  <p><a href="/patterns/">Pattern Matrix</a> · <a href="/patterns/engineering/">Pattern engineering notes</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+</div>
+<!-- PAGE-CHRONICLE:START -->
+<section class="page-chronicle" aria-labelledby="page-chronicle-title">
+  <h2 id="page-chronicle-title">Provenance</h2>
+  <dl>
+    <div><dt>Source record</dt><dd><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html" target="_blank" rel="noopener">Original Chinese engineering note</a></dd></div>
+    <div><dt>Source date</dt><dd><time datetime="2026-09-12">2026-09-12</time></dd></div>
+    <div><dt>First published here</dt><dd><time datetime="2026-09-13">2026-09-13</time></dd></div>
+  </dl>
+  <p><a href="/chronicle/#engineering-memory-storage-on-kubernetes">View in the ADPS Chronicle</a></p>
+</section>
+<!-- PAGE-CHRONICLE:END -->
+</article>
+
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
+                <p>ADPS · Agent Design Patterns Society · founded 2026</p>
+            </footer>
+
+        </div>
+      </div>
+    </main>
+
+    <script data-goatcounter="https://adps.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script>
+    (function(){
+      var heads=document.querySelectorAll('.docs-sidebar .sb-head');
+      if(window.matchMedia && window.matchMedia('(max-width: 900px)').matches){
+        var initial=document.querySelectorAll('.docs-sidebar .sb-section');
+        for(var k=0;k<initial.length;k++){initial[k].classList.remove('open');}
+      }
+      for(var i=0;i<heads.length;i++){
+        heads[i].addEventListener('click',function(){
+          var sec=this.parentElement, open=sec.classList.contains('open');
+          var all=document.querySelectorAll('.docs-sidebar .sb-section');
+          for(var j=0;j<all.length;j++){all[j].classList.remove('open');}
+          if(!open){sec.classList.add('open');}
+        });
+      }
+    })();
+    </script>
+<script type="module" src="/js/contributions/app.mjs"></script>
+</body>
+</html>

@@ -84,6 +84,7 @@
               <a href="/patterns/f3-experience-replay/">F3 Experience Replay</a>
               <a href="/patterns/f4-self-heal-loop/">F4 Self-Heal Loop</a>
               <h4>Collaboration</h4>
+              <a href="/patterns/collaboration/">Collaboration module overview</a>
               <a href="/patterns/c1-hierarchical-delegation/">C1 Hierarchical Delegation</a>
               <a href="/patterns/c2-fan-out-gather/">C2 Fan-Out/Gather</a>
               <a href="/patterns/c3-adversarial-review/">C3 Adversarial Review</a>
@@ -101,6 +102,12 @@
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
               <a href="/patterns/x3-security-and-identity/">X3 Security &amp; Identity</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>Pattern engineering notes</h4>
+              <a href="/patterns/engineering/">Engineering notes</a>
+              <a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent memory on Kubernetes</a>
+              <a href="/patterns/engineering/cross-agent-handoff/">Connecting two agents</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">Cases<span class="sb-caret">▸</span></button>
@@ -340,7 +347,14 @@ retrieval:
             <li>How should shared memory prevent a bad lesson from spreading across agents, projects, or tenants?</li>
             <li>How should evaluation cover writing the right memory, retrieving the right item, using it correctly, and retiring it safely?</li>
             </ul>
-            <h2>Workshop record</h2>
+            <!-- PATTERN-ENGINEERING-NOTE:START -->
+<section class="related-case-band" aria-labelledby="memory-engineering-note">
+  <p class="related-case-label">Pattern engineering note</p>
+  <h2 id="memory-engineering-note"><a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent Memory on Kubernetes: Storage Layers and Recovery</a></h2>
+  <p>A cross-Pod memory failure leads into the system of record, workspace projections, concurrent versions, index synchronization, tenant scope, and recovery tests.</p>
+</section>
+<!-- PATTERN-ENGINEERING-NOTE:END -->
+<h2>Workshop record</h2>
             <p>This overview incorporates the first Memory Module Workshop, held on 5 August 2026. Haofen Wang and Jia Huang hosted the session. Core workshop guests were Yingfeng Zhang, Qiuai Fu, Dong Zhang, Yutao Chen, Qingfeng Li, and Mo Zhou.</p>
             <p><a href="/workshops/memory-2026-08-05/">Read the full workshop record</a> · <a href="/founders/#white-paper-contributors">White Paper contributors</a></p>
 

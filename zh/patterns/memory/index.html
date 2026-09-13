@@ -90,6 +90,7 @@
               <a href="/zh/patterns/f3-experience-replay/">F3 经验回放</a>
               <a href="/zh/patterns/f4-self-heal-loop/">F4 自愈循环</a>
               <h4>协作 Collaboration</h4>
+              <a href="/zh/patterns/collaboration/">协作模块总纲</a>
               <a href="/zh/patterns/c1-hierarchical-delegation/">C1 层级委派</a>
               <a href="/zh/patterns/c2-fan-out-gather/">C2 扇出聚合</a>
               <a href="/zh/patterns/c3-adversarial-review/">C3 对抗评审</a>
@@ -107,6 +108,12 @@
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
               <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
               <a href="/zh/patterns/x3-security-and-identity/">X3 安全与身份</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:START -->
+              <h4>模式工程实现</h4>
+              <a href="/zh/patterns/engineering/">工程实现目录</a>
+              <a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆</a>
+              <a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上</a>
+              <!-- PATTERN-ENGINEERING-SIDEBAR:END -->
             </div></div>
           <div class="sb-section">
             <button class="sb-head" type="button">案例 · 蓝皮书<span class="sb-caret">▸</span></button>
@@ -349,7 +356,14 @@ retrieval:
             <li>群体共享怎样防止错误经验跨 Agent、项目和租户扩散。</li>
             <li>记忆评测怎样同时覆盖“记对了、取得准、用得对、退得掉”。</li>
             </ul>
-            <h2>研讨会记录</h2>
+            <!-- PATTERN-ENGINEERING-NOTE:START -->
+<section class="related-case-band" aria-labelledby="memory-engineering-note">
+  <p class="related-case-label">模式工程实现</p>
+  <h2 id="memory-engineering-note"><a href="/zh/patterns/engineering/memory-storage-on-kubernetes/">K8s 中的 Agent 记忆：存储分层与恢复验证</a></h2>
+  <p>从跨 Pod 丢失 Markdown 记忆切入，展开权威存储、工作区投影、版本并发、索引同步、租户隔离和恢复测试。</p>
+</section>
+<!-- PATTERN-ENGINEERING-NOTE:END -->
+<h2>研讨会记录</h2>
             <p>本总纲吸收了 2026-08-05 记忆模块第一次研讨会的讨论。主持人为王昊奋、黄佳；核心研讨嘉宾为张颖峰、付求爱、张栋、陈玉涛、李庆丰、周默。</p>
             <p><a href="/zh/workshops/memory-2026-08-05/">阅读完整研讨记录</a> · <a href="/zh/founders/#white-paper-contributors">白皮书贡献者</a></p>
 
