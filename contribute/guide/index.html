@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Collaboration and Publishing · ADPS</title>
+<meta content="Document Collaboration and Publishing" name="description"/>
+<meta content="2026-09-18" property="article:published_time"/>
+<meta content="https://adpsagent.com/images/og-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://adpsagent.com/contribute/guide/" rel="canonical"/>
+<link href="https://adpsagent.com/contribute/guide/" hreflang="en" rel="alternate"/>
+<link href="https://adpsagent.com/zh/contribute/guide/" hreflang="zh" rel="alternate"/>
+<link href="/favicon.png" rel="icon" type="image/png"/>
+<link href="/images/adps-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/css/style.css" rel="stylesheet"/>
+<link href="/css/adps-knowledge.css" rel="stylesheet"/>
+</head>
+<body class="page-essay">
+<header class="site-header">
+<div class="container">
+<a aria-label="ADPS home" class="site-brand" href="/"><img alt="" class="site-brand-mark" src="/images/adps-mark.svg"/><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+<nav aria-label="Main navigation" class="site-nav">
+<a href="/patterns/">Patterns</a>
+<a href="/cases/">Cases</a>
+<a href="/workshops/">Workshops</a>
+<a href="/topics/">Topics</a>
+<a href="/founders/">Team</a>
+<details class="site-nav-more">
+<summary>More</summary>
+<div class="site-nav-more-menu">
+<a href="/concepts/">Concepts</a>
+<a href="/research/">Research</a>
+<a href="/positions/">Technical positions</a>
+<a href="/chronicle/">Chronicle</a>
+<a href="/changes/">Change log</a>
+<a href="/news/">News</a>
+<a href="/contribute/">Discussion &amp; revisions</a>
+<a href="/join/">Join</a>
+</div>
+</details>
+<a href="https://github.com/huangjia2019/agent-design-patterns" rel="noopener" target="_blank">GitHub</a>
+<a class="lang-switch" href="/zh/contribute/guide/">中文</a>
+</nav>
+</div>
+</header>
+<main class="container content">
+<article class="essay"><h1>Document Collaboration and Publishing</h1>
+<p>ADPS maintains pattern specifications, module overviews, case reports, workshop records, concepts and topics in this repository. Readers can suggest changes to individual passages on the website or edit these documents through a pull request (PR).</p>
+<h2>Propose a Change</h2>
+<ol>
+<li>Find the article in the <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/README.md">documentation index</a> and use GitHub's edit button. Contributors without write access can submit from a fork.</li>
+<li>Edit the relevant passage. Technical additions should explain the use case, mechanism and limits, with sources that can be shared publicly. A typo fix needs only a short explanation.</li>
+<li>Check the Chinese counterpart. Update both languages when facts, classifications or examples change. A language-specific correction can leave the other version unchanged; explain this in the PR.</li>
+<li>Open a PR describing the reason, affected articles and verification. Link the original website discussion when applicable.</li>
+</ol>
+<p>For example, a reader may point out that approval should expire when tool arguments change. The proposed revision should specify which fields approval covers, what is checked when execution resumes, and which changes require fresh approval. Reviewers can then assess a concrete design.</p>
+<h2>Review and Acceptance</h2>
+<p>Domain reviewers assess the technical claims and evidence. Jia Huang approves changes to the text. Automated checks cover files, references, figures and language pairs; they do not establish technical correctness. Expert-group membership does not grant merge or deployment rights.</p>
+<p>Approval applies to a specific PR revision. Further edits require a new review. A merged revision becomes the accepted source, but may not yet be published on the website.</p>
+<h2>Website Publication</h2>
+<p>The publisher selects an exact source commit and builds a preview. After checking both languages, figures, links and discussion anchors, Jia Huang approves publication. A separate website PR carries the generated pages. The source commit, website commit and release tag are recorded after successful deployment and live verification.</p>
+<p>The website's "Published source" link identifies the exact commit used for that page. "Edit source" opens the maintained main branch. Accepted revisions can be ahead of the website, but the website does not maintain a separate editable article. Emergency corrections also start in the source documents.</p>
+<h2>Website Discussions</h2>
+<p>Approving a discussion makes that comment public; it does not accept an article revision. Maintainers link public suggestions that need text changes to GitHub issues, then address them through PRs. The issue preserves the original page, passage and revision so a suggestion cannot silently attach to different text.</p>
+<p>Unpublished submissions, raw chats, private review notes, personal contact details and unapproved material stay out of this public repository. If a published comment is withdrawn, contact the maintainer about its linked issue as well.</p>
+<h2>Files and Credit</h2>
+<ul>
+<li>Articles: <code>docs/publications/en/</code> and <code>docs/publications/zh/</code>.</li>
+<li>Figures: <code>docs/publications/assets/</code>. Preserve attribution and exclude credentials, customer data and private screenshots.</li>
+<li>Article-to-page mapping: <code>docs/publications/catalogue.json</code>.</li>
+<li>Existing authors and sources remain in the articles. New contributions are recorded in PRs, commits and release notes. Import dates do not replace original publication dates.</li>
+<li>Code retains the root license. Documents and third-party figures retain their <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/LICENSE.md">document licensing terms</a> and existing notices.</li>
+</ul>
+<p>Code and documents share a repository, not a change scope. A text-only PR should not modify runtime code, tests or deployment settings. Contributors using an agent to draft changes remain responsible for checking facts, sources and the scope of the diff.</p><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/CONTRIBUTING.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/CONTRIBUTING.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
+</main>
+<script async="" data-goatcounter="https://adps.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>文档协作与发布 · ADPS</title>
+<meta content="文档协作与发布" name="description"/>
+<meta content="2026-09-18" property="article:published_time"/>
+<meta content="https://adpsagent.com/images/og-card.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<link href="https://adpsagent.com/zh/contribute/guide/" rel="canonical"/>
+<link href="https://adpsagent.com/zh/contribute/guide/" hreflang="zh" rel="alternate"/>
+<link href="https://adpsagent.com/contribute/guide/" hreflang="en" rel="alternate"/>
+<link href="/favicon.png" rel="icon" type="image/png"/>
+<link href="/images/adps-mark.svg" rel="icon" type="image/svg+xml"/>
+<link href="/css/style.css" rel="stylesheet"/>
+<link href="/css/adps-knowledge.css" rel="stylesheet"/>
+</head>
+<body class="page-essay">
+<header class="site-header">
+<div class="container">
+<a aria-label="ADPS 中文首页" class="site-brand" href="/zh/"><img alt="" class="site-brand-mark" src="/images/adps-mark.svg"/><span class="site-brand-copy"><span class="site-brand-name">ADPS</span><span class="site-brand-full">Agent Design Patterns Society</span></span></a>
+<nav aria-label="主导航" class="site-nav">
+<a href="/zh/patterns/">模式</a>
+<a href="/zh/cases/">案例</a>
+<a href="/zh/workshops/">研讨会</a>
+<a href="/zh/topics/">专题</a>
+<a href="/zh/founders/">团队</a>
+<details class="site-nav-more">
+<summary>更多</summary>
+<div class="site-nav-more-menu">
+<a href="/zh/concepts/">概念库</a>
+<a href="/zh/research/">论文与研究</a>
+<a href="/zh/positions/">技术立场</a>
+<a href="/zh/chronicle/">来源时间线</a>
+<a href="/zh/changes/">变更日志</a>
+<a href="/zh/news/">新闻</a>
+<a href="/zh/contribute/">讨论与修订</a>
+<a href="/zh/join/">加入我们</a>
+</div>
+</details>
+<a href="https://github.com/huangjia2019/agent-design-patterns" rel="noopener" target="_blank">GitHub</a>
+<a class="lang-switch" href="/contribute/guide/">EN</a>
+</nav>
+</div>
+</header>
+<main class="container content">
+<article class="essay"><h1>文档协作与发布</h1>
+<p>ADPS 的模式、模块总纲、案例、研讨记录、概念和专题在本仓库维护。读者可以在网页上针对段落提建议，也可以直接修改这里的文档，提交 Pull Request（PR）。</p>
+<h2>提出修改</h2>
+<ol>
+<li>从<a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/README.md">文档目录</a>找到文章，点击 GitHub 的编辑按钮。没有仓库写权限也可以通过 Fork 提交。</li>
+<li>修改具体段落。技术补充请写明应用场景、解决办法和适用条件，并提供可公开的来源。修复错字不需要写长篇说明。</li>
+<li>检查对应的英文稿。事实、模式分类和案例发生变化时，两种语言一并更新。单独修复译名或错字，在 PR 中说明即可。</li>
+<li>提交 PR，交代修改原因、涉及文章和验证方式。来自网页讨论的修改，附原讨论链接。</li>
+</ol>
+<p>例如，一条建议指出“审批通过后，工具参数变化了，原来的批准不应继续有效”。修改稿应补充批准对象包含哪些字段、恢复执行时检查什么，以及哪些变化要求重新审批。评审围绕这些具体内容进行。</p>
+<h2>评审与采纳</h2>
+<p>领域评审者检查技术判断和证据，黄佳确认正文修订。自动检查负责文件、引用、图片和双语关系，不代替技术评审。专家成员身份不自动授予合并或发布权限。</p>
+<p>批准针对 PR 的具体版本。批准后再修改内容，需要重新评审。PR 合并后成为已采纳源稿，尚未发布的修订可以继续在 GitHub 阅读。</p>
+<h2>网站发布</h2>
+<p>发布者选择一个确定的源稿提交，构建预览，检查中英文、图片、链接和段落讨论的位置。黄佳确认后，发布者提交网站发布 PR。部署成功并核对线上结果后，记录源稿提交、网站提交和发布标签。</p>
+<p>网站文末的“查看发布源稿”指向当前页面使用的确切提交。“修订源稿”进入正在维护的主分支。网站可能暂时落后于已合并的新稿，但不会存在另一份独立维护的正文。紧急修复也先回到源稿，再发布。</p>
+<h2>网页讨论</h2>
+<p>网页上的“批准公开”只让建议对读者可见，不表示正文已经采纳。维护者把需要改稿的公开建议关联到 GitHub Issue，再通过 PR 修改正文。Issue 保留原页面、段落和原文版本，避免把旧建议套到改过的新段落上。</p>
+<p>未公开投稿、原始聊天、内部评审笔记、私人联系方式和未获确认的材料不进入本公开仓库。撤回公开意见时，也应联系维护者处理已关联的 Issue。</p>
+<h2>文件与贡献记录</h2>
+<ul>
+<li>正文：<code>docs/publications/zh/</code>、<code>docs/publications/en/</code>。</li>
+<li>图片：<code>docs/publications/assets/</code>。保留原图来源，不上传含密钥、客户数据或内部界面的截图。</li>
+<li>文档与网站路径对应关系：<code>docs/publications/catalogue.json</code>。</li>
+<li>原作者与来源保留在文档中，新增贡献记录在 PR、提交和发布说明里。导入时间不代替首次发表时间。</li>
+<li>本仓库代码按根目录许可使用。文档和第三方图片按<a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/LICENSE.md">文档许可说明</a>及各篇原有声明使用。</li>
+</ul>
+<p>代码与文档共用仓库，不共用修改范围。只改文章的 PR 不应顺便调整运行代码、测试或部署配置。由 Agent 辅助起草的修改，提交者同样需要核对事实、来源和改动范围。</p><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/CONTRIBUTING.zh-CN.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/CONTRIBUTING.zh-CN.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · 2026 年发起</p></footer>
+</main>
+<script async="" data-goatcounter="https://adps.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+</body>
+</html>

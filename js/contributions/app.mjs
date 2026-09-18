@@ -39,6 +39,7 @@ T.join = zh ? "参与讨论" : "Join the discussion";
 T.passageChoice = zh ? "建议涉及的内容" : "Passage to discuss";
 T.choosePassage = zh ? "选择原文段落" : "Select a passage";
 const openers = new Set();
+let reviewLinks = {};
 const rootPath = zh ? "/zh" : "";
 const workspace = /\/(?:zh\/)?contribute\/$/.test(location.pathname);
 const callback = location.pathname === "/auth/callback/";
@@ -220,6 +221,10 @@ function card(record,review=false,mine=false) {
  if(record.document_path===location.pathname && !blockMap.has(record.block_id))
   item.append(el("p",{class:"adps-muted",text:T.old}));
  const actions=el("div",{class:"adps-actions"},sourceLink(record));
+ const tracked=reviewLinks[record.proposal_id||record.id];
+ if(tracked?.revision===record.revision && /^https:\/\/github\.com\/huangjia2019\/agent-design-patterns\/issues\/\d+$/.test(tracked.issue_url||"")) {
+  actions.append(el("a",{href:tracked.issue_url,target:"_blank",rel:"noopener noreferrer",text:zh?"GitHub 评审进度":"Review on GitHub"}));
+ }
  if(!mine&&!review){
   actions.append(button(T.share,"link",async()=>{
    try{await navigator.clipboard.writeText(location.origin+publicLink(record));message(T.copied);}
@@ -421,6 +426,10 @@ async function start() {
  if(!response.ok)return;
  const config=await response.json();
  if(!config.enabled)return;
+ try {
+  const response=await fetch("/js/contributions/review-links.json",{cache:"no-cache"});
+  if(response.ok)reviewLinks=await response.json();
+ }catch{reviewLinks={};}
  const vendors=await (await fetch("/js/vendor/manifest.json")).json();
  await script(vendors["@supabase/supabase-js"]);await script(vendors.lucide);
  const css=el("link",{rel:"stylesheet",href:"/css/contributions.css"});document.head.append(css);
