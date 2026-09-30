@@ -193,13 +193,12 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式目录</a><span style="margin: 0 0.45rem;">/</span>横切工程面<span style="margin: 0 0.45rem;">/</span>X2</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS 横切工程面规范</p>
-                <h1>X2 · Evaluation & Validation · 评测与验证</h1>
-                <p class="publication-deck">以可重复样本、评分器、回归和外部验收管理 Agent 能力证据。</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/patterns/">模式目录</a><span style="margin: 0 0.45rem;">/</span>横切工程面<span style="margin: 0 0.45rem;">/</span>X2</p>
+<header class="publication-head">
+<p class="publication-series">ADPS 横切工程面规范</p>
+<h1>X2 · Evaluation &amp; Validation · 评测与验证</h1>
+<p class="publication-deck">以可重复样本、评分器、回归和外部验收管理 Agent 能力证据。</p>
+</header>
 <p><strong>样本、评分器、回归和验收</strong>共同构成 X2 的能力证据。样本界定任务与边界，评分器把标准变成可重复判断，回归保护已经建立的能力，外部验收核对真实系统中的结果。</p>
 <p>X2 管理 Agent 能力的验证证据。它把确定性测试、行为评测、外部验收和生产反馈接到同一发布与复验流程。</p>
 <h2>范围</h2>
@@ -228,30 +227,36 @@ evidence: artifacts/evals/payroll-v3/</code></pre>
 <h2>与 X1、X3 的边界</h2>
 <p>X1 记录发生了什么，X2 按合同判断结果是否合格，X3 限制评测器和候选系统各自能够访问或改写什么。Agent 与 grader 同时修改，或由候选系统自由改写发布门，会破坏结论的独立性。</p>
 <h2>常见失效</h2>
-<ul><li>只测最终文本，不检查外部状态；</li><li>只运行一次，将随机成功当成稳定能力；</li><li>只有正例，没有拒绝、越权、恢复和未知输入；</li><li>用一条 golden trajectory 排除其他正确路径；</li><li>只公布综合分数，不保留样本级失败和轨迹；</li><li>grader 未经人工校准，分数变化无法解释。</li></ul>
+<ul>
+<li>只测最终文本，不检查外部状态；</li>
+<li>只运行一次，将随机成功当成稳定能力；</li>
+<li>只有正例，没有拒绝、越权、恢复和未知输入；</li>
+<li>用一条 golden trajectory 排除其他正确路径；</li>
+<li>只公布综合分数，不保留样本级失败和轨迹；</li>
+<li>grader 未经人工校准，分数变化无法解释。</li>
+</ul>
 <!-- RELATED-CASE-DEEPAGENTS:START -->
-<section class="related-case-band" aria-labelledby="related-deepagents-case">
-  <p class="related-case-label">相关开源框架案例</p>
-  <h2 id="related-deepagents-case"><a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents：从固定图到代码生成的动态协作</a></h2>
-  <p>张海立在协作研讨会中的框架研究，经公开文档与源码复核，连接层级委派、扇出聚合、子代理隔离、独立复核以及评测与可观测性。</p>
+<section aria-labelledby="related-deepagents-case" class="related-case-band">
+<p class="related-case-label">相关开源框架案例</p>
+<h2 id="related-deepagents-case"><a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents：从固定图到代码生成的动态协作</a></h2>
+<p>张海立在协作研讨会中的框架研究，经公开文档与源码复核，连接层级委派、扇出聚合、子代理隔离、独立复核以及评测与可观测性。</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation">
-                <p><strong>引用建议：</strong>ADPS，《X2 · Evaluation & Validation · 评测与验证》，ADPS 横切工程面规范 v0.5，2026-08-20。</p>
-                <p><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证专题</a> · <a href="/zh/workshops/reflection-2026-08-12/">反思研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>使用边界：</strong>本页定义工程范围与接口，不构成产品认证。具名实践以案例页与公开代码为准。</p>
-            </div>
+<p><strong>引用建议：</strong>ADPS，《X2 · Evaluation &amp; Validation · 评测与验证》，ADPS 横切工程面规范 v0.5，2026-08-20。</p>
+<p><a href="/zh/topics/agent-evals-and-testing/">Agent 评测与验证专题</a> · <a href="/zh/workshops/evaluation-2026-09-29/">评测与验证研讨会</a> · <a href="/zh/workshops/reflection-2026-08-12/">反思研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>使用边界：</strong>本页定义工程范围与接口，不构成产品认证。具名实践以案例页与公开代码为准。</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">溯源记录</h2>
-  <dl>
-    <div><dt>来源记录</dt><dd>ADPS 模式白皮书；先行工作与参考资料见正文</dd></div>
-    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
-  </dl>
-  <p><a href="/zh/chronicle/#patterns-x2-evals-and-testing">在 ADPS Chronicle 中查看</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">溯源记录</h2>
+<dl>
+<div><dt>来源记录</dt><dd>ADPS 模式白皮书；先行工作与参考资料见正文</dd></div>
+<div><dt>本页首次公开</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
+</dl>
+<p><a href="/zh/chronicle/#patterns-x2-evals-and-testing">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/x2-evals-and-testing.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/patterns/x2-evals-and-testing.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/x2-evals-and-testing.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/1a765339d83ebd68afb29f10c596aca620671fd9/docs/publications/zh/patterns/x2-evals-and-testing.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

@@ -2167,6 +2167,17 @@
     "anchor": "workshops-collaboration-2026-08-25"
   },
   {
+    "path": "workshops/evaluation-2026-09-29/index.html",
+    "url": "/workshops/evaluation-2026-09-29/",
+    "language": "en",
+    "category": "workshops",
+    "title": "Agent Evaluation and Validation Workshop",
+    "source_text": "Agent Evaluation and Validation Workshop; workshop held on 2026-09-29",
+    "source_date": "2026-09-29",
+    "first_public": "2026-10-01",
+    "anchor": "workshops-evaluation-2026-09-29"
+  },
+  {
     "path": "workshops/governance-2026-08-18/index.html",
     "url": "/workshops/governance-2026-08-18/",
     "language": "en",
@@ -2242,6 +2253,17 @@
     "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "workshops-collaboration-2026-08-25"
+  },
+  {
+    "path": "zh/workshops/evaluation-2026-09-29/index.html",
+    "url": "/zh/workshops/evaluation-2026-09-29/",
+    "language": "zh",
+    "category": "workshops",
+    "title": "Agent 评测与验证研讨会",
+    "source_text": "Agent 评测与验证研讨会；会议日期 2026-09-29",
+    "source_date": "2026-09-29",
+    "first_public": "2026-10-01",
+    "anchor": "workshops-evaluation-2026-09-29"
   },
   {
     "path": "zh/workshops/governance-2026-08-18/index.html",

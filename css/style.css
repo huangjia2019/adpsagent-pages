@@ -45,6 +45,10 @@ body {
 }
 
 img, svg { max-width: 100%; display: block; }
+.workshop-diagram img[src*="evaluation-evidence-loop"] { width: 100%; height: auto; }
+.page-evaluation-workshop .evaluation-checklist { table-layout: fixed; }
+.page-evaluation-workshop .evaluation-checklist th:first-child,
+.page-evaluation-workshop .evaluation-checklist td:first-child { width: 7rem; }
 
 a {
     color: var(--color-link);

@@ -187,13 +187,12 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X2</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
-                <h1>X2 · Evaluation & Validation</h1>
-                <p class="publication-deck">Use repeatable cases, graders, regression, and external acceptance to govern capability evidence.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X2</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
+<h1>X2 · Evaluation &amp; Validation</h1>
+<p class="publication-deck">Use repeatable cases, graders, regression, and external acceptance to govern capability evidence.</p>
+</header>
 <p><strong>Cases, graders, regression, and acceptance</strong> form X2's capability evidence. Cases define tasks and boundaries, graders make criteria repeatable, regression protects established behavior, and external acceptance checks the result in the real system.</p>
 <p>X2 governs evidence that a capability works. It joins deterministic tests, behavioral evals, external acceptance, and production feedback into release and revalidation decisions.</p>
 <h2>Scope</h2>
@@ -222,30 +221,36 @@ evidence: artifacts/evals/payroll-v3/</code></pre>
 <h2>Boundary with X1 and X3</h2>
 <p>X1 records what happened. X2 judges the result against a contract. X3 limits what the grader and candidate system may read or change. Editing the agent and grader together, or letting a candidate rewrite its own release gate, destroys independence.</p>
 <h2>Failure modes</h2>
-<ul><li>Testing the final text while ignoring external state;</li><li>treating one stochastic success as stable capability;</li><li>positive cases without refusal, overreach, recovery, or unknown input;</li><li>one golden trajectory that rejects alternative correct paths;</li><li>a composite score without sample-level failures and trajectories;</li><li>uncalibrated graders whose score changes cannot be explained.</li></ul>
+<ul>
+<li>Testing the final text while ignoring external state;</li>
+<li>treating one stochastic success as stable capability;</li>
+<li>positive cases without refusal, overreach, recovery, or unknown input;</li>
+<li>one golden trajectory that rejects alternative correct paths;</li>
+<li>a composite score without sample-level failures and trajectories;</li>
+<li>uncalibrated graders whose score changes cannot be explained.</li>
+</ul>
 <!-- RELATED-CASE-DEEPAGENTS:START -->
-<section class="related-case-band" aria-labelledby="related-deepagents-case">
-  <p class="related-case-label">Related open-source framework case</p>
-  <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+<section aria-labelledby="related-deepagents-case" class="related-case-band">
+<p class="related-case-label">Related open-source framework case</p>
+<h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
+<p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation">
-                <p><strong>Suggested citation:</strong> ADPS, <em>X2 · Evaluation & Validation</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
-                <p><a href="/topics/agent-evals-and-testing/">Agent evaluation and validation topic</a> · <a href="/workshops/reflection-2026-08-12/">Reflection workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
-            </div>
+<p><strong>Suggested citation:</strong> ADPS, <em>X2 · Evaluation &amp; Validation</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
+<p><a href="/topics/agent-evals-and-testing/">Agent evaluation and validation topic</a> · <a href="/workshops/evaluation-2026-09-29/">Evaluation and Validation workshop</a> · <a href="/workshops/reflection-2026-08-12/">Reflection workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-x2-evals-and-testing">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-x2-evals-and-testing">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x2-evals-and-testing.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/x2-evals-and-testing.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x2-evals-and-testing.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/1a765339d83ebd68afb29f10c596aca620671fd9/docs/publications/en/patterns/x2-evals-and-testing.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
