@@ -48,16 +48,13 @@
     </header>
 
     <main class="container content">
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/workshops/">Workshops</a><span style="margin: 0 0.45rem;">/</span>Perception</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Agent Design Pattern Workshop Series</p>
-                <h1>ADPS Design Pattern Workshop · First Perception Workshop</h1>
-                <p class="publication-deck">Signal admission, event ingress, the boundary between multi-source and multi-modal input, and context in AI-driven software engineering.</p>
-                <p class="publication-date"><time datetime="2026-08-13">2026-08-13</time></p>
-            </header>
-
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/workshops/">Workshops</a><span style="margin: 0 0.45rem;">/</span>Perception</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent Design Pattern Workshop Series</p>
+<h1>ADPS Design Pattern Workshop · First Perception Workshop</h1>
+<p class="publication-deck">Signal admission, event ingress, the boundary between multi-source and multi-modal input, and context in AI-driven software engineering.</p>
+<p class="publication-date"><time datetime="2026-08-13">2026-08-13</time></p>
+</header>
 <table>
 <thead>
 <tr>
@@ -77,7 +74,6 @@
 </tbody>
 </table>
 <p>On 13 August 2026, ADPS held its first workshop on the perception module. The meeting followed two related tracks. The first tested whether P1–P4 explain signal ingress, context selection, compaction, discovery, and fusion in enterprise systems. The second used coding agents to examine how requirements, architecture, testing, review, and team responsibilities change when AI enters software engineering.</p>
-<p>The two tracks belong at different levels of the catalog. Perception findings enter the module overview and P1–P4. AI-driven software engineering crosses memory, action, reflection, and governance, so it has become a separate research topic.</p>
 <h2>Workshop conclusions</h2>
 <ol>
 <li>Perception scope should be designed backward from the decision goal. Available data does not automatically belong in the current context.</li>
@@ -94,20 +90,19 @@
 <p>In secure development workflows, code commits and tickets may arrive through callbacks, broad compliance scans run on a schedule, and high-volume telemetry uses streaming infrastructure. High-risk threats and fault isolation often require code, host, network, and historical ticket evidence to be corroborated.</p>
 <p>The mechanisms can coexist. A code-audit path may begin with a commit event, use a daily scan to check coverage, and aggregate several sources into one risk record.</p>
 <p>The workshop did not add Event-Driven as a new topology. Events define when work starts and how a signal is delivered. The six execution topologies still describe control after the task begins.</p>
-<figure class="workshop-diagram"><img src="/images/workshops/perception-funnel-en.svg" alt="Perception selects signals from goals and constraints, then emits structured facts and trigger advice rather than business actions."><figcaption>Perception selects signals from goals and constraints, then emits structured facts and trigger advice rather than business actions.</figcaption></figure>
+<figure class="workshop-diagram"><img alt="Perception selects signals from goals and constraints, then emits structured facts and trigger advice rather than business actions." src="/images/workshops/perception-funnel-en.svg"/><figcaption>Perception selects signals from goals and constraints, then emits structured facts and trigger advice rather than business actions.</figcaption></figure>
 <h2>3. Multi-source is not the same as multi-modal</h2>
-<p class="workshop-field-note"><strong>Yuke Xiong described post-deployment acceptance as a separate layer from algorithm boundary tests.</strong> Boundary tests can establish that the algorithm itself stays within limits, but map rendering, device behaviour in an advanced mode, and the final business outcome require further layers. An image-recognition task needs acceptance checks suited to its own downstream result.</p>
+<p class="workshop-field-note">Yuke Xiong discussed acceptance after algorithm deployment. In addition to boundary tests, the team needs to check map rendering, device behavior in advanced modes, and the final business result. Other tasks, such as image recognition, need checks designed for their outputs and intended use.</p>
 <p>Enterprise security systems often fuse several sources that are all text or structured records. Game development exposes a genuine modality choice: an Unreal Engine Blueprint can be inspected visually or transformed into a script-like representation. The appropriate representation depends on the task, available parser, and token cost.</p>
 <p>P4 now records source and modality separately. Source drives authorization, freshness, and corroboration. Modality drives parser and representation choice. The pattern keeps the name Multi-Modal Fusion for now; ADPS will revisit the name after more cases are available.</p>
 <h2>4. Goal and constraints form the context</h2>
-<p class="workshop-field-note"><strong>Xianglong Huang organized software context as Why, What, How, and acceptance.</strong> Why identifies the user and problem; What pins scenarios and product behaviour; How carries architecture, sequence, API, and database design; acceptance cases exist before coding. The agent receives checkable engineering material rather than an ever-growing oral brief.</p>
+<p class="workshop-field-note">Xianglong Huang's software context includes Why, What, How, and acceptance material. Why identifies the user and problem; What records scenarios and product behavior; How includes architecture, sequences, APIs, and database design. Acceptance cases are prepared before coding for use during implementation and review.</p>
 <p>A coding agent's context includes both goal and constraints. The goal defines the work. Tests, interface contracts, design rules, and business invariants define acceptance. Too little context prevents completion; too much unrelated material disperses attention.</p>
-<p>Algorithm development also exposes a layered acceptance problem. A passing algorithm test does not establish correct presentation, device behaviour, or final business operation. Different tasks require their own acceptance layers and cannot share one universal judge unchanged.</p>
 <p>These remarks now appear in the Context Contract in the perception overview and connect to the Action Contract and reflection evidence model.</p>
 <h2>5. From SDD to AI-driven software engineering</h2>
-<p class="workshop-field-note"><strong>Willem Jiang and Cheng Huang focused on brownfield systems.</strong> Jiang warned that a large repository accumulates architectural erosion through ordinary pull requests and that agents can accelerate it. Huang added ADRs, tests, task records, and reverse write-back so implementation decisions re-enter readable context. A new project can build from specifications; an old one must also recover its boundaries.</p>
+<p class="workshop-field-note">Willem Jiang noted that a large repository can drift from its architecture even when individual pull requests pass review; agents can accelerate that drift. Cheng Huang described using ADRs, tests, and task records to write implementation decisions back into project material for subsequent development. An existing project also needs a review of module responsibilities and dependencies.</p>
 <p>The public OpenLogos and RunLogos projects show one specification-oriented path. OpenLogos organizes software context through Why, What, How, and acceptance artifacts. RunLogos places proposal, documentation, planning, vertical slices, implementation, review, verification, deployment, and archival in a workflow engine. Each slice is independently acceptable. Review loops carry explicit iteration, issue-count, evidence, and stop limits.</p>
-<p>An anonymized large-backend practice keeps existing product, development, and testing responsibilities while introducing agents into technical design, implementation, and code review. It records adoption, token use, design iterations, and post-delivery code changes. The near-term goal is to reduce human intervention through measured improvement without claiming an unattended process before evidence supports it.</p>
+<p>A large-backend development practice keeps existing product, development, and testing responsibilities while introducing agents into technical design, implementation, and code review. It records adoption, token use, design iterations, and post-delivery code changes to identify steps that need less human intervention.</p>
 <p>Greenfield and brownfield work require different adoption paths. A new system can establish specifications, design, and tests from the start. A high-traffic legacy system requires more cautious movement from peripheral modules toward the core, with stronger human and test gates.</p>
 <p>Open-source collaboration exposes another constraint. When code generation exceeds maintainer review capacity, the problem moves to coherence. Contributors use different coding agents. <code>AGENTS.md</code> and Skills express some rules, but local changes can still accumulate into architecture debt. Periodic cleanup, refactoring, and architecture stewardship remain necessary.</p>
 <p>A game-development practice uses ADR, TDD, and Task artifacts to separate long-lived architecture choices, one change, and current execution. Daily notes and task records support recovery after interruption. Product decisions and implementation findings update each other through forward development and reverse troubleshooting paths.</p>
@@ -157,7 +152,6 @@
 </tr>
 </tbody>
 </table>
-<p>These terms organize the workshop record. Apart from the existing Context Contract, they do not create new pattern numbers.</p>
 <h2>8. White Paper revisions</h2>
 <ol>
 <li>A new <a href="/patterns/perception/">Perception Module Overview</a> records the four-stage funnel, ingress mechanisms, source and modality, the decision boundary, and input security.</li>
@@ -185,19 +179,18 @@
 <li><a href="/topics/ai-driven-software-engineering/">AI-Driven Software Engineering</a></li>
 <li><a href="/founders/#white-paper-contributors">White Paper contributors</a></li>
 </ul>
-<p class="publication-note publication-note-end">This page lists workshop participants and consolidates the discussion by theme. It does not map internal practice point by point to a person or organization. Conclusions adopted after comparison appear in the <a href="/patterns/perception/">Perception module overview</a> and individual pattern specifications.</p>
+<p class="publication-note publication-note-end">Internal system details have been anonymized. Adopted revisions appear in the <a href="/patterns/perception/">Perception module overview</a> and individual pattern specifications.</p>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS Design Pattern Workshop · First Perception Workshop; workshop held on <time datetime="2026-08-13">2026-08-13</time></dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-13">2026-08-13</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#workshops-perception-2026-08-13">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS Design Pattern Workshop · First Perception Workshop; workshop held on <time datetime="2026-08-13">2026-08-13</time></dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-08-13">2026-08-13</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
+</dl>
+<p><a href="/chronicle/#workshops-perception-2026-08-13">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/workshops/perception-2026-08-13.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/workshops/perception-2026-08-13.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/workshops/perception-2026-08-13.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/ff59651037ac1847970040d184f95e3982c7fc60/docs/publications/en/workshops/perception-2026-08-13.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
             <p>ADPS · Agent Design Patterns Society · founded 2026</p>

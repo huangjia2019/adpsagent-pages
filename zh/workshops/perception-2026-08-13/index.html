@@ -48,16 +48,13 @@
     </header>
 
     <main class="container content">
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/workshops/">研讨会</a><span style="margin: 0 0.45rem;">/</span>感知 Perception</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Agent 设计模式系列研讨会</p>
-                <h1>ADPS 设计模式系列研讨会 · 感知模块第一次研讨会</h1>
-                <p class="publication-deck">信号准入、事件入口、多源与多模态的边界，以及 AI 驱动软件工程中的上下文问题。</p>
-                <p class="publication-date"><time datetime="2026-08-13">2026-08-13</time></p>
-            </header>
-
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/zh/workshops/">研讨会</a><span style="margin: 0 0.45rem;">/</span>感知 Perception</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent 设计模式系列研讨会</p>
+<h1>ADPS 设计模式系列研讨会 · 感知模块第一次研讨会</h1>
+<p class="publication-deck">信号准入、事件入口、多源与多模态的边界，以及 AI 驱动软件工程中的上下文问题。</p>
+<p class="publication-date"><time datetime="2026-08-13">2026-08-13</time></p>
+</header>
 <table>
 <thead>
 <tr>
@@ -77,7 +74,6 @@
 </tbody>
 </table>
 <p>2026 年 8 月 13 日，ADPS 围绕感知模块组织了第一次专题研讨。会议有两条讨论线。第一条检查 P1–P4 能否解释企业系统中的信号接入、上下文选择、压缩、探索与融合。第二条以 Coding Agent 为现场，讨论 AI 进入软件工程后，需求、架构、测试、评审和组织分工怎样变化。</p>
-<p>两条线互有关联，但不应放进同一层目录。感知问题进入本模块总纲与 P1–P4；AI 驱动软件工程横跨记忆、行动、反思和治理，独立进入专题研究。</p>
 <h2>研讨结论</h2>
 <ol>
 <li>感知范围从决策目标反向设计。可取得的数据不等于本轮都该进入 context。</li>
@@ -94,24 +90,23 @@
 <p>在研发安全场景中，代码提交和工单可以通过事件回调进入系统，批量合规检查适合周期轮询，高吞吐日志适合流式处理。高风险威胁与故障定位常常需要把代码、主机、网络和历史工单放在一起交叉验证。</p>
 <p>这些方式可以组合。一条代码审计链可以由提交事件触发，同时使用每日全量扫描校准覆盖，再把多个来源的证据聚合为同一条风险记录。</p>
 <p>本场没有把 Event-Driven 增加为新拓扑。事件回答何时启动和怎样传递，任务启动后的控制关系仍由六种执行拓扑描述。</p>
-<figure class="workshop-diagram"><img src="/images/workshops/perception-funnel-zh.svg" alt="感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。"><figcaption>感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。</figcaption></figure>
+<figure class="workshop-diagram"><img alt="感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。" src="/images/workshops/perception-funnel-zh.svg"/><figcaption>感知从目标和约束反向选择信号，输出结构化事实与触发建议，业务动作留给后续控制。</figcaption></figure>
 <h2>3. 多源不等于多模态</h2>
-<p class="workshop-field-note"><strong>熊钰柯用算法上线后的验收说明了差别。</strong>算法本身通过边界检查，只能证明计算部分没有越界；地图上的呈现、设备在高级模式下的行为和最终业务效果还要分层验证。同一套验收设计也不能原样复制到图像识别等另一类任务。</p>
+<p class="workshop-field-note">熊钰柯提出了算法上线后的验收问题。除了算法的边界检查，还要检查地图呈现、设备在高级模式下的行为，以及最终业务效果。图像识别等其他任务，需要按各自的输出和用途设计验收。</p>
 <p>企业安全系统更常见的是多源融合：主机、网络、代码和工单可能都是文本或结构化记录。游戏开发中则有模态选择问题：虚幻引擎蓝图既可以按图读取，也可以转成脚本式结构；表示方式取决于任务、解析工具和 token 成本。</p>
 <p>研讨会后，P4 增加来源与模态两个字段。来源决定权限、时效和交叉核验，模态决定解析器和表示方式。P4 暂时保留“多模态融合”的名称，后续再根据案例决定是否扩大命名。</p>
 <h2>4. 目标与约束共同构成上下文</h2>
-<p class="workshop-field-note"><strong>黄湘龙把软件上下文拆成 Why、What、How 与验收。</strong>Why 说明服务谁、解决什么问题；What 固定场景和产品行为；How 承载架构、时序、API 与数据库；验收用例在编码前形成。Agent 因而拿到的是一组可核对的工程图纸，而不是不断变长的口头补充。</p>
+<p class="workshop-field-note">黄湘龙介绍的软件上下文包括 Why、What、How 与验收材料。Why 说明服务谁、解决什么问题；What 记录场景和产品行为；How 包括架构、时序、API 与数据库设计；验收用例在编码前准备好，供实现与评审使用。</p>
 <p>Coding Agent 的输入需要同时包含目标与约束。目标说明要完成什么，测试、接口、设计规范和业务规则说明怎样判断做得好不好。上下文过少，Agent 无法完成任务；上下文过多，注意力会被无关材料分散。</p>
-<p>算法研发中还出现了分层验收问题。算法本身通过测试，还不能证明地图呈现、设备行为或最终业务结果正确。不同任务需要自己的分层验收，无法把一套检查器原样搬到所有算法和产品中。</p>
 <p>这部分讨论进入了感知总纲中的 Context Contract，也连接到行动模块的 Action Contract 与反思模块的评测证据。</p>
 <h2>5. 从 SDD 到 AI 驱动的软件工程</h2>
-<p class="workshop-field-note"><strong>现场的争论落在存量系统上。</strong>姜宁提醒，大型旧仓库即使通过 PR 持续演进，也会累积架构侵蚀，Agent 还可能加快这种侵蚀；黄丞补充了 ADR、测试、任务记录和反向写回，让已经发生的实现决定重新进入可读上下文。新项目可以从规格建链，旧项目还要先恢复架构边界。</p>
+<p class="workshop-field-note">姜宁指出，大型旧仓库即使逐个 PR 通过评审，也可能逐渐偏离原来的架构，Agent 加快代码提交后，这个问题会更明显。黄丞介绍了 ADR、测试和任务记录的用法：实现过程中作出的决定写回项目资料，供后续开发读取。旧项目还需要先整理已有模块的职责与依赖关系。</p>
 <p>公开项目 OpenLogos 与 RunLogos 展示了一条规格化路径。OpenLogos 使用 Why、What、How 和验收材料组织软件上下文，RunLogos 将提案、文档、计划、垂直切片、编码、评审、验证、部署和归档放进流程引擎。每个切片都需要独立验收，评审循环设置轮次、问题数量、证据和停止条件。</p>
-<p>一组脱敏后的大型后端研发实践保留了产品、研发和测试的现有职责，在技术方案、代码实现和 Code Review 中逐步引入 Agent，并统计使用情况、token、方案往返轮次和落地后的代码修改量。近期目标是减少人工介入轮次，不预设全流程已经无人化。</p>
+<p>一项大型后端研发实践保留了产品、研发和测试的现有职责，在技术方案、代码实现和 Code Review 中逐步引入 Agent，并统计使用情况、token、方案往返轮次和落地后的代码修改量，观察哪些步骤可以减少人工介入。</p>
 <p>新项目和存量项目需要不同的引入方式。新项目可以从规范、设计和测试开始建立完整链路；面对高流量存量系统，团队更适合从边缘模块逐步进入核心，并保留更严格的人工与测试门禁。</p>
 <p>开源协作中还出现了另一个约束：代码生成速度超过维护者评审能力后，问题会转向架构一致性。不同贡献者使用不同 Coding Agent，<code>AGENTS.md</code> 和 Skill 可以表达部分规则，仍无法防止局部代码慢慢堆成架构债务。周期性清理、重构和架构守护因此成为必要工作。</p>
 <p>游戏项目的做法则用 ADR、TDD 与 Task 区分长期架构选择、一次变化和当期执行。日报和任务记录帮助成员在中断后恢复，需求和程序实践双向更新，代码、测试、构建与日志则形成正向开发和逆向排障两条路径。</p>
-<p>这些材料已经超出感知模块，完整综合见<a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程专题</a>。</p>
+<p>相关流程与案例见<a href="/zh/topics/ai-driven-software-engineering/">AI 驱动的软件工程专题</a>。</p>
 <h2>6. 三个反模式</h2>
 <p>研讨会归纳了三类已经出现的失效方式：</p>
 <ul>
@@ -157,7 +152,6 @@
 </tr>
 </tbody>
 </table>
-<p>这些名称用于整理本场讨论。除 Context Contract 外，其余暂不新增模式编号。</p>
 <h2>8. 白皮书修订</h2>
 <ol>
 <li>新增<a href="/zh/patterns/perception/">感知模块总纲</a>，写入四层漏斗、触发机制、来源与模态、决策边界及输入安全。</li>
@@ -187,17 +181,16 @@
 </ul>
 <p class="publication-note publication-note-end">公开稿保留研讨问题与工程细节；涉及内部系统的信息采用脱敏表述。会后采纳的结论见<a href="/zh/patterns/perception/">感知 Perception模块总纲</a>与各模式规范。</p>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">溯源记录</h2>
-  <dl>
-    <div><dt>来源记录</dt><dd>ADPS 设计模式系列研讨会 · 感知模块第一次研讨会；会议日期 <time datetime="2026-08-13">2026-08-13</time></dd></div>
-    <div><dt>来源日期</dt><dd><time datetime="2026-08-13">2026-08-13</time></dd></div>
-    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
-  </dl>
-  <p><a href="/zh/chronicle/#workshops-perception-2026-08-13">在 ADPS Chronicle 中查看</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">溯源记录</h2>
+<dl>
+<div><dt>来源记录</dt><dd>ADPS 设计模式系列研讨会 · 感知模块第一次研讨会；会议日期 <time datetime="2026-08-13">2026-08-13</time></dd></div>
+<div><dt>来源日期</dt><dd><time datetime="2026-08-13">2026-08-13</time></dd></div>
+<div><dt>本页首次公开</dt><dd><time datetime="2026-08-14">2026-08-14</time></dd></div>
+</dl>
+<p><a href="/zh/chronicle/#workshops-perception-2026-08-13">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/workshops/perception-2026-08-13.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/workshops/perception-2026-08-13.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/workshops/perception-2026-08-13.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/ff59651037ac1847970040d184f95e3982c7fc60/docs/publications/zh/workshops/perception-2026-08-13.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
             <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>
