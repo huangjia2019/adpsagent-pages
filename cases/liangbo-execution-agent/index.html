@@ -178,30 +178,25 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Engineering Case Reports · Case Report 01</p>
-                <h1>Dongfang Yiteng&#x27;s Execution Agent: Preserve Business State Across a Workflow</h1>
-                <p class="publication-deck">The model interprets intent, program state preserves parameter provenance, and a task graph enforces business dependencies.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Engineering Case Reports · Case Report 01</p>
+<h1>Dongfang Yiteng's Execution Agent: Preserve Business State Across a Workflow</h1>
+<p class="publication-deck">The model interprets intent, program state preserves parameter provenance, and a task graph enforces business dependencies.</p>
+</header>
 <!-- CASE-V06-ROUTE-liangbo-execution-agent-False:START -->
-<section class="case-route" aria-labelledby="case-route-liangbo">
-  <p class="case-route-kicker">Through-line task</p>
-  <h2 id="case-route-liangbo">How one payroll-configuration chain became resumable execution</h2>
-  <ol class="case-route-list">
-    <li><span class="case-step-no">01</span><strong>Task</strong><p>A new tenant selects a payroll template, snapshots current state, imports configuration, and pauses before a sensitive step.</p></li>
-    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>The model rewrites <code>template_id</code> from chat history. The field is valid; its provenance is not.</p></li>
-    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Strict values move to SessionState, dependencies to Workspace, and the model retains intent and narrative work.</p></li>
-    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Approval resumes the original node. Only a successful business read-back commits the task as completed.</p></li>
-  </ol>
+<section aria-labelledby="case-route-liangbo" class="case-route">
+<p class="case-route-kicker">Through-line task</p>
+<h2 id="case-route-liangbo">How one payroll-configuration chain became resumable execution</h2>
+<ol class="case-route-list">
+<li><span class="case-step-no">01</span><strong>Task</strong><p>A new tenant selects a payroll template, snapshots current state, imports configuration, and pauses before a sensitive step.</p></li>
+<li><span class="case-step-no">02</span><strong>First divergence</strong><p>The model rewrites <code>template_id</code> from chat history. The field is valid; its provenance is not.</p></li>
+<li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Strict values move to SessionState, dependencies to Workspace, and the model retains intent and narrative work.</p></li>
+<li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Approval resumes the original node. Only a successful business read-back commits the task as completed.</p></li>
+</ol>
 </section>
 <!-- CASE-V06-ROUTE-liangbo-execution-agent-False:END -->
-
-
-            <hr />
-
+<hr/>
 <h2>Case at a glance</h2>
 <table>
 <thead>
@@ -264,10 +259,9 @@
 <p><code>MessageHandler</code> owns the message boundary, SSE, and completion protocol. <code>Orchestrator</code> reads control signals and coordinates reasoning, memory, retrieval, and action. Capabilities register through explicit input and output contracts, so a new capability can join the middle of the flow without changing message handling.</p>
 <p>The runtime also separates control information from narrative context. Route choices, task states, and admission outcomes drive program branches. User goals, analyses, and execution summaries supply semantic context to the model. The two sets use different structures, validation, and persistence.</p>
 <figure>
-  <img src="/images/concepts/en/orchestrator.png" alt="The Orchestrator connects the control plane, narrative plane, MessageHandler, and Harness boundary">
-  <figcaption>Read the boundaries: <code>MessageHandler</code> owns ingress and presentation; <code>Orchestrator</code> turns control signals, semantic context, and tool execution into a traceable runtime path.</figcaption>
+<img alt="The Orchestrator connects the control plane, narrative plane, MessageHandler, and Harness boundary" src="/images/concepts/en/orchestrator.png"/>
+<figcaption>Read the boundaries: <code>MessageHandler</code> owns ingress and presentation; <code>Orchestrator</code> turns control signals, semantic context, and tool execution into a traceable runtime path.</figcaption>
 </figure>
-
 <h2>5. Explore while the task is unclear; schedule when dependencies are known</h2>
 <p><code>resolve</code> says that the user wants an operation, but it does not yet provide a stable plan. The runtime uses stepwise reasoning or ReAct when the next action depends on newly gathered information. Each iteration appends a <code>Thought</code>, <code>Action</code>, and <code>Observation</code> block to a scratchpad.</p>
 <p>Once dependencies are known, execution moves to a DAG. The executor schedules a <code>ready</code> node only after all upstream nodes are <code>completed</code>; an acceptance component decides whether a node can enter <code>completed</code>.</p>
@@ -307,21 +301,20 @@
 <p>Exact values from tool receipts enter <code>SessionState</code>. Later tools read them by coordinate. The model receives a narrative statement such as "the template has been matched," not the identifier itself as a value it must reproduce.</p>
 <p>The following record is an ADPS reconstruction of the mechanism.</p>
 <pre><code class="language-json">{
-  &quot;scope&quot;: &quot;session/payroll_setup&quot;,
-  &quot;key&quot;: &quot;template_id&quot;,
-  &quot;value&quot;: &quot;9287461350021&quot;,
-  &quot;producer&quot;: &quot;match_salary_template&quot;,
-  &quot;call_id&quot;: &quot;call_0187&quot;,
-  &quot;receipt_ref&quot;: &quot;events/0187/tool-result&quot;
+  "scope": "session/payroll_setup",
+  "key": "template_id",
+  "value": "9287461350021",
+  "producer": "match_salary_template",
+  "call_id": "call_0187",
+  "receipt_ref": "events/0187/tool-result"
 }
 </code></pre>
 <p>At registration time, a tool declares which state it produces and consumes. Before invocation, <code>RunPipeline</code> reads the coordinate, checks provenance, injects the value, and records the consumption link. The model never has to spell <code>template_id</code> again.</p>
 <p>This design assumes a managed tool environment. The organization must know the tools, state keys, scopes, and permissions before a run. Arbitrary tools from an open network do not automatically receive the same provenance guarantee.</p>
 <figure>
-  <img src="/images/concepts/en/mechanical-state-plane.png" alt="The mechanical state plane records provenance through producer, consumer, scope, and key">
-  <figcaption>A value can enter the next step only when producer, consumer, scope, and state key agree. Missing or ambiguous provenance fails fast.</figcaption>
+<img alt="The mechanical state plane records provenance through producer, consumer, scope, and key" src="/images/concepts/en/mechanical-state-plane.png"/>
+<figcaption>A value can enter the next step only when producer, consumer, scope, and state key agree. Missing or ambiguous provenance fails fast.</figcaption>
 </figure>
-
 <h2>7. Approval must preserve a resume point</h2>
 <p>Before a sensitive operation, the executor moves the node into a waiting state. After approval, it reloads persistent state, checks task and tool preconditions again, and resumes at that node. Rejection or timeout follows an explicit termination or replanning path.</p>
 <p>The case uses two forms of human involvement.</p>
@@ -364,37 +357,34 @@
 <p>The Anchor preserves the original goal, while the Ledger appends material progress. A Collection projects the small set of records needed for the current step. These structures support semantic reasoning and do not transport business IDs.</p>
 <p>Memory is also layered by use distance. L1 serves the current step, L2 preserves traceable facts, and L3 stores experience distilled across runs. An L3 item retains the ID of its L2 evidence so the original record can be loaded when needed. Retrieval is concentrated at reasoning, first ReAct, and planning boundaries instead of running after every step.</p>
 <figure>
-  <img src="/images/concepts/en/unified-session-state.png" alt="Unified session state separates Workspace, SessionNarrative, and SessionState">
-  <figcaption>The three planes serve scheduling, model understanding, and API delivery. They are archived together without pretending to share one source of truth.</figcaption>
+<img alt="Unified session state separates Workspace, SessionNarrative, and SessionState" src="/images/concepts/en/unified-session-state.png"/>
+<figcaption>The three planes serve scheduling, model understanding, and API delivery. They are archived together without pretending to share one source of truth.</figcaption>
 </figure>
-
-
 <!-- CASE-V06-REPLAY-liangbo-execution-agent-False:START -->
-<section class="case-replay" aria-labelledby="replay-liangbo">
-  <h2 id="replay-liangbo">Replay the same payroll-configuration task</h2>
-  <p>This replay follows one job and names the state owner and commit condition at each step.</p>
-  <ol class="case-replay-list">
-    <li><span class="case-step-no">01</span><strong>Create the job</strong><p>Workspace stores goal, tenant, DAG version, and current node.</p></li>
-    <li><span class="case-step-no">02</span><strong>Match a template</strong><p>The tool returns <code>template_id</code>; SessionState stores it with producer, call_id, and receipt_ref.</p></li>
-    <li><span class="case-step-no">03</span><strong>Take a snapshot</strong><p>The current payroll setup becomes a recoverable snapshot before import is ready.</p></li>
-    <li><span class="case-step-no">04</span><strong>Wait for approval</strong><p>The node remains blocked and the approval event targets the original job.</p></li>
-    <li><span class="case-step-no">05</span><strong>Resume import</strong><p>The executor rechecks versions and provenance before injecting strict values.</p></li>
-    <li><span class="case-step-no">06</span><strong>Read back business state</strong><p>The runtime verifies the actual payroll group; mismatches enter recovery or human takeover.</p></li>
-  </ol>
-  <p class="case-outcome"><strong>Commit condition</strong>The API receipt, state provenance, and business read-back must agree before the job becomes completed.</p>
+<section aria-labelledby="replay-liangbo" class="case-replay">
+<h2 id="replay-liangbo">Replay the same payroll-configuration task</h2>
+<p>This replay follows one job and names the state owner and commit condition at each step.</p>
+<ol class="case-replay-list">
+<li><span class="case-step-no">01</span><strong>Create the job</strong><p>Workspace stores goal, tenant, DAG version, and current node.</p></li>
+<li><span class="case-step-no">02</span><strong>Match a template</strong><p>The tool returns <code>template_id</code>; SessionState stores it with producer, call_id, and receipt_ref.</p></li>
+<li><span class="case-step-no">03</span><strong>Take a snapshot</strong><p>The current payroll setup becomes a recoverable snapshot before import is ready.</p></li>
+<li><span class="case-step-no">04</span><strong>Wait for approval</strong><p>The node remains blocked and the approval event targets the original job.</p></li>
+<li><span class="case-step-no">05</span><strong>Resume import</strong><p>The executor rechecks versions and provenance before injecting strict values.</p></li>
+<li><span class="case-step-no">06</span><strong>Read back business state</strong><p>The runtime verifies the actual payroll group; mismatches enter recovery or human takeover.</p></li>
+</ol>
+<p class="case-outcome"><strong>Commit condition</strong>The API receipt, state provenance, and business read-back must agree before the job becomes completed.</p>
 </section>
 <!-- CASE-V06-REPLAY-liangbo-execution-agent-False:END -->
-
 <!-- CASE-V06-EVIDENCE-liangbo-execution-agent-False:START -->
-<section class="case-evidence-section" aria-labelledby="evidence-liangbo">
-  <p class="case-evidence-label">Mechanism diagrams</p>
-  <h2 id="evidence-liangbo">Four runtime structures in the execution agent</h2>
-  <div class="case-evidence-grid">
-    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/task-dag-state-machine.png" alt="Task DAG and node state machine"><figcaption><strong>Task DAG and state machine</strong>Once dependencies are known, the executor schedules only ready nodes.<span class="case-evidence-proof">ADPS redrawing from the case talk; it explains mechanics, not production class names.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/hitl-block-resume.png" alt="Approval block and resume"><figcaption><strong>Approval block and resume</strong>The approval event returns to the original job and node instead of restarting the task.<span class="case-evidence-proof">The diagram supports state semantics; deployments still define authority and expiry.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/anchor-ledger-collection.png" alt="Anchor Ledger Collection structure"><figcaption><strong>Anchor, Ledger, Collection</strong>Goal, progress, and current projection remain separate to reduce long-run drift.<span class="case-evidence-proof">This structure serves model context, not strict identifier transfer.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/images/concepts/observability-glass-dome.png" alt="Unified activity events and runtime timeline"><figcaption><strong>Activity and runtime timeline</strong>Model, tool, state change, and approval enter one traceable sequence.<span class="case-evidence-proof">It explains event organization; public material does not provide aggregate performance metrics.</span></figcaption></figure>
-  </div>
+<section aria-labelledby="evidence-liangbo" class="case-evidence-section">
+<p class="case-evidence-label">Mechanism diagrams</p>
+<h2 id="evidence-liangbo">Four runtime structures in the execution agent</h2>
+<div class="case-evidence-grid">
+<figure class="case-evidence"><img alt="Task DAG and node state machine" loading="lazy" src="/images/concepts/task-dag-state-machine.png"/><figcaption><strong>Task DAG and state machine</strong>Once dependencies are known, the executor schedules only ready nodes.<span class="case-evidence-proof">Redrawn from the case presentation.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="Approval block and resume" loading="lazy" src="/images/concepts/hitl-block-resume.png"/><figcaption><strong>Approval block and resume</strong>The approval event returns to the original job and node instead of restarting the task.<span class="case-evidence-proof">The diagram supports state semantics; deployments still define authority and expiry.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="Anchor Ledger Collection structure" loading="lazy" src="/images/concepts/anchor-ledger-collection.png"/><figcaption><strong>Anchor, Ledger, Collection</strong>Goal, progress, and current projection remain separate to reduce long-run drift.<span class="case-evidence-proof">This structure serves model context, not strict identifier transfer.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="Unified activity events and runtime timeline" loading="lazy" src="/images/concepts/observability-glass-dome.png"/><figcaption><strong>Activity and runtime timeline</strong>Model, tool, state change, and approval enter one traceable sequence.</figcaption></figure>
+</div>
 </section>
 <!-- CASE-V06-EVIDENCE-liangbo-execution-agent-False:END -->
 <h2>9. What the current evidence supports</h2>
@@ -481,23 +471,21 @@
 <h2>Contributor and citation</h2>
 <p><strong>Case contributor:</strong> Bo Liang, Shanghai Dongfang Yiteng Technology Co., Ltd.</p>
 <p><strong>Suggested citation:</strong> ADPS and Bo Liang, "Dongfang Yiteng's Execution Agent: Preserve Business State Across a Workflow," ADPS Engineering Case Reports, Case Report 01, v0.4, 2026.</p>
-
-            <div class="document-citation">
-                <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Evidence boundary:</strong> This report documents Dongfang Yiteng&#x27;s execution-agent project. Bo Liang supplied the business context, prototype failures, and architecture decisions. The material has not been independently audited. ADPS reconstructed the example data structures to explain the disclosed mechanisms; they are not the implementation&#x27;s class or field names.</p>
-            </div>
+<div class="document-citation">
+<p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer">Case material supplied by Bo Liang. The example data structures illustrate the design.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case</a>; contributed by Bo Liang</dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-06-19">2026-06-19</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#cases-liangbo-execution-agent">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd><a href="/cases/liangbo-execution-agent/">Dongfang Yiteng Execution Agent case</a>; contributed by Bo Liang</dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-06-19">2026-06-19</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
+</dl>
+<p><a href="/chronicle/#cases-liangbo-execution-agent">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/liangbo-execution-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/cases/liangbo-execution-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/liangbo-execution-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/cases/liangbo-execution-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

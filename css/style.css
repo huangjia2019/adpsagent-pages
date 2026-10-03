@@ -981,6 +981,22 @@ article.essay blockquote {
     font-style: italic;
     font-family: var(--font-serif);
 }
+figcaption { text-align: center; }
+article.essay figure:not(.case-evidence):not(.matrix-figure) {
+    margin: 1.25rem 0;
+}
+article.essay figure:not(.case-evidence) > figcaption {
+    color: var(--color-text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    line-height: 1.55;
+    margin-top: 0.55rem;
+}
+article.essay figcaption p {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
 .page-pattern-selection-card article.essay figure {
     margin: 1.5rem 0;
     max-width: 100%;

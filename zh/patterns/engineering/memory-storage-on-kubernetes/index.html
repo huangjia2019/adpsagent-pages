@@ -193,16 +193,15 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/engineering/">模式工程实现</a></p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin:0 0.45rem;">/</span><a href="/zh/patterns/engineering/">模式工程实现</a></p>
 <header class="publication-head">
-  <p class="publication-series">ADPS 模式工程实现 · 记忆</p>
-  <h1>K8s 中的 Agent 记忆：存储分层与恢复验证</h1>
-  <p class="publication-deck">文件可以继续作为 Agent 的操作界面；跨 Pod 存活、版本冲突和恢复由持久后端负责。</p>
+<p class="publication-series">ADPS 模式工程实现 · 记忆</p>
+<h1>K8s 中的 Agent 记忆：存储分层与恢复验证</h1>
+<p class="publication-deck">文件可以继续作为 Agent 的操作界面；跨 Pod 存活、版本冲突和恢复由持久后端负责。</p>
 </header>
-<p>一位读者遇到的问题很具体：Agent 在工作目录中按日期写 Markdown 记忆，本地运行正常；服务部署到 Kubernetes 后，同一用户的下一轮请求可能落到另一个 Pod。刚刚写下的偏好还在 Pod A，Pod B 却读不到。</p>
-<p>这不是 Markdown 的缺陷。Markdown 决定正文怎样表达，存储系统决定记录能否跨进程、跨 Pod、跨版本继续存在。生产系统需要把“Agent 看到的文件”与“记忆的权威存储”分开。</p>
-<p><img alt="K8s 中 Agent 记忆的写入、持久化与工作区投影" src="/images/patterns/engineering/k8s-agent-memory-zh.svg"></p>
+<p>一位读者的 Agent 在工作目录中按日期写 Markdown 记忆，本地运行正常；服务部署到 Kubernetes 后，同一用户的下一轮请求可能落到另一个 Pod。刚刚写下的偏好还在 Pod A，Pod B 却读不到。</p>
+<p>Markdown 决定正文怎样表达，存储系统决定记录能否跨进程、跨 Pod、跨版本继续存在。生产系统需要把“Agent 看到的文件”与“记忆的权威存储”分开。</p>
+<p><img alt="K8s 中 Agent 记忆的写入、持久化与工作区投影" src="/images/patterns/engineering/k8s-agent-memory-zh.svg"/></p>
 <h2>先看一次真实的读写</h2>
 <p>用户说：“以后周报用中文，先写风险，再写进展。”</p>
 <p>Pod A 若只执行下面这次本地写入，确认语句就超出了系统已经完成的事实：</p>
@@ -255,18 +254,18 @@
 <h2>一条记忆记录需要什么</h2>
 <p>只保存文件名和正文，无法处理租户隔离、并发更新和过期内容。下面这组字段可以作为起步结构：</p>
 <pre><code class="language-json">{
-  &quot;memory_id&quot;: &quot;mem_01J...&quot;,
-  &quot;tenant_id&quot;: &quot;tenant_acme&quot;,
-  &quot;subject_id&quot;: &quot;user_1842&quot;,
-  &quot;project_id&quot;: &quot;weekly-report&quot;,
-  &quot;kind&quot;: &quot;preference&quot;,
-  &quot;body_format&quot;: &quot;text/markdown&quot;,
-  &quot;body&quot;: &quot;周报使用中文；风险先于进展。&quot;,
-  &quot;source_ref&quot;: &quot;trace://run-8842/message-6&quot;,
-  &quot;version&quot;: 13,
-  &quot;valid_from&quot;: &quot;2026-09-12T10:30:00Z&quot;,
-  &quot;supersedes&quot;: &quot;mem_01H...&quot;,
-  &quot;status&quot;: &quot;accepted&quot;
+  "memory_id": "mem_01J...",
+  "tenant_id": "tenant_acme",
+  "subject_id": "user_1842",
+  "project_id": "weekly-report",
+  "kind": "preference",
+  "body_format": "text/markdown",
+  "body": "周报使用中文；风险先于进展。",
+  "source_ref": "trace://run-8842/message-6",
+  "version": 13,
+  "valid_from": "2026-09-12T10:30:00Z",
+  "supersedes": "mem_01H...",
+  "status": "accepted"
 }
 </code></pre>
 <p><code>subject_id</code> 说明记忆属于谁，<code>project_id</code> 限定共享范围，<code>source_ref</code> 指回产生它的事件，<code>version</code> 与 <code>supersedes</code> 处理更新，<code>status</code> 区分候选、已接受和已退役内容。正文可以继续使用 Markdown，不必为进入数据库而失去可读性。</p>
@@ -414,21 +413,20 @@ WHERE memory_id = :memory_id
 </ul>
 <p>来源问题与知识星球初稿形成于 2026-09-12；ADPS 工程补充于 2026-09-13。</p>
 <div class="document-citation">
-  <p><strong>引用建议：</strong>ADPS，《K8s 中的 Agent 记忆：存储分层与恢复验证》，ADPS 模式工程实现 · 记忆，2026-09-13。</p>
-  <p><a href="/zh/patterns/">模式矩阵</a> · <a href="/zh/patterns/engineering/">模式工程实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+<p><strong>引用建议：</strong>ADPS，《K8s 中的 Agent 记忆：存储分层与恢复验证》，ADPS 模式工程实现 · 记忆，2026-09-13。</p>
+<p><a href="/zh/patterns/">模式矩阵</a> · <a href="/zh/patterns/engineering/">模式工程实现</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
 </div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">溯源记录</h2>
-  <dl>
-    <div><dt>来源记录</dt><dd><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html" target="_blank" rel="noopener">知识星球发布稿</a></dd></div>
-    <div><dt>来源日期</dt><dd><time datetime="2026-09-12">2026-09-12</time></dd></div>
-    <div><dt>本页首次公开</dt><dd><time datetime="2026-09-13">2026-09-13</time></dd></div>
-  </dl>
-  <p><a href="/zh/chronicle/#engineering-memory-storage-on-kubernetes">在 ADPS Chronicle 中查看</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">溯源记录</h2>
+<dl>
+<div><dt>来源记录</dt><dd><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html" rel="noopener" target="_blank">知识星球发布稿</a></dd></div>
+<div><dt>来源日期</dt><dd><time datetime="2026-09-12">2026-09-12</time></dd></div>
+<div><dt>本页首次公开</dt><dd><time datetime="2026-09-13">2026-09-13</time></dd></div>
+</dl>
+<p><a href="/zh/chronicle/#engineering-memory-storage-on-kubernetes">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/engineering/memory-storage-on-kubernetes.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/patterns/engineering/memory-storage-on-kubernetes.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/engineering/memory-storage-on-kubernetes.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/zh/patterns/engineering/memory-storage-on-kubernetes.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

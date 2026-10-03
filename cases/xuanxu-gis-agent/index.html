@@ -178,30 +178,25 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Engineering Case Reports · Case Report 02</p>
-                <h1>Xuanxu Technology&#x27;s GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines</h1>
-                <p class="publication-deck">Certified pipelines run through deterministic rules, and real map requests provide the final acceptance evidence.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Engineering Case Reports · Case Report 02</p>
+<h1>Xuanxu Technology's GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines</h1>
+<p class="publication-deck">Certified pipelines run through deterministic rules, and real map requests provide the final acceptance evidence.</p>
+</header>
 <!-- CASE-V06-ROUTE-xuanxu-gis-agent-False:START -->
-<section class="case-route" aria-labelledby="case-route-gis">
-  <p class="case-route-kicker">Through-line task</p>
-  <h2 id="case-route-gis">How an S-57 chart earns automatic publication</h2>
-  <ol class="case-route-list">
-    <li><span class="case-step-no">01</span><strong>Task</strong><p>Recognize the chart, process coordinates, generate style, publish service, build a viewer, and verify the result.</p></li>
-    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>GeoServer accepts the configuration and the run commits too early, while the consumer may still receive exception XML or a blank map.</p></li>
-    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Six stages commit fact files; the runtime executes only capabilities that have reached active status.</p></li>
-    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>An external probe issues a real map request and checks body, pixels, and report before the run commits.</p></li>
-  </ol>
+<section aria-labelledby="case-route-gis" class="case-route">
+<p class="case-route-kicker">Through-line task</p>
+<h2 id="case-route-gis">How an S-57 chart earns automatic publication</h2>
+<ol class="case-route-list">
+<li><span class="case-step-no">01</span><strong>Task</strong><p>Recognize the chart, process coordinates, generate style, publish service, build a viewer, and verify the result.</p></li>
+<li><span class="case-step-no">02</span><strong>First divergence</strong><p>GeoServer accepts the configuration and the run commits too early, while the consumer may still receive exception XML or a blank map.</p></li>
+<li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Six stages commit fact files; the runtime executes only capabilities that have reached active status.</p></li>
+<li><span class="case-step-no">04</span><strong>Acceptance</strong><p>An external probe issues a real map request and checks body, pixels, and report before the run commits.</p></li>
+</ol>
 </section>
 <!-- CASE-V06-ROUTE-xuanxu-gis-agent-False:END -->
-
-
-            <hr />
-
+<hr/>
 <h2>Case at a glance</h2>
 <table>
 <thead>
@@ -363,10 +358,9 @@
 </tbody>
 </table>
 <figure>
-  <img src="/zh/cases/xuanxu-gis-agent/assets/console-overview.jpg" alt="GIS agent console with pipeline catalog, datasets, and six-stage progress">
-  <figcaption>The console maps each stage to real state files. An operator can see where a dataset stopped and open the corresponding metadata, viewer, and verification report.</figcaption>
+<img alt="GIS agent console with pipeline catalog, datasets, and six-stage progress" src="/zh/cases/xuanxu-gis-agent/assets/console-overview.jpg"/>
+<figcaption>The console maps each stage to real state files. An operator can see where a dataset stopped and open the corresponding metadata, viewer, and verification report.</figcaption>
 </figure>
-
 <p>The current path is sequential. A concurrent test once produced a transient verification run with zero successful tile requests for one dataset. At the current scale, the team accepts queueing in exchange for reproducibility. This choice should be revisited when queue delay threatens the service objective.</p>
 <h2>5. Why state lives on disk</h2>
 <p>Stages exchange files and do not share in-process objects.</p>
@@ -386,26 +380,24 @@
 <li>A screenshot or image check observes meaningful map content.</li>
 </ol>
 <figure>
-  <img src="/zh/cases/xuanxu-gis-agent/assets/cesium-s57-viewer.jpg" alt="S-57 WMTS service rendered in a 3D globe viewer">
-  <figcaption>The acceptance target is a map that a consuming application can use. A successful API call, a registered layer, and usable output are three separate facts.</figcaption>
+<img alt="S-57 WMTS service rendered in a 3D globe viewer" src="/zh/cases/xuanxu-gis-agent/assets/cesium-s57-viewer.jpg"/>
+<figcaption>The acceptance target is a map that a consuming application can use. A successful API call, a registered layer, and usable output are three separate facts.</figcaption>
 </figure>
-
 <p>ADPS calls this mechanism an external acceptance probe. The same structure applies when the final fact lives in a database readback, delivered file, payment receipt, or deployed page.</p>
 <h2>7. Convert one failure into a rule for the next run</h2>
 <p>Runtime handles only known signatures. Available actions are retry, abort, and skip. A missing spatial reference or a broken chart-update sequence stops the run; the system does not invent the missing value.</p>
 <p>A new failure enters a five-part card after human review.</p>
-<pre><code class="language-yaml">signature: &quot;GetTile=400 and body contains '/ by zero'&quot;
-root_cause: &quot;metatile size was configured as 0x0&quot;
-fallback: &quot;disable the invalid metatile setting and rerun verify&quot;
-fixed_by: &quot;set a safe SDK default&quot;
-related_rules: [&quot;wmts-metatile-zero&quot;]
+<pre><code class="language-yaml">signature: "GetTile=400 and body contains '/ by zero'"
+root_cause: "metatile size was configured as 0x0"
+fallback: "disable the invalid metatile setting and rerun verify"
+fixed_by: "set a safe SDK default"
+related_rules: ["wmts-metatile-zero"]
 </code></pre>
 <p>The card preserves the symptom, root cause, immediate action, permanent fix, and runtime rule. Later runs consume a compact signature and action; an engineer can still follow <code>source</code> back to the full incident record.</p>
 <figure>
-  <img src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card2.jpg" alt="Knowledge-card graph grouped by pipeline and linked to sources">
-  <figcaption>Cards are grouped by pipeline. Runtime rules consume compact conclusions while engineers retain the failure account and source.</figcaption>
+<img alt="Knowledge-card graph grouped by pipeline and linked to sources" src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card2.jpg"/>
+<figcaption>Cards are grouped by pipeline. Runtime rules consume compact conclusions while engineers retain the failure account and source.</figcaption>
 </figure>
-
 <h2>8. How a new capability earns automatic execution</h2>
 <table>
 <thead>
@@ -435,20 +427,19 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
 </table>
 <p>When the current pipeline version differs from the certified version, the system returns it to candidate. A code change cannot keep an earlier certification silently.</p>
 <p>During development, the model creates scaffolding and a person certifies the pipeline; runtime accepts only active versions. This preserves review evidence without requiring approval for every routine run.</p>
-
 <!-- CASE-V06-REPLAY-xuanxu-gis-agent-False:START -->
-<section class="case-replay" aria-labelledby="replay-gis">
-  <h2 id="replay-gis">Republish the same S-57 dataset</h2>
-  <p>The runner does not improvise. Each stage reads facts committed by its predecessor.</p>
-  <ol class="case-replay-list">
-    <li><span class="case-step-no">01</span><strong>validate</strong><p>The signature uniquely matches an active pipeline and records the input manifest.</p></li>
-    <li><span class="case-step-no">02</span><strong>process</strong><p>GDAL and PostGIS commit the processed path, SRS, and bbox for downstream consumers.</p></li>
-    <li><span class="case-step-no">03</span><strong>generate_sld</strong><p>A versioned style is produced; an incomplete contract stops instead of trusting platform defaults.</p></li>
-    <li><span class="case-step-no">04</span><strong>publish</strong><p>Workspace, store, layer, and service receipt are stored while the run remains running.</p></li>
-    <li><span class="case-step-no">05</span><strong>viewer</strong><p>A real access point lets the probe and an engineer use the consumer path.</p></li>
-    <li><span class="case-step-no">06</span><strong>verify</strong><p>The probe checks content type, exception body, visible pixels, screenshot, and report.</p></li>
-  </ol>
-  <p class="case-outcome"><strong>Commit condition</strong>Only verify can commit success. HTTP 2xx or a publish receipt is insufficient on its own.</p>
+<section aria-labelledby="replay-gis" class="case-replay">
+<h2 id="replay-gis">Republish the same S-57 dataset</h2>
+<p>The runner does not improvise. Each stage reads facts committed by its predecessor.</p>
+<ol class="case-replay-list">
+<li><span class="case-step-no">01</span><strong>validate</strong><p>The signature uniquely matches an active pipeline and records the input manifest.</p></li>
+<li><span class="case-step-no">02</span><strong>process</strong><p>GDAL and PostGIS commit the processed path, SRS, and bbox for downstream consumers.</p></li>
+<li><span class="case-step-no">03</span><strong>generate_sld</strong><p>A versioned style is produced; an incomplete contract stops instead of trusting platform defaults.</p></li>
+<li><span class="case-step-no">04</span><strong>publish</strong><p>Workspace, store, layer, and service receipt are stored while the run remains running.</p></li>
+<li><span class="case-step-no">05</span><strong>viewer</strong><p>A real access point lets the probe and an engineer use the consumer path.</p></li>
+<li><span class="case-step-no">06</span><strong>verify</strong><p>The probe checks content type, exception body, visible pixels, screenshot, and report.</p></li>
+</ol>
+<p class="case-outcome"><strong>Commit condition</strong>Only verify can commit success. HTTP 2xx or a publish receipt is insufficient on its own.</p>
 </section>
 <!-- CASE-V06-REPLAY-xuanxu-gis-agent-False:END -->
 <h2>9. Why this still belongs in an agent case catalog</h2>
@@ -465,15 +456,14 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
 <li>Measure sequential operation before adding concurrency, dynamic planning, or a runtime model.</li>
 </ol>
 <p>The structure can support media transcoding, model deployment, report publication, static-site release, and other repetitive delivery workflows.</p>
-
 <!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-False:START -->
-<section class="case-evidence-section" aria-labelledby="evidence-gis">
-  <p class="case-evidence-label">Original runtime views</p>
-  <h2 id="evidence-gis">How the console carries dataset facts and failure knowledge forward</h2>
-  <div class="case-evidence-grid">
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/console-datasets.jpg" alt="Xuanxu GIS Agent dataset view"><figcaption><strong>Dataset and processing facts</strong>Input files, recognition results, and outputs remain inspectable in one view.<span class="case-evidence-proof">The screenshot supports one runtime view, not coverage of every format.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card.jpg" alt="Xuanxu GIS Agent failure knowledge card"><figcaption><strong>Failure knowledge card</strong>A field error becomes symptom, cause, fix, and prevention rule.<span class="case-evidence-proof">The screenshot supports the card mechanism; regression tests must still validate the rule.</span></figcaption></figure>
-  </div>
+<section aria-labelledby="evidence-gis" class="case-evidence-section">
+<p class="case-evidence-label">Original runtime views</p>
+<h2 id="evidence-gis">How the console carries dataset facts and failure knowledge forward</h2>
+<div class="case-evidence-grid">
+<figure class="case-evidence"><img alt="Xuanxu GIS Agent dataset view" loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/console-datasets.jpg"/><figcaption><strong>Dataset and processing facts</strong>Input files, recognition results, and outputs remain inspectable in one view.</figcaption></figure>
+<figure class="case-evidence"><img alt="Xuanxu GIS Agent failure knowledge card" loading="lazy" src="/zh/cases/xuanxu-gis-agent/assets/knowledge-card.jpg"/><figcaption><strong>Failure knowledge card</strong>A field error becomes symptom, cause, fix, and prevention rule.</figcaption></figure>
+</div>
 </section>
 <!-- CASE-V06-EVIDENCE-xuanxu-gis-agent-False:END -->
 <h2>11. Failure signals and evidence gaps</h2>
@@ -560,23 +550,21 @@ related_rules: [&quot;wmts-metatile-zero&quot;]
 <h2>Contributor and citation</h2>
 <p><strong>Case contributor:</strong> Yuke Xiong, Xuanxu Technology.</p>
 <p><strong>Suggested citation:</strong> ADPS and Yuke Xiong, "Xuanxu Technology's GIS Publishing Agent: Turn Runtime Experience into Verifiable Pipelines," ADPS Engineering Case Reports, Case Report 02, v0.4, 2026.</p>
-
-            <div class="document-citation">
-                <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Evidence boundary:</strong> This report documents Xuanxu Technology&#x27;s GIS data-publishing system. Yuke Xiong supplied the workflow, failure cases, and architecture decisions. The material has not been independently audited. Screenshots come from the case environment. ADPS reconstructed the example contracts to explain the disclosed mechanisms; they are not the implementation&#x27;s field names.</p>
-            </div>
+<div class="document-citation">
+<p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer">Case material and runtime screenshots supplied by Yuke Xiong. The example contracts illustrate the design.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd><a href="/cases/xuanxu-gis-agent/">Xuanxu Technology GIS publishing agent case</a>; contributed by Yuke Xiong</dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-07-30">2026-07-30</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#cases-xuanxu-gis-agent">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd><a href="/cases/xuanxu-gis-agent/">Xuanxu Technology GIS publishing agent case</a>; contributed by Yuke Xiong</dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-07-30">2026-07-30</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
+</dl>
+<p><a href="/chronicle/#cases-xuanxu-gis-agent">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/xuanxu-gis-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/cases/xuanxu-gis-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/xuanxu-gis-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/cases/xuanxu-gis-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

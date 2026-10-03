@@ -178,14 +178,12 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/cases/">案例</a><span style="margin:0 0.45rem;">/</span>开源框架研究</p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/cases/">案例</a><span style="margin:0 0.45rem;">/</span>开源框架研究</p>
 <header class="publication-head"><p class="publication-series">ADPS 开源框架案例</p><h1>Deep Agents：从固定图到代码生成的动态协作</h1><p class="publication-deck">LangGraph 保存状态与运行图，LangChain 组装 Agent 循环，Deep Agents 用中间件补齐长程任务所需的上下文、文件、技能和子 Agent。动态协作再把一次任务的具体编排写进受限解释器。</p><p class="publication-date"><time datetime="2026-08-26">2026-08-26</time></p></header>
 <p>2026 年 8 月 25 日的 ADPS 协作模块研讨会上，张海立把 LangGraph、LangChain Agent 与 Deep Agents 放在同一条技术栈里讲了一遍。海立老师告诉我们，三者并非三套互斥的 Agent 框架，它们分别承担运行时、Agent 抽象和 Harness 的职责。</p>
 <p>随后，他演示了动态子 Agent。模型可以根据当前任务写出一段 JavaScript，把工具和子 Agent 当作受控函数调用；循环、分支、并行和聚合留在解释器变量中。工作流依旧受运行时约束，具体形状则在任务到来后生成。</p>
 <p>本文以公开文档和源码为依据，拆解这套动态协作机制，并把它放回 ADPS 的协作、反思、治理和横切工程面中检查。</p>
-<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-zh.svg" alt="LangGraph、LangChain 与 Deep Agents 三层架构"><figcaption>图 1 · LangGraph 承担运行时，LangChain Agent 组装 Agent 循环，Deep Agents 提供 Harness。动态子 Agent 位于 Harness 与运行时之间。</figcaption></figure>
-
+<figure class="matrix-figure case-diagram case-diagram-stack"><img alt="LangGraph、LangChain 与 Deep Agents 三层架构" src="/images/cases/deepagents-three-layers-zh.svg"/><figcaption>图 1 · LangGraph 承担运行时，LangChain Agent 组装 Agent 循环，Deep Agents 提供 Harness。动态子 Agent 位于 Harness 与运行时之间。</figcaption></figure>
 <h2>1. LangGraph、LangChain Agent 与 Deep Agents</h2>
 <p>Deep Agents 公开架构文档梳理了三层关系的差异。</p>
 <table>
@@ -274,13 +272,13 @@
 <p>动态子 Agent 把这部分临时控制流移到解释器。模型仍决定策略，循环、集合、去重和并发由代码执行。</p>
 <h2>4. <code>task()</code> 把子 Agent 接进解释器</h2>
 <p>Deep Agents 的解释器中间件可以暴露一个 <code>task()</code> 全局函数。它接收任务描述、子 Agent 类型以及可选的结构化输出 schema。启用程序化工具调用（Programmatic Tool Calling，PTC）后，解释器还可以通过显式 allowlist 调用 <code>tools.*</code>。</p>
-<pre><code class="language-javascript">const files = await tools.glob({ pattern: &quot;src/**/*.{py,js,ts}&quot; });
+<pre><code class="language-javascript">const files = await tools.glob({ pattern: "src/**/*.{py,js,ts}" });
 const batches = chunk(files, 12);
 
 const reviews = await Promise.all(
   batches.map(batch =&gt; task({
-    subagentType: &quot;security-reviewer&quot;,
-    description: `Review these files and return evidence: ${batch.join(&quot;, &quot;)}`,
+    subagentType: "security-reviewer",
+    description: `Review these files and return evidence: ${batch.join(", ")}`,
     responseSchema: findingSchema
   }))
 );
@@ -288,17 +286,16 @@ const reviews = await Promise.all(
 const candidates = deduplicate(reviews.flat());
 const verified = await Promise.all(
   candidates.map(item =&gt; task({
-    subagentType: &quot;independent-verifier&quot;,
+    subagentType: "independent-verifier",
     description: `Verify this finding against its source: ${JSON.stringify(item)}`,
     responseSchema: verdictSchema
   }))
 );
 
-return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
+return verified.filter(v =&gt; v.status === "confirmed");
 </code></pre>
 <p>应用没有预先提交这张固定工作流图。模型根据当前任务生成临时编排，解释器负责执行；<code>task()</code> 把已经配置好的子 Agent 暴露成能力；LangGraph 继续保存运行状态和事件。</p>
-<figure class="matrix-figure case-diagram case-diagram-flow"><img src="/images/cases/deepagents-dynamic-review-zh.svg" alt="动态子 Agent 代码安全审查流程"><figcaption>图 2 · 文件发现、分片和去重留在解释器变量中；专业判断交给隔离的子 Agent；确认结果进入统一验收。</figcaption></figure>
-
+<figure class="matrix-figure case-diagram case-diagram-flow"><img alt="动态子 Agent 代码安全审查流程" src="/images/cases/deepagents-dynamic-review-zh.svg"/><figcaption>图 2 · 文件发现、分片和去重留在解释器变量中；专业判断交给隔离的子 Agent；确认结果进入统一验收。</figcaption></figure>
 <h2>5. 上下文节省来自数据路径</h2>
 <p>动态编排经常被概括为“更省 token”（大家可以进行实测）。其机理如下。</p>
 <p>普通工具调用会在消息历史中留下调用参数与返回内容。动态编排可以把文件列表、分片和中间集合保留在解释器变量或后端文件中，主 Agent 最后只接收摘要和结构化结果。Subagent 又把搜索、读取和推理的细节隔离在自己的上下文里。</p>
@@ -344,8 +341,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 </tbody>
 </table>
 <p>“动态”与“编排 / 编舞”属于两个维度。动态说明流程何时确定；编排与编舞说明控制权放在哪里。动态工作流既可以采用中央编排，也可以由多个参与者通过事件协作。</p>
-<figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-zh.svg" alt="动态编排与编舞的控制权对比"><figcaption>图 3 · 动态编排仍由一个节点持有完整计划；编舞由参与者根据事件和本地规则推进。</figcaption></figure>
-
+<figure class="workshop-diagram"><img alt="动态编排与编舞的控制权对比" src="/images/workshops/orchestration-vs-choreography-zh.svg"/><figcaption>图 3 · 动态编排仍由一个节点持有完整计划；编舞由参与者根据事件和本地规则推进。</figcaption></figure>
 <h2>7. 动态代码中的模式组合</h2>
 <p>安全审查示例包含一组可分开的模式机制。</p>
 <table>
@@ -477,26 +473,25 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <p>这份案例对应 <a href="/zh/patterns/c1-hierarchical-delegation/">C1</a>、<a href="/zh/patterns/c2-fan-out-gather/">C2</a>、<a href="/zh/patterns/c3-adversarial-review/">C3</a>、<a href="/zh/patterns/c5-sub-agent-isolation/">C5</a>以及反思与横切工程面。C6 继续作为候选模式，等待更多 Agent 生产案例检验。</p>
 <h2>公开来源</h2>
 <ul>
-<li><a href="https://adpsagent.com/zh/workshops/collaboration-2026-08-25/">ADPS 协作模块第一次研讨会</a></li>
+<li><a href="/zh/workshops/collaboration-2026-08-25/">ADPS 协作模块第一次研讨会</a></li>
 <li><a href="https://docs.langchain.com/oss/python/langchain/multi-agent/index">LangChain Multi-agent overview</a></li>
 <li><a href="https://docs.langchain.com/oss/python/deepagents/dynamic-subagents">Deep Agents Dynamic subagents</a></li>
 <li><a href="https://docs.langchain.com/oss/python/deepagents/subagents">Deep Agents Subagents</a></li>
 <li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/ARCHITECTURE.md">Deep Agents ARCHITECTURE.md</a></li>
 <li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/deepagents/deepagents/middleware/subagents.py">SubAgentMiddleware source</a></li>
 </ul>
-<div class="document-citation"><p><strong>研究来源：</strong>张海立在 2026-08-25 ADPS 协作模块第一次研讨会中的 LangGraph 与 Deep Agents 架构研究和演示。ADPS 根据公开文档与源码复核整理。</p><p><strong>证据边界：</strong>本文说明公开框架中的机制及其模式映射，不代表 LangChain 官方架构说明，也不构成企业部署效果验证。</p><p><a href="/zh/cases/">案例与研究报告目录</a> · <a href="/zh/patterns/collaboration/">协作模块</a> · <a href="/zh/patterns/reflection/">反思模块</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<div class="document-citation"><p><strong>研究来源：</strong>张海立在 2026 年 8 月 25 日 ADPS 协作模块第一次研讨会中的 LangGraph 与 Deep Agents 架构研究和演示。</p><p><a href="/zh/cases/">案例与研究报告目录</a> · <a href="/zh/patterns/collaboration/">协作模块</a> · <a href="/zh/patterns/reflection/">反思模块</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p></div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">溯源记录</h2>
-  <dl>
-    <div><dt>来源记录</dt><dd>张海立在协作模块研讨会中的 LangGraph 与 Deep Agents 架构研究；ADPS 依据公开文档与源码复核整理</dd></div>
-    <div><dt>来源日期</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
-    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
-  </dl>
-  <p><a href="/zh/chronicle/#cases-deepagents-dynamic-orchestration">在 ADPS Chronicle 中查看</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">溯源记录</h2>
+<dl>
+<div><dt>来源记录</dt><dd>张海立在协作模块研讨会中的 LangGraph 与 Deep Agents 架构研究；ADPS 依据公开文档与源码复核整理</dd></div>
+<div><dt>来源日期</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+<div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+</dl>
+<p><a href="/zh/chronicle/#cases-deepagents-dynamic-orchestration">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/cases/deepagents-dynamic-orchestration.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/cases/deepagents-dynamic-orchestration.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/cases/deepagents-dynamic-orchestration.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/zh/cases/deepagents-dynamic-orchestration.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

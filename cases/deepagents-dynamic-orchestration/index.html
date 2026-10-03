@@ -178,14 +178,12 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/cases/">Cases</a><span style="margin:0 0.45rem;">/</span>Open-source framework study</p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/cases/">Cases</a><span style="margin:0 0.45rem;">/</span>Open-source framework study</p>
 <header class="publication-head"><p class="publication-series">ADPS Open-Source Framework Case</p><h1>Deep Agents: From Fixed Graphs to Code-Generated Collaboration</h1><p class="publication-deck">LangGraph carries state and execution, LangChain assembles the agent loop, and Deep Agents packages the context, filesystem, skills, and delegation needed by long-running work. Dynamic collaboration adds a constrained interpreter that writes the task-specific orchestration at runtime.</p><p class="publication-date"><time datetime="2026-08-26">2026-08-26</time></p></header>
 <p>At the ADPS Collaboration workshop on 25 August 2026, Haili Zhang placed LangGraph, LangChain agents, and Deep Agents on one technical stack. He showed that the three names do not describe mutually exclusive agent frameworks. They own the runtime, the agent abstraction, and the harness respectively.</p>
 <p>He then demonstrated dynamic subagents. A model can write JavaScript for the current task and call tools and subagents as constrained functions. Loops, branches, parallel batches, and aggregation remain in interpreter variables. The runtime still enforces the execution boundary, while the shape of this particular workflow is determined after the task arrives.</p>
 <p>This case uses public documentation and source code to examine that mechanism and map it to ADPS Collaboration, Reflection, Governance, and cross-cutting engineering planes.</p>
-<figure class="matrix-figure case-diagram case-diagram-stack"><img src="/images/cases/deepagents-three-layers-en.svg" alt="Three layers of LangGraph, LangChain and Deep Agents"><figcaption>Figure 1 · LangGraph supplies the runtime, LangChain agents assemble the agent loop, and Deep Agents provides the harness. Dynamic subagents sit between the harness and runtime.</figcaption></figure>
-
+<figure class="matrix-figure case-diagram case-diagram-stack"><img alt="Three layers of LangGraph, LangChain and Deep Agents" src="/images/cases/deepagents-three-layers-en.svg"/><figcaption>Figure 1 · LangGraph supplies the runtime, LangChain agents assemble the agent loop, and Deep Agents provides the harness. Dynamic subagents sit between the harness and runtime.</figcaption></figure>
 <h2>1. LangGraph, LangChain agents, and Deep Agents</h2>
 <p>The public Deep Agents architecture document distinguishes the three layers.</p>
 <table>
@@ -274,13 +272,13 @@
 <p>Dynamic subagents move that temporary control flow into the interpreter. The model chooses the strategy; code executes iteration, sets, deduplication, and concurrency.</p>
 <h2>4. <code>task()</code> connects subagents to interpreter code</h2>
 <p>Deep Agents interpreter middleware can expose a global <code>task()</code> function with a description, subagent type, and optional response schema. With Programmatic Tool Calling (PTC) enabled, explicitly allowlisted <code>tools.*</code> calls are also available.</p>
-<pre><code class="language-javascript">const files = await tools.glob({ pattern: &quot;src/**/*.{py,js,ts}&quot; });
+<pre><code class="language-javascript">const files = await tools.glob({ pattern: "src/**/*.{py,js,ts}" });
 const batches = chunk(files, 12);
 
 const reviews = await Promise.all(
   batches.map(batch =&gt; task({
-    subagentType: &quot;security-reviewer&quot;,
-    description: `Review these files and return evidence: ${batch.join(&quot;, &quot;)}`,
+    subagentType: "security-reviewer",
+    description: `Review these files and return evidence: ${batch.join(", ")}`,
     responseSchema: findingSchema
   }))
 );
@@ -288,17 +286,16 @@ const reviews = await Promise.all(
 const candidates = deduplicate(reviews.flat());
 const verified = await Promise.all(
   candidates.map(item =&gt; task({
-    subagentType: &quot;independent-verifier&quot;,
+    subagentType: "independent-verifier",
     description: `Verify this finding against its source: ${JSON.stringify(item)}`,
     responseSchema: verdictSchema
   }))
 );
 
-return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
+return verified.filter(v =&gt; v.status === "confirmed");
 </code></pre>
 <p>The application does not define this exact workflow graph in advance. The model generates temporary orchestration for the current input. The interpreter executes it, <code>task()</code> exposes configured subagents as capabilities, and LangGraph continues to hold run state and events.</p>
-<figure class="matrix-figure case-diagram case-diagram-flow"><img src="/images/cases/deepagents-dynamic-review-en.svg" alt="Dynamic subagent security review flow"><figcaption>Figure 2 · Discovery, batching, and deduplication stay in interpreter variables. Isolated subagents make specialist judgments, and verified results enter one acceptance path.</figcaption></figure>
-
+<figure class="matrix-figure case-diagram case-diagram-flow"><img alt="Dynamic subagent security review flow" src="/images/cases/deepagents-dynamic-review-en.svg"/><figcaption>Figure 2 · Discovery, batching, and deduplication stay in interpreter variables. Isolated subagents make specialist judgments, and verified results enter one acceptance path.</figcaption></figure>
 <h2>5. Context savings come from the data path</h2>
 <p>Dynamic orchestration is often described as token-efficient, a claim that readers can test in their own workloads. Its effect on the main context comes from the data path.</p>
 <p>Ordinary tool calls add arguments and outputs to message history. Dynamic orchestration can retain file lists, batches, and intermediate collections in interpreter variables or backend files. The main agent receives summaries and structured results. Subagents also isolate the detailed search, reads, and reasoning that produced each result.</p>
@@ -344,8 +341,7 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 </tbody>
 </table>
 <p>“Dynamic” and “orchestration versus choreography” therefore describe different dimensions. Dynamic describes when the path is determined. Orchestration and choreography describe where control resides. A dynamic workflow may still be centrally orchestrated, or it may emerge from event-reactive participants.</p>
-<figure class="workshop-diagram"><img src="/images/workshops/orchestration-vs-choreography-en.svg" alt="Control ownership in dynamic orchestration and choreography"><figcaption>Figure 3 · One node still holds the complete plan in dynamic orchestration; choreography progresses through events and local rules.</figcaption></figure>
-
+<figure class="workshop-diagram"><img alt="Control ownership in dynamic orchestration and choreography" src="/images/workshops/orchestration-vs-choreography-en.svg"/><figcaption>Figure 3 · One node still holds the complete plan in dynamic orchestration; choreography progresses through events and local rules.</figcaption></figure>
 <h2>7. Pattern composition in dynamic code</h2>
 <table>
 <thead>
@@ -476,26 +472,25 @@ return verified.filter(v =&gt; v.status === &quot;confirmed&quot;);
 <p>This case maps to <a href="/patterns/c1-hierarchical-delegation/">C1</a>, <a href="/patterns/c2-fan-out-gather/">C2</a>, <a href="/patterns/c3-adversarial-review/">C3</a>, <a href="/patterns/c5-sub-agent-isolation/">C5</a>, Reflection, and the cross-cutting planes. C6 remains a candidate pattern pending more production evidence from agent systems.</p>
 <h2>Public sources</h2>
 <ul>
-<li><a href="https://adpsagent.com/workshops/collaboration-2026-08-25/">First ADPS Collaboration workshop</a></li>
+<li><a href="/workshops/collaboration-2026-08-25/">First ADPS Collaboration workshop</a></li>
 <li><a href="https://docs.langchain.com/oss/python/langchain/multi-agent/index">LangChain Multi-agent overview</a></li>
 <li><a href="https://docs.langchain.com/oss/python/deepagents/dynamic-subagents">Deep Agents Dynamic subagents</a></li>
 <li><a href="https://docs.langchain.com/oss/python/deepagents/subagents">Deep Agents Subagents</a></li>
 <li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/ARCHITECTURE.md">Deep Agents ARCHITECTURE.md</a></li>
 <li><a href="https://github.com/langchain-ai/deepagents/blob/main/libs/deepagents/deepagents/middleware/subagents.py">SubAgentMiddleware source</a></li>
 </ul>
-<div class="document-citation"><p><strong>Research source:</strong> Haili Zhang's LangGraph and Deep Agents research and demonstration at the first ADPS Collaboration workshop on 25 August 2026. ADPS checked the account against public documentation and source code.</p><p><strong>Evidence boundary:</strong> This article describes mechanisms in public frameworks and maps them to patterns. It is neither an official LangChain architecture document nor evidence of deployment outcomes.</p><p><a href="/cases/">Cases and research reports</a> · <a href="/patterns/collaboration/">Collaboration</a> · <a href="/patterns/reflection/">Reflection</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<div class="document-citation"><p><strong>Research source:</strong> Haili Zhang's LangGraph and Deep Agents research and demonstration at the first ADPS Collaboration workshop on 25 August 2026.</p><p><a href="/cases/">Cases and research reports</a> · <a href="/patterns/collaboration/">Collaboration</a> · <a href="/patterns/reflection/">Reflection</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p></div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>Haili Zhang's LangGraph and Deep Agents analysis at the Collaboration workshop; checked by ADPS against public documentation and source code</dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#cases-deepagents-dynamic-orchestration">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>Haili Zhang's LangGraph and Deep Agents analysis at the Collaboration workshop; checked by ADPS against public documentation and source code</dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+</dl>
+<p><a href="/chronicle/#cases-deepagents-dynamic-orchestration">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/deepagents-dynamic-orchestration.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/cases/deepagents-dynamic-orchestration.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/deepagents-dynamic-orchestration.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/cases/deepagents-dynamic-orchestration.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

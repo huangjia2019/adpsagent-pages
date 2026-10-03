@@ -178,30 +178,25 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Engineering Case Reports · Project Report 03</p>
-                <h1>AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back</h1>
-                <p class="publication-deck">Element, relationship, and view plans are checked before one bounded write enters the engineering repository.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/cases/" style="color: var(--color-text-muted);">Cases</a><span style="margin:0 0.45rem;">/</span>Case Report</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Engineering Case Reports · Project Report 03</p>
+<h1>AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back</h1>
+<p class="publication-deck">Element, relationship, and view plans are checked before one bounded write enters the engineering repository.</p>
+</header>
 <!-- CASE-V06-ROUTE-ark-mbse-agent-False:START -->
-<section class="case-route" aria-labelledby="case-route-mbse">
-  <p class="case-route-kicker">Through-line task</p>
-  <h2 id="case-route-mbse">How a modeling instruction earns permission to change an engineering model</h2>
-  <ol class="case-route-list">
-    <li><span class="case-step-no">01</span><strong>Task</strong><p>Create one use-case diagram in a named package, reuse existing actors, and add cases, relations, and layout.</p></li>
-    <li><span class="case-step-no">02</span><strong>First divergence</strong><p>A business name does not resolve to one package. Continuing may write a valid structure into the wrong scope.</p></li>
-    <li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Scope resolution, three typed plans, seven write-back invariants, and one adapter govern the side effect.</p></li>
-    <li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Actual deltas, result enums, a receipt, and an undo handle explain what the write-back changed.</p></li>
-  </ol>
+<section aria-labelledby="case-route-mbse" class="case-route">
+<p class="case-route-kicker">Through-line task</p>
+<h2 id="case-route-mbse">How a modeling instruction earns permission to change an engineering model</h2>
+<ol class="case-route-list">
+<li><span class="case-step-no">01</span><strong>Task</strong><p>Create one use-case diagram in a named package, reuse existing actors, and add cases, relations, and layout.</p></li>
+<li><span class="case-step-no">02</span><strong>First divergence</strong><p>A business name does not resolve to one package. Continuing may write a valid structure into the wrong scope.</p></li>
+<li><span class="case-step-no">03</span><strong>Architecture change</strong><p>Scope resolution, three typed plans, seven write-back invariants, and one adapter govern the side effect.</p></li>
+<li><span class="case-step-no">04</span><strong>Acceptance</strong><p>Actual deltas, result enums, a receipt, and an undo handle explain what the write-back changed.</p></li>
+</ol>
 </section>
 <!-- CASE-V06-ROUTE-ark-mbse-agent-False:END -->
-
-
-            <hr />
-
+<hr/>
 <h2>Project at a glance</h2>
 <table>
 <thead>
@@ -258,10 +253,9 @@
 <h2>3. Connect three typed plans</h2>
 <p>The entry step converts the request into a job card with an operation, diagram type, and project scope.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a1-intent-card.jpg" alt="Modeling job card containing operation, diagram type, and scope">
-  <figcaption>The job card fixes the operation boundary. Element planning does not start while scope remains unresolved.</figcaption>
+<img alt="Modeling job card containing operation, diagram type, and scope" src="/zh/cases/ark-mbse-agent/assets/fig-a1-intent-card.jpg"/>
+<figcaption>The job card fixes the operation boundary. Element planning does not start while scope remains unresolved.</figcaption>
 </figure>
-
 <p>Each stage consumes only accepted upstream artifacts.</p>
 <table>
 <thead>
@@ -305,7 +299,7 @@
   outcome: applied | applied_with_warnings | blocked | noop
   writeback_receipt: state delta + rollback handle
 </code></pre>
-<p>ADPS describes the sequence as a typed intermediate-representation chain. In practical terms, a downstream stage reads checkable fields, types, and references rather than free-form upstream prose.</p>
+<p>The three plans form a typed intermediate-representation chain. Each downstream stage reads the fields, types, and element references in the preceding plan and checks them before writing back to the model.</p>
 <p>Three separate agents can implement the stages, as can three functions in one runtime. Input boundaries, isolated failure, and data contracts provide the engineering value; process count does not.</p>
 <h2>4. Process one diagram per operation</h2>
 <p>"Complete the turnstile model" has no stable boundary. It may require requirement, use-case, block-definition, internal-block, and state diagrams. An early deviation can propagate through later diagrams.</p>
@@ -315,19 +309,17 @@
 </blockquote>
 <p>That limit defines the write scope, pre-write acceptance set, rollback change set, and smallest regression test. The user receives one diagram, a change summary, and a rollback action.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a2-canvas-result.jpg" alt="Canvas result with change summary and rollback action">
-  <figcaption>One operation owns one diagram. The summary distinguishes created, reused, and unresolved items and preserves a rollback handle.</figcaption>
+<img alt="Canvas result with change summary and rollback action" src="/zh/cases/ark-mbse-agent/assets/fig-a2-canvas-result.jpg"/>
+<figcaption>One operation owns one diagram. The summary distinguishes created, reused, and unresolved items and preserves a rollback handle.</figcaption>
 </figure>
-
 <p>This boundary also limits the impact of a defect. Branch merging, concurrent project writes, permission partitions, and long transactions remain outside the published case.</p>
 <h2>5. Pause the job when the project location is ambiguous</h2>
 <p>"Turnstile Control" may match multiple packages or none, so the runtime queries the project index first. A unique allowed match proceeds, a small candidate set goes to user selection, and no credible match asks for a more precise name or a separately created scope.</p>
 <p>The system does not default to the project root or silently create a parent package tree.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-04-clarify-scope.jpg" alt="Clarification card and pending job state for unresolved scope">
-  <figcaption>The clarification card retains the known operation and diagram type and asks only for the missing scope.</figcaption>
+<img alt="Clarification card and pending job state for unresolved scope" src="/zh/cases/ark-mbse-agent/assets/fig-04-clarify-scope.jpg"/>
+<figcaption>The clarification card retains the known operation and diagram type and asks only for the missing scope.</figcaption>
 </figure>
-
 <p>While waiting, a pending operation stores <code>action</code>, <code>diagram_type</code>, candidate scopes, current stage, and available choices. A later response resumes at scope resolution instead of rerunning the complete intent and planning path.</p>
 <p>The durable job provides resumability. The dialog only collects the missing fact.</p>
 <h2>6. Check explicit facts before write-back</h2>
@@ -379,10 +371,9 @@
 </tbody>
 </table>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-a3-prewrite-clarify.jpg" alt="Pre-write comparison between three requested use cases and a two-item plan">
-  <figcaption>The user named three use cases and the current plan contains two. The discrepancy becomes visible before side effects.</figcaption>
+<img alt="Pre-write comparison between three requested use cases and a two-item plan" src="/zh/cases/ark-mbse-agent/assets/fig-a3-prewrite-clarify.jpg"/>
+<figcaption>The user named three use cases and the current plan contains two. The discrepancy becomes visible before side effects.</figcaption>
 </figure>
-
 <p>An operation ends in one of four states.</p>
 <table>
 <thead>
@@ -416,15 +407,13 @@
 </tbody>
 </table>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-03-writeback-summary.jpg" alt="Successful write-back summary with created, reused, and rollback information">
-  <figcaption>A successful receipt reports the actual state delta and exposes rollback.</figcaption>
+<img alt="Successful write-back summary with created, reused, and rollback information" src="/zh/cases/ark-mbse-agent/assets/fig-03-writeback-summary.jpg"/>
+<figcaption>A successful receipt reports the actual state delta and exposes rollback.</figcaption>
 </figure>
-
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/fig-07-blocked-failure.jpg" alt="Unchanged canvas and a blocked result describing a dangling relationship">
-  <figcaption>An unresolved endpoint blocks the write and returns an actionable reason.</figcaption>
+<img alt="Unchanged canvas and a blocked result describing a dangling relationship" src="/zh/cases/ark-mbse-agent/assets/fig-07-blocked-failure.jpg"/>
+<figcaption>An unresolved endpoint blocks the write and returns an actionable reason.</figcaption>
 </figure>
-
 <h2>7. Assign program checks and model review to different questions</h2>
 <p>An early local experiment tested generation, model review, revision, and another review. Three issues appeared: review instructions diverged from the tool schema, latency and cost increased, and long comments did not improve write-back usability directly.</p>
 <p>The current prototype removes post-write model self-review. It retains at most one bounded repair before assembly and gives write admission to program checks.</p>
@@ -476,59 +465,53 @@
 </ol>
 <p>This arrangement reduces the input surface of each call. The available material contains no comparative token, latency, or success-rate data, so this report records a design judgment rather than an aggregate performance result.</p>
 <h2>10. Local experiment screenshots</h2>
-<p>The following screenshots come from Liangding Yuan's local experiment environment. They explain host integration, one intent result, and one relationship write-back. They support only the runs shown and do not establish commercial readiness or a longitudinal success rate.</p>
+<p>The following screenshots come from Liangding Yuan's local experiments and show host integration, intent parsing, and relationship write-back.</p>
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg" alt="Flying-car project in Magic Systems of Systems Architect with AI4MBSE">
-  <figcaption>AI4MBSE is embedded as a host panel. The project tree is on the left, the model view is in the center, and the assistant is on the right.</figcaption>
+<img alt="Flying-car project in Magic Systems of Systems Architect with AI4MBSE" src="/zh/cases/ark-mbse-agent/assets/shot-magicdraw-flycar.jpg"/>
+<figcaption>AI4MBSE is embedded as a host panel. The project tree is on the left, the model view is in the center, and the assistant is on the right.</figcaption>
 </figure>
-
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/log-intent-recognition.jpg" alt="Intent log with chat action and null diagram type and scope">
-  <figcaption>One consultation request produced <code>action=chat</code> and did not enter the modeling write path. The screenshot supports only this run.</figcaption>
+<img alt="Intent log with chat action and null diagram type and scope" src="/zh/cases/ark-mbse-agent/assets/log-intent-recognition.jpg"/>
+<figcaption>One consultation request produced <code>action=chat</code> and did not enter the modeling write path. The screenshot supports only this run.</figcaption>
 </figure>
-
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/shot-satellite-bdd.jpg" alt="Satellite-system block-definition diagram and element-planning panel">
-  <figcaption>A block-definition diagram in a satellite-system project. The right panel lists planned elements and ownership.</figcaption>
+<img alt="Satellite-system block-definition diagram and element-planning panel" src="/zh/cases/ark-mbse-agent/assets/shot-satellite-bdd.jpg"/>
+<figcaption>A block-definition diagram in a satellite-system project. The right panel lists planned elements and ownership.</figcaption>
 </figure>
-
 <figure>
-  <img src="/zh/cases/ark-mbse-agent/assets/log-relation-writeback.jpg" alt="Relationship write-back log using stable element and relationship identifiers">
-  <figcaption>The record uses stable element and relationship identifiers. One log cannot represent aggregate performance across diagram types.</figcaption>
+<img alt="Relationship write-back log using stable element and relationship identifiers" src="/zh/cases/ark-mbse-agent/assets/log-relation-writeback.jpg"/>
+<figcaption>The write-back record uses stable element and relationship identifiers.</figcaption>
 </figure>
-
-
 <!-- CASE-V06-REPLAY-ark-mbse-agent-False:START -->
-<section class="case-replay" aria-labelledby="replay-mbse">
-  <h2 id="replay-mbse">Replay the same gate-control use-case task</h2>
-  <p>Natural language narrows into checkable structures before it reaches the host model repository.</p>
-  <ol class="case-replay-list">
-    <li><span class="case-step-no">01</span><strong>Create ModelingJob</strong><p>Store create, use_case, explicit objects, and the host revision.</p></li>
-    <li><span class="case-step-no">02</span><strong>Resolve scope</strong><p>Duplicate names freeze the job; selection resumes against a stable ID and current revision.</p></li>
-    <li><span class="case-step-no">03</span><strong>Build three plans</strong><p>ElementPlan, RelationPlan, and ViewPlan constrain objects, relations, and the current view.</p></li>
-    <li><span class="case-step-no">04</span><strong>Run seven invariants</strong><p>Check scope, type, stable references, explicit items, closure, write set, and host revision.</p></li>
-    <li><span class="case-step-no">05</span><strong>Use one write path</strong><p>One adapter commits repository and canvas so two paths cannot disagree.</p></li>
-    <li><span class="case-step-no">06</span><strong>Return a receipt</strong><p>Actual deltas select APPLIED, WARNING, BLOCKED, or NOOP and preserve an undo handle.</p></li>
-  </ol>
-  <p class="case-outcome"><strong>Commit condition</strong>The plan passes its gates, the host reports a real delta, and repository and canvas agree.</p>
+<section aria-labelledby="replay-mbse" class="case-replay">
+<h2 id="replay-mbse">Replay the same gate-control use-case task</h2>
+<p>Natural language narrows into checkable structures before it reaches the host model repository.</p>
+<ol class="case-replay-list">
+<li><span class="case-step-no">01</span><strong>Create ModelingJob</strong><p>Store create, use_case, explicit objects, and the host revision.</p></li>
+<li><span class="case-step-no">02</span><strong>Resolve scope</strong><p>Duplicate names freeze the job; selection resumes against a stable ID and current revision.</p></li>
+<li><span class="case-step-no">03</span><strong>Build three plans</strong><p>ElementPlan, RelationPlan, and ViewPlan constrain objects, relations, and the current view.</p></li>
+<li><span class="case-step-no">04</span><strong>Run seven invariants</strong><p>Check scope, type, stable references, explicit items, closure, write set, and host revision.</p></li>
+<li><span class="case-step-no">05</span><strong>Use one write path</strong><p>One adapter commits repository and canvas so two paths cannot disagree.</p></li>
+<li><span class="case-step-no">06</span><strong>Return a receipt</strong><p>Actual deltas select APPLIED, WARNING, BLOCKED, or NOOP and preserve an undo handle.</p></li>
+</ol>
+<p class="case-outcome"><strong>Commit condition</strong>The plan passes its gates, the host reports a real delta, and repository and canvas agree.</p>
 </section>
 <!-- CASE-V06-REPLAY-ark-mbse-agent-False:END -->
-
 <!-- CASE-V06-EVIDENCE-ark-mbse-agent-False:START -->
-<section class="case-evidence-section" aria-labelledby="evidence-mbse">
-  <p class="case-evidence-label">Project flow and host views</p>
-  <h2 id="evidence-mbse">Connect progress, clarification, write-back, and degraded outcome</h2>
-  <div class="case-evidence-grid">
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-01-progress-line.jpg" alt="AI4MBSE modeling job progress"><figcaption><strong>Stage progress</strong>Elements, relations, views, and write-back retain separate states.<span class="case-evidence-proof">Teaching reconstruction; it explains boundaries, not identical host components.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-02-canvas-writeback.jpg" alt="AI4MBSE repository and canvas write-back"><figcaption><strong>Repository and canvas write-back</strong>One change set reaches structure and presentation together.<span class="case-evidence-proof">Teaching reconstruction; host read-back and logs remain required evidence.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-05-resume-timeline.jpg" alt="AI4MBSE clarification and resume timeline"><figcaption><strong>Clarify and resume</strong>New scope information resumes the original ModelingJob against the host revision.<span class="case-evidence-proof">The diagram supports interaction and state design, not concurrent editing.</span></figcaption></figure>
-    <figure class="case-evidence"><img loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-06-degraded-success.jpg" alt="AI4MBSE applied with warnings result"><figcaption><strong>Applied with warnings</strong>The structural write succeeds while non-destructive issues enter warnings.<span class="case-evidence-proof">A result enum is not a quality guarantee; semantic quality still needs review.</span></figcaption></figure>
-  </div>
-  <div class="case-source-links">
-    <a href="https://www.mbse.ltd/en/ai4mbse.html" target="_blank" rel="noopener"><strong>AI4MBSE project page</strong><span>Project framing, method packs, and local interaction sketch</span></a>
-    <a href="https://www.mbse.ltd/en/faq.html" target="_blank" rel="noopener"><strong>Project FAQ</strong><span>Current status, experiment boundary, and source notes</span></a>
-    <a href="/concepts/typed-ir-chain/"><strong>Typed IR chain</strong><span>An engineering concept extracted from the project mechanism</span></a>
-  </div>
+<section aria-labelledby="evidence-mbse" class="case-evidence-section">
+<p class="case-evidence-label">Project flow and host views</p>
+<h2 id="evidence-mbse">Connect progress, clarification, write-back, and degraded outcome</h2>
+<div class="case-evidence-grid">
+<figure class="case-evidence"><img alt="AI4MBSE modeling job progress" loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-01-progress-line.jpg"/><figcaption><strong>Stage progress</strong>Elements, relations, views, and write-back retain separate states.<span class="case-evidence-proof">Teaching reconstruction; it explains boundaries, not identical host components.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="AI4MBSE repository and canvas write-back" loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-02-canvas-writeback.jpg"/><figcaption><strong>Repository and canvas write-back</strong>One change set reaches structure and presentation together.<span class="case-evidence-proof">Teaching reconstruction; host read-back and logs remain required evidence.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="AI4MBSE clarification and resume timeline" loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-05-resume-timeline.jpg"/><figcaption><strong>Clarify and resume</strong>New scope information resumes the original ModelingJob against the host revision.<span class="case-evidence-proof">The diagram supports interaction and state design, not concurrent editing.</span></figcaption></figure>
+<figure class="case-evidence"><img alt="AI4MBSE applied with warnings result" loading="lazy" src="/zh/cases/ark-mbse-agent/assets/fig-06-degraded-success.jpg"/><figcaption><strong>Applied with warnings</strong>The structural write succeeds while non-destructive issues enter warnings.<span class="case-evidence-proof">A result enum is not a quality guarantee; semantic quality still needs review.</span></figcaption></figure>
+</div>
+<div class="case-source-links">
+<a href="https://www.mbse.ltd/en/ai4mbse.html" rel="noopener" target="_blank"><strong>AI4MBSE project page</strong><span>Project framing, method packs, and local interaction sketch</span></a>
+<a href="https://www.mbse.ltd/en/faq.html" rel="noopener" target="_blank"><strong>Project FAQ</strong><span>Current status, experiment boundary, and source notes</span></a>
+<a href="/concepts/typed-ir-chain/"><strong>Typed IR chain</strong><span>An engineering concept extracted from the project mechanism</span></a>
+</div>
 </section>
 <!-- CASE-V06-EVIDENCE-ark-mbse-agent-False:END -->
 <h2>11. The next report should add these measurements</h2>
@@ -664,24 +647,22 @@
 <p><strong>Liangding Yuan</strong> is a Chengdu-based architect documenting a personal technical research project. He has sixteen years of development and architecture experience across workflow, search, collaboration, authorization, and knowledge systems. He now records AI-assisted MBSE and SysML learning, technical reasoning, and local experiments on <a href="https://www.mbse.ltd/en/">mbse.ltd</a>. AI4MBSE is his personal experimental prototype.</p>
 <p><strong>Project site:</strong> <a href="https://www.mbse.ltd/en/">mbse.ltd</a>, where Liangding Yuan publishes his technical notes and experiments.</p>
 <p><strong>Suggested citation:</strong> ADPS and Liangding Yuan, "AI4MBSE Modeling Agent: Qualifying Natural-Language Plans for Model Write-Back," ADPS Engineering Case Reports, Project Report 03, v0.6, 2026.</p>
-
-            <div class="document-citation">
-                <p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Evidence boundary:</strong> This report documents the technical reasoning and local closed-loop tests of the AI4MBSE modeling-agent project initiated by Liangding Yuan. Screenshots and sample data come from local personal experiments and have not undergone an independent engineering audit.</p>
-                <p class="publication-disclaimer"><strong>Use boundary:</strong> This report is published for technical learning and academic exchange. It does not describe a software product, commercial solution, or project-delivery capability.</p>
-            </div>
+<div class="document-citation">
+<p><a href="/cases/">Case-report registry</a> · <a href="/patterns/">Pattern catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer">Material, screenshots, and sample data come from Liangding Yuan's local experiments.</p>
+<p class="publication-disclaimer"><strong>Use boundary:</strong> This report is published for technical learning and academic exchange. It does not describe a software product, commercial solution, or project-delivery capability.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd><a href="/cases/ark-mbse-agent/">AI4MBSE modeling agent project</a>; authored by Liangding Yuan</dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#cases-ark-mbse-agent">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd><a href="/cases/ark-mbse-agent/">AI4MBSE modeling agent project</a>; authored by Liangding Yuan</dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-02">2026-08-02</time></dd></div>
+</dl>
+<p><a href="/chronicle/#cases-ark-mbse-agent">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/ark-mbse-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/cases/ark-mbse-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/cases/ark-mbse-agent.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/cases/ark-mbse-agent.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

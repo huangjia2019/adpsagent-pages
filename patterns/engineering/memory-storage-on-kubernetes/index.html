@@ -187,16 +187,15 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span><a href="/patterns/engineering/">Pattern engineering notes</a></p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/patterns/">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span><a href="/patterns/engineering/">Pattern engineering notes</a></p>
 <header class="publication-head">
-  <p class="publication-series">ADPS Pattern Engineering Note · Memory</p>
-  <h1>Agent memory on Kubernetes: storage layers and recovery tests</h1>
-  <p class="publication-deck">Files can remain the agent interface; durable backends handle cross-Pod survival, version conflicts, and recovery.</p>
+<p class="publication-series">ADPS Pattern Engineering Note · Memory</p>
+<h1>Agent memory on Kubernetes: storage layers and recovery tests</h1>
+<p class="publication-deck">Files can remain the agent interface; durable backends handle cross-Pod survival, version conflicts, and recovery.</p>
 </header>
-<p>A reader described a concrete deployment failure. Their agent writes timestamped Markdown files under its workspace. The design works on a laptop, but a Kubernetes service may send the user's next request to another Pod. The preference saved by Pod A is not present in Pod B.</p>
-<p>Markdown is not the problem. It defines how the body is represented. The storage design determines whether the record survives a process, Pod, or release. A production system should separate the file view presented to the agent from the durable record behind it.</p>
-<p><img alt="Write, persistence, and workspace projection for agent memory on Kubernetes" src="/images/patterns/engineering/k8s-agent-memory-en.svg"></p>
+<p>A reader's agent writes timestamped Markdown files under its workspace. The design works on a laptop, but a Kubernetes service may send the user's next request to another Pod. The preference saved by Pod A is not present in Pod B.</p>
+<p>Markdown defines how the body is represented. The storage design determines whether the record survives a process, Pod, or release. A production system should separate the file view presented to the agent from the durable record behind it.</p>
+<p><img alt="Write, persistence, and workspace projection for agent memory on Kubernetes" src="/images/patterns/engineering/k8s-agent-memory-en.svg"/></p>
 <h2>Follow one write from end to end</h2>
 <p>Suppose a user says: “Write future weekly reports in Chinese. Put risks before progress.”</p>
 <p>If Pod A only writes the sentence here, the agent cannot honestly confirm durable storage:</p>
@@ -249,18 +248,18 @@
 <h2>A workable memory record</h2>
 <p>A filename and a body are not enough for tenant isolation, concurrent updates, or retirement:</p>
 <pre><code class="language-json">{
-  &quot;memory_id&quot;: &quot;mem_01J...&quot;,
-  &quot;tenant_id&quot;: &quot;tenant_acme&quot;,
-  &quot;subject_id&quot;: &quot;user_1842&quot;,
-  &quot;project_id&quot;: &quot;weekly-report&quot;,
-  &quot;kind&quot;: &quot;preference&quot;,
-  &quot;body_format&quot;: &quot;text/markdown&quot;,
-  &quot;body&quot;: &quot;Use Chinese; put risks before progress.&quot;,
-  &quot;source_ref&quot;: &quot;trace://run-8842/message-6&quot;,
-  &quot;version&quot;: 13,
-  &quot;valid_from&quot;: &quot;2026-09-12T10:30:00Z&quot;,
-  &quot;supersedes&quot;: &quot;mem_01H...&quot;,
-  &quot;status&quot;: &quot;accepted&quot;
+  "memory_id": "mem_01J...",
+  "tenant_id": "tenant_acme",
+  "subject_id": "user_1842",
+  "project_id": "weekly-report",
+  "kind": "preference",
+  "body_format": "text/markdown",
+  "body": "Use Chinese; put risks before progress.",
+  "source_ref": "trace://run-8842/message-6",
+  "version": 13,
+  "valid_from": "2026-09-12T10:30:00Z",
+  "supersedes": "mem_01H...",
+  "status": "accepted"
 }
 </code></pre>
 <p><code>subject_id</code> identifies whose memory this is. <code>project_id</code> limits where it may be shared. <code>source_ref</code> points to the event that produced it. <code>version</code> and <code>supersedes</code> make updates explicit. <code>status</code> separates candidates, accepted records, and retired records. The body can remain Markdown.</p>
@@ -401,21 +400,20 @@ WHERE memory_id = :memory_id
 </ul>
 <p>The source question and original Chinese article date to 12 September 2026. This ADPS engineering note was prepared on 13 September 2026.</p>
 <div class="document-citation">
-  <p><strong>Suggested citation:</strong> ADPS, <em>Agent Memory on Kubernetes: Storage Layers and Recovery</em>, ADPS Pattern Engineering Note · Memory, 13 September 2026.</p>
-  <p><a href="/patterns/">Pattern Matrix</a> · <a href="/patterns/engineering/">Pattern engineering notes</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+<p><strong>Suggested citation:</strong> ADPS, <em>Agent Memory on Kubernetes: Storage Layers and Recovery</em>, ADPS Pattern Engineering Note · Memory, 13 September 2026.</p>
+<p><a href="/patterns/">Pattern Matrix</a> · <a href="/patterns/engineering/">Pattern engineering notes</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
 </div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Provenance</h2>
-  <dl>
-    <div><dt>Source record</dt><dd><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html" target="_blank" rel="noopener">Original Chinese engineering note</a></dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-09-12">2026-09-12</time></dd></div>
-    <div><dt>First published here</dt><dd><time datetime="2026-09-13">2026-09-13</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#engineering-memory-storage-on-kubernetes">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Provenance</h2>
+<dl>
+<div><dt>Source record</dt><dd><a href="https://articles.zsxq.com/id_lmwrhdk7j78a.html" rel="noopener" target="_blank">Original Chinese engineering note</a></dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-09-12">2026-09-12</time></dd></div>
+<div><dt>First published here</dt><dd><time datetime="2026-09-13">2026-09-13</time></dd></div>
+</dl>
+<p><a href="/chronicle/#engineering-memory-storage-on-kubernetes">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/engineering/memory-storage-on-kubernetes.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/engineering/memory-storage-on-kubernetes.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/engineering/memory-storage-on-kubernetes.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/patterns/engineering/memory-storage-on-kubernetes.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
