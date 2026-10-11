@@ -96,8 +96,7 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
-              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
@@ -187,18 +186,18 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X3</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
-                <h1>X3 · Security & Identity</h1>
-                <p class="publication-deck">Propagate identity across delegation and constrain each run with least privilege and short-lived credentials.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X3</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
+<h1>X3 · Security &amp; Identity</h1>
+<p class="publication-deck">Propagate identity across delegation and constrain each run with least privilege and short-lived credentials.</p>
+</header>
 <p><strong>Principals, delegation, credentials, and resource boundaries</strong> form the X3 control line. The principal identifies who acts, delegation records whom it represents and what it may do, credentials enforce the verdict externally, and resource boundaries constrain the objects, environments, and time windows that authority can reach.</p>
 <p>X3 propagates identity across users, agents, workloads, runs, tools, and resources, then bounds delegation, authorization, and credentials to a concrete capability and environment.</p>
 <h2>Identity chain</h2>
 <pre><code>principal → tenant → agent version → workload → session/run
-          → intent → approval → short-lived credential → resource</code></pre>
+          → intent → approval → short-lived credential → resource
+</code></pre>
 <p>Each hop records who represents whom, which action is allowed, which resource is in scope, and when authority expires. A shared service account identifies a process; it does not prove the user, agent version, or delegation chain behind a request.</p>
 <h2>Engineering responsibilities</h2>
 <table><thead><tr><th>Responsibility</th><th>Question</th><th>Artifact</th></tr></thead><tbody>
@@ -208,7 +207,7 @@
 <tr><td>Credential</td><td>How is the verdict enforced by an external system?</td><td>Short-lived, narrow, revocable credential</td></tr>
 </tbody></table>
 <h2>Policy, decision, enforcement, and evidence</h2>
-<p>A policy source owns rules. A decision service evaluates a structured request. G5 Hooks Pipeline enforces the verdict at unavoidable runtime points. X1 records the request, verdict, state delta, and external receipt. Combining all four in one handler entangles policy versions, runtime identity, and audit boundaries.</p>
+<p>A policy source owns rules. A decision service evaluates a structured request. G4 Hooks Pipeline enforces the verdict at unavoidable runtime points. X1 records the request, verdict, state delta, and external receipt. Combining all four in one handler entangles policy versions, runtime identity, and audit boundaries.</p>
 <h2>Lifecycle</h2>
 <table><thead><tr><th>Stage</th><th>Security and identity control</th></tr></thead><tbody>
 <tr><td>Register</td><td>Record owner, capability, risk class, tenant, and accessible resources</td></tr>
@@ -218,27 +217,33 @@
 <tr><td>Revalidate and retire</td><td>Narrow authority after anomalies or regression; revoke old versions and departed principals</td></tr>
 </tbody></table>
 <h2>Relationship to Governance patterns</h2>
-<p>G1 binds approval to an intent. G2 sets the impact ceiling. G3 changes the long-term autonomy of a capability. G5 supplies deterministic enforcement points. X3 provides their common identity and authorization foundation while also covering perception data access, memory writes, sub-agent delegation, and publication of reflected assets.</p>
+<p>G1 binds approval to an intent. G2 sets the impact ceiling. G3 changes the long-term autonomy of a capability. G4 supplies deterministic enforcement points. X3 provides their common identity and authorization foundation while also covering perception data access, memory writes, sub-agent delegation, and publication of reflected assets.</p>
 <h2>Failure modes</h2>
-<ul><li>All agents share one long-lived service account;</li><li>a role written in a prompt is treated as permission;</li><li>approval binds only a prose summary, not tool version, arguments, and resource;</li><li>resume reuses expired credentials and stale preconditions;</li><li>the user is logged but sub-agent, workload, and delegation identities disappear;</li><li>an eval environment can read production secrets or alter release gates.</li></ul>
+<ul>
+<li>All agents share one long-lived service account;</li>
+<li>a role written in a prompt is treated as permission;</li>
+<li>approval binds only a prose summary, not tool version, arguments, and resource;</li>
+<li>resume reuses expired credentials and stale preconditions;</li>
+<li>the user is logged but sub-agent, workload, and delegation identities disappear;</li>
+<li>an eval environment can read production secrets or alter release gates.</li>
+</ul>
 <h2>Public path</h2>
 <p>The <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> case follows identity propagation, providers, decisions, and enforcement points in public code. The <a href="/workshops/governance-2026-08-18/">Governance workshop</a> records common questions around assembly-time filtering, runtime revalidation, short-lived credentials, and agent lifecycle.</p>
-            <div class="document-citation">
-                <p><strong>Suggested citation:</strong> ADPS, <em>X3 · Security & Identity</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
-                <p><a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
-            </div>
+<div class="document-citation">
+<p><strong>Suggested citation:</strong> ADPS, <em>X3 · Security &amp; Identity</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
+<p><a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-x3-security-and-identity">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-x3-security-and-identity">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x3-security-and-identity.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/x3-security-and-identity.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x3-security-and-identity.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/a42c132bf44b52278daf88f20abff069060391c9/docs/publications/en/patterns/x3-security-and-identity.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

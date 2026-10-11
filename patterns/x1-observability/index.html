@@ -96,8 +96,7 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
-              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/" class="active">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
@@ -187,17 +186,16 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X1</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
-                <h1>X1 · Observability</h1>
-                <p class="publication-deck">Join events, causality, versions, state deltas, and external outcomes into runtime evidence.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern catalog</a><span style="margin: 0 0.45rem;">/</span>Cross-cutting plane<span style="margin: 0 0.45rem;">/</span>X1</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Cross-cutting Engineering Plane Specification</p>
+<h1>X1 · Observability</h1>
+<p class="publication-deck">Join events, causality, versions, state deltas, and external outcomes into runtime evidence.</p>
+</header>
 <p><strong>Events, causality, versions, and external outcomes</strong> anchor X1. Events preserve atomic facts; causality connects calls across agents and tools; versions identify the components that actually ran; external outcomes confirm whether the real system changed. Without all four, runtime records are weak evidence for diagnosis, evaluation, or accountability.</p>
 <p>X1 joins normalized events, causal identity, version references, state deltas, and external receipts into evidence that can be queried, evaluated, and attributed.</p>
 <h2>Position</h2>
-<p>Observability spans all seven cognitive functions, six execution topologies, and lifecycle stages. It does not occupy a matrix cell. G4 remains only as a legacy entry point; the current identifier is X1.</p>
+<p>Observability spans all seven cognitive functions, six execution topologies, and lifecycle stages. It does not occupy a matrix cell.</p>
 <h2>From logs to evidence</h2>
 <table><thead><tr><th>Observation surface</th><th>Facts to retain</th><th>Use</th></tr></thead><tbody>
 <tr><td>Input and context</td><td>Source, version, admission, and discard reason</td><td>Reconstruct what the agent could see</td></tr>
@@ -209,7 +207,8 @@
 <p>Structured decision summaries, candidates, citations, tool calls, and state transitions are suitable runtime evidence. Retaining hidden reasoning is unstable and enlarges the sensitive-data surface.</p>
 <h2>Causality and identity</h2>
 <pre><code>principal → agent → workload → session → run → intent
-          → approval → model/tool/sub-agent span → resource → outcome</code></pre>
+          → approval → model/tool/sub-agent span → resource → outcome
+</code></pre>
 <p>Trace Context propagates across processes, while business objects still require stable identifiers. A retry may create a new span; it must not create a new business intent or duplicate a side effect.</p>
 <h2>Evidence across the lifecycle</h2>
 <table><thead><tr><th>Stage</th><th>Evidence focus</th></tr></thead><tbody>
@@ -219,34 +218,40 @@
 <tr><td>Revalidate and evolve</td><td>Failure clusters, change predictions, regressions, promotion, demotion, retirement</td></tr>
 </tbody></table>
 <h2>Failure modes</h2>
-<ul><li>Large volumes of text without object IDs, versions, or state deltas;</li><li>treating HTTP 200 or exit code 0 as business success;</li><li>broken causality across agents, queues, and callbacks;</li><li>sampling biased toward simple tasks;</li><li>unbounded retention of sensitive prompts and credentials;</li><li>mixing X2 evaluation judgements with X1 observed facts.</li></ul>
+<ul>
+<li>Large volumes of text without object IDs, versions, or state deltas;</li>
+<li>treating HTTP 200 or exit code 0 as business success;</li>
+<li>broken causality across agents, queues, and callbacks;</li>
+<li>sampling biased toward simple tasks;</li>
+<li>unbounded retention of sensitive prompts and credentials;</li>
+<li>mixing X2 evaluation judgements with X1 observed facts.</li>
+</ul>
 <h2>Verification</h2>
 <p>Check trace continuity, identity and version completeness, external confirmation for side effects, orphan writes, evidence latency, sampling bias, and access to sensitive evidence. Test cross-process calls, retries, resume, model fallback, schema upgrades, and collector failure.</p>
 <h2>Public implementation</h2>
 <p>The <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail</a> case follows a public code path across identity, authorization verdicts, RunJournal, and tool execution. Integrators still supply business state deltas and external outcomes.</p>
 <!-- RELATED-CASE-DEEPAGENTS:START -->
-<section class="related-case-band" aria-labelledby="related-deepagents-case">
-  <p class="related-case-label">Related open-source framework case</p>
-  <h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
-  <p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
+<section aria-labelledby="related-deepagents-case" class="related-case-band">
+<p class="related-case-label">Related open-source framework case</p>
+<h2 id="related-deepagents-case"><a href="/cases/deepagents-dynamic-orchestration/">Deep Agents: From Fixed Graphs to Code-Generated Collaboration</a></h2>
+<p>Haili Zhang's workshop research, checked against public documentation and source code, connects hierarchical delegation, fan-out/gather, subagent isolation, independent verification, evaluation, and observability.</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
 <div class="document-citation">
-                <p><strong>Suggested citation:</strong> ADPS, <em>X1 · Observability</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
-                <p><a href="/topics/observability-driven-evolution/">Observability topic</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
-            </div>
+<p><strong>Suggested citation:</strong> ADPS, <em>X1 · Observability</em>, ADPS Cross-cutting Engineering Plane Specification v0.5, 20 August 2026.</p>
+<p><a href="/topics/observability-driven-evolution/">Observability topic</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>Scope:</strong> This page defines engineering scope and interfaces; it does not certify products. Attributed practices remain governed by their case pages and public code.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-x1-observability">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-20">2026-08-20</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-x1-observability">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x1-observability.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/x1-observability.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/x1-observability.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/a42c132bf44b52278daf88f20abff069060391c9/docs/publications/en/patterns/x1-observability.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

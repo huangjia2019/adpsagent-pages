@@ -102,8 +102,7 @@
               <a href="/zh/patterns/g1-approval-gate/">G1 审批门</a>
               <a href="/zh/patterns/g2-blast-radius-control/">G2 爆炸半径控制</a>
               <a href="/zh/patterns/g3-progressive-commitment/">G3 渐进承诺</a>
-              <a href="/zh/patterns/g4-observability-harness/">G4 可观测性 <span class="ext">历史入口 → X1</span></a>
-              <a href="/zh/patterns/g5-hooks-pipeline/">G5 钩子流水线 <span class="ext">扩展</span></a>
+              <a href="/zh/patterns/g4-hooks-pipeline/">G4 钩子流水线 <span class="ext">扩展</span></a>
               <h4>横切工程面 Cross-cutting</h4>
               <a href="/zh/patterns/x1-observability/">X1 可观测性</a>
               <a href="/zh/patterns/x2-evals-and-testing/">X2 评测与验证</a>
@@ -193,17 +192,15 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin:0 0.45rem;">/</span>模式白皮书<span style="margin:0 0.45rem;">/</span>Collaboration</p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/zh/patterns/">模式矩阵</a><span style="margin:0 0.45rem;">/</span>模式白皮书<span style="margin:0 0.45rem;">/</span>Collaboration</p>
 <header class="publication-head">
 <p class="publication-series">ADPS Agent 设计模式白皮书 · 模块总纲</p>
 <h1>协作模块 · 多个参与者怎样共同完成一项工作</h1>
 <p class="publication-deck">任务、上下文、权限、证据和责任在参与者之间的流动方式。</p>
 </header>
-
 <p>协作带来的收益通常来自任务规模、专业分工、审查独立性或故障隔离。参与者增加以后，交接损耗、资源冲突和目标漂移也会一起增加。协作模块负责说明这些边界，以及不同模式如何组成一套可运行、可验收的系统。</p>
 <p>前端 Agent 复现接口超时，后端 Agent 已经掌握服务日志和事务上下文。交接内容包括当前责任、已核验事实、输入版本、临时权限和复测条件；两个会话各自的调试过程继续留在本地。协作模块从这类具体任务展开，再延伸到委派、并行、独立评审和事件协作。</p>
-<p><img alt="协作系统中的三类关系" src="/images/workshops/collaboration-three-planes-zh.svg"></p>
+<p><img alt="协作系统中的三类关系" src="/images/workshops/collaboration-three-planes-zh.svg"/></p>
 <h2>三类协作关系</h2>
 <table>
 <thead>
@@ -269,7 +266,7 @@
 </table>
 <p>订单系统可以在运行时由模型选择付款、库存和通知 Agent；只要一个解释器仍保存完整计划并汇总结果，它就是动态编排。只有当付款发布事件、库存和通知按各自本地规则订阅并继续发布，且没有节点掌握完整流程时，才进入 C6 编舞。分类取决于完整计划由谁持有，与流程是否预先写死无关。</p>
 <h2>拓扑治理矩阵</h2>
-<p><img alt="拓扑治理矩阵" src="/images/workshops/topology-governance-matrix-zh.svg"></p>
+<p><img alt="拓扑治理矩阵" src="/images/workshops/topology-governance-matrix-zh.svg"/></p>
 <table>
 <thead>
 <tr>
@@ -333,7 +330,7 @@ next_required: 可评审补丁与测试证据
 <h2>独立评审与反馈回路</h2>
 <p>生成者与评审者分离可以减少自评偏好，也可能切断执行反馈。评审产物需要包含依据、风险、适用条件和复验要求；执行阶段发现的新约束进入证据链，并返回下一轮评审。C3 给出条件，C4 传递条件，X1 与 X2 验证实际结果。</p>
 <h2>Hook 组合</h2>
-<p>Hook 可以承担四种职责：推动阶段流转、执行治理裁决、记录观测事件、保存现场并触发恢复。它是确定性执行位置，具体职责由组合决定。G5 保留历史编号，治理页面聚焦不可绕过的执行点；跨模块用法见<a href="/zh/topics/hook-composition/">Hook 组合</a>。</p>
+<p>Hook 可以承担四种职责：推动阶段流转、执行治理裁决、记录观测事件、保存现场并触发恢复。它是确定性执行位置，具体职责由组合决定。G4 聚焦治理中不可绕过的执行点；跨模块用法见<a href="/zh/topics/hook-composition/">Hook 组合</a>。</p>
 <h2>从开放探索到生产固化</h2>
 <p>开发环境允许临时拆任务与尝试拓扑。测试和预发布逐步固定 Agent、模型、工具、策略与主要运行图；生产只在评测过的范围内保留动态性。版本变化后重新评测，不能沿用旧证据。</p>
 <h2>什么时候拆成多个 Agent</h2>
@@ -380,35 +377,34 @@ next_required: 可评审补丁与测试证据
 </tbody>
 </table>
 <!-- PATTERN-ENGINEERING-NOTE:START -->
-<section class="related-case-band" aria-labelledby="handoff-engineering-note">
-  <p class="related-case-label">模式工程实现</p>
-  <h2 id="handoff-engineering-note"><a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上：从上下文引用到任务交接</a></h2>
-  <p>沿一次前端发现、后端修复和前端复测，展开消息、任务账、交接包、权限收窄和验收证据。</p>
+<section aria-labelledby="handoff-engineering-note" class="related-case-band">
+<p class="related-case-label">模式工程实现</p>
+<h2 id="handoff-engineering-note"><a href="/zh/patterns/engineering/cross-agent-handoff/">两个 Agent 怎样接上：从上下文引用到任务交接</a></h2>
+<p>沿一次前端发现、后端修复和前端复测，展开消息、任务账、交接包、权限收窄和验收证据。</p>
 </section>
 <!-- PATTERN-ENGINEERING-NOTE:END -->
 <h2>研讨会记录</h2>
 <p>本总纲吸收了 2026-08-25 协作模块第一次研讨会。主持人：张海立、黄佳；核心研讨嘉宾：张栋、王伟。</p>
 <p><a href="/zh/workshops/collaboration-2026-08-25/">阅读完整研讨记录</a> · <a href="/zh/topics/human-agent-interaction/">人与 Agent 的协作边界</a> · <a href="/zh/topics/abstraction-reconstruction/">抽象—还原</a></p>
 <!-- RELATED-CASE-DEEPAGENTS:START -->
-<section class="related-case-band" aria-labelledby="related-deepagents-case">
-  <p class="related-case-label">相关开源框架案例</p>
-  <h2 id="related-deepagents-case"><a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents：从固定图到代码生成的动态协作</a></h2>
-  <p>张海立在协作研讨会中的框架研究，经公开文档与源码复核，连接层级委派、扇出聚合、子代理隔离、独立复核以及评测与可观测性。</p>
+<section aria-labelledby="related-deepagents-case" class="related-case-band">
+<p class="related-case-label">相关开源框架案例</p>
+<h2 id="related-deepagents-case"><a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents：从固定图到代码生成的动态协作</a></h2>
+<p>张海立在协作研讨会中的框架研究，经公开文档与源码复核，连接层级委派、扇出聚合、子代理隔离、独立复核以及评测与可观测性。</p>
 </section>
 <!-- RELATED-CASE-DEEPAGENTS:END -->
-<div class="document-citation"><p><strong>引用建议：</strong>ADPS，《协作模块 · 多个参与者怎样共同完成一项工作》，Agent 设计模式白皮书 v0.9，2026-08-26。</p><p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/collaboration-2026-08-25/">协作研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer">本页为公开评审稿。具名实践另见案例库；研讨中的内部实例采用脱敏表述。</p></div>
+<div class="document-citation"><p><strong>引用建议：</strong>ADPS，《协作模块 · 多个参与者怎样共同完成一项工作》，Agent 设计模式白皮书 v0.9，2026-08-26。</p><p><a href="/zh/patterns/">模式目录</a> · <a href="/zh/workshops/collaboration-2026-08-25/">协作研讨会</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p><p class="publication-disclaimer">本页为公开评审稿。具名实践另见案例库；研讨中的内部实例采用脱敏表述。</p></div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">溯源记录</h2>
-  <dl>
-    <div><dt>来源记录</dt><dd><a href="/zh/workshops/collaboration-2026-08-25/">协作模块第一次研讨会</a>（2026-08-25）；<a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents 动态协作研究</a></dd></div>
-    <div><dt>来源日期</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
-    <div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
-  </dl>
-  <p><a href="/zh/chronicle/#patterns-collaboration">在 ADPS Chronicle 中查看</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">溯源记录</h2>
+<dl>
+<div><dt>来源记录</dt><dd><a href="/zh/workshops/collaboration-2026-08-25/">协作模块第一次研讨会</a>（2026-08-25）；<a href="/zh/cases/deepagents-dynamic-orchestration/">Deep Agents 动态协作研究</a></dd></div>
+<div><dt>来源日期</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+<div><dt>本页首次公开</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+</dl>
+<p><a href="/zh/chronicle/#patterns-collaboration">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/collaboration.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/zh/patterns/collaboration.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/patterns/collaboration.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/e110e4b31c398f13b3cff50cb764fee4947873c1/docs/publications/zh/patterns/collaboration.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

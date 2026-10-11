@@ -96,8 +96,7 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
-              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
@@ -187,84 +186,81 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M3</p>
-
-            <header class="publication-head">
-                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
-                <h1>M3 · Progress Tracking</h1>
-                <p class="publication-deck">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</p>
-            </header>
-
-                        <table>
-            <tbody>
-            <tr>
-            <td style="text-align: left;"><strong>Coordinate</strong></td>
-            <td style="text-align: left;">Memory × Orchestrate</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Cost</strong></td>
-            <td style="text-align: left;">Low (reading and writing state fields is cheap)</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Pattern group</strong></td>
-            <td style="text-align: left;">Memory patterns</td>
-            </tr>
-            <tr>
-            <td style="text-align: left;"><strong>Summary</strong></td>
-            <td style="text-align: left;">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</td>
-            </tr>
-            </tbody>
-            </table>
-            <hr />
-            <h2>Problem</h2>
-            <p>An LLM relies on the context window to retain current task information, and intermediate material in a long context may receive less attention. During extended debugging, the original plan can leave the effective working set. An agent may complete some files, become absorbed in a local defect, and then move to testing while a planned file remains uncreated.</p>
-            <p>Progress tracking externalizes the goal, milestones, blockers, and next step, then reloads them before consequential decisions. Databases, state machines, and ledgers remain authoritative for business state. The progress record carries references and task narrative; an old summary cannot decide which operational version is current.</p>
-            <h2>Classification: Memory × Orchestrate</h2>
-            <ul>
-            <li><strong>Vertical axis · Memory</strong>: Progress state preserves the goal, current step, completed artifacts, blockers, and recovery position across decisions and sessions.</li>
-            <li><strong>Horizontal axis · Orchestrate</strong>: One coordinator owns the plan state, chooses the next ready step, and updates checkpoints across the task. This differs from a chain in which each step only passes an artifact to its successor.</li>
-            </ul>
-            <h2>Solution and mechanics</h2>
-            <ol>
-            <li><strong>Goal Contract</strong>: Keep the objective, acceptance conditions, forbidden actions, and exit conditions at the top of the task ledger. Later compaction may shorten narrative but must preserve acceptance and prohibitions.</li>
-            <li><strong>Separate plan from progress</strong>: A plan describes expected steps. Progress stores each step's <code>pending / in_progress / blocked / needs_review / completed / failed</code> state, owner, dependencies, and next action. A single-threaded branch has one active step; explicit parallel branches maintain separate state.</li>
-            <li><strong>Reference authoritative business state</strong>: <code>state_refs</code> point to database records, approvals, commits, or business ledgers. Resolve them again on resume rather than treating values copied into a checkpoint as current truth.</li>
-            <li><strong>Create artifact checkpoints</strong>: At each milestone, store verifiable artifacts, state references, action receipts, and a resume cursor. Irreversible actions use idempotency keys or business receipts to prove completion.</li>
-            <li><strong>Re-anchor at risk boundaries</strong>: Reload the Goal Contract, active milestone, and prohibitions after a tool-call threshold, on failure, at a subtask switch, on resume, and before a high-risk commit.</li>
-            <li><strong>Stop on conflict</strong>: When progress conflicts with current authoritative state, acceptance criteria, or an action receipt, move to <code>needs_review</code>. The agent does not silently choose the most recent-looking prose.</li>
-            <li><strong>Isolate levels and archive history</strong>: The main agent keeps milestones and acceptance criteria; sub-agents keep local steps and return structured summaries. Completion clears the active view while preserving the event history for audit and replay.</li>
-            </ol>
-            <h2>Applicability</h2>
-            <ul>
-            <li><strong>Multi-step long tasks</strong>: Tasks spanning many turns and prone to losing planned work during detail-chasing, such as refactoring, multi-file changes, and complex debugging.</li>
-            <li><strong>Recoverable long flows</strong>: Scenarios where a task may crash midway and need to resume. After progress is persisted, the second session reads the progress, skips what is completed, and recovers from the interrupted step without redoing work.</li>
-            <li><strong>Goals advanced over multiple sessions</strong>: Investment research, migration work, and long investigations can retain durable milestones while each session creates bounded local steps and writes completed artifacts back to the task ledger.</li>
-            </ul>
-            <h2>Known failure modes</h2>
-            <ul>
-            <li><strong>Forcing it onto a simple task</strong>: Plain conversation, one-off Q&amp;A, and work that can be completed directly usually do not need todos.</li>
-            <li><strong>Allowing multiple in_progress in one serial branch</strong>: The next action becomes ambiguous. Real parallel work needs explicit branches or separate agents with independent state.</li>
-            <li><strong>Marking a todo complete before business state commits</strong>: A UI status is narrative. Without a database version, action receipt, or acceptance artifact, the system cannot claim that a side effect occurred.</li>
-            <li><strong>Restoring stale checkpoint values over current state</strong>: Replaying copied parameters may repeat a payment or publication and overwrite later human changes. Resolve every <code>state_ref</code> on resume.</li>
-            <li><strong>Compressing the goal into “continue processing”</strong>: Once acceptance, prohibitions, and exit conditions disappear, a local detail can become the agent's new goal.</li>
-            <li><strong>Treating a historical decision as the current decision</strong>: Retrieved discussion and old versions can pull the agent back to a superseded baseline. Authoritative decisions need accepted, superseded, or revoked status.</li>
-            <li><strong>Main agent and sub-agent sharing one pool</strong>: Detail todos from sub-agents can drown out the main agent's high-level plan. Sub-agents should maintain separate lists and return structured progress upward.</li>
-            <li><strong>No framework-level re-anchor or nudge</strong>: The agent stops updating progress or closes work without verification, and the runtime still allows it to continue. Escalation should reflect task risk and execution authority.</li>
-            </ul>
-            <h2>Verification and metrics</h2>
-            <ul>
-            <li><strong>Plan-omission rate</strong>: The share of long tasks that skip an item from the original plan. Compute it from replay or task audits rather than UI state alone.</li>
-            <li><strong>Goal and acceptance coverage</strong>: Each active step should map to the Goal Contract, and task closure should supply evidence for every acceptance condition.</li>
-            <li><strong>Goal-drift events</strong>: Count active steps that no longer relate to the objective, prohibitions, or active milestone.</li>
-            <li><strong>Verification-step coverage</strong>: Whether applicable tasks include verification before closing. Set the requirement by task risk and record whether the nudge changes behavior.</li>
-            <li><strong>Resume success rate</strong>: Whether recovery continues from persisted progress without repeating completed irreversible actions.</li>
-            <li><strong>Duplicate side-effect events</strong>: Count business actions repeated during resume, retry, or concurrency because no idempotency proof was available.</li>
-            <li><strong>State-reference freshness</strong>: Verify that <code>state_refs</code> are resolved to current versions on resume and before high-risk actions.</li>
-            <li><strong>Single-in_progress compliance</strong>: A single-threaded executor must have only one active item. A violation exposes a state-machine or concurrency-boundary defect.</li>
-            </ul>
-            <h2>Reference implementation</h2>
-            <pre><code>GoalContract:
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/" style="color: var(--color-text-muted);">Pattern Matrix</a><span style="margin:0 0.45rem;">/</span>White Paper<span style="margin:0 0.45rem;">/</span>M3</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+<h1>M3 · Progress Tracking</h1>
+<p class="publication-deck">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</p>
+</header>
+<table>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Coordinate</strong></td>
+<td style="text-align: left;">Memory × Orchestrate</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cost</strong></td>
+<td style="text-align: left;">Low (reading and writing state fields is cheap)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pattern group</strong></td>
+<td style="text-align: left;">Memory patterns</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Summary</strong></td>
+<td style="text-align: left;">Maintain a goal contract, structured progress, authoritative state references, and checkpoints across a long task so that work can resume without drifting or repeating side effects.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2>Problem</h2>
+<p>An LLM relies on the context window to retain current task information, and intermediate material in a long context may receive less attention. During extended debugging, the original plan can leave the effective working set. An agent may complete some files, become absorbed in a local defect, and then move to testing while a planned file remains uncreated.</p>
+<p>Progress tracking externalizes the goal, milestones, blockers, and next step, then reloads them before consequential decisions. Databases, state machines, and ledgers remain authoritative for business state. The progress record carries references and task narrative; an old summary cannot decide which operational version is current.</p>
+<h2>Classification: Memory × Orchestrate</h2>
+<ul>
+<li><strong>Vertical axis · Memory</strong>: Progress state preserves the goal, current step, completed artifacts, blockers, and recovery position across decisions and sessions.</li>
+<li><strong>Horizontal axis · Orchestrate</strong>: One coordinator owns the plan state, chooses the next ready step, and updates checkpoints across the task. This differs from a chain in which each step only passes an artifact to its successor.</li>
+</ul>
+<h2>Solution and mechanics</h2>
+<ol>
+<li><strong>Goal Contract</strong>: Keep the objective, acceptance conditions, forbidden actions, and exit conditions at the top of the task ledger. Later compaction may shorten narrative but must preserve acceptance and prohibitions.</li>
+<li><strong>Separate plan from progress</strong>: A plan describes expected steps. Progress stores each step's <code>pending / in_progress / blocked / needs_review / completed / failed</code> state, owner, dependencies, and next action. A single-threaded branch has one active step; explicit parallel branches maintain separate state.</li>
+<li><strong>Reference authoritative business state</strong>: <code>state_refs</code> point to database records, approvals, commits, or business ledgers. Resolve them again on resume rather than treating values copied into a checkpoint as current truth.</li>
+<li><strong>Create artifact checkpoints</strong>: At each milestone, store verifiable artifacts, state references, action receipts, and a resume cursor. Irreversible actions use idempotency keys or business receipts to prove completion.</li>
+<li><strong>Re-anchor at risk boundaries</strong>: Reload the Goal Contract, active milestone, and prohibitions after a tool-call threshold, on failure, at a subtask switch, on resume, and before a high-risk commit.</li>
+<li><strong>Stop on conflict</strong>: When progress conflicts with current authoritative state, acceptance criteria, or an action receipt, move to <code>needs_review</code>. The agent does not silently choose the most recent-looking prose.</li>
+<li><strong>Isolate levels and archive history</strong>: The main agent keeps milestones and acceptance criteria; sub-agents keep local steps and return structured summaries. Completion clears the active view while preserving the event history for audit and replay.</li>
+</ol>
+<h2>Applicability</h2>
+<ul>
+<li><strong>Multi-step long tasks</strong>: Tasks spanning many turns and prone to losing planned work during detail-chasing, such as refactoring, multi-file changes, and complex debugging.</li>
+<li><strong>Recoverable long flows</strong>: Scenarios where a task may crash midway and need to resume. After progress is persisted, the second session reads the progress, skips what is completed, and recovers from the interrupted step without redoing work.</li>
+<li><strong>Goals advanced over multiple sessions</strong>: Investment research, migration work, and long investigations can retain durable milestones while each session creates bounded local steps and writes completed artifacts back to the task ledger.</li>
+</ul>
+<h2>Known failure modes</h2>
+<ul>
+<li><strong>Forcing it onto a simple task</strong>: Plain conversation, one-off Q&amp;A, and work that can be completed directly usually do not need todos.</li>
+<li><strong>Allowing multiple in_progress in one serial branch</strong>: The next action becomes ambiguous. Real parallel work needs explicit branches or separate agents with independent state.</li>
+<li><strong>Marking a todo complete before business state commits</strong>: A UI status is narrative. Without a database version, action receipt, or acceptance artifact, the system cannot claim that a side effect occurred.</li>
+<li><strong>Restoring stale checkpoint values over current state</strong>: Replaying copied parameters may repeat a payment or publication and overwrite later human changes. Resolve every <code>state_ref</code> on resume.</li>
+<li><strong>Compressing the goal into “continue processing”</strong>: Once acceptance, prohibitions, and exit conditions disappear, a local detail can become the agent's new goal.</li>
+<li><strong>Treating a historical decision as the current decision</strong>: Retrieved discussion and old versions can pull the agent back to a superseded baseline. Authoritative decisions need accepted, superseded, or revoked status.</li>
+<li><strong>Main agent and sub-agent sharing one pool</strong>: Detail todos from sub-agents can drown out the main agent's high-level plan. Sub-agents should maintain separate lists and return structured progress upward.</li>
+<li><strong>No framework-level re-anchor or nudge</strong>: The agent stops updating progress or closes work without verification, and the runtime still allows it to continue. Escalation should reflect task risk and execution authority.</li>
+</ul>
+<h2>Verification and metrics</h2>
+<ul>
+<li><strong>Plan-omission rate</strong>: The share of long tasks that skip an item from the original plan. Compute it from replay or task audits rather than UI state alone.</li>
+<li><strong>Goal and acceptance coverage</strong>: Each active step should map to the Goal Contract, and task closure should supply evidence for every acceptance condition.</li>
+<li><strong>Goal-drift events</strong>: Count active steps that no longer relate to the objective, prohibitions, or active milestone.</li>
+<li><strong>Verification-step coverage</strong>: Whether applicable tasks include verification before closing. Set the requirement by task risk and record whether the nudge changes behavior.</li>
+<li><strong>Resume success rate</strong>: Whether recovery continues from persisted progress without repeating completed irreversible actions.</li>
+<li><strong>Duplicate side-effect events</strong>: Count business actions repeated during resume, retry, or concurrency because no idempotency proof was available.</li>
+<li><strong>State-reference freshness</strong>: Verify that <code>state_refs</code> are resolved to current versions on resume and before high-risk actions.</li>
+<li><strong>Single-in_progress compliance</strong>: A single-threaded executor must have only one active item. A violation exposes a state-machine or concurrency-boundary defect.</li>
+</ul>
+<h2>Reference implementation</h2>
+<pre><code>GoalContract:
                 goal_id / objective / acceptance[] / forbidden[] / exit_conditions[]
 
             PlanStep:
@@ -283,40 +279,38 @@
             checkpoint():
                 append progress event + artifact hashes + action receipts
                 snapshot the active view without replacing authoritative business state
-            </code></pre>
-            <p>Store progress events append-only and rebuild the active view from them. High-risk actions share one trace before and after execution. A checkpoint stores references and receipts, not a second copy of mechanical state that can become stale.</p>
-            <h2>Illustrative scenario</h2>
-            <p>Consider an investment-research agent that updates a view on one company over an extended period. Its Goal Contract stores the research subject, deliverables, evidence-date requirements, and the rule that portfolio-manager approval cannot be bypassed. Each session keeps only steps that can be completed in that run, then writes reports, data snapshots, and review decisions to artifact references. Position and approval state come from business systems, while the progress ledger stores pointers. Resume refreshes those references; a conflict between the research conclusion and current position or approval state enters <code>needs_review</code> instead of continuing from an old checkpoint.</p>
-            <h2>Related patterns</h2>
-            <ul>
-            <li><strong>Layered Retention (M1)</strong>: Progress tracking is the hottest layer within the hierarchy. The runtime loads the active item and enough of the higher-level goal for each decision.</li>
-            <li><strong>Failure Journals (M4)</strong>: M3 records expected work and current position. M4 preserves failure events, candidate diagnoses, and verified lessons. Link both to the same task, step, and trace identifiers.</li>
-            <li><strong>Plan-and-Execute (A2)</strong>: A2 creates and schedules the plan. M3 persists the changing execution state, artifacts, blockers, and resume cursor for that plan.</li>
-            <li><strong>Hooks Pipeline (G4 legacy entry, now X1)</strong>: Runtime hooks can persist progress after tool calls and reload the Goal Contract before risk boundaries. Hook behavior must remain idempotent and observable.</li>
-            <li><strong>Observability (X1)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
-            </ul>
-            <h2>Design conclusion</h2>
-            <p>Progress tracking externalizes the direction, execution state, and recovery position of long work. The Goal Contract limits drift, authoritative references prevent stale prose from becoming truth, and artifacts plus receipts prevent repeated side effects after resume.</p>
-
-            <!-- PATTERN-ENGINEERING-RELATED:START -->
-<section class="related-case-band" aria-labelledby="related-memory-engineering">
-  <p class="related-case-label">Pattern engineering note</p>
-  <h2 id="related-memory-engineering"><a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent Memory on Kubernetes: Storage Layers and Recovery</a></h2>
-  <p>Place this pattern in a multi-Pod service and inspect the system of record, version conflicts, retrieval indexes, and recovery path.</p>
+</code></pre>
+<p>Store progress events append-only and rebuild the active view from them. High-risk actions share one trace before and after execution. A checkpoint stores references and receipts, not a second copy of mechanical state that can become stale.</p>
+<h2>Illustrative scenario</h2>
+<p>Consider an investment-research agent that updates a view on one company over an extended period. Its Goal Contract stores the research subject, deliverables, evidence-date requirements, and the rule that portfolio-manager approval cannot be bypassed. Each session keeps only steps that can be completed in that run, then writes reports, data snapshots, and review decisions to artifact references. Position and approval state come from business systems, while the progress ledger stores pointers. Resume refreshes those references; a conflict between the research conclusion and current position or approval state enters <code>needs_review</code> instead of continuing from an old checkpoint.</p>
+<h2>Related patterns</h2>
+<ul>
+<li><strong>Layered Retention (M1)</strong>: Progress tracking is the hottest layer within the hierarchy. The runtime loads the active item and enough of the higher-level goal for each decision.</li>
+<li><strong>Failure Journals (M4)</strong>: M3 records expected work and current position. M4 preserves failure events, candidate diagnoses, and verified lessons. Link both to the same task, step, and trace identifiers.</li>
+<li><strong>Plan-and-Execute (A2)</strong>: A2 creates and schedules the plan. M3 persists the changing execution state, artifacts, blockers, and resume cursor for that plan.</li>
+<li><strong>Hooks Pipeline (G4)</strong>: Runtime hooks can persist progress after tool calls and reload the Goal Contract before risk boundaries. Hook behavior must remain idempotent and observable.</li>
+<li><strong>Observability (X1)</strong>: ProgressState explains where the agent believes it is; unified traces and action receipts prove what the system actually did.</li>
+</ul>
+<h2>Design conclusion</h2>
+<p>Progress tracking externalizes the direction, execution state, and recovery position of long work. The Goal Contract limits drift, authoritative references prevent stale prose from becoming truth, and artifacts plus receipts prevent repeated side effects after resume.</p>
+<!-- PATTERN-ENGINEERING-RELATED:START -->
+<section aria-labelledby="related-memory-engineering" class="related-case-band">
+<p class="related-case-label">Pattern engineering note</p>
+<h2 id="related-memory-engineering"><a href="/patterns/engineering/memory-storage-on-kubernetes/">Agent Memory on Kubernetes: Storage Layers and Recovery</a></h2>
+<p>Place this pattern in a multi-Pod service and inspect the system of record, version conflicts, retrieval indexes, and recovery path.</p>
 </section>
 <!-- PATTERN-ENGINEERING-RELATED:END -->
-<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M3 Progress Tracking</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" target="_blank" rel="noopener">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>M3 Progress Tracking</em>, Agent Design Pattern White Paper v0.3, 2026-07-13. <a href="/patterns/">Catalog</a> · <a href="https://github.com/huangjia2019/agent-design-patterns" rel="noopener" target="_blank">runnable code catalog</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p><p class="publication-disclaimer"><strong>Document status:</strong> This is a public review draft. Illustrative scenarios explain the mechanism and are not presented as verified enterprise cases. See the <a href="/cases/">case library</a> for attributed practice. ADPS welcomes case contributions with sources, measurement methods, and publication approval.</p></div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-m3-progress-tracking">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-m3-progress-tracking">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/m3-progress-tracking.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/m3-progress-tracking.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/m3-progress-tracking.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/a42c132bf44b52278daf88f20abff069060391c9/docs/publications/en/patterns/m3-progress-tracking.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

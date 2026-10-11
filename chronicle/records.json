@@ -220,15 +220,15 @@
     "anchor": "patterns-g3-progressive-commitment"
   },
   {
-    "path": "patterns/g5-hooks-pipeline/index.html",
-    "url": "/patterns/g5-hooks-pipeline/",
+    "path": "patterns/g4-hooks-pipeline/index.html",
+    "url": "/patterns/g4-hooks-pipeline/",
     "language": "en",
     "category": "patterns",
-    "title": "G5 · Hooks Pipeline",
+    "title": "G4 · Hooks Pipeline",
     "source_text": "ADPS pattern white paper; prior work and references are listed in the article",
     "source_date": null,
     "first_public": "2026-07-18",
-    "anchor": "patterns-g5-hooks-pipeline"
+    "anchor": "patterns-g4-hooks-pipeline"
   },
   {
     "path": "patterns/governance/index.html",
@@ -726,15 +726,15 @@
     "anchor": "patterns-g3-progressive-commitment"
   },
   {
-    "path": "zh/patterns/g5-hooks-pipeline/index.html",
-    "url": "/zh/patterns/g5-hooks-pipeline/",
+    "path": "zh/patterns/g4-hooks-pipeline/index.html",
+    "url": "/zh/patterns/g4-hooks-pipeline/",
     "language": "zh",
     "category": "patterns",
-    "title": "G5 · Hooks Pipeline · 钩子流水线",
+    "title": "G4 · Hooks Pipeline · 钩子流水线",
     "source_text": "ADPS 模式白皮书；先行工作与参考资料见正文",
     "source_date": null,
     "first_public": "2026-07-18",
-    "anchor": "patterns-g5-hooks-pipeline"
+    "anchor": "patterns-g4-hooks-pipeline"
   },
   {
     "path": "zh/patterns/governance/index.html",

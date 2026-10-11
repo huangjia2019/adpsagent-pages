@@ -112,7 +112,7 @@ next_required: 可评审补丁与测试证据</code></pre>
 <p>评审产物需要带上依据、风险、适用条件和复验要求。C3 对抗评审与 C4 交接链在这里连接：评审给出条件，交接传递条件，执行结果再回到外部验收。</p>
 <h2>9. Hook 的触发条件与组合</h2>
 <p class="workshop-field-note">王伟问，Hook 是否应该作为独立协作模式？讨论涉及几种用途：需求完成后启动编码 Agent；高危调用前暂停并等待审批；调用后记录 trace；失败后保存 checkpoint。这些用途分别属于编排、治理、观测和恢复，同一种回调机制可以用于不同的设计。</p>
-<p>本轮没有新增 C7。G5 继续保留历史编号，用于治理中的确定性执行点；跨模块的 Hook 用法进入<a href="/zh/topics/hook-composition/">Hook 组合</a>专题。组合设计必须声明事件、顺序、条件、幂等键、失败语义与后续事件，避免把控制流藏进互不透明的回调。</p>
+<p>本轮没有新增 C7。G4 用于治理中的确定性执行点；跨模块的 Hook 用法进入<a href="/zh/topics/hook-composition/">Hook 组合</a>专题。组合设计必须声明事件、顺序、条件、幂等键、失败语义与后续事件，避免把控制流藏进互不透明的回调。</p>
 <h2>10. 概率内核与确定性外壳</h2>
 <pre><code>模糊目标 → 模型理解与候选方案 → 结构化 Intent
         → 规则 / 状态 / 权限 / 测试 → 受控执行 → 外部结果
@@ -130,8 +130,7 @@ next_required: 可评审补丁与测试证据</code></pre>
 <li>新增<a href="/zh/patterns/collaboration/">协作模块总纲</a>，重新说明关系模式、协作约束、分布式候选与实现机制。</li>
 <li>C1–C5 分别补充任务级身份、写入冲突域、评审反馈、交接合同和跨 Session 隔离。</li>
 <li>C6 明确动态编排与编舞的控制权差异，继续保持候选。</li>
-<li>G5 保留历史编号；Hook 跨模块组合进入专题。</li>
-<li>G4 保留为历史目录入口，指向 X1 可观测性。</li>
+<li>G4 描述治理执行点；Hook 跨模块组合进入专题。</li>
 </ol>
 <h2>待继续回答</h2>
 <ul>
@@ -167,7 +166,7 @@ next_required: 可评审补丁与测试证据</code></pre>
 </dl>
 <p><a href="/zh/chronicle/#workshops-collaboration-2026-08-25">在 ADPS Chronicle 中查看</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/workshops/collaboration-2026-08-25.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/zh/workshops/collaboration-2026-08-25.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/zh/workshops/collaboration-2026-08-25.md">修订源稿</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/e110e4b31c398f13b3cff50cb764fee4947873c1/docs/publications/zh/workshops/collaboration-2026-08-25.md">查看发布源稿</a> · <a href="/zh/contribute/guide/">协作规范</a></p></article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
             <p>ADPS · Agent Design Patterns Society · 2026 年发起</p>

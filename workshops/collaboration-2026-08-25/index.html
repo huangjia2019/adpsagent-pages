@@ -108,7 +108,7 @@ acceptance:
 <p>Separating generator and reviewer reduces self-review bias. Execution may then expose missing dependencies, version differences, or insufficient authority. Those facts must return to the review layer; otherwise the next run repeats an obsolete judgement.</p>
 <h2>9. Hook triggers and composition</h2>
 <p class="workshop-field-note">Wei Wang asked whether hooks should form an independent collaboration pattern. Participants discussed starting a coding agent after requirements are complete, pausing before a dangerous call for approval, recording a trace after a call, and saving a checkpoint on failure. These uses belong to orchestration, governance, observation, and recovery respectively; the same callback mechanism serves different designs.</p>
-<p>No C7 was added. G5 keeps its historical identifier for deterministic governance enforcement. Cross-module use is documented in the <a href="/topics/hook-composition/">Hook Composition</a> topic.</p>
+<p>No C7 was added. G4 defines deterministic governance enforcement points. Cross-module use is documented in the <a href="/topics/hook-composition/">Hook Composition</a> topic.</p>
 <h2>10. Probabilistic core, deterministic shell</h2>
 <pre><code>ambiguous goal → model interpretation and candidates → structured intent
               → rules / state / authority / tests → controlled action → external result
@@ -125,8 +125,7 @@ acceptance:
 <li>A new <a href="/patterns/collaboration/">Collaboration module overview</a> separates relationship patterns, constraints, distributed candidates, and implementation mechanisms.</li>
 <li>C1-C5 now cover task identities, write-conflict domains, review feedback, Handoff Contracts, and cross-session isolation.</li>
 <li>C6 distinguishes dynamic orchestration from choreography and remains a candidate.</li>
-<li>G5 retains its identifier; cross-module hook composition moves to a topic.</li>
-<li>G4 remains a legacy catalog entry that leads to X1 Observability.</li>
+<li>G4 describes governance enforcement; cross-module hook composition is covered in a topic.</li>
 </ol>
 <h2>Open questions</h2>
 <ul>
@@ -162,7 +161,7 @@ acceptance:
 </dl>
 <p><a href="/chronicle/#workshops-collaboration-2026-08-25">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/workshops/collaboration-2026-08-25.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/7eebbebcb5bea9a94ac171471afb733d61f052cc/docs/publications/en/workshops/collaboration-2026-08-25.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/workshops/collaboration-2026-08-25.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/e110e4b31c398f13b3cff50cb764fee4947873c1/docs/publications/en/workshops/collaboration-2026-08-25.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
             <p>ADPS · Agent Design Patterns Society · founded 2026</p>

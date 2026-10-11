@@ -32,8 +32,7 @@
     </header>
 
     <main class="container content">
-        <article class="essay">
-<p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Hook Composition</p>
+        <article class="essay"><p style="font-size:0.9rem;color:var(--color-text-faint);margin-bottom:1.75rem;"><a href="/topics/">Topics</a><span style="margin:0 0.45rem;">/</span>Hook Composition</p>
 <header class="publication-head"><p class="publication-series">ADPS Topic Study</p><h1>Hook Composition · Make hidden callbacks a readable control structure</h1><p class="publication-deck">Compose orchestration, governance, observation, and recovery at lifecycle events with explicit order, idempotency, and failure semantics.</p></header>
 <p>Hooks place deterministic code at stable lifecycle events. A hook can shrink context before a model call, check authority before a tool call, start the next agent after an artifact is accepted, record trace data, save a checkpoint, or release resources.</p>
 <p>A hook is a mechanism. Its role comes from the event, the state it reads, the authority it holds, and its failure semantics.</p>
@@ -88,8 +87,8 @@ emits: [policy.decided]
 owner: security-platform
 version: 7
 </code></pre>
-<h2>Relation to G5</h2>
-<p>G5 keeps its historical identifier and focuses on deterministic governance enforcement. Hook Composition spans a wider set of responsibilities, so no new collaboration pattern has been added.</p>
+<h2>Relation to G4</h2>
+<p>G4 defines deterministic governance enforcement points. Hook Composition spans a wider set of responsibilities, so no new collaboration pattern has been added.</p>
 <h2>Common failures</h2>
 <ul>
 <li>Effective order depends on registration order and remains invisible.</li>
@@ -107,20 +106,19 @@ version: 7
 <li>Can a run show the effective hook set and versions?</li>
 </ol>
 <h2>Source</h2>
-<p>The Governance workshop separated policy source, decision, enforcement, and evidence. The Collaboration workshop added stage transitions, cross-agent triggers, and recovery. This topic joins both discussions while retaining G5 as the historical governance entry.</p>
-<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Hook Composition · Make hidden callbacks a readable control structure</em>, ADPS Topic Study, 26 August 2026.</p><p><a href="/topics/">Topic index</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p></div>
+<p>The Governance workshop separated policy source, decision, enforcement, and evidence. The Collaboration workshop added stage transitions, cross-agent triggers, and recovery. This topic joins both discussions with G4 defining governance enforcement points.</p>
+<div class="document-citation"><p><strong>Suggested citation:</strong> ADPS, <em>Hook Composition · Make hidden callbacks a readable control structure</em>, ADPS Topic Study, 26 August 2026.</p><p><a href="/topics/">Topic index</a> · <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p></div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>Workshop and case records cited in the article: <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> (<time datetime="2026-08-25">2026-08-25</time>)</dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#topics-hook-composition">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>Workshop and case records cited in the article: <a href="/workshops/collaboration-2026-08-25/">Collaboration workshop</a> (<time datetime="2026-08-25">2026-08-25</time>)</dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-08-25">2026-08-25</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-26">2026-08-26</time></dd></div>
+</dl>
+<p><a href="/chronicle/#topics-hook-composition">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/topics/hook-composition.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/topics/hook-composition.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/topics/hook-composition.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/e110e4b31c398f13b3cff50cb764fee4947873c1/docs/publications/en/topics/hook-composition.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
         <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;"><p>ADPS · Agent Design Patterns Society · founded 2026</p></footer>
     </main>
     <script data-goatcounter="https://adps.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

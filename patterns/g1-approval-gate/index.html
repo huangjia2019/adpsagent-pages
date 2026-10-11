@@ -96,8 +96,7 @@
               <a href="/patterns/g1-approval-gate/" class="active">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
-              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
@@ -187,13 +186,12 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>G1</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS Agent Design Pattern White Paper</p>
-                <h1>G1 · Approval Gate</h1>
-                <p class="publication-deck">Bind approval to an immutable execution intent, then revalidate identity, arguments, resources, policy, and business state before action.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>G1</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent Design Pattern White Paper</p>
+<h1>G1 · Approval Gate</h1>
+<p class="publication-deck">Bind approval to an immutable execution intent, then revalidate identity, arguments, resources, policy, and business state before action.</p>
+</header>
 <p>Approval Gate runs before a high-risk action becomes effective. Its input is a concrete intent made of an immutable tool version, canonical arguments, resource scope, delegated identity, and business preconditions.</p>
 <h2>Coordinate and boundary</h2>
 <p><strong>Governance × Route.</strong> The same tool can reach deny, allow, or ask according to principal, arguments, environment, impact, and reversibility. Action generation belongs to the Action module; G2 bounds impact after admission.</p>
@@ -218,7 +216,11 @@ execution:
 </code></pre>
 <p>Canonicalize arguments before hashing. Field order, defaults, time zones, and numeric precision otherwise make identity comparison unreliable.</p>
 <h2>Ordered decisions</h2>
-<ol><li>Deterministic rules handle hard denial, explicit admission, and mandatory review.</li><li>A model classifier adds context and rationale but does not issue authority.</li><li>A policy engine joins identity, arguments, resources, and environment into a structured verdict.</li></ol>
+<ol>
+<li>Deterministic rules handle hard denial, explicit admission, and mandatory review.</li>
+<li>A model classifier adds context and rationale but does not issue authority.</li>
+<li>A policy engine joins identity, arguments, resources, and environment into a structured verdict.</li>
+</ol>
 <p>Conflict order is part of policy. A high-risk path normally stops when policy or review is unavailable.</p>
 <h2>Pause and resume</h2>
 <pre><code>DRAFT → EVALUATING → DENIED
@@ -233,30 +235,29 @@ execution:
 <p>Common failures include approving only a tool name or prose summary, omitting expiry and single use, allowing model risk scores to issue authority, bypassing the gate on retry or resume, and hiding parameter or resource differences from reviewers.</p>
 <p>Test tampering, policy change, expiry, concurrent consumption, duplicate callbacks, precondition change, and review-service failure. Monitor approved-versus-executed digest equality, stale-approval rejection, high-risk bypass, and unnecessary low-risk review.</p>
 <h2>Related specifications</h2>
-<p><a href="/patterns/g2-blast-radius-control/">G2</a> bounds impact; <a href="/patterns/g3-progressive-commitment/">G3</a> supplies capability autonomy; <a href="/patterns/x1-observability/">X1</a> links the three records; <a href="/patterns/g5-hooks-pipeline/">G5</a> enforces pre-call and resume checks.</p>
+<p><a href="/patterns/g2-blast-radius-control/">G2</a> bounds impact; <a href="/patterns/g3-progressive-commitment/">G3</a> supplies capability autonomy; <a href="/patterns/x1-observability/">X1</a> links the three records; <a href="/patterns/g4-hooks-pipeline/">G4</a> enforces pre-call and resume checks.</p>
 <!-- RELATED-CASE-DEERFLOW:START -->
-<section class="related-case-band" aria-labelledby="related-deerflow-case">
-  <p class="related-case-label">Related open-source engineering case</p>
-  <h2 id="related-deerflow-case"><a href="/cases/deerflow-guardrail/">DeerFlow: From Pre-Call Interception to Two-Layer Authorization</a></h2>
-  <p>The Guardrail evolution shared by Willem Jiang uses five public pull requests to connect assembly filtering, runtime authorization, identity, policy, and audit in one tool-execution path.</p>
+<section aria-labelledby="related-deerflow-case" class="related-case-band">
+<p class="related-case-label">Related open-source engineering case</p>
+<h2 id="related-deerflow-case"><a href="/cases/deerflow-guardrail/">DeerFlow: From Pre-Call Interception to Two-Layer Authorization</a></h2>
+<p>The Guardrail evolution shared by Willem Jiang uses five public pull requests to connect assembly filtering, runtime authorization, identity, policy, and audit in one tool-execution path.</p>
 </section>
 <!-- RELATED-CASE-DEERFLOW:END -->
 <div class="document-citation">
-                <p><strong>Suggested citation:</strong>ADPS, <em>G1 · Approval Gate</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
-                <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
-            </div>
+<p><strong>Suggested citation:</strong>ADPS, <em>G1 · Approval Gate</em>, Agent Design Pattern White Paper v0.4, 19 August 2026.</p>
+<p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-g1-approval-gate">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd>ADPS pattern white paper; prior work and references are listed in the article</dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-06-21">2026-06-21</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-g1-approval-gate">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/g1-approval-gate.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/g1-approval-gate.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/g1-approval-gate.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/a42c132bf44b52278daf88f20abff069060391c9/docs/publications/en/patterns/g1-approval-gate.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>

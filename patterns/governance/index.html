@@ -96,8 +96,7 @@
               <a href="/patterns/g1-approval-gate/">G1 Approval Gate</a>
               <a href="/patterns/g2-blast-radius-control/">G2 Blast-Radius Control</a>
               <a href="/patterns/g3-progressive-commitment/">G3 Progressive Commitment</a>
-              <a href="/patterns/g4-observability-harness/">G4 Observability <span class="ext">legacy → X1</span></a>
-              <a href="/patterns/g5-hooks-pipeline/">G5 Hooks Pipeline <span class="ext">ext</span></a>
+              <a href="/patterns/g4-hooks-pipeline/">G4 Hooks Pipeline <span class="ext">ext</span></a>
               <h4>Cross-cutting planes</h4>
               <a href="/patterns/x1-observability/">X1 Observability</a>
               <a href="/patterns/x2-evals-and-testing/">X2 Evaluation &amp; Validation</a>
@@ -187,25 +186,22 @@
         </aside>
         <div class="docs-main">
 
-        <article class="essay">
-            <p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>Governance</p>
-            <header class="publication-head">
-                <p class="publication-series">ADPS Agent Design Pattern White Paper · Module overview</p>
-                <h1>Governance Module: Making Agent Autonomy Manageable</h1>
-                <p class="publication-deck">Authorization, accountability, containment, cross-cutting controls, lifecycle, and control plane.</p>
-            </header>
+        <article class="essay"><p style="font-size: 0.9rem; color: var(--color-text-faint); margin-bottom: 1.75rem;"><a href="/patterns/">Pattern matrix</a><span style="margin: 0 0.45rem;">/</span>White paper<span style="margin: 0 0.45rem;">/</span>Governance</p>
+<header class="publication-head">
+<p class="publication-series">ADPS Agent Design Pattern White Paper · Module overview</p>
+<h1>Governance Module: Making Agent Autonomy Manageable</h1>
+<p class="publication-deck">Authorization, accountability, containment, cross-cutting controls, lifecycle, and control plane.</p>
+</header>
 <p>When an agent only recommends, governance often looks like content review. Once it invokes tools, changes business state, and delegates to other agents, governance becomes a runtime discipline: whom the agent represents, why an action is authorized, where failure stops, and whether responsibility and outcome can be reconstructed.</p>
 <p>Locally compliant steps can still drift away from a long-running goal. Governance therefore evaluates both the current action and its relation to the original goal and real outcome.</p>
-<p><img src="/images/patterns/adps-framework-v05-en.svg" alt="ADPS v0.5 dual-axis matrix, X1–X3 cross-cutting engineering planes, and agent lifecycle"></p>
-
+<p><img alt="ADPS v0.5 dual-axis matrix, X1–X3 cross-cutting engineering planes, and agent lifecycle" src="/images/patterns/adps-framework-v05-en.svg"/></p>
 <h2>Governance objectives</h2>
 <table><thead><tr><th>Objective</th><th>Question</th><th>Engineering objects</th></tr></thead><tbody>
 <tr><td><strong>Authorization</strong></td><td>Who represents whom, and which action may affect which resource?</td><td>Identity, delegation, policy, tool, arguments, resource</td></tr>
 <tr><td><strong>Accountability</strong></td><td>Who did what under which versions and policies, and what happened?</td><td>Run, trace, approval, versions, state delta, external receipt</td></tr>
 <tr><td><strong>Containment</strong></td><td>If a control fails, where does the maximum impact stop?</td><td>Sandbox, tenant boundary, quota, budget, breaker, compensation</td></tr>
 </tbody></table>
-<p>G1 admits one intent. G2 bounds the damage if an admitted action is wrong. G3 changes the authority of a capability over time. X1 supplies their evidence, and G5 provides deterministic enforcement points.</p>
-
+<p>G1 admits one intent. G2 bounds the damage if an admitted action is wrong. G3 changes the authority of a capability over time. X1 supplies their evidence, and G4 provides deterministic enforcement points.</p>
 <h2>The v0.5 structure</h2>
 <h3>Dual-axis matrix</h3>
 <p>Cognitive function × execution topology remains the primary ADPS structure. Seven functions and six topologies are unchanged. The matrix now contains 27 cell-bound core patterns; the Governance row retains G1 Approval Gate, G2 Blast-Radius Control, and G3 Progressive Commitment.</p>
@@ -216,11 +212,9 @@
 <tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, authority, and resource boundaries</td><td>Allow, deny, ask, limits, execution conditions</td></tr>
 </tbody></table>
 <p>The planes do not belong to the Governance row and do not occupy matrix cells. X1 supplies runtime facts, X2 supplies validation judgements, and X3 supplies identity and authority. Governance patterns consume that evidence to approve, contain, expand, or withdraw authority.</p>
-
 <h3 id="payroll-lifecycle">Lifecycle</h3>
-<p><img src="/images/patterns/agent-governance-lifecycle-en.svg" alt="Agent governance lifecycle from registration and evaluation to demotion and retirement"></p>
+<p><img alt="Agent governance lifecycle from registration and evaluation to demotion and retirement" src="/images/patterns/agent-governance-lifecycle-en.svg"/></p>
 <p>ReAct is the perception-reasoning-action micro-loop inside controlled operation. Evals recur during offline validation, canary release, operation, and revalidation. Neither requires another matrix coordinate.</p>
-
 <h2>Running example: a payroll batch across the lifecycle</h2>
 <p>This example explains the composition and is not an attributed enterprise case.</p>
 <table><thead><tr><th>Stage</th><th>Engineering action</th><th>Evidence</th></tr></thead><tbody>
@@ -228,16 +222,14 @@
 <tr><td>Design and version</td><td>Pin model, prompt, payroll rules, payment tool, approval policy, and data dependencies</td><td>Workload digest and dependency manifest</td></tr>
 <tr><td>Offline eval</td><td>Cover routine batches, new hires, cross-region tax, duplicate requests, and hostile arguments</td><td>Regression results, failure classes, cost, boundary tests</td></tr>
 <tr><td>Shadow and canary</td><td>Compare with the manual process before enabling a small recommendation slice</td><td>Human differences, adoption, long-tail distribution</td></tr>
-<tr><td>Controlled operation</td><td>G1 freezes and routes intent; G2 limits tenant, amount, and batch; G5 revalidates before commit</td><td>Intent, Approval, quota, hook verdicts</td></tr>
+<tr><td>Controlled operation</td><td>G1 freezes and routes intent; G2 limits tenant, amount, and batch; G4 revalidates before commit</td><td>Intent, Approval, quota, hook verdicts</td></tr>
 <tr><td>Observe and attribute</td><td>X1 links source ledger, arguments, payment receipt, state delta, and reconciliation</td><td>Cross-system trace, receipt, business outcome</td></tr>
 <tr><td>Change and revalidate</td><td>A payment-API upgrade freezes old grants and reruns affected evaluation and shadow work</td><td>Version diff, revalidation, change approval</td></tr>
 <tr><td>Authority disposition</td><td>Validation may reach bounded execution; submission remains reviewed; an ended pilot is retired</td><td>Capability grant, demotion, or retirement record</td></tr>
 </tbody></table>
-
 <h2>Governance control plane</h2>
-<p><img src="/images/patterns/agent-governance-control-plane-en.svg" alt="Agent governance control plane with registry, policy, enforcement, and observation"></p>
+<p><img alt="Agent governance control plane with registry, policy, enforcement, and observation" src="/images/patterns/agent-governance-control-plane-en.svg"/></p>
 <p>A local middleware can guard one agent. Multiple agents, domains, and delegations need shared registry, policy, enforcement, and evidence services. A central platform can own identity, policy formats, telemetry, and cross-domain audit; domain teams still own risk, acceptance, approvers, and incident response.</p>
-
 <h2>Governance contract</h2>
 <pre><code class="language-yaml">intent_id: int_01K3...
 principal: user://finance/108
@@ -261,7 +253,6 @@ execution:
   idempotency_key: payrun-2026-08-batch-17
 </code></pre>
 <p>A tool name is not enough for a governance decision. Immutable tool version, canonical arguments, resources, delegation, environment, aggregate budget, and business preconditions all affect risk.</p>
-
 <h2>Governance patterns and cross-cutting dependencies</h2>
 <table><thead><tr><th>Specification</th><th>Control object</th><th>Boundary</th></tr></thead><tbody>
 <tr><td><a href="/patterns/g1-approval-gate/"><strong>G1 Approval Gate</strong></a></td><td>Current high-risk intent</td><td>Revalidate intent and preconditions on resume; consume approval once</td></tr>
@@ -270,14 +261,11 @@ execution:
 <tr><td><a href="/patterns/x1-observability/"><strong>X1 Observability</strong></a></td><td>Cross-cutting evidence chain</td><td>Keep observed facts separate from evaluation judgements</td></tr>
 <tr><td><a href="/patterns/x2-evals-and-testing/"><strong>X2 Evaluation &amp; Validation</strong></a></td><td>Capability and regression evidence</td><td>Keep graders independent from the candidate system</td></tr>
 <tr><td><a href="/patterns/x3-security-and-identity/"><strong>X3 Security &amp; Identity</strong></a></td><td>Principal, delegation, and credentials</td><td>Propagate identity and narrow authority by resource</td></tr>
-<tr><td><a href="/patterns/g4-observability-harness/"><strong>G4 Observability · legacy entry → X1</strong></a></td><td>Retains the old identifier and route</td><td>The current specification is X1 and no longer occupies a Governance cell</td></tr>
-<tr><td><a href="/patterns/g5-hooks-pipeline/"><strong>G5 Hooks Pipeline</strong></a></td><td>Deterministic enforcement points</td><td>A hook is not the policy source or domain judge</td></tr>
+<tr><td><a href="/patterns/g4-hooks-pipeline/"><strong>G4 Hooks Pipeline</strong></a></td><td>Deterministic enforcement points</td><td>A hook is not the policy source or domain judge</td></tr>
 </tbody></table>
-
 <h2>Public engineering material</h2>
 <p><a href="/cases/deerflow-guardrail/"><strong>DeerFlow Guardrail and two-layer authorization</strong></a> follows five public pull requests through pre-call interception, principal propagation, RunJournal, an RBAC provider, and assembly-time plus runtime authorization.</p>
 <p><a href="/workshops/governance-2026-08-18/"><strong>First Governance Module Workshop</strong></a> preserves concrete questions about sandboxing, approval resume, agent registry, evidence attribution, capability-level authority, and offline evaluation. That material led to the v0.5 engineering planes and lifecycle structure.</p>
-
 <h2>Mechanisms under further study</h2>
 <ul>
 <li><strong>Delegated identity chain</strong> across user, agent, workload, run, and downstream tool.</li>
@@ -285,23 +273,22 @@ execution:
 <li><strong>Agent registration and retirement</strong> for pilots, credentials, versions, queues, and ownership.</li>
 <li><strong>Federated governance</strong> between central controls and domain accountability.</li>
 </ul>
-            <div class="document-citation">
-                <p><strong>Suggested citation:</strong>ADPS, <em>Governance Module: Making Agent Autonomy Manageable</em>, Agent Design Pattern White Paper v0.5, 20 August 2026.</p>
-                <p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
-                <p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
-            </div>
+<div class="document-citation">
+<p><strong>Suggested citation:</strong>ADPS, <em>Governance Module: Making Agent Autonomy Manageable</em>, Agent Design Pattern White Paper v0.5, 20 August 2026.</p>
+<p><a href="/patterns/">Pattern catalog</a> · <a href="/workshops/governance-2026-08-18/">Governance workshop</a> · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener" target="_blank">CC BY 4.0</a></p>
+<p class="publication-disclaimer"><strong>Scope:</strong>Public review draft. Definitions and classifications are open for discussion and citation; running examples explain mechanisms, while attributed practice appears in the case library.</p>
+</div>
 <!-- PAGE-CHRONICLE:START -->
-<section class="page-chronicle" aria-labelledby="page-chronicle-title">
-  <h2 id="page-chronicle-title">Chronicle</h2>
-  <dl>
-    <div><dt>Recorded source</dt><dd><a href="/workshops/governance-2026-08-18/">First Governance Module Workshop</a> (18 August 2026); <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail architecture evolution</a></dd></div>
-    <div><dt>Source date</dt><dd><time datetime="2026-08-18">2026-08-18</time></dd></div>
-    <div><dt>First published on ADPS</dt><dd><time datetime="2026-08-19">2026-08-19</time></dd></div>
-  </dl>
-  <p><a href="/chronicle/#patterns-governance">View in the ADPS Chronicle</a></p>
+<section aria-labelledby="page-chronicle-title" class="page-chronicle">
+<h2 id="page-chronicle-title">Chronicle</h2>
+<dl>
+<div><dt>Recorded source</dt><dd><a href="/workshops/governance-2026-08-18/">First Governance Module Workshop</a> (18 August 2026); <a href="/cases/deerflow-guardrail/">DeerFlow Guardrail architecture evolution</a></dd></div>
+<div><dt>Source date</dt><dd><time datetime="2026-08-18">2026-08-18</time></dd></div>
+<div><dt>First published on ADPS</dt><dd><time datetime="2026-08-19">2026-08-19</time></dd></div>
+</dl>
+<p><a href="/chronicle/#patterns-governance">View in the ADPS Chronicle</a></p>
 </section>
-<!-- PAGE-CHRONICLE:END -->
-<p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/governance.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/8f5113b3e253d088803ad7497b6e703c0ec0e3a6/docs/publications/en/patterns/governance.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
+<!-- PAGE-CHRONICLE:END --><p class="adps-widget adps-source-links"><a href="https://github.com/huangjia2019/agent-design-patterns/edit/main/docs/publications/en/patterns/governance.md">Edit source</a> · <a href="https://github.com/huangjia2019/agent-design-patterns/blob/a42c132bf44b52278daf88f20abff069060391c9/docs/publications/en/patterns/governance.md">Published source</a> · <a href="/contribute/guide/">Review process</a></p></article>
 
             <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-rule); color: var(--color-text-faint); font-size: 0.88rem;">
                 <p>ADPS · Agent Design Patterns Society · founded 2026</p>
