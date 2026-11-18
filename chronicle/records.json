@@ -2057,6 +2057,17 @@
     "anchor": "cases-deepagents-dynamic-orchestration"
   },
   {
+    "path": "cases/soduwork-software-delivery/index.html",
+    "url": "/cases/soduwork-software-delivery/",
+    "language": "en",
+    "category": "cases",
+    "title": "After the Agent Writes the Code: A Closer Look at SoduWork",
+    "source_text": "Jia Huang’s analysis of the SoduWork software delivery plugin, based on its public source code and developer documentation.",
+    "source_date": "2026-11-18",
+    "first_public": "2026-11-18",
+    "anchor": "cases-soduwork-software-delivery"
+  },
+  {
     "path": "cases/deerflow-guardrail/index.html",
     "url": "/cases/deerflow-guardrail/",
     "language": "en",
@@ -2110,6 +2121,17 @@
     "source_date": "2026-08-25",
     "first_public": "2026-08-26",
     "anchor": "cases-deepagents-dynamic-orchestration"
+  },
+  {
+    "path": "zh/cases/soduwork-software-delivery/index.html",
+    "url": "/zh/cases/soduwork-software-delivery/",
+    "language": "zh",
+    "category": "cases",
+    "title": "用 ADPS 双轴框架读 SoduWork：Agent 的自主性放在哪里",
+    "source_text": "黄佳依据 SoduWork 公开源码与开发者文档，对内置研发交付插件进行的设计分析。",
+    "source_date": "2026-11-18",
+    "first_public": "2026-11-18",
+    "anchor": "cases-soduwork-software-delivery"
   },
   {
     "path": "zh/cases/deerflow-guardrail/index.html",
